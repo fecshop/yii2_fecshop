@@ -6,11 +6,6 @@ fecshop for ecommerce  , online shop open source
 > 项目已经开始
 > Terry
 
-[![Latest Stable Version](https://poser.pugx.org/fancyecommerce/fecshop/v/stable)](https://packagist.org/packages/fancyecommerce/fecshop)
-[![Total Downloads](https://poser.pugx.org/fancyecommerce/fecshop/downloads)](https://packagist.org/packages/fancyecommerce/fecshop)
-[![License](https://poser.pugx.org/fancyecommerce/fecshop/license)](https://packagist.org/packages/fancyecommerce/fecshop)
-
-
 1、安装Yii2
 ------------
 
