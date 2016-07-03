@@ -12,5 +12,5 @@ foreach (glob(__DIR__ . '/modules/*.php') as $filename){
 return [
 	'modules'=>$modules,
 	/* only config in front web */
-	'bootstrap' => ['store'],
+	//'bootstrap' => ['store'],
 ];
