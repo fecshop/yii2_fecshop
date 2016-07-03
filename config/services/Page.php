@@ -26,7 +26,32 @@ return [
 			'theme' => [
 				'class' 		=> 'fecshop\services\page\Theme',
 			],
-			
+			'widget' => [
+				'class' 		=> 'fecshop\services\page\Widget',
+				# 定义默认方法，也就是widgetConfig 里面各个部件里面的method如果没有填写
+				# 则使用该配置。
+				# 'defaultObMethod' => 'getLastData',
+				
+				'widgetConfig' => [
+					'menu' =>[
+						# 必填
+						'class' => 'fec\block\TestMenu',
+						# view 的绝对路径配置方式
+						'view'  => '@fec/views/testmenu/index.php',
+						# 下面为选填
+						'method'=> 'getLastData',
+						'terry1'=> 'My1',
+						'terry2'=> 'My2',
+					],
+					'love' => [
+						'class' => 'fecshop\app\appfront\modules\Cms\block\widget\Test',
+						# 根据多模板的优先级，依次去模板找查找该文件，直到找到这个文件。
+						'view'  => 'cms/home/test.php',
+						'terry' => 'II',
+					]
+				]
+				
+			],
 			'currency' => [
 				'class' => 'fecshop\services\page\Currency',
 				'currencys' => [
