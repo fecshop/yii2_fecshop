@@ -20,11 +20,7 @@ github: https://github.com/fancyecommerce/yii2_fecshop
 执行
 
 ```
-cd /www/web/develop
 composer  require "fxp/composer-asset-plugin:~1.1.1"
-composer create-project yiisoft/yii2-app-advanced fecadmin 2.0.7
-cd fecadmin
-./init
 
 ```
 
@@ -36,7 +32,6 @@ cd fecadmin
 执行
 
 ```
-cd /www/web/develop/fecshop
 composer require --prefer-dist fancyecommerce/fecshop
 
 ```
