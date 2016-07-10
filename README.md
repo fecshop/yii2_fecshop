@@ -7,17 +7,12 @@ github: https://github.com/fancyecommerce/yii2_fecshop
 
 [![Latest Stable Version](https://poser.pugx.org/fancyecommerce/fecshop/v/stable)](https://packagist.org/packages/fancyecommerce/fecshop) [![Total Downloads](https://poser.pugx.org/fancyecommerce/fecshop/downloads)](https://packagist.org/packages/fancyecommerce/fecshop) [![Latest Unstable Version](https://poser.pugx.org/fancyecommerce/fecshop/v/unstable)](https://packagist.org/packages/fancyecommerce/fecshop) [![License](https://poser.pugx.org/fancyecommerce/fecshop/license)](https://packagist.org/packages/fancyecommerce/fecshop)
 
-> 项目已经开始,本项目由Terry筹划，经过一年的构思，现在已经把底层结构想好， 预计到2017年元旦出来第一个正式版本。
+> 项目已经开始,本项目由Terry筹划，经过一年的构思，现在已经把底层结构想好， 预计到2017年元旦出来第一个正式版本。在架构宏观上解决两个大问题：
 
-> 在架构宏观上解决两个大问题：
-
-> 1. 
-
-> 1.1fecshop系统核心代码，模板，数据库升级
-
-> 1.2 第三方代码，模板，数据升级
-
-> 1.3 用户二次开发，代码，模板，数据修改
+> 1. 解决三者之间的矛盾：
+  a) fecshop系统核心代码，模板，数据库升级
+, b)第三方代码，模板，数据升级
+, c)用户二次开发，代码，模板，数据修改
 
 > 上面三者之间的矛盾的冲突，通过依赖注入的方式，通过配置解决服务层，模块层，controller层功能的重写。
 
