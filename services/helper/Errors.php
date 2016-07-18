@@ -20,7 +20,7 @@ use fecshop\services\ChildService;
  */
 class Errors extends ChildService
 {
-	protected $_errors ;
+	protected $_errors = false ;
 	public $status = true;
 	
 	public function add($str){
@@ -33,7 +33,12 @@ class Errors extends ChildService
 	}
 	
 	public function get(){
-		return $this->_errors;
+		if($this->_errors){
+			$errors = $this->_errors;
+			$this->_errors = false;
+			return implode('|',$errors);
+		}
+		return false;
 	}
 	
 	

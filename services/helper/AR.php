@@ -48,25 +48,46 @@ class AR extends ChildService
 		
 		if($asArray)
 			$query->asArray();
-		if($where)
-			$query->where($where);
+		if($where){
+			if(is_array($where)){
+				$i = 0;
+				foreach($where as $w){
+					$i++;
+					if($i==1){
+						$query->where($w);
+					}else{
+						$query->andWhere($w);
+					}
+				}
+			}
+		}
+			
 		$offset = ($pageNum -1 ) * $numPerPage;
 		$query->limit($numPerPage)->offset($offset);
 		if($orderBy)
 			$query->orderBy($orderBy);
-		return $query->all();
+		return $query;
 	}
 	
 	
 	public function save($model,$one){
-		
-		$attributes = $model->attributes();
-		foreach($attributes as $attr){
-			if(isset($one[$attr])){
-				$model[$attr] = $one[$attr];
-			}
+		if(!$model){
+			Yii::$app->helper->errors->add('ActiveRecord Save Error: $model is empty');
+			return;
 		}
-		return $model->save();
+		$attributes = $model->attributes();
+		
+		if(is_array($attributes) && !empty($attributes)){
+			foreach($attributes as $attr){
+				if(isset($one[$attr])){
+					$model[$attr] = $one[$attr];
+				}
+			}
+			return $model->save();
+		}else{
+			Yii::$app->helper->errors->add('$attribute is empty or is not array');
+			return;
+		}
 	}
 	
 	

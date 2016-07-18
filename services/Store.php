@@ -62,6 +62,7 @@ class Store extends Service implements BootstrapInterface
 					if(isset($store['language']) && !empty($store['language'])){
 						Yii::$app->store->currentLang = $store['language'];
 						Yii::$app->store->currentLangName = $store['languageName'];
+						Yii::$app->page->translate->setLanguage($store['language']);
 					}
 					if(isset($store['theme']) && !empty($store['theme'])){
 						Yii::$app->store->currentTheme = $store['theme'];

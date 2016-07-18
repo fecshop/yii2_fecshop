@@ -55,39 +55,46 @@ class Request extends \yii\web\Request
 	 * get module request url by db ;
 	 */
 	protected function getRewriteUri($requestUri){
-		$urlPath  = '';
+		$baseUrl = $this->getBaseUrl();
+		$requestUriRelative = $requestUri;
+		if($baseUrl){
+			$requestUriRelative = substr($requestUriRelative, strlen($baseUrl));
+		}
+		
+		//echo $requestUriRelative;exit;
+		$urlKey  = '';
 		$urlParam = '';
 		$urlParamSuffix = '';
 		
-		if(strstr($requestUri,"#")){
-			list($urlNoSuffix,$urlParamSuffix)=  explode("#",$requestUri);
+		if(strstr($requestUriRelative,"#")){
+			list($urlNoSuffix,$urlParamSuffix)=  explode("#",$requestUriRelative);
 			if(strstr($urlNoSuffix,"?")){
-				list($urlPath,$urlParam)=  explode("?",$urlNoSuffix);
+				list($urlKey,$urlParam)=  explode("?",$urlNoSuffix);
 			}
-		}else if(strstr($requestUri,"?")){
-			list($urlPath,$urlParam)= explode("?",$requestUri);
+		}else if(strstr($requestUriRelative,"?")){
+			list($urlKey,$urlParam)= explode("?",$requestUriRelative);
 		}else{
-			$urlPath 	= $requestUri;
+			$urlKey 	= $requestUriRelative;
 		}
 		if($urlParamSuffix){
 			$urlParamSuffix = '#'.$urlParamSuffix;
 		}
-		if($yiiUrlPath = $this->getYiiUrl($urlPath)){
-			if(strstr($yiiUrlPath,'?')){
+		if($originUrlPath = Yii::$app->url->getOriginUrl($urlKey)){
+			if(strstr($originUrlPath,'?')){
 				if($urlParam){
-					$url = $yiiUrlPath.'&'.$urlParam.$urlParamSuffix;
+					$url = $originUrlPath.'&'.$urlParam.$urlParamSuffix;
 				}else{
-					$url = $yiiUrlPath.$urlParamSuffix;
+					$url = $originUrlPath.$urlParamSuffix;
 				}
-				$this->setRequestParam($yiiUrlPath);
+				$this->setRequestParam($originUrlPath);
 			}else{
 				if($urlParam){
-					$url = $yiiUrlPath.'?'.$urlParam.$urlParamSuffix;
+					$url = $originUrlPath.'?'.$urlParam.$urlParamSuffix;
 				}else{
-					$url = $yiiUrlPath.$urlParamSuffix;
+					$url = $originUrlPath.$urlParamSuffix;
 				}
 			}
-			return $url;
+			return $baseUrl.$url;
 		}else{
 			return $requestUri;
 		}
@@ -98,8 +105,8 @@ class Request extends \yii\web\Request
 	 * after get urlPath from db, if urlPath has get param ,
 	 * set the param to $_GET
 	 */
-	public function setRequestParam($yiiUrlPath){
-		$arr    = explode("?",$yiiUrlPath);
+	public function setRequestParam($originUrlPath){
+		$arr    = explode("?",$originUrlPath);
 		$yiiUrlParam = $arr[1];
 		$arr    = explode("&",$yiiUrlParam);
 		foreach($arr as $a){
@@ -112,12 +119,12 @@ class Request extends \yii\web\Request
 	 *  mongodb url_rewrite collection columns: _id,  type ,custom_url, yii_url,
 	 *	if selete date from UrlRewrite, return the yii url.
 	 */
-	protected function getYiiUrl($urlPath){
+	protected function getOriginUrl($urlKey){
 		$UrlData = UrlRewrite::find()->where([
-			'custom_url' => $urlPath,
+			'custom_url_key' => $urlKey,
 		])->asArray()->one();
-		if($UrlData['custom_url']){
-			return $UrlData['yii_url'];
+		if($UrlData['custom_url_key']){
+			return $UrlData['origin_url'];
 		}
 		return ;
 	}

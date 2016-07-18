@@ -9,11 +9,12 @@
 return [
 	'cms' => [
 		'class' => 'fecshop\services\Cms',
-		'storage' => 'mysqldb', # mysqldb or mongodb.
+		
 		# ×Ó·þÎñ
 		'childService' => [
 			'article' => [
-				'class' 		=> 'fecshop\services\cms\Article',
+				'class' 			=> 'fecshop\services\cms\Article',
+				'storage' => 'mysqldb', # mysqldb or mongodb.
 			],
 		],
 	],

@@ -22,32 +22,69 @@ use fecshop\services\cms\article\ArticleMongodb;
  */
 class Article extends ChildService
 {
-	
+	public $storage = 'mongodb';
 	protected $_article;
 	
+	
 	public function init(){
-		if(Yii::$app->cms->storage == 'mongodb'){
+		if($this->storage == 'mongodb'){
 			$this->_article = new ArticleMongodb;
-		}else{
+		}else if($this->storage == 'mysqldb'){
 			$this->_article = new ArticleMysqldb;
 		}
 	}
-	
-	
-	public function getById($id){
-		return $this->_article->getById($id);
+	/**
+	 * Get Url by article's url key.
+	 */
+	public function getUrl($urlKey){
+		return Yii::$app->url->getBaseUrl.'/'.$urlKey;
+	}
+	/**
+	 * get artile's primary key.
+	 */
+	public function getPrimaryKey(){
+		return $this->_article->getPrimaryKey();
+	}
+	/**
+	 * get artile model by primary key.
+	 */
+	public function getByPrimaryKey($primaryKey){
+		return $this->_article->getByPrimaryKey($primaryKey);
 	}
 	
+	//public function getById($id){
+	//	return $this->_article->getById($id);
+	//}
+	
+	/**
+	 * @property $filter|Array
+	 * get artile collection by $filter
+	 * example filter:
+	 * [
+	 * 		'numPerPage' 	=> 20,  	
+	 * 		'pageNum'		=> 1,
+	 * 		'orderBy'	=> ['_id' => SORT_DESC, 'sku' => SORT_ASC ],
+	 * 		'where'			=> [
+	 * 			'price' => [
+	 * 				'?gt' => 1,
+	 * 				'?lt' => 10,
+	 * 			],
+	 * 			'sku' => 'uk10001',
+	 * 		],
+	 * 	'asArray' => true,
+	 * ]
+	 */
 	public function coll($filter=''){
 		return $this->_article->coll($filter);
 	}
 	
 	/**
-	 * @property $date|Array
+	 * @property $one|Array , save one data .
+	 * @property $originUrlKey|String , article origin url key.
 	 * save $data to cms model,then,add url rewrite info to system service urlrewrite.                 
 	 */
-	public function save($one){
-		return $this->_article->save($one);
+	public function save($one,$originUrlKey){
+		return $this->_article->save($one,$originUrlKey);
 	}
 	
 	public function remove($ids){

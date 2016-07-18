@@ -11,7 +11,8 @@ use Yii;
 use yii\base\InvalidValueException;
 use yii\base\InvalidConfigException;
 use yii\base\BootstrapInterface;
-use fecshop\models\mongodb\UrlRewrite;
+use fecshop\models\mongodb\UrlRewrite as MongodbUrlRewrite;
+use fecshop\models\mysqldb\UrlRewrite as MysqldbUrlRewrite;
 use fec\helpers\CUrl;
 /**
  * 
@@ -24,35 +25,88 @@ class Url extends Service
 	protected $_secure;
 	protected $_http;
 	protected $_baseUrl;
+	protected $_origin_url;
+	public 	  $storage = 'mysqldb';
+	public 	  $randomCount = 8;
 	/**
 	 * save custom url to mongodb collection url_rewrite
-	 * @param $urlArr|Array, example: 
-	 * $urlArr = [
-	 * 	'custom_url' 	=> '/xxxx.html',
-	 *  'yii_url' 		=> '/product/index?_id=32',
-	 * ];
-	 * @param $type|String.
+	 * @param $str|String, example:  fashion handbag women
+	 * @param $originUrl|String , origin url ,example: /cms/home/index?id=5
+	 * @param $originUrlKey|String,origin url key, it can be empty ,or generate by system , or custom url key.
+	 * @param $type|String, url rewrite type.
+	 * @return  rewrite Key. 
 	 */
-	public function saveCustomUrl($urlArr,$type='system'){
-		
-		$data = UrlRewrite::find()->where([
-			'custom_url' => $urlArr['custom_url'],
-		])->asArray()->one();
-		if(isset($data['custom_url'])){
-			throw new InvalidValueException('custom_url is exist in mongodb collection url_rewrite,which _id is:'.$data['_id']);
+	public function saveRewriteUrlKeyByStr($str,$originUrl,$originUrlKey,$type='system'){
+		$originUrl = $originUrl ? '/'.trim($originUrl,'/') : '';
+		$originUrlKey = $originUrlKey ? '/'.trim($originUrlKey,'/') : '';
+		if($originUrlKey){
+			/**
+			 * if originUrlKey and  originUrl is exist in url rewrite collectons.
+			 */
+			$model = $this->find();
+			$data = $model->where([
+				'custom_url_key' 	=> $originUrlKey,
+				'origin_url' 		=> $originUrl,
+			])->asArray()->one();
+			if(isset($data['custom_url_key'])){
+				return $originUrlKey;
+			}
+		}
+		if($originUrlKey){
+			$urlKey = $this->generateUrlByName($originUrlKey);
 		}else{
-			$arr = [
-				'type' 		=> $type,
-				'custom_url'=> $urlArr['custom_url'],
-				'yii_url' 	=> $urlArr['yii_url'],
-			];
-			$UrlRewrite = UrlRewrite::getCollection();
-			$UrlRewrite->save($arr);
-			return true;
+			$urlKey = $this->generateUrlByName($str);
+		}
+		if(strlen($urlKey)<=1){
+			$urlKey .= $this->getRandom(5);
+		}
+		if(strlen($urlKey)<=2){
+			$urlKey .= '-'.$this->getRandom(5);
+		}
+		$urlKey = $this->getRewriteUrlKey($urlKey,$originUrl);
+		$UrlRewrite = $this->findOne([
+			'origin_url' => $originUrl
+		]);
+		if(!isset($UrlRewrite['origin_url'])){
+			$UrlRewrite = $this->newModel();
+		}
+		$UrlRewrite->type = $type;
+		$UrlRewrite->custom_url_key = $urlKey;
+		$UrlRewrite->origin_url = $originUrl;
+		$UrlRewrite->save($arr);
+		return $urlKey;
+	}
+	
+	/**
+	 * @property $url_key|String 
+	 * remove url rewrite data by $url_key,which is custom url key that saved in custom url modules,like articcle , product, category ,etc..
+	 */
+	public function removeRewriteUrlKey($url_key){
+		$model = $this->findOne([
+				'custom_url_key' => $url_key,
+			]);
+		if($model['custom_url_key']){
+			$model->delete();
 		}
 		
 	}
 	
+	/**
+	 *  @property $urlKey|String 
+	 *  get $origin_url by $custom_url_key ,it is used for yii2 init,
+	 *  in (new fecshop\services\Request)->resolveRequestUri(),  ## fecshop\services\Request is extend  yii\web\Request
+	 */
+	public function getOriginUrl($urlKey){
+		
+		$model = $this->find();
+		$UrlData = $model->where([
+			'custom_url_key' => $urlKey,
+		])->asArray()->one();
+		if($UrlData['custom_url_key']){
+			return $UrlData['origin_url'];
+		}
+		return ;
+	}
 	
 	/**
 	 * @property $path|String, for example about-us.html,  fashion-handbag/women.html
@@ -85,11 +139,102 @@ class Url extends Service
 		return Yii::$app->getHomeUrl();
 	}
 	
+	
+	
+	
+	protected function newModel(){
+		if($this->storage == 'mysqldb'){
+			return  new MysqldbUrlRewrite;
+		}else if($this->storage == 'mongodb'){
+			return  new MongodbUrlRewrite;
+		}
+	}
+	protected function find(){
+		if($this->storage == 'mysqldb'){
+			return MysqldbUrlRewrite::find();
+		}else if($this->storage == 'mongodb'){
+			return MongodbUrlRewrite::find();
+		}
+	}
+	
+	
+	protected function findOne($where){
+		if($this->storage == 'mysqldb'){
+			$model = MysqldbUrlRewrite::findOne($where);
+			
+		}else if($this->storage == 'mongodb'){
+			$model = MongodbUrlRewrite::findOne($where);
+		}
+		return $model;
+	}
+	
+	
+	
+	/**
+	 * check current url type is http or https. https is secure url type.
+	 */ 
 	protected function secure(){
 		if($this->_secure === null){
 			$this->_secure = isset($_SERVER['HTTPS']) && (strcasecmp($_SERVER['HTTPS'], 'on') === 0 || $_SERVER['HTTPS'] == 1) || isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strcasecmp($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') === 0;
 		}
 		return $this->_secure;
+	}
+	
+	/**
+	 * get rewrite url key.
+	 */
+	protected function getRewriteUrlKey($urlKey,$originUrl){
+		$model = $this->find();
+		$data = $model->where([
+			'custom_url_key' => $urlKey,
+		])->andWhere(['<>','origin_url',$originUrl])
+		->asArray()->one();
+		if(isset($data['custom_url_key'])){
+			$urlKey = $this->getRandomUrlKey($urlKey);
+			return $this->getRewriteUrlKey($urlKey,$originUrl);
+		}else{
+			return $urlKey;
+		}
+	}
+	
+	
+	/**
+	 * generate random string.
+	 */
+	protected function getRandom($length=''){
+		if(!$length ){
+			$length = $this->randomCount;
+		}
+		$str = null;
+		$strPol = "123456789";
+		$max = strlen($strPol)-1;
+		for($i=0;$i<$length;$i++){
+			$str.=$strPol[rand(0,$max)];//rand($min,$max)生成介于min和max两个数之间的一个随机整数
+		}
+		return $str;
+	  
+	}
+	/**
+	 * if url key is exist in url_rewrite table ,Behind url add some random string 
+	 */
+	protected function getRandomUrlKey($url){
+		if($this->_origin_url){
+			$randomStr = $this->getRandom();
+			return $this->_origin_url.'-'.$randomStr;
+		}
+	}
+	
+	/**
+	 * clear character that can not use for url.
+	 */ 
+	protected function generateUrlByName($name){
+		$url = iconv('UTF-8', 'ASCII//TRANSLIT', $name);
+		$url = preg_replace("{[^a-zA-Z0-9_.| -]}", '', $url);
+		$url = strtolower(trim($url, '-'));
+		$url = preg_replace("{[_| -]+}", '-', $url);
+		$url = '/'.trim($url,'/');
+		$this->_origin_url = $url;
+		return $url;
 	}
 	
 }

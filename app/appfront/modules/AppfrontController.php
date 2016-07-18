@@ -4,6 +4,7 @@ use Yii;
 use fec\helpers\CConfig;
 use fec\controllers\FecController;
 use yii\base\InvalidValueException;
+# use fecshop\app\appfront\modules\AppfrontController;
 class AppfrontController extends FecController
 {
 	public $blockNamespace;
@@ -19,6 +20,10 @@ class AppfrontController extends FecController
 		if(!Yii::$app->page->theme->layoutFile){
 			Yii::$app->page->theme->layoutFile = CConfig::param('appfrontBaseLayoutName');
 		}
+		/**
+		 *  set i18n translate category.
+		 */
+		Yii::$app->page->translate->category = 'appfront';
 	}
 	 
 	/**

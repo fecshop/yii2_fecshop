@@ -19,6 +19,9 @@ return [
 				'ifAddHomeUrl'	=> true,  	# default true, if set false, home will not add url (a).
 				//'intervalSymbol'=> ' >> '	# default value:' > '
 			],
+			'translate' => [
+				'class' 		=> 'fecshop\services\page\Translate',
+			],
 			
 			'asset' => [
 				'class' =>  'fecshop\services\page\Asset',

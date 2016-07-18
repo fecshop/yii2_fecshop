@@ -10,8 +10,8 @@ namespace fecshop\services\cms\article;
 
 interface ArticleInterface{
 	
-	public function getById($id);
+	public function getByPrimaryKey($primaryKey);
 	public function coll($filter);
-	public function save($one);
+	public function save($one,$originUrlKey);
 	public function remove($ids);
 }
