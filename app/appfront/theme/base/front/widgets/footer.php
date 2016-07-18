@@ -5,9 +5,14 @@
 						
 							<div class="col-xs-12 col-sm-6 col-md-3 newsletter widget social">
 							<header>
-								<h3 class="title">Follow Us</h3>
+								<h3 class="title">
+								
+								<?= Yii::$app->page->translate->__('Follow Us'); ?>
+								</h3>
 							</header>
-							<p>Follow us in social media</p>
+							<p>
+								<?= Yii::$app->page->translate->__('Follow us in social media'); ?>
+							</p>
 							<a class="sbtnf sbtnf-rounded color color-hover icon-facebook" href="https://www.facebook.com/" rel="nofollow" target="_blank"></a> 
 							<a class="sbtnf sbtnf-rounded color color-hover icon-twitter" href="https://twitter.com/" rel="nofollow" target="_blank"></a> 
 							<a class="sbtnf sbtnf-rounded color color-hover icon-dribbble" href="http://pinterest.com/" rel="nofollow" target="_blank"></a> 
@@ -16,9 +21,13 @@
 							</div>
 							<div class="col-xs-12 col-sm-6 col-md-3 newsletter widget links">
 								<header>
-									<h3 class="title">Newsletter</h3>
+									<h3 class="title">
+										<?= Yii::$app->page->translate->__('Newsletter'); ?>
+									</h3>
 								</header>
-								<p>Sign up for newsletter</p>
+								<p>
+									<?= Yii::$app->page->translate->__('Sign up for newsletter'); ?>
+								</p>
 								<form action="http://www.intosmile.com/customer/contacts/save?uenc=aHR0cDovL3d3dy5pbnRvc21pbGUuY29tLw==" method="post" id="newsletter-validate-detail">
 									<input type="hidden" name="_csrf" value="YmZEWnpqbXYTA3ZoFSgCByYEAA8rLRUbJh4uIBczWxQxAQ0NSiU8Gw==" class="thiscsrf">
 									<div class="newsletter-container">

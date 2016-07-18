@@ -23,7 +23,7 @@ return [
 				'appfront' => [
 					//'class' => 'yii\i18n\PhpMessageSource',
 					'class' => 'fecshop\yii\i18n\PhpMessageSource',
-					'basePath' => [
+					'basePaths' => [
 						'@fecshop/app/appfront/languages',
 						'@appfront/languages',
 					],
