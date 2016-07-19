@@ -9,7 +9,7 @@ github: https://github.com/fancyecommerce/yii2_fecshop
 
 **Fecshop文档(撰写中)**：[Fecshop Doc Guide](http://www.fecshop.com/doc/fecshop-guide/cn-1.0/guide-index.html#)
 
-关于Terry
+关于Terry  
 
 > 2010年进入外贸电商领域，使用magento搞仿牌网站，到最后转入正品网站，维护日均IP 10w+的网站
 到发现magento的各种不足（在知乎上面发表了自己对magento的观点：https://www.zhihu.com/question/19813425#zh-question-answer-wrap），
