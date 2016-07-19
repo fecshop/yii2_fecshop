@@ -107,6 +107,8 @@ return [
 			'currency' => [
 				'class' => 'fecshop\services\page\Currency',
 				/* currency config example:
+				'baseCurrecy' => 'USD',  # 产品的价格都使用基础货币填写价格值。
+				'defaultCurrency' => 'USD', # 如果store不设置货币，就使用这个store默认货币
 				'currencys' => [
 					'USD' => [
 						'rate' 		=> 1,

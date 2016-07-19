@@ -7,8 +7,8 @@ class Headers implements BlockCache
 	
     public function getLastData()
     {
-		$currentLang = 
-		$currency = Yii::$app->page->currency->getCurrentCurrency();
+		//$currentLang = 
+		//$currency = Yii::$app->page->currency->getCurrentCurrency();
 		return [
 			'baseurl'			=> Yii::$app->url->getBaseUrl(),
 			'currentStore'		=> Yii::$app->store->currentStore,

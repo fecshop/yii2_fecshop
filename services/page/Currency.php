@@ -38,27 +38,33 @@ class Currency extends ChildService
 	 */
 	public $currencys;
 	/**
-	 * default currency;
+	 * base currency; product price value is  base currency value, 
+	 */
+	public $baseCurrecy ;
+	/**
+	 * default currency; if store is not set currency  , $defaultCurrency will set to this store
 	 */
 	public $defaultCurrency = 'USD';
-	private $_currentCurrency;
-	
+	protected $_currentCurrency;
+	protected $_currencys;
 	
 	/**
 	 * Get all currencys info.
 	 */
 	public function getCurrencys($currencyCode=''){
-		$arr = [];
-		foreach($this->currencys as $code => $info){
-			$arr[$code] = [
-				'code' 		=> $code ,
-				'rate' 		=> $info['rate'] ,
-				'symbol' 	=> $info['symbol'] ,
-			];
+		if(!$this->_currencys){
+			foreach($this->currencys as $code => $info){
+				$this->_currencys[$code] = [
+					'code' 		=> $code ,
+					'rate' 		=> $info['rate'] ,
+					'symbol' 	=> $info['symbol'] ,
+				];
+			}
 		}
+		
 		if($currencyCode)
-			return $arr[$currencyCode];
-		return $arr;
+			return $this->_currencys[$currencyCode];
+		return $this->_currencys;
 	}
 	
 	
@@ -77,8 +83,7 @@ class Currency extends ChildService
 		/**
 		 * if error current will be set to default currency.
 		 */
-		$currency = $this->defaultCurrency ;
-		$this->setCurrentCurrency($currency);
+		$this->setCurrentCurrency($this->baseCurrecy);
 		return $price;
 	}
 	/**

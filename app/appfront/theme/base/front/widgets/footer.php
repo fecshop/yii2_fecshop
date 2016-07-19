@@ -31,7 +31,7 @@
 								<form action="http://www.intosmile.com/customer/contacts/save?uenc=aHR0cDovL3d3dy5pbnRvc21pbGUuY29tLw==" method="post" id="newsletter-validate-detail">
 									<input type="hidden" name="_csrf" value="YmZEWnpqbXYTA3ZoFSgCByYEAA8rLRUbJh4uIBczWxQxAQ0NSiU8Gw==" class="thiscsrf">
 									<div class="newsletter-container">
-										<input type="text" name="email" id="newsletter" placeholder="Enter your email adress..." title="Sign up for our newsletter" class="input-text form-control required-entry validate-email input-block-level">
+										<input type="text" name="email" id="newsletter" placeholder="<?= Yii::$app->page->translate->__('Enter your email adress'); ?>..." title="Sign up for our newsletter" class="input-text form-control required-entry validate-email input-block-level">
 										<button type="submit" title="Subscribe" class="newsletter-button">
 										JOIN</button>
 									</div>
@@ -39,28 +39,30 @@
 							</div>
 							<div class="col-xs-12 col-sm-6 col-md-3 widget links">
 								<header>
-									<h3 class="title">General Links</h3>
+									<h3 class="title">
+										<?= Yii::$app->page->translate->__('General Links'); ?>
+									</h3>
 								</header>
 								<nav>
 									<ul>
-										<li class="first"><a href="http://www.intosmile.com/about-us" title="About us" rel="nofollow">About Us</a></li>
-										<li><a href="http://www.intosmile.com/privacy-policy" title="Privacy Policy" rel="nofollow">Privacy Policy</a></li>
-										<li><a href="http://www.intosmile.com/return-policy" title="Return Policy" rel="nofollow">Return Policy</a></li>
-										<li><a href="http://www.intosmile.com/faq" title="FAQ" rel="nofollow">FAQ</a></li>
-										<li class=" last"><a href="http://www.intosmile.com/contacts" title="Contact Us" rel="nofollow">Contact Us</a></li>
+										<li class="first"><a href="http://www.intosmile.com/about-us" title="About us" rel="nofollow"><?= Yii::$app->page->translate->__('About Us'); ?></a></li>
+										<li><a href="http://www.intosmile.com/privacy-policy" title="Privacy Policy" rel="nofollow"><?= Yii::$app->page->translate->__('Privacy Policy'); ?></a></li>
+										<li><a href="http://www.intosmile.com/return-policy" title="Return Policy" rel="nofollow"><?= Yii::$app->page->translate->__('Return Policy'); ?></a></li>
+										<li><a href="http://www.intosmile.com/faq" title="FAQ" rel="nofollow"><?= Yii::$app->page->translate->__('FAQ'); ?></a></li>
+										<li class=" last"><a href="http://www.intosmile.com/contacts" title="Contact Us" rel="nofollow"><?= Yii::$app->page->translate->__('Contact Us'); ?></a></li>
 									</ul>
 								</nav>
 							</div>
 							<div class="col-xs-12 col-sm-6 col-md-3 newsletter widget links">
 								<header>
-									<h3 class="title">My account</h3>
+									<h3 class="title"><?= Yii::$app->page->translate->__('My Account'); ?></h3>
 								</header>
 								<ul>
-									<li><a href="http://www.intosmile.com/customer/account/index" rel="nofollow">My Account</a></li>
-									<li><a href="http://www.intosmile.com/customer/order" rel="nofollow">My Order</a></li>
-									<li><a href="http://www.intosmile.com/customer/account/productreview" rel="nofollow">My Reviews</a></li>
-									<li><a href="http://www.intosmile.com/favorite/product" rel="nofollow">My Favorite</a></li>
-									<li><a href="http://www.intosmile.com/sitemap.xml">Site Map</a></li>
+									<li><a href="http://www.intosmile.com/customer/account/index" rel="nofollow"><?= Yii::$app->page->translate->__('My Account'); ?></a></li>
+									<li><a href="http://www.intosmile.com/customer/order" rel="nofollow"><?= Yii::$app->page->translate->__('My Order'); ?></a></li>
+									<li><a href="http://www.intosmile.com/customer/account/productreview" rel="nofollow"><?= Yii::$app->page->translate->__('My Reviews'); ?></a></li>
+									<li><a href="http://www.intosmile.com/favorite/product" rel="nofollow"><?= Yii::$app->page->translate->__('My Favorite'); ?></a></li>
+									<li><a href="http://www.intosmile.com/sitemap.xml"><?= Yii::$app->page->translate->__('Site Map'); ?></a></li>
 								</ul>
 							</div>
 							<div class="clear"></div>

@@ -219,6 +219,13 @@ class Url extends Service
 	 */
 	protected function getRandomUrlKey($url){
 		if($this->_origin_url){
+			$suffix = '';
+			$o_url = $this->_origin_url;
+			if(strstr($this->_origin_url,'.')){
+				list($o_url,$suffix) = explode('.',$this->_origin_url);
+				$randomStr = $this->getRandom();
+				return $o_url.'-'.$randomStr.'.'.$suffix;
+			}
 			$randomStr = $this->getRandom();
 			return $this->_origin_url.'-'.$randomStr;
 		}
