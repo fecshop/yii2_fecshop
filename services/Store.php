@@ -44,6 +44,7 @@ class Store extends Service implements BootstrapInterface
 	 */
 	public $currentStore;
 	
+	
 	/**
 	 * current language code example : fr  es cn ru.
 	 */
@@ -65,6 +66,7 @@ class Store extends Service implements BootstrapInterface
 		if(is_array($stores) && !empty($stores)){
 			foreach($stores as $store_code => $store){
 				if($host[1] == $store_code){
+					$this->html5DevideCheckAndRedirect($store_code,$store);
 					Yii::$service->store->currentStore = $store_code;
 					if(isset($store['language']) && !empty($store['language'])){
 						Yii::$service->store->currentLang = $store['language'];
@@ -101,6 +103,7 @@ class Store extends Service implements BootstrapInterface
 					 * current domian is config is store config.
 					 */
 					$init_compelte = 1;
+					break;
 				}
 			}
 		}
@@ -109,6 +112,49 @@ class Store extends Service implements BootstrapInterface
 		}
 		
     }
+	
+	/**
+	 * mobile devide url redirect.
+	 */
+	protected function html5DevideCheckAndRedirect($store_code,$store){
+		
+		if(!isset($store['mobile'])){
+			return;
+		}
+		$mobileDetect = Yii::$service->helper->mobileDetect;
+		$enable = isset($store['mobile']['enable']) ? $store['mobile']['enable'] : false ;
+		if(!$enable){
+			return;
+		}
+		$condition = isset($store['mobile']['condition']) ? $store['mobile']['condition'] : false ;
+		$redirectDomain = isset($store['mobile']['redirectDomain']) ? $store['mobile']['redirectDomain'] : false ;
+		if(is_array($condition) && !empty($condition) && !empty($redirectDomain)){
+			if(in_array('phone',$condition) && in_array('tablet',$condition)){
+				if($mobileDetect->isMobile()){
+					$this->redirectMobile($store_code,$redirectDomain);
+				}
+			}else if(in_array('phone',$condition)){
+				if( $mobileDetect->isMobile() && !$mobileDetect->isTablet() ){
+					$this->redirectMobile($store_code,$redirectDomain);
+				}
+			}else if(in_array('tablet',$condition)){
+				if( $mobileDetect->isTablet() ){
+					$this->redirectMobile($store_code,$redirectDomain);
+				}
+			}
+		}
+	}
+	/**
+	 * 设备满足什么条件的时候进行跳转。
+	 */
+	protected function redirectMobile($store_code,$redirectDomain){
+		$currentUrl = Yii::$service->url->getCurrentUrl();
+		$redirectUrl = str_replace($store_code,$redirectDomain,$currentUrl);
+		header("Location:".$redirectUrl);
+	}
+	
+	
+	
 	
 	/**
 	 * @property $attrVal|Array , language attr array , like   ['title_en' => 'xxxx','title_fr' => 'yyyy']

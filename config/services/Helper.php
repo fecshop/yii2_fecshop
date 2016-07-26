@@ -10,13 +10,16 @@ return [
 	'helper' => [
 		'class' => 'fecshop\services\Helper',
 		
-		# ×Ó·þÎñ
+		# å­æœåŠ¡
 		'childService' => [
 			'ar' => [
 				'class' => 'fecshop\services\helper\AR',
 			],
 			'errors' => [
 				'class' => 'fecshop\services\helper\Errors',
+			],
+			'mobileDetect' => [
+				'class' => 'fecshop\services\helper\MobileDetect',
 			],
 			
 			
