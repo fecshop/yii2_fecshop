@@ -11,14 +11,14 @@ use Yii;
 use fec\helpers\CDir;
 use yii\base\InvalidValueException;
 use yii\base\InvalidConfigException;
-use fecshop\services\ChildService;
+use fecshop\services\Service;
 
 use fecshop\models\mongodb\Product;
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Coll extends ChildService
+class Coll extends Service
 {
 	/**
 	 *  the number of product info when get products collection in one page.

@@ -6,7 +6,7 @@
  * @copyright Copyright (c) 2016 FecShop Software LLC
  * @license http://www.fecshop.com/license/
  */
-namespace fecshop\app\appadmin\modules\cms\block\article;
+namespace fecshop\app\appadmin\modules\Cms\block\article;
 use Yii;
 use fecshop\app\appadmin\modules\AppadminbaseBlock;
 use fec\helpers\CUrl;
@@ -33,7 +33,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 		/**
 		 * service component, data provider
 		 */
-		$this->_service = Yii::$app->cms->article;
+		$this->_service = Yii::$service->cms->article;
 		parent::init();
 		
 	}
@@ -87,7 +87,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 			[	# 时间区间类型搜索
 				'type'=>'inputdatefilter',
 				'name'=> 'created_at',
-				'columns_type' =>'datetime',
+				'columns_type' =>'int',
 				'value'=>[
 					'gte'=>'用户创建时间开始',
 					'lt' =>'用户创建时间结束',
@@ -107,15 +107,16 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 			[	
 				'orderField' 	=> $this->_primaryKey,
 				'label'			=> 'ID',
-				'width'			=> '110',
+				'width'			=> '50',
 				'align' 		=> 'center',
 				
 			],
 			[	
 				'orderField'	=> 'title',
 				'label'			=> '标题',
-				'width'			=> '110',
-				'align' 		=> 'center',
+				'width'			=> '50',
+				'align' 		=> 'left',
+				'lang'			=> true,
 			],
 			[	
 				'orderField'	=> 'created_user_id',
@@ -128,12 +129,14 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 				'label'			=> '创建时间',
 				'width'			=> '110',
 				'align' 		=> 'center',
+				'convert'		=> ['int' => 'datetime'],
 			],
 			[	
 				'orderField'	=> 'updated_at',
 				'label'			=> '更新时间',
 				'width'			=> '110',
 				'align' 		=> 'center',
+				'convert'		=> ['int' => 'datetime'],
 			],
 			
 		];
@@ -152,7 +155,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 		foreach($data as $one){
 			$user_ids[]=$one['created_user_id'];
 		}
-		$users = Yii::$app->adminUser->getIdAndNameArrByIds($user_ids);
+		$users = Yii::$service->adminUser->getIdAndNameArrByIds($user_ids);
 		foreach($data as $one){
 			$str .= '<tr target="sid_user" rel="'.$one[$this->_primaryKey].'">';
 			$str .= '<td><input name="'.$this->_primaryKey.'s" value="'.$one[$this->_primaryKey].'" type="checkbox"></td>';
@@ -209,6 +212,12 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 								}
 							}
 						}
+					}
+					
+					if(isset($field['lang']) && !empty($field['lang'])){
+						//var_dump($val);
+						//var_dump($orderField);
+						$val = Yii::$service->fecshoplang->getDefaultLangAttrVal($val,$orderField);
 					}
 				}
 				$str .= '<td>'.$val.'</td>';

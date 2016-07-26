@@ -12,13 +12,13 @@ use yii\base\InvalidValueException;
 use yii\base\InvalidConfigException;
 use fec\helpers\CSession;
 use fec\helpers\CUrl;
-use fecshop\services\ChildService;
+use fecshop\services\Service;
 /**
  * Order  child services
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Order extends ChildService
+class Order extends Service
 {
 	
 }

@@ -12,8 +12,8 @@ class ArticleController extends AppfrontController
 	# 网站信息管理
     public function actionIndex()
     {
-		//$primaryKey = Yii::$app->cms->article->getPrimaryKey();
-		//$article = Yii::$app->cms->article->getByPrimaryKey(CRequest::param($primaryKey));
+		//$primaryKey = Yii::$service->cms->article->getPrimaryKey();
+		//$article = Yii::$service->cms->article->getByPrimaryKey(CRequest::param($primaryKey));
 		//var_dump($article);
 		//echo 'article';
 		$data = $this->getBlock()->getLastData();
@@ -22,7 +22,7 @@ class ArticleController extends AppfrontController
 	
 	public function actionChangecurrency(){
 		$currency = \fec\helpers\CRequest::param('currency');
-		Yii::$app->page->currency->setCurrentCurrency($currency);
+		Yii::$service->page->currency->setCurrentCurrency($currency);
 	}
 }
 

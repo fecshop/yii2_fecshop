@@ -12,16 +12,17 @@ use yii\base\InvalidValueException;
 use yii\base\InvalidConfigException;
 use fec\helpers\CSession;
 use fec\helpers\CUrl;
-use fecshop\services\ChildService;
+use fecshop\services\Service;
 /**
  * Breadcrumbs services
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Theme extends ChildService
+class Theme extends Service
 {
 	/**
 	 * user current theme dir. Highest priority
+	 * 
 	 */
 	public $localThemeDir;
 	/**
@@ -77,7 +78,7 @@ class Theme extends ChildService
 			$relativeFile = $module->id.'/';
 		}
 		$relativeFile .= Yii::$app->controller->id.'/'.$view.'.php';
-		$absoluteDir = Yii::$app->page->theme->getThemeDirArr();
+		$absoluteDir = Yii::$service->page->theme->getThemeDirArr();
 		foreach($absoluteDir as $dir){
 			if($dir){
 				$file = $dir.'/'.$relativeFile;

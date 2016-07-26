@@ -12,23 +12,23 @@ use yii\base\InvalidValueException;
 use yii\base\InvalidConfigException;
 use fec\helpers\CSession;
 use fec\helpers\CUrl;
-use fecshop\services\ChildService;
+use fecshop\services\Service;
 /**
  * Breadcrumbs services
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Translate extends ChildService
+class Translate extends Service
 {
 	/**
 	 * current i18n category. it will set in controller init .
 	 * example: fecshop\app\appfront\modules\AppfrontController
-	 * code: 	Yii::$app->page->translate->category = 'appfront';
+	 * code: 	Yii::$service->page->translate->category = 'appfront';
 	 */ 
 	public $category;
 	
 	/**
-	 * Yii::$app->page->translate->__('Hello, {username}!', ['username' => $username]);
+	 * Yii::$service->page->translate->__('Hello, {username}!', ['username' => $username]);
 	 */
 	public function __($text,$arr=[]){
 		if(!$this->category){

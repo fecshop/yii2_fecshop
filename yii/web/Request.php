@@ -9,7 +9,7 @@
 namespace fecshop\yii\web;
 use Yii;
 use yii\base\InvalidConfigException;
-use fecshop\models\mongodb\UrlRewrite;
+#use fecshop\models\mongodb\UrlRewrite;
 
 /**
  * rewrite class \yii\web\Request
@@ -79,7 +79,7 @@ class Request extends \yii\web\Request
 		if($urlParamSuffix){
 			$urlParamSuffix = '#'.$urlParamSuffix;
 		}
-		if($originUrlPath = Yii::$app->url->getOriginUrl($urlKey)){
+		if($originUrlPath = Yii::$service->url->getOriginUrl($urlKey)){
 			if(strstr($originUrlPath,'?')){
 				if($urlParam){
 					$url = $originUrlPath.'&'.$urlParam.$urlParamSuffix;
@@ -119,6 +119,7 @@ class Request extends \yii\web\Request
 	 *  mongodb url_rewrite collection columns: _id,  type ,custom_url, yii_url,
 	 *	if selete date from UrlRewrite, return the yii url.
 	 */
+	/*
 	protected function getOriginUrl($urlKey){
 		$UrlData = UrlRewrite::find()->where([
 			'custom_url_key' => $urlKey,
@@ -128,7 +129,7 @@ class Request extends \yii\web\Request
 		}
 		return ;
 	}
-	
+	*/
 	
 
 	

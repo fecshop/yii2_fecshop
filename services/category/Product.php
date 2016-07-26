@@ -11,7 +11,7 @@ use Yii;
 use fec\helpers\CDir;
 use yii\base\InvalidValueException;
 use yii\base\InvalidConfigException;
-use fecshop\services\ChildService;
+use fecshop\services\Service;
 use fecshop\models\mongodb\Category;
 use fecshop\models\mongodb\Product;
 use fecshop\models\mongodb\CategoryProduct;
@@ -19,7 +19,7 @@ use fecshop\models\mongodb\CategoryProduct;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Product extends ChildService
+class Product extends Service
 {
 	
 	public $pageNum = 1;

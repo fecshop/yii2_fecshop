@@ -14,16 +14,16 @@ class AppfrontController extends FecController
 	 * layoutFile is current layout relative path.
 	 */
 	public function init(){
-		if(!Yii::$app->page->theme->fecshopThemeDir){
-			Yii::$app->page->theme->fecshopThemeDir = Yii::getAlias(CConfig::param('appfrontBaseTheme'));
+		if(!Yii::$service->page->theme->fecshopThemeDir){
+			Yii::$service->page->theme->fecshopThemeDir = Yii::getAlias(CConfig::param('appfrontBaseTheme'));
 		}
-		if(!Yii::$app->page->theme->layoutFile){
-			Yii::$app->page->theme->layoutFile = CConfig::param('appfrontBaseLayoutName');
+		if(!Yii::$service->page->theme->layoutFile){
+			Yii::$service->page->theme->layoutFile = CConfig::param('appfrontBaseLayoutName');
 		}
 		/**
 		 *  set i18n translate category.
 		 */
-		Yii::$app->page->translate->category = 'appfront';
+		Yii::$service->page->translate->category = 'appfront';
 	}
 	 
 	/**
@@ -53,7 +53,7 @@ class AppfrontController extends FecController
 	 * 2.get content by yii view compontent  function renderFile()  , 
 	 */
 	public function render($view, $params = []){
-		$viewFile = Yii::$app->page->theme->getViewFile($view);
+		$viewFile = Yii::$service->page->theme->getViewFile($view);
 		$content = Yii::$app->view->renderFile($viewFile, $params, $this);
         return $this->renderContent($content);
     }
@@ -63,8 +63,8 @@ class AppfrontController extends FecController
 	 */
 	public function findLayoutFile($view){
 		$layoutFile = '';
-		$relativeFile = 'layouts/'.Yii::$app->page->theme->layoutFile;
-		$absoluteDir = Yii::$app->page->theme->getThemeDirArr();
+		$relativeFile = 'layouts/'.Yii::$service->page->theme->layoutFile;
+		$absoluteDir = Yii::$service->page->theme->getThemeDirArr();
 		foreach($absoluteDir as $dir){
 			if($dir){
 				$file = $dir.'/'.$relativeFile;

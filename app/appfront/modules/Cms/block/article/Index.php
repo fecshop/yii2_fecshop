@@ -10,37 +10,38 @@ use fec\helpers\CRequest;
 class Index {
 	
 	protected $_artile;
+	protected $_title;
 	
 	public function getLastData(){
 		
-		echo Yii::$app->page->translate->__('fecshop,{username}', ['username' => 'terry']);
+		//echo Yii::$service->page->translate->__('fecshop,{username}', ['username' => 'terry']);
 		$this->initHead();
 		# change current layout File.
-		//Yii::$app->page->theme->layoutFile = 'home.php';
+		//Yii::$service->page->theme->layoutFile = 'home.php';
 		return [
-			'title' => $this->_artile['title'],
-			'content' => $this->_artile['content'],
+			'title' => $this->_title,
+			'content' => Yii::$service->store->getStoreAttrVal($this->_artile['content'],'content'),
 			'created_at' => $this->_artile['created_at'],
 		];
 	}
 	
 	public function initHead(){
-		$primaryKey = Yii::$app->cms->article->getPrimaryKey();
+		$primaryKey = Yii::$service->cms->article->getPrimaryKey();
 		$primaryVal = CRequest::param($primaryKey);
-		$article = Yii::$app->cms->article->getByPrimaryKey($primaryVal);
+		$article = Yii::$service->cms->article->getByPrimaryKey($primaryVal);
 		$this->_artile = $article ;
 		
 		Yii::$app->view->registerMetaTag([
 			'name' => 'keywords',
-			'content' => $article['meta_keywords'],
+			'content' => Yii::$service->store->getStoreAttrVal($article['meta_keywords'],'meta_keywords'),
 		]);
 		
 		Yii::$app->view->registerMetaTag([
 			'name' => 'description',
-			'content' => $article['meta_description'],
+			'content' => Yii::$service->store->getStoreAttrVal($article['meta_description'],'meta_description'),
 		]);
-		Yii::$app->view->title = $article['title'];
-		
+		$this->_title = Yii::$service->store->getStoreAttrVal($article['title'],'title');
+		Yii::$app->view->title = $this->_title;
 	}
 	
 }

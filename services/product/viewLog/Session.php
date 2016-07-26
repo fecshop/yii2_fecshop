@@ -9,7 +9,7 @@
 namespace fecshop\services\product\viewLog;
 use Yii;
 use yii\base\InvalidConfigException;
-use fecshop\services\ChildService;
+use fecshop\services\Service;
 use fec\helpers\CDate;
 use fec\helpers\CSession;
 use fec\helpers\CUser;
@@ -17,7 +17,7 @@ use fec\helpers\CUser;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Session extends ChildService
+class Session extends Service
 {
 	public $type;
 	public $_defaultType = 'session';

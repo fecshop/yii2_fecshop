@@ -12,13 +12,13 @@ use yii\base\InvalidValueException;
 use yii\base\InvalidConfigException;
 use fec\helpers\CSession;
 use fec\helpers\CUrl;
-use fecshop\services\ChildService;
+use fecshop\services\Service;
 /**
  * Breadcrumbs services
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Footer extends ChildService
+class Footer extends Service
 {
 	//public $textTerms;
 	const TEXT_TERMS 	= 'footer_text_terms';
@@ -28,22 +28,22 @@ class Footer extends ChildService
 	
 	
 	public function getTextTerms(){
-		Yii::$app->page->staticblock->get(self::TEXT_TERMS);
+		Yii::$service->page->staticblock->get(self::TEXT_TERMS);
 	}
 
 	
 	public function getCopyRight(){
-		Yii::$app->page->staticblock->get(self::COPYRIGHT);
+		Yii::$service->page->staticblock->get(self::COPYRIGHT);
 	}
 	
 	
 	public function followUs(){
-		Yii::$app->page->staticblock->get(self::FOLLOW_USE);
+		Yii::$service->page->staticblock->get(self::FOLLOW_USE);
 	}
 	
 	
 	public function getPaymentImg(){
-		Yii::$app->page->staticblock->get(self::PAYMENT_IMG);
+		Yii::$service->page->staticblock->get(self::PAYMENT_IMG);
 	}
 	
 	

@@ -13,14 +13,14 @@ use yii\base\InvalidConfigException;
 use fec\helpers\CSession;
 use fec\helpers\CUrl;
 use fec\helpers\CCache;
-use fecshop\services\ChildService;
+use fecshop\services\Service;
 use fecshop\interfaces\block\BlockCache;
 /**
  * Breadcrumbs services
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Widget extends ChildService
+class Widget extends Service
 {
 	public $defaultObMethod = 'getLastData';
 	public $widgetConfig;
@@ -52,7 +52,7 @@ class Widget extends ChildService
 			if(isset($this->widgetConfig[$configKey])){
 				$config = $this->widgetConfig[$configKey];
 			}else{
-				throw new InvalidValueException(" config key: '$configKey', can not find in  ".'Yii::$app->page->widget->widgetConfig'.", you must config it before use it.");
+				throw new InvalidValueException(" config key: '$configKey', can not find in  ".'Yii::$service->page->widget->widgetConfig'.", you must config it before use it.");
 			}
 		}
 		
@@ -91,15 +91,18 @@ class Widget extends ChildService
 			throw new InvalidConfigException('view and class must exist in array config!');
 		}
 		$params = [];
-		if($parentThis){
-			$params['parentThis'] = $parentThis;
-		}
+		
 		$view = $config['view'];
 		unset($config['view']);
 		$viewFile = $this->getViewFile($view);
-		if( !isset($config['class']) || empty($config['class']))
+		if( !isset($config['class']) || empty($config['class'])){
+			if($parentThis){
+				$params['parentThis'] = $parentThis;
+			}
 			return Yii::$app->view->renderFile($viewFile, $params);
-		
+		}
+			
+			
 		if(isset($config['method']) && !empty($config['method'])){
 			$method = $config['method'];
 			unset($config['method']);
@@ -108,6 +111,9 @@ class Widget extends ChildService
 		}
 		$ob = Yii::createObject($config);
 		$params = $ob->$method();
+		if($parentThis){
+			$params['parentThis'] = $parentThis;
+		}
 		
 		return Yii::$app->view->renderFile($viewFile, $params);
 		
@@ -122,7 +128,7 @@ class Widget extends ChildService
 		if(substr($view,0,1) == '@'){
 			return Yii::getAlias($view);
 		}
-		$absoluteDir = Yii::$app->page->theme->getThemeDirArr();
+		$absoluteDir = Yii::$service->page->theme->getThemeDirArr();
 		
 		foreach($absoluteDir as $dir){
 			if($dir){

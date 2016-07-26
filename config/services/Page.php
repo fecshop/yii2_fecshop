@@ -73,9 +73,11 @@ return [
 			
 			'theme' => [
 				'class' 		=> 'fecshop\services\page\Theme',
-				/*
+				/**  
+				 ** if you set value in config , it can not active ,it will be set value in store bootstrap. 
+				* it will be set in store service bootstrop
 				'localThemeDir' 	=> '@appfront/theme/terry/theme01',
-				# init by third theme.
+				# it will be set in store service bootstrop
 				'thirdThemeDir'		=> [],
 				# init in @fecshop/app/appName/modules/AppfrontController.php
 				# it will be set value in appfront  controller  init, it can not effect if you set value to it.

@@ -1,9 +1,9 @@
 $(document).ready(function(){
-	baseurl = $(".baseurl").val();
+	currentBaseUrl = $(".currentBaseUrl").val();
 	$(".top_currency .currency_list ul li").click(function(){
 		currency = $(this).attr("rel");
 		
-		htmlobj=$.ajax({url:baseurl+"/cms/home/changecurrency?currency="+currency,async:false});
+		htmlobj=$.ajax({url:currentBaseUrl+"/cms/home/changecurrency?currency="+currency,async:false});
 		//alert(htmlobj.responseText);
 		location.reload() ;
 	});

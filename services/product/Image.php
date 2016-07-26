@@ -11,12 +11,12 @@ use Yii;
 use fec\helpers\CDir;
 use yii\base\InvalidValueException;
 use yii\base\InvalidConfigException;
-use fecshop\services\ChildService;
+use fecshop\services\Service;
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Image extends ChildService
+class Image extends Service
 {
 	/**
 	 * absolute image save floder

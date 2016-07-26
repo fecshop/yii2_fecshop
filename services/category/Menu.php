@@ -11,13 +11,13 @@ use Yii;
 use fec\helpers\CDir;
 use yii\base\InvalidValueException;
 use yii\base\InvalidConfigException;
-use fecshop\services\ChildService;
+use fecshop\services\Service;
 use fecshop\models\mongodb\Category;
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Menu extends ChildService
+class Menu extends Service
 {
 	public $rootCategoryId = 0;
 	
@@ -39,7 +39,7 @@ class Menu extends ChildService
 			foreach($data as $category){
 				$categoryOne = [
 					'_id'		=> $category['_id'];
-					'name' 		=> Yii::$app->store->getLangVal($category['name'],'name'),
+					'name' 		=> Yii::$service->store->getLangVal($category['name'],'name'),
 					'urlPath' 	=> $category['url_path'],
 				]
 				$childMenu = $this->getCategoryMenuArr($category['parent_id']);

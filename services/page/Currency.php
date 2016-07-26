@@ -11,13 +11,13 @@ use Yii;
 use yii\base\InvalidValueException;
 use yii\base\InvalidConfigException;
 use fec\helpers\CSession;
-use fecshop\services\ChildService;
+use fecshop\services\Service;
 /**
  * Currency
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Currency extends ChildService
+class Currency extends Service
 {
 	
 	const CURRENCY_CURRENT = 'currency_current';

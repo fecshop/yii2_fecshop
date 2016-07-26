@@ -34,17 +34,20 @@ class Store extends Service implements BootstrapInterface
 	/**
 	 * current store theme package
 	 */
-	public $currentThemePackage = 'default';
+	//public $currentThemePackage = 'default';
 	/**
 	 * current store theme
 	 */
-	public $currentTheme = 'default';
+	//public $currentTheme = 'default';
 	/**
 	 * current store code , this property will  init value with store code.
 	 */
 	public $currentStore;
 	
-	
+	/**
+	 * current language code example : fr  es cn ru.
+	 */
+	protected $currentLangCode;
 	/**
 	 *	Bootstrap:init website,  class property $currentLang ,$currentTheme and $currentStore.
 	 *  if you not config this ,default class property will be set.
@@ -52,23 +55,37 @@ class Store extends Service implements BootstrapInterface
 	 *	class property $currentStore will be set value $store_code.
 	 */
 	public function bootstrap($app){
+		
+		//Yii::$service = new \fecshop\services\Service;
+		//Yii::createObject($service);
 		$host = explode('://' ,$app->getHomeUrl());
 		$stores = $this->stores;
+		
 		$init_compelte = 0;
 		if(is_array($stores) && !empty($stores)){
 			foreach($stores as $store_code => $store){
 				if($host[1] == $store_code){
-					Yii::$app->store->currentStore = $store_code;
+					Yii::$service->store->currentStore = $store_code;
 					if(isset($store['language']) && !empty($store['language'])){
-						Yii::$app->store->currentLang = $store['language'];
-						Yii::$app->store->currentLangName = $store['languageName'];
-						Yii::$app->page->translate->setLanguage($store['language']);
+						Yii::$service->store->currentLang = $store['language'];
+						Yii::$service->store->currentLangCode = Yii::$service->fecshoplang->getLangCodeByLanguage($store['language']);
+						Yii::$service->store->currentLangName = $store['languageName'];
+						Yii::$service->page->translate->setLanguage($store['language']);
 					}
 					if(isset($store['theme']) && !empty($store['theme'])){
-						Yii::$app->store->currentTheme = $store['theme'];
+						Yii::$service->store->currentTheme = $store['theme'];
 					}
-					if(isset($store['themePackage']) && !empty($store['themePackage'])){
-						Yii::$app->store->currentThemePackage = $store['themePackage'];
+					/**
+					 * set local theme dir.
+					 */ 
+					if(isset($store['localThemeDir']) && $store['localThemeDir']){
+						Yii::$service->page->theme->localThemeDir = $store['localThemeDir'];
+					}
+					/**
+					 * set third theme dir.
+					 */ 
+					if(isset($store['thirdThemeDir']) && $store['thirdThemeDir']){
+						Yii::$service->page->theme->thirdThemeDir = $store['thirdThemeDir'];
 					}
 					/**
 					 * init store currency.
@@ -79,7 +96,7 @@ class Store extends Service implements BootstrapInterface
 						$currency = '';
 					}
 					
-					Yii::$app->page->currency->initCurrency($currency);
+					Yii::$service->page->currency->initCurrency($currency);
 					/**
 					 * current domian is config is store config.
 					 */
@@ -94,11 +111,16 @@ class Store extends Service implements BootstrapInterface
     }
 	
 	/**
-	 * if a object or array  attribute is a store attribute, you can get current 
+	 * @property $attrVal|Array , language attr array , like   ['title_en' => 'xxxx','title_fr' => 'yyyy']
+	 * @property $attrName|String, attribute name ,like: title ,description. 
+	 * if  object or array  attribute is a language attribute, you can get current 
 	 * language value by this function.
+	 * if lang attribute in current store language is empty , default language attribute will be return. 
+	 * if attribute in default language value is empty, $attrVal will be return. 
 	 */
-	public function getLangVal($attr,$attrName){
-		return $attr[$this->currentLang."_".$attrName];
+	public function getStoreAttrVal($attrVal,$attrName){
+		$lang = $this->currentLangCode;
+		return Yii::$service->fecshoplang->getLangAttrVal($attrVal,$attrName,$lang);
 	}
 	
 	/**

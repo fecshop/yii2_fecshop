@@ -12,7 +12,7 @@ use yii\base\InvalidValueException;
 use yii\base\InvalidConfigException;
 use fec\helpers\CSession;
 use fec\helpers\CUrl;
-use fecshop\services\ChildService;
+use fecshop\services\Service;
 use fecshop\services\cms\article\ArticleMysqldb;
 use fecshop\services\cms\article\ArticleMongodb;
 /**
@@ -20,7 +20,7 @@ use fecshop\services\cms\article\ArticleMongodb;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Article extends ChildService
+class Article extends Service
 {
 	public $storage = 'mongodb';
 	protected $_article;
@@ -36,8 +36,9 @@ class Article extends ChildService
 	/**
 	 * Get Url by article's url key.
 	 */
-	public function getUrl($urlKey){
-		return Yii::$app->url->getBaseUrl.'/'.$urlKey;
+	public function getUrlByPath($urlPath){
+		//return Yii::$service->url->getHttpBaseUrl().'/'.$urlKey;
+		return Yii::$service->url->getUrlByPath($urlPath);
 	}
 	/**
 	 * get artile's primary key.
@@ -52,9 +53,7 @@ class Article extends ChildService
 		return $this->_article->getByPrimaryKey($primaryKey);
 	}
 	
-	//public function getById($id){
-	//	return $this->_article->getById($id);
-	//}
+	
 	
 	/**
 	 * @property $filter|Array

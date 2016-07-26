@@ -12,7 +12,7 @@ use yii\base\InvalidValueException;
 use yii\base\InvalidConfigException;
 use fec\helpers\CSession;
 use fec\helpers\CUrl;
-use fecshop\services\ChildService;
+use fecshop\services\Service;
 use yii\web\AssetBundle;
 
 use yii\base\Object;
@@ -40,7 +40,7 @@ class Asset
 	 */
 	public function register($view){
 		$assetArr = [];
-		$themeDir = Yii::$app->page->theme->getThemeDirArr();
+		$themeDir = Yii::$service->page->theme->getThemeDirArr();
 		if( is_array($themeDir) && !empty($themeDir)){
 			if( is_array($this->jsOptions) && !empty($this->jsOptions)){
 				foreach($this->jsOptions as $jsOption){

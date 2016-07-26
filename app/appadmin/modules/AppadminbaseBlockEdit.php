@@ -1,8 +1,11 @@
 <?php
 namespace fecshop\app\appadmin\modules;
+use Yii;
 use fec\helpers\CRequest;
 use fec\helpers\CUrl;
+use fec\helpers\CConfig;
 use yii\base\Object;
+
 use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockEditInterface;
 class AppadminbaseBlockEdit extends Object{
 	
@@ -11,6 +14,7 @@ class AppadminbaseBlockEdit extends Object{
 	public 		$_one;
 	public 		$_service;
 	public 		$_textareas;
+	public 		$_lang_attr;
 	/**
 	 * html input or text etc. ,  html name like: <input name="XXXX" />
 	 */
@@ -35,9 +39,10 @@ class AppadminbaseBlockEdit extends Object{
 	
 	
 	public function getEditBar(){
-		
+		$langs = Yii::$service->fecshoplang->allLangCode;
 		$editArr = $this->getEditArr();
 		$str = '';
+		$langAndTextarea = '';
 		if($this->_param[$this->_primaryKey]){
 			$str = <<<EOF
 			<input type="hidden"  value="{$this->_param[$this->_primaryKey]}" size="30" name="{$this->_editFormData}[{$this->_primaryKey}]" class="textInput ">
@@ -55,14 +60,55 @@ EOF;
 			$value = $this->_one[$name] ? $this->_one[$name] : $column['default'];
 			$display_type = isset($display['type']) ? $display['type'] : 'inputString';
 			if($display_type == 'inputString'){
-				$str .=<<<EOF
-						<p>
-							<label>{$label}：</label>
-							<input type="text"  value="{$value}" size="30" name="{$this->_editFormData}[{$name}]" class="textInput {$require} ">
-						</p>
+				$isLang = isset($display['lang']) ? $display['lang'] : false;
+				
+				if( $isLang && is_array($langs) && !empty($langs) ){
+					$tabLangTitle = '';
+					$tabLangInput = '';
+					foreach($langs as $lang){
+						//var_dump($value);
+						//var_dump($name.'_'.$lg);
+						$tabLangTitle .= '<li><a href="javascript:;"><span>'.$lang.'</span></a></li>';
+						$langAttrName = Yii::$service->fecshoplang->getLangAttrName($name,$lang);
+						$tabLangInput .= '<div>
+								<p>
+									<label>'.$label.'['.$lang.']：</label>
+									<input type="text"  value="'.$value[$langAttrName].'" size="30" name="'.$this->_editFormData.'['.$name.']['.$langAttrName.']" class="textInput {$require} ">
+								</p>
+
+							</div>';
+					}
+					$this->_lang_attr .=<<<EOF
+						<div class="tabs" currentIndex="0" eventType="click" style="margin:10px 0;">
+							<div class="tabsHeader">
+								<div class="tabsHeaderContent">
+									<ul>
+										{$tabLangTitle}
+									</ul>
+								</div>
+							</div>
+							<div class="tabsContent" style="height:30px;">
+								{$tabLangInput}
+							</div>
+							<div class="tabsFooter">
+								<div class="tabsFooterContent"></div>
+							</div>
+						</div>
 EOF;
+					
+				}else{
+					$str .=<<<EOF
+							<p>
+								<label>{$label}：</label>
+								<input type="text"  value="{$value}" size="30" name="{$this->_editFormData}[{$name}]" class="textInput {$require} ">
+							</p>
+EOF;
+				}
 			}else if($display_type == 'inputDate'){
-				$valueData = $value ? date("Y-m-d",strtotime($value)) : '';
+				if($value && !is_numeric($value)){
+					$value = strtotime($value);
+				}
+				$valueData = $value ? date("Y-m-d",$value) : '';
 				$str .=<<<EOF
 						<p>
 							<label>{$label}：</label>
@@ -114,7 +160,52 @@ EOF;
 			}else if($display_type == 'textarea'){
 				$rows = isset($display['rows']) ? $display['rows'] : 15;
 				$cols = isset($display['cols']) ? $display['cols'] : 110;
-				$this->_textareas .= <<<EOF
+				$isLang = isset($display['lang']) ? $display['lang'] : false;
+				
+				if( $isLang && is_array($langs) && !empty($langs) ){
+					$tabLangTitle = '';
+					$tabLangTextarea = '';
+					foreach($langs as $lang){
+						//var_dump($value);
+						//var_dump($name.'_'.$lg);
+						$langAttrName = Yii::$service->fecshoplang->getLangAttrName($name,$lang);
+						
+						$tabLangTitle .= '<li><a href="javascript:;"><span>'.$lang.'</span></a></li>';
+						$tabLangTextarea .= '
+						<div>
+							<fieldset id="fieldset_table_qbe">
+								<legend style="color:#cc0000">'.$label.'['.$lang.']：</legend>
+								<div>
+									<div class="unit">
+										<textarea  class="editor"  rows="'.$rows.'" cols="'.$cols.'" name="'.$this->_editFormData.'['.$name.']['.$langAttrName.']" >'.$value[$langAttrName].'</textarea>
+									</div>
+								</div>
+							</fieldset>
+						</div>';
+						
+						
+						
+					}
+					$this->_lang_attr .=<<<EOF
+						<div class="tabs" currentIndex="0" eventType="click" style="margin:10px 0;">
+							<div class="tabsHeader">
+								<div class="tabsHeaderContent">
+									<ul>
+										{$tabLangTitle}
+									</ul>
+								</div>
+							</div>
+							<div class="tabsContent" style="height:300px;">
+								{$tabLangTextarea}
+							</div>
+							<div class="tabsFooter">
+								<div class="tabsFooterContent"></div>
+							</div>
+						</div>
+EOF;
+					
+				}else{
+					$this->_textareas .= <<<EOF
 						<fieldset id="fieldset_table_qbe">
 							<legend style="color:#cc0000">{$label}：</legend>
 							<div>
@@ -122,6 +213,7 @@ EOF;
 							</div>
 						</fieldset>
 EOF;
+				}
 			}
 		}
 		return $str;

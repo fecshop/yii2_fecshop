@@ -12,14 +12,14 @@ use yii\base\InvalidValueException;
 use yii\base\InvalidConfigException;
 use fec\helpers\CSession;
 use fec\helpers\CUrl;
-use fecshop\services\ChildService;
+use fecshop\services\Service;
 use fecshop\models\mongodb\Category;
 /**
  * Menu services
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Menu extends ChildService
+class Menu extends Service
 {
 	/**
 	 * whether display HOME in the menu.
@@ -82,7 +82,7 @@ class Menu extends ChildService
 	 * get product category array as menu.
 	 */
 	protected function getProductCategoryMenu(){
-		return Yii::$app->category->menu->getCategoryMenuArr();
+		return Yii::$service->category->menu->getCategoryMenuArr();
 	}
 	
 }

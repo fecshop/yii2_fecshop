@@ -8,20 +8,25 @@
  */
 namespace fecshop\services;
 use Yii;
-use yii\base\Object;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class ChildService extends  Object
+class Application
 {
 	public $childService;
 	public $_childService;
 	
+	
+	public function __construct($config = [])
+    {
+        Yii::$service 		= $this;
+        $this->childService = $config;
+    }
 	/**
-	 * å¾—åˆ°services é‡Œé¢é…ç½®çš„å­æœåŠ¡childServiceçš„å®žä¾‹
+	 * µÃµ½services ÀïÃæÅäÖÃµÄ×Ó·þÎñchildServiceµÄÊµÀý
 	 */
 	public function getChildService($childServiceName){
 		if(!$this->_childService[$childServiceName]){

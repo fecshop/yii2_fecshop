@@ -9,7 +9,7 @@
 namespace fecshop\services\product\viewLog;
 use Yii;
 use yii\base\InvalidConfigException;
-use fecshop\services\ChildService;
+use fecshop\services\Service;
 use fec\helpers\CDate;
 use fec\helpers\CUser;
 use fecshop\models\db\product\ViewLog as DbViewLog;
@@ -18,7 +18,7 @@ use fecshop\models\mongodb\product\ViewLog as MongodbViewLog;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Db extends ChildService
+class Db extends Service
 {
 	
 	public $table;

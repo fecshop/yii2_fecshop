@@ -9,14 +9,14 @@
 namespace fecshop\services\product;
 use Yii;
 use yii\base\InvalidConfigException;
-use fecshop\services\ChildService;
+use fecshop\services\Service;
 use fecshop\models\db\product\ViewLog as DbViewLog;
 use fecshop\models\mongodb\product\ViewLog as MongodbViewLog;
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class ViewLog extends ChildService
+class ViewLog extends Service
 {
 	/**
 	 *	data:
@@ -29,23 +29,23 @@ class ViewLog extends ChildService
 		];
 		
 		#use mongodb save product view log history
-		Yii::$app->product->viewLog->mongodb->setHistory($product);
+		Yii::$service->product->viewLog->mongodb->setHistory($product);
 		
 		#use mongodb get product view log history
-		$d = Yii::$app->product->viewLog->mongodb->getHistory();
+		$d = Yii::$service->product->viewLog->mongodb->getHistory();
 		
 		#use mysql save product view log history
-		Yii::$app->product->viewLog->db->setHistory($product);
+		Yii::$service->product->viewLog->db->setHistory($product);
 		
 		#use mysql get product view log history
-		$d = Yii::$app->product->viewLog->db->getHistory();
+		$d = Yii::$service->product->viewLog->db->getHistory();
 		
 		
 		#use session save product view log history
-		Yii::$app->product->viewLog->session->setHistory($product);
+		Yii::$service->product->viewLog->session->setHistory($product);
 		
 		#use session get product view log history
-		$history = Yii::$app->product->viewLog->session->getHistory();
+		$history = Yii::$service->product->viewLog->session->getHistory();
 		
 	 */
 }

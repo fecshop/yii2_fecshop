@@ -28,7 +28,9 @@ class PhpMessageSource extends YiiPhpMessageSource
 					Yii::error("The message file for category '$category' does not exist: $messageFile", __METHOD__);
 				}
 			}
-			$message_merge = array_merge($message_merge,$messages);
+			if(is_array($messages)){
+				$message_merge = array_merge($message_merge,$messages);
+			}
 		}
 		//var_dump($message_merge);exit;
         return (array) $message_merge;

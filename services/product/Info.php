@@ -10,7 +10,7 @@ namespace fecshop\services\product;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\base\InvalidValueException;
-use fecshop\services\ChildService;
+use fecshop\services\Service;
 use fec\helpers\CDate;
 use fec\helpers\CUser;
 use fecshop\models\mongodb\Product;
@@ -18,7 +18,7 @@ use fecshop\models\mongodb\Product;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Info extends ChildService
+class Info extends Service
 {
 	private $_product;
 	
@@ -36,7 +36,7 @@ class Info extends ChildService
 		if(!$this->_product){
 			
 			if(!$productId){
-				$productId = Yii::$app->product->getCurrentProductId();
+				$productId = Yii::$service->product->getCurrentProductId();
 			}
 			if(!$productId){
 				throw new InvalidValueException('productId is empty,you must pass a ProductId');
@@ -62,7 +62,7 @@ class Info extends ChildService
 	public function getCurrentLangProduct($product){
 		$lang_attrs = $this->getLangAttr();
 		foreach($lang_attrs as $attr){
-			$product->$attr = Yii::$app->store->getLangVal($product->$attr,$attr);
+			$product->$attr = Yii::$service->store->getLangVal($product->$attr,$attr);
 		}
 	}
 	

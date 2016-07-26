@@ -287,7 +287,7 @@ class AppadminbaseBlock extends Object{
 	 * generate where Array by  $this->_param and $searchArr.
 	 * foreach $searchArr , check each one if it is exist in this->_param.
 	 */
-	public function initDateWhere($searchArr){
+	public function initDataWhere($searchArr){
 		$where = [];
 		foreach($searchArr as $field){
 			$type = $field['type'];
@@ -309,7 +309,7 @@ class AppadminbaseBlock extends Object{
 				}else if($type == 'inputdatefilter'){
 					$_gte 	= $this->_param[$name.'_gte'];
 					$_lt 	= $this->_param[$name.'_lt'];
-					if($columns_type == 'float'){
+					if($columns_type == 'int'){
 						$_gte 	= strtotime($_gte);
 						$_lt	= strtotime($_lt);
 					}
@@ -442,7 +442,7 @@ class AppadminbaseBlock extends Object{
 	public function getTableTbody(){
 		$searchArr = $this->getSearchArr();
 		if(is_array($searchArr) && !empty($searchArr)){
-			$where = $this->initDateWhere($searchArr);
+			$where = $this->initDataWhere($searchArr);
 		}
 		$filter = [
 	 		'numPerPage' 	=> $this->_param['numPerPage'],  	
@@ -453,6 +453,7 @@ class AppadminbaseBlock extends Object{
 		];
 		$coll = $this->_service->coll($filter );
 		$data = $coll['coll'];
+		
 		$this->_param['numCount'] = $coll['count'];
 		return $this->getTableTbodyHtml($data);
 	}
@@ -512,6 +513,10 @@ class AppadminbaseBlock extends Object{
 								}
 							}
 						}
+					}
+					if(isset($field['lang']) && !empty($field['lang'])){
+						
+						$val = Yii::$service->fecshoplang->getDefaultLangAttrVal($val,$orderField);
 					}
 				}
 				$str .= '<td>'.$val.'</td>';

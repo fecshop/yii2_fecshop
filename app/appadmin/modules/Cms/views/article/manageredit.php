@@ -27,6 +27,9 @@ use fecadmin\models\AdminRole;
 					</div>
 				</fieldset>
 				
+				
+				<?= $lang_attr ?>
+				
 				<?= $textareas ?>
 				
 				

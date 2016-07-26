@@ -8,14 +8,15 @@ class Headers implements BlockCache
     public function getLastData()
     {
 		//$currentLang = 
-		//$currency = Yii::$app->page->currency->getCurrentCurrency();
+		//$currency = Yii::$service->page->currency->getCurrentCurrency();
 		return [
-			'baseurl'			=> Yii::$app->url->getBaseUrl(),
-			'currentStore'		=> Yii::$app->store->currentStore,
-			'currentStoreLang' 	=> Yii::$app->store->currentLangName,
-			'stores'			=> Yii::$app->store->getStoresLang(),
-			'currency'			=> Yii::$app->page->currency->getCurrencyInfo(),
-			'currencys'			=> Yii::$app->page->currency->getCurrencys(),
+			'homeUrl'			=> Yii::$service->url->homeUrl(),
+			'currentBaseUrl'	=> Yii::$service->url->getCurrentBaseUrl(),
+			'currentStore'		=> Yii::$service->store->currentStore,
+			'currentStoreLang' 	=> Yii::$service->store->currentLangName,
+			'stores'			=> Yii::$service->store->getStoresLang(),
+			'currency'			=> Yii::$service->page->currency->getCurrencyInfo(),
+			'currencys'			=> Yii::$service->page->currency->getCurrencys(),
 		];
 	}
 	
@@ -23,8 +24,8 @@ class Headers implements BlockCache
 	
 	
 	public function getCacheKey(){
-		$lang = Yii::$app->store->currentStore;
-		$currency = Yii::$app->page->currency->getCurrentCurrency();
+		$lang = Yii::$service->store->currentStore;
+		$currency = Yii::$service->page->currency->getCurrentCurrency();
 		return self::BLOCK_CACHE_PREFIX.'_'.$lang.'_'.$currency;
 	
 	}

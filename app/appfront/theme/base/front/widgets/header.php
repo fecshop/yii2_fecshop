@@ -1,5 +1,6 @@
 <div id="top_nav">
-	<input type="hidden" class="baseurl" value="<?= $baseurl ?>" />
+	<input type="hidden" class="currentBaseUrl" value="<?= $currentBaseUrl ?>" />
+	<input type="hidden" class="currentBaseUrl" value="<?= $currentBaseUrl ?>" />
 	<div class="top_nav_inner">	    
 		<div class="top_nav_left">
 		
@@ -88,7 +89,7 @@
 				</form>
 			</div>
 
-			<div class="logo"><a titel="SammyDress logo" href="http://www.sammydress.com/"><img width="254" height="40" src="http://css.sammydress.com/imagecache/S1/images/styleimg/slogo2.gif"></a></div>
+			<div class="logo"><a titel="fecshop logo" href="<?= $homeUrl ?>"><img width="254" height="40" src="http://css.sammydress.com/imagecache/S1/images/styleimg/slogo2.gif"></a></div>
 		</div><!--end .top_header-->
 
 		</div><!--end .top_main_inner-->

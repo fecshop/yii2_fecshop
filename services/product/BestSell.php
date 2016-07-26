@@ -9,12 +9,12 @@
 namespace fecshop\services\product;
 use Yii;
 use yii\base\InvalidConfigException;
-use fecshop\services\ChildService;
+use fecshop\services\Service;
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class BestSell extends ChildService
+class BestSell extends Service
 {
 	
 	/**

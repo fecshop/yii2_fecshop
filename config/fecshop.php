@@ -8,16 +8,25 @@ foreach (glob(__DIR__ . '/modules/*.php') as $filename){
 	$modules = array_merge($modules,require($filename));
 }
 */
-# 服务器组件
+# 服务
 $services = [];
 foreach (glob(__DIR__ . '/services/*.php') as $filename){
 	$services = array_merge($services,require($filename));
 }
 
+
+# 组件
+$components = [];
+foreach (glob(__DIR__ . '/components/*.php') as $filename){
+	$components = array_merge($components,require($filename));
+}
+
     
 return [
 	//'modules'=>$modules,
-    'components' => $services,
+    'components' 	=> $components,
+	'services' 		=> $services,
+	
 	/* only config in front web */
 	//'bootstrap' => ['store'],
 ];

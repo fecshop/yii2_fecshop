@@ -8,13 +8,13 @@
  */
 namespace fecshop\services;
 use Yii;
-use yii\base\Component;
+use yii\base\Object;
 use yii\base\InvalidConfigException;
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Service extends Component
+class Service extends  Object
 {
 	public $childService;
 	public $_childService;

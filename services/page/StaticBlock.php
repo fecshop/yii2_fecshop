@@ -12,13 +12,13 @@ use yii\base\InvalidValueException;
 use yii\base\InvalidConfigException;
 use fec\helpers\CSession;
 use fec\helpers\CUrl;
-use fecshop\services\ChildService;
+use fecshop\services\Service;
 /**
  * Breadcrumbs services
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class StaticBlock extends ChildService
+class StaticBlock extends Service
 {
 	/**
 	 * @property  $key|Array
@@ -26,7 +26,7 @@ class StaticBlock extends ChildService
 	 */
 	public function getByKey($key,$lang=''){
 		if(!$lang)
-			$lang = Yii::$app->store->currentLanguage;
+			$lang = Yii::$service->store->currentLanguage;
 		if(!$lang)
 			throw new InvalidValueException('language is empty');
 		

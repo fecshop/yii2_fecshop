@@ -13,7 +13,7 @@ class Footer implements BlockCache
 	}
 	
 	public function getCacheKey(){
-		$lang = Yii::$app->store->currentLanguage;
+		$lang = Yii::$service->store->currentLanguage;
 		return self::BLOCK_CACHE_PREFIX.'_'.$lang;
 	
 	}

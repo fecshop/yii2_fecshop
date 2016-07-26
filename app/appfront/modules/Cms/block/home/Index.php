@@ -13,7 +13,7 @@ class Index {
 	public function getLastData(){
 		$this->initHead();
 		# change current layout File.
-		//Yii::$app->page->theme->layoutFile = 'home.php';
+		//Yii::$service->page->theme->layoutFile = 'home.php';
 		
 		
 		

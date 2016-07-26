@@ -23,7 +23,7 @@ class Module extends AppfrontModule
 		
 		# 指定默认的man文件
 		//$this->layout = "home.php";
-		Yii::$app->page->theme->layoutFile = 'home.php';
+		Yii::$service->page->theme->layoutFile = 'home.php';
 		parent::init();  
 		
     }

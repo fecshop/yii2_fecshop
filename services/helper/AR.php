@@ -12,13 +12,13 @@ use yii\base\InvalidValueException;
 use yii\base\InvalidConfigException;
 use fec\helpers\CSession;
 use fec\helpers\CUrl;
-use fecshop\services\ChildService;
+use fecshop\services\Service;
 /**
  * Breadcrumbs services
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class AR extends ChildService
+class AR extends Service
 {
 	public $numPerPage=20;
 	public $pageNum=1;
@@ -72,7 +72,7 @@ class AR extends ChildService
 	
 	public function save($model,$one){
 		if(!$model){
-			Yii::$app->helper->errors->add('ActiveRecord Save Error: $model is empty');
+			Yii::$service->helper->errors->add('ActiveRecord Save Error: $model is empty');
 			return;
 		}
 		$attributes = $model->attributes();
@@ -85,7 +85,7 @@ class AR extends ChildService
 			}
 			return $model->save();
 		}else{
-			Yii::$app->helper->errors->add('$attribute is empty or is not array');
+			Yii::$service->helper->errors->add('$attribute is empty or is not array');
 			return;
 		}
 	}

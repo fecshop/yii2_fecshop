@@ -20,7 +20,7 @@ use fec\helpers\CUrl;
 class AdminUser extends Service
 {
 	
-	#Yii::$app->adminUser->getIdAndNameArrByIds($ids)
+	#Yii::$service->adminUser->getIdAndNameArrByIds($ids)
 	public function getIdAndNameArrByIds($ids){
 		
 		$user_coll = \fecadmin\models\AdminUser::find()->asArray()->select(['id','username'])->where([

@@ -19,6 +19,7 @@ return [
 				'class' => 'fecshop\services\helper\Errors',
 			],
 			
+			
 		],
 	],
 ];
