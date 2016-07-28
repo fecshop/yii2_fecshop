@@ -26,9 +26,6 @@ class Errors extends Service
 	public function add($str){
 		if($str){
 			$this->_errors[] = $str;
-			if($this->status){
-				$this->status = false;
-			}
 		}
 	}
 	
