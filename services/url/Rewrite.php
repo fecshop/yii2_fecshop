@@ -16,7 +16,7 @@ use fecshop\services\Service;
 use fecshop\services\url\rewrite\RewriteMysqldb;
 use fecshop\services\url\rewrite\RewriteMongodb;
 /**
- * Breadcrumbs services
+ * Url Rewrite services
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */

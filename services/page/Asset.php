@@ -20,7 +20,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 
 /**
- * Breadcrumbs services
+ * page asset services
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  extends AssetBundle

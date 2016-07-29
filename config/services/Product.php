@@ -1,7 +1,6 @@
 <?php
 /**
  * FecShop file.
- *
  * @link http://www.fecshop.com/
  * @copyright Copyright (c) 2016 FecShop Software LLC
  * @license http://www.fecshop.com/license/
@@ -10,8 +9,7 @@ return [
 	'product' => [
 		'class' => 'fecshop\services\Product',
 		//'terry' => 'xxxx',
-		
-		# ×Ó·þÎñ
+		# å­æœåŠ¡
 		'childService' => [
 			'image' => [
 				'class' => 'fecshop\services\product\Image',

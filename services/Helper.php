@@ -13,7 +13,7 @@ use yii\base\InvalidConfigException;
 use fec\helpers\CSession;
 use fec\helpers\CUrl;
 /**
- * Breadcrumbs services
+ * Helper services
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */

@@ -12,7 +12,6 @@ use yii\base\InvalidValueException;
 use yii\base\InvalidConfigException;
 use fecshop\models\mongodb\cms\Article;
 /**
- * Breadcrumbs services
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */

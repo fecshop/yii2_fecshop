@@ -1,10 +1,20 @@
 <?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
 namespace fecshop\app\appadmin\modules;
 use fec\helpers\CRequest;
 use fec\helpers\CUrl;
 use yii\base\Object;
 use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockInterface;
-# use fecshop\app\appadmin\modules\AppadminbaseBlock;
+/**
+ * @author Terry Zhao <2358269014@qq.com>
+ * @since 1.0
+ */
 class AppadminbaseBlock extends Object{
 	/**
 	 * parameter storage front passed.

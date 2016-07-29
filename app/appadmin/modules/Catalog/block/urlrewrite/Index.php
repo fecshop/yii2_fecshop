@@ -12,7 +12,6 @@ use fecshop\app\appadmin\modules\AppadminbaseBlock;
 use fec\helpers\CUrl;
 use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockInterface;
 /**
- * block cms\article
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */

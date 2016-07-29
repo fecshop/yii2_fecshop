@@ -1,7 +1,6 @@
 <?php
 /**
  * FecShop file.
- *
  * @link http://www.fecshop.com/
  * @copyright Copyright (c) 2016 FecShop Software LLC
  * @license http://www.fecshop.com/license/
@@ -9,8 +8,7 @@
 return [
 	'Customer' => [
 		'class' => 'fecshop\services\Customer',
-		
-		# ×Ó·þÎñ
+		# å­æœåŠ¡
 		'childService' => [
 			'address' => [
 				'class' 		=> 'fecshop\services\customer\Address',
@@ -42,8 +40,6 @@ return [
 			'wholesale' => [
 				'class' 		=> 'fecshop\services\customer\Wholesale',
 			],
-			
-			
 		],
 	],
 ];

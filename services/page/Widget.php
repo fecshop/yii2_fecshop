@@ -16,7 +16,7 @@ use fec\helpers\CCache;
 use fecshop\services\Service;
 use fecshop\interfaces\block\BlockCache;
 /**
- * Breadcrumbs services
+ * widget services
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */

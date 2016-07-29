@@ -16,7 +16,7 @@ use fecshop\services\Service;
 use fecshop\services\cms\article\ArticleMysqldb;
 use fecshop\services\cms\article\ArticleMongodb;
 /**
- * Breadcrumbs services
+ * Cms Article services
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */

@@ -1,7 +1,6 @@
 <?php
 /**
  * FecShop file.
- *
  * @link http://www.fecshop.com/
  * @copyright Copyright (c) 2016 FecShop Software LLC
  * @license http://www.fecshop.com/license/
@@ -10,7 +9,6 @@ return [
 	'page' => [
 		'class' => 'fecshop\services\Page',
 		//'terry' => 'xxxx',
-		
 		# 子服务
 		'childService' => [
 			'breadcrumbs' => [

@@ -10,7 +10,6 @@ namespace fecshop\yii\web;
 use Yii;
 use yii\base\InvalidConfigException;
 #use fecshop\models\mongodb\UrlRewrite;
-
 /**
  * rewrite class \yii\web\Request
  * use custom url in our system, example: www.example.com/xxxxx.html, this file is not

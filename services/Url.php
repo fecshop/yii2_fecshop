@@ -13,7 +13,6 @@ use yii\base\InvalidConfigException;
 use yii\base\BootstrapInterface;
 use fec\helpers\CUrl;
 /**
- * 
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */

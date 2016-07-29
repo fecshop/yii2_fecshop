@@ -14,7 +14,7 @@ use fec\helpers\CSession;
 use fec\helpers\CUrl;
 use fecshop\services\Service;
 /**
- * Breadcrumbs services
+ * AR services
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */

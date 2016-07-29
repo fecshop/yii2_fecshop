@@ -7,8 +7,7 @@
  * @license http://www.fecshop.com/license/
  */
 use fec\helpers\CRequest;
-/**
- * Breadcrumbs services
+/** 
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
