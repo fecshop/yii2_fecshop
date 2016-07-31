@@ -16,4 +16,23 @@ return [
 	'modules'=>$modules,
 	/* only config in front web */
 	//'bootstrap' => ['store'],
+	'components' => [
+		'user' => [
+			'identityClass' => 'fecadmin\models\AdminUser',
+			'enableAutoLogin' => true,
+		],
+		
+		'errorHandler' => [
+			'errorAction' => 'fecadmin/error',
+		],
+		
+		'urlManager' => [
+			'class' => 'yii\web\UrlManager',
+			'enablePrettyUrl' => true,
+			'showScriptName' => false,
+			'rules' => [
+				'' => 'fecadmin/index/index',
+			],
+		],
+    ],
 ];

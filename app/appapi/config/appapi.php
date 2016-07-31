@@ -42,6 +42,14 @@ return [
             ],  
         ],
 		
+		'user' => [
+			'identityClass' => 'fecadmin\models\AdminUser',
+			'enableAutoLogin' => true,
+		],
+		
+		'errorHandler' => [
+			'errorAction' => 'site/error',
+		],
 		
 	],
 	 

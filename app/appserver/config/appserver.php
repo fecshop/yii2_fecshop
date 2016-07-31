@@ -6,35 +6,34 @@
  * @copyright Copyright (c) 2016 FecShop Software LLC
  * @license http://www.fecshop.com/license/
  */
-# æœ¬æ–‡ä»¶åœ¨app/web/index.php å¤„å¼•å…¥ã€‚
-# fecshop - appfront çš„æ ¸å¿ƒæ¨¡å—
+# ±¾ÎÄ¼şÔÚapp/web/index.php ´¦ÒıÈë¡£
+# fecshop - appfront µÄºËĞÄÄ£¿é
 $modules = [];
 foreach (glob(__DIR__ . '/modules/*.php') as $filename){
 	$modules = array_merge($modules,require($filename));
 }
-# æ­¤å¤„ä¹Ÿå¯ä»¥é‡å†™fecshopçš„ç»„ä»¶ã€‚ä¾›è°ƒç”¨ã€‚
+# ´Ë´¦Ò²¿ÉÒÔÖØĞ´fecshopµÄ×é¼ş¡£¹©µ÷ÓÃ¡£
 return [
 	'modules'=>$modules,
 	/* only config in front web */
 	'bootstrap' => ['store'],
 	'params'	=> [
 		/* appfront base theme dir   */
-		'appfrontBaseTheme' 	=> '@fecshop/app/appfront/theme/base/front',
-		'appfrontBaseLayoutName'=> 'main.php',
+		//'appfrontBaseTheme' 	=> '@fecshop/app/appfront/theme/base/front',
+		//'appfrontBaseLayoutName'=> 'main.php',
 	],
 	# language config.
 	'components' => [
 		'i18n' => [
 			'translations' => [
-				'appfront' => [
+				'appserver' => [
 					//'class' => 'yii\i18n\PhpMessageSource',
 					'class' => 'fecshop\yii\i18n\PhpMessageSource',
 					'basePaths' => [
-						'@fecshop/app/appfront/languages',
-						'@appfront/languages',
+						'@fecshop/app/appserver/languages',
+						'@appserver/languages',
 					],
-					'sourceLanguage' => 'en_US', # å¦‚æœ en_US ä¹Ÿæƒ³ç¿»è¯‘ï¼Œé‚£ä¹ˆå¯ä»¥æ”¹æˆen_XXã€‚
-
+					'sourceLanguage' => 'en_US', # Èç¹û en_US Ò²Ïë·­Òë£¬ÄÇÃ´¿ÉÒÔ¸Ä³Éen_XX¡£
 				],
 			],
 		],
