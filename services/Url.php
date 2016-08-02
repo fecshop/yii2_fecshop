@@ -36,7 +36,7 @@ class Url extends Service
 	 * @param $type|String, url rewrite type.
 	 * @return  rewrite Key. 
 	 */
-	public function saveRewriteUrlKeyByStr($str,$originUrl,$originUrlKey,$type='system'){
+	public function actionSaveRewriteUrlKeyByStr($str,$originUrl,$originUrlKey,$type='system'){
 		$originUrl = $originUrl ? '/'.trim($originUrl,'/') : '';
 		$originUrlKey = $originUrlKey ? '/'.trim($originUrlKey,'/') : '';
 		if($originUrlKey){
@@ -81,7 +81,7 @@ class Url extends Service
 	 * @property $url_key|String 
 	 * remove url rewrite data by $url_key,which is custom url key that saved in custom url modules,like articcle , product, category ,etc..
 	 */
-	public function removeRewriteUrlKey($url_key){
+	public function actionRemoveRewriteUrlKey($url_key){
 		$model = $this->findOne([
 				'custom_url_key' => $url_key,
 			]);
@@ -91,7 +91,7 @@ class Url extends Service
 		
 	}
 	
-	public function getCurrentUrl(){
+	public function actionGetCurrentUrl(){
 		if(!$this->_currentUrl){
 			$pageURL = 'http';
 			if ($_SERVER["HTTPS"] == "on"){
@@ -113,7 +113,7 @@ class Url extends Service
 	 *  get $origin_url by $custom_url_key ,it is used for yii2 init,
 	 *  in (new fecshop\services\Request)->resolveRequestUri(),  ## fecshop\services\Request is extend  yii\web\Request
 	 */
-	public function getOriginUrl($urlKey){
+	public function actionGetOriginUrl($urlKey){
 		
 		return Yii::$service->url->rewrite->getOriginUrl($urlKey);
 	}

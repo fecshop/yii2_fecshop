@@ -109,7 +109,7 @@ class ArticleMysqldb implements ArticleInterface
 		
 		$saveStatus = Yii::$service->helper->ar->save($model,$one);
 		if(!$primaryVal){
-			$primaryVal = Yii::$service->db->getLastInsertID();
+			$primaryVal = Yii::$app->db->getLastInsertID();
 		}
 		
 		$originUrl = $originUrlKey.'?'.$this->getPrimaryKey() .'='. $primaryVal;

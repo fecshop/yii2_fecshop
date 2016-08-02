@@ -19,7 +19,7 @@ class Product extends ActiveRecord
     
 	public static function collectionName()
     {
-	   return '{{%product}}';
+	   return 'product';
     }
 	
 	

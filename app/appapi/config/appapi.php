@@ -16,7 +16,7 @@ foreach (glob(__DIR__ . '/modules/*.php') as $filename){
 return [
 	'modules'=>$modules,
 	'params'	=> [
-	
+		
 	],
 	'components' => [
 		'urlManager' => [

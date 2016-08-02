@@ -51,7 +51,7 @@ class Currency extends Service
 	/**
 	 * Get all currencys info.
 	 */
-	public function getCurrencys($currencyCode=''){
+	protected function ActionGetCurrencys($currencyCode=''){
 		if(!$this->_currencys){
 			foreach($this->currencys as $code => $info){
 				$this->_currencys[$code] = [
@@ -74,7 +74,9 @@ class Currency extends Service
 	 * if current currency is not find in object variable $currencys(maybe change config in online shop,but current user session is effective),
 	 * current currency will set defaultCurrency, origin price will be return.
 	 */
-	public function getCurrentCurrencyPrice($price){
+	protected function actionGetCurrentCurrencyPrice($price){
+		
+		
 		if(isset($this->currencys[$this->getCurrentCurrency()]['rate'])){
 			$rate = $this->currencys[$this->getCurrentCurrency()]['rate'];
 			if($rate)
@@ -93,7 +95,7 @@ class Currency extends Service
 	 * 2. if store pass currency to this function, current currency will equals store currency.
 	 * 3. if store not pass currency to this function ,defaultCurrency will be set.
 	 */
-	public function initCurrency($currency=''){
+	protected function actionInitCurrency($currency=''){
 		if(!$this->getCurrentCurrency()){
 			if(!$currency)
 				$currency = $this->defaultCurrency;
@@ -102,24 +104,24 @@ class Currency extends Service
 		
 	}
 	
-	public function getCurrencyInfo($code=''){
+	protected function actionGetCurrencyInfo($code=''){
 		if(!$code)
 			$code = $this->getCurrentCurrency();
 		return $this->getCurrencys($code);
 	}
 	
-	public function getCurrentCurrency(){
+	protected function actionGetCurrentCurrency(){
+		
 		if(!$this->_currentCurrency)
 			$this->_currentCurrency = CSession::get(self::CURRENCY_CURRENT);
 		return $this->_currentCurrency;
 	}
 	
-	public function setCurrentCurrency($currency){
+	protected function actionSetCurrentCurrency($currency){
 		if($this->isCorrectCurrency($currency)){
 			CSession::set(self::CURRENCY_CURRENT,$currency);
 			return true;
 		}
-		
 	}
 	/**
 	 * check param currency if is contained in object variable $currencys.

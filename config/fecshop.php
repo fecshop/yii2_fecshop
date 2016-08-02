@@ -24,7 +24,18 @@ return [
 	
     'components' 	=> $components,
 	'services' 		=> $services,
-	
+	'params'		=> [
+		'fecshop_log' => [
+			'log_services' => [
+				'dbprint' 		=> true,
+				'htmlprint'  	=> true,
+				'htmlprintbyparam'  => [
+					'enable'	=> true,
+					'param'		=> 'xxxxxxxx',
+				],
+			],
+		],
+	],
 	/* only config in front web */
 	//'bootstrap' => ['store'],
 ];

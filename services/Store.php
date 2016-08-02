@@ -15,7 +15,7 @@ use yii\base\BootstrapInterface;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Store extends Service implements BootstrapInterface
+class Store extends Service 
 {
 	/**
 	 * init by config file.
@@ -55,7 +55,7 @@ class Store extends Service implements BootstrapInterface
 	 *  if current store_code is not config , InvalidValueException will be throw. 
 	 *	class property $currentStore will be set value $store_code.
 	 */
-	public function bootstrap($app){
+	public function actionBootstrap($app){
 		
 		//Yii::$service = new \fecshop\services\Service;
 		//Yii::createObject($service);
