@@ -36,10 +36,10 @@ class Article extends Service
 	/**
 	 * Get Url by article's url key.
 	 */
-	public function getUrlByPath($urlPath){
+	//public function getUrlByPath($urlPath){
 		//return Yii::$service->url->getHttpBaseUrl().'/'.$urlKey;
-		return Yii::$service->url->getUrlByPath($urlPath);
-	}
+		//return Yii::$service->url->getUrlByPath($urlPath);
+	//}
 	/**
 	 * get artile's primary key.
 	 */

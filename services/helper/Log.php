@@ -67,13 +67,12 @@ class Log extends Service
 	/**
 	 * ServiceLog：保存serviceLog
 	 */
-	public function saveServiceLog($log_info){
+	public function printServiceLog($log_info){
 		if($this->isServiceLogDbPrint()){
 			FecshopServiceLog::getCollection()->save($log_info);
 		}
 		if($this->isServiceLogHtmlPrint() || $this->isServiceLogDbPrintByParam()){
 			$str = '<br>#################################<br><table>';
-			
 			foreach($log_info as $k=>$v){
 				if(is_array($v)){
 					$v = implode('<br>',$v);
@@ -82,18 +81,14 @@ class Log extends Service
 					</tr>";
 				}else{
 					$str .= "<tr>
-						<td>$k</td><td>$v</td>
-						</tr>";
+					<td>$k</td><td>$v</td>
+					</tr>";
 				}
-				
 			}
-			
 			$str .= '</table><br>#################################<br><br>';
 			echo $str ;
 		}
-		
 	}
-	
 	
 	/**
 	 * ServiceLog：if service log db print is enable.

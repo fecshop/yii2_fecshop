@@ -12,7 +12,6 @@ use fec\helpers\CConfig;
 use yii\base\Object;
 use yii\base\InvalidConfigException;
 use yii\base\InvalidCallException;
-
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
@@ -24,22 +23,18 @@ class Service extends  Object
 	
 	protected $_beginCallTime;
 	protected $_beginCallCode;
-	
 	/**
 	 * 
 	 */
 	public function __get($attr){
 		return $this->getChildService($attr);
-		
 	}
 	/**
-	 * 
+	 * 通过call函数，去调用actionXxxx方法。
 	 */
 	public function __call($originMethod,$arguments) {
 		$method = 'action'.ucfirst($originMethod);
 		if(method_exists($this, $method)) {
-			//$this->logServiceProcess();
-			//$serviceInfo = $this->getCurrentServiceInfo($method,$arguments);
             $this->beginCall($originMethod,$arguments);
 			$return = call_user_func_array(array($this,$method),$arguments);
 			$this->endCall($originMethod,$arguments);
@@ -65,7 +60,9 @@ class Service extends  Object
 		return $this->_childService[$childServiceName];
 	}
 	
-	
+	/**
+	 * 如果开启service log，则记录开始的时间。
+	 */
 	protected function beginCall($originMethod,$arguments) {
 		if(Yii::$service->helper->log->isServiceLogEnable()){
 			$this->_beginCallTime = microtime(true);
@@ -73,7 +70,10 @@ class Service extends  Object
     }
 	
 	/**
-	 * $originMethod and $arguments,魔术方法传递的参数
+	 * @param $originMethod and $arguments,魔术方法传递的参数
+	 * 调用service后，调用endCall，目前用来记录log信息
+	 * 1. 如果service本身的调用，则不会记录，只会记录外部函数调用service
+	 * 2. 同一次访问的service_uid 的值是一样的，这样可以把一次访问调用的serice找出来。
 	 */
 	protected function endCall($originMethod,$arguments){
 		if(Yii::$service->helper->log->isServiceLogEnable()){
@@ -111,7 +111,7 @@ class Service extends  Object
 			];
 			
 			//Yii::$service->helper->log->fetchServiceLog($log_info);
-			Yii::$service->helper->log->saveServiceLog($log_info);
+			Yii::$service->helper->log->printServiceLog($log_info);
 		}
 	}
 	

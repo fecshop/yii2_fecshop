@@ -19,7 +19,7 @@ use fec\helpers\CUrl;
 class Url extends Service 
 {
 	public 	  $randomCount = 8;
-	
+	public    $showScriptName;
 	protected $_secure;
 	protected $_currentBaseUrl;
 	protected $_origin_url;
@@ -27,7 +27,14 @@ class Url extends Service
 	protected $_httpBaseUrl;
 	protected $_httpsBaseUrl;
 	protected $_currentUrl;
-	
+	/**
+	 * About: 对于 \yii\helpers\CUrl 已经 封装了一些对url的操作，也就是基于yii2的url机制进行的
+	 * 但是对于前端并不适用，对于域名当首页http://xx.com这类url是没有问题，但是，
+	 * 对于子目录当首页的时候就会出问题：  譬如：http://xx.com/zh , http://xx.com/es , http://xx.com/fr 这类得有一定目录的url，则不能满足要求
+	 * 另外前端页面为了seo要求，还会加入url自定义等要求，作为Yii2的url，已经不能满足要求，
+	 * 因此这里重新封装，对于前端页面，请使用 Yii::$service->url.
+	 * 对于admin部分，不会涉及到重写url和域名子目录作为htmlUrl的情况，因此admin部分还是可以用\yii\helpers\CUrl的。
+	 */
 	/**
 	 * save custom url to mongodb collection url_rewrite
 	 * @param $str|String, example:  fashion handbag women
@@ -36,7 +43,7 @@ class Url extends Service
 	 * @param $type|String, url rewrite type.
 	 * @return  rewrite Key. 
 	 */
-	public function actionSaveRewriteUrlKeyByStr($str,$originUrl,$originUrlKey,$type='system'){
+	protected function actionSaveRewriteUrlKeyByStr($str,$originUrl,$originUrlKey,$type='system'){
 		$originUrl = $originUrl ? '/'.trim($originUrl,'/') : '';
 		$originUrlKey = $originUrlKey ? '/'.trim($originUrlKey,'/') : '';
 		if($originUrlKey){
@@ -81,7 +88,7 @@ class Url extends Service
 	 * @property $url_key|String 
 	 * remove url rewrite data by $url_key,which is custom url key that saved in custom url modules,like articcle , product, category ,etc..
 	 */
-	public function actionRemoveRewriteUrlKey($url_key){
+	protected function actionRemoveRewriteUrlKey($url_key){
 		$model = $this->findOne([
 				'custom_url_key' => $url_key,
 			]);
@@ -91,7 +98,10 @@ class Url extends Service
 		
 	}
 	
-	public function actionGetCurrentUrl(){
+	/**
+	 * get current url
+	 */
+	protected function actionGetCurrentUrl(){
 		if(!$this->_currentUrl){
 			$pageURL = 'http';
 			if ($_SERVER["HTTPS"] == "on"){
@@ -113,7 +123,7 @@ class Url extends Service
 	 *  get $origin_url by $custom_url_key ,it is used for yii2 init,
 	 *  in (new fecshop\services\Request)->resolveRequestUri(),  ## fecshop\services\Request is extend  yii\web\Request
 	 */
-	public function actionGetOriginUrl($urlKey){
+	protected function actionGetOriginUrl($urlKey){
 		
 		return Yii::$service->url->rewrite->getOriginUrl($urlKey);
 	}
@@ -121,12 +131,23 @@ class Url extends Service
 	/**
 	 * @property $path|String, for example about-us.html,  fashion-handbag/women.html
 	 * genarate current store url by path.
+	 * example:
+	 * Yii::$service->url->getUrlByPath('cms/article/index?id=33');
+	 * Yii::$service->url->getUrlByPath('cms/article/index',['id'=>33]);
+	 * Yii::$service->url->getUrlByPath('cms/article/index',['id'=>33],true);
 	 */
-	public function getUrlByPath($path,$https=false){
+	protected function getUrl($path,$params=[],$https=false){
 		if($https){
 			$baseUrl 	= $this->getHttpsBaseUrl();
 		}else{
 			$baseUrl 	= $this->getHttpBaseUrl();
+		}
+		if(is_array($params) && !empty($params)){
+			$arr = [];
+			foreach($params as $k => $v){
+				$arr[] = $k.'='.$v;
+			}
+			return $baseUrl.'/'.$path.'?'.implode('&',$arr);
 		}
 		return $baseUrl.'/'.$path;
 	}
@@ -137,6 +158,9 @@ class Url extends Service
 	public function getCurrentBaseUrl(){
 		if(!$this->_currentBaseUrl){
 			$homeUrl = $this->homeUrl();
+			if($this->showScriptName){
+				$homeUrl .=  '/index.php';
+			}
 			if(!$this->_httpType)
 				$this->_httpType = $this->secure() ? 'https' : 'http';
 			$this->_currentBaseUrl = str_replace("http",$this->_httpType,$homeUrl);
@@ -165,7 +189,11 @@ class Url extends Service
 			}else{
 				$this->_httpBaseUrl = $homeUrl;
 			}
+			if($this->showScriptName){
+				$this->_httpBaseUrl .=  '/index.php';
+			}
 		}
+		
 		return $this->_httpBaseUrl;
 	}
 	/**
@@ -179,15 +207,12 @@ class Url extends Service
 			}else{
 				$this->_httpsBaseUrl = $homeUrl;
 			}
+			if($this->showScriptName){
+				$this->_httpsBaseUrl .=  '/index.php';
+			}
 		}
 		return $this->_httpsBaseUrl;
 	}
-	
-	
-	
-	
-	
-	
 	
 	protected function newModel(){
 		return Yii::$service->url->rewrite->newModel();

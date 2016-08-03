@@ -21,14 +21,14 @@ return [
 						# if enable is false , all services will be close
 						'enable' => false,
 						# print log info to db.
-						'dbprint' 		=> true,
+						'dbprint' 		=> false,
 						# print log info to front html
 						'htmlprint'  	=> false,
 						# print log
 						'htmlprintbyparam'  => [
-							# like :http://fecshop.appfront.fancyecommerce.com/cn/?htmlprintparam=xxxxxxxx
-							'enable'		=> true,
-							'paramKey'		=> 'htmlprintparam',  
+							# like :http://fecshop.appfront.fancyecommerce.com/cn/?servicelog=xxxxxxxx
+							'enable'		=> false,
+							'paramKey'		=> 'servicelog',  
 							'paramVal'			=> 'xxxxxxxx',
 						],
 					],

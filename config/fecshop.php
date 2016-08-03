@@ -12,30 +12,17 @@ foreach (glob(__DIR__ . '/services/*.php') as $filename){
 	$services = array_merge($services,require($filename));
 }
 
-
 # 组件
 $components = [];
 foreach (glob(__DIR__ . '/components/*.php') as $filename){
 	$components = array_merge($components,require($filename));
 }
-
-    
+ 
 return [
 	
     'components' 	=> $components,
 	'services' 		=> $services,
 	'params'		=> [
-		'fecshop_log' => [
-			'log_services' => [
-				'dbprint' 		=> true,
-				'htmlprint'  	=> true,
-				'htmlprintbyparam'  => [
-					'enable'	=> true,
-					'param'		=> 'xxxxxxxx',
-				],
-			],
-		],
+		
 	],
-	/* only config in front web */
-	//'bootstrap' => ['store'],
 ];
