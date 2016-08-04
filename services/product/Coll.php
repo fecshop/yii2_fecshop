@@ -56,7 +56,7 @@ class Coll extends Service
 	 * 	'asArray' => true,
 	 * ]
 	*/
-	public function getProducts($filter){
+	protected function actionGetProducts($filter){
 		$numPerPage 	= isset($filter['numPerPage']) ? $filter['numPerPage'] : $this->numPerPage;
 		$pageNum 		= isset($filter['pageNum']) ? $filter['pageNum'] : $this->pageNum;
 		$orderBy 		= isset($filter['orderBy']) ? $filter['orderBy'] : $this->orderBy;

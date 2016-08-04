@@ -34,20 +34,20 @@ class Rewrite extends Service
 		}
 	}
 	
-	public function actionGetOriginUrl($urlKey){
+	protected function actionGetOriginUrl($urlKey){
 		return $this->_urlRewrite->getOriginUrl($urlKey);
 	}
 	
 	/**
 	 * get artile's primary key.
 	 */
-	public function actionGetPrimaryKey(){
+	protected function actionGetPrimaryKey(){
 		return $this->_urlRewrite->getPrimaryKey();
 	}
 	/**
 	 * get artile model by primary key.
 	 */
-	public function actionGetByPrimaryKey($primaryKey){
+	protected function actionGetByPrimaryKey($primaryKey){
 		return $this->_urlRewrite->getByPrimaryKey($primaryKey);
 	}
 	
@@ -73,7 +73,7 @@ class Rewrite extends Service
 	 * 	'asArray' => true,
 	 * ]
 	 */
-	public function actionColl($filter=''){
+	protected function actionColl($filter=''){
 		return $this->_urlRewrite->coll($filter);
 	}
 	
@@ -82,24 +82,24 @@ class Rewrite extends Service
 	 * @property $originUrlKey|String , article origin url key.
 	 * save $data to cms model,then,add url rewrite info to system service urlrewrite.                 
 	 */
-	public function actionSave($one){
+	protected function actionSave($one){
 		return $this->_urlRewrite->save($one);
 	}
 	
-	public function actionRemove($ids){
+	protected function actionRemove($ids){
 		return $this->_urlRewrite->remove($ids);
 	}
 	
 	
-	public function actionFind(){
+	protected function actionFind(){
 		return $this->_urlRewrite->find();
 	}
 	
-	public function actionFindOne($where){
+	protected function actionFindOne($where){
 		return $this->_urlRewrite->findOne($where);
 	}
 	
-	public function actionNewModel(){
+	protected function actionNewModel(){
 		return $this->_urlRewrite->newModel();
 	}
 	

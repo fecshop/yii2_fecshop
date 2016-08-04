@@ -41,7 +41,7 @@ class Product extends Service
 	 ]
 	 */
 	
-	public function getFilterProduct($filter){
+	protected function actionGetFilterProduct($filter){
 		$where 		= isset($filter['where']) ? $filter['where'] : '';
 		$categoryId = isset($filter['categoryId']) ? $filter['categoryId'] : '';
 		if($categoryId){

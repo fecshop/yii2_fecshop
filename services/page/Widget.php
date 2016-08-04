@@ -43,7 +43,7 @@ class Widget extends Service
 		]
 	]
 	*/
-	public function render($configKey,$parentThis=''){
+	protected function actionRender($configKey,$parentThis=''){
 		$config = '';
 		if(is_array($configKey)){
 			$config = $configKey;
@@ -59,33 +59,7 @@ class Widget extends Service
 		return $this->renderContent($configKey,$config,$parentThis);
 	}
 	
-	
-	protected function renderContent($configKey,$config,$parentThis=''){
-		if(isset($config['cache']['enable']) && $config['cache']['enable']){
-			if(!isset($config['class']) || !$config['class']){
-				throw new InvalidConfigException('in widget ['.$configKey.'],you enable cache ,you must config widget class .');
-			}else if($ob = new $config['class']){
-				if($ob instanceof BlockCache){
-					$cacheKey = $ob->getCacheKey();
-					if(!($content = CCache::get($cacheKey))){
-						$cache = $config['cache'];
-						$timeout = isset($cache['timeout']) ? $cache['timeout'] : 0;
-						unset($config['cache']);
-						$content = $this->renderContentHtml($configKey,$config,$parentThis);
-						CCache::set($cacheKey,$content,$timeout);
-					}
-					return $content;
-				}else{
-					throw new InvalidConfigException($config['class'].' must implete fecshop\interfaces\block\BlockCache  when you use block cache .');
-				}
-			}
-		}
-		$content = $this->renderContentHtml($configKey,$config,$parentThis);
-		return $content;
-		
-	}
-	
-	public function renderContentHtml($configKey,$config,$parentThis=''){
+	protected function actionRenderContentHtml($configKey,$config,$parentThis=''){
 		if( !isset($config['view']) || empty($config['view'])
 		){
 			throw new InvalidConfigException('view and class must exist in array config!');
@@ -118,6 +92,34 @@ class Widget extends Service
 		return Yii::$app->view->renderFile($viewFile, $params);
 		
 	}
+	
+	
+	protected function renderContent($configKey,$config,$parentThis=''){
+		if(isset($config['cache']['enable']) && $config['cache']['enable']){
+			if(!isset($config['class']) || !$config['class']){
+				throw new InvalidConfigException('in widget ['.$configKey.'],you enable cache ,you must config widget class .');
+			}else if($ob = new $config['class']){
+				if($ob instanceof BlockCache){
+					$cacheKey = $ob->getCacheKey();
+					if(!($content = CCache::get($cacheKey))){
+						$cache = $config['cache'];
+						$timeout = isset($cache['timeout']) ? $cache['timeout'] : 0;
+						unset($config['cache']);
+						$content = $this->renderContentHtml($configKey,$config,$parentThis);
+						CCache::set($cacheKey,$content,$timeout);
+					}
+					return $content;
+				}else{
+					throw new InvalidConfigException($config['class'].' must implete fecshop\interfaces\block\BlockCache  when you use block cache .');
+				}
+			}
+		}
+		$content = $this->renderContentHtml($configKey,$config,$parentThis);
+		return $content;
+		
+	}
+	
+	
 	
 	
 	/**

@@ -20,11 +20,11 @@ class Product extends Service
 {
 	private $_productId;
 	
-	public function setCurrentProductId($productId){
+	protected function actionSetCurrentProductId($productId){
 		$this->_productId = $productId;
 	}
 	
-	public function getCurrentProductId(){
+	protected function actionGetCurrentProductId(){
 		return $this->_productId;
 	}
 	

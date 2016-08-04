@@ -55,7 +55,7 @@ class Menu extends Service
 			]
 		]
 	 */
-	public function getMenuData(){
+	protected function actionGetMenuData(){
 		$this->_homeUrl = CUrl::getHomeUrl();
 		$arr = [];
 		if($displayHome = $this->displayHome){

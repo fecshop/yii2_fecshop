@@ -19,12 +19,12 @@ use fec\helpers\CSession;
 class Search extends Service
 {
 	
-	public function getProductList($text,$filter){
+	protected function actionGetProductList($text,$filter){
 		
 		
 	}
 	
-	public function getHotSearchText(){
+	protected function actionGetHotSearchText(){
 		
 		
 	}

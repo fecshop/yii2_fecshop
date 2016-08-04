@@ -25,15 +25,6 @@ class Breadcrumbs extends Service
 	public 		$intervalSymbol = ' > ';
 	protected 	$_items;
 	
-	/**
-	 * property $items|Array. add $items to $this->_items.
-	 * $items format example.
-	 * $items = ['name'=>'fashion handbag','url'=>'http://www.xxx.com'];
-	 */
-	public function addItems($items){
-		$this->_items[] = $items;
-	}
-	
 	public function init(){
 		if($this->homeName){
 			$items['name'] = $this->homeName;
@@ -44,9 +35,20 @@ class Breadcrumbs extends Service
 	}
 	
 	/**
+	 * property $items|Array. add $items to $this->_items.
+	 * $items format example.
+	 * $items = ['name'=>'fashion handbag','url'=>'http://www.xxx.com'];
+	 */
+	protected function actionAddItems($items){
+		$this->_items[] = $items;
+	}
+	
+	
+	
+	/**
 	 * generate Breadcrumbs html ,before generate , you should use addItems function to add breadcrumbs items.
 	 */
-	public function generateHtml(){
+	protected function actionGenerateHtml(){
 		$arr = [];
 		if($this->_items){
 			foreach($this->_items as $item){

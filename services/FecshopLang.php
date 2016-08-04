@@ -33,11 +33,11 @@ class Fecshoplang extends Service
 	 * @property $langCode|String , language 2 code, like :en ,fr ,es,
 	 *  get language child language attr, like: title_fr
 	 */
-	public function getLangAttrName($attrName,$langCode){
+	protected function actionGetLangAttrName($attrName,$langCode){
 		return $attrName.'_'.$langCode;
 	}
 	
-	public function getDefaultLangAttrName($attrName){
+	protected function actionGetDefaultLangAttrName($attrName){
 		return $attrName.'_'.$this->defaultLangCode;
 	}
 	
@@ -47,7 +47,7 @@ class Fecshoplang extends Service
 	 * get default language attr value.
 	 * example getDefaultLangAttrVal(['title_en'=>'xx','title_fr'=>'yy'],'title');
 	 */
-	public function getDefaultLangAttrVal($attrVal,$attrName){
+	protected function actionGetDefaultLangAttrVal($attrVal,$attrName){
 		$defaultLangAttrName = $this->getDefaultLangAttrName($attrName);
 		if(isset($attrVal[$defaultLangAttrName]) && !empty($attrVal[$defaultLangAttrName])){
 			return $attrVal[$defaultLangAttrName];
@@ -65,7 +65,7 @@ class Fecshoplang extends Service
 	 * if attribute in default language value is empty, '' will be return. 
 	 * example getLangAttrVal(['title_en'=>'xx','title_fr'=>'yy'],'title','fr');
 	 */
-	public function getLangAttrVal($attrVal,$attrName,$langCode){
+	protected function actionGetLangAttrVal($attrVal,$attrName,$langCode){
 		$langAttrName = $this->getLangAttrName($attrName,$langCode);
 		if(isset($attrVal[$langAttrName]) && !empty($attrVal[$langAttrName])){
 			return $attrVal[$langAttrName];
@@ -85,7 +85,7 @@ class Fecshoplang extends Service
 	 * @return String , like  en ,fr ,es ,  if  $language is not exist in $this->allLangCode
 	 * empty will be return.
 	 */
-	public function getLangCodeByLanguage($language){
+	protected function actionGetLangCodeByLanguage($language){
 		if(isset($this->allLangCode[$language])){
 			return $this->allLangCode[$language];
 		}else{

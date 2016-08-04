@@ -18,14 +18,13 @@ use yii\web\AssetBundle;
 use yii\base\Object;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
-
 /**
  * page asset services
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  extends AssetBundle
  */
-class Asset
+class Asset extends Service
 {
 	public $cssOptions;
 	public $jsOptions; 
@@ -38,7 +37,7 @@ class Asset
     /**
 	 * 文件路径默认放到模板路径下面的assets里面
 	 */
-	public function register($view){
+	protected function actionRegister($view){
 		$assetArr = [];
 		$themeDir = Yii::$service->page->theme->getThemeDirArr();
 		if( is_array($themeDir) && !empty($themeDir)){
@@ -103,7 +102,7 @@ class Asset
 	}
 	
 	
-	public function initOptions($options){
+	protected function initOptions($options){
 		if(isset($options['position'])){
 			if($options['position'] == 'POS_HEAD'){
 				$options['position'] =  \yii\web\View::POS_HEAD;

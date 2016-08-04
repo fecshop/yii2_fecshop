@@ -26,7 +26,7 @@ class Menu extends Service
 	 * get category menu as array. array key is: _id ,name ,urlPath,childMenu
 	 * 
 	 */
-	public function getCategoryMenuArr($parentId=''){
+	protected function actionGetCategoryMenuArr($parentId=''){
 		$arr = [];
 		if(!$parentId)
 			$parentId = $this->rootCategoryId;
@@ -57,7 +57,7 @@ class Menu extends Service
 	 * @property $categoryId|Array 
 	 * check if cateogry has child .
 	 */
-	public function hasChild($categoryId){
+	protected function hasChild($categoryId){
 		$one = Category::find()->asArray()->where([
 				'parent_id' => $categoryId
 			])->one();

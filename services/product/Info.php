@@ -30,7 +30,7 @@ class Info extends Service
 	 * image will return full image url
 	 * this function will be use for front product info page.
 	 */
-	public function getProduct($productId='',$selectAttr=[])
+	protected function actionGetProduct($productId='',$selectAttr=[])
 	{
 		//echo 33;exit;
 		if(!$this->_product){
@@ -59,7 +59,7 @@ class Info extends Service
 	 *  @property $product is object.
 	 *	convert product language attribute to current language value.
 	 */
-	public function getCurrentLangProduct($product){
+	protected function actionGetCurrentLangProduct($product){
 		$lang_attrs = $this->getLangAttr();
 		foreach($lang_attrs as $attr){
 			$product->$attr = Yii::$service->store->getLangVal($product->$attr,$attr);
@@ -69,7 +69,7 @@ class Info extends Service
 	/**
 	 *	product language attributes array.
 	 */
-	public function getLangAttr(){
+	protected function actionGetLangAttr(){
 		return [
 			'name',
 			'title',

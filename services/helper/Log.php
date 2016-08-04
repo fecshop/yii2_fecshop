@@ -22,12 +22,9 @@ use fecshop\models\mongodb\FecshopServiceLog;
  */
 class Log extends Service
 {
-	
+	public $log_config;
 	protected $_serviceContent;
 	protected $_serviceUid;
-	
-	public $log_config;
-	
 	protected $_isServiceLog;
 	protected $_isServiceLogDbPrint;
 	protected $_isServiceLogHtmlPrint;

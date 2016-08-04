@@ -19,51 +19,51 @@ use fec\helpers\CSession;
 class Blog extends Service
 {
 	
-	public function getCategoryMenu(){
+	protected function actionGetCategoryMenu(){
 		
 		
 	}
 	
-	public function getArticleList(){
+	protected function actionGetArticleList(){
 		
 		
 	}
 	
-	public function getCategoryArticleList(){
+	protected function actionGetCategoryArticleList(){
 		
 		
 	}
 	
-	public function getArticleById(){
-		
-		
-	}
-	
-	
-	public function saveArticle(){
+	protected function actionGetArticleById(){
 		
 		
 	}
 	
 	
-	public function deleteArticle(){
+	protected function actionSaveArticle(){
 		
 		
 	}
 	
 	
-	public function saveCategory(){
-		
-		
-	}
-	
-	public function deleteCategory(){
+	protected function actionDeleteArticle(){
 		
 		
 	}
 	
 	
-	public function getCategoryById(){
+	protected function actionSaveCategory(){
+		
+		
+	}
+	
+	protected function actionDeleteCategory(){
+		
+		
+	}
+	
+	
+	protected function actionGetCategoryById(){
 		
 		
 	}

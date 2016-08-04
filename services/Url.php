@@ -136,7 +136,7 @@ class Url extends Service
 	 * Yii::$service->url->getUrlByPath('cms/article/index',['id'=>33]);
 	 * Yii::$service->url->getUrlByPath('cms/article/index',['id'=>33],true);
 	 */
-	protected function getUrl($path,$params=[],$https=false){
+	protected function actionGetUrl($path,$params=[],$https=false){
 		if($https){
 			$baseUrl 	= $this->getHttpsBaseUrl();
 		}else{
@@ -155,7 +155,7 @@ class Url extends Service
 	/**
 	 * get current base url , is was generate by http(or https ).'://'.store_code  
 	 */
-	public function getCurrentBaseUrl(){
+	protected function actionGetCurrentBaseUrl(){
 		if(!$this->_currentBaseUrl){
 			$homeUrl = $this->homeUrl();
 			if($this->showScriptName){
@@ -172,7 +172,7 @@ class Url extends Service
 	/**
 	 * get current home url , is was generate by 'http://'.store_code  
 	 */
-	public function homeUrl(){
+	protected function actionHomeUrl(){
 		return Yii::$app->getHomeUrl();
 	}
 	

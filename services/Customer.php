@@ -22,7 +22,7 @@ class Customer extends Service
 	 * @property $data|Array
 	 * like :['email'=>'xxx@xxx.com','password'=>'xxxx']
 	 */
-	public function login($data){
+	protected function actionLogin($data){
 		
 		
 	}
@@ -33,7 +33,7 @@ class Customer extends Service
 	 *	,'sex','age',
 	 * ]
 	 */
-	public function register($data){
+	protected function actionRegister($data){
 		
 		
 	}
@@ -43,7 +43,7 @@ class Customer extends Service
 	 * Get customer info by customerId, if customer id is empty, current customer id will be set, 
 	 * if current customer id is empty , false will be return .
 	 */
-	public function viewInfo($customerId = ''){
+	protected function actionViewInfo($customerId = ''){
 		
 		
 	}
@@ -54,7 +54,7 @@ class Customer extends Service
 	 * change  customer password.
 	 * if $customer id is empty, it will be equals current customer id.
 	 */ 
-	public function changePassword($password,$customerId=''){
+	protected function actionChangePassword($password,$customerId=''){
 		
 		
 	}
@@ -63,14 +63,14 @@ class Customer extends Service
 	 * @property $customerId|Array
 	 * ['firstname','lastname','password','customerId']
 	 */
-	public function changeNameAndPassword($data){
+	protected function actionChangeNameAndPassword($data){
 		
 	}
 	
 	/**
 	 * get current customer identify.
 	 */
-	public function getCurrentAccount(){
+	protected function actionGetCurrentAccount(){
 		return Yii::$app->user->identity->username;
 		
 	}

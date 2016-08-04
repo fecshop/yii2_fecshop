@@ -25,7 +25,6 @@ class Article extends Service
 	public $storage = 'mongodb';
 	protected $_article;
 	
-	
 	public function init(){
 		if($this->storage == 'mongodb'){
 			$this->_article = new ArticleMongodb;
@@ -43,13 +42,13 @@ class Article extends Service
 	/**
 	 * get artile's primary key.
 	 */
-	public function getPrimaryKey(){
+	protected function actionGetPrimaryKey(){
 		return $this->_article->getPrimaryKey();
 	}
 	/**
 	 * get artile model by primary key.
 	 */
-	public function getByPrimaryKey($primaryKey){
+	protected function actionGetByPrimaryKey($primaryKey){
 		return $this->_article->getByPrimaryKey($primaryKey);
 	}
 	
@@ -73,7 +72,7 @@ class Article extends Service
 	 * 	'asArray' => true,
 	 * ]
 	 */
-	public function coll($filter=''){
+	protected function actionColl($filter=''){
 		return $this->_article->coll($filter);
 	}
 	
@@ -82,11 +81,11 @@ class Article extends Service
 	 * @property $originUrlKey|String , article origin url key.
 	 * save $data to cms model,then,add url rewrite info to system service urlrewrite.                 
 	 */
-	public function save($one,$originUrlKey){
+	protected function actionSave($one,$originUrlKey){
 		return $this->_article->save($one,$originUrlKey);
 	}
 	
-	public function remove($ids){
+	protected function actionRemove($ids){
 		return $this->_article->remove($ids);
 	}
 	

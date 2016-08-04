@@ -70,7 +70,7 @@ class Image extends Service
 	 * return , if success ,return image saved relative file path , like '/b/i/big.jpg'
 	 * if fail, reutrn false;
 	 */
-	public function saveProductUploadImg($param_img_file){
+	protected function actionSaveProductUploadImg($param_img_file){
 		$this->initUploadImage();
 		$size = $param_img_file['size']; 
 		$file = $param_img_file['tmp_name'];

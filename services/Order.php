@@ -26,7 +26,7 @@ class Order extends Service
 	/**
 	 * get all order collection
 	 */
-	public function getOrderList(){
+	protected function actionGetOrderList(){
 		
 		
 	}
@@ -34,14 +34,14 @@ class Order extends Service
 	/**
 	 * get order list by customer account id.
 	 */
-	public function getAccountOrderList(){
+	protected function actionGetAccountOrderList(){
 		
 		
 	}
 	/**
 	 * get order list by customer account id.
 	 */
-	public function changeOrderStatus(){
+	protected function actionChangeOrderStatus(){
 		
 		
 	}
@@ -49,7 +49,7 @@ class Order extends Service
 	/**
 	 * get order by Id.
 	 */
-	public function getOrderById(){
+	protected function actionGetOrderById(){
 		
 	}
 	

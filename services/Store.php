@@ -43,8 +43,6 @@ class Store extends Service
 	 * current store code , this property will  init value with store code.
 	 */
 	public $currentStore;
-	
-	
 	/**
 	 * current language code example : fr  es cn ru.
 	 */
@@ -55,13 +53,9 @@ class Store extends Service
 	 *  if current store_code is not config , InvalidValueException will be throw. 
 	 *	class property $currentStore will be set value $store_code.
 	 */
-	public function actionBootstrap($app){
-		
-		//Yii::$service = new \fecshop\services\Service;
-		//Yii::createObject($service);
+	protected function actionBootstrap($app){
 		$host = explode('://' ,$app->getHomeUrl());
 		$stores = $this->stores;
-		
 		$init_compelte = 0;
 		if(is_array($stores) && !empty($stores)){
 			foreach($stores as $store_code => $store){
@@ -97,7 +91,6 @@ class Store extends Service
 					}else{
 						$currency = '';
 					}
-					
 					Yii::$service->page->currency->initCurrency($currency);
 					/**
 					 * current domian is config is store config.
@@ -110,7 +103,6 @@ class Store extends Service
 		if(!$init_compelte){
 			throw new InvalidValueException('this domain is not config in store component');
 		}
-		
     }
 	
 	/**
@@ -164,7 +156,7 @@ class Store extends Service
 	 * if lang attribute in current store language is empty , default language attribute will be return. 
 	 * if attribute in default language value is empty, $attrVal will be return. 
 	 */
-	public function getStoreAttrVal($attrVal,$attrName){
+	protected function actionGetStoreAttrVal($attrVal,$attrName){
 		$lang = $this->currentLangCode;
 		return Yii::$service->fecshoplang->getLangAttrVal($attrVal,$attrName,$lang);
 	}
@@ -173,7 +165,7 @@ class Store extends Service
 	 * @return Array
 	 * get all store info, one item in array format is: ['storeCode' => 'store language'].
 	 */
-	public function getStoresLang(){
+	protected function actionGetStoresLang(){
 		$stores = $this->stores;
 		$topLang = [];
 		foreach($stores as $storeCode=> $store){

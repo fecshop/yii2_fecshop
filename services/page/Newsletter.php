@@ -25,7 +25,7 @@ class Newsletter extends Service
 	/**
 	 * newsletter subscription 
 	 */
-	public function subscription($email){
+	protected function actionSubscription($email){
 		$mongoNewsletter = new MongoNewsletter();
 		$mongoNewsletter->attributes = [
 			'email' => $email,
@@ -58,7 +58,7 @@ class Newsletter extends Service
 	 * @property $filter|array
 	 * get subscription email collection
 	 */
-	public function getSubscriptionList($filter){
+	protected function actionGetSubscriptionList($filter){
 		
 		
 	}

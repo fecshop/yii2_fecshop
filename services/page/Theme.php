@@ -45,7 +45,7 @@ class Theme extends Service
 	protected $_themeDirArr;
 	
 	
-	public function getThemeDirArr(){
+	protected function actionGetThemeDirArr(){
 		if(!$this->_themeDirArr){
 			$arr = [];
 			if($localThemeDir = Yii::getAlias($this->localThemeDir)){
@@ -67,7 +67,7 @@ class Theme extends Service
 	/**
 	 * find theme file by mutil theme ,if not find view file  and $throwError=true, it will throw InvalidValueException.
 	 */ 
-	public function getViewFile($view,$throwError=true){
+	protected function actionGetViewFile($view,$throwError=true){
 		$view = trim($view);
 		if(substr($view,0,1) == '@'){
 			return Yii::getAlias($view);

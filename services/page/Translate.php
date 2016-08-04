@@ -38,7 +38,7 @@ class Translate extends Service
 		}
 	}
 	
-	public function setLanguage($language){
+	protected function actionSetLanguage($language){
 		Yii::$app->language = $language;
 	}
 	

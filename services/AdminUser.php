@@ -21,7 +21,7 @@ class AdminUser extends Service
 {
 	
 	#Yii::$service->adminUser->getIdAndNameArrByIds($ids)
-	public function getIdAndNameArrByIds($ids){
+	protected function actionGetIdAndNameArrByIds($ids){
 		
 		$user_coll = \fecadmin\models\AdminUser::find()->asArray()->select(['id','username'])->where([
 			'in','id',$ids

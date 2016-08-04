@@ -33,24 +33,24 @@ class Cart extends Service
 	 * use session to save custom cart info, also ,you can config varibale $noLoginUserCartStorage ,save cart info to db.
 	 *
 	 */
-	public function addProductToCart($item){
+	protected function actionAddProductToCart($item){
 		
 		
 	}
 	
-	public function getUserCartInfo(){
+	protected function actionGetUserCartInfo(){
 		
 		
 	}
 	
-	public function changeItemQty($sku){
+	protected function actionChangeItemQty($sku){
 		
 	}
 	
 	/**
 	 *  merge cart , if current cart currency is not equals to user cart currency when user login account.
 	 */
-	public function mergeCartAfterUserLogin(){
+	protected function actionMergeCartAfterUserLogin(){
 		
 		
 	}
@@ -59,7 +59,7 @@ class Cart extends Service
 	 * change current cart currency 
 	 * 1. check if currency is allowed to change.
 	 */
-	public function changeCartCurrency(){
+	protected function actionChangeCartCurrency(){
 		
 		
 	}
@@ -68,7 +68,7 @@ class Cart extends Service
 	 * @property $language|String
 	 * change current language , cart product  language change to current language.
 	 */
-	public function changeProductLanguage($language=''){
+	protected function actionChangeProductLanguage($language=''){
 		
 		
 	}
@@ -77,7 +77,7 @@ class Cart extends Service
 	 * @property $address|Array
 	 * save cart address.like,,  customer name,tel,email,address ,,etc,,.
 	 */
-	public function saveCartAddress($address){
+	protected function actionSaveCartAddress($address){
 		
 		
 	}
@@ -89,7 +89,7 @@ class Cart extends Service
 	 * 3.change shipping cost after change
 	 * 
 	 */
-	public function saveCartShipping($shippingId){
+	protected function actionSaveCartShipping($shippingId){
 		
 		
 	}
@@ -99,7 +99,7 @@ class Cart extends Service
 	 * 1.check if $paymentId is effective
 	 * 2.add or change payment to cart.
 	 */
-	public function saveCartPayment($paymentId){
+	protected function actionSaveCartPayment($paymentId){
 		
 		
 	}
@@ -108,7 +108,7 @@ class Cart extends Service
 	 * $item_ids
 	 * remove cart items by $items_ids
 	 */
-	public function removeItems($item_ids){
+	protected function actionRemoveItems($item_ids){
 		
 		
 	}
@@ -116,7 +116,7 @@ class Cart extends Service
 	/**
 	 * clear cart product.
 	 */
-	public function clearCart(){
+	protected function actionClearCart(){
 		
 		
 	}
@@ -124,7 +124,7 @@ class Cart extends Service
 	/**
 	 * generate order by current Cart.
 	 */
-	public function generateOrderByCart(){
+	protected function actionGenerateOrderByCart(){
 		
 		
 	}
@@ -135,7 +135,7 @@ class Cart extends Service
 	 * 2. get all item sku and custom option.
 	 * 3. add to cart like in product page ,click add to cart button.
 	 */
-	public function addItemsByPendingOrder($order_id){
+	protected function actionAddItemsByPendingOrder($order_id){
 		
 		
 	}
