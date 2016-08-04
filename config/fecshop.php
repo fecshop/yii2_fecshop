@@ -19,10 +19,8 @@ foreach (glob(__DIR__ . '/components/*.php') as $filename){
 }
  
 return [
-	
     'components' 	=> $components,
 	'services' 		=> $services,
-	'params'		=> [
-		
+	'params'		=> [	
 	],
 ];

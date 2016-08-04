@@ -31,16 +31,11 @@ return [
 					'class' => 'fecshop\yii\i18n\PhpMessageSource',
 					'basePaths' => [
 						'@fecshop/app/appfront/languages',
-						'@appfront/languages',
 					],
-					'sourceLanguage' => 'en_US', # 如果 en_US 也想翻译，那么可以改成en_XX。
-
 				],
 			],
 		],
-		'assetManager' => [
-			'forceCopy' => true,
-		],
+		
 		'user' => [
 			'identityClass' => 'fecadmin\models\AdminUser',
 			'enableAutoLogin' => true,
@@ -51,18 +46,11 @@ return [
 		],
 		
 		
-		
 		'urlManager' => [
-			'class' => 'yii\web\UrlManager',
-			'enablePrettyUrl' => true,
-			'showScriptName' => false,
 			'rules' => [
 				'' => 'cms/home/index',
 			],
-			//'baseUrl' => '/fr/',
 		],
-		
-		
 		
 		'request' => [
 			'class' => 'fecshop\yii\web\Request',

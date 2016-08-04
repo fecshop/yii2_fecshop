@@ -49,19 +49,11 @@ return [
 			'errorAction' => 'site/error',
 		],
 		
-		
-		
 		'urlManager' => [
-			'class' => 'yii\web\UrlManager',
-			'enablePrettyUrl' => true,
-			'showScriptName' => false,
 			'rules' => [
 				'' => 'cms/home/index',
 			],
-			//'baseUrl' => '/fr/',
 		],
-		
-		
 		
 		'request' => [
 			'class' => 'fecshop\yii\web\Request',
