@@ -21,7 +21,7 @@ github: https://github.com/fancyecommerce/yii2_fecshop
 
 > 项目已经开始,本项目由Terry筹划，预计到2017年元旦出来第一个正式版本。
 
-架构特色：
+架构特色：更加详细的介绍参看：[Fecshop 架构特色](http://www.fecshop.com/doc/fecshop-guide/cn-1.0/guide-fecshop-about-fecshop.html)
 
 > 1.解决三者之间的矛盾：
   a) fecshop系统核心代码，模板，数据库升级
@@ -31,7 +31,7 @@ github: https://github.com/fancyecommerce/yii2_fecshop
 > 2.解决功能重构：在模块View ，Controller与数据层model中间加入功能服务层service，在架构层面可以很好的解决重构问题。
 。
 
-> 3. 更加详细的介绍参看：[Fecshop 架构特色](http://www.fecshop.com/doc/fecshop-guide/cn-1.0/guide-fecshop-about-fecshop.html)
+
 
 1、安装Fecsop
 ------------
