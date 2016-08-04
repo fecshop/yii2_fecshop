@@ -37,8 +37,8 @@ github: https://github.com/fancyecommerce/yii2_fecshop
 ------------
 
 本部分为fecshop的核心代码部分，
-是以yii2扩展的方式制作，因此，您通过安装入口库包`fecshop app advanced`
-，通过`composer update`, 本部门会以依赖本的方式被加载。
+是以yii2扩展的方式制作，因此，您安装入口库包`fecshop app advanced`
+，通过`composer update`, 本部分代码会以依赖本的方式被加载。
 
-点击次数，进入[安装 fecshop app advanced](https://github.com/fancyecommerce/yii2_fecshop_app_advanced)
+点击这里，进入[安装 fecshop app advanced](https://github.com/fancyecommerce/yii2_fecshop_app_advanced)
 页面。
