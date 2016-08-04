@@ -31,36 +31,13 @@ github: https://github.com/fancyecommerce/yii2_fecshop
 > 2.解决功能重构：在模块View ，Controller与数据层model中间加入功能服务层service，在架构层面可以很好的解决重构问题。
 。
 
-1、安装Yii2
+> 3. 更加详细的介绍参看：[Fecshop 架构特色](http://www.fecshop.com/doc/fecshop-guide/cn-1.0/guide-fecshop-about-fecshop.html)
+
+1、安装Fecsop
 ------------
 
-安装这个扩展的首选方式是通过 [composer](http://getcomposer.org/download/).
+本部分为fecshop的核心代码部分，
+是以yii2扩展的方式制作，因此，您通过安装入口库包
+，通过`composer update`, 本部门会以依赖本的方式被加载。
 
-我的安装路径是在 /www/web/develop/fecadmin 文件夹下面
-
-执行
-
-```
-composer  require "fxp/composer-asset-plugin:~1.1.1"
-
-```
-
-
-
-2、安装FecShop
-------------
-
-执行
-
-```
-composer require --prefer-dist fancyecommerce/fecshop
-
-```
-或添加
-
-```
-"fancyecommerce/fecshop": "~1.0"
-composer install
-```
-
-执行完上面，就安装完成了。
+[安装 fecshop app advanced](https://github.com/fancyecommerce/yii2_fecshop_app_advanced)
