@@ -37,9 +37,7 @@ return [
 				],
 			],
 		],
-		'assetManager' => [
-			'forceCopy' => true,
-		],
+		
 		'user' => [
 			'identityClass' => 'fecadmin\models\AdminUser',
 			'enableAutoLogin' => true,

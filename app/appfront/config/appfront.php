@@ -42,9 +42,8 @@ return [
 		],
 		
 		'errorHandler' => [
-			'errorAction' => 'site/error',
+			'errorAction' => 'site/helper/error',
 		],
-		
 		
 		'urlManager' => [
 			'rules' => [
