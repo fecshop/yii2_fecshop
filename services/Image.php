@@ -13,7 +13,7 @@ use yii\base\InvalidConfigException;
 use fec\helpers\CSession;
 use fec\helpers\CUrl;
 /**
- * Cms services
+ * Image services
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -34,7 +34,9 @@ class Image extends Service
 		}
 	}
 	/**
-	 *  1.2 app front image  Url
+	 *  1.2 app front image  Url* 
+	 *  example : <?= Yii::$service->image->getImgUrl('appfront','images/en_.jpg'); ?>
+	 *  it will find image in @appimage/$app	
 	 */
 	protected function actionGetImgUrl($str,$app='common'){
 		//echo "$str,$app";
@@ -45,10 +47,8 @@ class Image extends Service
 				}
 				return $appbase[$app]['basedomain'];
 			}
-		}else{
-			return 'xxx';
 		}
-		
+		return ;
 	}
 	/**
 	 *  2.1 app front image base dir

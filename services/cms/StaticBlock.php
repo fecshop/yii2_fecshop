@@ -36,6 +36,7 @@ class Staticblock extends Service
 	}
 	/**
 	 * get store static block content by identify
+	 * example <?=  Yii::$service->cms->staticblock->getStoreContentByIdentify('home-big-img','appfront') ?>
 	 */
 	protected function actionGetStoreContentByIdentify($identify,$app='common'){
 		$staticBlock = $this->_static_block->getByIdentify($identify);

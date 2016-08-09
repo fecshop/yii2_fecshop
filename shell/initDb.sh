@@ -5,7 +5,7 @@ Cur_Dir=$(cd `dirname $0`; pwd)
 #fec_admin
 $Cur_Dir/../../../../yii migrate --migrationPath=@fecadmin/migrations
 
-#db
+#db   
 $Cur_Dir/../../../../yii migrate --migrationPath=@fecshop/migrations/db/product/log
 
 #mongodb
