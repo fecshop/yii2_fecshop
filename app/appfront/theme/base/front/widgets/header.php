@@ -98,7 +98,7 @@
 				</form>
 			</div>
 
-			<div class="logo"><a titel="fecshop logo" href="<?= $homeUrl ?>"><img width="254" height="40" src="http://css.sammydress.com/imagecache/S1/images/styleimg/slogo2.gif"></a></div>
+			<div class="logo"><a titel="fecshop logo" href="<?= $homeUrl ?>" style="font-size:30px;color:#cc0000 ;line-height: 30px;">FECSHOP</a></div>
 		</div><!--end .top_header-->
 
 		</div><!--end .top_main_inner-->

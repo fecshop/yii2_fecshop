@@ -75,13 +75,15 @@ class Store extends Service
 					 * set local theme dir.
 					 */ 
 					if(isset($store['localThemeDir']) && $store['localThemeDir']){
-						Yii::$service->page->theme->localThemeDir = $store['localThemeDir'];
+						//Yii::$service->page->theme->localThemeDir = $store['localThemeDir'];
+						Yii::$service->page->theme->setLocalThemeDir($store['localThemeDir']);
 					}
 					/**
 					 * set third theme dir.
 					 */ 
 					if(isset($store['thirdThemeDir']) && $store['thirdThemeDir']){
-						Yii::$service->page->theme->thirdThemeDir = $store['thirdThemeDir'];
+						//Yii::$service->page->theme->thirdThemeDir = $store['thirdThemeDir'];
+						Yii::$service->page->theme->setThirdThemeDir($store['thirdThemeDir']);
 					}
 					/**
 					 * init store currency.

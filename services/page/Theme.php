@@ -102,9 +102,13 @@ class Theme extends Service
 		}
 	}
 	
+	protected function actionSetLocalThemeDir($dir){
+		$this->localThemeDir = $dir;
+	}
 	
-	
-	
+	protected function actionSetThirdThemeDir($dir){
+		$this->thirdThemeDir = $dir;
+	}
 	
 	
 	

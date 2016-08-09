@@ -12,10 +12,6 @@ class ArticleController extends AppfrontController
 	# 网站信息管理
     public function actionIndex()
     {
-		//$primaryKey = Yii::$service->cms->article->getPrimaryKey();
-		//$article = Yii::$service->cms->article->getByPrimaryKey(CRequest::param($primaryKey));
-		//var_dump($article);
-		//echo 'article';
 		$data = $this->getBlock()->getLastData();
 		return $this->render($this->action->id,$data);
 	}

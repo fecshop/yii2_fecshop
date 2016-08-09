@@ -23,6 +23,7 @@ class Service extends  Object
 	
 	protected $_beginCallTime;
 	protected $_beginCallCode;
+	protected $_callFuncLog;
 	/**
 	 * 
 	 */
@@ -33,7 +34,12 @@ class Service extends  Object
 	 * 通过call函数，去调用actionXxxx方法。
 	 */
 	public function __call($originMethod,$arguments) {
-		$method = 'action'.ucfirst($originMethod);
+		if(isset($this->_callFuncLog[$originMethod])){
+			$method = $this->_callFuncLog[$originMethod];
+		}else{
+			$method = 'action'.ucfirst($originMethod);
+			$this->_callFuncLog[$originMethod] = $method;
+		}
 		if(method_exists($this, $method)) {
             $this->beginCall($originMethod,$arguments);
 			$return = call_user_func_array(array($this,$method),$arguments);

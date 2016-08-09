@@ -6,13 +6,13 @@
  * @copyright Copyright (c) 2016 FecShop Software LLC
  * @license http://www.fecshop.com/license/
  */
-namespace fecshop\app\appadmin\modules\Cms\block\article;
+namespace fecshop\app\appadmin\modules\Cms\block\staticblock;
 use Yii;
 use fecshop\app\appadmin\modules\AppadminbaseBlock;
 use fec\helpers\CUrl;
 use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockInterface;
 /**
- * block cms\article
+ * block cms\staticblock
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -25,15 +25,15 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 		/**
 		 * edit data url
 		 */
-		$this->_editUrl 	= CUrl::getUrl("cms/article/manageredit");
+		$this->_editUrl 	= CUrl::getUrl("cms/staticblock/manageredit");
 		/**
 		 * delete data url
 		 */
-		$this->_deleteUrl 	= CUrl::getUrl("cms/article/managerdelete");
+		$this->_deleteUrl 	= CUrl::getUrl("cms/staticblock/managerdelete");
 		/**
 		 * service component, data provider
 		 */
-		$this->_service = Yii::$service->cms->article;
+		$this->_service = Yii::$service->cms->staticblock;
 		parent::init();
 		
 	}
@@ -84,6 +84,12 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 				'name'=>'title' ,
 				'columns_type' =>'string'
 			],
+			[	# 字符串类型
+				'type'=>'inputtext',
+				'title'=>'标识符',
+				'name'=>'identify' ,
+				'columns_type' =>'string'
+			],
 			[	# 时间区间类型搜索
 				'type'=>'inputdatefilter',
 				'name'=> 'created_at',
@@ -117,6 +123,13 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 				'width'			=> '50',
 				'align' 		=> 'left',
 				'lang'			=> true,
+			],
+			[	
+				'orderField'	=> 'identify',
+				'label'			=> '标识符',
+				'width'			=> '50',
+				'align' 		=> 'left',
+				'lang'			=> false,
 			],
 			[	
 				'orderField'	=> 'created_user_id',

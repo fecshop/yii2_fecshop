@@ -21,15 +21,9 @@ github: https://github.com/fancyecommerce/yii2_fecshop
 
 > 项目已经开始,本项目由Terry筹划，预计到2017年元旦出来第一个正式版本。
 
-架构特色：更加详细的介绍参看：[Fecshop 架构特色](http://www.fecshop.com/doc/fecshop-guide/cn-1.0/guide-fecshop-about-fecshop.html)
+架构特色：参看详细介绍：[Fecshop 架构特色](http://www.fecshop.com/doc/fecshop-guide/cn-1.0/guide-fecshop-about-fecshop.html)
 
-> 1.解决三者之间的矛盾：
-  a) fecshop系统核心代码，模板，数据库升级
-, b)第三方代码，模板，数据升级
-, c)用户二次开发，代码，模板，数据修改
-
-> 2.解决功能重构：在模块View ，Controller与数据层model中间加入功能服务层service，在架构层面可以很好的解决重构问题。
-。
+中文博客：[yii2 教程](http://www.fancyecommerce.com).
 
 
 
@@ -38,7 +32,7 @@ github: https://github.com/fancyecommerce/yii2_fecshop
 
 本部分为fecshop的核心代码部分，
 是以yii2扩展的方式制作，因此，您安装入口库包`fecshop app advanced`
-，通过`composer update`, 本部分代码会以依赖本的方式被加载。
+，通过`composer update`, 本部分代码会以依赖包的方式被加载安装。
 
 点击这里，进入[安装 fecshop app advanced](https://github.com/fancyecommerce/yii2_fecshop_app_advanced)
 页面。
