@@ -19,7 +19,7 @@ class Category extends ActiveRecord
     
 	public static function collectionName()
     {
-	   return '{{%category}}';
+	   return 'category';
     }
 	
 	
@@ -33,7 +33,7 @@ class Category extends ActiveRecord
 		    'name',
 	        'status', 
 	        'url_key', 
-			'url_path',
+			
 			'thumbnail_image',
 			'image',
 	        'description',
@@ -49,7 +49,11 @@ class Category extends ActiveRecord
 			'default_sort_by', 
 			'theme', 
 			'active_from',
-			'active_to',   
+			'active_to', 
+
+			'created_at',
+			'updated_at',
+			'created_user_id',
 			
 			//other
 			/*

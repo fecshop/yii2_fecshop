@@ -48,9 +48,12 @@ class AppadminbaseBlockEdit extends Object{
 	}
 	
 	
-	public function getEditBar(){
+	public function getEditBar($editArr=[]){
 		$langs = Yii::$service->fecshoplang->allLangCode;
-		$editArr = $this->getEditArr();
+		$defaultLangCode = Yii::$service->fecshoplang->defaultLangCode;
+		if(empty($editArr)){
+			$editArr = $this->getEditArr();
+		}
 		$str = '';
 		$langAndTextarea = '';
 		if($this->_param[$this->_primaryKey]){
@@ -76,14 +79,19 @@ EOF;
 					$tabLangTitle = '';
 					$tabLangInput = '';
 					foreach($langs as $lang){
-						//var_dump($value);
-						//var_dump($name.'_'.$lg);
+						
+						if($require && $defaultLangCode === $lang){
+							$inputStringLangRequire = 'required';
+						}else{
+							$inputStringLangRequire = 0;
+						}
+						
 						$tabLangTitle .= '<li><a href="javascript:;"><span>'.$lang.'</span></a></li>';
 						$langAttrName = Yii::$service->fecshoplang->getLangAttrName($name,$lang);
 						$tabLangInput .= '<div>
-								<p>
+								<p class="edit_p">
 									<label>'.$label.'['.$lang.']：</label>
-									<input type="text"  value="'.$value[$langAttrName].'" size="30" name="'.$this->_editFormData.'['.$name.']['.$langAttrName.']" class="textInput {$require} ">
+									<input type="text"  value="'.$value[$langAttrName].'" size="30" name="'.$this->_editFormData.'['.$name.']['.$langAttrName.']" class="textInput '.$inputStringLangRequire.' ">
 								</p>
 
 							</div>';
@@ -108,7 +116,7 @@ EOF;
 					
 				}else{
 					$str .=<<<EOF
-							<p>
+							<p class="edit_p">
 								<label>{$label}：</label>
 								<input type="text"  value="{$value}" size="30" name="{$this->_editFormData}[{$name}]" class="textInput {$require} ">
 							</p>
@@ -120,21 +128,21 @@ EOF;
 				}
 				$valueData = $value ? date("Y-m-d",$value) : '';
 				$str .=<<<EOF
-						<p>
+						<p class="edit_p">
 							<label>{$label}：</label>
 							<input type="text"  value="{$valueData}" size="30" name="{$this->_editFormData}[{$name}]" class="date textInput {$require} ">
 						</p>
 EOF;
 			}else if($display_type == 'inputEmail'){
 				$str .=<<<EOF
-						<p>
+						<p class="edit_p">
 							<label>{$label}：</label>
 							<input type="text"  value="{$value}" size="30" name="{$this->_editFormData}[{$name}]" class="email textInput {$require} ">
 						</p>
 EOF;
 			}else if($display_type == 'inputPassword'){
 				$str .=<<<EOF
-						<p>
+						<p class="edit_p">
 							<label>{$label}：</label>
 							<input type="password"  value="" size="30" name="{$this->_editFormData}[{$name}]" class=" textInput {$require} ">
 						</p>
@@ -162,7 +170,7 @@ EOF;
 				}
 				
 				$str .=<<<EOF
-						<p>
+						<p class="edit_p">
 							<label>{$label}：</label>
 								{$select_str}
 						</p>
@@ -176,8 +184,6 @@ EOF;
 					$tabLangTitle = '';
 					$tabLangTextarea = '';
 					foreach($langs as $lang){
-						//var_dump($value);
-						//var_dump($name.'_'.$lg);
 						$langAttrName = Yii::$service->fecshoplang->getLangAttrName($name,$lang);
 						
 						$tabLangTitle .= '<li><a href="javascript:;"><span>'.$lang.'</span></a></li>';
@@ -196,7 +202,7 @@ EOF;
 						
 						
 					}
-					$this->_lang_attr .=<<<EOF
+					$this->_textareas .=<<<EOF
 						<div class="tabs" currentIndex="0" eventType="click" style="margin:10px 0;">
 							<div class="tabsHeader">
 								<div class="tabsHeaderContent">

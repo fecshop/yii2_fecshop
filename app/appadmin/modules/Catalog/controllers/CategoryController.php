@@ -16,27 +16,34 @@ use fecshop\app\appadmin\modules\Catalog\CatalogController;
  */
 class CategoryController extends CatalogController
 {
+	public $enableCsrfValidation = false;
 	
     public function actionIndex()
     {
+		$idKey = Yii::$service->category->getPrimaryKey();
+		$idVal = Yii::$app->request->get($idKey);
+		$parent_id = Yii::$app->request->get('parent_id');
+		if($idVal || $parent_id || $parent_id === '0'){
+			$data = $this->getBlock()->getLastInfo();
+			//$data['product'] = $this->getBlock('product')->getLastData();
+			//echo $data['product']['pagerForm'];
+			//exit;
+			return $this->render('info',$data);
+		}
 		$data = $this->getBlock()->getLastData();
 		return $this->render($this->action->id,$data);
 	}
 	
-	public function actionManageredit()
-    {
+	
+	public function actionProduct(){
 		$data = $this->getBlock()->getLastData();
 		return $this->render($this->action->id,$data);
 	}
+	 
 	
-	public function actionManagereditsave()
+	public function actionRemove()
     {
-		$data = $this->getBlock("manageredit")->save();
-	}
-	
-	public function actionManagerdelete()
-    {
-		$this->getBlock("manageredit")->delete();
+		$this->getBlock("index")->remove();
 	}
 
 

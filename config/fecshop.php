@@ -22,5 +22,6 @@ return [
     'components' 	=> $components,
 	'services' 		=> $services,
 	'params'		=> [	
+	
 	],
 ];
