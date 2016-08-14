@@ -35,7 +35,7 @@ class Image extends Service
 	}
 	/**
 	 *  1.2 app front image  Url* 
-	 *  example : <?= Yii::$service->image->getImgUrl('appfront','images/en_.jpg'); ?>
+	 *  example : <?= Yii::$service->image->getImgUrl('custom/logo.png','appfront'); ?>
 	 *  it will find image in @appimage/$app	
 	 */
 	protected function actionGetImgUrl($str,$app='common'){

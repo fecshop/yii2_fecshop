@@ -15,19 +15,29 @@ use yii\mongodb\ActiveRecord;
  */
 class Product extends ActiveRecord
 {
-    
+    protected $_customProductAttrs;
     
 	public static function collectionName()
     {
-	   return 'product';
+	   return 'product_flat';
     }
 	
-	
+	/**
+	 * get custom product attrs.
+	 */
+	public function setCustomProductAttrs($attrGroup){
+		
+		$customAttrGroup = Yii::$service->product->customAttrGroup;
+		if(is_array($customAttrGroup) && isset($customAttrGroup[$attrGroup])){
+			$this->_customProductAttrs = array_keys($customAttrGroup[$attrGroup]);
+		}
+		return false;
+	}
 
    
     public function attributes()
     {
-		return [
+		$origin =  [
 			'_id', 
 		    'name',
 	        'sku', 
@@ -48,7 +58,6 @@ class Product extends ActiveRecord
 			'new_product_from',
 			'new_product_to',
 			'freeshipping',
-			
 			'featured',
 			'upc',
 			'meta_title',
@@ -63,18 +72,11 @@ class Product extends ActiveRecord
 			'custom_option',
 			'remark', 
 			
-			//other
-			/*
-				related product
-				buy this product also buy
-				view this product also view
-				categories
-				product views
-				product template.
-			
-			
-			*/
-	   ];
+		];
+		if(is_array($this->_customProductAttrs) && !empty($this->_customProductAttrs)){
+			$origin = array_merge($origin,$this->_customProductAttrs);
+		}
+		return $origin;
     }
 	
 	

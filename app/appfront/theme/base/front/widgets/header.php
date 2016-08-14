@@ -98,7 +98,9 @@
 				</form>
 			</div>
 
-			<div class="logo"><a titel="fecshop logo" href="<?= $homeUrl ?>" style="font-size:30px;color:#cc0000 ;line-height: 30px;">FECSHOP</a></div>
+			<div class="logo"><a titel="fecshop logo" href="<?= $homeUrl ?>" style="">
+				<img src="<?= Yii::$service->image->getImgUrl('custom/logo.png','appfront'); ?>"  />
+			</a></div>
 		</div><!--end .top_header-->
 
 		</div><!--end .top_main_inner-->

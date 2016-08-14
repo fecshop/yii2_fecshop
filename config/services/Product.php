@@ -8,7 +8,46 @@
 return [
 	'product' => [
 		'class' => 'fecshop\services\Product',
-		//'terry' => 'xxxx',
+		/*
+		'customAttrGroup' => [
+			'dress_group' => [
+				'dresses-length' 	=> [
+					'dbtype' 	=> 'String',
+					'lang'		=> true,
+					'display'	=> [
+						'type' => 'input',
+						'default'	=> 1,
+					],
+				],
+				'style-status'		=> [
+					'dbtype' 	=> 'Int',
+					'display'	=> [
+						'type' 		=> 'select',
+						'selectData'=> [
+							'1'	=> 'Enable',
+							'2'	=> 'Disable',
+						],
+						'default'	=> 1,
+					],
+				],
+				'sleeve-length'		=> ['dbtype' => 'Float'],
+				'neckline'			=> ['dbtype' => 'String'],
+				'material'			=> ['dbtype' => 'String'],
+				'pattern_type'		=> ['dbtype' => 'String'],
+				'embellishment'		=> ['dbtype' => 'ArrayInt'],
+			],
+			'computer_group' => [
+				'dresses-length' 	=> ['dbtype' => 'String'],
+				'style' 			=> ['dbtype' => 'String'],
+				'sleeve-length' 	=> ['dbtype' => 'String'],
+				'neckline' 			=> ['dbtype' => 'String'],
+				'material' 			=> ['dbtype' => 'String'],
+				'pattern_type' 		=> ['dbtype' => 'String'],
+				'embellishment' 	=> ['dbtype' => 'String'],
+			],
+			
+		],
+		*/
 		# 子服务
 		'childService' => [
 			'image' => [
