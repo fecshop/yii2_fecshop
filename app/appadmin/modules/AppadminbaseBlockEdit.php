@@ -49,7 +49,7 @@ class AppadminbaseBlockEdit extends Object{
 	
 	
 	public function getEditBar($editArr=[]){
-		$langs = Yii::$service->fecshoplang->allLangCode;
+		$langs = Yii::$service->fecshoplang->getAllLangCode();
 		$defaultLangCode = Yii::$service->fecshoplang->defaultLangCode;
 		if(empty($editArr)){
 			$editArr = $this->getEditArr();

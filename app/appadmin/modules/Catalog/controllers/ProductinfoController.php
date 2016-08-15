@@ -26,7 +26,7 @@ class ProductinfoController extends CatalogController
 	}
 	
 	
-	public function actionProduct(){
+	public function actionManageredit(){
 		$data = $this->getBlock()->getLastData();
 		return $this->render($this->action->id,$data);
 	}

@@ -40,6 +40,7 @@ class Product extends ActiveRecord
 		$origin =  [
 			'_id', 
 		    'name',
+			'spu',
 	        'sku', 
 	        'weight', 
 	        'status',
@@ -71,6 +72,10 @@ class Product extends ActiveRecord
 			'short_description',
 			'custom_option',
 			'remark', 
+			
+			'created_at',
+			'updated_at',
+			'created_user_id',
 			
 		];
 		if(is_array($this->_customProductAttrs) && !empty($this->_customProductAttrs)){

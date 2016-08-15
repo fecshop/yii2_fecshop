@@ -22,7 +22,9 @@ class Product extends Service
 {
 	
 	public $storage = 'mongodb';
+	public $customAttrGroup;
 	protected $_product;
+	protected $_defaultAttrGroup = 'default';
 	
 	public function init(){
 		if($this->storage == 'mongodb'){
@@ -30,6 +32,17 @@ class Product extends Service
 		//}else if($this->storage == 'mysqldb'){
 			//$this->_category = new CategoryMysqldb;
 		}
+	}
+	# Yii::$service->product->getCustomAttrGroup();
+	protected function actionGetCustomAttrGroup(){
+		$customAttrGroup = $this->customAttrGroup;
+		$arr = array_keys($customAttrGroup);
+		$arr[] = $this->_defaultAttrGroup;
+		return $arr;
+	}
+	
+	protected function actionGetDefaultAttrGroup(){
+		return $this->_defaultAttrGroup;
 	}
 	
 	

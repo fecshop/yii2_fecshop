@@ -26,7 +26,7 @@ class Fecshoplang extends Service
 	 * default language
 	 */
 	public $defaultLangCode; 
-	
+	protected $_allLangCode;
 	
 	/**
 	 * @property $attrName|String  , attr name ,like  : tilte , description ,name etc..
@@ -39,6 +39,23 @@ class Fecshoplang extends Service
 	
 	protected function actionGetDefaultLangAttrName($attrName){
 		return $attrName.'_'.$this->defaultLangCode;
+	}
+	
+	protected function actionGetAllLangCode(){
+		if(!$this->_allLangCode){
+			if(empty($this->allLangCode) || !is_array($this->allLangCode)){
+				return [];
+			}
+			if($this->defaultLangCode){
+				$this->_allLangCode[] = $this->defaultLangCode;
+				foreach($this->allLangCode as $code){
+					if($this->defaultLangCode != $code){
+						$this->_allLangCode[] = $code;
+					}
+				}
+			}
+		}
+		return $this->_allLangCode;
 	}
 	
 	/**

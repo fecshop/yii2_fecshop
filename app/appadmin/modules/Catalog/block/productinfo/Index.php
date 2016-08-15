@@ -25,15 +25,15 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 		/**
 		 * edit data url
 		 */
-		$this->_editUrl 	= CUrl::getUrl("cms/article/manageredit");
+		$this->_editUrl 	= CUrl::getUrl("catalog/productinfo/manageredit");
 		/**
 		 * delete data url
 		 */
-		$this->_deleteUrl 	= CUrl::getUrl("cms/article/managerdelete");
+		$this->_deleteUrl 	= CUrl::getUrl("catalog/productinfo/managerdelete");
 		/**
 		 * service component, data provider
 		 */
-		$this->_service = Yii::$service->cms->article;
+		$this->_service = Yii::$service->product;
 		parent::init();
 		
 	}
@@ -112,11 +112,25 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 				
 			],
 			[	
-				'orderField'	=> 'title',
+				'orderField'	=> 'name',
 				'label'			=> '标题',
 				'width'			=> '50',
 				'align' 		=> 'left',
 				'lang'			=> true,
+			],
+			[	
+				'orderField'	=> 'spu',
+				
+				'width'			=> '110',
+				'align' 		=> 'center',
+				
+			],
+			[	
+				'orderField'	=> 'sku',
+				
+				'width'			=> '110',
+				'align' 		=> 'center',
+				
 			],
 			[	
 				'orderField'	=> 'created_user_id',
@@ -162,13 +176,14 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 			foreach($fileds as $field){
 				$orderField = $field['orderField'];
 				$display	= $field['display'];
-				$val = $one[$orderField];
+				$val = isset($one[$orderField]) ? $one[$orderField] : '';
 				if($orderField == 'created_user_id'){
 					$val = isset($users[$val]) ? $users[$val] : $val;
 					$str .= '<td>'.$val.'</td>';
 					continue;
 				}
 				if($val){
+					//echo $val;
 					if(isset($field['display']) && !empty($field['display'])){
 						$display = $field['display'];
 						$val = $display[$val] ? $display[$val] : $val;
