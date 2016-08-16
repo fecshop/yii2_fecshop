@@ -45,10 +45,20 @@ $(document).ready(function(){
 	
 });
 
+
+function thissubmit(thiss){
+	
+	main_image_image 		=  $('.productimg input:checked').val();
+	main_image_label 		=  $('.productimg input:checked').parent().parent().find(".image_label").val();
+	main_image_sort_order 	=  $('.productimg input:checked').parent().parent().find(".sort_order").val();
+	alert(main_image_image+main_image_label+main_image_sort_order);
+	return validateCallback(thiss, dialogAjaxDoneCloseAndReflush);
+	
+}
 </script>
 
 <div class="pageContent"> 
-	<form  method="post" action="<?= $saveUrl ?>" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDoneCloseAndReflush);">
+	<form  method="post" action="<?= $saveUrl ?>" class="pageForm required-validate" onsubmit="return thissubmit(this, dialogAjaxDoneCloseAndReflush);">
 		<?php echo CRequest::getCsrfInputHtml();  ?>	
 		<input type="hidden" class="primary_info"  value="<?= $primaryInfo ?>" />
 		<div class="tabs" >
@@ -88,12 +98,91 @@ $(document).ready(function(){
 				<div ><?= $descriptionInfo ?>
 				</div>
 				
+				
+				
 				<div >
+					<input type="hidden" name="image_main" class="image_main"  />
+					<input type="hidden" name="image_gallery" class="image_gallery"  />
+					<?=  $img_html ?>	
+					<div id="addpicContainer">
+						<!-- 利用multiple="multiple"属性实现添加多图功能 -->
+						<!-- position: absolute;left: 10px;top: 5px;只针对本用例将input隐至图片底下。-->
+						<!-- height:0;width:0;z-index: -1;是为了隐藏input，因为Chrome下不能使用display:none，否则无法添加文件 -->
+						<!-- onclick="getElementById('inputfile').click()" 点击图片时则点击添加文件按钮 -->
+						<button style="" onclick="getElementById('inputfile').click()" class="scalable" type="button" title="Duplicate" id=""><span><span><span>Browse Files</span></span></span></button>
+						
+						<input type="file" multiple="multiple" id="inputfile" style="height:0;width:0;z-index: -1; position: absolute;left: 10px;top: 5px;"/>
+						<span class="loading"></span>
+					</div>
+					<script>
+						jQuery(document).ready(function(){
+							jQuery("body").on('click',".delete_img",function(){
+								jQuery(this).parent().parent().remove();
+							});
+							//jQuery(".delete_img").click(function(){
+							//	jQuery
+							//});
+						
+							//响应文件添加成功事件
+							$("#inputfile").change(function(){
+								//创建FormData对象
+								var thisindex = 0;
+								jQuery(".productimg tbody tr").each(function(){
+									rel = parseInt(jQuery(this).attr("rel"));
+									//alert(rel);
+									if(rel > thisindex){
+										thisindex = rel;
+									}
+								});
+								//alert(thisindex);
+								var data = new FormData();
+								data.append('thisindex', thisindex);
+								
+								//为FormData对象添加数据
+								$.each($('#inputfile')[0].files, function(i, file) {
+									data.append('upload_file'+i, file);
+								});
+								//$(".loading").show();	//显示加载图片
+								//发送数据
+								
+							
+									
+								$.ajax({
+									url:'<?= CUrl::getUrl('catalog/productinfo/imageupload')  ?>',
+									type:'POST',
+									data:data,
+									async:false,
+									dataType: 'json', 
+									timeout: 80000,
+									cache: false,
+									contentType: false,		//不可缺参数
+									processData: false,		//不可缺参数
+									success:function(data, textStatus){
+										//data = $(data).html();
+										//第一个feedback数据直接append，其他的用before第1个（ .eq(0).before() ）放至最前面。
+										//data.replace(/&lt;/g,'<').replace(/&gt;/g,'>') 转换html标签，否则图片无法显示。
+										//if($("#feedback").children('img').length == 0) $("#feedback").append(data.replace(/&lt;/g,'<').replace(/&gt;/g,'>'));
+										//else $("#feedback").children('img').eq(0).before(data.replace(/&lt;/g,'<').replace(/&gt;/g,'>'));
+									//	alert(data.return_status);
+										if(data.return_status == "success"){
+										//	alert("success");
+											jQuery(".productimg tbody ").append(data.img_str);
+											//alert(data.img_str);
+										}
+										//$(".loading").hide();	//加载成功移除加载图片
+									},
+									error:function(){
+										alert('上传出错');
+										//$(".loading").hide();	//加载失败移除加载图片
+									}
+								});
+							});
+						});
+					</script>
 				</div>
 				
 				<div >
 				</div>
-				
 				<div ><?= $groupAttr ?>
 				</div>
 				

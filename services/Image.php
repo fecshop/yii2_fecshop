@@ -27,9 +27,9 @@ class Image extends Service
 		if($appbase = $this->appbase){
 			if(isset($appbase[$app]['basedir'])){
 				if($str){
-					return $appbase[$app]['basedir'].'/'.$str;
+					return Yii::getAlias($appbase[$app]['basedir'].'/'.$str);
 				}
-				return $appbase[$app]['basedir'];
+				return Yii::getAlias($appbase[$app]['basedir']);
 			}
 		}
 	}

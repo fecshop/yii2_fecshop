@@ -35,6 +35,11 @@ class ProductinfoController extends CatalogController
 		$data = $this->getBlock('manageredit')->save();
 		return $this->render($this->action->id,$data);
 	}
+	
+	# catalog
+	public function actionImageupload(){
+		$this->getBlock()->upload();
+	}
 	 
 	
 	public function actionRemove()

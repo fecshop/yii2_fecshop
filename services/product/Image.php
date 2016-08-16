@@ -21,7 +21,7 @@ class Image extends Service
 	/**
 	 * absolute image save floder
 	 */
-	public $imageFloder;
+	public $imageFloder = 'media/catalog/product';
 	/**
 	 * upload image max size
 	 */
@@ -29,38 +29,50 @@ class Image extends Service
 	/**
 	 * allow image type
 	 */
-	public $allowImgType;
+	public $allowImgType = [
+		'image/jpeg',
+		'image/gif',
+		'image/png',
+		'image/jpg',
+		'image/pjpeg',
+	];
 	
+	protected $_maxUploadSize;
 	/**
-	 * curent max upload size 
+	 * 得到上传图片的最大的size
 	 */
-	private $_maxUploadSize;
+	protected function actionGetMaxUploadSize(){
+		if(!$this->_maxUploadSize){
+			if($this->maxUploadMSize){
+				$this->_maxUploadSize = $this->maxUploadMSize * 1024 * 1024;
+			}
+		}
+		return $this->_maxUploadSize;
+	} 
 	/**
-	 * image  absolute floder that can save product image,
-	 * example:/www/web/fecshop/appadmin/web/media/catalog/product
+	 * 得到保存产品图片所在相对根目录的url路径
 	 */
-	private $_imageBaseFloder;
-	
+	protected function actionGetBaseUrl(){
+		return Yii::$service->image->GetImgUrl($this->imageFloder,'common');
+	}
 	/**
-	 * image  absolute url that  product image saved,
-	 * example:http://www.fecshop.com/media/catalog/product
+	 * 得到保存产品图片所在相对根目录的文件夹路径
 	 */
-	private $_imageBaseUrl;
-	
+	protected function actionGetBaseFloder(){
+		return Yii::$service->image->GetImgDir($this->imageFloder,'common');
+	}
 	/**
-	 * default allowed image type ,if not set allowImgType in config file ,this value will be effective.
+	 * 通过产品图片的相对路径得到产品图片的url
 	 */
-	private $_defaultAllowImgType = ['image/jpeg','image/gif','image/png'];
+	protected function actionGetUrl($str){
+		return Yii::$service->image->GetImgUrl($this->imageFloder.$str,'common');
+	}
 	/**
-	 * default allow image upload size (MB) ,if not set maxUploadMSize in config file ,this value will be effective.
+	 * 通过产品图片的相对路径得到产品图片的绝对路径
 	 */
-	private $_defaultMaxUploadMSize = 2; #mb
-	/**
-	 * default relative image save floder ,if not set imageFloder in config file ,this value will be effective.
-	 */
-	private $_defaultImageFloder = 'media/catalog/product';
-	//private $_image
-	
+	protected function actionGetFilePath(){
+		return Yii::$service->image->GetImgDir($this->imageFloder.$str,'common');
+	}
 	
 	
 	/**
@@ -70,98 +82,33 @@ class Image extends Service
 	 * return , if success ,return image saved relative file path , like '/b/i/big.jpg'
 	 * if fail, reutrn false;
 	 */
-	protected function actionSaveProductUploadImg($param_img_file){
-		$this->initUploadImage();
-		$size = $param_img_file['size']; 
-		$file = $param_img_file['tmp_name'];
-		$name = $param_img_file['name'];
-		if($size > $this->_maxUploadSize){
-			throw new InvalidValueException('upload image is to max than '.($this->maxUploadSize/(1024*1024)));
+	protected function actionSaveProductUploadImg($FILE){
+		
+		$size = $FILE['size']; 
+		$file = $FILE['tmp_name'];
+		$name = $FILE['name'];
+		if($size > $this->getMaxUploadSize()){
+			throw new InvalidValueException('upload image is to max than'. $this->maxUploadMSize.' MB');
+		}else if(!($img = getimagesize($file))){
+			throw new InvalidValueException('file type is empty.');
+			
 		}else if($img = getimagesize($file)){
 			$imgType = $img['mime'];
-			if(in_array($imgType,$this->allowImgType)){
-				
-			}else{
+			
+			if(!in_array($imgType,$this->allowImgType)){
 				throw new InvalidValueException('image type is not allow for '.$imgType);
 			}
 		}
 		// process image name.
 		$imgSavedRelativePath = $this->getImgSavedRelativePath($name);
-		$isMoved = @move_uploaded_file ( $file, $this->getImageBaseFloder().$imgSavedRelativePath);
+		$isMoved = @move_uploaded_file ( $file, $this->getBaseFloder().$imgSavedRelativePath);
 		if($isMoved){
-			return $imgSavedRelativePath;
+			$imgUrl = $this->getUrl($imgSavedRelativePath);
+			$imgPath = $this->getFilePath($imgSavedRelativePath);
+			return [$imgSavedRelativePath,$imgUrl,$imgPath];
 		}
 		return false;
 	}
-	
-	
-	protected function resize($imgPath,$width='',$height=''){
-		 
-		
-	}
-	
-	
-	
-	/**
-	 *  init Object property. 
-	 */
-	
-	protected function initUploadImage(){
-		if(!$this->allowImgType){
-			$this->allowImgType = $this->_defaultAllowImgType;
-		}
-		if(!$this->_maxUploadSize){
-			if($this->maxUploadMSize){
-				$this->_maxUploadSize = $this->maxUploadMSize * 1024 * 1024;
-			}else{
-				$this->_maxUploadSize = $this->_defaultMaxUploadMSize * 1024 * 1024;
-			}
-		}
-		$this->getImageFloder();
-	}
-	
-	/**
-	 *  Get  relative Floder  that  product image saved.
-	 */
-	protected function getImageFloder(){
-		if(!$this->imageFloder){
-			$this->imageFloder = $this->_defaultImageFloder;
-		}
-	}
-	/**
-	 *  Get  absolute Floder  that  product image saved.
-	 */
-	protected function getImageBaseFloder(){
-		if(!$this->_imageBaseFloder){
-			if(!$this->imageFloder)
-				$this->getImageFloder();
-			$this->_imageBaseFloder = Yii::getAlias("@webroot").'/'. $this->imageFloder;
-		}
-		return $this->_imageBaseFloder;
-	}
-	
-	
-	/**
-	 *  Get  Image base url string  that  product image saved floder.
-	 */
-	protected function getImageBaseUrl(){
-		if(!$this->_imageBaseUrl){
-			if(!$this->imageFloder)
-				$this->getImageFloder();
-			$this->_imageBaseUrl =  Yii::$app->homeUrl.'/'. $this->imageFloder;
-		}
-		return $this->_imageBaseUrl;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	/**
 	 * get Image save file path, if floder is not exist, this function will create floder.
@@ -179,7 +126,7 @@ class Image extends Service
 		$first_str = substr($imgName,0,1);
 		$two_str   = substr($imgName,1,2);
 		
-		$imgSaveFloder = CDir::createFloder($this->getImageBaseFloder(),[$first_str,$two_str]);
+		$imgSaveFloder = CDir::createFloder($this->getBaseFloder(),[$first_str,$two_str]);
 		if($imgSaveFloder){
 			$imgName = $this->getUniqueImgNameInPath($imgSaveFloder,$imgName,$imgType);
 			$relative_floder = '/'.$first_str.'/'.$two_str.'/';
@@ -201,7 +148,7 @@ class Image extends Service
 		if(!file_exists($imagePath)){
 			return $name.$randStr.'.'.$imageType;;
 		}else{
-			$randStr = time().rand(100,999);
+			$randStr = time().rand(10000,99999);
 			return $this->getUniqueImgNameInPath($imgSaveFloder,$name,$imageType,$randStr);
 		}
 	}

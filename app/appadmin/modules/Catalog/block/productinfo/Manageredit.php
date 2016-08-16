@@ -47,12 +47,13 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 	public function getLastData(){
 		
 		return [
-			'baseInfo' => $this->getBaseInfo(),
-			'metaInfo' => $this->getMetaInfo(),
-			'groupAttr'=> $this->getGroupAttr(),
+			'baseInfo' 		=> $this->getBaseInfo(),
+			'metaInfo' 		=> $this->getMetaInfo(),
+			'groupAttr'		=> $this->getGroupAttr(),
 			'descriptionInfo' => $this->getDescriptionInfo(),
-			'attrGroup'	=> $this->_attr->getProductAttrGroupSelect(),
-			'primaryInfo' => $this->getCurrentProductPrimay(),
+			'attrGroup'		=> $this->_attr->getProductAttrGroupSelect(),
+			'primaryInfo' 	=> $this->getCurrentProductPrimay(),
+			'img_html'		=> $this->getImgHtml(),
 			//'editBar' 	=> $this->getEditBar(),
 			//'textareas'	=> $this->_textareas,
 			//'lang_attr'	=> $this->_lang_attr,
@@ -101,6 +102,66 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 		}
 		return '';
 		
+	}
+	
+	public function getImgHtml(){
+		$main_image = [
+			'image' => '/2/14/21471340924755.jpg',
+			'label' => 'xxxx',
+			'sort_order'=> 1,
+		];
+		$gallery_image = [
+			[
+				'image' 	=> '/1/6/16.jpg',
+				'label' 	=> 'xxxx',
+				'sort_order'=> 5,
+			],
+			[
+				'image' => '/3/14/31471340924495.jpg',
+				'label' => 'yyy',
+				'sort_order'=> 6,
+			]
+		];
+		$str =
+		'<div>
+			
+			<table class="list productimg" width="100%" >
+				<thead>
+					<tr>
+						<td>图片</td>
+						<td>label</td>
+						<td>sort_order</td>
+						<td>主图</td>
+						<td>删除</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="p_img" rel="1" style="border-bottom:1px solid #ccc;">
+						<td style="width:120px;text-align:center;"><img  rel="'.$main_image['image'].'" style="width:100px;height:100px;" src="'.Yii::$service->product->image->getUrl($main_image['image']).'"></td>
+						<td style="width:220px;text-align:center;"><input style="height:10px;width:200px;" type="text" class="image_label" name="image_label"  value="'.$main_image['label'].'" /></td>
+						<td style="width:220px;text-align:center;"><input style="height:10px;width:200px;" type="text" class="sort_order"  name="sort_order" value="'.$main_image['sort_order'].'"  /></td>
+						<td style="width:30px;text-align:center;"><input type="radio" name="image" checked  value="'.$main_image['image'].'" /></td>
+						<td style="padding:0 0 0 20px;"><a class="delete_img btnDel" href="javascript:void(0)">删除</a></td>
+					</tr>';
+					if(!empty($gallery_image) && is_array($gallery_image)){
+						$i=2;
+						foreach($gallery_image as $gallery){
+							$str .='<tr class="p_img" rel="'.$i.'" style="border-bottom:1px solid #ccc;">
+									<td style="width:120px;text-align:center;"><img  rel="'.$gallery['image'].'" style="width:100px;height:100px;" src="'.Yii::$service->product->image->getUrl($gallery['image']).'"></td>
+									<td style="width:220px;text-align:center;"><input style="height:10px;width:200px;" type="text" class="image_label" name="image_label"  value="'.$gallery['label'].'" /></td>
+									<td style="width:220px;text-align:center;"><input style="height:10px;width:200px;" type="text" class="sort_order"  name="sort_order" value="'.$gallery['sort_order'].'"  /></td>
+									<td style="width:30px;text-align:center;"><input type="radio" name="image"   value="'.$gallery['image'].'" /></td>
+									<td style="padding:0 0 0 20px;"><a class="delete_img btnDel" href="javascript:void(0)">删除</a></td>
+								</tr>';
+							$i++;
+						}
+						
+					}
+														
+		$str .=	'</tbody>
+			</table>
+		</div>';
+		return $str;
 	}
 	
 	

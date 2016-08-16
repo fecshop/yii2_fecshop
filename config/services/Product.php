@@ -71,8 +71,11 @@ return [
 		# 子服务
 		'childService' => [
 			'image' => [
-				'class' => 'fecshop\services\product\Image',
-				'imageFloder' => 'media/catalog/product',
+				'class' 		=> 'fecshop\services\product\Image',
+				'imageFloder' 	=> 'media/catalog/product',
+				//'allowImgType' 	=> ['image/jpeg','image/gif','image/png'],
+				'maxUploadMSize'=> 5, #MB
+			
 			],
 			'price' => [
 				'class' => 'fecshop\services\product\Price',
