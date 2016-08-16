@@ -60,6 +60,7 @@ class ProductMongodb implements ProductInterface
 	 * save $data to cms model,then,add url rewrite info to system service urlrewrite.                 
 	 */
 	public function save($one,$originUrlKey){
+		//var_dump($one);exit;
 		$currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
 		$primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
 		if($primaryVal){

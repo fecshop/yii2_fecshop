@@ -40,6 +40,18 @@ class Product extends Service
 		$arr[] = $this->_defaultAttrGroup;
 		return $arr;
 	}
+	/**
+	 * @property $productAttrGroup|String
+	 * return product attrGroup attributes.
+	 */
+	protected function actionGetGroupAttrInfo($productAttrGroup){
+		if($productAttrGroup == $this->_defaultAttrGroup){
+			return [];
+		}else if(isset($this->customAttrGroup[$productAttrGroup])){
+			return $this->customAttrGroup[$productAttrGroup];
+		}
+	}
+	
 	
 	protected function actionGetDefaultAttrGroup(){
 		return $this->_defaultAttrGroup;

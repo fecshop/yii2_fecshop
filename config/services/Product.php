@@ -12,39 +12,59 @@ return [
 		'customAttrGroup' => [
 			'dress_group' => [
 				'dresses-length' 	=> [
-					'dbtype' 	=> 'String',
-					'lang'		=> true,
-					'display'	=> [
-						'type' => 'input',
-						'default'	=> 1,
+					'dbtype' 	=> 'Int',
+					'label'=>'裙长',
+					'name'=>'dresses-length',
+					'display'=>[
+						'type' => 'inputString',
+						'lang' => true,
 					],
+					'require' => 1,
 				],
 				'style-status'		=> [
 					'dbtype' 	=> 'Int',
-					'display'	=> [
-						'type' 		=> 'select',
-						'selectData'=> [
-							'1'	=> 'Enable',
-							'2'	=> 'Disable',
-						],
-						'default'	=> 1,
+					'label'=>'分类状态',
+					'name'=>'status',
+					'display'=>[
+						'type' => 'select',
+						'data' => [
+							1 	=> '激活',
+							2 	=> '关闭',
+						]
 					],
+					'require' => 1,
+					'default' => 1,
 				],
-				'sleeve-length'		=> ['dbtype' => 'Float'],
-				'neckline'			=> ['dbtype' => 'String'],
-				'material'			=> ['dbtype' => 'String'],
-				'pattern_type'		=> ['dbtype' => 'String'],
-				'embellishment'		=> ['dbtype' => 'ArrayInt'],
 			],
+			
 			'computer_group' => [
-				'dresses-length' 	=> ['dbtype' => 'String'],
-				'style' 			=> ['dbtype' => 'String'],
-				'sleeve-length' 	=> ['dbtype' => 'String'],
-				'neckline' 			=> ['dbtype' => 'String'],
-				'material' 			=> ['dbtype' => 'String'],
-				'pattern_type' 		=> ['dbtype' => 'String'],
-				'embellishment' 	=> ['dbtype' => 'String'],
+				'memory_capacity' 	=> [
+					'dbtype' 	=> 'String',
+					'label'=>'Memory Capacity',
+					'name'=>'memory_capacity',
+					'display'=>[
+						'type' => 'inputString',
+						'lang' => true,
+					],
+					'require' => 1,
+				],
+				'cpu'		=> [
+					'dbtype' 	=> 'Int',
+					'label'=>'CPU型号',
+					'name'=>'cpu',
+					'display'=>[
+						'type' => 'select',
+						'data' => [
+							1 	=> 'i3',
+							2 	=> 'i5',
+							3 	=> 'i7',
+						]
+					],
+					'require' => 1,
+					'default' => 1,
+				],
 			],
+			
 			
 		],
 		*/

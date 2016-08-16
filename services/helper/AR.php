@@ -76,7 +76,6 @@ class AR extends Service
 			return;
 		}
 		$attributes = $model->attributes();
-		
 		if(is_array($attributes) && !empty($attributes)){
 			foreach($attributes as $attr){
 				if(isset($one[$attr])){

@@ -25,13 +25,22 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 	
 	public function init(){
 		$this->_saveUrl = CUrl::getUrl('catalog/productinfo/managereditsave');
-		$this->_attr = new Attr;
 		parent::init();
+		$this->_attr = new Attr($this->_one);
 		//$this->_param		= $request_param[$this->_editFormData];
 	}
 	
 	public function setService(){
 		$this->_service 	= Yii::$service->product;
+	}
+	
+	public function getCurrentProductPrimay(){
+		$primaryKey = Yii::$service->product->getPrimaryKey();
+		$primaryVal = CRequest::param($primaryKey);
+		if($primaryVal){
+			return $primaryKey.'='.$primaryVal;
+		}
+		return '';
 	}
 	
 	# 传递给前端的数据 显示编辑form	
@@ -40,9 +49,10 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 		return [
 			'baseInfo' => $this->getBaseInfo(),
 			'metaInfo' => $this->getMetaInfo(),
+			'groupAttr'=> $this->getGroupAttr(),
 			'descriptionInfo' => $this->getDescriptionInfo(),
 			'attrGroup'	=> $this->_attr->getProductAttrGroupSelect(),
-			
+			'primaryInfo' => $this->getCurrentProductPrimay(),
 			//'editBar' 	=> $this->getEditBar(),
 			//'textareas'	=> $this->_textareas,
 			//'lang_attr'	=> $this->_lang_attr,
@@ -75,6 +85,23 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 		return $this->_lang_attr.$editBar.$this->_textareas;
 	}
 	
+	
+	public function getGroupAttr(){
+		$this->_lang_attr = '';
+		$this->_textareas = '';
+		$editArr = $this->_attr->getGroupAttr();
+		//var_dump($editArr);
+		//var_dump($this->_one);
+		$this->_primaryKey  = $this->_service->getPrimaryKey();
+		$id 				= $this->_param[$this->_primaryKey];
+		$this->_one = $this->_service->getByPrimaryKey($id);
+		if(!empty($editArr)){
+			$editBar = $this->getEditBar($editArr);
+			return $this->_lang_attr.$editBar.$this->_textareas;
+		}
+		return '';
+		
+	}
 	
 	
 	
@@ -154,11 +181,14 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 	public function save(){
 		$request_param 		= CRequest::param();
 		$this->_param		= $request_param[$this->_editFormData];
+		$this->_param['attr_group'] = CRequest::param('attr_group');
+		//var_dump($this->_param['attr_group']);exit;
 		/**
 		 * if attribute is date or date time , db storage format is int ,by frontend pass param is int ,
 		 * you must convert string datetime to time , use strtotime function.
 		 */
-		$this->_service->save($this->_param,'cms/article/index');
+		// var_dump()
+		$this->_service->save($this->_param,'catalog/product/index');
 		$errors = Yii::$service->helper->errors->get();
 		if(!$errors ){
 			echo  json_encode(array(

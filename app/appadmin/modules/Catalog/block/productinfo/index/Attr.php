@@ -19,17 +19,37 @@ use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockEditInterface;
  */
 class Attr 
 {
+	protected $_currentAttrGroup;
+	protected $_attrInfo;
+	
+	public function __construct($one){
+		$currentAttrGroup = CRequest::param('attr_group');
+		if($currentAttrGroup){
+			$this->_currentAttrGroup = $currentAttrGroup;
+		}else if(isset($one['attr_group']) && $one['attr_group']){
+			$this->_currentAttrGroup = $one['attr_group'];
+		}else{
+			$this->_currentAttrGroup = Yii::$service->product->getDefaultAttrGroup();
+		}
+		$this->_attrInfo = Yii::$service->product->getGroupAttrInfo($this->_currentAttrGroup);
+		$attrs = array_keys($this->_attrInfo);
+		\fecshop\models\mongodb\Product::addCustomProductAttrs($attrs);
+		
+	}
+	
+	public function getGroupAttr(){
+		return $this->_attrInfo;
+	}
+	
 	
 	public function getProductAttrGroupSelect(){
 		$attrGroup = Yii::$service->product->getCustomAttrGroup();
 		$str = '';
-		$currentAttrGroup = CRequest::param('attr_group');
-		$currentAttrGroup = $currentAttrGroup ? $currentAttrGroup : Yii::$service->product->getDefaultAttrGroup();
 		if(is_array($attrGroup) && !empty($attrGroup)){
 			$str .= '<select name="attr_group" class="attr_group required">';
 		
 			foreach($attrGroup as $k=>$v){
-				if($currentAttrGroup == $v){
+				if($this->_currentAttrGroup == $v){
 					$str .= '<option value="'.$v.'" selected="selected">'.$v.'</option>';
 				}else{
 					$str .= '<option value="'.$v.'" >'.$v.'</option>';
@@ -66,7 +86,7 @@ class Attr
 			],
 			[
 				'label'=>'SKU',
-				'name'=>'spu',
+				'name'=>'sku',
 				'display'=>[
 					'type' => 'inputString',
 					'lang' => false,

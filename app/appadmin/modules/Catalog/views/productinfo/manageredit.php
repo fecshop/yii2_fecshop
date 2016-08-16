@@ -33,7 +33,9 @@ $(document).ready(function(){
 		options = {};
 		val = $(this).val();
 		pm = "?attr_group="+val;
-		url = '<?= CUrl::getUrl("catalog/productinfo/manageredit"); ?>'+pm;
+		currentPrimayInfo = $(".primary_info").val();
+		currentPrimayInfo = currentPrimayInfo ? '&'+currentPrimayInfo : '';
+		url = '<?= CUrl::getUrl("catalog/productinfo/manageredit"); ?>'+pm+currentPrimayInfo;
 		$.pdialog.reload(url,options);
 	});
 	//$(".tabs").off("click").on("click",".tabsHeaderContent a",function(){
@@ -48,8 +50,7 @@ $(document).ready(function(){
 <div class="pageContent"> 
 	<form  method="post" action="<?= $saveUrl ?>" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDoneCloseAndReflush);">
 		<?php echo CRequest::getCsrfInputHtml();  ?>	
-		
-		
+		<input type="hidden" class="primary_info"  value="<?= $primaryInfo ?>" />
 		<div class="tabs" >
 			<div class="tabsHeader">
 				<div class="tabsHeaderContent">
@@ -64,7 +65,7 @@ $(document).ready(function(){
 					</ul>
 				</div>
 			</div>
-			<div class="tabsContent" style="height:500px;overflow:auto;">
+			<div class="tabsContent" style="height:450px;overflow:auto;">
 				<div>
 					<input type="hidden"  value="<?=  $product_id; ?>" size="30" name="product_id" class="textInput ">
 				
@@ -93,7 +94,7 @@ $(document).ready(function(){
 				<div >
 				</div>
 				
-				<div >
+				<div ><?= $groupAttr ?>
 				</div>
 				
 				<div >

@@ -15,7 +15,7 @@ use yii\mongodb\ActiveRecord;
  */
 class Product extends ActiveRecord
 {
-    protected $_customProductAttrs;
+    public  static $_customProductAttrs;
     
 	public static function collectionName()
     {
@@ -25,13 +25,9 @@ class Product extends ActiveRecord
 	/**
 	 * get custom product attrs.
 	 */
-	public function setCustomProductAttrs($attrGroup){
+	public static function addCustomProductAttrs($attrs){
 		
-		$customAttrGroup = Yii::$service->product->customAttrGroup;
-		if(is_array($customAttrGroup) && isset($customAttrGroup[$attrGroup])){
-			$this->_customProductAttrs = array_keys($customAttrGroup[$attrGroup]);
-		}
-		return false;
+		self::$_customProductAttrs = $attrs;
 	}
 
    
@@ -77,9 +73,11 @@ class Product extends ActiveRecord
 			'updated_at',
 			'created_user_id',
 			
+			'attr_group',
+			
 		];
-		if(is_array($this->_customProductAttrs) && !empty($this->_customProductAttrs)){
-			$origin = array_merge($origin,$this->_customProductAttrs);
+		if(is_array(self::$_customProductAttrs) && !empty(self::$_customProductAttrs)){
+			$origin = array_merge($origin,self::$_customProductAttrs);
 		}
 		return $origin;
     }
