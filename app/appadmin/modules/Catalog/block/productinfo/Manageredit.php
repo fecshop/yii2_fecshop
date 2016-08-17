@@ -105,23 +105,15 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 	}
 	
 	public function getImgHtml(){
-		$main_image = [
-			'image' => '/2/14/21471340924755.jpg',
-			'label' => 'xxxx',
-			'sort_order'=> 1,
-		];
-		$gallery_image = [
-			[
-				'image' 	=> '/1/6/16.jpg',
-				'label' 	=> 'xxxx',
-				'sort_order'=> 5,
-			],
-			[
-				'image' => '/3/14/31471340924495.jpg',
-				'label' => 'yyy',
-				'sort_order'=> 6,
-			]
-		];
+		if(isset($this->_one['image']['main']) && !empty($this->_one['image']['main'])){
+			$main_image = $this->_one['image']['main'];
+		}
+		
+		if(isset($this->_one['image']['gallery']) && !empty($this->_one['image']['gallery'])){
+			$gallery_image = $this->_one['image']['gallery'];
+		}
+		
+		
 		$str =
 		'<div>
 			
@@ -135,21 +127,23 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 						<td>删除</td>
 					</tr>
 				</thead>
-				<tbody>
-					<tr class="p_img" rel="1" style="border-bottom:1px solid #ccc;">
+				<tbody>';
+				if(!empty($main_image) && is_array($main_image)){
+					$str .='<tr class="p_img" rel="1" style="border-bottom:1px solid #ccc;">
 						<td style="width:120px;text-align:center;"><img  rel="'.$main_image['image'].'" style="width:100px;height:100px;" src="'.Yii::$service->product->image->getUrl($main_image['image']).'"></td>
-						<td style="width:220px;text-align:center;"><input style="height:10px;width:200px;" type="text" class="image_label" name="image_label"  value="'.$main_image['label'].'" /></td>
-						<td style="width:220px;text-align:center;"><input style="height:10px;width:200px;" type="text" class="sort_order"  name="sort_order" value="'.$main_image['sort_order'].'"  /></td>
+						<td style="width:220px;text-align:center;"><input style="height:18px;width:200px;" type="text" class="image_label" name="image_label"  value="'.$main_image['label'].'" /></td>
+						<td style="width:220px;text-align:center;"><input style="height:18px;width:200px;" type="text" class="sort_order"  name="sort_order" value="'.$main_image['sort_order'].'"  /></td>
 						<td style="width:30px;text-align:center;"><input type="radio" name="image" checked  value="'.$main_image['image'].'" /></td>
 						<td style="padding:0 0 0 20px;"><a class="delete_img btnDel" href="javascript:void(0)">删除</a></td>
 					</tr>';
+				}
 					if(!empty($gallery_image) && is_array($gallery_image)){
 						$i=2;
 						foreach($gallery_image as $gallery){
 							$str .='<tr class="p_img" rel="'.$i.'" style="border-bottom:1px solid #ccc;">
 									<td style="width:120px;text-align:center;"><img  rel="'.$gallery['image'].'" style="width:100px;height:100px;" src="'.Yii::$service->product->image->getUrl($gallery['image']).'"></td>
-									<td style="width:220px;text-align:center;"><input style="height:10px;width:200px;" type="text" class="image_label" name="image_label"  value="'.$gallery['label'].'" /></td>
-									<td style="width:220px;text-align:center;"><input style="height:10px;width:200px;" type="text" class="sort_order"  name="sort_order" value="'.$gallery['sort_order'].'"  /></td>
+									<td style="width:220px;text-align:center;"><input style="height:18px;width:200px;" type="text" class="image_label" name="image_label"  value="'.$gallery['label'].'" /></td>
+									<td style="width:220px;text-align:center;"><input style="height:18px;width:200px;" type="text" class="sort_order"  name="sort_order" value="'.$gallery['sort_order'].'"  /></td>
 									<td style="width:30px;text-align:center;"><input type="radio" name="image"   value="'.$gallery['image'].'" /></td>
 									<td style="padding:0 0 0 20px;"><a class="delete_img btnDel" href="javascript:void(0)">删除</a></td>
 								</tr>';
@@ -243,7 +237,41 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 		$request_param 		= CRequest::param();
 		$this->_param		= $request_param[$this->_editFormData];
 		$this->_param['attr_group'] = CRequest::param('attr_group');
-		//var_dump($this->_param['attr_group']);exit;
+		
+		$image_gallery 		= CRequest::param('image_gallery');
+		$image_main 		= CRequest::param('image_main');
+		
+		$save_gallery = [];
+		if($image_gallery){
+			$image_gallery_arr = explode("|||||",$image_gallery);
+			if(!empty($image_gallery_arr)){
+				foreach($image_gallery_arr as $one){
+					if(!empty($one)){
+						list($gallery_image,$gallery_label,$gallery_sort_order) = explode('#####',$one);
+						$save_gallery[] = [
+							'image' 		=> $gallery_image,
+							'label' 		=> $gallery_label,
+							'sort_order' 	=> $gallery_sort_order,
+						];	
+						
+					}
+				}
+				$this->_param['image']['gallery'] 	= $save_gallery;
+			}
+		}
+		
+		if($image_main){
+			list($main_image,$main_label,$main_sort_order) = explode('#####',$image_main);
+			$save_main = [
+				'image' 		=> $main_image,
+				'label' 		=> $main_label,
+				'sort_order' 	=> $main_sort_order,
+			];
+			$this->_param['image']['main'] 	= $save_main;
+		}
+		
+		
+		
 		/**
 		 * if attribute is date or date time , db storage format is int ,by frontend pass param is int ,
 		 * you must convert string datetime to time , use strtotime function.
