@@ -48,7 +48,7 @@ class Product extends Service
 		if($productAttrGroup == $this->_defaultAttrGroup){
 			return [];
 		}else if(isset($this->customAttrGroup[$productAttrGroup])){
-			return $this->customAttrGroup[$productAttrGroup];
+			return isset($this->customAttrGroup[$productAttrGroup]) ? $this->customAttrGroup[$productAttrGroup] : [];
 		}
 	}
 	

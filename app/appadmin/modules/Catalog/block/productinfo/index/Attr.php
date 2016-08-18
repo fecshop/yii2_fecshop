@@ -106,7 +106,7 @@ class Attr
 			],
 			
 			[
-				'label'=>'分类状态',
+				'label'=>'状态',
 				'name'=>'status',
 				'display'=>[
 					'type' => 'select',

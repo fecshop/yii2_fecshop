@@ -54,6 +54,7 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 			'attrGroup'		=> $this->_attr->getProductAttrGroupSelect(),
 			'primaryInfo' 	=> $this->getCurrentProductPrimay(),
 			'img_html'		=> $this->getImgHtml(),
+			'custom_option' => $this->_one['custom_option'],
 			//'editBar' 	=> $this->getEditBar(),
 			//'textareas'	=> $this->_textareas,
 			//'lang_attr'	=> $this->_lang_attr,
@@ -236,8 +237,8 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 	public function save(){
 		$request_param 		= CRequest::param();
 		$this->_param		= $request_param[$this->_editFormData];
-		$this->_param['attr_group'] = CRequest::param('attr_group');
-		
+		$this->_param['attr_group'] 	= CRequest::param('attr_group');
+		$this->_param['custom_option'] 	= ($custom_option = CRequest::param('custom_option')) ? json_decode($custom_option,true) : '';
 		$image_gallery 		= CRequest::param('image_gallery');
 		$image_main 		= CRequest::param('image_main');
 		
@@ -271,7 +272,7 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 		}
 		
 		
-		
+		$this->initParamType();
 		/**
 		 * if attribute is date or date time , db storage format is int ,by frontend pass param is int ,
 		 * you must convert string datetime to time , use strtotime function.
@@ -294,6 +295,97 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 		}
 		
 	}
+	
+	protected function initParamType(){
+		//$this->_primaryKey  = $this->_service->getPrimaryKey();
+		//$id 				= $this->_param[$this->_primaryKey];
+		//$this->_one = $this->_service->getByPrimaryKey($id);
+		
+		$this->_param['weight'] = $this->_param['weight'] ? (float)($this->_param['weight']) : 0;
+		$this->_param['status'] = $this->_param['status'] ? (float)($this->_param['status']) : 0;
+		if(isset($this->_param['image']['main']['sort_order']) && !empty($this->_param['image']['main']['sort_order'])){
+			$this->_param['image']['main']['sort_order'] = (int)($this->_param['image']['main']['sort_order']);
+		}
+		if(isset($this->_param['image']['gallery']) && is_array($this->_param['image']['gallery']) && !empty($this->_param['image']['gallery'])){
+			$gallery_af = [];
+			foreach($this->_param['image']['gallery'] as $gallery){
+				if(isset($gallery['sort_order']) && !empty($gallery['sort_order'])){
+					$gallery['sort_order'] = (int)$gallery['sort_order'];
+				}
+				$gallery_af[] = $gallery;
+			}
+			$this->_param['image']['gallery'] = $gallery_af;
+		}
+		# 自定义属性
+		$custom_attr = \Yii::$service->product->getGroupAttrInfo($this->_param['attr_group']);
+		//var_dump($custom_attr);exit;
+		if(is_array($custom_attr) && !empty($custom_attr)){
+			foreach($custom_attr as $attrInfo){
+				$attr 	= $attrInfo['name'];
+				$dbtype = $attrInfo['dbtype'];
+				if(isset($this->_param[$attr]) && !empty($this->_param[$attr])){
+					if($dbtype == 'Int'){
+						if(isset($attrInfo['display']['lang']) && $attrInfo['display']['lang']){
+							$langs = Yii::$service->fecshoplang->getAllLangCode();
+							if(is_array($langs) && !empty($langs)){
+								foreach($langs as $langCode){
+									$langAttr = Yii::$service->fecshoplang->getLangAttrName($attr,$langCode);
+									if(isset($this->_param[$attr][$langAttr]) && $this->_param[$attr][$langAttr]){
+										$this->_param[$attr][$langAttr] = (int)$this->_param[$attr][$langAttr];
+									}
+								}
+							}
+						}else{
+							$this->_param[$attr] = (Int)$this->_param[$attr];
+						}
+					}
+					if($dbtype == 'Float'){
+						if(isset($attrInfo['display']['lang']) && $attrInfo['display']['lang']){
+							$langs = Yii::$service->fecshoplang->getAllLangCode();
+							if(is_array($langs) && !empty($langs)){
+								foreach($langs as $langCode){
+									$langAttr = Yii::$service->fecshoplang->getLangAttrName($attr,$langCode);
+									if(isset($this->_param[$attr][$langAttr]) && $this->_param[$attr][$langAttr]){
+										$this->_param[$attr][$langAttr] = (float)$this->_param[$attr][$langAttr];
+									}
+								}
+							}
+						}else{
+							$this->_param[$attr] = (Float)$this->_param[$attr];
+						}
+						
+					}
+				}
+			}
+		}
+		$custom_option = isset($this->_param['custom_option']) ? $this->_param['custom_option'] : ''; 
+		//var_dump($custom_option);exit;
+		if(is_array($custom_option) && !empty($custom_option) ){
+			$custom_option_af = [];
+			
+			foreach($custom_option as $option){
+				$option['is_require'] = isset($option['is_require']) ? (int)$option['is_require'] : 0;
+				$option['sort_order'] = isset($option['sort_order']) ? (int)$option['sort_order'] : 0;
+				$data = isset($option['data']) ? $option['data'] : '';
+				$data_af = [];
+				if(!empty($data) && is_array($data)){
+					foreach($data as $d){
+						$d['price'] = isset($d['price']) ? (float)$d['price'] : 0;
+						$d['sort_order'] = isset($d['sort_order']) ? (int)$d['sort_order'] : 0;
+						$data_af[] = $d;
+					}
+				}
+				$option['data'] = $data_af;
+				$custom_option_af[] = $option;
+			}
+			$this->_param['custom_option'] = $custom_option_af;
+		}
+		
+		
+			
+		
+	}
+	
 	
 	
 	# 批量删除
