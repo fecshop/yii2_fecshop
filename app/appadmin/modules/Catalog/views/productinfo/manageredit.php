@@ -205,6 +205,117 @@ function thissubmit(thiss){
 				</div>
 				
 				<div >
+					
+					<div class="custom_option">
+								<style>
+									.one_option{background:#e7efef;position:relative;margin:10px;padding:10px;border:1px solid #cddddd}
+									.close_panl{position:absolute;right:10px;top:10px;cursor: pointer;}
+									.close_panl img:hover{border:1px solid #ccc;}
+									.close_panl img{border:1px solid #fff;}
+									.one_option tbody tr td img{cursor: pointer;border:1px solid #fff;}
+									.one_option tbody tr td img:hover{border:1px solid #ccc;}
+								</style>
+								<script>
+									jQuery(document).ready(function(){
+										jQuery(".add_custom_option").click(function(){
+											i = 1;
+											jQuery(".one_option").each(function(){
+												thisi = parseInt(jQuery(this).attr("rel"));
+												if(thisi>i){
+													i = thisi;
+												}
+											});
+											i++;
+											add = '<div class="one_option" rel="'+i+'">';
+											add += '		<div class="close_panl" >';
+											add += '			<img src="http://admin.intosmile.com/images/bkg_btn-close2.gif" />';
+											add += '		</div>';
+											add += '		<table class="option_header">';
+											add += '			<tr >';
+											add += '				<td style="padding:3px;">Title</td>';
+											add += '				<td style="padding:3px;">Is_Required</td>';
+											add += '				<td style="padding:3px;">Sort_Order</td>';
+											add += '			</tr>';
+											add += '			<tr >';
+											add += '				<td><input type="text" class="title_header textInput required valid"/></td>';
+											add += '				<td><select class="is_require" style="margin:0 24px;"><option value="1">Yes</option><option value="0">No</option>  </select>';
+											add += '				<td><input type="text" class="sort_order_header" /></td>';
+											add += '			</tr>';
+														
+											add += '		</table>';
+												
+											add += '		<table class="list option_content" style="margin:10px;">';
+											add += '			<thead>';
+											add += '				<tr style="background:#ccc;">';
+											add += '	<td>en Title</td>	';add += '	<td>fr Title</td>	';add += '	<td>es Title</td>	';add += '	<td>de Title</td>	';add += '	<td>it Title</td>	';add += '	<td>nl Title</td>	';add += '	<td>ru Title</td>	';add += '	<td>pt Title</td>	';											add += '					<td>Price</td>';
+											add += '					<td>Sort Order</td>';
+											add += '					<td></td>';
+											add += '				</tr>';
+											add += '			</thead>';
+											add += '			<tbody class="addtbody'+i+'">';
+															
+											add += '				</tr>';
+															
+											add += '			</tbody>';
+											add += '			<tfoot style="text-align:right;">';
+											add += '				<tr>';
+											add += '					<td  colspan="100"  style="text-align:right;">';
+											add += '						<a rel="'+i+'"  style="text-align:right;" href="javascript:void(0)"  class="addchildoption11 button"><span>增加子属性</span></a>';
+											add += '					</td>';
+											add += '				</tr>';
+											add += '			</tfoot>';
+														
+											add += '		</table>';
+											add += '	</div>';
+											jQuery(".add_custom_option_div").append(add);
+										});
+										
+										
+										jQuery(document).off("click",".one_option tfoot a.addchildoption11");
+										jQuery(document).on("click",".one_option tfoot a.addchildoption11",function(){
+												add = '<tr>';
+												add += '			<td><input rel="en_title" style="width:50px;" type="text" class="title_content textInput  valid" /></td>';add += '			<td><input rel="fr_title" style="width:50px;" type="text" class="title_content textInput  valid" /></td>';add += '			<td><input rel="es_title" style="width:50px;" type="text" class="title_content textInput  valid" /></td>';add += '			<td><input rel="de_title" style="width:50px;" type="text" class="title_content textInput  valid" /></td>';add += '			<td><input rel="it_title" style="width:50px;" type="text" class="title_content textInput  valid" /></td>';add += '			<td><input rel="nl_title" style="width:50px;" type="text" class="title_content textInput  valid" /></td>';add += '			<td><input rel="ru_title" style="width:50px;" type="text" class="title_content textInput  valid" /></td>';add += '			<td><input rel="pt_title" style="width:50px;" type="text" class="title_content textInput  valid" /></td>';												add += '			<td><input type="text" class="price_content" style="width:40px" /></td>';
+												add += '			<td><input type="text" class="sort_order_content" style="width:40px" /></td>';
+												add += '			<td><img src="http://admin.intosmile.com/images/bkg_btn-close2.gif" /></td>';	
+												add += '		</tr>';
+												
+												i = jQuery(this).attr("rel");
+												ee = ".addtbody"+i;
+												//alert(ee);
+												jQuery(ee).append(add);
+											
+										});
+										
+										jQuery(document).on("click",".one_option tbody tr td img",function(){
+											jQuery(this).parent().parent().remove();
+										});
+										
+										jQuery(document).on("click",".close_panl img",function(){
+											jQuery(this).parent().parent().remove();
+										});
+										
+										
+										
+									});
+								</script>
+								<a href="javascript:void(0)"  class=" add_custom_option button"><span>增加自定义属性</span></a>
+								<div style="clear:both;"></div>
+								
+								<div class="add_custom_option_div">
+									<input type="hidden"  class="custom_option_value" name="custom_option" value='' />
+									
+																		
+														
+												
+												
+											
+									
+									
+									
+								</div>	
+							</div>
+						
+						
 				</div>
 				
 			</div>

@@ -211,7 +211,7 @@ EOF;
 									</ul>
 								</div>
 							</div>
-							<div class="tabsContent" style="height:300px;">
+							<div class="tabsContent" style="">
 								{$tabLangTextarea}
 							</div>
 							<div class="tabsFooter">
