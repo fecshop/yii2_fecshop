@@ -45,6 +45,7 @@ class Product extends ActiveRecord
 			'visibility', 
 			'url_key', 
 			'url_path',
+			'category',
 			'price', 
 			'cost_price', 
 			'special_price', 
@@ -68,13 +69,10 @@ class Product extends ActiveRecord
 			'short_description',
 			'custom_option',
 			'remark', 
-			
 			'created_at',
 			'updated_at',
 			'created_user_id',
-			
 			'attr_group',
-			
 		];
 		if(is_array(self::$_customProductAttrs) && !empty(self::$_customProductAttrs)){
 			$origin = array_merge($origin,self::$_customProductAttrs);

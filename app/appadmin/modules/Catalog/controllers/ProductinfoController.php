@@ -20,19 +20,12 @@ class ProductinfoController extends CatalogController
 	
     public function actionIndex()
     {
-		//echo 1;exit;
 		$data = $this->getBlock()->getLastData();
 		return $this->render($this->action->id,$data);
 	}
-	
 	
 	public function actionManageredit(){
 		$data = $this->getBlock()->getLastData();
-		return $this->render($this->action->id,$data);
-	}
-	
-	public function actionManagereditsave(){
-		$data = $this->getBlock('manageredit')->save();
 		return $this->render($this->action->id,$data);
 	}
 	
@@ -40,33 +33,22 @@ class ProductinfoController extends CatalogController
 	public function actionImageupload(){
 		$this->getBlock()->upload();
 	}
-	 
 	
+	# catalog product
+	public function actionGetproductcategory(){
+		$this->getBlock()->getProductCategory();
+	}
+	
+	public function actionManagereditsave(){
+		$data = $this->getBlock('manageredit')->save();
+		return $this->render($this->action->id,$data);
+	}
 	
 	public function actionManagerdelete()
     {
 		$data = $this->getBlock('manageredit')->delete();
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
-	
 }
 
 

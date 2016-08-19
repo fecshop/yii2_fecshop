@@ -40,6 +40,34 @@ $(document).ready(function(){
 	});
 });
 
+
+function getCategoryData(product_id,i){
+														
+	$.ajax({
+		url:'<?= CUrl::getUrl("catalog/productinfo/getproductcategory",['product_id'=>$product_id]); ?>',
+		async:false,
+		timeout: 80000,
+		dataType: 'json', 
+		type:'get',
+		data:{
+			'product_id':product_id,
+		},
+		success:function(data, textStatus){
+			if(data.return_status == "success"){
+				jQuery(".category_tree").html(data.menu);
+				// $.fn.zTree.init($(".category_tree"), subMenuSetting, json);
+				if(i){
+					$("ul.tree", ".dialog").jTree();
+				}
+				
+			}
+		},
+		error:function(){
+			alert('上传出错');
+		}
+	});
+}
+
 function thissubmit(thiss){
 	// product image
 	main_image_image 		=  $('.productimg input[type=radio]:checked').val();
@@ -105,6 +133,15 @@ function thissubmit(thiss){
 	});
 	custom_option = JSON.stringify(custom_option);
 	jQuery(".custom_option_value").val(custom_option);
+	
+	cate_str = "";
+	jQuery(".category_tree div.ckbox.checked").each(function(){
+		cate_id = jQuery(this).find("input").val();
+		cate_str += cate_id+",";
+	});
+	jQuery(".inputcategory").val(cate_str);
+	
+		
 	return validateCallback(thiss, dialogAjaxDoneCloseAndReflush);
 }
 </script>
@@ -118,6 +155,7 @@ function thissubmit(thiss){
 				<div class="tabsHeaderContent">
 					<ul>
 						<li><a href="javascript:;"><span>基本信息</span></a></li>
+						<li><a href="javascript:;"><span>Price信息</span></a></li>
 						<li><a href="javascript:;"><span>Meta信息</span></a></li>
 						<li><a href="javascript:;"><span>描述信息</span></a></li>
 						<li><a href="javascript:;"><span>图片信息</span></a></li>
@@ -140,6 +178,9 @@ function thissubmit(thiss){
 						</div>
 					</fieldset>
 					<?= $baseInfo ?>
+				</div>
+				<div>
+					<?= $priceInfo ?>
 				</div>
 				<div>
 					<?= $metaInfo ?>
@@ -228,7 +269,17 @@ function thissubmit(thiss){
 					</script>
 				</div>
 				<div>
-					
+					<script>
+									
+									$(document).ready(function(){
+										id = '<?= $product_id; ?>' ;
+										
+										getCategoryData(id,0);  
+									});
+								</script>
+								<input type="hidden" value="" name="category"  class="inputcategory"/>
+								<ul class="category_tree tree treeFolder treeCheck expand" >
+																	</ul>
 				</div>
 				<div >
 					<?= $groupAttr ?>
@@ -390,12 +441,12 @@ function thissubmit(thiss){
 												if(is_array($langs) && !empty($langs)){
 													foreach($langs as $langCode){
 														$tkey = \Yii::$service->fecshoplang->GetLangAttrName('title',$langCode);
-														$str .=	'<td><input rel="'.$tkey.'" style="width:80px;" value="'.(isset($c_title[$tkey]) ? $c_title[$tkey] : '').'" type="text" class="title_content textInput  valid"></td>		';													
+														$str .=	'<td><input rel="'.$tkey.'" style="width:60px;" value="'.(isset($c_title[$tkey]) ? $c_title[$tkey] : '').'" type="text" class="title_content textInput  valid"></td>		';													
 													}
 												}
 																
-										$str .=	'	<td><input   value="'.$c_price.'"  type="text" class="price_content"></td>			
-													<td><input   value="'.$c_sort_order.'"  type="text" class="sort_order_content"></td>			
+										$str .=	'	<td><input   value="'.$c_price.'"  type="text" class="price_content" style="width:40px;"></td>			
+													<td><input   value="'.$c_sort_order.'"  type="text" class="sort_order_content" style="width:40px;"></td>			
 													<td><img src="'.\Yii::$service->image->getImgUrl('/images/bkg_btn-close2.gif').'"></td>		
 												</tr>';
 											}

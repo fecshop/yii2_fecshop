@@ -120,6 +120,24 @@ class Attr
 			],
 			
 			[
+				'label'=>'新产品开始时间',
+				'name'=>'new_product_from',
+				'display'=>[
+					'type' => 'inputDate',
+				],
+				'require' => 0,
+			],
+			
+			[
+				'label'=>'新产品结束时间',
+				'name'=>'new_product_to',
+				'display'=>[
+					'type' => 'inputDate',
+				],
+				'require' => 0,
+			],
+			
+			[
 				'label'=>'Url Key',
 				'name'=>'url_key',
 				'display'=>[
@@ -131,6 +149,85 @@ class Attr
 			
 			
 			
+			[
+				'label'=>'库存个数',
+				'name'=>'qty',
+				'display'=>[
+					'type' => 'inputString',
+				],
+				'require' => 1,
+			],
+			
+			[
+				'label'=>'库存状态',
+				'name'=>'is_in_stock',
+				'display'=>[
+					'type' => 'select',
+					'data' => [
+						1 	=> '有货',
+						2 	=> '缺货',
+					]
+				],
+				'require' => 1,
+				'default' => 1,
+			],
+			
+			[
+				'label'=>'备注',
+				'name'=>'remark',
+				'display'=>[
+					'type' => 'inputString',
+				],
+				'require' => 0,
+			],
+			
+		];
+	}
+	
+	public function getPriceInfo(){
+		return [
+			[
+				'label'=>'成本价格',
+				'name'=>'cost_price',
+				'display'=>[
+					'type' => 'inputString',
+				],
+				'require' => 0,
+			],
+			[
+				'label'=>'销售价格',
+				'name'=>'price',
+				'display'=>[
+					'type' => 'inputString',
+				],
+				'require' => 1,
+			],
+			[
+				'label'=>'销售特价',
+				'name'=>'special_price',
+				'display'=>[
+					'type' => 'inputString',
+				],
+				'require' => 0,
+			],
+			
+			[
+				'label'=>'特价开始时间',
+				'name'=>'special_from',
+				'display'=>[
+					'type' => 'inputDate',
+				],
+				'require' => 0,
+			],
+			
+			[
+				'label'=>'特价结束时间',
+				'name'=>'special_to',
+				'display'=>[
+					'type' => 'inputDate',
+				],
+				'require' => 0,
+			],
 		];
 	}
 	

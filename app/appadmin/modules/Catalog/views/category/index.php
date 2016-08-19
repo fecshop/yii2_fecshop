@@ -69,11 +69,11 @@ $(".add-category").ready(function(){
 				<div class="formBar">
 					<ul style="float:left;">
 						<!--<li><a class="buttonActive" href="javascript:;"><span>保存</span></a></li>-->
-						<li class="add-category"><a href="javascript:void(0)" class="addcategory button"><span>增加分类</span></a></li>
+						<li class="add-category"><a href="javascript:void(0)" class="addcategory button"><span>增加</span></a></li>
 						
-						<li><div class="buttonActive"><div class="buttonContent"><button type="submit" name="accept" value="accept" >保存分类</button></div></div></li>
+						<li><div class="buttonActive"><div class="buttonContent"><button type="submit" name="accept" value="accept" >保存</button></div></div></li>
 						
-						<li  class="del-category"><a href="javascript:void(0)" class="delcategory button" ><span>删除分类</span></a></li>
+						<li  class="del-category"><a href="javascript:void(0)" class="delcategory button" ><span>删除</span></a></li>
 						
 					</ul>
 				</div>

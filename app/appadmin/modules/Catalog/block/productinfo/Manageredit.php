@@ -48,6 +48,7 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 		
 		return [
 			'baseInfo' 		=> $this->getBaseInfo(),
+			'priceInfo' 	=> $this->getPriceInfo(),
 			'metaInfo' 		=> $this->getMetaInfo(),
 			'groupAttr'		=> $this->getGroupAttr(),
 			'descriptionInfo' => $this->getDescriptionInfo(),
@@ -55,6 +56,7 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 			'primaryInfo' 	=> $this->getCurrentProductPrimay(),
 			'img_html'		=> $this->getImgHtml(),
 			'custom_option' => $this->_one['custom_option'],
+			'product_id' 	=> $this->_one[Yii::$service->product->getPrimaryKey()],
 			//'editBar' 	=> $this->getEditBar(),
 			//'textareas'	=> $this->_textareas,
 			//'lang_attr'	=> $this->_lang_attr,
@@ -67,6 +69,14 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 		$this->_lang_attr = '';
 		$this->_textareas = '';
 		$editArr = $this->_attr->getBaseInfo();
+		$editBar = $this->getEditBar($editArr);
+		return $this->_lang_attr.$editBar.$this->_textareas;
+	}
+	
+	public function getPriceInfo(){
+		$this->_lang_attr = '';
+		$this->_textareas = '';
+		$editArr = $this->_attr->getPriceInfo();
 		$editBar = $this->getEditBar($editArr);
 		return $this->_lang_attr.$editBar.$this->_textareas;
 	}
@@ -268,6 +278,24 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 		$image_gallery 		= CRequest::param('image_gallery');
 		$image_main 		= CRequest::param('image_main');
 		$save_gallery = [];
+		// Category
+		$category 	= CRequest::param('category');
+		if($category){
+			$category = explode(',',$category);
+			if(!empty($category )){
+				$cates = [];
+				foreach($category  as $cate){
+					if($cate){
+						$cates[] = $cate;
+					}
+				}
+				$this->_param['category'] =  $cates;
+			}else{
+				$this->_param['category'] = [];
+			}
+		}else{
+			$this->_param['category'] = [];
+		}
 		// init image gallery
 		if($image_gallery){
 			$image_gallery_arr = explode("|||||",$image_gallery);
@@ -295,6 +323,19 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 			];
 			$this->_param['image']['main'] 	= $save_main;
 		}
+		//qty
+		$this->_param['qty'] = $this->_param['qty'] ? (float)($this->_param['qty']) : 0;
+		//is_in_stock
+		$this->_param['is_in_stock'] = $this->_param['is_in_stock'] ? (int)($this->_param['is_in_stock']) : 0;
+		//price
+		$this->_param['cost_price'] = $this->_param['cost_price'] ? (float)($this->_param['cost_price']) : 0;
+		$this->_param['price'] = $this->_param['price'] ? (float)($this->_param['price']) : 0;
+		$this->_param['special_price'] = $this->_param['special_price'] ? (float)($this->_param['special_price']) : 0;
+		//date
+		$this->_param['new_product_from'] = $this->_param['new_product_from'] ? (float)(strtotime($this->_param['new_product_from'])) : 0;
+		$this->_param['new_product_to'] = $this->_param['new_product_to'] ? (float)(strtotime($this->_param['new_product_to'])) : 0;
+		$this->_param['special_from'] = $this->_param['special_from'] ? (float)(strtotime($this->_param['special_from'])) : 0;
+		$this->_param['special_to'] = $this->_param['special_to'] ? (float)(strtotime($this->_param['special_to'])) : 0;
 		//weight
 		$this->_param['weight'] = $this->_param['weight'] ? (float)($this->_param['weight']) : 0;
 		//status
@@ -376,8 +417,6 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 		}
 	}
 	
-	
-	
 	# 批量删除
 	public function delete(){
 		$ids = '';
@@ -400,21 +439,9 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 				"message"=>$errors,
 			));
 			exit;
-		}
-		
-		
-		
+		}	
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
+
+
+
