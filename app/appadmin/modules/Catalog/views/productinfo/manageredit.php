@@ -38,13 +38,7 @@ $(document).ready(function(){
 		url = '<?= CUrl::getUrl("catalog/productinfo/manageredit"); ?>'+pm+currentPrimayInfo;
 		$.pdialog.reload(url,options);
 	});
-	//$(".tabs").off("click").on("click",".tabsHeaderContent a",function(){
-	//	
-	//	initUI("#fieldset_table_qbe");
-	//});
-	
 });
-
 
 function thissubmit(thiss){
 	// product image
@@ -59,9 +53,7 @@ function thissubmit(thiss){
 		alert('您至少上传并选择一张主图');
 		//DWZ.ajaxDone;
 		return false;
-		
 	}
-	
 	image_gallery = '';
 	$('.productimg input[type=radio]').each(function(){
 		if(!$(this).is(':checked')){
@@ -73,22 +65,18 @@ function thissubmit(thiss){
 		}
 	});
 	$(".tabsContent .image_gallery").val(image_gallery);
-	
 	//custom_option
 	i = 0;
 	custom_option = new Object();
 	jQuery(".add_custom_option_div .one_option").each(function(){
-		
 		title_header = jQuery(this).find(".option_header .title_header").val();
 		if(title_header){
 			is_require = jQuery(this).find(".option_header .is_require").val();
 			sort_order_header = jQuery(this).find(".option_header .sort_order_header").val();
 			option_header = new Object();
-			
 			k = 0;
 			data = new Object();
 			jQuery(this).find(".option_content tbody tr").each(function(){
-				
 				title_content = jQuery(this).find(".title_content").val();
 				if(title_content){
 					store_option_title = new Object();
@@ -111,16 +99,13 @@ function thissubmit(thiss){
 			option_header['is_require'] = is_require;
 			option_header['sort_order'] = sort_order_header;
 			option_header['data'] = data;
-			
 			custom_option[i] = option_header;
 			i++;
 		}
 	});
 	custom_option = JSON.stringify(custom_option);
 	jQuery(".custom_option_value").val(custom_option);
-	
 	return validateCallback(thiss, dialogAjaxDoneCloseAndReflush);
-	
 }
 </script>
 
@@ -154,19 +139,14 @@ function thissubmit(thiss){
 							</p>
 						</div>
 					</fieldset>
-					
-					
 					<?= $baseInfo ?>
 				</div>
-				
-				<div><?= $metaInfo ?>
+				<div>
+					<?= $metaInfo ?>
 				</div>
-				
-				<div ><?= $descriptionInfo ?>
+				<div >
+					<?= $descriptionInfo ?>
 				</div>
-				
-				
-				
 				<div >
 					<input type="hidden" name="image_main" class="image_main"  />
 					<input type="hidden" name="image_gallery" class="image_gallery"  />
@@ -247,124 +227,115 @@ function thissubmit(thiss){
 						});
 					</script>
 				</div>
-				
+				<div>
+					
+				</div>
 				<div >
+					<?= $groupAttr ?>
 				</div>
-				<div ><?= $groupAttr ?>
-				</div>
-				
 				<div >
 					<style>
-									.one_option{background:#e7efef;position:relative;margin:10px;padding:10px;border:1px solid #cddddd}
-									.close_panl{position:absolute;right:10px;top:10px;cursor: pointer;}
-									.close_panl img:hover{border:1px solid #ccc;}
-									.close_panl img{border:1px solid #fff;}
-									.one_option tbody tr td img{cursor: pointer;border:1px solid #fff;}
-									.one_option tbody tr td img:hover{border:1px solid #ccc;}
-								</style>
-								<?php  $langs = \Yii::$service->fecshoplang->getAllLangCode(); ?>
-								<?php  //var_dump($langs);  ?>
-								<script>
-									jQuery(document).ready(function(){
-										jQuery(".add_custom_option").click(function(){
-											i = 1;
-											jQuery(".one_option").each(function(){
-												thisi = parseInt(jQuery(this).attr("rel"));
-												if(thisi>i){
-													i = thisi;
-												}
-											});
-											i++;
-											add = '<div class="one_option" rel="'+i+'">';
-											add += '		<div class="close_panl" >';
-											add += '			<img src="<?= \Yii::$service->image->getImgUrl('/images/bkg_btn-close2.gif')  ?>" />';
-											add += '		</div>';
-											add += '		<table class="option_header">';
-											add += '			<tr >';
-											add += '				<td style="padding:3px;">Title</td>';
-											add += '				<td style="padding:3px;">Is_Required</td>';
-											add += '				<td style="padding:3px;">Sort_Order</td>';
-											add += '			</tr>';
-											add += '			<tr >';
-											add += '				<td><input type="text" class="title_header textInput required valid"/></td>';
-											add += '				<td><select class="is_require" style="margin:0 24px;"><option value="1">Yes</option><option value="2">No</option>  </select>';
-											add += '				<td><input type="text" class="sort_order_header" /></td>';
-											add += '			</tr>';
-														
-											add += '		</table>';
-												
-											add += '		<table class="list option_content" style="margin:10px;">';
-											add += '			<thead>';
-											add += '				<tr style="background:#ccc;">';
-											<?php  if(is_array($langs) && !empty($langs)){  ?>
-											<?php  		foreach($langs as $langCode){  ?>
-											<?php  			echo "add += '	<td>$langCode Title</td>	';"  ?>
-											<?php  			  ?>
-											<?php  		} ?>
-											<?php  	} ?>
-											add += '					<td>Price</td>';
-											add += '					<td>Sort Order</td>';
-											add += '					<td></td>';
-											add += '				</tr>';
-											add += '			</thead>';
-											add += '			<tbody class="addtbody'+i+'">';
-															
-											add += '				</tr>';
-															
-											add += '			</tbody>';
-											add += '			<tfoot style="text-align:right;">';
-											add += '				<tr>';
-											add += '					<td  colspan="100"  style="text-align:right;">';
-											add += '						<a rel="'+i+'"  style="text-align:right;" href="javascript:void(0)"  class="addchildoption11 button"><span>增加子属性</span></a>';
-											add += '					</td>';
-											add += '				</tr>';
-											add += '			</tfoot>';
-														
-											add += '		</table>';
-											add += '	</div>';
-											jQuery(".add_custom_option_div").append(add);
-										});
-										
-										
-										jQuery(document).off("click",".one_option tfoot a.addchildoption11");
-										jQuery(document).on("click",".one_option tfoot a.addchildoption11",function(){
-												add = '<tr>';
-										<?php  if(is_array($langs) && !empty($langs)){  ?>
-										<?php  		foreach($langs as $langCode){  ?>
-										<?php  			echo "add += '			<td><input rel=\"".\Yii::$service->fecshoplang->GetLangAttrName('title',$langCode)."\" style=\"width:50px;\" type=\"text\" class=\"title_content textInput  valid\" /></td>';"  ?>
-										<?php  			  ?>
-										<?php  		} ?>
-										<?php  	} ?>
-												add += '			<td><input type="text" class="price_content" style="width:40px" /></td>';
-												add += '			<td><input type="text" class="sort_order_content" style="width:40px" /></td>';
-												add += '			<td><img src="<?= \Yii::$service->image->getImgUrl('/images/bkg_btn-close2.gif')  ?>" /></td>';	
-												add += '		</tr>';
-												
-												i = jQuery(this).attr("rel");
-												ee = ".addtbody"+i;
-												//alert(ee);
-												jQuery(ee).append(add);
+						.one_option{background:#e7efef;position:relative;margin:10px;padding:10px;border:1px solid #cddddd}
+						.close_panl{position:absolute;right:10px;top:10px;cursor: pointer;}
+						.close_panl img:hover{border:1px solid #ccc;}
+						.close_panl img{border:1px solid #fff;}
+						.one_option tbody tr td img{cursor: pointer;border:1px solid #fff;}
+						.one_option tbody tr td img:hover{border:1px solid #ccc;}
+					</style>
+					<?php  $langs = \Yii::$service->fecshoplang->getAllLangCode(); ?>
+					<?php  //var_dump($langs);  ?>
+					<script>
+						jQuery(document).ready(function(){
+							jQuery(".add_custom_option").click(function(){
+								i = 1;
+								jQuery(".one_option").each(function(){
+									thisi = parseInt(jQuery(this).attr("rel"));
+									if(thisi>i){
+										i = thisi;
+									}
+								});
+								i++;
+								add = '<div class="one_option" rel="'+i+'">';
+								add += '		<div class="close_panl" >';
+								add += '			<img src="<?= \Yii::$service->image->getImgUrl('/images/bkg_btn-close2.gif')  ?>" />';
+								add += '		</div>';
+								add += '		<table class="option_header">';
+								add += '			<tr >';
+								add += '				<td style="padding:3px;">Title</td>';
+								add += '				<td style="padding:3px;">Is_Required</td>';
+								add += '				<td style="padding:3px;">Sort_Order</td>';
+								add += '			</tr>';
+								add += '			<tr >';
+								add += '				<td><input type="text" class="title_header textInput required valid"/></td>';
+								add += '				<td><select class="is_require" style="margin:0 24px;"><option value="1">Yes</option><option value="2">No</option>  </select>';
+								add += '				<td><input type="text" class="sort_order_header" /></td>';
+								add += '			</tr>';
 											
-										});
-										
-										jQuery(document).on("click",".one_option tbody tr td img",function(){
-											jQuery(this).parent().parent().remove();
-										});
-										
-										jQuery(document).on("click",".close_panl img",function(){
-											jQuery(this).parent().parent().remove();
-										});
-										
-										
-										
-									});
-								</script>
+								add += '		</table>';
+									
+								add += '		<table class="list option_content" style="margin:10px;">';
+								add += '			<thead>';
+								add += '				<tr style="background:#ccc;">';
+								<?php  if(is_array($langs) && !empty($langs)){  ?>
+								<?php  		foreach($langs as $langCode){  ?>
+								<?php  			echo "add += '	<td>$langCode Title</td>	';"  ?>
+								<?php  			  ?>
+								<?php  		} ?>
+								<?php  	} ?>
+								add += '					<td>Price</td>';
+								add += '					<td>Sort Order</td>';
+								add += '					<td></td>';
+								add += '				</tr>';
+								add += '			</thead>';
+								add += '			<tbody class="addtbody'+i+'">';
+												
+								add += '				</tr>';
+												
+								add += '			</tbody>';
+								add += '			<tfoot style="text-align:right;">';
+								add += '				<tr>';
+								add += '					<td  colspan="100"  style="text-align:right;">';
+								add += '						<a rel="'+i+'"  style="text-align:right;" href="javascript:void(0)"  class="addchildoption11 button"><span>增加子属性</span></a>';
+								add += '					</td>';
+								add += '				</tr>';
+								add += '			</tfoot>';
+											
+								add += '		</table>';
+								add += '	</div>';
+								jQuery(".add_custom_option_div").append(add);
+							});
+							jQuery(document).off("click",".one_option tfoot a.addchildoption11");
+							jQuery(document).on("click",".one_option tfoot a.addchildoption11",function(){
+								add = '<tr>';
+								<?php  if(is_array($langs) && !empty($langs)){  ?>
+								<?php  		foreach($langs as $langCode){  ?>
+								<?php  			echo "add += '			<td><input rel=\"".\Yii::$service->fecshoplang->GetLangAttrName('title',$langCode)."\" style=\"width:50px;\" type=\"text\" class=\"title_content textInput  valid\" /></td>';"  ?>
+								<?php  			  ?>
+								<?php  		} ?>
+								<?php  	} ?>
+								add += '			<td><input type="text" class="price_content" style="width:40px" /></td>';
+								add += '			<td><input type="text" class="sort_order_content" style="width:40px" /></td>';
+								add += '			<td><img src="<?= \Yii::$service->image->getImgUrl('/images/bkg_btn-close2.gif')  ?>" /></td>';	
+								add += '		</tr>';
+								i = jQuery(this).attr("rel");
+								ee = ".addtbody"+i;
+								jQuery(ee).append(add);
+							});
+							
+							jQuery(document).on("click",".one_option tbody tr td img",function(){
+								jQuery(this).parent().parent().remove();
+							});
+							
+							jQuery(document).on("click",".close_panl img",function(){
+								jQuery(this).parent().parent().remove();
+							});
+						});
+					</script>
 					<div class="custom_option">
 						<a href="javascript:void(0)"  class=" add_custom_option button"><span>增加自定义属性</span></a>
 						<div style="clear:both;"></div>
 						<div class="add_custom_option_div">
 							<input type="hidden"  class="custom_option_value" name="custom_option" value='' />
-							
 							<?php
 								$str  = '';
 								//var_dump($custom_option);
@@ -398,23 +369,17 @@ function thissubmit(thiss){
 												<thead>				
 													<tr style="background:#ccc;">';	
 												$langs = \Yii::$service->fecshoplang->getAllLangCode();
-												
 												if(is_array($langs) && !empty($langs)){
-													
 													foreach($langs as $langCode){
-														
 														$str .='<td>'.strtolower($langCode).' Title</td>';		
 													}
 												}
-												
-								$str .=	'			
-																			
-														<td>Price</td>					
+												$str .=	'<td>Price</td>					
 														<td>Sort Order</td>					
 														<td></td>				
 													</tr>			
 												</thead>			
-												<tbody class="addtbody'.$i.'">		';
+												<tbody class="addtbody'.$i.'">';
 									
 										if(is_array($data) && !empty($data)){
 											foreach($data as $k2=>$c_option){
@@ -452,20 +417,15 @@ function thissubmit(thiss){
 						</div>	
 					</div>	
 				</div>
-				
 			</div>
 			<div class="tabsFooter">
 				<div class="tabsFooterContent"></div>
 			</div>
 		</div>
-		
-		
-	
 		<div class="formBar">
 			<ul>
 				<!--<li><a class="buttonActive" href="javascript:;"><span>保存</span></a></li>-->
 				<li><div class="buttonActive"><div class="buttonContent"><button onclick="func('accept')"  value="accept" name="accept" type="submit">保存</button></div></div></li>
-			
 				<li>
 					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
 				</li>
