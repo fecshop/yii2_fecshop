@@ -55,11 +55,16 @@ function thissubmit(thiss){
 	if(main_image_image){
 		image_main = main_image_image+'#####'+main_image_label+'#####'+main_image_sort_order;
 		$(".tabsContent .image_main").val(image_main);
+	}else{
+		alert('您至少上传并选择一张主图');
+		//DWZ.ajaxDone;
+		return false;
+		
 	}
+	
 	image_gallery = '';
 	$('.productimg input[type=radio]').each(function(){
 		if(!$(this).is(':checked')){
-			
 			gallery_image_image 		= $(this).val();
 			gallery_image_label 		= $(this).parent().parent().find(".image_label").val();
 			gallery_image_sort_order 	= $(this).parent().parent().find(".sort_order").val();

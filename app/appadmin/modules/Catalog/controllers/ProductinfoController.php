@@ -42,9 +42,10 @@ class ProductinfoController extends CatalogController
 	}
 	 
 	
-	public function actionRemove()
+	
+	public function actionManagerdelete()
     {
-		$this->getBlock("index")->remove();
+		$data = $this->getBlock('manageredit')->delete();
 	}
 
 

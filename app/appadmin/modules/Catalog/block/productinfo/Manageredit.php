@@ -235,42 +235,6 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 	 * save article data,  get rewrite url and save to article url key.
 	 */
 	public function save(){
-		$request_param 		= CRequest::param();
-		$this->_param		= $request_param[$this->_editFormData];
-		$this->_param['attr_group'] 	= CRequest::param('attr_group');
-		$this->_param['custom_option'] 	= ($custom_option = CRequest::param('custom_option')) ? json_decode($custom_option,true) : '';
-		$image_gallery 		= CRequest::param('image_gallery');
-		$image_main 		= CRequest::param('image_main');
-		
-		$save_gallery = [];
-		if($image_gallery){
-			$image_gallery_arr = explode("|||||",$image_gallery);
-			if(!empty($image_gallery_arr)){
-				foreach($image_gallery_arr as $one){
-					if(!empty($one)){
-						list($gallery_image,$gallery_label,$gallery_sort_order) = explode('#####',$one);
-						$save_gallery[] = [
-							'image' 		=> $gallery_image,
-							'label' 		=> $gallery_label,
-							'sort_order' 	=> $gallery_sort_order,
-						];	
-						
-					}
-				}
-				$this->_param['image']['gallery'] 	= $save_gallery;
-			}
-		}
-		
-		if($image_main){
-			list($main_image,$main_label,$main_sort_order) = explode('#####',$image_main);
-			$save_main = [
-				'image' 		=> $main_image,
-				'label' 		=> $main_label,
-				'sort_order' 	=> $main_sort_order,
-			];
-			$this->_param['image']['main'] 	= $save_main;
-		}
-		
 		
 		$this->initParamType();
 		/**
@@ -297,15 +261,49 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 	}
 	
 	protected function initParamType(){
-		//$this->_primaryKey  = $this->_service->getPrimaryKey();
-		//$id 				= $this->_param[$this->_primaryKey];
-		//$this->_one = $this->_service->getByPrimaryKey($id);
-		
+		$request_param 		= CRequest::param();
+		$this->_param		= $request_param[$this->_editFormData];
+		$this->_param['attr_group'] 	= CRequest::param('attr_group');
+		$this->_param['custom_option'] 	= ($custom_option = CRequest::param('custom_option')) ? json_decode($custom_option,true) : '';
+		$image_gallery 		= CRequest::param('image_gallery');
+		$image_main 		= CRequest::param('image_main');
+		$save_gallery = [];
+		// init image gallery
+		if($image_gallery){
+			$image_gallery_arr = explode("|||||",$image_gallery);
+			if(!empty($image_gallery_arr)){
+				foreach($image_gallery_arr as $one){
+					if(!empty($one)){
+						list($gallery_image,$gallery_label,$gallery_sort_order) = explode('#####',$one);
+						$save_gallery[] = [
+							'image' 		=> $gallery_image,
+							'label' 		=> $gallery_label,
+							'sort_order' 	=> $gallery_sort_order,
+						];	
+					}
+				}
+				$this->_param['image']['gallery'] 	= $save_gallery;
+			}
+		}
+		// init image main
+		if($image_main){
+			list($main_image,$main_label,$main_sort_order) = explode('#####',$image_main);
+			$save_main = [
+				'image' 		=> $main_image,
+				'label' 		=> $main_label,
+				'sort_order' 	=> $main_sort_order,
+			];
+			$this->_param['image']['main'] 	= $save_main;
+		}
+		//weight
 		$this->_param['weight'] = $this->_param['weight'] ? (float)($this->_param['weight']) : 0;
+		//status
 		$this->_param['status'] = $this->_param['status'] ? (float)($this->_param['status']) : 0;
+		//image main sort order
 		if(isset($this->_param['image']['main']['sort_order']) && !empty($this->_param['image']['main']['sort_order'])){
 			$this->_param['image']['main']['sort_order'] = (int)($this->_param['image']['main']['sort_order']);
 		}
+		//image gallery 
 		if(isset($this->_param['image']['gallery']) && is_array($this->_param['image']['gallery']) && !empty($this->_param['image']['gallery'])){
 			$gallery_af = [];
 			foreach($this->_param['image']['gallery'] as $gallery){
@@ -316,9 +314,8 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 			}
 			$this->_param['image']['gallery'] = $gallery_af;
 		}
-		# 自定义属性
+		# 自定义属性 也就是在 @common\config\fecshop_local_services\Product.php 产品服务的 customAttrGroup 配置的产品属性。
 		$custom_attr = \Yii::$service->product->getGroupAttrInfo($this->_param['attr_group']);
-		//var_dump($custom_attr);exit;
 		if(is_array($custom_attr) && !empty($custom_attr)){
 			foreach($custom_attr as $attrInfo){
 				$attr 	= $attrInfo['name'];
@@ -353,16 +350,13 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 						}else{
 							$this->_param[$attr] = (Float)$this->_param[$attr];
 						}
-						
 					}
 				}
 			}
 		}
 		$custom_option = isset($this->_param['custom_option']) ? $this->_param['custom_option'] : ''; 
-		//var_dump($custom_option);exit;
 		if(is_array($custom_option) && !empty($custom_option) ){
 			$custom_option_af = [];
-			
 			foreach($custom_option as $option){
 				$option['is_require'] = isset($option['is_require']) ? (int)$option['is_require'] : 0;
 				$option['sort_order'] = isset($option['sort_order']) ? (int)$option['sort_order'] : 0;
@@ -380,10 +374,6 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 			}
 			$this->_param['custom_option'] = $custom_option_af;
 		}
-		
-		
-			
-		
 	}
 	
 	

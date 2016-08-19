@@ -82,7 +82,7 @@ class Attr
 					'lang' => false,
 					
 				],
-				'require' => 0,
+				'require' => 1,
 			],
 			[
 				'label'=>'SKU',
@@ -92,7 +92,7 @@ class Attr
 					'lang' => false,
 					
 				],
-				'require' => 0,
+				'require' => 1,
 			],
 			[
 				'label'=>'重量',
@@ -196,7 +196,7 @@ class Attr
 					'rows'	=> 14,
 					'cols'	=> 100,
 				],
-				'require' => 0,
+				'require' => 1,
 			],
 		];
 	}

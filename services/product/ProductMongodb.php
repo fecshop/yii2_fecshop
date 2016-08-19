@@ -61,20 +61,43 @@ class ProductMongodb implements ProductInterface
 	 */
 	public function save($one,$originUrlKey){
 		//var_dump($one);exit;
+		if(!$this->initSave($one)){
+			return;
+		}
 		$currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
 		$primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
+		
 		if($primaryVal){
+			
 			$model = Product::findOne($primaryVal);
 			if(!$model){
 				Yii::$service->helper->errors->add('Product '.$this->getPrimaryKey().' is not exist');
 				return;
 			}	
+			#验证sku 是否重复
+			$product_one = Product::find()->asArray()->where([
+				'<>',$this->getPrimaryKey(),(new \MongoId($primaryVal))
+			])->andWhere([
+				'sku' => $one['sku'],
+			])->one();
+			if($product_one['sku']){
+				Yii::$service->helper->errors->add('Product Sku 已经存在，请使用其他的sku');
+				return;
+			}
 		}else{
 			$model = new Product;
 			$model->created_at = time();
 			$model->created_user_id = \fec\helpers\CUser::getCurrentUserId();
 			$primaryVal = new \MongoId;
 			$model->{$this->getPrimaryKey()} = $primaryVal;
+			#验证sku 是否重复
+			$product_one = Product::find()->asArray()->where([
+				'sku' => $one['sku'],
+			])->one();
+			if($product_one['sku']){
+				Yii::$service->helper->errors->add('Product Sku 已经存在，请使用其他的sku');
+				return;
+			}
 		}
 		$model->updated_at = time();
 		unset($one['_id']);
@@ -88,80 +111,66 @@ class ProductMongodb implements ProductInterface
 		return true;
 	}
 	
-	/**
-	 * remove Product
-	 */ 
-	public function remove($id){
-		if(!$id){
-			Yii::$service->helper->errors->add('remove id is empty');
+	protected function initSave($one){
+		if(!isset($one['sku']) || empty($one['sku'])){
+			Yii::$service->helper->errors->add(' sku 必须存在 ');
 			return false;
 		}
-		
-		$model = Product::findOne($id);
-		if(isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()]) ){
-			$url_key =  $model['url_key'];
-			Yii::$service->url->removeRewriteUrlKey($url_key);
-			$model->delete();
-			$this->removeChildCate($id);
-		}else{
-			Yii::$service->helper->errors->add("Product Remove Errors:ID:$id is not exist.");
+		if(!isset($one['spu']) || empty($one['spu'])){
+			Yii::$service->helper->errors->add(' spu 必须存在 ');
 			return false;
 		}
-		
+		$defaultLangName = \Yii::$service->fecshoplang->getDefaultLangAttrName('name'); 
+		if(!isset($one['name'][$defaultLangName]) || empty($one['name'][$defaultLangName])){
+			Yii::$service->helper->errors->add(' name '.$defaultLangName.' 不能为空 ');
+			return false;
+		}
+		$defaultLangDes = \Yii::$service->fecshoplang->getDefaultLangAttrName('description');
+		if(!isset($one['description'][$defaultLangDes]) || empty($one['description'][$defaultLangDes])){
+			Yii::$service->helper->errors->add(' description '.$defaultLangDes.'不能为空 ');
+			return false;
+		}
 		return true;
 	}
 	
-	protected function removeChildCate($id){
-		$data = Product::find()->where(['parent_id'=>$id])->all();
-		if(!empty($data)){
-			foreach($data as $one){
-				$idVal = $one['_id']->{'$id'};
-				if($this->hasChildCategory($idVal)){
-					$this->removeChildCate($idVal);
+	/**
+	 * remove Product
+	 */ 
+	public function remove($ids){
+		if(empty($ids)){
+			Yii::$service->helper->errors->add('remove id is empty');
+			return false;
+		}
+		if(is_array($ids)){
+			foreach($ids as $id){
+				$model = Product::findOne($id);
+				if(isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()]) ){
+					$url_key =  $model['url_key'];
+					Yii::$service->url->removeRewriteUrlKey($url_key);
+					$model->delete();
+					//$this->removeChildCate($id);
+				}else{
+					Yii::$service->helper->errors->add("Product Remove Errors:ID:$id is not exist.");
+					return false;
 				}
-				$url_key =  $one['url_key'];
+			}
+		}else{
+			$id = $ids;
+			$model = Product::findOne($id);
+			if(isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()]) ){
+				$url_key =  $model['url_key'];
 				Yii::$service->url->removeRewriteUrlKey($url_key);
-				$one->delete();
+				$model->delete();
+				//$this->removeChildCate($id);
+			}else{
+				Yii::$service->helper->errors->add("Product Remove Errors:ID:$id is not exist.");
+				return false;
 			}
 		}
+		return true;
 	}
 	
-	public function getTreeArr($rootCategoryId = '',$lang=''){
-		$arr = [];
-		if(!$lang){
-			$lang = Yii::$service->fecshoplang->defaultLangCode;
-		}
-		if(!$rootCategoryId){
-			$where = ['parent_id' => '0'];
-		}else{
-			$where = ['parent_id' => $rootCategoryId];
-		}
-		$categorys =  Product::find()->asArray()->where($where)->all();
-		//var_dump($categorys);exit;
-		$idKey= $this->getPrimaryKey();
-		if(!empty($categorys)){
-			foreach($categorys as $cate){
-				$idVal = $cate[$idKey]->{'$id'};
-				$arr[$idVal] = [
-					$idKey 	=> $idVal,
-					'name' 	=> Yii::$service->fecshoplang->getLangAttrVal($cate['name'],'name',$lang),
-				];
-				//echo $arr[$idVal]['name'];
-				
-				if($this->hasChildCategory($idVal)){
-					$arr[$idVal]['child'] = $this->getTreeArr($idVal,$lang);
-				}
-			}
-		}
-		return $arr;
-	}
-	protected function hasChildCategory($idVal){
-		$one = Product::find()->asArray()->where(['parent_id'=>$idVal])->one();
-		if(!empty($one)){
-			return true;
-		}
-		return false;
-	}
+	
 	
 }
 

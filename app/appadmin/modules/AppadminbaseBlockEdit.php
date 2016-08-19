@@ -185,7 +185,11 @@ EOF;
 					$tabLangTextarea = '';
 					foreach($langs as $lang){
 						$langAttrName = Yii::$service->fecshoplang->getLangAttrName($name,$lang);
-						
+						if($require && $defaultLangCode === $lang){
+							$inputStringLangRequire = 'required';
+						}else{
+							$inputStringLangRequire = 0;
+						}
 						$tabLangTitle .= '<li><a href="javascript:;"><span>'.$lang.'</span></a></li>';
 						$tabLangTextarea .= '
 						<div>
@@ -193,7 +197,7 @@ EOF;
 								<legend style="color:#cc0000">'.$label.'['.$lang.']：</legend>
 								<div>
 									<div class="unit">
-										<textarea  class="editor"  rows="'.$rows.'" cols="'.$cols.'" name="'.$this->_editFormData.'['.$name.']['.$langAttrName.']" >'.$value[$langAttrName].'</textarea>
+										<textarea  class="editor '.$inputStringLangRequire.'"  rows="'.$rows.'" cols="'.$cols.'" name="'.$this->_editFormData.'['.$name.']['.$langAttrName.']" >'.$value[$langAttrName].'</textarea>
 									</div>
 								</div>
 							</fieldset>
