@@ -302,11 +302,18 @@ class AppadminbaseBlock extends Object{
 		foreach($searchArr as $field){
 			$type = $field['type'];
 			$name = $field['name'];
+			$lang = $field['lang'];
+			
 			$columns_type = isset($field['columns_type']) ? $field['columns_type'] : '';
 			if($this->_param[$name] || $this->_param[$name.'_get'] || $this->_param[$name.'_lt']){
 				if($type == 'inputtext' || $type == 'select' || $type == 'chosen_select'){
 					if($columns_type == 'string'){
-						$where[] = ['like', $name, $this->_param[$name]];
+						if($lang){
+							$langname = $name.'.'.\Yii::$service->fecshoplang->getDefaultLangAttrName($name) ;
+							$where[] = ['like', $langname, $this->_param[$name]];
+						}else{
+							$where[] = ['like', $name, $this->_param[$name]];
+						}
 					}else if($columns_type == 'int'){
 						$where[] = [$name => (int)$this->_param[$name]];
 					}else if($columns_type == 'float'){
@@ -350,6 +357,7 @@ class AppadminbaseBlock extends Object{
 				}
 			}
 		}
+		//var_dump($where);
 		return $where;
 	}
 	
@@ -477,10 +485,12 @@ class AppadminbaseBlock extends Object{
 				$orderField = $field['orderField'];
 				$display	= $field['display'];
 				$val = $one[$orderField];
+				$display_title = '';
 				if($val){
 					if(isset($field['display']) && !empty($field['display'])){
 						$display = $field['display'];
 						$val = $display[$val] ? $display[$val] : $val;
+						$display_title = $val;
 					}
 					if(isset($field['convert']) && !empty($field['convert'])){
 						$convert = $field['convert'];
@@ -495,6 +505,7 @@ class AppadminbaseBlock extends Object{
 									}else if($to == 'int'){
 										$val = $timestramp;
 									}
+									$display_title = $val;
 								}
 							}else if(strstr($origin,'date')){
 								if($to == 'date'){
@@ -504,6 +515,7 @@ class AppadminbaseBlock extends Object{
 								}else if($to == 'int'){
 									$val = strtotime($val);
 								}
+								$display_title = $val;
 							}else if($origin == 'int'){
 								if($to == 'date'){
 									$val = date('Y-m-d',$val);
@@ -512,6 +524,7 @@ class AppadminbaseBlock extends Object{
 								}else if($to == 'int'){
 									$val = $val;
 								}
+								$display_title = $val;
 							}else if($origin == 'string'){
 								if($to == 'img'){
 									
@@ -527,7 +540,7 @@ class AppadminbaseBlock extends Object{
 						$val = Yii::$service->fecshoplang->getDefaultLangAttrVal($val,$orderField);
 					}
 				}
-				$str .= '<td>'.$val.'</td>';
+				$str .= '<td><span title="'.$display_title.'">'.$val.'</span></td>';
 			}
 			$str .= '<td>
 						<a title="编辑" target="dialog" class="btnEdit" mask="true" drawable="true" width="1000" height="580" href="'.$this->_editUrl.'?'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" >编辑</a>

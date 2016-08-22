@@ -130,7 +130,10 @@ class Index extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInterf
 	}
 	
 	public function getLastInfo(){
+		$primaryKey = Yii::$service->category->getPrimaryKey();
+		$primaryVal = Yii::$app->request->get($primaryKey);
 		return [
+			'product_url'=> CUrl::getUrl('catalog/category/product',[$primaryKey => $primaryVal]),
 			'base_info' => $this->getBaseInfo(),
 			'meta_info' => $this->getMetaInfo(),
 		];

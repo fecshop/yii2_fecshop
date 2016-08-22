@@ -10,6 +10,7 @@ namespace fecshop\app\appadmin\modules\Catalog\block\productinfo;
 use Yii;
 use fecshop\app\appadmin\modules\AppadminbaseBlock;
 use fec\helpers\CUrl;
+use fecshop\app\appadmin\modules\Catalog\helper\Product as ProductHelper;
 use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockInterface;
 /**
  * block cms\article
@@ -73,24 +74,50 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 				'title'=>'状态',
 				'name'=>'status',
 				'columns_type' =>'int',  # int使用标准匹配， string使用模糊查询
-				'value'=> [					# select 类型的值
-					1=>'激活',
-					2=>'关闭',
-				],
+				'value'=> ProductHelper::getStatusArr(),
+			],
+			[	# selecit的Int 类型
+				'type'=>'select',	 
+				'title'=>'库存状态',
+				'name'=>'is_in_stock',
+				'columns_type' =>'int',  # int使用标准匹配， string使用模糊查询
+				'value'=> ProductHelper::getInStockArr(),
+			],
+			[	# 字符串类型
+				'type'			=>'inputtext',
+				'title'			=>'产品名称',
+				'name'			=>'name' ,
+				'columns_type' 	=>'string',
+				'lang'			=> true,
 			],
 			[	# 字符串类型
 				'type'=>'inputtext',
-				'title'=>'标题',
-				'name'=>'title' ,
+				'title'=>'Spu',
+				'name'=>'spu' ,
+				'columns_type' =>'string'
+			],
+			[	# 字符串类型
+				'type'=>'inputtext',
+				'title'=>'Sku',
+				'name'=>'sku' ,
 				'columns_type' =>'string'
 			],
 			[	# 时间区间类型搜索
 				'type'=>'inputdatefilter',
-				'name'=> 'created_at',
+				'name'=> 'updated_at',
 				'columns_type' =>'int',
 				'value'=>[
-					'gte'=>'用户创建时间开始',
-					'lt' =>'用户创建时间结束',
+					'gte'=>'更新时间开始',
+					'lt' =>'更新时间结束',
+				]
+			],
+			[	# 时间区间类型搜索
+				'type'=>'inputfilter',
+				'name'=> 'qty',
+				'columns_type' =>'int',
+				'value'=>[
+					'gte'=>'库存开始',
+					'lt' =>'库存结束',
 				]
 			],
 		];
@@ -107,48 +134,96 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 			[	
 				'orderField' 	=> $this->_primaryKey,
 				'label'			=> 'ID',
-				'width'			=> '50',
+				'width'			=> '90',
 				'align' 		=> 'center',
 				
 			],
 			[	
-				'orderField'	=> 'name',
-				'label'			=> '标题',
+				'orderField'	=> 'image_main',
+				'label'			=> '图片',
 				'width'			=> '50',
 				'align' 		=> 'left',
 				'lang'			=> true,
 			],
 			[	
+				'orderField'	=> 'name',
+				'label'			=> '标题',
+				'width'			=> '250',
+				'align' 		=> 'left',
+				'lang'			=> true,
+			],
+			[	
 				'orderField'	=> 'spu',
-				
-				'width'			=> '110',
+				'width'			=> '120',
 				'align' 		=> 'center',
 				
 			],
 			[	
 				'orderField'	=> 'sku',
-				
-				'width'			=> '110',
+				'width'			=> '150',
 				'align' 		=> 'center',
-				
 			],
+			
+			[	
+				'orderField'	=> 'qty',
+				'label'			=> '库存数',
+				'width'			=> '50',
+				'align' 		=> 'center',
+			],
+			
+			[	
+				'orderField'	=> 'weight',
+				'label'			=> '重量',
+				'width'			=> '50',
+				'align' 		=> 'center',
+			],
+			
+			[	
+				'orderField'	=> 'status',
+				'label'			=> '状态',
+				'width'			=> '50',
+				'align' 		=> 'center',
+				'display'		=> ProductHelper::getStatusArr(),
+			],
+			
+			[	
+				'orderField'	=> 'cost_price',
+				'label'			=> '成本价',
+				'width'			=> '50',
+				'align' 		=> 'center',
+			],
+			
+			[	
+				'orderField'	=> 'price',
+				'label'			=> '销售价',
+				'width'			=> '50',
+				'align' 		=> 'center',
+			],
+			
+			[	
+				'orderField'	=> 'special_price',
+				'label'			=> '特价',
+				'width'			=> '50',
+				'align' 		=> 'center',
+			],
+			
 			[	
 				'orderField'	=> 'created_user_id',
 				'label'			=> '创建人',
-				'width'			=> '110',
+				'width'			=> '50',
 				'align' 		=> 'center',
 			],
 			[	
 				'orderField'	=> 'created_at',
 				'label'			=> '创建时间',
-				'width'			=> '110',
+				'width'			=> '80',
 				'align' 		=> 'center',
 				'convert'		=> ['int' => 'datetime'],
 			],
 			[	
 				'orderField'	=> 'updated_at',
 				'label'			=> '更新时间',
-				'width'			=> '110',
+				'width'			=> '80',
 				'align' 		=> 'center',
 				'convert'		=> ['int' => 'datetime'],
 			],
@@ -177,16 +252,34 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 				$orderField = $field['orderField'];
 				$display	= $field['display'];
 				$val = isset($one[$orderField]) ? $one[$orderField] : '';
+				$display_title = '';
 				if($orderField == 'created_user_id'){
 					$val = isset($users[$val]) ? $users[$val] : $val;
-					$str .= '<td>'.$val.'</td>';
+					$display_title = $val;
+					$str .= '<td><span title="'.$display_title.'">'.$val.'</span></td>';
+					continue;
+				}
+				if($orderField == $this->_primaryKey){
+					$display_title = $val;
+					$str .= '<td><span style="width:60px;display:block;word-break:break-all;" title="'.$display_title.'">'.$val.'</span></td>';
+					continue;
+				}
+				
+				
+				if($orderField == 'image_main'){
+					if(isset($one['image']['main']['image'])){
+						$val = $one['image']['main']['image'];
+					}
+					$imgUrl = Yii::$service->product->image->getUrl($val);
+					$str .= '<td><span title="'.$imgUrl.'"><img style="width:100px;height:100px;" src="'.$imgUrl.'" /></span></td>';
 					continue;
 				}
 				if($val){
-					//echo $val;
+					$display_title = $val;
 					if(isset($field['display']) && !empty($field['display'])){
 						$display = $field['display'];
 						$val = $display[$val] ? $display[$val] : $val;
+						$display_title = $val;
 					}
 					if(isset($field['convert']) && !empty($field['convert'])){
 						$convert = $field['convert'];
@@ -202,6 +295,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 										$val = $timestramp;
 									}
 								}
+								$display_title = $val;
 							}else if(strstr($origin,'date')){
 								if($to == 'date'){
 									$val = date('Y-m-d',strtotime($val));
@@ -210,6 +304,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 								}else if($to == 'int'){
 									$val = strtotime($val);
 								}
+								$display_title = $val;
 							}else if($origin == 'int'){
 								if($to == 'date'){
 									$val = date('Y-m-d',$val);
@@ -218,11 +313,13 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 								}else if($to == 'int'){
 									$val = $val;
 								}
+								$display_title = $val;
 							}else if($origin == 'string'){
 								if($to == 'img'){
 									
 									$t_width = isset($field['img_width']) ? $field['img_width'] : '100';
 									$t_height = isset($field['img_height']) ? $field['img_height'] : '100';
+									$display_title = $val;
 									$val = '<img style="width:'.$t_width.'px;height:'.$t_height.'px" src="'.$val.'" />';;
 								}
 							}
@@ -233,9 +330,10 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 						//var_dump($val);
 						//var_dump($orderField);
 						$val = Yii::$service->fecshoplang->getDefaultLangAttrVal($val,$orderField);
+						$display_title = $val;
 					}
 				}
-				$str .= '<td>'.$val.'</td>';
+				$str .= '<td><span title="'.$display_title.'">'.$val.'</span></td>';
 			}
 			$str .= '<td>
 						<a title="编辑" target="dialog" class="btnEdit" mask="true" drawable="true" width="1000" height="580" href="'.$this->_editUrl.'?'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" >编辑</a>

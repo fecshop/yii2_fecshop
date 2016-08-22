@@ -66,9 +66,7 @@ class ProductMongodb implements ProductInterface
 		}
 		$currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
 		$primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
-		
 		if($primaryVal){
-			
 			$model = Product::findOne($primaryVal);
 			if(!$model){
 				Yii::$service->helper->errors->add('Product '.$this->getPrimaryKey().' is not exist');

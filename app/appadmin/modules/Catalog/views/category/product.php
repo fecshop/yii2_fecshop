@@ -17,7 +17,8 @@ use fec\helpers\CRequest;
 .pagination .j-prev ,
 .pagination .j-next ,
 .pagination .j-last {display:none;}
-
+.grid .gridTbody td div{height:auto;}
+.searchContent input{width:60px;}
 </style>
 <div id="pagerForm2" onsubmit="return divSearch(this, 'jbsxBox_product');"  method="post" action="<?= \fec\helpers\CUrl::getCurrentUrl();  ?>">
 	<?=  CRequest::getCsrfInputHtml();  ?>
@@ -42,15 +43,13 @@ use fec\helpers\CRequest;
 			<?= $tbody; ?>
 		</tbody>
 	</table>
-	
 </div>
 
 <script>
 $(document).ready(function(){
-	
 
 	$(".productSearch").click(function(){
-		url 	= $(".j-ajax").attr("href")+"?";
+		url 	= $(".j-ajax").attr("href")+"&";
 		ajaxProduct(url,'','');
 	});
 	
@@ -67,7 +66,7 @@ $(document).ready(function(){
 			selectVal 	= orderfield;
 			selectName 	= "orderField";
 			url 	= $(".j-ajax").attr("href");
-			url 	+= "?"+selectName+"="+selectVal+"&orderDirection="+orderDirection+"&";
+			url 	+= "&"+selectName+"="+selectVal+"&orderDirection="+orderDirection+"&";
 			ajaxProduct(url,selectName,'orderDirection');
 		}
 	});
@@ -113,7 +112,7 @@ $(document).ready(function(){
 		selectVal = $(this).val();
 		selectName = "numPerPage";
 		url = $(".j-ajax").attr("href");
-		url += "?"+selectName+"="+selectVal+"&";
+		url += "&"+selectName+"="+selectVal+"&";
 		
 		ajaxProduct(url,selectName);
 		
@@ -124,7 +123,7 @@ $(document).ready(function(){
 		selectVal = $(this).text();
 		selectName = "pageNum";
 		url = $(".j-ajax").attr("href");
-		url += "?"+selectName+"="+selectVal+"&";
+		url += "&"+selectName+"="+selectVal+"&";
 		ajaxProduct(url,selectName);
 	});
 	

@@ -11,6 +11,7 @@ use Yii;
 use fecshop\app\appadmin\modules\AppadminbaseBlockEdit;
 use fec\helpers\CUrl;
 use fec\helpers\CRequest;
+use fecshop\app\appadmin\modules\Catalog\helper\Product as ProductHelper;
 use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockEditInterface;
 /**
  * block catalog/productinfo
@@ -34,7 +35,6 @@ class Attr
 		$this->_attrInfo = Yii::$service->product->getGroupAttrInfo($this->_currentAttrGroup);
 		$attrs = array_keys($this->_attrInfo);
 		\fecshop\models\mongodb\Product::addCustomProductAttrs($attrs);
-		
 	}
 	
 	public function getGroupAttr(){
@@ -95,7 +95,7 @@ class Attr
 				'require' => 1,
 			],
 			[
-				'label'=>'重量',
+				'label'=>'重量(KG)',
 				'name'=>'weight',
 				'display'=>[
 					'type' => 'inputString',
@@ -110,10 +110,7 @@ class Attr
 				'name'=>'status',
 				'display'=>[
 					'type' => 'select',
-					'data' => [
-						1 	=> '激活',
-						2 	=> '关闭',
-					]
+					'data' => ProductHelper::getStatusArr(),
 				],
 				'require' => 1,
 				'default' => 1,
@@ -163,10 +160,7 @@ class Attr
 				'name'=>'is_in_stock',
 				'display'=>[
 					'type' => 'select',
-					'data' => [
-						1 	=> '有货',
-						2 	=> '缺货',
-					]
+					'data' => ProductHelper::getInStockArr(),
 				],
 				'require' => 1,
 				'default' => 1,
@@ -285,7 +279,7 @@ class Attr
 			],
 			
 			[
-				'label'=>'产品描述',
+				'label'=>'产品描述（<b>必填</b>）',
 				'name'=>'description',
 				'display'=>[
 					'type' => 'textarea',

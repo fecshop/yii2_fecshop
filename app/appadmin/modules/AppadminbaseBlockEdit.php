@@ -179,6 +179,13 @@ EOF;
 				$rows = isset($display['rows']) ? $display['rows'] : 15;
 				$cols = isset($display['cols']) ? $display['cols'] : 110;
 				$isLang = isset($display['lang']) ? $display['lang'] : false;
+				$uploadImgUrl = 'upimgurl="'.CUrl::getUrl('cms/staticblock/imageupload').'" upimgext="jpg,jpeg,gif,png"';
+				$uploadFlashUrl = 'upflashurl="'.CUrl::getUrl('cms/staticblock/flashupload').'" upflashext="swf"';
+				$uploadLinkUrl = 'uplinkurl="'.CUrl::getUrl('cms/staticblock/linkupload').'" uplinkext="zip,rar,txt"';
+				$uploadMediaUrl = 'upmediaurl="'.CUrl::getUrl('cms/staticblock/mediaupload').'" upmediaext:"avi"="" ';
+				
+				
+				
 				
 				if( $isLang && is_array($langs) && !empty($langs) ){
 					$tabLangTitle = '';
@@ -197,7 +204,7 @@ EOF;
 								<legend style="color:#cc0000">'.$label.'['.$lang.']：</legend>
 								<div>
 									<div class="unit">
-										<textarea  class="editor '.$inputStringLangRequire.'"  rows="'.$rows.'" cols="'.$cols.'" name="'.$this->_editFormData.'['.$name.']['.$langAttrName.']" >'.$value[$langAttrName].'</textarea>
+										<textarea '.$uploadImgUrl.' '.$uploadFlashUrl.'  '.$uploadLinkUrl.'  '.$uploadMediaUrl.'  class="editor '.$inputStringLangRequire.'"  rows="'.$rows.'" cols="'.$cols.'" name="'.$this->_editFormData.'['.$name.']['.$langAttrName.']" >'.$value[$langAttrName].'</textarea>
 									</div>
 								</div>
 							</fieldset>
@@ -229,7 +236,7 @@ EOF;
 						<fieldset id="fieldset_table_qbe">
 							<legend style="color:#cc0000">{$label}：</legend>
 							<div>
-								<textarea  class="editor" name="{$this->_editFormData}[{$name}]" rows="{$rows}" cols="{$cols}" name="{$this->_editFormData}[{$name}]" >{$value}</textarea>
+								<textarea  class="editor" name="{$this->_editFormData}[{$name}]" rows="{$rows}" cols="{$cols}" name="{$this->_editFormData}[{$name}]"  {$uploadImgUrl}  {$uploadFlashUrl}  {$uploadLinkUrl}   {$uploadMediaUrl} >{$value}</textarea>
 							</div>
 						</fieldset>
 EOF;

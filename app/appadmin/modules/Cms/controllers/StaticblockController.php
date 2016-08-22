@@ -16,6 +16,7 @@ use fecshop\app\appadmin\modules\Cms\CmsController;
  */
 class StaticblockController extends CmsController
 {
+	public $enableCsrfValidation = false;
 	
     public function actionIndex()
     {
@@ -41,14 +42,29 @@ class StaticblockController extends CmsController
 
 
 
+	# cms/staticblock/imageupload
+	public function actionImageupload()
+    {
+		//$imgUrl = 'http://fecshop.appadmin.fancyecommerce.com/assets/9e150533/dwz_jui-master/themes/default/images/logo.png';
+		foreach($_FILES as $FILE){
+			list($imgSavedRelativePath,$imgUrl,$imgPath) = Yii::$service->image->saveUploadImg($FILE);
+		}
+		exit(json_encode(array('err' => 0, 'msg' => $imgUrl)));  
+		//var_dump($_FILES);
+	}
 
+	
+	public function actionFlashupload(){
+		
+	}
 
+	public function actionLinkupload(){
+		
+	}
 
-
-
-
-
-
+	public function actionMediaupload(){
+		
+	}
 
 
 

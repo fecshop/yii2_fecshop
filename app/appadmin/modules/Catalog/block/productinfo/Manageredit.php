@@ -119,15 +119,11 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 		if(isset($this->_one['image']['main']) && !empty($this->_one['image']['main'])){
 			$main_image = $this->_one['image']['main'];
 		}
-		
 		if(isset($this->_one['image']['gallery']) && !empty($this->_one['image']['gallery'])){
 			$gallery_image = $this->_one['image']['gallery'];
 		}
-		
-		
 		$str =
 		'<div>
-			
 			<table class="list productimg" width="100%" >
 				<thead>
 					<tr>
@@ -172,74 +168,7 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 	
 	
 	public function getEditArr(){
-		return [
-			[
-				'label'=>'标题',
-				'name'=>'title',
-				'display'=>[
-					'type' => 'inputString',
-					'lang' => true,
-				],
-				'require' => 1,
-			],
-			
-			[
-				'label'=>'Url Key',
-				'name'=>'url_key',
-				'display'=>[
-					'type' => 'inputString',
-				],
-				'require' => 0,
-			],
-			
-			[
-				'label'=>'Meta Keywords',
-				'name'=>'meta_keywords',
-				'display'=>[
-					'type' => 'inputString',
-					'lang' => true,
-				],
-				'require' => 0,
-			],
-			
-			[
-				'label'=>'Meta Description',
-				'name'=>'meta_description',
-				'display'=>[
-					'type' => 'textarea',
-					'lang' => true,
-					'rows'	=> 14,
-					'cols'	=> 110,
-				],
-				'require' => 0,
-			],
-			
-			[
-				'label'=>'Content',
-				'name'=>'content',
-				'display'=>[
-					'type' => 'textarea',
-					'lang' => true,
-					'rows'	=> 14,
-					'cols'	=> 110,
-				],
-				'require' => 0,
-			],
-			
-			[
-				'label'=>'用户状态',
-				'name'=>'status',
-				'display'=>[
-					'type' => 'select',
-					'data' => [
-						1 	=> '激活',
-						2 	=> '关闭',
-					]
-				],
-				'require' => 1,
-				'default' => 1,
-			],
-		];
+		
 	}
 	/**
 	 * save article data,  get rewrite url and save to article url key.

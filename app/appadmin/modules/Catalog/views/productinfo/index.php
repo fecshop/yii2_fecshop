@@ -12,6 +12,11 @@ use fec\helpers\CRequest;
  * @since 1.0
  */
 ?>
+<style>
+.searchContent input{width:50px;}
+.grid .gridTbody td div{height:auto;}
+.grid .gridTbody td div span{display:block;white-space:normal}
+</style>
 <form id="pagerForm" method="post" action="<?= \fec\helpers\CUrl::getCurrentUrl();  ?>">
 	<?=  CRequest::getCsrfInputHtml();  ?>
 	<?=  $pagerForm;  ?>
