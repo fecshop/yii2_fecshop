@@ -46,7 +46,10 @@ class CategoryController extends CatalogController
 		$this->getBlock("index")->remove();
 	}
 
-
+	public function actionImageupload()
+    {
+		$this->getBlock('image')->upload();
+	}
 
 
 

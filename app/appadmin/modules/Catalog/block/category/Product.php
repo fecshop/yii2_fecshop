@@ -19,6 +19,8 @@ use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockInterface;
  */
 class Product extends AppadminbaseBlock implements AppadminbaseBlockInterface
 {
+	protected $_select_id_arr; 
+	
 	/**
 	 * init param function ,execute in construct
 	 */
@@ -27,6 +29,28 @@ class Product extends AppadminbaseBlock implements AppadminbaseBlockInterface
 		$this->_service = Yii::$service->product;
 		parent::init();
 		
+	}
+	
+	public function getPagerForm(){
+		$str = "";
+		if(is_array($this->_param) && !empty($this->_param)){
+			foreach($this->_param as $k=>$v){
+				if($k != "_csrf"){
+					$str .='<input type="hidden" name="'.$k.'" value="'.$v.'">';
+				}
+			}
+		}
+		if(!isset($this->_param['productfiltertype'])){
+			$str .='<input type="hidden" name="productfiltertype" value="">';
+		}
+		if(!isset($this->_param['product_select_info'])){
+			$str .='<input class="product_select_info" type="hidden" name="product_select_info" value="">';
+		}
+		if(!isset($this->_param['product_unselect_info'])){
+			$str .='<input class="product_unselect_info" type="hidden" name="product_unselect_info" value="">';
+		}
+		
+		return $str;
 	}
 	
 	public function getLastData(){
@@ -219,9 +243,55 @@ class Product extends AppadminbaseBlock implements AppadminbaseBlockInterface
 			}
 		}
 		$where[] = ['status' => 1];
-		$where[] = ['category' => CRequest::param($this->_primaryKey)];
+		if(CRequest::param('productfiltertype') == 'reset'){
+			
+		}else{
+			$where[] = ['category' => CRequest::param(Yii::$service->category->getPrimaryKey())];
+		}
 		//var_dump($where);
 		return $where;
+	}
+	
+	
+	/**
+	 * list table body.
+	 */
+	public function getTableTbody(){
+		$searchArr = $this->getSearchArr();
+		if(is_array($searchArr) && !empty($searchArr)){
+			$where = $this->initDataWhere($searchArr);
+		}
+		$filter = [
+	 		'numPerPage' 	=> $this->_param['numPerPage'],  	
+	 		'pageNum'		=> $this->_param['pageNum'], 
+	 		'orderBy'		=> [$this->_param['orderField'] => (($this->_param['orderDirection'] == 'asc') ? SORT_ASC : SORT_DESC  )],
+	 		'where'			=> $where,
+			'asArray' 		=> $this->_asArray,
+		];
+		$coll = $this->_service->coll($filter );
+		$data = $coll['coll'];
+		$product_id_arr = [];
+		foreach($data as $one){
+			$product_id_arr[] = $one[\Yii::$service->product->getPrimaryKey()];
+		}
+		$category_id = CRequest::param(Yii::$service->category->getPrimaryKey());
+		$this->_select_id_arr = \Yii::$service->product->getCategoryProductIds($product_id_arr,$category_id);
+		# 如果选择
+		$product_select_info = CRequest::param('product_select_info');
+		$product_unselect_info = CRequest::param('product_unselect_info');
+		
+		if($product_select_info){
+			$product_select_arr = explode(",",$product_select_info);
+			$this->_select_id_arr =  array_merge($this->_select_id_arr,$product_select_arr);
+		}
+		if($product_unselect_info){
+			$product_unselect_arr = explode(",",$product_unselect_info);
+			$this->_select_id_arr = array_diff($this->_select_id_arr,$product_unselect_arr);
+		}
+		
+		//var_dump($this->_select_id_arr);
+		$this->_param['numCount'] = $coll['count'];
+		return $this->getTableTbodyHtml($data);
 	}
 	
 	/**
@@ -237,8 +307,12 @@ class Product extends AppadminbaseBlock implements AppadminbaseBlockInterface
 		}
 		$users = Yii::$service->adminUser->getIdAndNameArrByIds($user_ids);
 		foreach($data as $one){
+			$checked = '';
+			if(in_array($one[$this->_primaryKey],$this->_select_id_arr)){
+				$checked = 'checked="checked"';
+			}  
 			$str .= '<tr target="sid_user" rel="'.$one[$this->_primaryKey].'">';
-			$str .= '<td><input name="'.$this->_primaryKey.'s" value="'.$one[$this->_primaryKey].'" type="checkbox"></td>';
+			$str .= '<td><input name="'.$this->_primaryKey.'s" value="'.$one[$this->_primaryKey].'" type="checkbox"  '.$checked.'></td>';
 			foreach($fileds as $field){
 				$orderField = $field['orderField'];
 				$display	= $field['display'];
@@ -399,8 +473,8 @@ class Product extends AppadminbaseBlock implements AppadminbaseBlockInterface
 				</table>
 				<div class="subBar">
 					<ul>
-						<li><a class="button productSearch" ><span>产品重置</span></a></li>
-						<li><a class="button productSearch" ><span>检索</span></a></li>
+						<li><a class="button productReset" ><span>全部产品检索</span></a></li>
+						<li><a class="button productSearch" ><span>当前分类产品检索</span></a></li>
 					</ul>
 				</div>';
 		}	

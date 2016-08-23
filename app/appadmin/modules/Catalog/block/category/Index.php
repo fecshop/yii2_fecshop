@@ -10,6 +10,7 @@ namespace fecshop\app\appadmin\modules\Catalog\block\category;
 use Yii;
 use fecshop\app\appadmin\modules\AppadminbaseBlockEdit;
 use fec\helpers\CUrl;
+use fec\helpers\CRequest;
 use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockEditInterface;
 /**
  * @author Terry Zhao <2358269014@qq.com>
@@ -95,6 +96,7 @@ class Index extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInterf
 	}
 	
 	public function saveCategory(){
+		$cate_id = Yii::$service->category->GetPrimaryKey();
 		$editFormData = Yii::$app->request->post('editFormData');
 		if(isset($editFormData)){
 			$defaultLangName = Yii::$service->fecshoplang->GetDefaultLangAttrName('name');
@@ -107,8 +109,28 @@ class Index extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInterf
 				));
 				exit;
 			}
+			$thumbnail_image = CRequest::param('thumbnail_image');
+			$image = CRequest::param('image');
+			if($thumbnail_image){
+				$editFormData['thumbnail_image'] = $thumbnail_image;
+			}
+			if($image){
+				$editFormData['image'] = $image;
+			}
+			
+			$product_select_info = CRequest::param('product_select_info');
+			$product_unselect_info = CRequest::param('product_unselect_info');
+			$category_id = $editFormData[$cate_id];
+			//var_dump($editFormData);
+			//echo $category_id;exit;
+			$addCateProductIdArr = explode(',',$product_select_info);
+			$deleteCateProductIdArr = explode(',',$product_unselect_info);
+			Yii::$service->product->addAndDeleteProductCategory($category_id,$addCateProductIdArr,$deleteCateProductIdArr);
+			
 			$parent_id = (Yii::$app->request->post('parent_id'));
-			$editFormData['parent_id'] = $parent_id;
+			if(!isset($editFormData[$cate_id]) || !$editFormData[$cate_id]){
+				$editFormData['parent_id'] = $parent_id;
+			}
 			$originUrlKey = 'catalog/category/index';
 			Yii::$service->category->save($editFormData,$originUrlKey);
 			$errors = Yii::$service->helper->errors->get();
@@ -133,9 +155,13 @@ class Index extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInterf
 		$primaryKey = Yii::$service->category->getPrimaryKey();
 		$primaryVal = Yii::$app->request->get($primaryKey);
 		return [
-			'product_url'=> CUrl::getUrl('catalog/category/product',[$primaryKey => $primaryVal]),
-			'base_info' => $this->getBaseInfo(),
-			'meta_info' => $this->getMetaInfo(),
+			'thumbnail_image' 	=> $this->_one['thumbnail_image'],
+			'image' 			=> $this->_one['image'],
+			'thumbnail_imageurl'=> Yii::$service->category->image->getUrl($this->_one['thumbnail_image']),
+			'imageurl'			=> Yii::$service->category->image->getUrl($this->_one['image']),
+			'product_url'		=> CUrl::getUrl('catalog/category/product',[$primaryKey => $primaryVal]),
+			'base_info' 		=> $this->getBaseInfo(),
+			'meta_info' 		=> $this->getMetaInfo(),
 		];
 	}
 	

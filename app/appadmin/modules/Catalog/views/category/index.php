@@ -14,11 +14,86 @@ use fec\helpers\CUrl;
 
 <script>
 
+function array_unique(arr)
+{
+	arr.sort();
+	var re=[arr[0]];
+	for(var i = 1; i < arr.length; i++)
+	{
+		if( arr[i] !== re[re.length-1])
+		{
+			re.push(arr[i]);
+		}
+	}
+	return re;
+}
+
+
+function array_quchu(arr1,arr2){
+    var arr3 = [];
+    for (var i = 0; i < arr1.length; i++) {
+		var flag = true;
+		for (var j = 0; j < arr2.length; j++) {
+			if (arr2[j] == arr1[i]) {
+				flag = false;
+			}
+		}
+		if (flag) {
+			arr3.push(arr1[i]);
+		}
+	}
+	return arr3;
+} 
+
+//选择产品。
+function product_select(){
+	product_select_info = $('#jbsxBox_product input[name="product_select_info"]').val();
+	if(product_select_info){
+		var select_arr = product_select_info.split(","); 
+	}else{
+		var select_arr = []; 
+	} 
+	
+	product_unselect_info = $('#jbsxBox_product input[name="product_unselect_info"]').val();
+	if(product_unselect_info){
+		var un_select_arr = product_unselect_info.split(","); 
+	}else{
+		var un_select_arr = []; 
+	} 
+	
+	$('.gridTbody input:checkbox:checked').each(function(){
+		val = $(this).val();
+		select_arr.push(val);
+	});
+	select_arr = array_unique(select_arr);
+	//alert(select_arr);
+	
+	$('.gridTbody input:checkbox:unchecked').each(function(){
+		val = $(this).val();
+		un_select_arr.push(val);
+	});
+	un_select_arr = array_unique(un_select_arr);
+	
+	select_arr = array_quchu(select_arr,un_select_arr);
+	selected_product = select_arr.join(",");
+	//alert(selected_product); 
+	$('#jbsxBox_product input[name="product_select_info"]').val(selected_product);		
+	
+	un_select_arr = array_quchu(un_select_arr,select_arr);
+	un_selected_product = un_select_arr.join(",");
+	//alert(un_selected_product); 
+	$('#jbsxBox_product input[name="product_unselect_info"]').val(un_selected_product);
+}
 
 function thissubmit(thiss){	
+	ifproductinfoisload = $(".ifproductinfoisload").val();
+	if(ifproductinfoisload){
+		product_select();
+	}
 	return validateCallback(thiss, dialogAjaxDoneReflush);
 }
-$(".add-category").ready(function(){
+
+$(document).ready(function(){
 	$(document).off("click").on("click",".addcategory",function(){
 		parentId = $(".treeFolder .selected > .category_one").attr("key");
 		if(parentId){

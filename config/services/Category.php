@@ -17,6 +17,13 @@ return [
 				'class' => 'fecshop\services\category\Menu',
 				//'rootCategoryId' => 0,
 			],
+			'image' => [
+				'class' 		=> 'fecshop\services\category\Image',
+				'imageFloder' 	=> 'media/catalog/category',
+				//'allowImgType' 	=> ['image/jpeg','image/gif','image/png'],
+				'maxUploadMSize'=> 5, #MB
+			
+			],
 		],
 	],
 ];

@@ -23,6 +23,7 @@ use fec\helpers\CRequest;
 <div id="pagerForm2" onsubmit="return divSearch(this, 'jbsxBox_product');"  method="post" action="<?= \fec\helpers\CUrl::getCurrentUrl();  ?>">
 	<?=  CRequest::getCsrfInputHtml();  ?>
 	<?=  $pagerForm;  ?>
+	
 </div>
 <div class="pageHeader">
 	<div rel="pagerForm2" onsubmit="return divSearch(this, 'jbsxBox_product');"  action="<?= \fec\helpers\CUrl::getCurrentUrl();  ?>" method="post">
@@ -46,13 +47,55 @@ use fec\helpers\CRequest;
 </div>
 
 <script>
-$(document).ready(function(){
 
-	$(".productSearch").click(function(){
+function array_unique(arr)
+{
+	arr.sort();
+	var re=[arr[0]];
+	for(var i = 1; i < arr.length; i++)
+	{
+		if( arr[i] !== re[re.length-1])
+		{
+			re.push(arr[i]);
+		}
+	}
+	return re;
+}
+
+
+function array_quchu(arr1,arr2){
+    var arr3 = [];
+    for (var i = 0; i < arr1.length; i++) {
+		var flag = true;
+		for (var j = 0; j < arr2.length; j++) {
+			if (arr2[j] == arr1[i]) {
+				flag = false;
+			}
+		}
+		if (flag) {
+			arr3.push(arr1[i]);
+		}
+	}
+	return arr3;
+} 
+
+
+
+$(document).ready(function(){
+	//搜索
+	$(".searchBar").off("click").on("click",".productSearch",function(){
 		url 	= $(".j-ajax").attr("href")+"&";
+		$("#pagerForm2 input[name='productfiltertype']").val("");
+		ajaxProduct(url,'','');
+	});
+	// 重置搜索
+	$(".searchBar").on("click",".productReset",function(){
+		url 	= $(".j-ajax").attr("href")+"&";
+		$("#pagerForm2 input[name='productfiltertype']").val("reset");
 		ajaxProduct(url,'','');
 	});
 	
+	//排序
 	$("#jbsxBox_product").off("click").on("click",".grid table tr th",function(){
 		//alert(111);
 		orderfield 	= $(this).attr("orderfield");
@@ -71,7 +114,55 @@ $(document).ready(function(){
 		}
 	});
 	
+	//$("#jbsxBox_product").on("click","input:checkbox",function(){
+	//	product_select();
+	//});
+	
+	//选择产品。
+	function product_select(){
+		product_select_info = $('#jbsxBox_product input[name="product_select_info"]').val();
+		if(product_select_info){
+			var select_arr = product_select_info.split(","); 
+		}else{
+			var select_arr = []; 
+		} 
+		
+		product_unselect_info = $('#jbsxBox_product input[name="product_unselect_info"]').val();
+		if(product_unselect_info){
+			var un_select_arr = product_unselect_info.split(","); 
+		}else{
+			var un_select_arr = []; 
+		} 
+		
+		$('.gridTbody input:checkbox:checked').each(function(){
+			val = $(this).val();
+			select_arr.push(val);
+		});
+		select_arr = array_unique(select_arr);
+		//alert(select_arr);
+		
+		$('.gridTbody input:checkbox:unchecked').each(function(){
+			val = $(this).val();
+			un_select_arr.push(val);
+		});
+		un_select_arr = array_unique(un_select_arr);
+		
+		select_arr = array_quchu(select_arr,un_select_arr);
+		selected_product = select_arr.join(",");
+		//alert(selected_product); 
+		$('#jbsxBox_product input[name="product_select_info"]').val(selected_product);		
+		
+		un_select_arr = array_quchu(un_select_arr,select_arr);
+		un_selected_product = un_select_arr.join(",");
+		//alert(un_selected_product); 
+		$('#jbsxBox_product input[name="product_unselect_info"]').val(un_selected_product);
+	}
+	
+	
+	
 	function ajaxProduct(url,selectName,selectName2=''){
+		
+		product_select();
 		$("#pagerForm2 input").each(function(){
 			val = $(this).val();
 			name = $(this).attr("name");
@@ -136,6 +227,6 @@ $(document).ready(function(){
 });
 
 </script>
-
+<input type="hidden"  class="ifproductinfoisload" value="1"  />
 
 

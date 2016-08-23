@@ -55,6 +55,31 @@ class ProductMongodb implements ProductInterface
 		];
 	}
 	
+	
+	public function getCategoryProductIds($product_id_arr,$category_id){
+		$id_arr = [];
+		if(is_array($product_id_arr) && !empty($product_id_arr)){
+			$query = Product::find()->asArray();
+			$mongoIds = [];
+			foreach($product_id_arr as $id){
+				$mongoIds[] = new \MongoId($id);
+			}
+			//var_dump($mongoIds);
+			$query->where(['in',$this->getPrimaryKey(),$mongoIds]);
+			$query->andWhere(['category'=>$category_id]);
+			$data = $query->all();
+			if(is_array($data) && !empty($data) ){
+				foreach($data as $one){
+					$id_arr[] = $one[$this->getPrimaryKey()];
+				}
+			}
+		}
+		//echo '####';
+		//var_dump($id_arr);
+		//echo '####';
+		return $id_arr;
+	}
+	
 	/**
 	 * @property $one|Array
 	 * save $data to cms model,then,add url rewrite info to system service urlrewrite.                 
@@ -168,7 +193,58 @@ class ProductMongodb implements ProductInterface
 		return true;
 	}
 	
-	
+	//addAndDeleteProductCategory
+	public function addAndDeleteProductCategory($category_id,$addCateProductIdArr,$deleteCateProductIdArr){
+		# 在 addCategoryIdArr 查看哪些产品，分类id在product中已经存在，
+		$idKey = $this->getPrimaryKey();
+		//var_dump($addCateProductIdArr);
+		if(is_array($addCateProductIdArr) && !empty($addCateProductIdArr) && $category_id){
+			
+			$addCateProductIdArr = array_unique($addCateProductIdArr);
+			foreach($addCateProductIdArr as $product_id){
+				if(!$product_id){
+					continue;
+				}
+				$product = Product::findOne($product_id);
+				if(!$product[$idKey]){
+					continue;
+				}
+				$category = $product->category;
+				$category = ($category && is_array($category)) ? $category : [];
+				//echo $category_id;
+				if(!in_array($category_id,$category)){
+					//echo $category_id;
+					$category[] = $category_id;
+					$product->category = $category;
+					$product->save();
+				}
+			}
+		}
+		
+		if(is_array($deleteCateProductIdArr) && !empty($deleteCateProductIdArr) && $category_id){
+			$deleteCateProductIdArr = array_unique($deleteCateProductIdArr);
+			foreach($deleteCateProductIdArr as $product_id){
+				if(!$product_id){
+					continue;
+				}
+				$product = Product::findOne($product_id);
+				if(!$product[$idKey]){
+					continue;
+				}
+				$category = $product->category;
+				if(in_array($category_id,$category)){
+					$arr = [];
+					foreach($category as $c){
+						if($category_id != $c){
+							$arr[] = $c;
+						}
+					}
+					$product->category = $arr;
+					$product->save();
+				}
+			}
+		}
+	}
 	
 }
 

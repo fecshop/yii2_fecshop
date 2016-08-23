@@ -469,7 +469,6 @@ class AppadminbaseBlock extends Object{
 		];
 		$coll = $this->_service->coll($filter );
 		$data = $coll['coll'];
-		
 		$this->_param['numCount'] = $coll['count'];
 		return $this->getTableTbodyHtml($data);
 	}

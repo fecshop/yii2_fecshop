@@ -96,6 +96,10 @@ class Product extends Service
 		return $this->_product->getTreeArr($rootCategoryId);
 	}
 	
+	
+	protected function actionGetCategoryProductIds($product_id_arr,$category_id){
+		return $this->_product->getCategoryProductIds($product_id_arr,$category_id);
+	}
 	/**
 	 * @property $one|Array , save one data .
 	 * @property $originUrlKey|String , article origin url key.
@@ -107,6 +111,10 @@ class Product extends Service
 	
 	protected function actionRemove($ids){
 		return $this->_product->remove($ids);
+	}
+	
+	protected function actionAddAndDeleteProductCategory($category_id,$addCateProductIdArr,$deleteCateProductIdArr){
+		return $this->_product->addAndDeleteProductCategory($category_id,$addCateProductIdArr,$deleteCateProductIdArr);
 	}
 	
 }
