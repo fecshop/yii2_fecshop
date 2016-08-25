@@ -7,8 +7,11 @@ class Menu implements BlockCache
 	
     public function getLastData()
     {
+		
+		$categoryArr = Yii::$service->page->menu->getMenuData();
+		//var_dump($categoryArr);
 		return [
-			
+			'categoryArr' => $categoryArr,
 		];
 	}
 	

@@ -73,7 +73,9 @@ class Category extends Service
 	protected function actionColl($filter=''){
 		return $this->_category->coll($filter);
 	}
-	
+	/**
+	 *  用于后台分类树编辑。
+	 */
 	protected function actionGetTreeArr($rootCategoryId=0){
 		return $this->_category->getTreeArr($rootCategoryId);
 	}

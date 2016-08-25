@@ -56,27 +56,63 @@ class Menu extends Service
 		]
 	 */
 	protected function actionGetMenuData(){
+		
 		$this->_homeUrl = CUrl::getHomeUrl();
 		$arr = [];
 		if($displayHome = $this->displayHome){
-			$enable =  isset($displayHome['enable']) ?$displayHome['enable'] : '',
-			$display =  isset($displayHome['display']) ?$displayHome['display'] : '',
+			$enable =  isset($displayHome['enable']) ?$displayHome['enable'] : '';
+			$display =  isset($displayHome['display']) ?$displayHome['display'] : '';
 			if($enable && $display){
 				$arr[] = [
 					'name' => $display,
-					'urlPath'	=> '',
+					'url'	=> Yii::$service->url->homeUrl(),
 				];
 			}
 		}
-		if($this->frontCustomMenu){
-			$arr[] = $this->frontCustomMenu,
+		$first_custom_menu = $this->customMenuInit($this->frontCustomMenu);
+		if(is_array($first_custom_menu) && !empty($first_custom_menu)){
+			foreach($first_custom_menu as $m){
+				$arr[] = $m;
+			}
 		}
-		$arr[] = $this->getProductCategoryMenu();
-		if($this->behindCustomMenu){
-			$arr[] = $this->behindCustomMenu,
+		$categoryMenuArr = $this->getProductCategoryMenu();
+		//var_dump($categoryMenuArr);
+		if(is_array($categoryMenuArr) && !empty($categoryMenuArr)){
+			foreach($categoryMenuArr as $a){
+				$arr[] = $a;
+			}
 		}
+		
+		$behind_custom_menu = $this->customMenuInit($this->behindCustomMenu);
+		if(is_array($behind_custom_menu) && !empty($behind_custom_menu)){
+			foreach($behind_custom_menu as $m){
+				$arr[] = $m;
+			}
+		}
+		
+		//var_dump($arr);
 		return $arr;
 	} 
+	
+	protected function customMenuInit($customMenu){
+		$cMenu = [];
+		if(is_array($customMenu) && !empty($customMenu)){
+			foreach($customMenu as $k=>$menu){
+				$name = $menu['name'];
+				if(is_array($name)){
+					$name = Yii::$service->store->getStoreAttrVal($name,'name');
+					$menu['name'] = $name;
+				}
+				$urlPath = $menu['urlPath'];
+				$menu['url'] = Yii::$service->url->getUrl($urlPath);
+				$cMenu[$k] = $menu;
+				if(isset($menu['childMenu'])){
+					$cMenu[$k]['childMenu'] = $this->customMenuInit($menu['childMenu']);
+				}
+			}
+		}
+		return $cMenu;
+	}
 	
 	/**
 	 * get product category array as menu.

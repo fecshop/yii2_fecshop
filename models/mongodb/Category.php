@@ -37,7 +37,7 @@ class Category extends ActiveRecord
 			'thumbnail_image',
 			'image',
 	        'description',
-			
+			'menu_custom',
 			'title', 
 			'meta_description', 
 			'meta_keywords', 

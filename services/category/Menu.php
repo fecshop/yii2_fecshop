@@ -19,11 +19,11 @@ use fecshop\models\mongodb\Category;
  */
 class Menu extends Service
 {
-	public $rootCategoryId = 0;
+	public $rootCategoryId = '0';
 	
 	/**
 	 * @property $parentId|Int
-	 * get category menu as array. array key is: _id ,name ,urlPath,childMenu
+	 * 得到分类的目录信息
 	 * 
 	 */
 	protected function actionGetCategoryMenuArr($parentId=''){
@@ -31,18 +31,20 @@ class Menu extends Service
 		if(!$parentId)
 			$parentId = $this->rootCategoryId;
 		$data = Category::find()->asArray()->select([
-			'_id','parent_id','name','url_path'
+			'_id','parent_id','name','url_key','menu_custom'
 		])->where([
 			'parent_id' => $parentId
 		])->all();
+		
 		if(is_array($data) && !empty($data)){
 			foreach($data as $category){
 				$categoryOne = [
-					'_id'		=> $category['_id'];
-					'name' 		=> Yii::$service->store->getLangVal($category['name'],'name'),
-					'urlPath' 	=> $category['url_path'],
-				]
-				$childMenu = $this->getCategoryMenuArr($category['parent_id']);
+					'_id'		=> $category['_id']->{'$id'},
+					'name' 		=> Yii::$service->store->getStoreAttrVal($category['name'],'name'),
+					'menu_custom'=> Yii::$service->store->getStoreAttrVal($category['menu_custom'],'menu_custom'),
+					'url' 		=> Yii::$service->url->getUrl($category['url_key']),
+				];
+				$childMenu = $this->getCategoryMenuArr($category['_id']->{'$id'});
 				if($childMenu){
 					$categoryOne['childMenu'] = $childMenu;
 				}

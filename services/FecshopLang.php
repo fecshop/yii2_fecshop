@@ -95,7 +95,19 @@ class Fecshoplang extends Service
 		return '';
 	}
 	
-	
+	/**
+	 * @property $attrVal|String  属性对应的值 一般是一个数组，里面包含各个语言的的属性值
+	 * @property $attrName|String 属性名称，譬如:  name   title
+	 * @return  当前store 语言对应的值。
+	 */
+	/*
+	protected function actionGetCurrentStoreAttrVal($attrVal,$attrName){
+		$langCode = Yii::$service->store->currentLangCode ;
+		if($langCode){
+			return $this->getLangAttrVal($attrVal,$attrName,$langCode);
+		}
+	}
+	*/
 	
 	/**
 	 * @property $language|String  like: en_US ,fr_FR,zh_CN

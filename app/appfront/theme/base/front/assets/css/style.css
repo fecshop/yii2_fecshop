@@ -180,6 +180,7 @@ a:active, a:link {
 #mainBox, .main_inner, .social_inner, .top_main_inner, .top_nav_inner, .userInfo, .userNavBox {
     width: 1200px;
 }
+#mainBox {min-height:500px;}
 .pr {
     position: relative;
 }

@@ -137,6 +137,12 @@ class Url extends Service
 	 * Yii::$service->url->getUrlByPath('cms/article/index',['id'=>33],true);
 	 */
 	protected function actionGetUrl($path,$params=[],$https=false){
+		$first_str = substr($path,0,1);
+		if($first_str == '/'){
+			$jg = '';
+		}else{
+			$jg = '/';
+		}
 		if($https){
 			$baseUrl 	= $this->getHttpsBaseUrl();
 		}else{
@@ -147,9 +153,9 @@ class Url extends Service
 			foreach($params as $k => $v){
 				$arr[] = $k.'='.$v;
 			}
-			return $baseUrl.'/'.$path.'?'.implode('&',$arr);
+			return $baseUrl.$jg.$path.'?'.implode('&',$arr);
 		}
-		return $baseUrl.'/'.$path;
+		return $baseUrl.$jg.$path;
 	}
 	
 	/**

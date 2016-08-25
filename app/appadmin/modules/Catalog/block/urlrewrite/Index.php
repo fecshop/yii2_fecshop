@@ -203,16 +203,37 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 				}
 				$str .= '<td>'.$val.'</td>';
 			}
-			$str .= '<td>
-						<a title="编辑" target="dialog" class="btnEdit" mask="true" drawable="true" width="1000" height="580" href="'.$this->_editUrl.'?'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" >编辑</a>
-						<a title="删除" target="ajaxTodo" href="'.$this->_deleteUrl.'?'.$csrfString.'&'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" class="btnDel">删除</a>
-					</td>';
+			
 			$str .= '</tr>';
 		}
 		return $str ;
 		
 	}
 	
+	
+	public function getTableTheadHtml($table_th_bar){
+		$table_th_bar = $this->getTableTheadArrInit($table_th_bar);
+		$this->_param['orderField'] 	= $this->_param['orderField'] 		? $this->_param['orderField'] : $this->_primaryKey;
+		$this->_param['orderDirection'] = $this->_param['orderDirection'] ;
+		foreach($table_th_bar as $k => $field){
+			if($field['orderField'] == $this->_param['orderField']){
+				$table_th_bar[$k]['class'] = $this->_param['orderDirection'];
+			}	
+		}
+		$str = '<thead><tr>';
+		$str .= '<th width="22"><input type="checkbox" group="'.$this->_primaryKey.'s" class="checkboxCtrl"></th>';
+		foreach($table_th_bar as $b){
+			$width = $b['width'];
+			$label = $b['label'];
+			$orderField = $b['orderField'];
+			$class = isset($b['class']) ? $b['class'] : '';
+			$align = isset($b['align']) ? 'align="'.$b['align'].'"' : '';
+			$str .= '<th width="'.$width.'" '.$align.' orderField="'.$orderField.'" class="'.$class.'">'.$label.'</th>';
+		}
+		//$str .= '<th width="80" >编辑</th>';
+		$str .= '</tr></thead>';
+		return $str;
+	}
 	
 	
 }

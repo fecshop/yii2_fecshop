@@ -269,6 +269,19 @@ class Index extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInterf
 				'require' => 0,
 			],
 			
+			[
+				'label'=>'菜单自定义部分',
+				'name'=>'menu_custom',
+				'display'=>[
+					'type' => 'textarea',
+					'lang' => true,
+					'rows'	=> 14,
+					'cols'	=> 100,
+				],
+				'require' => 0,
+			],
+			
+			
 		];
 		$str = $this->getEditBar($editArr);
 		return $this->_lang_attr.$str.$this->_textareas;
