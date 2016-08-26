@@ -117,6 +117,10 @@ class Product extends Service
 		return $this->_product->addAndDeleteProductCategory($category_id,$addCateProductIdArr,$deleteCateProductIdArr);
 	}
 	
+	protected function actionGetFrontCategoryProducts($filter){
+		return $this->_product->getFrontCategoryProducts($filter);
+		
+	}
 }
 
 

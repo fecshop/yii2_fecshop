@@ -183,6 +183,15 @@ class Index extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInterf
 		$this->_textareas = '';
 		$editArr = [
 			[
+				'label'=>'Title',
+				'name'=>'title',
+				'display'=>[
+					'type' => 'inputString',
+					'lang' => true,
+				],
+				'require' => 0,
+			],
+			[
 				'label'=>'Meta Keywords',
 				'name'=>'meta_keywords',
 				'display'=>[

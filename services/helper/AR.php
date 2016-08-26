@@ -40,7 +40,8 @@ class AR extends Service
 	 * ]
 	 */
 	public function getCollByFilter($query,$filter){
-		$asArray 	= isset($filter['asArray']) ? $filter['asArray'] : false;
+		$select 	= isset($filter['select']) ? $filter['select'] : '';
+		$asArray 	= isset($filter['asArray']) ? $filter['asArray'] : true;
 		$numPerPage = isset($filter['numPerPage']) ? $filter['numPerPage'] : $this->numPerPage;
 		$pageNum 	= isset($filter['pageNum']) ? $filter['pageNum'] : $this->pageNum;
 		$orderBy 	= isset($filter['orderBy']) ? $filter['orderBy'] : '';
@@ -48,6 +49,8 @@ class AR extends Service
 		
 		if($asArray)
 			$query->asArray();
+		if(is_array($select) && !empty($select))
+			$query->select($select);
 		if($where){
 			if(is_array($where)){
 				$i = 0;

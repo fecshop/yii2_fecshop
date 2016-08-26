@@ -12,9 +12,6 @@ use fec\helpers\CDir;
 use yii\base\InvalidValueException;
 use yii\base\InvalidConfigException;
 use fecshop\services\Service;
-use fecshop\models\mongodb\Category;
-use fecshop\models\mongodb\Product;
-use fecshop\models\mongodb\CategoryProduct;
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
@@ -33,48 +30,87 @@ class Product extends Service
 		'numPerPage'	=> 50,
 		'orderBy'		=> 'name',
 		'where'			=> [
-			'price' => [
-				'?gte'  => 11,
-				'?lt'	=> 22
-			],
+			['>','price',11],
+			['<','price',22],
 		],
 	 ]
 	 */
 	
-	protected function actionGetFilterProduct($filter){
-		$where 		= isset($filter['where']) ? $filter['where'] : '';
-		$categoryId = isset($filter['categoryId']) ? $filter['categoryId'] : '';
-		if($categoryId){
-			$productIds = $this->getProductIdsByCategoryId($categoryId);
-			$where['_id'] = ['?in' => $productIds];
+	protected function actionColl($filter){
+		$category_id = isset($filter['category_id']) ? $filter['category_id'] : '';
+		if(!$category_id){
+			Yii::$service->helper->errors->add('category id is empty');
+			return ;
+		}else{
+			unset($filter['category_id']);
+			$filter['where'][] = ['category' => $category_id];
 		}
-		$pageNum = isset($filter['pageNum']) ? $filter['pageNum'] : $this->pageNum;
-		$numPerPage = isset($filter['numPerPage']) ? $filter['numPerPage'] : $this->numPerPage;
-		$orderBy = isset($filter['orderBy']) ? $filter['orderBy'] : '';
-		$offset = ($pageNum - 1)*$numPerPage;
-		
-		$query = Product::find()->asArray()->offset($offset)->limit($numPerPage);
-		if($orderBy)
-			$query->orderBy($orderBy);
-		return $query->all();
-	}
-	
-	/**
-	 * @property $categoryId|Int
-	 * @return $productIds|Array
-	 */
-	protected function getProductIdsByCategoryId($categoryId){
-		$data = CategoryProduct::find()->asArray()->where([
-			'category_id' => $categoryId
-		])->all();
-		$productIds = [];
-		if(!empty($data)){
-			foreach($data as $one){
-				$productIds[] = $one['product_id'];
+		if(!isset($filter['pageNum']) || !$filter['pageNum']){
+			$filter['pageNum'] = 1;
+		}
+		if(!isset($filter['numPerPage']) || !$filter['numPerPage']){
+			$filter['numPerPage'] = $this->numPerPage ;
+		}
+		if(isset($filter['orderBy']) && !empty($filter['orderBy'])){
+			if(!is_array($filter['orderBy'])){
+				Yii::$service->helper->errors->add('orderBy must be array');
+				return;
 			}
 		}
-		return $productIds;
+		return Yii::$service->product->coll($filter);
 	}
+	
+	protected function actionGetFrontList($filter){
+		$filter['select'] = [
+			'sku','spu','name','image','price','special_price',
+			'special_from','special_to','url_key'
+		];
+		$filter['group'] 	= '$spu';
+		$coll 				= Yii::$service->product->getFrontCategoryProducts($filter);
+		$collection 		= $coll['coll'];
+		$count 				= $coll['count'];
+		$arr = [];
+		//var_dump($collection);
+		//var_dump($count);
+		$defaultImg = Yii::$service->product->image->defautImg();
+		if(is_array($collection) && !empty($collection)){
+			foreach($collection as $one){
+				
+				$name 		= Yii::$service->store->getStoreAttrVal($one['name'],'name');
+				$image 		= $one['image'];
+				$url_key 	= $one['url_key'];
+				if(isset($image['main']['image']) && !empty($image['main']['image'])){
+					$image = $image['main']['image'];
+				}else{
+					$image = $defaultImg;
+				}
+				list($price,$special_price) = $this->getPrices($one['price'],$one['special_price'],$one['special_from'],$one['special_to']);
+				$arr[] = [
+					'name' 			=> $name,
+					'sku' 			=> $one['sku'],
+					'image' 		=> $image,
+					'price' 		=> $price,
+					'special_price' => $special_price,
+					'url'			=> Yii::$service->url->getUrl($url_key),
+				];
+			}
+		}
+		return $arr;
+	}
+	
+	
+	protected function getPrices($price,$special_price,$special_from,$special_to){
+		if($special_price){
+			$now = time();
+			if(
+				($now >= $special_from) && (!$special_to || ($now <= $special_to))
+			){
+				return [$price,$special_price];
+			}
+		}
+		return [$price,0];
+	}
+	
 	
 	
 	

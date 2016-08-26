@@ -246,6 +246,50 @@ class ProductMongodb implements ProductInterface
 		}
 	}
 	
+	public function getFrontCategoryProducts($filter){
+		$where 			= $filter['where'];
+		if(empty($where))
+			return [];
+		$orderBy 			= $filter['orderBy'];
+		$pageNum 		= $filter['pageNum'];
+		$numPerPage 	= $filter['numPerPage'];
+		$select			= $filter['select'];
+		$group['_id'] 	= $filter['group'];
+		$project 		= [];
+		foreach($select as $column){
+			$project[$column] 	= 1;
+			$group[$column] 	= ['$first' => '$'.$column];
+		}
+		$pipelines = [
+			[
+				'$match' 	=> $where,
+			],
+			[
+				'$sort' => [
+					'score' => -1
+				]
+			],
+			[
+				'$project' 	=> $project
+			],
+			[
+				'$group'	=> $group,
+			],
+			[
+				'$sort' 	=> $orderBy,
+			],
+		];
+
+		$product_data = Product::getCollection()->aggregate($pipelines);
+		$product_total_count = count($product_data);
+		$pageOffset = ($pageNum - 1) * $numPerPage;
+		$products = array_slice($product_data, $pageOffset, $numPerPage);
+		return [
+			'coll' => $products,
+			'count' => $product_total_count,
+		];
+	}
+	
 }
 
 

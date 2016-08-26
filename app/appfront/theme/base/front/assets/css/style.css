@@ -185,6 +185,7 @@ a:active, a:link {
     position: relative;
 }
 
+.main.container{width: 1200px;margin:auto;min-height:500px;}
 
 .t_hidden {
     font: 0px/0 Verdana;
@@ -241,9 +242,6 @@ address, article, aside, audio, canvas, details, figcaption, figure, footer, hea
     display: inline;
     float: left;
 }
-
-
-
 
 #nav .big_sub_menu, #nav .small_sub_menu {
     border: medium none;

@@ -78,7 +78,17 @@ class Request extends \yii\web\Request
 		if($urlParamSuffix){
 			$urlParamSuffix = '#'.$urlParamSuffix;
 		}
-		if($originUrlPath = Yii::$service->url->getOriginUrl($urlKey)){
+		//echo $urlKey;exit;
+		if(Yii::$service->url->showScriptName){
+			$urlKey = str_replace('/index.php','',$urlKey);
+			$originUrlPath = Yii::$service->url->getOriginUrl($urlKey);
+		}else{
+			$originUrlPath = Yii::$service->url->getOriginUrl($urlKey);
+		}
+		//echo $urlKey;
+		//echo $originUrlPath;
+		//exit;
+		if($originUrlPath){
 			if(strstr($originUrlPath,'?')){
 				if($urlParam){
 					$url = $originUrlPath.'&'.$urlParam.$urlParamSuffix;

@@ -104,7 +104,16 @@ class Attr
 				],
 				'require' => 0,
 			],
-			
+			[
+				'label'=>'分值',
+				'name'=>'score',
+				'display'=>[
+					'type' => 'inputString',
+					'lang' => false,
+					
+				],
+				'require' => 0,
+			],
 			[
 				'label'=>'状态',
 				'name'=>'status',

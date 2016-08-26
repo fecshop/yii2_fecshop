@@ -267,6 +267,7 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 		$this->_param['special_to'] = $this->_param['special_to'] ? (float)(strtotime($this->_param['special_to'])) : 0;
 		//weight
 		$this->_param['weight'] = $this->_param['weight'] ? (float)($this->_param['weight']) : 0;
+		$this->_param['weight'] = $this->_param['score']  ? (int)($this->_param['score']) : 0;
 		//status
 		$this->_param['status'] = $this->_param['status'] ? (float)($this->_param['status']) : 0;
 		//image main sort order
