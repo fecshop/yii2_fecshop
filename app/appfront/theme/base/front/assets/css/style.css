@@ -612,21 +612,39 @@ input.input-text {
 
 .top_currency   .currency_list   ul li{cursor:pointer;}
 
+.two-columns-left .col-main{width:980px;float:right}
+.two-columns-left .col-left {width:200px;float:left}
+.col-main h1{font-size:15px;font-weight:100;}
 
+.category_product{margin:0 0 15px 0;}
+.category_product ul{margin:0 0 10px ;}
+.category_product ul li {float:left;width:240px;height:350px;}
 
+.category_product ul li a {font-size:0.75em}
+.category_product .c_name{min-height:50px;overflow:hidden}
 
+.category_product .c_price .price{
+	float:left;
+	font-weight:bold;
+	font-size:0.9em;
+}
+.category_product .c_price .special_price{
+	float:left;
+	margin: 0 0 0 10px;
+	font-weight:bold;
+	font-size:0.9em;
+}
+.category_product  .c_price .price.sp{
+	text-decoration: line-through;
+	color:777;
+	font-weight:100;
+	
+}
 
-
-
-
-
-
-
-
-
-
-
-
+.menu_category .toolbar{padding:8px 15px;background:#eee;margin:6px 0;height:25px;}
+.menu_category .toolbar .tb_le{float:left;}
+.menu_category .toolbar .tb_rg{float:right;}
+.menu_category .toolbar .tb_le b{font-size:0.8em}
 
 
 

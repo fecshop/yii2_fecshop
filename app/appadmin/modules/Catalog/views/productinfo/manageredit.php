@@ -139,6 +139,12 @@ function thissubmit(thiss){
 		cate_id = jQuery(this).find("input").val();
 		cate_str += cate_id+",";
 	});
+	
+	jQuery(".category_tree div.ckbox.indeterminate").each(function(){
+		cate_id = jQuery(this).find("input").val();
+		cate_str += cate_id+",";
+	});
+	
 	jQuery(".inputcategory").val(cate_str);
 	
 		

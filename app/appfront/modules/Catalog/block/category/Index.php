@@ -1,12 +1,19 @@
 <?php
-/*
- * 存放 一些基本的非数据库数据 如 html
- * 都是数组
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
  */
 namespace fecshop\app\appfront\modules\Catalog\block\category;
 use Yii;
 use fec\helpers\CModule;
 use fec\helpers\CRequest;
+/**
+ * @author Terry Zhao <2358269014@qq.com>
+ * @since 1.0
+ */
 class Index {
 	
 	protected $_category;
@@ -25,6 +32,8 @@ class Index {
 		return [
 			'title' 		=> $this->_title,
 			'name'			=> Yii::$service->store->getStoreAttrVal($this->_category['name'],'name'),
+			'image'			=> $this->_category['image'] ? Yii::$service->category->image->getUrl($this->_category['image']) : '',
+			'description'	=> Yii::$service->store->getStoreAttrVal($this->_category['description'],'description'),
 			'products'		=> $this->getCategoryProductColl(),
 			//'content' => Yii::$service->store->getStoreAttrVal($this->_category['content'],'content'),
 			//'created_at' => $this->_category['created_at'],

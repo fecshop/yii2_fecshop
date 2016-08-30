@@ -94,7 +94,7 @@ class Widget extends Service
 	}
 	
 	
-	protected function renderContent($configKey,$config,$parentThis=''){
+	protected function actionRenderContent($configKey,$config,$parentThis=''){
 		if(isset($config['cache']['enable']) && $config['cache']['enable']){
 			if(!isset($config['class']) || !$config['class']){
 				throw new InvalidConfigException('in widget ['.$configKey.'],you enable cache ,you must config widget class .');
