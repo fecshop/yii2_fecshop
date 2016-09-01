@@ -250,7 +250,7 @@ class ProductMongodb implements ProductInterface
 		$where 			= $filter['where'];
 		if(empty($where))
 			return [];
-		$orderBy 			= $filter['orderBy'];
+		$orderBy 		= $filter['orderBy'];
 		$pageNum 		= $filter['pageNum'];
 		$numPerPage 	= $filter['numPerPage'];
 		$select			= $filter['select'];
@@ -290,6 +290,29 @@ class ProductMongodb implements ProductInterface
 		];
 	}
 	
+	
+	
+	
+	public function getFrontCategoryFilter($filter_attr,$where){
+		if(empty($where))
+			return [];
+		$group['_id'] 	= '$'.$filter_attr;
+		$group['count'] = ["?sum"=> 1];
+		$project 		= [$filter_attr => 1];
+		$pipelines = [
+			[
+				'$match' 	=> $where,
+			],
+			[
+				'$project' 	=> $project
+			],
+			[
+				'$group'	=> $group,
+			],
+		];
+		$filter_data = Product::getCollection()->aggregate($pipelines);
+		return $filter_data;
+	}
 }
 
 

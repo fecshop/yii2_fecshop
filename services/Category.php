@@ -93,4 +93,15 @@ class Category extends Service
 		return $this->_category->remove($ids);
 	}
 	
+	protected function actionGetAllParentInfo($parent_id){
+		return $this->_category->getAllParentInfo($parent_id);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 }

@@ -121,6 +121,10 @@ class Product extends Service
 		return $this->_product->getFrontCategoryProducts($filter);
 		
 	}
+	
+	protected function actionGetFrontCategoryFilter($filter_attr,$where){
+		return $this->_product->getFrontCategoryFilter($filter_attr,$where);
+	}
 }
 
 

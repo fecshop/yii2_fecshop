@@ -67,16 +67,27 @@ class CategoryMongodb implements CategoryInterface
 			if(!$model){
 				Yii::$service->helper->errors->add('Category '.$this->getPrimaryKey().' is not exist');
 				return;
-			}	
+			}
+			$parent_id 		= $model['parent_id'];
 		}else{
 			$model = new Category;
 			$model->created_at = time();
 			$model->created_user_id = \fec\helpers\CUser::getCurrentUserId();
 			$primaryVal = new \MongoId;
 			$model->{$this->getPrimaryKey()} = $primaryVal;
+			$parent_id = $one['parent_id'];
+		}
+		if($parent_id === '0'){
+			$model['level'] = 1;
+		}else{
+			$parent_model 	= Category::findOne($parent_id);
+			if($parent_level = $parent_model['level']){
+				$model['level'] = $parent_level + 1;
+			}
 		}
 		$model->updated_at = time();
 		unset($one['_id']);
+		
 		$saveStatus = Yii::$service->helper->ar->save($model,$one);
 		$originUrl = $originUrlKey.'?'.$this->getPrimaryKey() .'='. $primaryVal;
 		$originUrlKey = isset($one['url_key']) ? $one['url_key'] : '';
@@ -86,6 +97,7 @@ class CategoryMongodb implements CategoryInterface
 		$model->save();
 		return true;
 	}
+	
 	
 	/**
 	 * remove Category
@@ -160,6 +172,28 @@ class CategoryMongodb implements CategoryInterface
 			return true;
 		}
 		return false;
+	}
+	
+	
+	public function getAllParentInfo($parent_id){
+		if($parent_id){
+			$parentModel = Category::findOne($parent_id);
+			$parent_parent_id = $parentModel['parent_id'];
+			$parent_category = [];
+			if($parent_parent_id !== '0'){
+				$parent_category[] = [
+					'name' => $parentModel['name'],
+					'url_key'=>$parentModel['url_key'],
+				];
+				$parent_category = array_merge($this->getAllParentInfo($parent_parent_id),$parent_category);
+			}else{
+				$parent_category[] = [
+					'name' => $parentModel['name'],
+					'url_key'=>$parentModel['url_key'],
+				];
+			}
+			return $parent_category;
+		}
 	}
 	
 }

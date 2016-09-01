@@ -22,7 +22,7 @@ class Breadcrumbs extends Service
 {
 	public 		$homeName = 'Home';
 	public 		$ifAddHomeUrl = true;
-	public 		$intervalSymbol = ' > ';
+	public 		$active 	= true;
 	protected 	$_items;
 	
 	public function init(){
@@ -40,14 +40,26 @@ class Breadcrumbs extends Service
 	 * $items = ['name'=>'fashion handbag','url'=>'http://www.xxx.com'];
 	 */
 	protected function actionAddItems($items){
-		$this->_items[] = $items;
+		if($this->active){
+			$this->_items[] = $items;
+		}
 	}
 	
 	
+	protected function actionGetItems(){
+		if($this->active){
+			if(is_array($this->_items) && !empty($this->_items)){
+				return $this->_items;
+			}else{
+				return [];
+			}
+		}
+	}
 	
 	/**
 	 * generate Breadcrumbs html ,before generate , you should use addItems function to add breadcrumbs items.
 	 */
+	/*
 	protected function actionGenerateHtml(){
 		$arr = [];
 		if($this->_items){
@@ -63,9 +75,10 @@ class Breadcrumbs extends Service
 				}
 			}
 		}
-		if(!empty($arr))
-			return implode($this->intervalSymbol,$arr);
+		return $arr;
+		//if(!empty($arr))
+		//	return implode($this->intervalSymbol,$arr);
 	}
-	
+	*/
 	
 }

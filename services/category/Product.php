@@ -61,10 +61,6 @@ class Product extends Service
 	}
 	
 	protected function actionGetFrontList($filter){
-		$filter['select'] = [
-			'sku','spu','name','image','price','special_price',
-			'special_from','special_to','url_key'
-		];
 		$filter['group'] 	= '$spu';
 		$coll 				= Yii::$service->product->getFrontCategoryProducts($filter);
 		$collection 		= $coll['coll'];
@@ -95,7 +91,10 @@ class Product extends Service
 				];
 			}
 		}
-		return $arr;
+		return [
+			'coll' => $arr,
+			'count'=> $count,
+		];
 	}
 	
 	

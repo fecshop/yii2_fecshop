@@ -266,6 +266,24 @@ class Index extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInterf
 				],
 				'require' => 0,
 			],
+			
+			[
+				'label'=>'分类产品过滤属性',
+				'name'=>'filter_product_attr_selected',
+				'display'=>[
+					'type' => 'inputString',
+				],
+				'require' => 0,
+			],
+			
+			[
+				'label'=>'分类产品非过滤属性',
+				'name'=>'filter_product_attr_unselected',
+				'display'=>[
+					'type' => 'inputString',
+				],
+				'require' => 0,
+			],
 			[
 				'label'=>'分类描述',
 				'name'=>'description',

@@ -65,7 +65,6 @@ class Widget extends Service
 			throw new InvalidConfigException('view and class must exist in array config!');
 		}
 		$params = [];
-		
 		$view = $config['view'];
 		unset($config['view']);
 		$viewFile = $this->getViewFile($view);
@@ -75,8 +74,6 @@ class Widget extends Service
 			}
 			return Yii::$app->view->renderFile($viewFile, $params);
 		}
-			
-			
 		if(isset($config['method']) && !empty($config['method'])){
 			$method = $config['method'];
 			unset($config['method']);
@@ -88,11 +85,8 @@ class Widget extends Service
 		if($parentThis){
 			$params['parentThis'] = $parentThis;
 		}
-		
 		return Yii::$app->view->renderFile($viewFile, $params);
-		
 	}
-	
 	
 	protected function actionRenderContent($configKey,$config,$parentThis=''){
 		if(isset($config['cache']['enable']) && $config['cache']['enable']){

@@ -11,6 +11,7 @@
 <?php // echo count($products); ?>
 <?php  $count = 4; $end = $count-1; ?>
 	<div class="col-main">
+		<?= Yii::$service->page->widget->render('breadcrumbs',$this); ?>
 		<div class="menu_category">
 			<div class="category_img">
 				<a href="#"><?=  $image ? '<img style="width:980px;" src="'.$image.'"/>' : '';?><a>
@@ -20,32 +21,17 @@
 				<?=  $description ?>
 			</div>
 			<div class="panelBar">
-				<div class="toolbar">
-					<div class="tb_le">
-						<b>Sort By:</b>
-						<select>
-							<option value="new">New</option>
-							<option value="name">Name</option>
-							<option value="price">Price</option>
-						</select>
-						<select>
-							<option value="30">30</option>
-							<option value="60">60</option>
-							<option value="90">90</option>
-						</select>
-					</div>
-					<div class="tb_rg">
-						<a href="#"><</a>
-						
-						<a href="#">1</a>
-						<a href="#">2</a>
-						<a href="#">3</a>
-						<a href="#">4</a>
-						<a href="#">5</a>
-						<a href="#">></a>
-					</div>
-					<div class="clear"></div>
-				</div>
+				<?php
+					$parentThis = [
+						'query_item' => $query_item,
+						'product_page'=>$product_page,
+					];
+					$config = [
+						'view'  		=> 'catalog/category/index/toolbar.php',
+					];
+					$toolbar = Yii::$service->page->widget->renderContent('category_toolbar',$config,$parentThis);
+					echo $toolbar;
+				?>
 			</div>
 			<div class="category_product">
 				<?php  if(is_array($products)){ ?>
@@ -84,11 +70,33 @@
 						<?php  } ?>
 				<?php  }  ?>
 			</div>
+			<div class="clear"></div>
+			<div class="panelBar">
+				<?php echo $toolbar; ?>
+			</div>
 		</div>
 	</div>
 
 	<div class="col-left ">
-	
+		<?php
+			$parentThis = [
+				'filters' => $filter_info,
+			];
+			$config = [
+				'view'  		=> 'catalog/category/index/filter/attr.php',
+			];
+			echo Yii::$service->page->widget->renderContent('category_product_filter_attr',$config,$parentThis);
+		?>
+		<?php
+		
+			$parentThis = [
+				'filter_price' => $filter_price,
+			];
+			$config = [
+				'view'  		=> 'catalog/category/index/filter/price.php',
+			];
+			echo Yii::$service->page->widget->renderContent('category_product_filter_price',$config,$parentThis);
+		?>
 	</div>
 	<div class="clear"></div>
 </div>

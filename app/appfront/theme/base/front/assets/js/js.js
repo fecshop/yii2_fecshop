@@ -17,5 +17,13 @@ $(document).ready(function(){
 		//alert(2);
 		location.href=redirectUrl;
 	});
+	$(".product_sort").change(function(){	
+		url = $(this).find("option:selected").attr('url');
+		window.location.href = url;
+	});
+	$(".product_num_per_page").change(function(){
+		url = $(this).find("option:selected").attr('url');
+		window.location.href = url;
+	});
 	
 });

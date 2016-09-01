@@ -16,15 +16,11 @@ use yii\mongodb\ActiveRecord;
 class Category extends ActiveRecord
 {
     
-    
 	public static function collectionName()
     {
 	   return 'category';
     }
 	
-	
-
-   
     public function attributes()
     {
 		return [
@@ -33,28 +29,26 @@ class Category extends ActiveRecord
 		    'name',
 	        'status', 
 	        'url_key', 
-			
+			'level',
 			'thumbnail_image',
 			'image',
+			'filter_product_attr_selected',
+			'filter_product_attr_unselected',
 	        'description',
 			'menu_custom',
 			'title', 
 			'meta_description', 
 			'meta_keywords', 
-			
 			'include_in_menu', 
 			'is_feature', 
 			'available_sort_by', 
-			
 			'default_sort_by', 
 			'theme', 
 			'active_from',
 			'active_to', 
-
 			'created_at',
 			'updated_at',
 			'created_user_id',
-			
 			//other
 			/*
 				category filter
