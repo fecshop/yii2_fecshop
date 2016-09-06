@@ -98,7 +98,9 @@ class Category extends Service
 	}
 	
 	
-	
+	protected function actionGetFilterCategory($category_id,$parent_id){
+		return $this->_category->getFilterCategory($category_id,$parent_id);
+	}
 	
 	
 	

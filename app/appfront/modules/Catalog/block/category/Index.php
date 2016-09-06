@@ -53,10 +53,54 @@ class Index {
 			'query_item'	=> $this->getQueryItem(),
 			'product_page'	=> $this->getProductPage(),
 			'filter_price'	=> $this->getFilterPrice(),
+			'filter_category'=> $this->getFilterCategoryHtml(),
 			//'content' => Yii::$service->store->getStoreAttrVal($this->_category['content'],'content'),
 			//'created_at' => $this->_category['created_at'],
 		];
 	}
+	/**
+	 * 得到子分类，如果子分类不存在，则返回同级分类。
+	 */
+	protected function getFilterCategory(){
+		$category_id 	= $this->_primaryVal;
+		$parent_id 		= $this->_category['parent_id'];
+		$filter_category = Yii::$service->category->getFilterCategory($category_id,$parent_id);
+		return $filter_category;
+	}
+	
+	
+	protected function getFilterCategoryHtml($filter_category=''){
+		$str = '';
+		if(!$filter_category){
+			$filter_category = $this->getFilterCategory();
+		}
+		//var_dump($filter_category);
+		//exit;
+		if(is_array($filter_category) && !empty($filter_category)){
+			$str .= '<ul>';
+			foreach($filter_category as $cate){
+				//var_dump($cate);
+				//echo '<br><br>';
+				//continue;
+				$name = Yii::$service->store->getStoreAttrVal($cate['name'],'name');
+				$url  = Yii::$service->url->getUrl($cate['url_key']);
+				$current = '';
+				if(isset($cate['current']) && $cate['current']){
+					$current = 'class="current"';
+				}
+				$str .= '<li '.$current.'><a href="'.$url.'">'.$name.'</a>';
+				if(isset($cate['child']) && is_array($cate['child'] ) && !empty($cate['child'])){
+					$str .= $this->getFilterCategoryHtml($cate['child']);
+					
+				}
+				$str .= '</li>';
+			}
+			$str .= '</ul>';
+		}
+		//exit;
+		return $str;
+	}
+	
 	
 	protected function getProductPage(){
 		$spaceShowNum = 4;

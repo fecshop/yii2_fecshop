@@ -195,6 +195,199 @@ class CategoryMongodb implements CategoryInterface
 			return $parent_category;
 		}
 	}
+	/**
+	 * 得到分类的侧栏过滤信息
+	 */
+	 /*
+	 [
+		['name' => 'xxx','url_key'=>'xxx'],
+		[
+			'name' => 'xxx',
+			'url_key'=>'xxx',
+			'child' => [
+				['name' => 'xxx','url_key'=>'xxx'],
+				['name' => 'xxx','url_key'=>'xxx'],
+				[
+					'name' => 'xxx',
+					'url_key'=>'xxx',
+					'current' => true,
+					'child' => [
+						['name' => 'xxx','url_key'=>'xxx'],
+						['name' => 'xxx','url_key'=>'xxx'],
+						['name' => 'xxx','url_key'=>'xxx'],
+					]
+				],
+			]
+		],
+		['name' => 'xxx','url_key'=>'xxx'],
+		['name' => 'xxx','url_key'=>'xxx'],
+	 ]
+	 
+	
+	
+	 
+	 */
+	public function getParentCategory($parent_id){
+		if($parent_id === '0'){
+			return [];
+		}
+		$category = Category::find()->asArray()->where(['_id' => new \mongoId($parent_id)])->one();
+		if(isset($category['_id']) && !empty($category['_id']) ){
+			$currentUrlKey 		= $category['url_key'];
+			$currentName 		= $category['name'];
+			$currentId			= $category['_id']->{'$id'};
+			
+			$currentCategory[] = [
+				'_id' 		=> $currentId,
+				'name' 		=> $currentName,
+				'url_key'	=> $currentUrlKey,
+				'parent_id'	=> $category['parent_id'],
+			];
+			$parentCategory = $this->getParentCategory($category['parent_id']);
+			
+			return array_merge($parentCategory,$currentCategory);
+			
+		}else{
+			return [];
+		}
+	}
+	
+	public function getFilterCategory($category_id,$parent_id){
+		
+		# 1.如果level为一级，那么title部分为当前的分类，子分类位一级分类下的二级分类
+		
+		# 2.如果level为二级，那么将所有的二级分类列出，当前的二级分类，列出来子分类
+		# 3.如果level为三级，那么将所有的二级分类列出。
+		# 当前二级分类的所有子分类列出，当前三级分类如果有子分类，则列出
+		//echo $category_id.'##';
+		//echo $parent_id;
+		$returnData = [];
+		$primaryKey 		= $this->getPrimaryKey();
+		
+		$currentCategory 	= Category::findOne($category_id);
+		
+		$currentUrlKey 		= $currentCategory['url_key'];
+		$currentName 		= $currentCategory['name'];
+		$currentId			= $currentCategory['_id']->{'$id'};
+		
+		//var_dump($currentCategory);exit;
+		
+		
+		$returnData['current'] = [
+			'_id' 		=> $currentId,
+			'name' 		=> $currentName,
+			'url_key'	=> $currentUrlKey,
+			'parent_id'	=> $currentCategory['parent_id'],
+		];
+		//echo $currentCategory['parent_id'];
+		//exit;
+		if($currentCategory['parent_id']){
+			$allParent = $this->getParentCategory($currentCategory['parent_id']);
+			$allParent[] = $returnData['current'];
+			$data = $this->getAllParentCate($allParent);
+		}else{
+			// 点击的是一级分类的时候
+			$data = $this->getOneLevelCateChild($returnData['current']);
+		}
+		//$data = $this->getChildCate($currentId);
+		//var_dump($data);exit;
+		return $data;
+		
+	}
+	
+	public function getOneLevelCateChild($category){
+		//'_id' 		=> $currentId,
+		//'name' 		=> $currentName,
+		//'url_key'	=> $currentUrlKey,
+		$data[0] = $category;
+		$_id = $category['_id'];
+		$name = $category['name'];
+		$url_key = $category['url_key'];
+		$cate = Category::find()->asArray()->where([
+			'parent_id' => $_id,
+		])->all();
+		if(is_array($cate) && !empty($cate)){
+			foreach($cate as $one){
+				$c_id = $one['_id']->{'$id'};
+				$data[0]['child'][$c_id] = [
+					'name' 		=> $one['name'],
+					'url_key'	=> $one['url_key'],
+					'parent_id'	=> $one['parent_id'],
+				];
+			}
+		}
+		return $data;
+	}
+	
+	
+	public function getAllParentCate($allParent){
+		//var_dump($allParent);exit;
+		$d = $allParent;
+		$data = [];
+		if(is_array($allParent) && !empty($allParent)){
+			foreach($allParent as $k => $category){
+				unset($d[$k]);
+				$category_id = $category['_id'];
+				$parent_id  = $category['parent_id'];
+				if($parent_id){
+					$cate = Category::find()->asArray()->where([
+						'parent_id' => $parent_id,
+					])->all();
+					//var_dump($cate);
+					//echo '$$$$$$$$$$';
+					if(is_array($cate) && !empty($cate)){
+						//echo '**********';
+						foreach($cate as $one){
+							$c_id = $one['_id']->{'$id'};
+							$data[$c_id] = [
+								'name' 		=> $one['name'],
+								'url_key'	=> $one['url_key'],
+								'parent_id'	=> $one['parent_id'],
+							];
+							//echo $category_id;
+							//echo '&&&'.$c_id;
+							if(($c_id == $category_id) && !empty($d)){
+								$data[$c_id]['child'] = $this->getAllParentCate($d);
+							}
+							if(($c_id == $category_id) && empty($d)){
+								$child_cate = $this->getChildCate($c_id);
+								$data[$c_id]['current'] = true;
+								if(!empty($child_cate)){
+									$data[$c_id]['child'] = $child_cate;
+								}
+							}
+						}
+					}
+					break;
+				}
+			}
+		}
+		return $data;
+	}
+	
+	public function getChildCate($category_id){
+		//echo $category_id;
+		$data = Category::find()->asArray()->where([
+						'parent_id' => $category_id,
+					])->all();
+		$arr = [];
+		if(is_array($data) && !empty($data)){
+			foreach($data as $one){
+				$currentUrlKey 		= $one['url_key'];
+				$currentName 		= $one['name'];
+				$currentId			= $one['_id']->{'$id'};
+				
+				$arr[$currentId] = [
+					//'_id' 		=> $currentId,
+					'name' 		=> $currentName,
+					'url_key'	=> $currentUrlKey,
+					'parent_id'	=> $one['parent_id'],
+				];
+			}
+		}
+		return $arr;
+	}
+	
 	
 }
 

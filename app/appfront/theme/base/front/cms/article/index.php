@@ -7,8 +7,11 @@
  * @license http://www.fecshop.com/license/
  */
 ?>
-<h1><?= $title ?></h1>
-<div>
-<?= $content ?>
-
+<div class="main container one-column">
+	<div class="col-main">
+		<h1><?= $title ?></h1>
+		<div>
+			<?= $content ?>
+		</div>
+	</div>
 </div>

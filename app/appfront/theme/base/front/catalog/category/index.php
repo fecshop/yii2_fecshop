@@ -21,20 +21,22 @@
 				<?=  $description ?>
 			</div>
 			<div class="panelBar">
-				<?php
-					$parentThis = [
-						'query_item' => $query_item,
-						'product_page'=>$product_page,
-					];
-					$config = [
-						'view'  		=> 'catalog/category/index/toolbar.php',
-					];
-					$toolbar = Yii::$service->page->widget->renderContent('category_toolbar',$config,$parentThis);
-					echo $toolbar;
-				?>
+				<?php  if(is_array($products) && !empty($products)){ ?>
+					<?php
+						$parentThis = [
+							'query_item' => $query_item,
+							'product_page'=>$product_page,
+						];
+						$config = [
+							'view'  		=> 'catalog/category/index/toolbar.php',
+						];
+						$toolbar = Yii::$service->page->widget->renderContent('category_toolbar',$config,$parentThis);
+						echo $toolbar;
+					?>
+				<?php } ?>
 			</div>
 			<div class="category_product">
-				<?php  if(is_array($products)){ ?>
+				<?php  if(is_array($products) && !empty($products)){ ?>
 					<?php $i = 0;  foreach($products as $product){ ?>
 						<?php  if($i%$count == 0){ ?>
 						<ul>
@@ -72,12 +74,22 @@
 			</div>
 			<div class="clear"></div>
 			<div class="panelBar">
-				<?php echo $toolbar; ?>
+				<?php  if(is_array($products) && !empty($products)){ ?>
+					<?php echo $toolbar; ?>
+				<?php  }  ?>
 			</div>
 		</div>
 	</div>
-
 	<div class="col-left ">
+		<?php
+			$parentThis = [
+				'filter_category' => $filter_category,
+			];
+			$config = [
+				'view'  		=> 'catalog/category/index/filter/subcategory.php',
+			];
+			echo Yii::$service->page->widget->renderContent('category_product_filter_sub_category',$config,$parentThis);
+		?>
 		<?php
 			$parentThis = [
 				'filters' => $filter_info,
@@ -88,7 +100,6 @@
 			echo Yii::$service->page->widget->renderContent('category_product_filter_attr',$config,$parentThis);
 		?>
 		<?php
-		
 			$parentThis = [
 				'filter_price' => $filter_price,
 			];

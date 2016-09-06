@@ -3,7 +3,7 @@ body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, 
 body {color: #333;font: 1em/1.55 Verdana,Arial,Helvetica,sans-serif;}
 a{color: #666;text-decoration: none;}
 ol, ul {list-style: outside none none;}
-ul li{height:32px;}
+
 
 #top_nav {background-color: #000;font-size: 0.75em;height: 40px;line-height: 40px;width: 100%;}
 .top_nav_inner {height: 100%;width:1200px;}
@@ -185,7 +185,7 @@ a:active, a:link {
     position: relative;
 }
 
-.main.container{width: 1200px;margin:auto;min-height:500px;}
+.main.container{width: 1200px;margin:auto;min-height:400px;}
 
 .t_hidden {
     font: 0px/0 Verdana;
@@ -194,7 +194,7 @@ a:active, a:link {
 .topSeachForm .seachBtn {
     cursor: pointer;
 }
-
+.col-main .site-error h1{font-size:22px;margin-bottom:20px;}
 
 #nav {
     margin: 0 auto;
@@ -650,8 +650,19 @@ input.input-text {
 .breadcrumbs  span{font-size:0.85em;}
 .breadcrumbs {margin:0 0 10px 0}
 
-
-
+.filter_attr_info a{
+	background: rgba(0, 0, 0, 0) url("../images/checkbox.png") no-repeat scroll -69px 3px;
+	padding: 0 0 0 16px;
+	font-size:0.8em;
+}
+.filter_attr_info a.checked{
+	background-position: -50px -17px;
+}
+.filter_attr_title {
+	font-size:0.9em;
+	text-transform: uppercase;
+}
+.filter_attr{margin:0 0 20px 0}
 
 
 
