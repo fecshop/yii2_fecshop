@@ -87,17 +87,17 @@
 	<div class="top_main_inner pr">
 		<div class="top_header clearfix">
 			<div class="topSeachForm">
-				<form method="post" name="searchFrom" class="js_topSeachForm">
+				<form method="get" name="searchFrom" class="js_topSeachForm" action="<?= Yii::$service->url->getUrl('catalogsearch/index');   ?>">
 					<div class="top_seachBox">
 						<div class="searchInput fl">
-							<input type="text" autocomplete="off" value="" maxlength="150" placeholder="Products keyword" class="searchArea js_k2 ac_input" name="k1">
+							<input type="text"  value="<?=  Yii::$app->request->get('q');  ?>" maxlength="150" placeholder="Products keyword" class="searchArea js_k2 ac_input" name="q">
 						</div>
 						<button class="fl js_topSearch seachBtn" type="submit"><span class="t_hidden">search</span></button>
-						<input type="hidden" class="category" value="0" name="category">
-											</div><!--end .top_seachBox-->
+						<!-- <input type="hidden" class="category" value="0" name="category"> -->
+					</div><!--end .top_seachBox-->
 				</form>
 			</div>
-
+			
 			<div class="logo"><a titel="fecshop logo" href="<?= $homeUrl ?>" style="">
 				<img src="<?= Yii::$service->image->getImgUrl('custom/logo.png','appfront'); ?>"  />
 			</a></div>
