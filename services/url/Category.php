@@ -61,7 +61,7 @@ class Category extends Service
 	 * @property $p|String  在url中用来表示分页的参数，一般用p来标示。
 	 * @property $pageBackToOne|boolean 是否让p的页数回归第一页
 	 */
-	protected function actionGetFilterChooseAttrUrl($attrUrlStr,$val,$p='',$pageBackToOne=true){
+	protected function actionGetFilterChooseAttrUrl($attrUrlStr,$val,$p='p',$pageBackToOne=true){
 		
 		$val = $this->attrValConvertUrlStr($val);
 		$str = $attrUrlStr.'='.$val;

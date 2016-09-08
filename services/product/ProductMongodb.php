@@ -279,7 +279,7 @@ class ProductMongodb implements ProductInterface
 				'$sort' 	=> $orderBy,
 			],
 		];
-
+		//var_dump($orderBy);
 		$product_data = Product::getCollection()->aggregate($pipelines);
 		$product_total_count = count($product_data);
 		$pageOffset = ($pageNum - 1) * $numPerPage;

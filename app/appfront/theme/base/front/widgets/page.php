@@ -1,6 +1,4 @@
-
-
- <div class="tb_rg">
+<div class="tb_rg">
 	<?php  if($prevPage){  ?>
 		<a href="<?= $prevPage['url']['url'] ?>"><</a>
 	<?php }else{  ?>

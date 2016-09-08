@@ -118,6 +118,14 @@ class Url extends Service
 		return $this->_currentUrl;
 	}
 	
+	protected function actionGetCurrentUrlNoParam(){
+		$currentUrl = $this->getCurrentUrl();
+		if(strstr($currentUrl,'?')){
+			$currentUrl = substr($currentUrl,0,strpos($currentUrl,'?'));
+		}
+		return $currentUrl;
+	}
+	
 	/**
 	 *  @property $urlKey|String 
 	 *  get $origin_url by $custom_url_key ,it is used for yii2 init,
@@ -308,4 +316,32 @@ class Url extends Service
 		return $url;
 	}
 	
+	/**
+	 * @property $url|String  要处理的url ， 一般是当前的url
+	 * @property $removeUrlParamStr|String  在url中删除的部分，一般是某个key对应的某个val，譬如color=green
+	 * @property $backToPage1|boolean  删除后，页数由原来的页数变成第一页？
+	 */
+	protected function actionRemoveUrlParamVal($url,$removeUrlParamStr,$backToPage1=true){
+		
+	
+		$return_url = $url;
+		if(strstr($url,'?'.$removeUrlParamStr.'&')){
+			$return_url = str_replace('?'.$removeUrlParamStr.'&','?',$url);
+		}else if(strstr($url,'?'.$removeUrlParamStr)){
+			$return_url = str_replace('?'.$removeUrlParamStr,'',$url);
+		}else if(strstr($url,'&'.$removeUrlParamStr)){
+			$return_url = str_replace('&'.$removeUrlParamStr,'',$url);
+		}
+		if($backToPage1){
+			$pVal = Yii::$app->request->get('p');
+			if($pVal){
+				$originPUrl  = 'p='.$pVal;
+				$afterPUrl   = 'p=1';
+			}
+			if($originPUrl){
+				$return_url = str_replace($originPUrl,$afterPUrl,$return_url);
+			}
+		}
+		return $return_url;
+	}
 }

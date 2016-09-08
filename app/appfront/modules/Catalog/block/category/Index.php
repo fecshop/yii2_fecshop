@@ -49,9 +49,10 @@ class Index {
 			'image'			=> $this->_category['image'] ? Yii::$service->category->image->getUrl($this->_category['image']) : '',
 			'description'	=> Yii::$service->store->getStoreAttrVal($this->_category['description'],'description'),
 			'products'		=> $products,
-			'filter_info'	=> $this->getFilterInfo(),
 			'query_item'	=> $this->getQueryItem(),
 			'product_page'	=> $this->getProductPage(),
+			'refine_by_info'=> $this->getRefineByInfo(),
+			'filter_info'	=> $this->getFilterInfo(),
 			'filter_price'	=> $this->getFilterPrice(),
 			'filter_category'=> $this->getFilterCategoryHtml(),
 			//'content' => Yii::$service->store->getStoreAttrVal($this->_category['content'],'content'),
@@ -68,20 +69,14 @@ class Index {
 		return $filter_category;
 	}
 	
-	
 	protected function getFilterCategoryHtml($filter_category=''){
 		$str = '';
 		if(!$filter_category){
 			$filter_category = $this->getFilterCategory();
 		}
-		//var_dump($filter_category);
-		//exit;
 		if(is_array($filter_category) && !empty($filter_category)){
 			$str .= '<ul>';
 			foreach($filter_category as $cate){
-				//var_dump($cate);
-				//echo '<br><br>';
-				//continue;
 				$name = Yii::$service->store->getStoreAttrVal($cate['name'],'name');
 				$url  = Yii::$service->url->getUrl($cate['url_key']);
 				$current = '';
@@ -103,7 +98,6 @@ class Index {
 	
 	
 	protected function getProductPage(){
-		$spaceShowNum = 4;
 		$productNumPerPage 	= $this->getNumPerPage();
 		$productCount 		= $this->_productCount;
 		$pageNum 			= $this->getPageNum();
@@ -187,6 +181,45 @@ class Index {
 		return $this->_filter_attr;
 	}
 	
+	protected function getRefineByInfo(){
+		
+		$get_arr = Yii::$app->request->get();
+		//var_dump($get_arr);
+		if(is_array($get_arr) && !empty($get_arr)){
+			$refineInfo = [];
+			$filter_attrs = $this->getFilterAttr();
+			$filter_attrs[] = 'price';
+			//var_dump($filter_attrs);
+			$currentUrl = Yii::$service->url->getCurrentUrl();
+			foreach($get_arr as $k=>$v){
+				$attr = Yii::$service->url->category->urlStrConvertAttrVal($k);
+				//echo $attr;
+				if(in_array($attr,$filter_attrs)){
+					if($attr == 'price'){
+						$refine_attr_str = $this->getFormatFilterPrice($v);
+						//$refine_attr_str = Yii::$service->url->category->urlStrConvertAttrVal($v);
+					}else{
+						$refine_attr_str = Yii::$service->url->category->urlStrConvertAttrVal($v);
+					}
+					$removeUrlParamStr = $k.'='.$v;
+					$refine_attr_url = Yii::$service->url->removeUrlParamVal($currentUrl,$removeUrlParamStr);
+					$refineInfo[] = [
+						'name' =>  $refine_attr_str,
+						'url'  =>  $refine_attr_url,	
+					];
+				}
+			}
+		}
+		if(!empty($refineInfo)){
+			$arr[] = [
+				'name' 	=> 'clear all',
+				'url'	=> Yii::$service->url->getCurrentUrlNoParam(),
+			];
+			$refineInfo = array_merge($arr,$refineInfo);
+		}
+		return $refineInfo;
+	}
+	
 	protected function getFilterInfo(){
 		$filter_info  = [];
 		$filter_attrs = $this->getFilterAttr();
@@ -203,23 +236,25 @@ class Index {
 		if(isset($priceInfo['price_range']) && !empty($priceInfo['price_range'])  && is_array($priceInfo['price_range'])){
 			foreach($priceInfo['price_range'] as $price_item){
 				$info = Yii::$service->url->category->getFilterChooseAttrUrl($this->_filterPrice,$price_item,$this->_page);
-				$info['val'] =  $price_item;
-				list($f_price,$l_price) = explode('-',$price_item);
-				$str = '';
-				if($f_price == '0' || $f_price){
-					$f_price = Yii::$service->product->price->formatPrice($f_price);
-					$str  .= $f_price['symbol'].$f_price['value'].'---';
-				}
-				if($l_price){
-					$l_price = Yii::$service->product->price->formatPrice($l_price);
-					$str  .= $l_price['symbol'].$l_price['value'];
-				
-				}
-				$info['val'] = $str;
+				$info['val'] = $this->getFormatFilterPrice($price_item);
 				$filter[$this->_filterPrice][] = $info;
 			}
 		}
 		return $filter;
+	}
+	
+	protected function getFormatFilterPrice($price_item){
+		list($f_price,$l_price) = explode('-',$price_item);
+		$str = '';
+		if($f_price == '0' || $f_price){
+			$f_price = Yii::$service->product->price->formatPrice($f_price);
+			$str  .= $f_price['symbol'].$f_price['value'].'---';
+		}
+		if($l_price){
+			$l_price = Yii::$service->product->price->formatPrice($l_price);
+			$str  .= $l_price['symbol'].$l_price['value'];
+		}
+		return $str;
 	}
 	
 	protected function getFilterArr($str){
@@ -293,17 +328,25 @@ class Index {
 	
 	
 	protected function getCategoryProductColl(){
+		
+		$select = [
+				'sku','spu','name','image',
+				'price','special_price',
+				'special_from','special_to',
+				'url_key','score',
+			];
+		$category_query = Yii::$app->controller->module->params['category_query'];
+		if(is_array($category_query['sort'])){
+			foreach($category_query['sort'] as $sort_item){
+				$select[] = $sort_item['db_columns'];
+			}
+		}
 		$filter = [
 			'pageNum'	  => $this->getPageNum(),
 			'numPerPage'  => $this->getNumPerPage(),
 			'orderBy'	  => $this->getOrderBy(),
 			'where'		  => $this->_where,
-			'select' 	  => [
-				'sku','spu','name','image',
-				'price','special_price',
-				'special_from','special_to',
-				'url_key','score',
-			],
+			'select' 	  => $select,
 		];
 		//var_dump($filter);exit;
 		return Yii::$service->category->product->getFrontList($filter);

@@ -81,9 +81,22 @@
 		</div>
 	</div>
 	<div class="col-left ">
+		
 		<?php
+			# Refind By
+			$parentThis = [
+				'refine_by_info' => $refine_by_info,
+			];
+			$config = [
+				'view'  		=> 'catalog/category/index/filter/refineby.php',
+			];
+			echo Yii::$service->page->widget->renderContent('category_product_filter_refine_by',$config,$parentThis);
+		?>
+		<?php
+			# Category Left Filter subCategory
 			$parentThis = [
 				'filter_category' => $filter_category,
+				'current_category'=> $name,
 			];
 			$config = [
 				'view'  		=> 'catalog/category/index/filter/subcategory.php',
@@ -91,6 +104,7 @@
 			echo Yii::$service->page->widget->renderContent('category_product_filter_sub_category',$config,$parentThis);
 		?>
 		<?php
+			# Category Left Filter Product Attributes
 			$parentThis = [
 				'filters' => $filter_info,
 			];
@@ -100,6 +114,7 @@
 			echo Yii::$service->page->widget->renderContent('category_product_filter_attr',$config,$parentThis);
 		?>
 		<?php
+			# Category Left Filter Product Price
 			$parentThis = [
 				'filter_price' => $filter_price,
 			];

@@ -256,14 +256,13 @@ address, article, aside, audio, canvas, details, figcaption, figure, footer, hea
 #nav .sub_menu {
     background-color: #fff;
     font-family: Arial;
-   
     padding: 6px 0 8px;
-   
 }
 #nav .sub_menu, #nav li .point {
     display: none;
     position: absolute;
-	top:26px;
+	top:20px;
+	padding-top: 10px;
 }
 
 #nav .big_sub_menu .trends_item {
@@ -621,7 +620,7 @@ input.input-text {
 .category_product ul li {float:left;width:240px;height:350px;}
 
 .category_product ul li a {font-size:0.75em}
-.category_product .c_name{min-height:50px;overflow:hidden}
+.category_product .c_name{height:50px;overflow:hidden}
 
 .category_product .c_price .price{
 	float:left;
@@ -645,7 +644,10 @@ input.input-text {
 .menu_category .toolbar .tb_le{float:left;}
 .menu_category .toolbar .tb_rg{float:right;}
 .menu_category .toolbar .tb_le b{font-size:0.8em}
-
+.menu_category .toolbar .current{
+	color:#cc0000;
+}
+.toolbar{font-size:0.9em;}
 .breadcrumbs , .breadcrumbs  a {font-size:0.83em;}
 .breadcrumbs  span{font-size:0.85em;}
 .breadcrumbs {margin:0 0 10px 0}
@@ -663,6 +665,59 @@ input.input-text {
 	text-transform: uppercase;
 }
 .filter_attr{margin:0 0 20px 0}
+
+.category_left_filter_category {
+	font-size:0.8em;
+	font-family: Arial;
+	margin: 0 0 30px 0;
+}
+.category_left_filter {
+font-family: Arial;
+}
+.category_left_filter_category ul li   {
+	line-height: 26px;
+}
+.category_left_filter_category ul li.current > a{
+	color:#cc0000;
+}
+.category_left_filter_category ul{
+	margin-left:20px;
+}
+.col-left  .filter_attr_title{
+	  border-bottom: 1px solid #ddd;
+    color: #333;
+    font-family: Arial;
+    font-size: 0.9em;
+    margin: 5px 0;
+    padding: 5px 0;
+    text-transform: uppercase;
+}
+.filter_category_content{overflow:hidden;}
+.category_left_filter_category ul li a{font-size:0.9em}
+.category_left_filter_category ul li ul li a{color:#999;}
+
+
+.closeBtn {
+	background-image: url("../images/tag.png");
+    background-repeat: no-repeat;
+    background-position: -80px -420px;
+    display: inline-block;
+    font-size: 0;
+    height: 20px;
+    vertical-align: -5px;
+    width: 20px;
+}
+
+.filter_refine_by_content a{
+	text-transform: uppercase;
+	font-size:0.8em;
+	color:#777;
+}
+.filter_refine_by_content a:hover{color:#cc0000;text-decoration: underline;}
+
+
+
+
 
 
 

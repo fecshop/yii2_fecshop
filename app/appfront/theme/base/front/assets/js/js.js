@@ -26,4 +26,14 @@ $(document).ready(function(){
 		window.location.href = url;
 	});
 	
+	$(".filter_attr_info a").click(function(){
+		
+		if($(this).hasClass("checked")){
+			$(this).removeClass("checked");
+		}else{
+			$(".filter_attr_info a.checked").removeClass("checked");
+			$(this).addClass("checked");
+		}
+	});
+	
 });

@@ -299,7 +299,8 @@ class CategoryMongodb implements CategoryInterface
 		//'_id' 		=> $currentId,
 		//'name' 		=> $currentName,
 		//'url_key'	=> $currentUrlKey,
-		$data[0] = $category;
+		//$category['current'] = true;
+		//$data[0] = $category;
 		$_id = $category['_id'];
 		$name = $category['name'];
 		$url_key = $category['url_key'];
@@ -309,7 +310,7 @@ class CategoryMongodb implements CategoryInterface
 		if(is_array($cate) && !empty($cate)){
 			foreach($cate as $one){
 				$c_id = $one['_id']->{'$id'};
-				$data[0]['child'][$c_id] = [
+				$data[$c_id] = [
 					'name' 		=> $one['name'],
 					'url_key'	=> $one['url_key'],
 					'parent_id'	=> $one['parent_id'],

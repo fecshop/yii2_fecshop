@@ -39,18 +39,18 @@ class Page
 		$hiddenBehindStr = '';
 		if($maxPageNum <= $hiddenPageMaxCount){
 			$c = $pageNum;
-			while($c >= 1){
+			while($c > 1){
 				$c = $c - 1;
 				if($c){
 					$frontPage = array_merge([$c],$frontPage);
 				}
-				
 			}
 			$c = $pageNum;
 			while($c < $maxPageNum){
 				$c = $c + 1;
 				$behindPage[] = $c;
 			}
+			//var_dump($behindPage);
 		}else if(($pageNum > $spaceShowNum)&&($pageNum < $endSpaceNum)){
 			$firstSpaceShow = true;
 			$lastSpaceShow = true;
@@ -129,14 +129,16 @@ class Page
 		}
 		//Yii::$service->url->category->getFilterChooseAttrUrl($this->page,$val);
 		if($firstSpaceShow){
-			$url = Yii::$service->url->category->getFilterChooseAttrUrl($this->page,1);
+			$url = $this->getPageUrl($pageNum,1);
+			//Yii::$service->url->category->getFilterChooseAttrUrl($this->page,1);
 			$firstSpaceShow = [
 				'p'   => 1,
 				'url' => $url,
 			];
 		}
 		if($lastSpaceShow){
-			$url = Yii::$service->url->category->getFilterChooseAttrUrl($this->page,$maxPageNum);
+			$url = $this->getPageUrl($pageNum,$maxPageNum);
+			//Yii::$service->url->category->getFilterChooseAttrUrl($this->page,$maxPageNum);
 			$lastSpaceShow = [
 				'p'   => $maxPageNum,
 				'url' => $url,
@@ -148,16 +150,19 @@ class Page
 			foreach($frontPage as $p){
 				$frontPageU[] = [
 					'p'   => $p,
-					'url' => Yii::$service->url->category->getFilterChooseAttrUrl($this->page,$p),
+					'url' => $this->getPageUrl($pageNum,$p),
+					//Yii::$service->url->category->getFilterChooseAttrUrl($this->page,$p),
 				];
 			}
 		}
 		$behindPageU = [];
+		//var_dump($behindPage);
 		if(is_array($behindPage) && !empty($behindPage)){
 			foreach($behindPage as $p){
 				$behindPageU[] = [
 					'p'   => $p,
-					'url' => Yii::$service->url->category->getFilterChooseAttrUrl($this->page,$p),
+					'url' => $this->getPageUrl($pageNum,$p),
+					//Yii::$service->url->category->getFilterChooseAttrUrl($this->page,$p),
 				];
 			}
 		}
@@ -166,15 +171,17 @@ class Page
 		if($pageNum > 1){
 			$prevPage = $pageNum - 1;
 			$prevPage = [
-				'p'	=> $prevPage,
-				'url' => Yii::$service->url->category->getFilterChooseAttrUrl($this->page,$prevPage),
+				'p'		=> $prevPage,
+				'url' 	=> $this->getPageUrl($pageNum,$prevPage),
+				//Yii::$service->url->category->getFilterChooseAttrUrl($this->page,$prevPage),
 			];
 		}
 		if($pageNum != $maxPageNum){
-			$nextPage = $pageNum - 1;
+			$nextPage = $pageNum + 1;
 			$nextPage = [
-				'p'	=> $nextPage,
-				'url' => Yii::$service->url->category->getFilterChooseAttrUrl($this->page,$nextPage),
+				'p'		=> $nextPage,
+				'url' 	=> $this->getPageUrl($pageNum,$nextPage),
+				//Yii::$service->url->category->getFilterChooseAttrUrl($this->page,$nextPage),
 			];
 		}
 		$currentPage = [
@@ -194,4 +201,34 @@ class Page
 			'hiddenBehindStr'=>$hiddenBehindStr,
 		];
 	}
+	
+	public function getPageUrl($currentPage,$showPage){
+		$currentUrl = Yii::$service->url->getCurrentUrl();
+		$pVal = Yii::$app->request->get('p');
+		if($pVal){
+			$currentPageStr = 'p='.$pVal;
+			$showPageStr = 'p='.$showPage;
+			$url = str_replace($currentPageStr,$showPageStr,$currentUrl);
+		}else{
+			if(strstr($currentUrl,'?')){
+				$url = $currentUrl.'&p='.$showPage;
+			}else{
+				$url = $currentUrl.'?p='.$showPage;
+			}
+		}
+		return [
+			'url' => $url,
+		];
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
