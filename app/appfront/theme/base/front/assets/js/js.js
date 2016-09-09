@@ -31,7 +31,7 @@ $(document).ready(function(){
 		if($(this).hasClass("checked")){
 			$(this).removeClass("checked");
 		}else{
-			$(".filter_attr_info a.checked").removeClass("checked");
+			$(this).parent().find("a.checked").removeClass("checked");
 			$(this).addClass("checked");
 		}
 	});

@@ -313,6 +313,121 @@ class ProductMongodb implements ProductInterface
 		$filter_data = Product::getCollection()->aggregate($pipelines);
 		return $filter_data;
 	}
+	/**
+	 * 全文搜索
+	 * $filter Example:
+	 *	$filter = [
+	 *		'pageNum'	  => $this->getPageNum(),
+	 *		'numPerPage'  => $this->getNumPerPage(),
+	 *		'where'  => $this->_where,
+	 *		'product_search_max_count' => 	Yii::$app->controller->module->params['product_search_max_count'],		
+	 *		'select' 	  => $select,
+	 *	];
+	 */
+	public function fullTearchText($filter){
+		$where	 				= $filter['where'];
+		$product_search_max_count	= $filter['product_search_max_count'] ? $filter['product_search_max_count'] : 1000;
+		$mongodb = Yii::$app->mongodb;
+		$select 	= $filter['select'];
+		$pageNum 	= $filter['pageNum'];
+		$numPerPage = $filter['numPerPage'];
+		$orderBy 	= $filter['orderBy'];
+		# 
+		/**
+		 * 说明：1.'search_score'=>['$meta'=>"textScore" ，这个是text搜索为了排序，
+		 *		    详细参看：https://docs.mongodb.com/manual/core/text-search-operators/
+		 *		 2. sort排序：search_score是全文搜索匹配后的得分，score是product表的一个字段，这个字段可以通过销售量或者其他作为参考设置。
+		 */
+		$search_data = $mongodb->getCollection('product_flat')
+			
+			->find($where,['search_score'=>['$meta'=>"textScore" ],'id' => 1 ,'spu'=> 1,'score' => 1,])
+			->sort( ['search_score'=> [ '$meta'=> 'textScore' ],'score' => -1] )
+			->limit($product_search_max_count)
+			;
+		/**
+		 * 通过下面的数组，在spu相同，而且name description相同的的多个sku产品，只显示一个，因为上面已经排序，
+		 * 因此，显示的是score最高的一个
+		 */
+		$data = [];
+		foreach($search_data as $one){
+			if(!isset($data[$one['spu']])){
+				$data[$one['spu']] = $one;
+			}
+		}
+		$count = count($data);
+		$offset = ($pageNum -1)*$numPerPage;
+		$limit  =  $numPerPage;
+		$productIds = [];
+		foreach($data as $d){
+			$productIds[] = $d['_id'];
+		}
+		$productIds = array_slice($productIds, $offset, $limit);
+		if(!empty($productIds)){
+			$query = Product::find()->asArray()
+					->select($select)
+					->where(['_id'=> ["?in"=>$productIds]])
+					;
+			$data  = $query->all();
+			/**
+			 * 下面的代码的作用：将结果按照上面in查询的顺序进行数组的排序，使结果和上面的搜索结果排序一致（_id）。
+			 */
+			$s_data = [];
+			foreach($data as $one){
+				$_id = $one['_id']->{'$id'};
+				$s_data[$_id] = $one;
+			}
+			$return_data = [];
+			foreach($productIds as $product_id){
+				$return_data[] = $s_data[$product_id->{'$id'}];
+			}
+			return [
+				'coll' => $return_data ,
+				'count'=> $count,
+			];
+		}
+		
+	}
+	
+	/*
+	$project 		= [];
+	$group['_id'] 	= $filter['group'];
+	foreach($select as $column){
+		$project[$column] 	= 1;
+		if($column != '_id'){
+			$group[$column] 	= ['$first' => '$'.$column];
+		}else{
+			$group['mongo_id'] 	= ['$first' => '$'.$column];
+		
+		}
+	
+	}
+	
+	$pipelines = [
+		[
+			'$match' 	=> $where,
+		],
+		
+		[
+			'$project' 	=> $project
+		],
+		[
+			'$group'	=> $group,
+		],
+		
+	];
+	//var_dump($pipelines);
+	//exit;
+	$data = Product::getCollection()->aggregate($pipelines);
+	
+	*/
+	//var_dump($where);exit;
+	//var_dump($productIds );
+	//$data = Product::getCollection()
+	//	->fullTextSearch($searchText,[],['_id'],['limit'=>$product_search_max_count])
+	//	;
+	//exit;
+		
+	
 }
 
 

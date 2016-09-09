@@ -125,6 +125,10 @@ class Product extends Service
 	protected function actionGetFrontCategoryFilter($filter_attr,$where){
 		return $this->_product->getFrontCategoryFilter($filter_attr,$where);
 	}
+	
+	protected function actionFullTearchText($filter){
+		return $this->_product->fullTearchText($filter);
+	}
 }
 
 

@@ -65,9 +65,16 @@ class Product extends Service
 		$coll 				= Yii::$service->product->getFrontCategoryProducts($filter);
 		$collection 		= $coll['coll'];
 		$count 				= $coll['count'];
+		
+		$arr = $this->convertToCategoryInfo($collection);
+		return [
+			'coll' => $arr,
+			'count'=> $count,
+		];
+	}
+	
+	protected function actionConvertToCategoryInfo($collection){
 		$arr = [];
-		//var_dump($collection);
-		//var_dump($count);
 		$defaultImg = Yii::$service->product->image->defautImg();
 		if(is_array($collection) && !empty($collection)){
 			foreach($collection as $one){
@@ -91,10 +98,7 @@ class Product extends Service
 				];
 			}
 		}
-		return [
-			'coll' => $arr,
-			'count'=> $count,
-		];
+		return $arr;
 	}
 	
 	

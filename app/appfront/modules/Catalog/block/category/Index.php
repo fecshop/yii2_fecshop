@@ -10,6 +10,7 @@ namespace fecshop\app\appfront\modules\Catalog\block\category;
 use Yii;
 use fec\helpers\CModule;
 use fec\helpers\CRequest;
+use yii\base\InvalidValueException;
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
@@ -30,9 +31,12 @@ class Index {
 	protected $_filterPriceAttr = 'price';
 	protected $_productCount;
 	protected $_filter_attr;
+	protected $_numPerPageVal;
 	
 	public function getLastData(){
-		
+		# 每页显示的产品个数，进行安全验证，如果个数不在预先设置的值内，则会报错。
+		# 这样是为了防止恶意攻击，也就是发送很多不同的页面个数的链接，绕开缓存。
+		$this->getNumPerPage();
 		//echo Yii::$service->page->translate->__('fecshop,{username}', ['username' => 'terry']);
 		$this->initCategory();
 		
@@ -309,17 +313,29 @@ class Index {
 	}
 	
 	protected function getNumPerPage(){
-		$numPerPage = Yii::$app->request->get($this->_numPerPage);
-		if(!$numPerPage){
+		if(!$this->_numPerPageVal){
+			$numPerPage = Yii::$app->request->get($this->_numPerPage);
 			$category_query_config = Yii::$app->controller->module->params['category_query'];
-			if(isset($category_query_config['numPerPage'])){
-				if(is_array($category_query_config['numPerPage'])){
-					return $category_query_config['numPerPage'][0];
+			if(!$numPerPage){
+				if(isset($category_query_config['numPerPage'])){
+					if(is_array($category_query_config['numPerPage'])){
+						$this->_numPerPageVal = $category_query_config['numPerPage'][0];
+					}
+				}
+			}else if(!$this->_numPerPageVal){
+				if(isset($category_query_config['numPerPage']) && is_array($category_query_config['numPerPage'])){
+					$numPerPageArr = $category_query_config['numPerPage'];
+					if(in_array((int)$numPerPage,$numPerPageArr)){
+						$this->_numPerPageVal = $numPerPage;
+					}else{
+						throw new InvalidValueException('Incorrect numPerPage value:'.$numPerPage);
+					}
 				}
 			}
 		}
-		return $numPerPage;
+		return $this->_numPerPageVal;
 	}
+	
 	
 	protected function getPageNum(){
 		$numPerPage = Yii::$app->request->get($this->_page);
