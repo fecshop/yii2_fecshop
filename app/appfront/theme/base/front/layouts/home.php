@@ -18,6 +18,7 @@ $jsOptions = [
 		'js'	=>[
 			'js/jquery-3.0.0.min.js',
 			'js/js.js',
+			'js/owl.carousel.min.js',
 		],
 	],
 	# js config 2
@@ -38,6 +39,7 @@ $cssOptions = [
 		'css'	=>[
 			'css/style.css',
 			'css/ie.css',
+			'css/owl.carousel.css',
 		],
 	],
 	
