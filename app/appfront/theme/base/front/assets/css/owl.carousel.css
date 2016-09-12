@@ -82,20 +82,32 @@
 /* Styling Next and Prev buttons */
 
 .owl-theme .owl-controls .owl-buttons div{
-	color: #FFF;
-	display: inline-block;
-	zoom: 1;
-	*display: inline;/*IE7 life-saver */
-	margin: 5px;
-	padding: 3px 10px;
-	font-size: 12px;
-	-webkit-border-radius: 30px;
-	-moz-border-radius: 30px;
-	border-radius: 30px;
-	background: #869791;
-	filter: Alpha(Opacity=50);/*IE7 fix*/
-	opacity: 0.5;
+	background-image: url("../images/bg_direction_nav2.png");
+    background-repeat: no-repeat;
+    cursor: pointer;
+    display: block;
+    height: 58px;
+    margin: -29px 0 0;
+    position: absolute;
+    text-indent: -9999px;
+    top: 50%;
+    width: 28px;
+    z-index: 10;
 }
+.owl-carousel{overflow:hidden}
+
+.owl-theme .owl-controls .owl-buttons div.owl-prev{
+    background-position: 0 0;
+    left: -50px;
+}
+.owl-theme .owl-controls .owl-buttons div.owl-next{
+    background-position: -28px 0;
+    right: -50px;
+}
+.owl-theme:hover .owl-controls .owl-buttons div.owl-prev{left:0}
+
+.owl-theme:hover .owl-controls .owl-buttons div.owl-next{right:0}
+.owl-pagination{margin-top:-40px;}
 /* Clickable class fix problem with hover on touch devices */
 /* Use it for non-touch hover action */
 .owl-theme .owl-controls.clickable .owl-buttons div:hover{
@@ -113,21 +125,22 @@
 }
 .owl-theme .owl-controls .owl-page span{
 	display: block;
-	width: 12px;
-	height: 12px;
+	width: 14px;
+	height: 14px;
 	margin: 5px 7px;
 	filter: Alpha(Opacity=50);/*IE7 fix*/
 	opacity: 0.5;
 	-webkit-border-radius: 20px;
 	-moz-border-radius: 20px;
 	border-radius: 20px;
-	background: #869791;
+	background: #aaa;
 }
 
 .owl-theme .owl-controls .owl-page.active span,
 .owl-theme .owl-controls.clickable .owl-page:hover span{
-	filter: Alpha(Opacity=100);/*IE7 fix*/
-	opacity: 1;
+	background: #fff;
+	width: 14px;
+	height: 14px;
 }
 
 /* If PaginationNumbers is true */

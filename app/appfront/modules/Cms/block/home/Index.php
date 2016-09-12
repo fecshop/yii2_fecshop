@@ -14,8 +14,37 @@ class Index {
 		$this->initHead();
 		# change current layout File.
 		//Yii::$service->page->theme->layoutFile = 'home.php';
+		return [
+			'bestSellerProducts' => $this->getBestSellerProduct(),
+			'bestFeaturedProducts'	 => $this->getFeaturedProduct(),
+		];
 		
+	}
+	public function getFeaturedProduct(){
+		$featured_skus = Yii::$app->controller->module->params['homeFeaturedSku'];
+		return $this->getProductBySkus($featured_skus);
+	}
+	
+	public function getBestSellerProduct(){
+		$best_skus = Yii::$app->controller->module->params['homeBestSellerSku'];
+		return $this->getProductBySkus($best_skus);
+	}
+	
+	public function getProductBySkus($skus){
 		
+		if(is_array($skus) && !empty($skus)){
+			$filter['select'] = [
+				'sku','spu','name','image',
+				'price','special_price',
+				'special_from','special_to',
+				'url_key','score',
+			];
+			$filter['where'] = ['in','sku',$skus];
+			$products = Yii::$service->product->getProducts($filter);
+			//var_dump($products);
+			$products = Yii::$service->category->product->convertToCategoryInfo($products);
+			return $products;
+		}
 		
 	}
 	

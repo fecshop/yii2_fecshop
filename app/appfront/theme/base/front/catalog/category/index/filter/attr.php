@@ -22,10 +22,12 @@ if(isset($parentThis['filters']) && !empty($parentThis['filters']) && is_array($
 			foreach($filter as $item){
 				$val = $item['_id'];
 				$count = $item['count'];
-				$urlInfo = Yii::$service->url->category->getFilterChooseAttrUrl($attrUrlStr,$val,'p');
-				$url = $urlInfo['url'];
-				$selected = $urlInfo['selected'] ? 'class="checked"' : '';
-				echo '<a '.$selected.' href="'.$url.'">'.$val.'('.$count.')</a><br/>';
+				if($val){
+					$urlInfo = Yii::$service->url->category->getFilterChooseAttrUrl($attrUrlStr,$val,'p');
+					$url = $urlInfo['url'];
+					$selected = $urlInfo['selected'] ? 'class="checked"' : '';
+					echo '<a '.$selected.' href="'.$url.'">'.$val.'('.$count.')</a><br/>';
+				}
 			}
 			echo '</div>';
 			echo '</div>';

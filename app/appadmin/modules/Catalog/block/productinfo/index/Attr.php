@@ -33,8 +33,10 @@ class Attr
 			$this->_currentAttrGroup = Yii::$service->product->getDefaultAttrGroup();
 		}
 		$this->_attrInfo = Yii::$service->product->getGroupAttrInfo($this->_currentAttrGroup);
-		$attrs = array_keys($this->_attrInfo);
-		\fecshop\models\mongodb\Product::addCustomProductAttrs($attrs);
+		if(is_array($this->_attrInfo) && !empty($this->_attrInfo)){
+			$attrs = array_keys($this->_attrInfo);
+			\fecshop\models\mongodb\Product::addCustomProductAttrs($attrs);
+		}
 	}
 	
 	public function getGroupAttr(){

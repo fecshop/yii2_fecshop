@@ -95,7 +95,13 @@ class Product extends Service
 	protected function actionGetTreeArr($rootCategoryId=0){
 		return $this->_product->getTreeArr($rootCategoryId);
 	}
-	
+	/**
+	 * 通过where条件 和 查找的select 字段信息，得到产品的列表信息，
+	 * 这里一般是用于前台的区块性的不分页的产品查找。
+	 */
+	protected function actionGetProducts($filter){
+		return $this->_product->getProducts($filter);
+	}
 	
 	protected function actionGetCategoryProductIds($product_id_arr,$category_id){
 		return $this->_product->getCategoryProductIds($product_id_arr,$category_id);

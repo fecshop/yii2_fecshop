@@ -25,14 +25,16 @@ class Category extends Service
 	 * 把属性值转换成url格式的字符串，用于生成url
 	 */
 	protected function actionAttrValConvertUrlStr($strVal){
-		if(!preg_match("/^[A-Za-z0-9-_ &]+$/",$strVal)){
-			throw new InvalidValueException('"'.$strVal .'":contain special str , you can only contain special string [A-Za-z0-9-_ &]');
+		if($strVal){
+			if(!preg_match("/^[A-Za-z0-9-_ &]+$/",$strVal)){
+				throw new InvalidValueException('"'.$strVal .'":contain special str , you can only contain special string [A-Za-z0-9-_ &]');
+			}
+			$convert = $this->strUrlRelation();
+			foreach($convert as $originStr => $nStr){
+				$strVal = str_replace($originStr,$nStr,$strVal);
+			}
+			return $strVal;
 		}
-		$convert = $this->strUrlRelation();
-		foreach($convert as $originStr => $nStr){
-			$strVal = str_replace($originStr,$nStr,$strVal);
-		}
-		return $strVal;
 	}
 	/**
 	 * 把url格式的字符串转换成属性值，用于解析url，得到相应的属性值

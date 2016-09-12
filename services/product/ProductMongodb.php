@@ -246,6 +246,23 @@ class ProductMongodb implements ProductInterface
 		}
 	}
 	
+	/**
+	 * 通过where条件 和 查找的select 字段信息，得到产品的列表信息，
+	 * 这里一般是用于前台的区块性的不分页的产品查找。
+	 */ 
+	public function getProducts($filter){
+		$where 			= $filter['where'];
+		if(empty($where))
+			return [];
+		$select			= $filter['select'];
+		$query = Product::find()->asArray();
+		$query->where($where);
+		if(is_array($select) && !empty($select)){
+			$query->select($select);
+		}
+		return $query->all();
+	}
+	
 	public function getFrontCategoryProducts($filter){
 		$where 			= $filter['where'];
 		if(empty($where))

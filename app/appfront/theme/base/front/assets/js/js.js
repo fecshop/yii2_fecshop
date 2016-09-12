@@ -36,7 +36,7 @@ $(document).ready(function(){
 		}
 	});
 	// home big image slide
-	$("#owl-demo").owlCarousel({
+	$("#owl-fecshop").owlCarousel({
 		navigation : true,
 		slideSpeed : 300,
 		paginationSpeed : 400,

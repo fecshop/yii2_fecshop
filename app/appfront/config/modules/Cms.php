@@ -13,6 +13,14 @@ return [
 			'homeTitle' 			=> 'fecshop home page',
 			'homeMetaKeywords'		=> 'fecshop , fancy ecommerce shop ',
 			'homeMetaDescription'	=> 'fancy ecommerce shop , base Yii2 framework',
+			'homeBestSellerSku'		=> [
+				'3232','432432','sk10002','sk10003-001',
+			],
+			'homeFeaturedSku'		=> [
+				'men0003','men0002','men0001','32332'
+			],
+			
+		
 		],
 	],
 ];

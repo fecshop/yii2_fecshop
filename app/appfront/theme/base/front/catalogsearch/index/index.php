@@ -38,7 +38,7 @@
 							<li>
 								<div class="c_img">
 									<a href="<?= $product['url'] ?>">
-										<img src="<?= Yii::$service->product->image->getResize($product['image'],[230,230],false) ?>"  />
+										<img  class="js_lazy" src="<?= Yii::$service->image->getImgUrl('images/lazyload.gif');   ?>" data-original="<?= Yii::$service->product->image->getResize($product['image'],[230,230],false) ?>"  />
 									</a>
 								</div>
 								<div class="c_name">

@@ -44,6 +44,7 @@ class Url extends Service
 	 * @return  rewrite Key. 
 	 */
 	protected function actionSaveRewriteUrlKeyByStr($str,$originUrl,$originUrlKey,$type='system'){
+		$str = trim($str);
 		$originUrl = $originUrl ? '/'.trim($originUrl,'/') : '';
 		$originUrlKey = $originUrlKey ? '/'.trim($originUrlKey,'/') : '';
 		if($originUrlKey){

@@ -40,8 +40,8 @@ class HomeController extends AppfrontController
 		//var_dump($coll);
 		# change current layout File.
 		//Yii::$service->page->theme->layoutFile = 'home.php';
-		$this->getBlock()->getLastData();
-		return $this->render($this->action->id,[]);
+		$data = $this->getBlock()->getLastData();
+		return $this->render($this->action->id,$data);
 	}
 	
 	

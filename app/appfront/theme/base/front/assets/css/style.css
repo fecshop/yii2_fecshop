@@ -200,6 +200,7 @@ a:active, a:link {
     margin: 0 auto;
     min-height: 38px;
     width: 1200px;
+	z-index:99999;
 }
 #nav{
     position: relative;
@@ -715,9 +716,14 @@ font-family: Arial;
 }
 .filter_refine_by_content a:hover{color:#cc0000;text-decoration: underline;}
 
+.bottomAdList a img{height:90px;}
+.pro_img img{width:285px;height:434px;width:100%}
 
-
-
+#owl-fecshop .item img{
+        display: block;
+        width: 100%;
+        height: auto;
+    }
 
 
 
