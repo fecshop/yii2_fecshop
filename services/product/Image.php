@@ -91,8 +91,12 @@ class Image extends Service
 		return $this->_defaultImg;
 	}
 	
-	//$resize = [111,222]
+	/**
+	 * $imgResize 可以为数组 [230,230] 代表生成的图片为230*230，如果宽度或者高度不够，则会用白色填充
+	 * 如果 $imgResize设置为 230， 则宽度不变，高度按照原始图的比例计算出来。
+	 */
 	protected function actionGetResize($imageVal,$imgResize,$isWatered=false){
+		/*
 		list($width,$height) = $imgResize;
 		if(!$width && !$height){
 			throw new InvalidValueException('resize img width and height can not empty');
@@ -104,7 +108,7 @@ class Image extends Service
 			$width = $height;
 		}	
 		$imgResize = [$width , $height];
-		
+		*/
 		$originImgPath = $this->getDir($imageVal);
 		$waterImgPath = '';
 		if($isWatered){
@@ -127,7 +131,13 @@ class Image extends Service
 		}
 		
 		$baseDir = '/cache/'.$this->_md5WaterImgPath;
-		list($width,$height) = $imgResize;
+		if(is_array($imgResize)){
+			list($width,$height) = $imgResize;
+		}else{
+			$width  = $imgResize;
+			$height = '0'; 
+		}
+		
 		
 		$imageArr = explode('/',$imageVal);
 		$dirArr = ['cache',$this->_md5WaterImgPath,$width,$height];

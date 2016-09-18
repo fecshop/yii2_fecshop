@@ -50,19 +50,21 @@ class Index {
 	
 	
 	public function initHead(){
+		$home_title = Yii::$app->controller->module->params['home_title'];
+		$home_meta_keywords = Yii::$app->controller->module->params['home_meta_keywords'];
+		$home_meta_description = Yii::$app->controller->module->params['home_meta_description'];
+		
 		Yii::$app->view->registerMetaTag([
 			'name' => 'keywords',
-			'content' => CModule::param('homeMetaKeywords')
+			'content' => Yii::$service->store->getStoreAttrVal($home_meta_keywords,'home_meta_keywords'),
 		]);
 		
 		Yii::$app->view->registerMetaTag([
 			'name' => 'description',
-			'content' => CModule::param('homeMetaDescription')
+			'content' => Yii::$service->store->getStoreAttrVal($home_meta_description,'home_meta_description'),
 		]);
-		Yii::$app->view->title = CModule::param('homeTitle');
-		
+		Yii::$app->view->title = Yii::$service->store->getStoreAttrVal($home_title,'home_title');
 	}
-	
 }
 
 

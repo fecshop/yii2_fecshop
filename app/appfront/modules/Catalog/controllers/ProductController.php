@@ -15,16 +15,16 @@ use fecshop\app\appfront\modules\AppfrontController;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class CategoryController extends AppfrontController
+class ProductController extends AppfrontController
 {
     public function init(){
 		parent::init();
-		Yii::$service->page->theme->layoutFile = 'category_view.php';
+		Yii::$service->page->theme->layoutFile = 'product_view.php';
 	}
 	# 网站信息管理
     public function actionIndex()
     {
-		
+		//echo 1;exit;
 		$data = $this->getBlock()->getLastData();
 		return $this->render($this->action->id,$data);
 	}

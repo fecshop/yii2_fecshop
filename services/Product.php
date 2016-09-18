@@ -34,6 +34,9 @@ class Product extends Service
 		}
 	}
 	# Yii::$service->product->getCustomAttrGroup();
+	/**
+	 * 得到产品的所有的属性组。
+	 */
 	protected function actionGetCustomAttrGroup(){
 		$customAttrGroup = $this->customAttrGroup;
 		$arr = array_keys($customAttrGroup);
@@ -42,7 +45,9 @@ class Product extends Service
 	}
 	/**
 	 * @property $productAttrGroup|String
-	 * return product attrGroup attributes.
+	 *  得到这个产品属性组里面的所有的产品属性，
+	 *  注解：不同类型的产品，对应不同的属性组，譬如衣服有颜色尺码，电脑类型的有不同cpu型号等
+	 *  属性组，以及属性组对应的属性，是在Product Service config中配置的。
 	 */
 	protected function actionGetGroupAttrInfo($productAttrGroup){
 		if($productAttrGroup == $this->_defaultAttrGroup){
@@ -51,8 +56,9 @@ class Product extends Service
 			return isset($this->customAttrGroup[$productAttrGroup]) ? $this->customAttrGroup[$productAttrGroup] : [];
 		}
 	}
-	
-	
+	/**
+	 * 得到默认的产品属性组。
+	 */
 	protected function actionGetDefaultAttrGroup(){
 		return $this->_defaultAttrGroup;
 	}
@@ -78,12 +84,10 @@ class Product extends Service
 	 * 		'numPerPage' 	=> 20,  	
 	 * 		'pageNum'		=> 1,
 	 * 		'orderBy'	=> ['_id' => SORT_DESC, 'sku' => SORT_ASC ],
-	 * 		'where'			=> [
-	 * 			'price' => [
-	 * 				'?gt' => 1,
-	 * 				'?lt' => 10,
-	 * 			],
-	 * 			'sku' => 'uk10001',
+	 * 		where'			=> [
+				['>','price',1],
+				['<=','price',10]
+	 * 			['sku' => 'uk10001'],
 	 * 		],
 	 * 	'asArray' => true,
 	 * ]

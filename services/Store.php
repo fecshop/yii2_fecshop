@@ -46,7 +46,7 @@ class Store extends Service
 	/**
 	 * current language code example : fr  es cn ru.
 	 */
-	protected $currentLangCode;
+	public $currentLangCode;
 	/**
 	 *	Bootstrap:init website,  class property $currentLang ,$currentTheme and $currentStore.
 	 *  if you not config this ,default class property will be set.

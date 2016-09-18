@@ -14,6 +14,7 @@
 		<div class="pro-content">
 			<?php
 				$parentThis['products'] = $bestSellerProducts;
+				$parentThis['name'] = 'best-seller';
 				$config = [
 					'view'  		=> 'cms/home/index/product.php',
 				];
@@ -27,6 +28,7 @@
 		<div class="pro-content">
 			<?php
 				$parentThis['products'] = $bestFeaturedProducts;
+				$parentThis['name'] = 'featured';
 				$config = [
 					'view'  		=> 'cms/home/index/product.php',
 				];
@@ -36,3 +38,44 @@
 	</div>
 	
 </div>
+
+<script>
+<?php $this->beginBlock('owl_fecshop_slider') ?>  
+$(document).ready(function(){
+	$("#owl-fecshop").owlCarousel({
+		navigation : true,
+		slideSpeed : 300,
+		paginationSpeed : 400,
+		singleItem : true,
+		autoPlay:3000,
+		lazyLoad:true
+      // "singleItem:true" is a shortcut for:
+      // items : 1, 
+      // itemsDesktop : false,
+      // itemsDesktopSmall : false,
+      // itemsTablet: false,
+      // itemsMobile : false
+	});
+	
+	$("#owl-best-seller").owlCarousel({
+		items : 4,
+		lazyLoad : true,
+		navigation : true,
+		scrollPerPage : true,
+		pagination:false,
+		itemsCustom : false,
+        slideSpeed : 900
+	});
+	$("#owl-featured").owlCarousel({
+		items : 4,
+		lazyLoad : true,
+		navigation : true,
+		scrollPerPage : true,
+		pagination:false,
+		itemsCustom : false,
+        slideSpeed : 900
+	});
+});
+<?php $this->endBlock(); ?>  
+</script>  
+<?php $this->registerJs($this->blocks['owl_fecshop_slider'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>

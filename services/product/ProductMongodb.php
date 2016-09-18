@@ -37,11 +37,9 @@ class ProductMongodb implements ProductInterface
 	 * 		'pageNum'		=> 1,
 	 * 		'orderBy'	=> ['_id' => SORT_DESC, 'sku' => SORT_ASC ],
 	 * 		'where'			=> [
-	 * 			'price' => [
-	 * 				'?gt' => 1,
-	 * 				'?lt' => 10,
-	 * 			],
-	 * 			'sku' => 'uk10001',
+				['>','price',1],
+				['<=','price',10]
+	 * 			['sku' => 'uk10001'],
 	 * 		],
 	 * 	'asArray' => true,
 	 * ]
@@ -314,7 +312,7 @@ class ProductMongodb implements ProductInterface
 		if(empty($where))
 			return [];
 		$group['_id'] 	= '$'.$filter_attr;
-		$group['count'] = ["?sum"=> 1];
+		$group['count'] = ['$sum'=> 1];
 		$project 		= [$filter_attr => 1];
 		$pipelines = [
 			[
@@ -382,7 +380,7 @@ class ProductMongodb implements ProductInterface
 		if(!empty($productIds)){
 			$query = Product::find()->asArray()
 					->select($select)
-					->where(['_id'=> ["?in"=>$productIds]])
+					->where(['_id'=> ['$in'=>$productIds]])
 					;
 			$data  = $query->all();
 			/**

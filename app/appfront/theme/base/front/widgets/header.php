@@ -9,7 +9,6 @@
 ?>
 <div id="top_nav">
 	<input type="hidden" class="currentBaseUrl" value="<?= $currentBaseUrl ?>" />
-	<input type="hidden" class="currentBaseUrl" value="<?= $currentBaseUrl ?>" />
 	<div class="top_nav_inner">	    
 		<div class="top_nav_left">
 		
@@ -23,7 +22,7 @@
 						</ul>
 				</dd>
 			</dl>
-			<!-- ±ÒÖÖÑ¡Ôñ -->
+			<!-- å¸ç§é€‰æ‹© -->
 			<dl class="top_currency">
 				<dt><span class="current_currency"><label><?= $currency['symbol'] ?></label><?= $currency['code'] ?></span></dt>
 				<dd class="currency_list">

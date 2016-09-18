@@ -158,6 +158,6 @@
 
 /* preloading images */
 .owl-item.loading{
-	min-height: 150px;
+	min-height: 100px;
 	background: url(../images/AjaxLoader.gif) no-repeat center center
 }

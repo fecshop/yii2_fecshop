@@ -17,38 +17,8 @@ $(document).ready(function(){
 		//alert(2);
 		location.href=redirectUrl;
 	});
-	$(".product_sort").change(function(){	
-		url = $(this).find("option:selected").attr('url');
-		window.location.href = url;
-	});
-	$(".product_num_per_page").change(function(){
-		url = $(this).find("option:selected").attr('url');
-		window.location.href = url;
-	});
 	
-	$(".filter_attr_info a").click(function(){
-		
-		if($(this).hasClass("checked")){
-			$(this).removeClass("checked");
-		}else{
-			$(this).parent().find("a.checked").removeClass("checked");
-			$(this).addClass("checked");
-		}
-	});
 	// home big image slide
-	$("#owl-fecshop").owlCarousel({
-		navigation : true,
-		slideSpeed : 300,
-		paginationSpeed : 400,
-		singleItem : true,
-		autoPlay:3000,
-		lazyLoad:true
-      // "singleItem:true" is a shortcut for:
-      // items : 1, 
-      // itemsDesktop : false,
-      // itemsDesktopSmall : false,
-      // itemsTablet: false,
-      // itemsMobile : false
-	});
+	
 });
 

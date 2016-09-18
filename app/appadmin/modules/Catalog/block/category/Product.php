@@ -441,7 +441,7 @@ class Product extends AppadminbaseBlock implements AppadminbaseBlockInterface
 									</td>';
 				}else if($d['type'] == 'inputtext'){
 					$searchBar .=	'<td>
-										'.$title.':<input type="text" value="'.(is_array($this->_param[$name]) ? $this->_param[$name]['?regex'] : $this->_param[$name]).'" name="'.$name.'" />
+										'.$title.':<input type="text" value="'.(is_array($this->_param[$name]) ? $this->_param[$name]['$regex'] : $this->_param[$name]).'" name="'.$name.'" />
 									</td>';
 				}else if($d['type'] == 'inputdate'){
 					$searchBar .=	'<td>

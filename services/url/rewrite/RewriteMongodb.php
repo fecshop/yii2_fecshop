@@ -48,12 +48,10 @@ class RewriteMongodb implements RewriteInterface
 	 * 		'numPerPage' 	=> 20,  	
 	 * 		'pageNum'		=> 1,
 	 * 		'orderBy'	=> ['_id' => SORT_DESC, 'sku' => SORT_ASC ],
-	 * 		'where'			=> [
-	 * 			'price' => [
-	 * 				'?gt' => 1,
-	 * 				'?lt' => 10,
-	 * 			],
-	 * 			'sku' => 'uk10001',
+			where'			=> [
+				['>','price',1],
+				['<=','price',10]
+	 * 			['sku' => 'uk10001'],
 	 * 		],
 	 * 	'asArray' => true,
 	 * ]

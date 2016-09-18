@@ -200,7 +200,7 @@ a:active, a:link {
     margin: 0 auto;
     min-height: 38px;
     width: 1200px;
-	z-index:99999;
+	z-index:999;
 }
 #nav{
     position: relative;
@@ -724,6 +724,23 @@ font-family: Arial;
         width: 100%;
         height: auto;
     }
+
+.product_view{}
+.product_view .media_img{width:400px;float:left;}
+.product_view .product_info{width:780px;float:right;}
+.product_view .proList{}
+
+#gallery_01 img{border:2px solid white;}
+#gal1  img{border:1px solid #ccc;padding:4px;margin:5px;  }
+#gal1 .active img{border:1px solid #000 !important; }
+#gal1{margin:9px 0;}
+.pro_img a {
+	display: block;
+    height: 434px;
+    padding: 0 7.5px;
+    width: 285px;
+}
+
 
 
 

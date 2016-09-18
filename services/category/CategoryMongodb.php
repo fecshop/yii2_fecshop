@@ -18,11 +18,15 @@ use fecshop\models\mongodb\Category;
 class CategoryMongodb implements CategoryInterface
 {
 	public $numPerPage = 20;
-	
+	/**
+	 * 返回主键。
+	 */
 	public function getPrimaryKey(){
 		return '_id';
 	}
-	
+	/**
+	 * 通过主键，得到Category对象。
+	 */
 	public function getByPrimaryKey($primaryKey){
 		if($primaryKey){
 			return Category::findOne($primaryKey);
@@ -37,11 +41,9 @@ class CategoryMongodb implements CategoryInterface
 	 * 		'pageNum'		=> 1,
 	 * 		'orderBy'	=> ['_id' => SORT_DESC, 'sku' => SORT_ASC ],
 	 * 		'where'			=> [
-	 * 			'price' => [
-	 * 				'?gt' => 1,
-	 * 				'?lt' => 10,
-	 * 			],
-	 * 			'sku' => 'uk10001',
+	 *			['>','price','1'],
+	 *			['<','price','10'],
+	 * 			['sku' => 'uk10001'],
 	 * 		],
 	 * 	'asArray' => true,
 	 * ]
@@ -56,8 +58,9 @@ class CategoryMongodb implements CategoryInterface
 	}
 	
 	/**
-	 * @property $one|Array
-	 * save $data to cms model,then,add url rewrite info to system service urlrewrite.                 
+	 * @property $one|Array , save one data . 分类数组
+	 * @property $originUrlKey|String , 分类的在修改之前的url key.（在数据库中保存的url_key字段，如果没有则为空）
+	 * 保存分类，同时生成分类的伪静态url（自定义url），如果按照name生成的url或者自定义的urlkey存在，系统则会增加几个随机数字字符串，来增加唯一性。                
 	 */
 	public function save($one,$originUrlKey){
 		$currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
@@ -77,6 +80,7 @@ class CategoryMongodb implements CategoryInterface
 			$model->{$this->getPrimaryKey()} = $primaryVal;
 			$parent_id = $one['parent_id'];
 		}
+		# 增加分类的级别字段level，从1级级别开始依次类推。
 		if($parent_id === '0'){
 			$model['level'] = 1;
 		}else{
@@ -99,8 +103,10 @@ class CategoryMongodb implements CategoryInterface
 	}
 	
 	
-	/**
-	 * remove Category
+	/** 
+	 * @property $id | String  主键值
+	 * 通过主键值找到分类，并且删除分类在url rewrite表中的记录
+	 * 查看这个分类是否存在子分类，如果存在子分类，则删除所有的子分类，以及子分类在url rewrite表中对应的数据。
 	 */ 
 	public function remove($id){
 		if(!$id){
@@ -136,7 +142,11 @@ class CategoryMongodb implements CategoryInterface
 			}
 		}
 	}
-	
+	/**
+	 *  得到分类的树数组。
+	 *  数组中只有  id  name(default language), child(子分类) 等数据。
+	 *  目前此函数仅仅用于后台对分类的编辑使用。 appadmin 
+	 */
 	public function getTreeArr($rootCategoryId = '',$lang=''){
 		$arr = [];
 		if(!$lang){
@@ -173,8 +183,13 @@ class CategoryMongodb implements CategoryInterface
 		}
 		return false;
 	}
-	
-	
+	/**
+	 * @property $parent_id|String 
+	 * 通过当前分类的parent_id字段（当前分类的上级分类id），得到所有的上级信息数组。
+	 * 里面包含的信息为：name，url_key。
+	 * 譬如一个分类为三级分类，将他的parent_id传递给这个函数，那么，他返回的数组信息为[一级分类的信息（name，url_key），二级分类的信息（name，url_key）].
+	 * 目前这个功能用于前端分类页面的面包屑导航。
+	 */
 	public function getAllParentInfo($parent_id){
 		if($parent_id){
 			$parentModel = Category::findOne($parent_id);
@@ -195,39 +210,8 @@ class CategoryMongodb implements CategoryInterface
 			return $parent_category;
 		}
 	}
-	/**
-	 * 得到分类的侧栏过滤信息
-	 */
-	 /*
-	 [
-		['name' => 'xxx','url_key'=>'xxx'],
-		[
-			'name' => 'xxx',
-			'url_key'=>'xxx',
-			'child' => [
-				['name' => 'xxx','url_key'=>'xxx'],
-				['name' => 'xxx','url_key'=>'xxx'],
-				[
-					'name' => 'xxx',
-					'url_key'=>'xxx',
-					'current' => true,
-					'child' => [
-						['name' => 'xxx','url_key'=>'xxx'],
-						['name' => 'xxx','url_key'=>'xxx'],
-						['name' => 'xxx','url_key'=>'xxx'],
-					]
-				],
-			]
-		],
-		['name' => 'xxx','url_key'=>'xxx'],
-		['name' => 'xxx','url_key'=>'xxx'],
-	 ]
-	 
 	
-	
-	 
-	 */
-	public function getParentCategory($parent_id){
+	protected function getParentCategory($parent_id){
 		if($parent_id === '0'){
 			return [];
 		}
@@ -251,48 +235,37 @@ class CategoryMongodb implements CategoryInterface
 			return [];
 		}
 	}
-	
+	/**
+	 * @property $category_id|String  当前的分类_id 
+	 * @property $parent_id|String  当前的分类上级id parent_id 
+	 * 这个功能是点击分类后，在产品分类页面侧栏的子分类菜单导航，详细的逻辑如下：
+	 * 1.如果level为一级，那么title部分为当前的分类，子分类为一级分类下的二级分类
+	 * 2.如果level为二级，那么将所有的二级分类列出，当前的二级分类，会列出来当前二级分类对应的子分类
+	 * 3.如果level为三级，那么将所有的二级分类列出。当前三级分类的所有姊妹分类（同一个父类）列出，当前三级分类如果有子分类，则列出
+	 * 4.依次递归。
+	 * 具体的显示效果，请查看appfront 对应的分类页面。
+	 */
 	public function getFilterCategory($category_id,$parent_id){
-		
-		# 1.如果level为一级，那么title部分为当前的分类，子分类位一级分类下的二级分类
-		
-		# 2.如果level为二级，那么将所有的二级分类列出，当前的二级分类，列出来子分类
-		# 3.如果level为三级，那么将所有的二级分类列出。
-		# 当前二级分类的所有子分类列出，当前三级分类如果有子分类，则列出
-		//echo $category_id.'##';
-		//echo $parent_id;
 		$returnData = [];
 		$primaryKey 		= $this->getPrimaryKey();
-		
 		$currentCategory 	= Category::findOne($category_id);
-		
 		$currentUrlKey 		= $currentCategory['url_key'];
 		$currentName 		= $currentCategory['name'];
 		$currentId			= $currentCategory['_id']->{'$id'};
-		
-		//var_dump($currentCategory);exit;
-		
-		
 		$returnData['current'] = [
 			'_id' 		=> $currentId,
 			'name' 		=> $currentName,
 			'url_key'	=> $currentUrlKey,
 			'parent_id'	=> $currentCategory['parent_id'],
 		];
-		//echo $currentCategory['parent_id'];
-		//exit;
 		if($currentCategory['parent_id']){
 			$allParent = $this->getParentCategory($currentCategory['parent_id']);
 			$allParent[] = $returnData['current'];
 			$data = $this->getAllParentCate($allParent);
 		}else{
-			// 点击的是一级分类的时候
 			$data = $this->getOneLevelCateChild($returnData['current']);
 		}
-		//$data = $this->getChildCate($currentId);
-		//var_dump($data);exit;
 		return $data;
-		
 	}
 	
 	public function getOneLevelCateChild($category){

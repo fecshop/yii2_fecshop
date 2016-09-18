@@ -13,12 +13,13 @@ $jsOptions = [
 	[
 		'options' => [
 			'position' =>  'POS_END',
-		//	'condition'=> 'lt IE 9',
 		],
 		'js'	=>[
 			'js/jquery-3.0.0.min.js',
 			'js/jquery.lazyload.min.js',
-			'js/owl.carousel.min.js',
+			'js/owl.carousel.min.js',     
+			'elevatezoom/jquery.elevatezoom.js',
+			'fancybox/jquery.fancybox.pack.js',
 			'js/js.js',
 		],
 	],
@@ -31,6 +32,7 @@ $cssOptions = [
 		'css'	=>[
 			'css/style.css',
 			'css/owl.carousel.css',
+			'fancybox/jquery.fancybox.css',
 		],
 	],
 ];
