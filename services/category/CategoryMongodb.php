@@ -268,7 +268,7 @@ class CategoryMongodb implements CategoryInterface
 		return $data;
 	}
 	
-	public function getOneLevelCateChild($category){
+	protected function getOneLevelCateChild($category){
 		//'_id' 		=> $currentId,
 		//'name' 		=> $currentName,
 		//'url_key'	=> $currentUrlKey,
@@ -294,7 +294,7 @@ class CategoryMongodb implements CategoryInterface
 	}
 	
 	
-	public function getAllParentCate($allParent){
+	protected function getAllParentCate($allParent){
 		//var_dump($allParent);exit;
 		$d = $allParent;
 		$data = [];
@@ -339,7 +339,7 @@ class CategoryMongodb implements CategoryInterface
 		return $data;
 	}
 	
-	public function getChildCate($category_id){
+	protected function getChildCate($category_id){
 		//echo $category_id;
 		$data = Category::find()->asArray()->where([
 						'parent_id' => $category_id,

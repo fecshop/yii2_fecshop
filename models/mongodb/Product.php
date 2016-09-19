@@ -17,6 +17,13 @@ class Product extends ActiveRecord
 {
     public  static $_customProductAttrs;
     
+	/**
+	 * 需要做的索引  [sku],[spu],
+	 * [category_id,score],[category_id,created_at]
+	 * [category_id,price]
+	 */
+	 
+	
 	public static function collectionName()
     {
 	   return 'product_flat';

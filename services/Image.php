@@ -159,8 +159,9 @@ class Image extends Service
 			$imgUrl = $this->getUrlByRelativePath($imgSavedRelativePath);
 			$imgPath = $this->getDirByRelativePath($imgSavedRelativePath);
 			return [$imgSavedRelativePath,$imgUrl,$imgPath];
+		}else{
+			return false;
 		}
-		return false;
 	}
 	
 	/**

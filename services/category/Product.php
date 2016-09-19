@@ -13,6 +13,7 @@ use yii\base\InvalidValueException;
 use yii\base\InvalidConfigException;
 use fecshop\services\Service;
 /**
+ * 分类对应的产品的一些操作。
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -21,11 +22,12 @@ class Product extends Service
 	
 	public $pageNum = 1;
 	public $numPerPage = 50;
-	
 	public $allowedNumPerPage ;
+	
 	/**
+	 * @property $filter | Array   example:
 	 * [
-		'categoryId' 	=> 1,
+		'category_id' 	=> 1,
 		'pageNum'		=> 2,
 		'numPerPage'	=> 50,
 		'orderBy'		=> 'name',
@@ -34,6 +36,7 @@ class Product extends Service
 			['<','price',22],
 		],
 	 ]
+	 * 通过搜索条件得到当类下的产品。
 	 */
 	
 	protected function actionColl($filter){
@@ -59,7 +62,10 @@ class Product extends Service
 		}
 		return Yii::$service->product->coll($filter);
 	}
-	
+	/**
+	 * @property $filter | Array    和上面的函数 actionColl($filter) 类似。
+	 * 
+	 */
 	protected function actionGetFrontList($filter){
 		$filter['group'] 	= '$spu';
 		$coll 				= Yii::$service->product->getFrontCategoryProducts($filter);
@@ -72,7 +78,9 @@ class Product extends Service
 			'count'=> $count,
 		];
 	}
-	
+	/**
+	 * 将service取出来的数据，处理一下，然后前端显示。
+	 */ 
 	protected function actionConvertToCategoryInfo($collection){
 		$arr = [];
 		$defaultImg = Yii::$service->product->image->defautImg();
@@ -101,7 +109,9 @@ class Product extends Service
 		return $arr;
 	}
 	
-	
+	/**
+	 * 处理，得到产品价格信息
+	 */
 	protected function getPrices($price,$special_price,$special_from,$special_to){
 		if($special_price){
 			$now = time();
