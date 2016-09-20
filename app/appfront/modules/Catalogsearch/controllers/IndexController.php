@@ -23,7 +23,27 @@ class IndexController extends AppfrontController
 	# 网站信息管理
     public function actionIndex()
     {
-		//echo 1;exit;
+		/*
+		Yii::$service->search->initFullSearchIndex();
+		$filter['select'] = ['_id'];
+		$count = Yii::$service->product->collCount($filter);
+		//echo $count;
+		$numPerPage = 10;
+		$pageCount = ceil($count/10);
+		for($i=1;$i<=$pageCount;$i++){
+			$filter['numPerPage'] = $numPerPage;
+			$filter['pageNum'] = $i;
+			$products = Yii::$service->product->coll($filter);
+			$product_ids = [];
+			foreach($products['coll'] as $p){
+				$product_ids[] = $p['_id'];
+			}
+			//var_dump($product_ids);exit;
+			Yii::$service->search->syncProductInfo($product_ids);
+			
+		}
+		*/
+		
 		$data = $this->getBlock()->getLastData();
 		return $this->render($this->action->id,$data);
 	}

@@ -38,7 +38,6 @@ class Index {
 		$this->getNumPerPage();
 		//echo Yii::$service->page->translate->__('fecshop,{username}', ['username' => 'terry']);
 		$this->initSearch();
-		
 		# change current layout File.
 		//Yii::$service->page->theme->layoutFile = 'home.php';
 		
@@ -149,7 +148,7 @@ class Index {
 	
 	protected function getFilterAttr(){
 		if(!$this->_filter_attr){
-			$this->_filter_attr = Yii::$app->controller->module->params['categorysearch_filter_attr'];
+			$this->_filter_attr = $filterAttr = Yii::$service->search->filterAttr;
 		}
 		return $this->_filter_attr;
 	}
@@ -186,7 +185,7 @@ class Index {
 		if(!empty($refineInfo)){
 			$arr[] = [
 				'name' 	=> 'clear all',
-				'url'	=> Yii::$service->url->getCurrentUrlNoParam(),
+				'url'	=> Yii::$service->url->getCurrentUrlNoParam().'?q='.Yii::$app->request->get('q'),
 			];
 			$refineInfo = array_merge($arr,$refineInfo);
 		}
@@ -196,13 +195,12 @@ class Index {
 	protected function getFilterInfo(){
 		$filter_info  = [];
 		$filter_attrs = $this->getFilterAttr();
-		//var_dump($this->_where);exit;
-		foreach($filter_attrs as $attr){
-			
-			$filter_info[$attr] = Yii::$service->product->getFrontCategoryFilter($attr,$this->_where);
+		if(is_array($filter_attrs) && !empty($filter_attrs)){
+			foreach($filter_attrs as $attr){
+				$filter_info[$attr] = Yii::$service->search->getFrontSearchFilter($attr,$this->_where);
+			}
 		}
 		return $filter_info;
-		
 	}
 	
 	protected function getFilterPrice(){
@@ -315,41 +313,31 @@ class Index {
 	
 	
 	protected function getSearchProductColl(){
-		
 		$select = [
-				'sku','spu','name','image',
-				'price','special_price',
-				'special_from','special_to',
-				'url_key','score',
-			];
-		$category_query = Yii::$app->controller->module->params['search_query'];
-		if(is_array($category_query['sort'])){
-			foreach($category_query['sort'] as $sort_item){
-				$select[] = $sort_item['db_columns'];
-			}
-		}
-			
-		$filter = [
-			'pageNum'	  => $this->getPageNum(),
-			'numPerPage'  => $this->getNumPerPage(),
-			'where'  => $this->_where,
-			'product_search_max_count' => 	Yii::$app->controller->module->params['product_search_max_count'],		
-			'select' 	  => $select,
+			'sku','spu','name','image',
+			'price','special_price',
+			'special_from','special_to',
+			'url_key','score',
 		];
-		//var_dump($filter);exit;
-		$collection = Yii::$service->product->fullTearchText($filter);
-		$collection['coll'] = Yii::$service->category->product->convertToCategoryInfo($collection['coll']);
-		return $collection;
+		$where = $this->_where;
+		$search_text = Yii::$app->controller->module->params['search_query'];
+		$pageNum	    = $this->getPageNum();
+		$numPerPage	    = $this->getNumPerPage();
+		$product_search_max_count = Yii::$app->controller->module->params['product_search_max_count'];
+		return Yii::$service->search->getSearchProductColl($select,$where,$pageNum,$numPerPage,$product_search_max_count);
+		
 	}
 	
 	protected function initWhere(){
 		$filterAttr = $this->getFilterAttr();
-		foreach($filterAttr as $attr){
-			$attrUrlStr = Yii::$service->url->category->attrValConvertUrlStr($attr);
-			$val = Yii::$app->request->get($attrUrlStr);
-			if($val){
-				$val = Yii::$service->url->category->urlStrConvertAttrVal($val);
-				$where[$attr] = $val;
+		if(is_array($filterAttr) && !empty($filterAttr)){
+			foreach($filterAttr as $attr){
+				$attrUrlStr = Yii::$service->url->category->attrValConvertUrlStr($attr);
+				$val = Yii::$app->request->get($attrUrlStr);
+				if($val){
+					$val = Yii::$service->url->category->urlStrConvertAttrVal($val);
+					$where[$attr] = $val;
+				}
 			}
 		}
 		$filter_price = Yii::$app->request->get($this->_filterPrice);
@@ -363,8 +351,8 @@ class Index {
 		//$where['category'] = $this->_primaryVal;
 		//var_dump($where);exit;
 		$where['$text'] = ['$search' => $this->_searchText];
-		$where['status'] = 1;
-		$where['is_in_stock'] = 1;
+		//$where['status'] = 1;
+		//$where['is_in_stock'] = 1;
 		$this->_where = $where;
 		return $where;
 	}

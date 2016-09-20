@@ -58,6 +58,8 @@
 										'view'  		=> 'catalog/category/price.php',
 										'price' 		=> $product['price'],
 										'special_price' => $product['special_price'],
+										'special_from' => $product['special_from'],
+										'special_to' => $product['special_to'],
 									];
 									echo Yii::$service->page->widget->renderContent('category_product_price',$config);
 								?>

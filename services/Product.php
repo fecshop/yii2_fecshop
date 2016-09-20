@@ -98,6 +98,10 @@ class Product extends Service
 		return $this->_product->coll($filter);
 	}
 	
+	protected function actionCollCount($filter=''){
+		return $this->_product->collCount($filter);
+	}
+	
 	/**
 	 * 通过where条件 和 查找的select 字段信息，得到产品的列表信息，
 	 * 这里一般是用于前台的区块性的不分页的产品查找。
@@ -122,7 +126,7 @@ class Product extends Service
 	 * 保存产品（插入和更新），以及保存产品的自定义url  
      * 如果提交的数据中定义了自定义url，则按照自定义url保存到urlkey中，如果没有自定义urlkey，则会使用name进行生成。	 
 	 */
-	protected function actionSave($one,$originUrlKey){
+	protected function actionSave($one,$originUrlKey=''){
 		return $this->_product->save($one,$originUrlKey);
 	}
 	/**
@@ -193,9 +197,11 @@ class Product extends Service
 	 *  多个spu，取score最高的那个一个显示。
 	 *  按照搜索的匹配度来进行排序，没有其他排序方式
 	 */
-	protected function actionFullTearchText($filter){
-		return $this->_product->fullTearchText($filter);
-	}
+	//protected function actionFullTearchText($filter){
+	//	return $this->_product->fullTearchText($filter);
+	//}
+	
+	
 }
 
 

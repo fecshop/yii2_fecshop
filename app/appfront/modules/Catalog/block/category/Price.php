@@ -17,25 +17,14 @@ use fec\helpers\CRequest;
 class Price {
 	public $price;
 	public $special_price;
+	public $special_from;
+	public $special_to;
 	
 	public function getLastData(){
-		$price_info = Yii::$service->product->price->formatPrice($this->price);
-		$return =  [
-			'price' => [
-				'symbol' 	=> $price_info['symbol'],
-				'value' 	=> $price_info['value'],
-				'code' 		=> $price_info['code'],
-			]
-		];
-		if($this->special_price){
-			$special_price_info = Yii::$service->product->price->formatPrice($this->special_price);
-			$return['special_price'] = [
-				'symbol' 	=> $special_price_info['symbol'],
-				'value' 	=> $special_price_info['value'],
-				'code' 		=> $special_price_info['code'],
-			];
-		}
-		return $return;
+		return  Yii::$service->product->price->getCurrentCurrencyProductPriceInfo($this->price,$this->special_price,$this->special_from,$this->special_to);
 	}
 
 }
+
+
+

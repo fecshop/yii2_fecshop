@@ -86,14 +86,17 @@ class Product extends Service
 		$defaultImg = Yii::$service->product->image->defautImg();
 		if(is_array($collection) && !empty($collection)){
 			foreach($collection as $one){
-				
-				$name 		= Yii::$service->store->getStoreAttrVal($one['name'],'name');
+				if(is_array($one['name']) && !empty($one['name'])){
+					$name 	= Yii::$service->store->getStoreAttrVal($one['name'],'name');
+				}else{
+					$name 	= $one['name'];
+				}
 				$image 		= $one['image'];
 				$url_key 	= $one['url_key'];
 				if(isset($image['main']['image']) && !empty($image['main']['image'])){
-					$image = $image['main']['image'];
+					$image 	= $image['main']['image'];
 				}else{
-					$image = $defaultImg;
+					$image 	= $defaultImg;
 				}
 				list($price,$special_price) = $this->getPrices($one['price'],$one['special_price'],$one['special_from'],$one['special_to']);
 				$arr[] = [
@@ -113,13 +116,8 @@ class Product extends Service
 	 * 处理，得到产品价格信息
 	 */
 	protected function getPrices($price,$special_price,$special_from,$special_to){
-		if($special_price){
-			$now = time();
-			if(
-				($now >= $special_from) && (!$special_to || ($now <= $special_to))
-			){
-				return [$price,$special_price];
-			}
+		if(Yii::$service->product->price->specialPriceisActive($price,$special_price,$special_from,$special_to)){
+			return [$price,$special_price];
 		}
 		return [$price,0];
 	}

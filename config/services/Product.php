@@ -79,6 +79,7 @@ return [
 			],
 			'price' => [
 				'class' => 'fecshop\services\product\Price',
+				'ifSpecialPriceGtPriceFinalPriceEqPrice' => true, # 设置为true后，如果产品的special_price > price， 则 special_price无效，价格为price 
 			],
 			'review' => [
 				'class' => 'fecshop\services\product\Review',

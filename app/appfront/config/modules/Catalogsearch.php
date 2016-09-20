@@ -10,9 +10,9 @@ return [
 	'catalogsearch' => [
 		'class' => '\fecshop\app\appfront\modules\Catalogsearch\Module',
 		'params'=> [
-			'categorysearch_filter_attr' =>[
-				'color','size',
-			],
+			//'categorysearch_filter_attr' =>[
+			//	'color','size',
+			//],
 			# 搜索页面的title 格式 ，%s 将会被替换成搜索词
 			'search_page_title_format' => 'Search Text: %s ',
 			# 搜索页面的 meta keywords格式 ，%s 将会被替换成搜索词
@@ -29,30 +29,7 @@ return [
 			'search_query' =>[
 				# 放到第一个的就是默认值，譬如下面的30
 				'numPerPage' => [4,30,60,90],		# 产品显示个数的列举
-				# 放到第一个的就是默认值，譬如下面的hot
-				'sort' => [						# 所有排序方式
-					# 下面的譬如hot  new  low-to-high 只能用 字母，数组，-，_ 这4种字符。 
-					'hot' => [
-						'label'   	=> 'Hot',   # 显示的字符
-						'db_columns'=> 'score', # 对应数据库的字段
-						'direction'	=> 'desc',  # 排序方式
-					],
-					'new' => [
-						'label'   	=> 'New',
-						'db_columns'=> 'created_at',
-						'direction'	=> 'desc',
-					],
-					'low-to-high' => [
-						'label'   	=> '$ Low to High',
-						'db_columns'=> 'price',
-						'direction'	=> 'asc',
-					],
-					'high-to-low' => [
-						'label'   	=> '$ High to Low',
-						'db_columns'=> 'price',
-						'direction'	=> 'desc',
-					],
-				],
+				
 				# 价格区间设置，如果不想在搜索页面价格过滤，可以清空这个。
 				'price_range' => [
 					'0-10',

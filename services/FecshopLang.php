@@ -40,6 +40,19 @@ class Fecshoplang extends Service
 	protected function actionGetDefaultLangAttrName($attrName){
 		return $attrName.'_'.$this->defaultLangCode;
 	}
+	/**
+	 * 返回所有的，用于mongodb 生成fullSearch的语言名称。
+	 */
+	/*
+	protected function actionGetAllmongoSearchLangName(){
+		$arr = [];
+		foreach($this->allLangCode as $codeInfo){
+			$mongoSearchLangName = $codeInfo['mongoSearchLangName'];
+			$arr[] = $mongoSearchLangName;
+		}
+		return $arr;
+	}
+	*/
 	
 	protected function actionGetAllLangCode(){
 		if(!$this->_allLangCode){
@@ -48,7 +61,8 @@ class Fecshoplang extends Service
 			}
 			if($this->defaultLangCode){
 				$this->_allLangCode[] = $this->defaultLangCode;
-				foreach($this->allLangCode as $code){
+				foreach($this->allLangCode as $codeInfo){
+					$code = $codeInfo['code'];
 					if($this->defaultLangCode != $code){
 						$this->_allLangCode[] = $code;
 					}
@@ -116,7 +130,7 @@ class Fecshoplang extends Service
 	 */
 	protected function actionGetLangCodeByLanguage($language){
 		if(isset($this->allLangCode[$language])){
-			return $this->allLangCode[$language];
+			return $this->allLangCode[$language]['code'];
 		}else{
 			return '';
 		}

@@ -120,3 +120,27 @@
 	</div>
 	<div class="clear"></div>
 </div>
+<script>
+<?php $this->beginBlock('category_product_filter') ?>  
+$(document).ready(function(){
+	$(".product_sort").change(function(){	
+		url = $(this).find("option:selected").attr('url');
+		window.location.href = url;
+	});
+	$(".product_num_per_page").change(function(){
+		url = $(this).find("option:selected").attr('url');
+		window.location.href = url;
+	});
+	
+	$(".filter_attr_info a").click(function(){
+		if($(this).hasClass("checked")){
+			$(this).removeClass("checked");
+		}else{
+			$(this).parent().find("a.checked").removeClass("checked");
+			$(this).addClass("checked");
+		}
+	});
+});
+<?php $this->endBlock(); ?>  
+</script>  
+<?php $this->registerJs($this->blocks['category_product_filter'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>

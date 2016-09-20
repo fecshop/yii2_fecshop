@@ -52,7 +52,7 @@ class Product extends ActiveRecord
 			'is_in_stock', 
 			'visibility', 
 			'url_key', 
-			'url_path',
+			//'url_path',
 			'category',
 			'price', 
 			'cost_price', 
@@ -60,7 +60,7 @@ class Product extends ActiveRecord
 			'special_from', 
 			'special_to', 
 			'tier_price',
-			'now_price',   # 算出来的最终价格。这个通过脚本赋值。
+			'final_price',   # 算出来的最终价格。这个通过脚本赋值。
 			'new_product_from',
 			'new_product_to',
 			'freeshipping',

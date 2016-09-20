@@ -52,6 +52,14 @@ class ProductMongodb implements ProductInterface
 			'count'=> $query->count(),
 		];
 	}
+	/**
+	 *  得到总数
+	 */
+	public function collCount($filter=''){
+		$query = Product::find();
+		$query = Yii::$service->helper->ar->getCollByFilter($query,$filter);
+		return $query->count();
+	}
 	
 	/**
 	 * @property  $product_id_arr | Array
@@ -86,11 +94,11 @@ class ProductMongodb implements ProductInterface
 	
 	/**
 	 * @property $one|Array , 产品数据数组
-	 * @property $originUrlKey|String , 分类的原来的url key ，也就是在前端，分类的自定义url。
+	 * @property $originUrlKey|String , 产品的原来的url key ，也就是在前端，分类的自定义url。
 	 * 保存产品（插入和更新），以及保存产品的自定义url  
      * 如果提交的数据中定义了自定义url，则按照自定义url保存到urlkey中，如果没有自定义urlkey，则会使用name进行生成。	 
 	 */
-	public function save($one,$originUrlKey){
+	public function save($one,$originUrlKey=''){
 		if(!$this->initSave($one)){
 			return;
 		}
@@ -128,14 +136,32 @@ class ProductMongodb implements ProductInterface
 			}
 		}
 		$model->updated_at = time();
+		/**
+		 * 计算出来产品的最终价格。
+		 */
+		$one['final_price']= Yii::$service->product->price->getFinalPrice($one['price'],$one['special_price'],$one['special_from'],$one['special_to']);
+		$one['score'] = (int)$one['score'];
 		unset($one['_id']);
+		/**
+		 * 保存产品
+		 */
 		$saveStatus = Yii::$service->helper->ar->save($model,$one);
-		$originUrl = $originUrlKey.'?'.$this->getPrimaryKey() .'='. $primaryVal;
-		$originUrlKey = isset($one['url_key']) ? $one['url_key'] : '';
-		$defaultLangTitle = Yii::$service->fecshoplang->getDefaultLangAttrVal($one['name'],'name');
-		$urlKey = Yii::$service->url->saveRewriteUrlKeyByStr($defaultLangTitle,$originUrl,$originUrlKey);
-		$model->url_key = $urlKey;
-		$model->save();
+		/**
+		 * 自定义url部分
+		 */
+		if($originUrlKey){
+			$originUrl = $originUrlKey.'?'.$this->getPrimaryKey() .'='. $primaryVal;
+			$originUrlKey = isset($one['url_key']) ? $one['url_key'] : '';
+			$defaultLangTitle = Yii::$service->fecshoplang->getDefaultLangAttrVal($one['name'],'name');
+			$urlKey = Yii::$service->url->saveRewriteUrlKeyByStr($defaultLangTitle,$originUrl,$originUrlKey);
+			$model->url_key = $urlKey;
+			$model->save();
+		}
+		/**
+		 * 更新产品信息到搜索表。
+		 */
+		$product_ids = [$model->{$this->getPrimaryKey()} ];
+		Yii::$service->search->syncProductInfo($product_ids);
 		return true;
 	}
 	/**
@@ -180,7 +206,10 @@ class ProductMongodb implements ProductInterface
 				$model = Product::findOne($id);
 				if(isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()]) ){
 					$url_key =  $model['url_key'];
+					# 删除在重写url里面的数据。
 					Yii::$service->url->removeRewriteUrlKey($url_key);
+					# 删除在搜索表（各个语言）里面的数据
+					Yii::$service->search->removeByProductId($model[$this->getPrimaryKey()]);
 					$model->delete();
 					//$this->removeChildCate($id);
 				}else{
@@ -193,7 +222,10 @@ class ProductMongodb implements ProductInterface
 			$model = Product::findOne($id);
 			if(isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()]) ){
 				$url_key =  $model['url_key'];
+				# 删除在重写url里面的数据。
 				Yii::$service->url->removeRewriteUrlKey($url_key);
+				# 删除在搜索里面的数据
+				Yii::$service->search->removeByProductId($model[$this->getPrimaryKey()]);
 				$model->delete();
 				//$this->removeChildCate($id);
 			}else{
@@ -371,84 +403,7 @@ class ProductMongodb implements ProductInterface
 		$filter_data = Product::getCollection()->aggregate($pipelines);
 		return $filter_data;
 	}
-	/**
-	 * 全文搜索
-	 * $filter Example:
-	 *	$filter = [
-	 *		'pageNum'	  => $this->getPageNum(),
-	 *		'numPerPage'  => $this->getNumPerPage(),
-	 *		'where'  => $this->_where,
-	 *		'product_search_max_count' => 	Yii::$app->controller->module->params['product_search_max_count'],		
-	 *		'select' 	  => $select,
-	 *	];
-	 *  因为mongodb的搜索涉及到计算量，因此产品过多的情况下，要设置 product_search_max_count的值。减轻服务器负担
-     *  因为对客户来说，前10页的产品已经足矣，后面的不需要看了，限定一下产品个数，减轻服务器的压力。	 
-	 *  多个spu，取score最高的那个一个显示。
-	 *  按照搜索的匹配度来进行排序，没有其他排序方式
-	 */
-	public function fullTearchText($filter){
-		$where	 				= $filter['where'];
-		$product_search_max_count	= $filter['product_search_max_count'] ? $filter['product_search_max_count'] : 1000;
-		$mongodb = Yii::$app->mongodb;
-		$select 	= $filter['select'];
-		$pageNum 	= $filter['pageNum'];
-		$numPerPage = $filter['numPerPage'];
-		$orderBy 	= $filter['orderBy'];
-		# 
-		/**
-		 * 说明：1.'search_score'=>['$meta'=>"textScore" ，这个是text搜索为了排序，
-		 *		    详细参看：https://docs.mongodb.com/manual/core/text-search-operators/
-		 *		 2. sort排序：search_score是全文搜索匹配后的得分，score是product表的一个字段，这个字段可以通过销售量或者其他作为参考设置。
-		 */
-		$search_data = $mongodb->getCollection('product_flat')
-			
-			->find($where,['search_score'=>['$meta'=>"textScore" ],'id' => 1 ,'spu'=> 1,'score' => 1,])
-			->sort( ['search_score'=> [ '$meta'=> 'textScore' ],'score' => -1] )
-			->limit($product_search_max_count)
-			;
-		/**
-		 * 通过下面的数组，在spu相同，而且name description相同的的多个sku产品，只显示一个，因为上面已经排序，
-		 * 因此，显示的是score最高的一个
-		 */
-		$data = [];
-		foreach($search_data as $one){
-			if(!isset($data[$one['spu']])){
-				$data[$one['spu']] = $one;
-			}
-		}
-		$count = count($data);
-		$offset = ($pageNum -1)*$numPerPage;
-		$limit  =  $numPerPage;
-		$productIds = [];
-		foreach($data as $d){
-			$productIds[] = $d['_id'];
-		}
-		$productIds = array_slice($productIds, $offset, $limit);
-		if(!empty($productIds)){
-			$query = Product::find()->asArray()
-					->select($select)
-					->where(['_id'=> ['$in'=>$productIds]])
-					;
-			$data  = $query->all();
-			/**
-			 * 下面的代码的作用：将结果按照上面in查询的顺序进行数组的排序，使结果和上面的搜索结果排序一致（_id）。
-			 */
-			$s_data = [];
-			foreach($data as $one){
-				$_id = $one['_id']->{'$id'};
-				$s_data[$_id] = $one;
-			}
-			$return_data = [];
-			foreach($productIds as $product_id){
-				$return_data[] = $s_data[$product_id->{'$id'}];
-			}
-			return [
-				'coll' => $return_data ,
-				'count'=> $count,
-			];
-		}
-		
-	}
+	
 	
 	/*
 	$project 		= [];

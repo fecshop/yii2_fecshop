@@ -66,6 +66,11 @@ class Service extends  Object
 		return $this->_childService[$childServiceName];
 	}
 	
+	public function getAllChildServiceName(){
+		$childService = $this->childService;
+		return array_keys($childService);
+	} 
+	
 	/**
 	 * 如果开启service log，则记录开始的时间。
 	 */
