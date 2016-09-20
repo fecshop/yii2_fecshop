@@ -40,12 +40,12 @@ return [
 					],
 					'low-to-high' => [
 						'label'   	=> '$ Low to High',
-						'db_columns'=> 'price',
+						'db_columns'=> 'final_price',
 						'direction'	=> 'asc',
 					],
 					'high-to-low' => [
 						'label'   	=> '$ High to Low',
-						'db_columns'=> 'price',
+						'db_columns'=> 'final_price',
 						'direction'	=> 'desc',
 					],
 				],
