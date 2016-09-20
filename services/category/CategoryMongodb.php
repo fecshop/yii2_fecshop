@@ -215,7 +215,7 @@ class CategoryMongodb implements CategoryInterface
 		if($parent_id === '0'){
 			return [];
 		}
-		$category = Category::find()->asArray()->where(['_id' => new \mongoId($parent_id)])->one();
+		$category = Category::find()->asArray()->where(['_id' => new \MongoId($parent_id)])->one();
 		if(isset($category['_id']) && !empty($category['_id']) ){
 			$currentUrlKey 		= $category['url_key'];
 			$currentName 		= $category['name'];

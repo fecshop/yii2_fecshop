@@ -34,7 +34,6 @@ class Search extends Service
 		parent::init();
 	}
 	
-	
 	/**
 	 * init search engine index
 	 */ 
@@ -100,9 +99,10 @@ class Search extends Service
 		}
 	}
 	
-	
 	/**
 	 * 得到搜索的sku列表侧栏的过滤
+	 * @property $filter_attr | Array
+	 * @property $where | Array
 	 */
 	protected function actionGetFrontSearchFilter($filter_attr,$where){
 		$currentLangCode= Yii::$service->store->currentLangCode;
@@ -126,9 +126,9 @@ class Search extends Service
 		}
 	}
 	
-	
 	/**
 	 * 通过product_id删除搜索数据
+	 * @property $product_id | \mongoId
 	 */
 	protected function actionRemoveByProductId($product_id){
 		$searchEngineList = $this->getAllChildServiceName();
@@ -139,15 +139,12 @@ class Search extends Service
 			}
 		}
 	}
+	
+	
+	
+	
+	
+	
+	
+	
 }
-
-
-
-
-
-
-
-
-
-
-
