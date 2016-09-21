@@ -52,11 +52,16 @@ class Url extends Service
 			 * if originUrlKey and  originUrl is exist in url rewrite collectons.
 			 */
 			$model = $this->find();
-			$data = $model->where([
+			$data_one = $model->where([
 				'custom_url_key' 	=> $originUrlKey,
 				'origin_url' 		=> $originUrl,
-			])->asArray()->one();
-			if(isset($data['custom_url_key'])){
+			])->one();
+			if(isset($data_one['custom_url_key'])){
+				/**
+				 * 只要进行了查询，就要更新一下rewrite url表的updated_at.
+				 */
+				$data_one->updated_at = time();
+				$data_one->save();
 				return $originUrlKey;
 			}
 		}
@@ -77,7 +82,9 @@ class Url extends Service
 		]);
 		if(!isset($UrlRewrite['origin_url'])){
 			$UrlRewrite = $this->newModel();
+			$UrlRewrite->created_at = time();
 		}
+		$UrlRewrite->updated_at = time();
 		$UrlRewrite->type = $type;
 		$UrlRewrite->custom_url_key = $urlKey;
 		$UrlRewrite->origin_url = $originUrl;

@@ -88,6 +88,10 @@ class Rewrite extends Service
 		return $this->_urlRewrite->remove($ids);
 	}
 	
+	protected function actionRemoveByUpdatedAt($time){
+		return $this->_urlRewrite->removeByUpdatedAt($time);
+	}
+	
 	
 	protected function actionFind(){
 		return $this->_urlRewrite->find();

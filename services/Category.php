@@ -53,6 +53,9 @@ class Category extends Service
 		return $this->_category->getByPrimaryKey($primaryKey);
 	}
 	
+	protected function actionCollCount($filter=''){
+		return $this->_category->collCount($filter);
+	}
 	
 	
 	/**
@@ -89,7 +92,7 @@ class Category extends Service
 	 * @property $originUrlKey|String , 分类的在修改之前的url key.（在数据库中保存的url_key字段，如果没有则为空）
 	 * 保存分类，同时生成分类的伪静态url（自定义url），如果按照name生成的url或者自定义的urlkey存在，系统则会增加几个随机数字字符串，来增加唯一性。                
 	 */
-	protected function actionSave($one,$originUrlKey){
+	protected function actionSave($one,$originUrlKey='catalog/category/index'){
 		return $this->_category->save($one,$originUrlKey);
 	}
 	/** 

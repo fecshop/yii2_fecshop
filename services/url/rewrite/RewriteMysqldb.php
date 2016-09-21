@@ -124,7 +124,6 @@ class RewriteMysqldb implements RewriteInterface
 					$model = UrlRewrite::findOne($id);
 					if(isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()]) ){
 					$url_key =  $model['url_key'];
-						Yii::$service->url->removeRewriteUrlKey($url_key);
 						$model->delete();
 					}else{
 						
@@ -147,7 +146,6 @@ class RewriteMysqldb implements RewriteInterface
 				$innerTransaction = Yii::$service->db->beginTransaction();
 				try {
 					$url_key =  $model['url_key'];
-					Yii::$service->url->removeRewriteUrlKey($url_key);
 					$model->delete();
 					$innerTransaction->commit();
 				} catch (Exception $e) {
@@ -161,6 +159,14 @@ class RewriteMysqldb implements RewriteInterface
 		}
 		return true;
 		
+	}
+	
+	public function removeByUpdatedAt($time){
+		if($time){
+			UrlRewrite::deleteAll([
+				'<','updated_at',$time
+			]);
+		}
 	}
 	
 	public function find(){

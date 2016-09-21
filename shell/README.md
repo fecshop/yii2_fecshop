@@ -26,13 +26,16 @@ Xun Search 只支持中文，
 ### 3.computeProductFinalPrice.sh
 
 本脚本为计算每一个产品的final_price的值，
-同时会同步信息到搜索表，但是不会处理删除掉的表
-因此，执行这个价格完成后，还需要执行 fullSearchSync.sh脚本。
+3.1 同时会同步信息到搜索表，但是不会执行删除操作（譬如某个产品
+删除了，这个脚本是不会检测，同步删除的，如果要删除需要执行 fullSearchSync.sh脚本。）
+3.2 url rewrite的产品数据也会同步，同样不会执行删除url rewrite里面的数据（
+如果要清除残留的url rewrite数据，请执行urlRewrite.sh脚本）。
 
 
+### 4.urlRewrite.sh脚本
 
-
-
+4.1 将产品的url自定义重新跑一次。包括分类，产品等
+4.2 将urlRewrite表中残留的重新数据，但是在产品和分类中不存在的清空。
 
 
 

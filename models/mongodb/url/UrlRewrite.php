@@ -31,7 +31,9 @@ class UrlRewrite extends ActiveRecord
 		'type', 
 		'custom_url_key', 
 		'origin_url', 
-		'status'
+		'status',
+		'updated_at',
+		'created_at',
 		];
     }
 }

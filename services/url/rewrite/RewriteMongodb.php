@@ -97,7 +97,6 @@ class RewriteMongodb implements RewriteInterface
 				$model = UrlRewrite::findOne($id);
 				if(isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()]) ){
 					$url_key =  $model['url_key'];
-					Yii::$service->url->removeRewriteUrlKey($url_key);
 					$model->delete();
 				}else{
 					//throw new InvalidValueException("ID:$id is not exist.");
@@ -110,7 +109,6 @@ class RewriteMongodb implements RewriteInterface
 			$model = UrlRewrite::findOne($id);
 			if(isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()]) ){
 				$url_key =  $model['url_key'];
-				Yii::$service->url->removeRewriteUrlKey($url_key);
 				$model->delete();
 			}else{
 				Yii::$service->helper->errors->add("UrlRewrite Remove Errors:ID:$id is not exist.");
@@ -120,6 +118,29 @@ class RewriteMongodb implements RewriteInterface
 		return true;
 		
 	}
+	
+	public function removeByUpdatedAt($time){
+		if($time){
+			UrlRewrite::deleteAll([
+				'$or' => [
+					[
+						'updated_at' => [
+							'$lt' => (int)$time,
+						],
+					],
+					[
+						'updated_at' => [
+							'$exists' => false
+						]
+					]
+				]
+				
+			]);
+			echo "delete complete \n";
+		}
+		
+	}
+	
 	
 	public function find(){
 		return UrlRewrite::find();

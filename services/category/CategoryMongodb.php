@@ -58,11 +58,20 @@ class CategoryMongodb implements CategoryInterface
 	}
 	
 	/**
+	 *  得到总数
+	 */
+	public function collCount($filter=''){
+		$query = Category::find();
+		$query = Yii::$service->helper->ar->getCollByFilter($query,$filter);
+		return $query->count();
+	}
+	
+	/**
 	 * @property $one|Array , save one data . 分类数组
 	 * @property $originUrlKey|String , 分类的在修改之前的url key.（在数据库中保存的url_key字段，如果没有则为空）
 	 * 保存分类，同时生成分类的伪静态url（自定义url），如果按照name生成的url或者自定义的urlkey存在，系统则会增加几个随机数字字符串，来增加唯一性。                
 	 */
-	public function save($one,$originUrlKey){
+	public function save($one,$originUrlKey='catalog/category/index'){
 		$currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
 		$primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
 		if($primaryVal){

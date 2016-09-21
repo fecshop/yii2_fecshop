@@ -32,7 +32,7 @@ class PriceController extends Controller
 	public function actionComputefinalprice($pageNum){
 		$filter['numPerPage'] = $this->_numPerPage;
 		$filter['pageNum'] = $pageNum;
-		$filter['asArray'] = false; 
+		$filter['asArray'] = true; 
 		$products = Yii::$service->product->coll($filter);
 		$product_ids = [];   
 		foreach($products['coll'] as $one){
