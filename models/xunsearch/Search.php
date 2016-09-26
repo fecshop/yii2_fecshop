@@ -17,6 +17,6 @@ use yii\db\ActiveRecord;
 class Search extends \hightman\xunsearch\ActiveRecord
 {
     public static function projectName() {
-        return 'search';	// Õâ½«Ê¹ÓÃ @app/config/another_name.ini ×÷ÎªÏîÄ¿Ãû
+        return 'search';	// è¿™å°†ä½¿ç”¨ @app/config/another_name.ini ä½œä¸ºé¡¹ç›®å
     }
 }

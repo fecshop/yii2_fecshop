@@ -88,6 +88,11 @@ class SearchController extends Controller
 	public function actionDeletenotactiveproduct($nowTimeStamp){
 		Yii::$service->search->deleteNotActiveProduct($nowTimeStamp);
 	}
+	
+	
+	public function actionXundeleteallproduct($i){
+		Yii::$service->search->xunSearch->xunDeleteAllProduct($this->_numPerPage,$i);
+	}
 }
 
 

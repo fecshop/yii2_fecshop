@@ -22,7 +22,14 @@ done
 #delete all search data that sync_updated_at $gt $nowtime.
 $Cur_Dir/../../../../yii  product/search/deletenotactiveproduct $nowtime
 
-###### 1.Sync Section End
+###### delete xunsearch 
+echo "There are $pagenum pages to check if is delete in xunSearch"
+echo "##############ALL BEGINING###############";
+for (( i=1; i<=$pagenum; i++ ))
+do
+   $Cur_Dir/../../../../yii product/search/xundeletenotactiveproduct $nowtime $i
+   echo "Page $i done"
+done
 
 
 
