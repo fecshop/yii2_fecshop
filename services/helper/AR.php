@@ -71,7 +71,7 @@ class AR extends Service
 	}
 	
 	
-	public function save($model,$one){
+	public function save($model,$one,$serialize=false){
 		if(!$model){
 			Yii::$service->helper->errors->add('ActiveRecord Save Error: $model is empty');
 			return;
@@ -80,7 +80,11 @@ class AR extends Service
 		if(is_array($attributes) && !empty($attributes)){
 			foreach($attributes as $attr){
 				if(isset($one[$attr])){
-					$model[$attr] = $one[$attr];
+					if($serialize && is_array($one[$attr])){
+						$model[$attr] = serialize($one[$attr]);
+					}else{
+						$model[$attr] = $one[$attr];
+					}
 				}
 			}
 			return $model->save();

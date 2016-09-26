@@ -145,8 +145,15 @@ class MongoSearch extends Service implements SearchInterface
 		if(!empty($this->searchLang) && is_array($this->searchLang)){
 			foreach($this->searchLang as $langCode => $mongoSearchLangName){
 				Search::$_lang	= $langCode;
+				# 更新时间方式删除。
 				Search::deleteAll([
 					'<','sync_updated_at',(int)$nowTimeStamp
+				]);
+				# 不存在更新时间的直接删除掉。
+				Search::deleteAll([
+					'sync_updated_at' => [
+						'?exists' => false,
+					]
 				]);
 			}
 		}
