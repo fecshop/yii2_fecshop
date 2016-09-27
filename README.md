@@ -1,4 +1,4 @@
-<p align="center">
+<p style="margin-bottom:19px;">
   <a href="http://fecshop.appfront.fancyecommerce.com/">
     <img src="http://img.appfront.fancyecommerce.com/custom/logo.png">
   </a>
