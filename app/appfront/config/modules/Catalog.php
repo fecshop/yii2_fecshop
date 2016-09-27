@@ -24,7 +24,7 @@ return [
 			'category_filter_price' 	=> true,
 			'category_query' =>[
 				# 放到第一个的就是默认值，譬如下面的30
-				'numPerPage' => [4,30,60,90],		# 产品显示个数的列举
+				'numPerPage' => [30,60,90],		# 产品显示个数的列举
 				# 放到第一个的就是默认值，譬如下面的hot
 				'sort' => [						# 所有排序方式
 					# 下面的譬如hot  new  low-to-high 只能用 字母，数组，-，_ 这4种字符。 
