@@ -1,7 +1,9 @@
-# Yii2 FecShop
-========
+<p align="center">
+  <a href="http://fecshop.appfront.fancyecommerce.com/">
+    <img src="http://img.appfront.fancyecommerce.com/custom/logo.png">
+  </a>
+</p>
 
-[![logo](http://img.appfront.fancyecommerce.com/custom/logo.png "title")](http://fecshop.appfront.fancyecommerce.com/)
 
 
 
