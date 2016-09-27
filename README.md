@@ -1,7 +1,9 @@
 # Yii2 FecShop
-
-![http://img.appfront.fancyecommerce.com/custom/logo.png](http://fecshop.appfront.fancyecommerce.com/)
 ========
+
+[![logo](http://img.appfront.fancyecommerce.com/custom/logo.png "title")](http://fecshop.appfront.fancyecommerce.com/)
+
+
 
 
 github: https://github.com/fancyecommerce/yii2_fecshop
