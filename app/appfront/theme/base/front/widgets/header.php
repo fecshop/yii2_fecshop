@@ -39,11 +39,9 @@
 		<div class="top_nav_right">
 			<div class="login-text t_r">
 				<span id="js_isNotLogin">
-					<a href="" rel="nofollow">Sign in</a>
+					<a href="<?= Yii::$service->url->getUrl('customer/account/login') ?>" rel="nofollow">Sign In / Join Free</a>
 				</span>
-				<span class="join">
-					<a href="">/ Join</a>
-				</span>
+				
 			</div>
 			<dl class="top_account t_r">
 				<dt>
@@ -51,22 +49,21 @@
 				</dt>
 				<dd style="">
 					<ul>
-						<li><a href="" rel="nofollow">My S Points</a></li>
-						<li><a href="" rel="nofollow">My Orders</a></li>
-						<li><a href="" rel="nofollow">My Favorites</a></li>
-						<li><a href="" rel="nofollow">Personal Data</a></li>
-						<li><a href="" rel="nofollow">Order Review</a></li>
+						<li><a href="<?= Yii::$service->url->getUrl('customer/point') ?>" rel="nofollow">My S Points</a></li>
+						<li><a href="<?= Yii::$service->url->getUrl('customer/order') ?>" rel="nofollow">My Orders</a></li>
+						<li><a href="<?= Yii::$service->url->getUrl('customer/wishlist') ?>" rel="nofollow">My Favorites</a></li>
+						<li><a href="<?= Yii::$service->url->getUrl('customer/product/review') ?>" rel="nofollow">Product Review</a></li>
 					</ul>
 				</dd>
 			</dl>
 			<div class="mywish t_r">
-				<a href="">
+				<a href="<?= Yii::$service->url->getUrl('customer/wishlist') ?>">
 					<span class="mywishbg"></span>
 				</a>
 				<span class="mywish-text" id="js_favour_num">0</span>
 			</div>
 			<div class="mycart t_r">
-				<a href="">
+				<a href="<?= Yii::$service->url->getUrl('checkout/cart') ?>">
 					<span class="mycartbg" id="js_topBagWarp"></span>
 				</a>
 				<span class="mycart-text" id="js_cart_items">0</span>

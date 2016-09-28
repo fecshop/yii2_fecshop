@@ -4,6 +4,13 @@ body {color: #333;font: 1em/1.55 Verdana,Arial,Helvetica,sans-serif;}
 a{color: #666;text-decoration: none;}
 ol, ul {list-style: outside none none;}
 
+h1, h2, h3, h4, h5, h6 {
+    color: #444;
+    font-family: Bitter,Myriad Pro,Verdana,serif;
+    font-weight: normal;
+    line-height: 1;
+    padding-bottom: 23px;
+}
 
 #top_nav {background-color: #000;font-size: 0.75em;height: 40px;line-height: 40px;width: 100%;}
 .top_nav_inner {height: 100%;width:1200px;}
@@ -49,7 +56,7 @@ ol, ul {list-style: outside none none;}
     height: 40px;
     width: 50px;
 }
-.top_nav_right .t_r.login-text{width:120px;}
+.top_nav_right .t_r.login-text{width:150px;}
 
 .top_account .mycoount {
     background: rgba(0, 0, 0, 0) url("../images/toptip.png") no-repeat scroll left top;
@@ -611,7 +618,7 @@ input.input-text {
 #footer ul li{height:22px;}
 
 .top_currency   .currency_list   ul li{cursor:pointer;}
-
+.one-column{}
 .two-columns-left .col-main{width:980px;float:right}
 .two-columns-left .col-left {width:200px;float:left}
 .col-main h1{font-size:15px;font-weight:100;}
@@ -741,8 +748,246 @@ font-family: Arial;
     width: 285px;
 }
 
+.page-title h1{font-weight:100;font-size:1.5em;}
+.account-login h1{ border-bottom: 1px solid #ddd;
+    font-size: 22px;
+    margin: 15px;
+    padding-bottom: 20px;
+}
+.account-login .col2-set .col-1 {
+    display: inline;
+    float: left;
+    margin: 12px 12px 12px 50px;
+    min-height: 1px;
+    width: 480px;
+}
+.account-login .col2-set .col-2 {
+    display: inline;
+    float: left;
+    margin-left: 12px;
+    width: 480px;
+}
+.account-login .col2-set {
+    clear: both;
+}
+.col2-set {
+    overflow: hidden;
+}
+.account-login .new-users .content {
+    display: inline;
+    float: left;
+    margin: 42px 12px 0 0;
+    width: 480px;
+}
+
+
+
+.account-login .new-users p {
+    margin-bottom: 30px !important;
+}
+.main p {
+    margin: 0 0 20px;
+	
+}
+
+
+.account-login .registered-users .content {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    display: inline;
+    float: left;
+    margin: 22px 12px 0 0;
+    padding: 19px;
+    width: 440px;
+}
+
+.account-login .registered-users .content .form-list {
+    margin: 0;
+    padding: 0 0 50px;
+}
+
+form label.required::after {
+    color: #c3293a;
+    content: "*";
+    display: inline-block;
+    font: 12px/12px Segoeui,Arial,Verdana,serif;
+    margin: 0 3px;
+}
+
+.account-login .registered-users .content .form-list input {
+    margin: 5px 0 13px;
+    width: 255px;
+}
+
+button{
+	 background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+    border: medium none;
+    color: #fff;
+    cursor: pointer;
+    font-weight: 700;
+    white-space: nowrap;
+ }
+
+ button.redBtn  {
+    font-family: Arial;
+    font-size: 0.875em;
+    margin-left: -3px;
+    padding: 0;
+}
+
+.account-create button.redBtn{
+	margin-top:5px;
+}
+
+button.redBtn em {
+     border: 3px solid #59b7c2;
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+
+ button.redBtn span {
+	 background-color: #59b7c2;
+    border: 1px solid #fff;
+    color: #fff;
+    cursor: pointer;
+    display: block;
+    font-weight: 700;
+    line-height: 30px;
+    padding: 0 40px;
+    white-space: nowrap;
+	font-style: normal;
+}
+
+button.pinkBtn span {
+	 background-color: #59b7c2;
+    border: 1px solid #fff;
+    color: #fff;
+    cursor: pointer;
+    display: block;
+    font-weight: 700;
+    line-height: 30px;
+    padding: 0 40px;
+    white-space: nowrap;
+	font-style: normal;
+}
+
+.account-login .registered-users .buttons-set button {
+    font: bold 14px/35px Segoeui-Bold,Myriad Pro,Verdana,serif;
+    margin: -55px 0 0 20px;
+    position: absolute;
+   
+}
+
+
+.account-login .registered-users .buttons-set a.f-left {
+    color: #777;
+    font-size: 12px;
+    line-height: 35px;
+    margin: -115px 0 0 320px;
+    position: absolute;
+}
+
+
+.account-create  h1 {
+    border-bottom: 1px solid #ddd;
+    font-size: 22px;
+    margin: 15px;
+    padding-bottom: 20px;
+}
+
+
+.account-create #form-validate {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    margin: 0 auto;
+    padding: 20px;
+    width: 640px;
+}
+
+.account-create #form-validate .fieldset {
+    float: left;
+    width: 285px;
+}
+
+.account-create #form-validate .fieldset:nth-child(2),  .account-create #form-validate .buttons-set {
+    clear: none;
+    float: right;
+    width: 276px;
+}
 
 
 
 
+.account-create #form-validate .fieldset:nth-child(2) , .account-create #form-validate .buttons-set {
+    clear: none;
+    float: right;
+    width: 276px;
+}
+
+
+form label.required::after {
+    color: #c3293a;
+    content: "*";
+    display: inline-block;
+    font: 12px/12px Segoeui,Arial,Verdana,serif;
+    margin: 0 3px;
+}
+form label {
+    color: #707070;
+    font: bold 13px/13px Segoeui-Bold,Myriad Pro,Verdana,serif;
+}
+form label.required em {
+    display: none;
+}
+
+.account-create form input {
+    margin: 5px 0 13px;
+    width: 255px;
+}
+
+#is_subscribed {
+    float: left;
+    margin-right: 3px;
+    text-align: left;
+    width: auto;
+}
+
+
+.account-create #form-validate .buttons-set p.back-link {
+    margin: 50px 0 0;
+    position: absolute;
+}
+
+
+
+.account-create #form-validate .buttons-set p.required {
+    float: right;
+	line-height: 50px;
+}
+form p.required {
+    color: #c3293a;
+    font: 12px/35px Segoeui,Arial,Verdana,serif;
+    margin-bottom: 0;
+}
+
+.validation-advice {
+    color: #c3293a;
+    font: 12px/12px Segoeui,Arial,Verdana,serif;
+    margin: 0 0 20px;
+}
+
+button.dataUp i {
+	background: rgba(0, 0, 0, 0) url("../images/signloading.gif") no-repeat scroll center center;
+    display: inline-block;
+    height: 16px;
+    margin-right: 5px;
+    vertical-align: -2px;
+    width: 16px;
+}
+button.redBtn:hover span{
+	background-color: #fff;
+    color: #35aac9;
+}
 
