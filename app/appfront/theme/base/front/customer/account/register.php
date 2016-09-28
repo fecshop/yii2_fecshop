@@ -72,10 +72,10 @@ $firstNameLenghtValidate 	= 'first name length must between';
 $lastNameLenghtValidate 	= 'last name length must between';
 $passwordLenghtValidate 	= 'Please enter 6 or more characters. Leading or trailing spaces will be ignored.';
 $passwordMatchValidate 		= 'Please make sure your passwords match. ';
-$minNameLength = 2;
-$maxNameLength = 20;
-$minPassLength = 6;  
-$maxPassLength = 30;
+//$minNameLength = 2;
+//$maxNameLength = 20;
+//$minPassLength = 6;  
+//$maxPassLength = 30;
 
 ?>
 <script>

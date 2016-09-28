@@ -19,7 +19,14 @@ class Register {
 	
 	public function getLastData(){
 		return [
+			'minNameLength' => Yii::$service->customer->getRegisterNameMinLength(),
+			'maxNameLength' => Yii::$service->customer->getRegisterNameMaxLength(),
+			'minPassLength' => Yii::$service->customer->getRegisterPassMinLength(),
+			'maxPassLength' => Yii::$service->customer->getRegisterPassMaxLength(),
 		
 		];
 	}
 }
+
+
+

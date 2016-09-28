@@ -18,6 +18,41 @@ use yii\base\InvalidConfigException;
  */
 class Customer extends Service
 {
+	public $customer_register;
+	
+	/**
+	 * 注册用户名字的最小长度
+	 */
+	protected function actionGetRegisterNameMinLength(){
+		if(isset($this->customer_register['min_name_length'])){
+			return $this->customer_register['min_name_length'];
+		}
+	}
+	/**
+	 * 注册用户名字的最大长度
+	 */
+	protected function actionGetRegisterNameMaxLength(){
+		if(isset($this->customer_register['max_name_length'])){
+			return $this->customer_register['max_name_length'];
+		}
+	}
+	/**
+	 * 注册用户密码的最小长度
+	 */
+	protected function actionGetRegisterPassMinLength(){
+		if(isset($this->customer_register['min_pass_length'])){
+			return $this->customer_register['min_pass_length'];
+		}
+	}
+	/**
+	 * 注册用户密码的最大长度
+	 */
+	protected function actionGetRegisterPassMaxLength(){
+		if(isset($this->customer_register['max_pass_length'])){
+			return $this->customer_register['max_pass_length'];
+		}
+	}
+	
 	/**
 	 * @property $data|Array
 	 * like :['email'=>'xxx@xxx.com','password'=>'xxxx']
