@@ -18,7 +18,32 @@ $(document).ready(function(){
 		location.href=redirectUrl;
 	});
 	
-	// home big image slide
+	// ajax get account login info
+	
+	loginInfoUrl = currentBaseUrl+"/customer/account/logininfo";
+	logoutUrl 	 = $(".logoutUrl").val();
+	
+	jQuery.ajax({
+		async:true,
+		timeout: 6000,
+		dataType: 'json', 
+		type:'get',
+		data: {
+			'currentUrl':window.location.href
+		},
+		url:loginInfoUrl,
+		success:function(data, textStatus){ 
+			welcome = $('.welcome_str').val();
+			if(data.loginStatus){
+				str = '<span id="welcome">'+welcome+'</span>';
+				str += '<span id="js_isNotLogin">';
+				str += '<a href="'+logoutUrl+'" rel="nofollow">Logout</a>';
+				str += '</span>';
+				$(".login-text").html(str);
+			}
+		},
+		error:function (XMLHttpRequest, textStatus, errorThrown){}
+	});
 	
 });
 

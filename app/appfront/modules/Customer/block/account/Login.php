@@ -22,4 +22,25 @@ class Login {
 		
 		];
 	}
+	
+	public function login($param){
+		if(is_array($param) && !empty($param)){
+			Yii::$service->customer->login($param);
+		}
+		if(!Yii::$app->user->isGuest){
+			Yii::$service->url->redirectByUrlKey('customer/account');
+		}
+		$errors = Yii::$service->helper->errors->get(true);
+		if($errors){
+			if(is_array($errors) && !empty($errors)){
+				foreach($errors as $error){
+					if(is_array($error) && !empty($error)){
+						foreach($error as $er){
+							Yii::$service->page->message->addError($er);
+						}
+					}
+				}
+			} 
+		}
+	}
 }

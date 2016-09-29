@@ -1,4 +1,6 @@
 <div class="main container one-column">
+<?= Yii::$service->page->widget->render('flashmessage'); ?>
+
 	<div class="account-login">
     <div class="page-title">
         <h1>Login or Create an Account</h1>
@@ -20,19 +22,20 @@
                         <li>
                             <label for="email" class="required"><em>*</em>Email Address</label>
                             <div class="input-box">
-                                <input name="login[username]" value="" id="email" class="input-text required-entry validate-email" title="Email Address" type="text">
+                                <input name="editForm[email]" value="" id="email" class="input-text required-entry validate-email" title="Email Address" type="text">
                             </div>
                         </li> 
                         <li>
                             <label for="pass" class="required"><em>*</em>Password</label>
                             <div class="input-box">
-                                <input name="login[password]" class="input-text required-entry validate-password" id="pass" title="Password" type="password">
+                                <input name="editForm[password]" class="input-text required-entry validate-password" id="pass" title="Password" type="password">
                             </div>
                         </li>
 
                 </div>
             </div>
         </div>
+		<?= \fec\helpers\CRequest::getCsrfInputHtml();  ?>
         <div class="col2-set">
             <div class="col-1 new-users">
                 <div class="buttons-set">

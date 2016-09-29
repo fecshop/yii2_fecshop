@@ -23,17 +23,22 @@ class Errors extends Service
 	protected $_errors = false ;
 	public $status = true;
 	
-	public function add($str){
-		if($str){
-			$this->_errors[] = $str;
+	public function add($errros){
+		if($errros){
+			$this->_errors[] = $errros;
 		}
 	}
 	
-	public function get(){
+	public function get($arrayFormat=false){
 		if($this->_errors){
 			$errors = $this->_errors;
 			$this->_errors = false;
-			return implode('|',$errors);
+			if(!$arrayFormat){
+				return implode('|',$errors);
+			}else{
+				return $errors;
+			}
+			
 		}
 		return false;
 	}

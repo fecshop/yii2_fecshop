@@ -9,6 +9,7 @@
 namespace fecshop\models\mysqldb;
 use Yii;
 use yii\db\ActiveRecord;
+use yii\web\IdentityInterface;
 /**
  * User model
  *
@@ -28,7 +29,7 @@ use yii\db\ActiveRecord;
  * @since 1.0
  */
 
-class Customer extends ActiveRecord
+class Customer extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = 10;
     const STATUS_ACTIVE  = 1;
@@ -75,9 +76,9 @@ class Customer extends ActiveRecord
      * @param string $username
      * @return static|null
      */
-    public static function findByUsername($username)
+    public static function findByEmail($email)
     {
-        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['email' => $email, 'status' => self::STATUS_ACTIVE]);
     }
 
     /**

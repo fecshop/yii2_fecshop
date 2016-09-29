@@ -10,6 +10,8 @@ namespace fecshop\services;
 use Yii;
 use yii\base\InvalidValueException;
 use yii\base\InvalidConfigException;
+use fecshop\models\mysqldb\customer\CustomerRegister;
+use fecshop\models\mysqldb\customer\CustomerLogin;
 /**
  * Customer service
  * @property Image|\fecshop\services\Product\Image $image ,This property is read-only.
@@ -59,18 +61,33 @@ class Customer extends Service
 	 */
 	protected function actionLogin($data){
 		
-		
+		$model = new CustomerLogin;
+		$model->email 	 = $data['email'];
+		$model->password = $data['password'];
+		$loginStatus = $model->login();
+		$errors = $model->errors;
+		//var_dump($errors);
+		//exit;
+		Yii::$service->helper->errors->add($errors);
+		return $loginStatus;
 	}
 	/**
 	 * @property $data|Array
 	 * register customer account
 	 * ['email','firstname','lastname','password'
-	 *	,'sex','age',
+	 *	
 	 * ]
 	 */
-	protected function actionRegister($data){
-		
-		
+	protected function actionRegister($param){
+		$model = new CustomerRegister;
+		$model->attributes = $param;
+		if($model->validate()){
+			return $model->save();
+		}else{
+			$errors = $model->errors;
+			Yii::$service->helper->errors->add($errors);
+			return false;;
+		}
 	}
 	
 	/**

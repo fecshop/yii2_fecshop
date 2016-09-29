@@ -134,6 +134,10 @@ return [
 				'class' => 'fecshop\services\page\Menu',
 				
 			],
+			'message' => [
+				'class' => 'fecshop\services\page\Message',
+				
+			],
 			
 		],
 	],

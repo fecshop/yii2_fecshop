@@ -1,9 +1,12 @@
 <div class="main container one-column">
+<?= Yii::$service->page->widget->render('flashmessage'); ?>
+
 	<div class="account-create">
 		<div class="page-title">
 			<h1>Create an Account</h1>
 		</div>
         <form action="<?= Yii::$service->url->getUrl('customer/account/register'); ?>" method="post" id="form-validate">
+			
 			<div class="fieldset">
 				<h2 class="legend">Personal Information</h2>
 				<ul class="form-list">
@@ -12,13 +15,13 @@
 							<div class="field name-firstname">
 								<label for="firstname" class="required"><em>*</em>First Name</label>
 								<div class="input-box">
-									<input id="firstname" name="firstname" value="" title="First Name" maxlength="255" class="input-text required-entry" type="text">
+									<input id="firstname" name="editForm[firstname]" value="<?= $firstname ?>" title="First Name" maxlength="255" class="input-text required-entry" type="text">
 								</div>
 							</div>
 							<div class="field name-lastname">
 								<label for="lastname" class="required"><em>*</em>Last Name</label>
 								<div class="input-box">
-									<input id="lastname" name="lastname" value="" title="Last Name" maxlength="255" class="input-text required-entry" type="text">
+									<input id="lastname" name="editForm[lastname]" value="<?= $lastname ?>" title="Last Name" maxlength="255" class="input-text required-entry" type="text">
 								</div>
 							</div>
 						</div>
@@ -26,12 +29,12 @@
 					<li>
 						<label for="email_address" class="required"><em>*</em>Email Address</label>
 						<div class="input-box">
-							<input name="email" id="email_address" value="" title="Email Address" class="input-text validate-email required-entry" type="text">
+							<input name="editForm[email]" id="email_address" value="<?= $email ?>" title="Email Address" class="input-text validate-email required-entry" type="text">
 						</div>
 					</li>
                     <li class="control">
 						<div class="input-box">
-							<input name="is_subscribed" title="Sign Up for Newsletter" value="1" id="is_subscribed" class="checkbox" type="checkbox">
+							<input name="editForm[is_subscribed]" title="Sign Up for Newsletter" value="1" id="is_subscribed" class="checkbox" type="checkbox" checked="checked">
 						</div>
 						<label for="is_subscribed">Sign Up for Newsletter</label>
 					</li>
@@ -44,18 +47,19 @@
 						<div class="field">
 							<label for="password" class="required"><em>*</em>Password</label>
 							<div class="input-box">
-								<input name="password" id="password" title="Password" class="input-text required-entry validate-password" type="password">
+								<input name="editForm[password]" id="password" title="Password" class="input-text required-entry validate-password" type="password">
 							</div>
 						</div>
 						<div class="field">
 							<label for="confirmation" class="required"><em>*</em>Confirm Password</label>
 							<div class="input-box">
-								<input name="confirmation" title="Confirm Password" id="confirmation" class="input-text required-entry validate-cpassword" type="password">
+								<input name="editForm[confirmation]" title="Confirm Password" id="confirmation" class="input-text required-entry validate-cpassword" type="password">
 							</div>
 						</div>
 					</li>
 				</ul>
 			</div>
+			<?= \fec\helpers\CRequest::getCsrfInputHtml();  ?>
 			<div class="buttons-set">
 				<p class="required">* Required Fields</p>
 				<p class="back-link"><a href="<?= Yii::$service->url->getUrl('customer/account/login'); ?>" class="back-link"><small>« </small>Back</a></p>
@@ -167,6 +171,7 @@ $(document).ready(function(){
 		if(validate){
 		//	alert("validate success");
 			$(this).addClass("dataUp");
+			$("#form-validate").submit();
 		}
 	});
 });

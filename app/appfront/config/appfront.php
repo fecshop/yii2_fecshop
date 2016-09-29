@@ -37,7 +37,7 @@ return [
 		],
 		
 		'user' => [
-			'identityClass' => 'fecadmin\models\AdminUser',
+			'identityClass' => 'fecshop\models\mysqldb\Customer',
 			'enableAutoLogin' => true,
 		],
 		

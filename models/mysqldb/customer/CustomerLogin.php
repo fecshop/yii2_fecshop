@@ -8,44 +8,44 @@
  */
 namespace fecshop\models\mysqldb\customer;
 use fecshop\models\mysqldb\Customer;
+use yii\base\Model;
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class CustomerLogin extends Customer {
+class CustomerLogin extends Model {
 	
-	public $username;
+	public $email;
 	public $password;
-	public $captcha;
-	private $_admin_user;
+	//public $captcha;
+	private $_customer;
 	public function rules()
     {
         return [
-            [['username', 'password'], 'required'],
+            [['email', 'password'], 'required'],
+			['email','email'],
 			['password', 'validatePassword'],
-         //   ['captcha', 'captcha','captchaAction'=>'/fecadmin/captcha/index'],
-		//	 ['captcha', 'required'],
         ];
     }
 	
 	public function validatePassword($attribute,$params){
 		
 		if (!$this->hasErrors()) {
-            $AdminUser = $this->getAdminUser();
-            if (!$AdminUser) {
-                $this->addError('用户名', '用户名不存在');
-            }else if(!$AdminUser->validatePassword($this->password)){
-				$this->addError('用户名或密码','不正确');
+            $customer = $this->getCustomer();
+            if (!$customer) {
+                $this->addError($attribute,'email is not exist');
+            }else if(!$customer->validatePassword($this->password)){
+				$this->addError($attribute,'user password is not correct');
 			}
         }
 	}
 	
 	
-	public function getAdminUser(){
-		if($this->_admin_user === null){
-			$this->_admin_user = AdminUser::findByUsername($this->username);
+	public function getCustomer(){
+		if($this->_customer === null){
+			$this->_customer = Customer::findByEmail($this->email);
 		}
-		return $this->_admin_user;
+		return $this->_customer;
 		
 	}
 	
@@ -53,7 +53,7 @@ class CustomerLogin extends Customer {
     {
         if ($this->validate()) {
             //return \Yii::$app->user->login($this->getAdminUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
-			return \Yii::$app->user->login($this->getAdminUser(), 3600 * 24);
+			return \Yii::$app->user->login($this->getCustomer(), 3600 * 24);
         } else {
             return false;
         }

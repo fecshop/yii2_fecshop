@@ -352,4 +352,19 @@ class Url extends Service
 		}
 		return $return_url;
 	}
+	/**
+	 * url 跳转
+	 */
+	protected function actionRedirect($url){
+		if($url){
+			header("Location: $url");
+		}
+	}
+	protected function actionRedirectByUrlKey($urlKey,$params=[]){
+		if($urlKey){
+			$url = $this->getUrl($urlKey,$params);
+			header("Location: $url");
+		}
+	}
+	
 }

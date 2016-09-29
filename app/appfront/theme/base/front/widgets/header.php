@@ -9,6 +9,8 @@
 ?>
 <div id="top_nav">
 	<input type="hidden" class="currentBaseUrl" value="<?= $currentBaseUrl ?>" />
+	<input type="hidden" class="logoutUrl" value="<?= $logoutUrl ?>" />
+	<input type="hidden" class="welcome_str" value="<?= Yii::$service->page->translate->__('Welcome!'); ?>" />
 	<div class="top_nav_inner">	    
 		<div class="top_nav_left">
 		
@@ -45,7 +47,7 @@
 			</div>
 			<dl class="top_account t_r">
 				<dt>
-					<a href="" rel="nofollow" class="mycoount"></a>
+					<a href="<?= Yii::$service->url->getUrl('customer/account') ?>" rel="nofollow" class="mycoount"></a>
 				</dt>
 				<dd style="">
 					<ul>
