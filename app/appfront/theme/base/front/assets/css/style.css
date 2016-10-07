@@ -883,10 +883,10 @@ button.pinkBtn span {
 
 
 .account-login .registered-users .buttons-set a.f-left {
-    color: #777;
+     color: #777;
     font-size: 12px;
     line-height: 35px;
-    margin: -115px 0 0 320px;
+    margin: -53px 0 0 200px;
     position: absolute;
 }
 
@@ -957,8 +957,8 @@ form label.required em {
 
 
 .account-create #form-validate .buttons-set p.back-link {
-    margin: 50px 0 0;
-    position: absolute;
+    margin: 15px 0 0;
+   
 }
 
 
@@ -1013,15 +1013,47 @@ button.redBtn:hover span{
     margin: 0 15px;
 }
 
+.refresh-icon{
+	 background-image: url("../images/sign.png");
+    background-position: 3px -138px;
+    background-repeat: no-repeat;
+    border: 1px solid #ddd;
+    display: block;
+    float: right;
+    height: 30px;
+    margin-left: 1px;
+    width: 30px;
+	cursor: pointer;
+}
+
+.account-login .registered-users .content .form-list .login-captcha-input{
+	 border: 1px solid #ccc;
+    height: 30px;
+    margin: 0;
+    padding: 0 0 0 10px;
+    width: 90px;
+}
+
+.login-captcha-img{
+	border:1px solid #aaa;
+	cursor: pointer;
+}
+.login-captcha{
+	width:277px;
+}
 
 
+.account-create #form-validate .buttons-set{
+	float:none;
+}
 
-
-
-
-
-
-
+.account-create form .register-captcha input{
+	 border: 1px solid #ccc;
+    height: 30px;
+    margin: 0;
+    padding: 0 0 0 10px;
+    width: 90px;
+}
 
 
 

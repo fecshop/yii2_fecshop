@@ -56,14 +56,41 @@
 								<input name="editForm[confirmation]" title="Confirm Password" id="confirmation" class="input-text required-entry validate-cpassword" type="password">
 							</div>
 						</div>
+						
+						<?php if($registerPageCaptcha){  ?>
+						<div class="field">
+                            <label for="captcha" class="required"><em>*</em>Captcha</label>
+                            <div class="input-box register-captcha">
+								<input type="text" name="editForm[captcha]" value="" size=10 class="login-captcha-input"> 
+								<img class="login-captcha-img"  title="点击刷新" src="<?= Yii::$service->url->getUrl('site/helper/captcha'); ?>" align="absbottom" onclick="this.src='<?= Yii::$service->url->getUrl('site/helper/captcha'); ?>?'+Math.random();"></img>
+								<i class="refresh-icon"></i>
+                            </div>
+							<script>
+							<?php $this->beginBlock('login_captcha_onclick_refulsh') ?>  
+							$(document).ready(function(){
+								$(".refresh-icon").click(function(){
+									$(this).parent().find("img").click();
+								});
+							});
+							<?php $this->endBlock(); ?>  
+							</script>  
+							<?php $this->registerJs($this->blocks['login_captcha_onclick_refulsh'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
+
+                        </div>
+						<?php }  ?>
 					</li>
+					
+					
+						
+						
 				</ul>
 			</div>
 			<?= \fec\helpers\CRequest::getCsrfInputHtml();  ?>
 			<div class="buttons-set">
 				<p class="required">* Required Fields</p>
-				<p class="back-link"><a href="<?= Yii::$service->url->getUrl('customer/account/login'); ?>" class="back-link"><small>« </small>Back</a></p>
 				<button type="button" id="js_registBtn" class="redBtn"><em><span><i></i>Submit</span></em></button>
+				<p class="back-link"><a href="<?= Yii::$service->url->getUrl('customer/account/login'); ?>" class="back-link"><small>« </small>Back</a></p>
+				
 			</div>
 			<div class="clear"></div>
 		</form>

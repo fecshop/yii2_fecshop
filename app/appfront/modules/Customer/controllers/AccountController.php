@@ -27,6 +27,7 @@ class AccountController extends AppfrontController
 			Yii::$service->url->redirectByUrlKey('customer/account/login');
 		}
 		$data = $this->getBlock()->getLastData();
+		
 		return $this->render($this->action->id,$data);
 	}
     public function actionLogin()
@@ -67,10 +68,14 @@ class AccountController extends AppfrontController
 	public function actionLogout(){
 		$rt = Yii::$app->request->get('rt');
 		if(!Yii::$app->user->isGuest){
+			
 				Yii::$app->user->logout();
+				
 			}
+		
 		if($rt){
 			$redirectUrl = base64_decode($rt);
+			//exit;
 			Yii::$service->url->redirect($redirectUrl);
 		}else{
 			Yii::$service->url->redirect(Yii::$service->url->HomeUrl());

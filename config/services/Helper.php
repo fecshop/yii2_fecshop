@@ -40,7 +40,15 @@ return [
 			'mobileDetect' => [
 				'class' => 'fecshop\services\helper\MobileDetect',
 			],
-			
+			'captcha' => [
+				'class' 		=> 'fecshop\services\helper\Captcha',
+				//'charset' 	=> '0123456789', //随机因子
+				'codelen' 		=> 4,  //验证码长度
+				'width'   		=> 130,//宽度
+				'height'  		=> 50, //高度
+				'fontsize'		=> 20, //子体大小
+				'case_sensitive'=> false , // 是否区分大小写，false代表不区分
+			],
 			
 		],
 	],

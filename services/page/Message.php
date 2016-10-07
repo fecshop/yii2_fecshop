@@ -27,6 +27,10 @@ class Message extends Service
 	 * @property $message | String
 	 */ 
 	protected function actionAddCorrect($message){
+		$correct = $this->getCorrects();
+		if(is_array($correct) && is_array($message)){
+			$message = array_merge($correct,$message);
+		}
 		return Yii::$app->session->setFlash($this->_correctName,$message);
 	}
 	/**
@@ -34,6 +38,10 @@ class Message extends Service
 	 * @property $message | String
 	 */ 
 	protected function actionAddError($message){
+		$error = $this->getErrors();
+		if(is_array($error) && is_array($message)){
+			$message = array_merge($error,$message);
+		}
 		return Yii::$app->session->setFlash($this->_errorName,$message);
 	}
 	/**

@@ -18,12 +18,23 @@ use yii\base\InvalidValueException;
 class Login {
 	
 	public function getLastData(){
+		$loginParam = \Yii::$app->getModule('customer')->params['login'];
+		$loginPageCaptcha = isset($loginParam['loginPageCaptcha']) ? $loginParam['loginPageCaptcha'] : false;
 		return [
-		
+			'loginPageCaptcha' => $loginPageCaptcha,
 		];
 	}
 	
+	
+	
 	public function login($param){
+		$captcha = $param['captcha'];
+		$loginParam = \Yii::$app->getModule('customer')->params['login'];
+		$loginPageCaptcha = isset($loginParam['loginPageCaptcha']) ? $loginParam['loginPageCaptcha'] : false;
+		if($captcha && $loginPageCaptcha && !\Yii::$service->helper->captcha->validateCaptcha($captcha)){
+			Yii::$service->page->message->addError(['Captcha is not right']);
+			return;
+		}
 		if(is_array($param) && !empty($param)){
 			Yii::$service->customer->login($param);
 		}
@@ -36,6 +47,7 @@ class Login {
 				foreach($errors as $error){
 					if(is_array($error) && !empty($error)){
 						foreach($error as $er){
+							
 							Yii::$service->page->message->addError($er);
 						}
 					}

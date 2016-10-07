@@ -21,6 +21,9 @@ class Register {
 		$firstname 		= isset($param['firstname']) ? $param['firstname'] : '';
 		$lastname 		= isset($param['lastname']) ? $param['lastname'] : '';
 		$email 			= isset($param['email']) ? $param['email'] : '';
+		$registerParam = \Yii::$app->getModule('customer')->params['register'];
+		$registerPageCaptcha = isset($registerParam['registerPageCaptcha']) ? $registerParam['registerPageCaptcha'] : false;
+		
 		return [
 			'firstname'		=> $firstname,
 			'lastname'		=> $lastname,
@@ -30,11 +33,21 @@ class Register {
 			'maxNameLength' => Yii::$service->customer->getRegisterNameMaxLength(),
 			'minPassLength' => Yii::$service->customer->getRegisterPassMinLength(),
 			'maxPassLength' => Yii::$service->customer->getRegisterPassMaxLength(),
-		
+			'registerPageCaptcha' => $registerPageCaptcha,
 		];
 	}
 	
 	public function register($param){
+		
+		$captcha = $param['captcha'];
+		$registerParam = \Yii::$app->getModule('customer')->params['register'];
+		$registerPageCaptcha = isset($registerParam['registerPageCaptcha']) ? $registerParam['registerPageCaptcha'] : false;
+		# 如果开启了验证码，但是验证码验证不正确就报错返回。
+		if($captcha && $registerPageCaptcha && !\Yii::$service->helper->captcha->validateCaptcha($captcha)){
+			Yii::$service->page->message->addError(['Captcha is not right']);
+			return;
+		}
+		
 		Yii::$service->customer->register($param);
 		$errors = Yii::$service->helper->errors->get(true);
 		if($errors){
