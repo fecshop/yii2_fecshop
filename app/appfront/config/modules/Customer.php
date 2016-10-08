@@ -15,7 +15,29 @@ return [
 				'successAutoLogin' => true, 
 				# 注册登录成功后，跳转的url
 				'loginSuccessRedirectUrlKey' => 'customer/account', 
-				'registerPageCaptcha' => true,  
+				'registerPageCaptcha' => true, 
+				'email' => [
+					'enable' => true,
+					'block'		=> 'fecshop\app\appfront\modules\Customer\block\mailer\account\register\EmailBody',
+					'viewPath' 	=> 'mailer/customer/account/register',
+				
+					'mailerConfig' => [
+						'appfront_register' => [
+							'class' => 'yii\swiftmailer\Mailer',
+							'transport' => [
+								'class' => 'Swift_SmtpTransport',
+								'host' => 'smtp.sendgrid.net',
+								'username' => 'support@onfancymail.com',
+								'password' => 'check301',
+								'port' => '587',
+								'encryption' => 'tls',
+							],
+							'messageConfig'=>[  
+							   'charset'=>'UTF-8',  
+							], 
+						],
+					],
+				]
 			],
 			'login' => [
 				# 在登录页面 customer/account/login 页面登录成功后跳转的urlkey，
@@ -24,6 +46,13 @@ return [
 				'otherPageSuccessRedirectUrlKey' => false  ,
 				
 				'loginPageCaptcha' => true,  // 登录验证码是否开启
+				'email' => [
+					'enable' => true,
+					'block'		=> 'fecshop\app\appfront\modules\Customer\block\mailer\account\login\EmailBody',
+					'viewPath' 	=> 'mailer/customer/account/login',
+				
+					# 如果不定义 mailerConfig，则会使用email service里面的默认配置
+				]
 			],
 		],
 	],

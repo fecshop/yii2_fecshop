@@ -25,22 +25,23 @@ class Widget extends Service
 	public $defaultObMethod = 'getLastData';
 	public $widgetConfig;
 	/*
+	@property configKey   String or Array
+	
+	Array example:
 	[
+		# class 选填
+		'class' => 'fec\block\TestMenu',
+		# view 为 必填 ， view可以用两种方式
+		#  view 1 使用绝对地址的方式
+		'view'  => '@fec/views/testmenu/index.php',
+			OR
+		#  view 2 使用相对地址，通过当前模板进行查找
+		'view'  => 'cms/home/index.php',
 		
-		'widgetConfig' =>[
-			'menu' =>[
-				# 必填
-				'class' => 'fec\block\TestMenu',
-				'view'  => '@fec/views/testmenu/index.php',
-				OR
-				'view'  => 'cms/home/index.php',
-				
-				# 下面为选填
-				'method'=> 'getLastData',
-				'terry1'=> 'My1',
-				'terry2'=> 'My2',
-			],
-		]
+		# 下面为选填
+		'method'=> 'getLastData',
+		'terry1'=> 'My1',
+		'terry2'=> 'My2',
 	]
 	*/
 	protected function actionRender($configKey,$parentThis=''){

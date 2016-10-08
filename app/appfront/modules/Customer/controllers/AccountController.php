@@ -32,6 +32,15 @@ class AccountController extends AppfrontController
 	}
     public function actionLogin()
     {
+		/**
+		$toEmail = 'zqy234@126.com';
+		// \fecshop\app\appfront\modules\Mailer\Email::sendLoginEmail($toEmail);
+		\fecshop\app\appfront\modules\Mailer\Email::sendRegisterEmail($toEmail);
+		
+		exit;
+		*/
+		
+		
 		$param = Yii::$app->request->post('editForm');
 		$this->getBlock()->login($param);
 		$data = $this->getBlock()->getLastData();
