@@ -22,14 +22,21 @@ class AccountController extends AppfrontController
 	public function init(){
 		parent::init();
 	}
+	/**
+	 * 账户中心
+	 */
 	public function actionIndex(){
 		if(Yii::$app->user->isGuest){
 			Yii::$service->url->redirectByUrlKey('customer/account/login');
 		}
+		
 		$data = $this->getBlock()->getLastData();
 		
 		return $this->render($this->action->id,$data);
 	}
+	/**
+	 * 登录
+	 */
     public function actionLogin()
     {
 		/**
@@ -39,20 +46,17 @@ class AccountController extends AppfrontController
 		
 		exit;
 		*/
-		
-		
 		$param = Yii::$app->request->post('editForm');
 		$this->getBlock()->login($param);
 		$data = $this->getBlock()->getLastData();
 		return $this->render($this->action->id,$data);
 	}
-	
-	
-	
+	/**
+	 * 注册
+	 */
 	public function actionRegister()
     {
 		$param = Yii::$app->request->post('editForm');
-		
 		if(!empty($param)){
 			$registerStatus = $this->getBlock()->register($param);
 			//echo $registerStatus;exit;
@@ -73,15 +77,14 @@ class AccountController extends AppfrontController
 		return $this->render($this->action->id,$data);
 	}
 	
-	
+	/**
+	 * 登出账户
+	 */
 	public function actionLogout(){
 		$rt = Yii::$app->request->get('rt');
 		if(!Yii::$app->user->isGuest){
-			
-				Yii::$app->user->logout();
-				
-			}
-		
+			Yii::$app->user->logout();
+		}
 		if($rt){
 			$redirectUrl = base64_decode($rt);
 			//exit;
@@ -90,13 +93,51 @@ class AccountController extends AppfrontController
 			Yii::$service->url->redirect(Yii::$service->url->HomeUrl());
 		}
 	}
-	
+	/**
+	 * ajax 请求 ，得到是否登录账户的信息
+	 */
 	public function actionLogininfo(){
 		if(!Yii::$app->user->isGuest){
-			return json_encode([
+			echo json_encode([
 				'loginStatus' => true,
 			]);
+			exit;
 		}
+	}
+	/**
+	 * 忘记密码？
+	 */
+	public function actionForgotpassword(){
+		$data = $this->getBlock()->getLastData();
+		return $this->render($this->action->id,$data);
+	
+	}
+	
+	public function actionForgotpasswordsubmit(){
+		$editForm = Yii::$app->request->post('editForm');
+		$data = [
+			'forgotPasswordUrl' => Yii::$service->url->getUrl('customer/account/forgotpassword'),
+			'contactUrl'		=> Yii::$service->url->getUrl('contacts/index/index'),
+		];
+		if(!empty($editForm)){
+			$identity = $this->getBlock('forgotpassword')->sendForgotPasswordMailer($editForm);
+			//var_dump($identity);
+			if($identity){
+				$data['identity'] =  $identity;
+			}else{
+				$redirectUrl = Yii::$service->url->getUrl('customer/account/forgotpassword');
+				Yii::$service->url->redirect($redirectUrl);
+			}
+		}
+		return $this->render($this->action->id,$data);
+	}
+	
+	
+	
+	public function actionResetpassword(){
+		$resetToken = Yii::$app->request->get('resetToken');
+		echo $resetToken;
+		
 	}
 	
 }

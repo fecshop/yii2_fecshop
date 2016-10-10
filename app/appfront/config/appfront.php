@@ -21,9 +21,24 @@ return [
 		/* appfront base theme dir   */
 		'appfrontBaseTheme' 	=> '@fecshop/app/appfront/theme/base/front',
 		'appfrontBaseLayoutName'=> 'main.php',
+		'mailer'	=> [
+			# 用来发送邮件的函数helper类，用来处理数据，生成邮件内容，然后调用邮件service
+			# 通过配置的方式去访问调用的目的是为了让用户可以通过配置 重写这个类
+			'mailer_class' 	=> 'fecshop\app\appfront\helper\mailer\Email',
+			#在邮件中显示的Store的名字
+			'storeName' 	=> 'FecShop',
+			# 在邮件中显示的电话
+			'phone'			=> '11111111',
+			# 在邮件中显示的联系邮箱地址。
+			'contacts'	=> [
+				'emailAddress' => '2358269014@qq.com',
+			]
+		],
 	],
-	# language config.
+	
+	# Yii组件配置
 	'components' => [
+		# language config.
 		'i18n' => [
 			'translations' => [
 				'appfront' => [

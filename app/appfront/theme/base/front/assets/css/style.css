@@ -1054,6 +1054,11 @@ button.redBtn:hover span{
     padding: 0 0 0 10px;
     width: 90px;
 }
+.forgot-captha{width:276px;}
 
-
+.account-create form .forgot-captha input ,
+.account-create form .forgot-captha img,
+.account-create form .forgot-captha i{
+	margin-bottom:13px;
+}
 

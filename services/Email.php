@@ -120,9 +120,18 @@ class Email extends Service
 	}
 	
 	/**
-	 * 
+	 * [
+		'to' => $to,
+		'subject' => $subject,
+		'htmlBody' => $htmlBody,
+		'senderName'=> $senderName,
+	 ]
 	 */
-	protected function actionSend($to,$subject,$htmlBody,$mailerConfigParam=''){
+	protected function actionSend($sendInfo,$mailerConfigParam=''){
+		$to 		= isset($sendInfo['to']) ? $sendInfo['to'] : '';
+		$subject 	= isset($sendInfo['subject']) ? $sendInfo['subject'] : '';
+		$htmlBody 	= isset($sendInfo['htmlBody']) ? $sendInfo['htmlBody'] : '';
+		$senderName = isset($sendInfo['senderName']) ? $sendInfo['senderName'] : '';
 		/*
 		$this->mailer()->compose()
 			->setFrom('support@onfancymail.com')
@@ -154,15 +163,21 @@ class Email extends Service
 		}else{
 			$from = $this->_from;
 		}
-		
+		/*
 		echo $from;
 		echo '<br/><br/>';
 		echo $to;echo '<br/><br/>';
 		echo $subject;echo '<br/><br/>';
 		echo $htmlBody;echo '<br/><br/>';
 		var_dump($mailer);
+		*/
+		if($senderName){
+			$setFrom = [$from => $senderName];
+		}else{
+			$setFrom = $from;
+		}
 		$mailer->compose()
-			->setFrom($from)
+			->setFrom($setFrom)
 			->setTo($to)
 			->setSubject($subject)
 			->setHtmlBody($htmlBody)

@@ -11,11 +11,13 @@ use Yii;
 use fec\helpers\CModule;
 use fec\helpers\CRequest;
 use yii\base\InvalidValueException;
+use fecshop\app\appfront\helper\mailer\Email;
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
 class Login {
+	
 	
 	public function getLastData(){
 		$loginParam = \Yii::$app->getModule('customer')->params['login'];
@@ -25,18 +27,23 @@ class Login {
 		];
 	}
 	
-	
-	
 	public function login($param){
 		$captcha = $param['captcha'];
 		$loginParam = \Yii::$app->getModule('customer')->params['login'];
 		$loginPageCaptcha = isset($loginParam['loginPageCaptcha']) ? $loginParam['loginPageCaptcha'] : false;
-		if($captcha && $loginPageCaptcha && !\Yii::$service->helper->captcha->validateCaptcha($captcha)){
+		if($loginPageCaptcha && !$captcha){
+			Yii::$service->page->message->addError(['Captcha can not empty']);
+			return;
+		}else if($captcha && $loginPageCaptcha && !\Yii::$service->helper->captcha->validateCaptcha($captcha)){
 			Yii::$service->page->message->addError(['Captcha is not right']);
 			return;
 		}
 		if(is_array($param) && !empty($param)){
 			Yii::$service->customer->login($param);
+			# 发送邮件
+			if($param['email']){
+				$this->sendLoginEmail($param['email']);
+			}
 		}
 		if(!Yii::$app->user->isGuest){
 			Yii::$service->url->redirectByUrlKey('customer/account');
@@ -53,6 +60,21 @@ class Login {
 					}
 				}
 			} 
+		}
+	}
+	/**
+	 * 发送登录邮件
+	 */
+	public function sendLoginEmail($emailAddress){
+		if($emailAddress){
+			$mailerConfig = Yii::$app->params['mailer'];
+			$mailer_class = isset($mailerConfig['mailer_class']) ? $mailerConfig['mailer_class'] : '';
+			if($mailer_class){
+				forward_static_call(
+					[$mailer_class , 'sendLoginEmail'],
+					$emailAddress
+				);
+			}
 		}
 	}
 }

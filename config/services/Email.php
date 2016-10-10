@@ -14,9 +14,9 @@ return [
 				'class' => 'yii\swiftmailer\Mailer',
 				'transport' => [
 					'class' => 'Swift_SmtpTransport',
-					'host' => 'smtp.sendgrid.net',
-					'username' => 'support@onfancymail.com',
-					'password' => 'check301',
+					'host' => 'smtp.qq.com',
+					'username' => '2358269014@qq.com',
+					'password' => 'bjxpkyzfwkxnebai',
 					'port' => '587',
 					'encryption' => 'tls',
 				],

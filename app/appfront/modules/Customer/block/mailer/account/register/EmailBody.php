@@ -11,14 +11,33 @@ use Yii;
 use fec\helpers\CModule;
 use fec\helpers\CRequest;
 use yii\base\InvalidValueException;
+use fecshop\app\appfront\helper\mailer\Email;
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
 class EmailBody {
 	
+	public $params;
+	
 	public function getLastData(){
-		return [];
+		$identity = $this->params;
+		//echo Yii::$service->image->getImgUrl('mail/logo.png','appfront');exit;
+		return [
+			'name'		=> $identity['firstname'].' '. $identity['lastname'],
+			'email'		=> $identity['email'],
+			'password'	=> $identity['password'],
+			'storeName' 			=> Email::storeName(),
+			'contactsEmailAddress'	=> Email::contactsEmailAddress(),
+			'contactsPhone'			=> Email::contactsPhone(),
+			'homeUrl'	=> Yii::$service->url->homeUrl(),
+			'logoImg'	=> Yii::$service->image->getImgUrl('mail/logo.png','appfront'),
+			
+			'loginUrl'	=> Yii::$service->url->getUrl("customer/account/index"),
+			'accountUrl'=> Yii::$service->url->getUrl("customer/account/index"),
+			
+			'identity'  => $identity,
+		];
 	}
 	
 	

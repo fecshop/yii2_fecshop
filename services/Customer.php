@@ -12,6 +12,7 @@ use yii\base\InvalidValueException;
 use yii\base\InvalidConfigException;
 use fecshop\models\mysqldb\customer\CustomerRegister;
 use fecshop\models\mysqldb\customer\CustomerLogin;
+use fecshop\models\mysqldb\Customer as CustomerModel;
 /**
  * Customer service
  * @property Image|\fecshop\services\Product\Image $image ,This property is read-only.
@@ -125,6 +126,38 @@ class Customer extends Service
 	protected function actionGetCurrentAccount(){
 		return Yii::$app->user->identity->username;
 		
+	}
+	/**
+	 * get CustomerModel by Email address
+	 */
+	protected function actionGetUserIdentityByEmail($email){
+		$one = CustomerModel::findByEmail($email);
+		if($one['email']){
+			return $one;
+		}else{
+			return false;
+		}
+	}
+	
+	/**
+	 * @property $identify|object(customer object) or String
+	 * @return 生成的resetToken，如果生成失败返回false
+	 * 用来找回密码，生成resetToken，返回
+	 */
+	protected function actionGeneratePasswordResetToken($identify){
+		if(is_string($identify)){
+			$email = $identify;
+			$one = $this->getUserIdentityByEmail($email);
+		}else{
+			$one = $identify;
+		}
+		if($one){
+			
+			$one->generatePasswordResetToken();
+			$one->save();
+			return $one->password_reset_token;
+		}
+		return false;
 	}
 	
 	

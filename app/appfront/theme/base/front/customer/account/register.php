@@ -62,7 +62,7 @@
                             <label for="captcha" class="required"><em>*</em>Captcha</label>
                             <div class="input-box register-captcha">
 								<input type="text" name="editForm[captcha]" value="" size=10 class="login-captcha-input"> 
-								<img class="login-captcha-img"  title="点击刷新" src="<?= Yii::$service->url->getUrl('site/helper/captcha'); ?>" align="absbottom" onclick="this.src='<?= Yii::$service->url->getUrl('site/helper/captcha'); ?>?'+Math.random();"></img>
+								<img class="login-captcha-img"  title="click refresh" src="<?= Yii::$service->url->getUrl('site/helper/captcha'); ?>" align="absbottom" onclick="this.src='<?= Yii::$service->url->getUrl('site/helper/captcha'); ?>?'+Math.random();"></img>
 								<i class="refresh-icon"></i>
                             </div>
 							<script>
@@ -150,10 +150,10 @@ $(document).ready(function(){
 		lastname 	= $("#lastname").val();
 		password  	= $("#password").val();
 		confirmation= $("#confirmation").val();
-		minNameLength = <?= $minNameLength ?>;  
-		maxNameLength = <?= $maxNameLength ?>;
-		minPassLength = <?= $minPassLength ?>;  
-		maxPassLength = <?= $maxPassLength ?>; 
+		minNameLength = <?= $minNameLength ? $minNameLength : 4 ?>;  
+		maxNameLength = <?= $maxNameLength ? $maxNameLength : 30 ?>;
+		minPassLength = <?= $minPassLength ? $minPassLength : 4 ?>;  
+		maxPassLength = <?= $maxPassLength ? $maxPassLength : 30 ?>; 
 		firstNameLength = firstname.length;
 		lastNameLength  = lastname.length;
 		passwordLength  = password.length;

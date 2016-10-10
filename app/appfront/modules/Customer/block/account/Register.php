@@ -43,12 +43,16 @@ class Register {
 		$registerParam = \Yii::$app->getModule('customer')->params['register'];
 		$registerPageCaptcha = isset($registerParam['registerPageCaptcha']) ? $registerParam['registerPageCaptcha'] : false;
 		# 如果开启了验证码，但是验证码验证不正确就报错返回。
-		if($captcha && $registerPageCaptcha && !\Yii::$service->helper->captcha->validateCaptcha($captcha)){
+		if($registerPageCaptcha && !$captcha){
+			Yii::$service->page->message->addError(['Captcha can not empty']);
+			return;
+		}else if($captcha && $registerPageCaptcha && !\Yii::$service->helper->captcha->validateCaptcha($captcha)){
 			Yii::$service->page->message->addError(['Captcha is not right']);
 			return;
 		}
 		
 		Yii::$service->customer->register($param);
+		
 		$errors = Yii::$service->helper->errors->get(true);
 		if($errors){
 			if(is_array($errors) && !empty($errors)){
@@ -61,7 +65,25 @@ class Register {
 				}
 			} 
 		}else{
+			# 发送注册邮件
+			$this->sendRegisterEmail($param);
 			return true;
+		}
+	}
+	
+	/**
+	 * 发送登录邮件
+	 */
+	public function sendRegisterEmail($param){
+		if($param){
+			$mailerConfig = Yii::$app->params['mailer'];
+			$mailer_class = isset($mailerConfig['mailer_class']) ? $mailerConfig['mailer_class'] : '';
+			if($mailer_class){
+				forward_static_call(
+					[$mailer_class , 'sendRegisterEmail'],
+					$param
+				);
+			}
 		}
 	}
 }
