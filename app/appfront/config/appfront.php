@@ -34,6 +34,8 @@ return [
 				'emailAddress' => '2358269014@qq.com',
 			]
 		],
+		# 通过邮箱找回密码，发送的resetToken过期的秒数
+		'user.passwordResetTokenExpire' => 3600*24*1, # 一天
 	],
 	
 	# Yii组件配置

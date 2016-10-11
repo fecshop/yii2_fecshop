@@ -103,13 +103,47 @@ class Customer extends Service
 	
 	/**
 	 * @property $password|String
-	 * @property $customerId|Int
+	 * @property $customerId|Int or String or Object
 	 * change  customer password.
 	 * if $customer id is empty, it will be equals current customer id.
 	 */ 
-	protected function actionChangePassword($password,$customerId=''){
-		
-		
+	protected function actionChangePassword($password,$identity){
+		if(is_int($identity)){
+			$customer_id = $identity;
+			$customerModel = CustomerModel::findIdentity($customer_id);
+		}else if(is_string($identity)){
+			$email = $identity;
+			$customerModel = CustomerModel::findByEmail($email);
+		}else if(is_object($identity)){
+			$customerModel = $identity;
+		}
+		$customerModel->setPassword($password);
+		$customerModel->save();
+	}
+	/**
+	 * @property $password|String
+	 * @property $customerId|Int or String or Object
+	 * change  customer password.
+	 * 更改密码，然后，清空token
+	 */
+	protected function actionChangePasswordAndClearToken($password,$identity){
+		if(is_int($identity)){
+			$customer_id = $identity;
+			$customerModel = CustomerModel::findIdentity($customer_id);
+		}else if(is_string($identity)){
+			$email = $identity;
+			$customerModel = CustomerModel::findByEmail($email);
+		}else if(is_object($identity)){
+			$customerModel = $identity;
+		}else{
+			Yii::$service->helper->errors->add('identity is not right');
+			return;
+		}
+		//echo $password;exit;
+		$customerModel->setPassword($password);
+		$customerModel->removePasswordResetToken();
+		$customerModel->save();
+		return true;
 	}
 	
 	/**
@@ -159,6 +193,22 @@ class Customer extends Service
 		}
 		return false;
 	}
+	
+	/**
+	 * 通过PasswordResetToken 得到user
+	 */
+	protected function actionFindByPasswordResetToken($token){
+		return CustomerModel::findByPasswordResetToken($token);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 }

@@ -11,15 +11,25 @@ return [
 		'mailerConfig' => [
 			# 默认通用配置
 			'default' => [
+				
 				'class' => 'yii\swiftmailer\Mailer',
 				'transport' => [
 					'class' => 'Swift_SmtpTransport',
 					'host' => 'smtp.qq.com',
-					'username' => '2358269014@qq.com',
-					'password' => 'bjxpkyzfwkxnebai',
+					//'username' => '2358269014@qq.com',
+					//'password' => 'bjxpkyzfwkxnebai',
+					
+					'username' => '372716335@qq.com',
+					'password' => 'wffmbummgnhhcbbj',
+					
 					'port' => '587',
 					'encryption' => 'tls',
 				],
+				'messageConfig'=>[  
+				   'charset'=>'UTF-8',  
+				], 
+				
+				
 				'messageConfig'=>[  
 				   'charset'=>'UTF-8',  
 				], 
@@ -43,18 +53,7 @@ return [
 			'contacts'				=> 'default',
 			
 			'createNewOrder'=> [  # 创建新订单，但是不一定支付成功
-				'class' => 'yii\swiftmailer\Mailer',
-				'transport' => [
-					'class' => 'Swift_SmtpTransport',
-					'host' => 'smtp.sendgrid.net',
-					'username' => 'support@onfancymail.com',
-					'password' => 'check301',
-					'port' => '587',
-					'encryption' => 'tls',
-				],
-				'messageConfig'=>[  
-				   'charset'=>'UTF-8',  
-				], 
+				
 			],
 			
 			'paySuccessOrder'=> 'createNewOrder', # 支付成功发送的邮件配置，值为 createNewOrder 代表等于 createNewOrder的配置

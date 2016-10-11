@@ -24,7 +24,7 @@ return [
 					'block'		=> 'fecshop\app\appfront\modules\Customer\block\mailer\account\register\EmailBody',
 					# 邮件内容的view部分
 					'viewPath' 	=> 'mailer/customer/account/register',
-				
+					/*
 					'mailerConfig' => [
 						'appfront_register' => [
 							'class' => 'yii\swiftmailer\Mailer',
@@ -41,6 +41,7 @@ return [
 							], 
 						],
 					],
+					*/
 				]
 			],
 			'login' => [
@@ -52,7 +53,7 @@ return [
 				'loginPageCaptcha' => false,  
 				# 邮件信息，登录账号后是否发送邮件
 				'email' => [
-					'enable' => true,
+					'enable' => false,
 					# 邮件内容的动态数据提供部分
 					'block'		=> 'fecshop\app\appfront\modules\Customer\block\mailer\account\login\EmailBody',
 					# 邮件内容的view部分

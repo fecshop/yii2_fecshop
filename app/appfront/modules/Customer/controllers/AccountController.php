@@ -135,9 +135,23 @@ class AccountController extends AppfrontController
 	
 	
 	public function actionResetpassword(){
-		$resetToken = Yii::$app->request->get('resetToken');
-		echo $resetToken;
+		$editForm = Yii::$app->request->post('editForm');
+		if(!empty($editForm)){
+			$resetStatus = $this->getBlock()->resetPassword($editForm);
+			if($resetStatus){
+				# 重置成功，跳转
+				$resetSuccessUrl = Yii::$service->url->getUrl('customer/account/resetpasswordsuccess');
+				Yii::$service->url->redirect($resetSuccessUrl);
+			}
+		}
+		$data = $this->getBlock()->getLastData();
+		return $this->render($this->action->id,$data);
 		
+	}
+	
+	public function actionResetpasswordsuccess(){
+		$data = $this->getBlock()->getLastData();
+		return $this->render($this->action->id,$data);
 	}
 	
 }
