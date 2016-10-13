@@ -12,6 +12,7 @@ use fec\helpers\CModule;
 use fec\helpers\CRequest;
 use yii\base\InvalidValueException;
 use fecshop\app\appfront\helper\mailer\Email;
+
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
@@ -67,14 +68,7 @@ class Login {
 	 */
 	public function sendLoginEmail($emailAddress){
 		if($emailAddress){
-			$mailerConfig = Yii::$app->params['mailer'];
-			$mailer_class = isset($mailerConfig['mailer_class']) ? $mailerConfig['mailer_class'] : '';
-			if($mailer_class){
-				forward_static_call(
-					[$mailer_class , 'sendLoginEmail'],
-					$emailAddress
-				);
-			}
+			Email::sendLoginEmail($emailAddress);
 		}
 	}
 }

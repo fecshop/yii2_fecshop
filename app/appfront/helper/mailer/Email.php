@@ -17,7 +17,14 @@ use yii\base\InvalidValueException;
  */
 class Email
 {
-	
+	/**
+	 * 说明：
+	 * 本函数是静态函数方法，您可以直接调用，如果想要在本地重写这个文件
+	 * 可以通过Yii 的classMap的方式进行重写，也就是，
+	 * 在@app/config/YiiClassMap.php文件中添加配置即可
+	 * 原理请参看文章：http://www.fancyecommerce.com/2016/10/13/%e9%80%9a%e8%bf%87%e9%85%8d%e7%bd%ae%e7%9a%84%e6%96%b9%e5%bc%8f%e9%87%8d%e5%86%99%e6%9f%90%e4%b8%aayii2-%e6%96%87%e4%bb%b6-%e6%88%96%e7%ac%ac%e4%b8%89%e6%96%b9%e6%89%a9%e5%b1%95%e6%96%87%e4%bb%b6/
+	 */
+	 
 	/**
 	 * 得到联系我们的邮箱地址
 	 */

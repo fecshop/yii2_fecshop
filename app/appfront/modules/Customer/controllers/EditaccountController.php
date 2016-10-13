@@ -15,7 +15,7 @@ use fecshop\app\appfront\modules\AppfrontController;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class OrderController extends AppfrontController
+class EditaccountController extends AppfrontController
 {
     //protected $_registerSuccessRedirectUrlKey = 'customer/account';
 	
@@ -29,7 +29,10 @@ class OrderController extends AppfrontController
 	 * 
 	 */
 	public function actionIndex(){
-		
+		$editForm = Yii::$app->request->post('editForm');
+		if(!empty($editForm)){
+			$this->getBlock()->saveAccount($editForm);
+		}
 		$data = $this->getBlock()->getLastData();
 		return $this->render($this->action->id,$data);
 	}

@@ -11,6 +11,7 @@ use Yii;
 use fec\helpers\CModule;
 use fec\helpers\CRequest;
 use yii\base\InvalidValueException;
+use fecshop\app\appfront\helper\mailer\Email;
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
@@ -64,15 +65,7 @@ class Forgotpassword {
 	 */
 	public function sendForgotPasswordEmail($identity){
 		if($identity){
-			$mailerConfig = Yii::$app->params['mailer'];
-			$mailer_class = isset($mailerConfig['mailer_class']) ? $mailerConfig['mailer_class'] : '';
-			if($mailer_class){
-				
-				forward_static_call(
-					[$mailer_class , 'sendForgotPasswordEmail'],
-					$identity
-				);
-			}
+			Email::sendForgotPasswordEmail($identity);
 		}
 	}
 	

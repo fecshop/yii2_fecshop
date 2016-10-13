@@ -15,7 +15,7 @@ use fecshop\app\appfront\modules\AppfrontController;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class OrderController extends AppfrontController
+class ProductreviewController extends AppfrontController
 {
     //protected $_registerSuccessRedirectUrlKey = 'customer/account';
 	

@@ -11,6 +11,7 @@ use Yii;
 use fec\helpers\CModule;
 use fec\helpers\CRequest;
 use fecshop\app\appfront\modules\AppfrontController;
+use fecshop\app\appfront\helper\test\My;
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
@@ -39,6 +40,7 @@ class AccountController extends AppfrontController
 	 */
     public function actionLogin()
     {
+		
 		/**
 		$toEmail = 'zqy234@126.com';
 		// \fecshop\app\appfront\modules\Mailer\Email::sendLoginEmail($toEmail);

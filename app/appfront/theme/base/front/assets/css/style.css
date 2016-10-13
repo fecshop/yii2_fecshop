@@ -11,7 +11,12 @@ h1, h2, h3, h4, h5, h6 {
     line-height: 1;
     padding-bottom: 23px;
 }
-
+h3 {
+    font-size: 16px;
+    font-weight: 100;
+    line-height: 1.25;
+    margin: 10px 0 5px;
+}
 #top_nav {background-color: #000;font-size: 0.75em;height: 40px;line-height: 40px;width: 100%;}
 .top_nav_inner {height: 100%;width:1200px;}
 #mainBox, .footHelp_inner, .main_inner, .social_inner, .top_main_inner, .top_nav_inner {margin-left: auto;margin-right: auto;}
@@ -1061,4 +1066,147 @@ button.redBtn:hover span{
 .account-create form .forgot-captha i{
 	margin-bottom:13px;
 }
+
+
+
+
+/* Sidebar =============================================================================== */
+.block {  margin:0 0 10px; }
+.block .block-title {  padding:0; }
+.block .block-title strong { font-size:14px; font-weight:bold; }
+.block .block-title strong span { color: #4c6b99;
+    font-family: Georgia;
+    font-size: 19px;
+    line-height: 40px;
+    text-decoration: none;}
+.block .block-title a { text-decoration:none !important; }
+.block .block-subtitle { font-size:13px; font-weight:bold; }
+.block .block-content { padding:5px 0; }
+.block .block-content li.item { padding:5px 0; }
+.block .btn-remove,
+.block .btn-edit { float:right;}
+.block .actions { text-align:right; }
+.block .actions a { float:left; }
+.block .empty {}
+
+.block li.odd {}
+.block li.even { background-color:#f6f6f6; }
+
+
+.sidebar .block-account li {
+   background: rgba(0, 0, 0, 0.05);
+    font-size: 12px;
+    margin: 3px 0;
+    padding: 10px 0 10px 16px;
+}
+
+
+
+
+.welcome-msg .hello {
+    margin: 0 0 5px;
+}
+.welcome-msg p {
+    line-height: 20px;
+}
+
+
+.box-account {
+    margin: 40px 0 0;
+}
+
+
+.box-account .addressbook {
+    border-top: 1px solid #ccc;
+}
+
+.col2-set .col-1 {
+    float: left;
+    width: 49%;
+}
+
+
+.box-account .box-content {
+    margin: 10px 0 30px;
+}
+
+
+.box-account .box-title a {
+    display: block;
+    margin: 10px 0 0;
+}
+
+.box-content div {
+    margin: 2px 0;
+}
+
+
+.col2-set .col-2 {
+    float: right;
+    width: 49%;
+}
+
+.account_center{font-size:11px;}
+
+.block-account .block-content li.current a{
+	font-weight:bold;
+}
+
+.sidebar .block-account li.current {
+   background:rgba(0, 0, 0, 0.1);
+   
+}
+.sidebar .block-account li:hover{
+	background:rgba(0, 0, 0, 0.1);
+}
+
+
+.page-title {
+    border: medium none;
+    margin: 0 0 3px;
+    padding: 5px 0;
+}
+
+#form-validate ul li {
+    margin: 11px 0;
+}
+
+
+#form-validate ul li label {
+    display: block;
+    font-size: 13px;
+    margin: 10px 0 4px;
+}
+
+
+#form-validate input.input-text {
+    color: #333;
+    width: 250px;
+}
+
+.form-list .field {
+    float: left;
+    width: 275px;
+}
+
+.validation-advice {
+    background: rgba(0, 0, 0, 0) url("../images/validation_advice_bg.gif") no-repeat scroll 2px 1px;
+    clear: both;
+    color: #f00;
+    font-size: 11px;
+    line-height: 13px;
+    margin: 3px 0 0;
+    min-height: 13px;
+    padding-left: 17px;
+	
+}
+.validation-failed {
+    background: #faebe7 none repeat scroll 0 0 !important;
+    border: 1px dashed #f00 !important;
+}
+
+.account_center h2{
+	font-size:18px;
+}
+
 

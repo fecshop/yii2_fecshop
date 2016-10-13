@@ -34,6 +34,9 @@ class AppfrontController extends FecController
 		 *  set i18n translate category.
 		 */
 		Yii::$service->page->translate->category = 'appfront';
+		/**
+		 * 自定义Yii::$classMap,用于重写
+		 */
 	}
 	 
 	/**

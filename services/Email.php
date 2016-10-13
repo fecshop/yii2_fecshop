@@ -58,8 +58,8 @@ class Email extends Service
 				'transport' => [
 					'class' => 'Swift_SmtpTransport',
 					'host' => 'smtp.sendgrid.net',
-					'username' => 'support@onfancymail.com',
-					'password' => 'check301',
+					'username' => 'support@mail.com',
+					'password' => 'xxxx',
 					'port' => '587',
 					'encryption' => 'tls',
 				],

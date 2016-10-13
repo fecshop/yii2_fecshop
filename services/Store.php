@@ -105,6 +105,7 @@ class Store extends Service
 		if(!$init_compelte){
 			throw new InvalidValueException('this domain is not config in store component');
 		}
+		
     }
 	
 	/**
