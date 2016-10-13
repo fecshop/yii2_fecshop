@@ -59,7 +59,7 @@ class Email extends Service
 					'class' => 'Swift_SmtpTransport',
 					'host' => 'smtp.sendgrid.net',
 					'username' => 'support@mail.com',
-					'password' => 'xxxx',
+					'password' => 'xxxx', 
 					'port' => '587',
 					'encryption' => 'tls',
 				],
