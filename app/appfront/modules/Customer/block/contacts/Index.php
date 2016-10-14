@@ -6,7 +6,7 @@
  * @copyright Copyright (c) 2016 FecShop Software LLC
  * @license http://www.fecshop.com/license/
  */
-namespace fecshop\app\appfront\modules\Customer\block\account;
+namespace fecshop\app\appfront\modules\Customer\block\contacts;
 use Yii;
 use fec\helpers\CModule;
 use fec\helpers\CRequest;
@@ -18,22 +18,8 @@ use yii\base\InvalidValueException;
 class Index {
 	
 	public function getLastData(){
-		$identity = Yii::$app->user->identity;
 		return [
-			'accountEditUrl' => Yii::$service->url->getUrl('customer/editaccount'),  
-			'email'			=> $identity['email'],
-			'accountAddressUrl' => Yii::$service->url->getUrl('customer/address'),  
-			'accountOrderUrl' => Yii::$service->url->getUrl('customer/order'),  
+		
 		];
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

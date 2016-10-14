@@ -27,6 +27,13 @@ class Message extends Service
 	 * @property $message | String
 	 */ 
 	protected function actionAddCorrect($message){
+		
+		if(empty($message)){
+			return;
+		}
+		if(is_string($message)){
+			$message = [$message];
+		}
 		$correct = $this->getCorrects();
 		if(is_array($correct) && is_array($message)){
 			$message = array_merge($correct,$message);
@@ -38,6 +45,13 @@ class Message extends Service
 	 * @property $message | String
 	 */ 
 	protected function actionAddError($message){
+		
+		if(empty($message)){
+			return;
+		}
+		if(is_string($message)){
+			$message = [$message];
+		}
 		$error = $this->getErrors();
 		if(is_array($error) && is_array($message)){
 			$message = array_merge($error,$message);

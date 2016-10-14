@@ -1,5 +1,6 @@
 <div class="main container two-columns-left">
-	
+<?= Yii::$service->page->widget->render('flashmessage'); ?>
+
 	<div class="col-main account_center">
 		<div class="std">
 			<div style="margin:19px 0 0">
@@ -23,7 +24,7 @@
 									<div class="field name-firstname">
 										<label for="firstname" class="required">First Name</label>
 										<div class="input-box">
-											<input id="firstname" name="editForm[first_name]" value="<?= $firstname ?>" title="First Name" maxlength="255" class="input-text required-entry" type="text">
+											<input id="firstname" name="editForm[firstname]" value="<?= $firstname ?>" title="First Name" maxlength="255" class="input-text required-entry" type="text">
 											<div class="validation-advice" id="required_current_firstname" style="display:none;">This is a required field.</div>
 										</div>
 									</div>
@@ -32,14 +33,14 @@
 								<div class="field name-lastname">
 										<label for="lastname" class="required">Last Name</label>
 										<div class="input-box">
-											<input id="lastname" name="editForm[last_name]" value="<?= $lastname ?>" title="Last Name" maxlength="255" class="input-text required-entry" type="text">
+											<input id="lastname" name="editForm[lastname]" value="<?= $lastname ?>" title="Last Name" maxlength="255" class="input-text required-entry" type="text">
 											<div class="validation-advice" id="required_current_lastname" style="display:none;">This is a required field.</div>
 										</div>
 									</div>
 							</li>
 							<li class="control">
 								<input name="editForm[change_password]" id="change_password" value="1" onclick="setPasswordForm(this.checked)" title="Change Password" class="checkbox" type="checkbox">
-								<label style="display:inline;vertical-align: middle;" for="change_password">Change Password</label>
+								<label style="display:inline;" for="change_password">Change Password</label>
 							</li>
 						</ul>
 					</div>
@@ -74,8 +75,7 @@
 						</ul>
 					</div>
 					<div class="buttons-set">
-						<button onclick="return check_edit()" type="submit" id="js_registBtn" class="redBtn"><em><span><i></i>SAVE</span></em></button>
-						
+						<button type="submit" title="Save" class="button" onclick="return check_edit()"><span><span>Save</span></span></button>
 					</div>
 				</form>
 			</div>

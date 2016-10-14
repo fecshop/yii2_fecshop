@@ -134,7 +134,7 @@ class Email extends Service
 		$senderName = isset($sendInfo['senderName']) ? $sendInfo['senderName'] : '';
 		/*
 		$this->mailer()->compose()
-			->setFrom('support@onfancymail.com')
+			->setFrom('support@fecshop.com')
 			->setTo('2851823529@qq.com')
 			->setSubject('111111Message subject222')
 			->setHtmlBody('<b>HTML content333333333df</b>')

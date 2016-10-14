@@ -19,12 +19,12 @@
 							<div class="box">
 								<div class="box-title">
 									<h3>Contact Information</h3>
-									<a href="http://www.intosmile.com/customer/account/edit">Edit</a>
+									<a href="<?= $accountEditUrl ?>">Edit</a>
 								</div>
 								<div class="box-content">
 									<div>
 																	
-										<span style="margin:0 10px;">xxxx@dsfasdfdssdf.com </span>
+										<span style="margin:0 10px;"><?= $email ?></span>
 									</div>
 									
 								</div>
@@ -44,7 +44,7 @@
 									</div>
 									<div class="box-content">
 										<p>You Can Manager Your Address. </p>
-										<a href="http://www.intosmile.com/customer/address">Manager Addresses</a>
+										<a href="<?= $accountAddressUrl ?>">Manager Addresses</a>
 									</div>
 									
 								</div>
@@ -57,7 +57,7 @@
 									</div>
 									<div class="box-content">
 										<p>You Can View Your Order. </p>
-										<a href="http://www.intosmile.com/customer/order/index">View</a>
+										<a href="<?= $accountOrderUrl ?>">View</a>
 									</div>
 								</div>
 							</div>

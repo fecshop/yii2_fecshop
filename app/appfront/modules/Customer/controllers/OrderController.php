@@ -29,11 +29,14 @@ class OrderController extends AppfrontController
 	 * 
 	 */
 	public function actionIndex(){
-		
 		$data = $this->getBlock()->getLastData();
 		return $this->render($this->action->id,$data);
 	}
 	
+	public function actionView(){
+		$data = $this->getBlock()->getLastData();
+		return $this->render($this->action->id,$data);
+	}
 	
 }
 

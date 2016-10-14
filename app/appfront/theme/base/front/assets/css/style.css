@@ -133,9 +133,7 @@ h3 {
     margin-left: -100%;
     width: 250px;
 }
-a:active, a:link {
-    background-color: transparent;
-}
+
 
 .topSeachForm form {
     float: right;
@@ -153,6 +151,9 @@ a:active, a:link {
 }
 
 
+a:active, a:link {
+    background-color: transparent;
+}
 
 .topSeachForm .searchInput {
     width: 250px;
@@ -839,7 +840,13 @@ button{
     font-size: 0.875em;
     margin-left: -3px;
     padding: 0;
+	background:none;
 }
+button.redBtn:hover{
+	background:none;
+	box-shadow:none;
+}
+
 
 .account-create button.redBtn{
 	margin-top:5px;
@@ -1208,5 +1215,554 @@ button.redBtn:hover span{
 .account_center h2{
 	font-size:18px;
 }
+
+table {
+    border: 0 none;
+    border-collapse: collapse;
+    border-spacing: 0;
+    empty-cells: show;
+    font: 12px Segoeui,Arial,Verdana,serif;
+    text-align: center;
+	width:100%;
+}
+
+.addressbook thead tr {
+    background: #f7f7f7 none repeat scroll 0 0;
+}
+
+
+
+
+
+
+.cpointer {
+    background: #ccc none repeat scroll 0 0;
+    border: 0 none;
+    color: #fff;
+    cursor: pointer;
+    font-family: verdana;
+    font-size: 11px;
+    height: 20px;
+    line-height: 20px;
+    
+}
+
+
+.addnew.cpointer {
+    background: #59b7c2 none repeat scroll 0 0;
+    height: 25px;
+    margin: 10px 0;
+}
+
+.product-Reviews .submitbutton {
+    background: #4c6b99 none repeat scroll 0 0;
+    border-radius: 2px;
+    color: #fafafa;
+    cursor: pointer;
+    display: block;
+    float: left;
+    font: bold 12px/25px Segoeui-Bold,Arial,Verdana,serif;
+    height: 25px;
+    padding: 0 10px;
+    text-align: center;
+}
+
+
+.addressbook tbody tr td {
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+}
+
+
+.addressbook tr td.ltp a {
+    color: #666;
+    display: block;
+    height: 20px;
+    line-height: 25px;
+    margin: 0 0 0 4px;
+    text-decoration: underline;
+}
+
+.addressbook tr td.ltp span {
+    color: #666;
+    display: block;
+    height: 29px;
+    line-height: 25px;
+    margin: 0 0 0 4px;
+}
+
+caption, th, td {
+    font-weight: normal;
+    text-align: left;
+    vertical-align: top;
+}
+
+td {
+    border-bottom: 1px solid #e0e0e0;
+    border-collapse: collapse;
+    height: 49px;
+    padding: 0 10px;
+    vertical-align: middle;
+}
+
+
+th {
+    border-bottom: 1px solid #4c6b99;
+    font: 13px Bitter,Myriad Pro,Verdana,serif;
+    height: 37px;
+    padding: 0 10px;
+    vertical-align: middle;
+}
+
+
+
+button.button span span {
+    background-position: 100% 0;
+    padding: 0 12px 0 4px;
+}
+button.button span {
+    color: #fff;
+    float: left;
+    font: bold 12px/21px Arial,Helvetica,sans-serif;
+    height: 21px;
+    padding: 0 0 0 8px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+
+button.button {
+    border: 0 none;
+    cursor: pointer;
+    margin: 0;
+    overflow: visible;
+    padding: 0;
+    width: auto;
+}
+
+button, input[type="submit"] {
+    background: #4c6b99 none repeat scroll 0 0;
+    border-radius: 2px;
+    color: #fefefe;
+    cursor: pointer;
+    display: block;
+    font: bold 14px/35px Segoeui-Bold,Arial,Verdana,serif;
+    height: 35px;
+    padding: 0 20px;
+    text-align: center;
+}
+
+
+a.submitbutton:hover{color: #ffffff;}
+a.submitbutton{
+ height: 35px;
+    display: block;
+    background: #4c6b99;
+    color: #fafafa;
+    text-align: center;
+    font: bold 14px/35px Segoeui-Bold, Arial, Verdana, serif;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -khtml-border-radius: 2px;
+    behavior: url(PIE.htc);
+    cursor: pointer;
+    padding: 0 20px;
+	text-align: center;
+    width: auto;
+	float:left;
+}
+
+
+.submitbutton:hover{
+    background: #4c6b99;
+    box-shadow: 0px 0px 2px #4c6b99;
+    -moz-box-shadow: 0px 0px 2px #4c6b99;
+    -webkit-box-shadow: 0px 0px 2px #4c6b99;
+	text-decoration:none;
+}
+.submitbutton:active,
+.submitbutton:focus{
+    background: #4c6b99;
+    box-shadow: inset 0px 0px 10px #4c6b99;
+    -moz-box-shadow: inset 0px 0px 10px #4c6b99;
+    -webkit-box-shadow: inset 0px 0px 10px #4c6b99;
+}
+
+
+
+button:hover,
+input[type="submit"]:hover{
+    background: #4c6b99;
+    box-shadow: 0px 0px 2px #4c6b99;
+    -moz-box-shadow: 0px 0px 2px #4c6b99;
+    -webkit-box-shadow: 0px 0px 2px #4c6b99;
+}
+button:active,
+button:focus,
+input[type="submit"]:focus,
+input[type="submit"]:active{
+    background: #4c6ba9;
+    box-shadow: inset 0px 0px 10px #4c6ba9;
+    -moz-box-shadow: inset 0px 0px 10px #4c6ba9;
+    -webkit-box-shadow: inset 0px 0px 10px #4c6ba9;
+}
+
+.addressedit .address_country {
+    width: 272px;
+}
+select, .selectBox {
+    background: #fff none repeat scroll 0 0;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    color: #444;
+    display: inline-block;
+    font: 12px/33px Segoeui,Arial,Verdana,serif;
+    height: 33px;
+    overflow: hidden;
+    padding-left: 10px;
+    position: relative;
+    text-decoration: none !important;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.two-columns-left .account_center{
+	width:960px;float:right;
+	
+}
+
+.edit_order thead tr {
+    background: #f7f7f7 none repeat scroll 0 0;
+}
+
+.col-left  .block-account{
+	margin-top:10px;
+}
+
+.my_account_order h2 {
+    color: #888;
+    font-family: Arial;
+    font-size: 15px;
+    font-weight: 100;
+    margin: 0 0 10px;
+    text-transform: uppercase;
+	padding:0 0 2px;
+}
+
+.my_account_order .box .box-content {
+    margin: 10px 0 0;
+
+}
+
+
+.my_account_order .box {
+    margin: 4px 0 30px;
+}
+
+.std address {
+    font-style: normal;
+    line-height: 20px;
+}
+
+
+
+.data-table thead {
+    background-color: #f2f2f2;
+}
+
+.data-table th {
+    border: 1px solid #ddd;
+    color: #777;
+    font-size: 13px;
+    font-weight: 100;
+    padding: 5px;
+    white-space: nowrap;
+}
+
+.my_account_order .data-table tbody.odd tr.border td {
+    line-height: 20px;
+}
+.data-table tbody.odd tr.border td, .data-table tbody.even tr.border td {
+    border-bottom-width: 1px;
+}
+.data-table tbody.odd td {
+    border-width: 0 1px;
+}
+td:nth-child(2n) {
+    background: #f7f7f7 none repeat scroll 0 0;
+}
+.data-table td {
+    border: 1px solid #ddd;
+    padding: 5px;
+}
+.a-right {
+    text-align: right !important;
+}
+
+.edit_order tr td {
+    background: #fff none repeat scroll 0 0;
+}
+
+
+
+#review_description li{
+    width:940px;
+    border-bottom:1px solid #ccc;
+	padding:15px 0 ;
+}
+.review_description_left a span{
+	display: block;
+    height: 32px;
+    overflow: hidden;
+	color:#777;
+}
+.review_reply{
+    background: none repeat scroll 0 0 #f6f4f5;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color: #666;
+    font-family: verdana;
+    font-size: 11px;
+    word-break: break-all;
+    margin-top: 20px;
+    padding: 10px;
+    position: relative;
+}
+.review_reply_span{
+    background:url(../images/tringle.png) no-repeat;
+    height: 12px;
+    left: 70px;
+    position: absolute;
+    top: -12px;
+    width: 18px;
+}
+.review_description_left{
+   display: inline-block;
+    float: left;
+    padding: 0 10px;
+    width: 200px;
+}
+.review_description_right{
+    width:730px;padding:10px;display:inline-block;
+}
+
+
+.product-Reviews_top .review_description_left{
+   display: inline-block;
+    float: left;
+    padding: 0 10px;
+    width: 170px;
+}
+.product-Reviews_top .review_description_right{
+    display: inline-block;
+    float: right;
+    padding: 0 10px;
+    width: 730px;
+}
+.review_list_product  #review_description {
+	border:none;
+}
+
+
+.review_description_left p{
+     color: #000;
+    font-size: 14px;
+    margin: 0px 0 5px;
+    padding: 7px 0;
+}
+.review_description_right_span{
+    display:block;margin-bottom:23px ;line-height:20px;
+}
+.review_description_centen{
+    min-height:20px;word-break:break-all;padding-bottom:10px;
+}
+.review_description_right p{
+    height:30px;line-height:30px;margin-top: 10px;
+}
+.review_description_right p span{
+    border: 1px solid #ccc;
+    cursor: pointer;
+    display: inline-block;
+    height: 20px;
+    line-height: 20px;
+    margin-right: 2px;
+    padding: 0 4px;
+    text-align: center;
+    width: auto;
+}
+
+.favorite-Operation{
+    height:30px;line-height:30px;margin-top: 10px;
+}
+.favorite-Operation span{
+    text-align:center;display:inline-block;width:70px;height:30px;border:1px solid #ccc;cursor:pointer
+}
+.favorite-Operation-main {
+    padding: 10px;
+    height: 128px;
+    border: solid 1px #909090;
+    background: #fff;
+    text-align: center;
+}
+input.save {
+    width: 47px;
+    height: 20px;
+    background: url(../images/add_save_hover.jpg) no-repeat;
+    border: 0;
+    margin-top: 4px;
+}
+input.cancel {
+    width: 47px;
+    height: 20px;
+    background: url(../images/add_Close_hover.jpg) no-repeat;
+    border: 0;
+    margin-top: 4px;
+}
+.favorite-Operation-main textarea {
+margin-bottom: 10px;
+width: 177px;
+height: 77px;
+border: solid 1px #adadad;
+}
+.product-Reviews_top{
+   padding: 20px 0 20px 10px;
+    width: 100%;
+}
+.product-Reviews_bottom{
+    padding: 10px 0 50px 10px;
+    width: 100%;
+}
+
+.product-Reviews_bottom #review_create{ height: 100%;}
+
+.h-30{
+    height:30px;
+}
+.lh30_f{
+   float:left;line-height:30px; 
+}
+.star_ul{
+    height:30px;display: inline;
+}
+.star_ul li{
+    float:left;
+}
+#review_price_span{
+    display:inline;
+}
+#review_create{
+    height:220px;margin-top:20px;
+	width:750px;
+}
+.review_input_box{
+    margin: 10px 0;
+}
+#review_textarea{
+    clear:both;width:722px;
+}
+.review-input-text{
+    width: 314px;height: 33px;padding: 0 10px;border: 1px solid #ccc;color: #777;border-radius: 2px;
+}
+.review_description_left a{
+    text-decoration:none;
+    color:#000;
+}
+.myFavorite_nohove {
+background: url("../images/scroll/favourite.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+float: left;
+margin: 11px 0 0 10px;
+padding: 0 0 0 20px;
+}
+
+.login_box_file{
+    width:320px;height:28px;float:left;
+}
+.login_box_span{
+    width:44px;float:right;height:28px;margin-right:5px;
+}
+
+#review_description {
+    border-top: 1px solid #ccc;
+}
+
+
+.fieldset {
+    background: #fefefe none repeat scroll 0 0;
+    border: 1px solid #ddd;
+    margin: 28px 0;
+    padding: 22px 25px 12px 33px;
+}
+
+.fieldset .legend {
+    background: #dedede none repeat scroll 0 0;
+    border: 1px solid #fefefe;
+    color: #333;
+    float: left;
+    font-size: 13px;
+    font-weight: bold;
+    margin: -33px 0 0 -10px;
+    padding: 0 8px;
+    position: relative;
+}
+
+
+#form-validate ul li {
+    margin: 11px 0;
+}
+.form-list li {
+    margin: 0 0 8px;
+}
+
+
+.form-list .field {
+    float: left;
+    width: 275px;
+}
+
+#form-validate ul li label {
+    display: block;
+    font-size: 13px;
+    margin: 10px 0 4px;
+}
+
+
+.form-list .input-box {
+    clear: both;
+    display: block;
+    width: 375px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
