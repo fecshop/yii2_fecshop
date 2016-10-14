@@ -57,7 +57,7 @@ class Email extends Service
 				'class' => 'yii\swiftmailer\Mailer',
 				'transport' => [
 					'class' => 'Swift_SmtpTransport',
-					'host' => 'smtp.sendgrid.net',
+					'host' => 'smtp.qq.net',
 					'username' => 'support@mail.com',
 					'password' => 'xxxx', 
 					'port' => '587',
