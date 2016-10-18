@@ -14,7 +14,7 @@ github: https://github.com/fancyecommerce/yii2_fecshop
 
 项目状态：
 
-> 项目已经开始,本项目由Terry筹划，预计到2017年元旦出来第一个正式版本。
+> 项目已经开始,本项目由Terry筹划，预计到2017-05-01出来第一个正式版本。
 
 架构特色：参看详细介绍：[Fecshop 架构特色](http://www.fecshop.com/doc/fecshop-guide/cn-1.0/guide-fecshop-about-fecshop.html)
 
