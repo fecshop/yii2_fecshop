@@ -1,7 +1,7 @@
 <div class="main container one-column">
 <?= Yii::$service->page->widget->render('flashmessage'); ?>
 
-	<div class="account-create">
+	<div class="account-register">
 		<div class="page-title">
 			<h1>Create an Account</h1>
 		</div>
@@ -87,10 +87,9 @@
 			</div>
 			<?= \fec\helpers\CRequest::getCsrfInputHtml();  ?>
 			<div class="buttons-set">
-				<p class="required">* Required Fields</p>
+				
 				<button type="button" id="js_registBtn" class="redBtn"><em><span><i></i>Submit</span></em></button>
 				<p class="back-link"><a href="<?= Yii::$service->url->getUrl('customer/account/login'); ?>" class="back-link"><small>« </small>Back</a></p>
-				
 			</div>
 			<div class="clear"></div>
 		</form>

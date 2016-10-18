@@ -16,7 +16,7 @@ use fecshop\app\appfront\helper\test\My;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class ContactsController extends AppfrontController
+class NewsletterController extends AppfrontController
 {
     //protected $_registerSuccessRedirectUrlKey = 'customer/account';
 	
@@ -27,10 +27,6 @@ class ContactsController extends AppfrontController
 	 * 
 	 */
 	public function actionIndex(){
-		$editForm = Yii::$app->request->post('editForm');
-		if(!empty($editForm)){
-			$this->getBlock()->saveContactsInfo($editForm);
-		}
 		$data = $this->getBlock()->getLastData();
 		return $this->render($this->action->id,$data);
 	}

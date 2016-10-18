@@ -81,7 +81,34 @@ return [
 				'My Product Reviews' => 'customer/productreview',
 				'My Favorite' => 'customer/productfavorite',
 				
-			]
+			],
+			
+			'contacts'	=> [
+				# 联系我们页面的验证码是否开启
+				'contactsCaptcha' => true, 
+				'email' => [
+					# 联系我们的邮箱地址
+					'address'	=> '2358269014@qq.com',
+					# block  邮件动态数据提供部分。
+					'block'		=> 'fecshop\app\appfront\modules\Customer\block\mailer\contacts\EmailBody',
+					# 邮件内容的view部分
+					'viewPath' 	=> 'mailer/customer/contacts',
+					# 如果不定义 mailerConfig，则会使用email service里面的默认配置
+					//'mailerConfig' => []
+				],
+			],
+			'newsletterSubscribe' => [
+				'email' => [
+					# 订阅邮件成功后，是否发送邮件给用户
+					'enable'	=> true,
+					# block  邮件动态数据提供部分。
+					'block'		=> 'fecshop\app\appfront\modules\Customer\block\mailer\newsletter\EmailBody',
+					# 邮件内容的view部分
+					'viewPath' 	=> 'mailer/customer/newsletter',
+					# 如果不定义 mailerConfig，则会使用email service里面的默认配置
+					//'mailerConfig' => []
+				],
+			],
 		],
 	],
 ];

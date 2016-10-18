@@ -16,6 +16,11 @@ return [
 		],
 		# 子服务
 		'childService' => [
+			'newsletter' => [
+				'class' 		=> 'fecshop\services\customer\Newsletter',
+			],
+		
+		
 			'address' => [
 				'class' 		=> 'fecshop\services\customer\Address',
 			],

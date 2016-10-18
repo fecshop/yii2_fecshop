@@ -1,8 +1,5 @@
 <div class="main container two-columns-left">
-	
 	<div class="col-main account_center">
-								
-
 		<div class="std">
 			<div style="margin:19px 0 0">
 				<div class="page-title">
@@ -13,7 +10,6 @@
 					<p>From your My Account Dashboard you have the ability to view a snapshot of your recent account activity and update your account information. Select a link below to view or edit information.</p>
 				</div>
 				<div class="box-account box-info">
-				  
 					<div class="col2-set">
 						<div class="col-1">
 							<div class="box">

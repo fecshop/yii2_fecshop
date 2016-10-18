@@ -1409,7 +1409,7 @@ input[type="submit"]:active{
 .addressedit .address_country {
     width: 272px;
 }
-select, .selectBox {
+.selectBox {
     background: #fff none repeat scroll 0 0;
     border: 1px solid #ccc;
     border-radius: 2px;
@@ -1731,27 +1731,43 @@ padding: 0 0 0 20px;
     width: 375px;
 }
 
+.verification_code_input {
+    height: 30px;
+    padding: 0 10px;
+    width: 86px;
+}
+
+.form-list li .login_box{
+	width:280px;
+}
+
+
+
+#contacts_comment {
+    height: 100px;
+    width: 530px;
+}
 
 
 
 
+.account-register #form-validate{
+	border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+
+.account-register  .form-list .field{float:none;}
+.login-captcha-input{height: 30px;
+    padding: 0 10px;
+    width: 76px;}
+.account-register  .form-list .input-box{width:272px;}
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.account-register  .back-link{font-size:11px;margin-top:10px;}
 
 
 

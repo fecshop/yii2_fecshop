@@ -60,9 +60,7 @@ class Email
 		if(!$langCode){
 			Yii::$service->helper->errors->add('langCode is empty');
 			return ;
-		}
-		
-			
+		}	
 		$bodyViewFile	= $viewPath.'/body_'.$langCode.'.php';
 		$bodyConfigKey = [
 			'class' => $block,
@@ -178,6 +176,75 @@ class Email
 		
 	}
 	
+	/**
+	 * 客户联系我们邮件。
+	 */
+	public static function sendContactsEmail($paramData){
+		# 从配置中读出来联系我们的邮件地址。
+		$contactsParam = Yii::$app->getModule('customer')->params['contacts'];
+		if(!isset($contactsParam['email']['address']) || ! $contactsParam['email']['address']){
+			Yii::$service->page->message->addError(['Contact us : receive email is empty , you must config it in Module(Customer):[contacts][email][address]']);
+			return;
+		} 
+		$toEmail = $contactsParam['email']['address'];
+		$mailerConfigParam = '';
+		if(isset($contactsParam['email']['mailerConfig']) && $contactsParam['email']['mailerConfig']){
+			$mailerConfigParam = $contactsParam['email']['mailerConfig'];	
+		}
+		if(isset($contactsParam['email']['block']) && $contactsParam['email']['block']){
+			$block = $contactsParam['email']['block'];
+		}
+		if(isset($contactsParam['email']['viewPath']) && $contactsParam['email']['viewPath']){
+			$viewPath = $contactsParam['email']['viewPath'];
+		}
+		if($block && $viewPath){
+			$defaultLangCode = Yii::$service->fecshoplang->defaultLangCode;
+			/**
+			 * 因为contacts  是通过smtp发送给管理员的邮箱地址，因此，这里生成邮件使用默认的语言，而不是当前
+			 * 网店的语言，这样方便管理员阅读内容。
+			 * 在邮件中会标注当前的语言的store langCode。
+			 */
+			list($subject,$htmlBody) = self::getSubjectAndBody($block,$viewPath,$defaultLangCode,$paramData);
+			$sendInfo = [
+				'to' 		=> $toEmail,
+				'subject' 	=> $subject,
+				'htmlBody' 	=> $htmlBody,
+				'senderName'=> Yii::$service->store->currentStore,
+			];
+			Yii::$service->email->send($sendInfo,$mailerConfigParam);
+			return true;
+		}
+	}
 	
 	
+	/**
+	 * 订阅邮件成功邮件
+	 */
+	public static function sendNewsletterSubscribeEmail($param){
+		# 从配置中读出来联系我们的邮件地址。
+		$newsletterSubscribeParam = Yii::$app->getModule('customer')->params['newsletterSubscribe'];
+		$toEmail = $param['email'];
+		$mailerConfigParam = '';
+		if(isset($newsletterSubscribeParam['email']['mailerConfig']) && $newsletterSubscribeParam['email']['mailerConfig']){
+			$mailerConfigParam = $newsletterSubscribeParam['email']['mailerConfig'];	
+		}
+		if(isset($newsletterSubscribeParam['email']['block']) && $newsletterSubscribeParam['email']['block']){
+			$block = $newsletterSubscribeParam['email']['block'];
+		}
+		if(isset($newsletterSubscribeParam['email']['viewPath']) && $newsletterSubscribeParam['email']['viewPath']){
+			$viewPath = $newsletterSubscribeParam['email']['viewPath'];
+		}
+		if($block && $viewPath){
+			list($subject,$htmlBody) = self::getSubjectAndBody($block,$viewPath,'',$param);
+			$sendInfo = [
+				'to' 		=> $toEmail,
+				'subject' 	=> $subject,
+				'htmlBody' => $htmlBody,
+				'senderName'=> Yii::$service->store->currentStore,
+			];
+			//var_dump($sendInfo);exit;
+			Yii::$service->email->send($sendInfo,$mailerConfigParam);
+
+		}
+	}
 }

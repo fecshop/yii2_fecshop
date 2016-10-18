@@ -37,8 +37,7 @@
 					<p>
 						<?= Yii::$service->page->translate->__('Sign up for newsletter'); ?>
 					</p>
-					<form action="http://www.intosmile.com/customer/contacts/save?uenc=aHR0cDovL3d3dy5pbnRvc21pbGUuY29tLw==" method="post" id="newsletter-validate-detail">
-						<input type="hidden" name="_csrf" value="YmZEWnpqbXYTA3ZoFSgCByYEAA8rLRUbJh4uIBczWxQxAQ0NSiU8Gw==" class="thiscsrf">
+					<form action="<?=  Yii::$service->url->getUrl('customer/newsletter') ?>" method="get" id="newsletter-validate-detail">
 						<div class="newsletter-container">
 							<input type="text" name="email" id="newsletter" placeholder="<?= Yii::$service->page->translate->__('Enter your email adress'); ?>..." title="Sign up for our newsletter" class="input-text form-control required-entry validate-email input-block-level">
 							<button type="submit" title="Subscribe" class="newsletter-button">
@@ -58,7 +57,7 @@
 							<li><a href="<?= \Yii::$service->url->getUrl('privacy-policy');  ?>" title="Privacy Policy" rel="nofollow"><?= Yii::$service->page->translate->__('Privacy Policy'); ?></a></li>
 							<li><a href="<?= \Yii::$service->url->getUrl('return-policy');  ?>" title="Return Policy" rel="nofollow"><?= Yii::$service->page->translate->__('Return Policy'); ?></a></li>
 							<li><a href="<?= \Yii::$service->url->getUrl('faq');  ?>" title="FAQ" rel="nofollow"><?= Yii::$service->page->translate->__('FAQ'); ?></a></li>
-							<li class=" last"><a href="<?= \Yii::$service->url->getUrl('contact-us');  ?>" title="Contact Us" rel="nofollow"><?= Yii::$service->page->translate->__('Contact Us'); ?></a></li>
+							<li class=" last"><a href="<?= \Yii::$service->url->getUrl('customer/contacts');  ?>" title="Contact Us" rel="nofollow"><?= Yii::$service->page->translate->__('Contact Us'); ?></a></li>
 						</ul>
 					</nav>
 				</div>
