@@ -315,7 +315,7 @@ class Index {
 	protected function getNumPerPage(){
 		if(!$this->_numPerPageVal){
 			$numPerPage = Yii::$app->request->get($this->_numPerPage);
-			$category_query_config = Yii::$app->controller->module->params['category_query'];
+			$category_query_config = Yii::$app->getModule('catalog')->params['category_query'];
 			if(!$numPerPage){
 				if(isset($category_query_config['numPerPage'])){
 					if(is_array($category_query_config['numPerPage'])){
@@ -351,7 +351,7 @@ class Index {
 				'special_from','special_to',
 				'url_key','score',
 			];
-		$category_query = Yii::$app->controller->module->params['category_query'];
+		$category_query = Yii::$app->getModule('catalog')->params['category_query'];
 		if(is_array($category_query['sort'])){
 			foreach($category_query['sort'] as $sort_item){
 				$select[] = $sort_item['db_columns'];

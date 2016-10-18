@@ -49,6 +49,7 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 		return [
 			'baseInfo' 		=> $this->getBaseInfo(),
 			'priceInfo' 	=> $this->getPriceInfo(),
+			'tier_price'	=> $this->_one['tier_price'],
 			'metaInfo' 		=> $this->getMetaInfo(),
 			'groupAttr'		=> $this->getGroupAttr(),
 			'descriptionInfo' => $this->getDescriptionInfo(),
@@ -80,6 +81,8 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 		$editBar = $this->getEditBar($editArr);
 		return $this->_lang_attr.$editBar.$this->_textareas;
 	}
+	
+	
 	
 	public function getMetaInfo(){
 		$this->_lang_attr = '';
@@ -345,6 +348,29 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 			}
 			$this->_param['custom_option'] = $custom_option_af;
 		}
+		#tier price
+		$tier_price = $this->_param['tier_price'];
+		$tier_price_arr = [];
+		if($tier_price){
+			$arr = explode('||',$tier_price);
+			if(is_array($arr) && !empty($arr)){
+				foreach($arr as $ar){
+					list($tier_qty,$tier_price) = explode('##',$ar);
+					if($tier_qty && $tier_price){
+						$tier_qty = (int)$tier_qty;
+						$tier_price = (float)$tier_price;
+						$tier_price_arr[] = [
+							'qty' 	=> $tier_qty,
+							'price'	=> $tier_price,
+						];
+						
+					}
+				}
+			}
+		}
+		$tier_price_arr = \fec\helpers\CFunc::array_sort($tier_price_arr,'qty','asc');
+		$this->_param['tier_price'] = $tier_price_arr;
+		
 	}
 	
 	# 批量删除

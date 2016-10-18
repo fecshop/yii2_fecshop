@@ -41,19 +41,62 @@ class Price extends Service
 		];
 	}
 	/**
-	 * 得到单个产品的最终价格。
+	 * 得到单个产品的最终价格。支持tier price 如果是tier price 需要把qty 以及tier Price传递过来
 	 * @property  $price 		 | Float  产品的价格
 	 * @property  $special_price | Float  产品的特价
 	 * @property  $special_from  | Int    产品的特检开始时间
 	 * @property  $special_to    | Int    产品的特检结束时间
+	 * @property  $qty    		 | Int 	  产品的个数，这个用于一次性购买多个产品的优惠，这些是用于批发客户
+	 * @property  $tier_price    | Array  ，Example:
+	 * $tier_price = [
+	 *		['qty'=>2,'price'=>33],
+	 *		['qty'=>4,'price'=>30],
+	 *	];
+	 *
 	 * @return    Float
 	 */
-	protected function actionGetFinalPrice($price,$special_price,$special_from,$special_to){
+	protected function actionGetFinalPrice(
+		$price			, $special_price,
+		$special_from	, $special_to,
+		$qty=''			, $tier_price=[]
+	){
 		if($this->specialPriceisActive($price,$special_price,$special_from,$special_to)){
-			return $special_price;
+			$return_price = $special_price;
 		}else{
+			$return_price = $price;
+		}
+		if($qty > 1){
+			$return_price = $this->getTierPrice($qty,$tier_price_arr,$return_price);
+		}
+		return $return_price;
+	}
+	/**
+	 * @property $qty | Int 
+	 * @property $price | Float 一个产品的单价(如果有特价，那么这个值是一个产品的特价)
+	 * @property $tier_price | Array  , example: 
+	 * $tier_price = [
+	 *		['qty'=>2,'price'=>33],
+	 *		['qty'=>4,'price'=>30],
+	 *	];
+	 * 传递过来的tier_price 数组，必须是按照qty进行排序好了的数组
+	 */
+	protected function actionGetTierPrice($qty,$tier_price_arr,$price){
+		if($qty <= 1){
 			return $price;
 		}
+		$t_price = $price;
+		if(is_array($tier_price_arr) && !empty($tier_price_arr)){
+			foreach($tier_price_arr  as $one){
+				$t_qty = $one['qty'];
+				if($t_qty <= $qty){
+					continue;
+				}else{
+					return $t_price;
+				}
+				$t_price = $one['price'];
+			}
+		}
+		return $t_price;
 	}
 	/**
 	 * 判断产品的special_price是否有效，下面几种情况会无效

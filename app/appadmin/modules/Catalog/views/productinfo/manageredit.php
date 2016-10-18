@@ -23,6 +23,29 @@ use fecadmin\models\AdminRole;
 .edit_p label{float:left;line-height: 20px;min-width:110px;}
 .edit_p input{width:700px;}
 .tabsContent .tabsContent .edit_p label{min-width:104px;}
+.edit_p .tier_price input{
+	width:100px;
+}
+
+.tier_price table thead tr th{
+	 background: #ddd none repeat scroll 0 0;
+    border: 1px solid #ccc;
+    padding: 4px 10px;
+    width: 100px;
+}
+
+.tier_price table tbody tr td{
+	background: #fff;
+    border-right: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+    padding:3px;
+    width: 100px;
+}
+
+
+.edit_p .tier_price input.tier_qty{width:30px;}
+
+
 </style>
 
 <script>
@@ -140,6 +163,8 @@ function thissubmit(thiss){
 		cate_str += cate_id+",";
 	});
 	
+	
+	
 	jQuery(".category_tree div.ckbox.indeterminate").each(function(){
 		cate_id = jQuery(this).find("input").val();
 		cate_str += cate_id+",";
@@ -147,7 +172,17 @@ function thissubmit(thiss){
 	
 	jQuery(".inputcategory").val(cate_str);
 	
-		
+	tier_price_str = "";
+	$(".tier_price table tbody tr").each(function(){
+		tier_qty = $(this).find(".tier_qty").val();
+		tier_price = $(this).find(".tier_price").val();
+		if(tier_qty && tier_price){
+			tier_price_str += tier_qty+'##'+tier_price+"||";
+		}
+	});
+	//alert(tier_price_str);
+	jQuery(".tier_price_input").val(tier_price_str);
+	//alert($(".tier_price_input").val());
 	return validateCallback(thiss, dialogAjaxDoneCloseAndReflush);
 }
 </script>
@@ -187,6 +222,60 @@ function thissubmit(thiss){
 				</div>
 				<div>
 					<?= $priceInfo ?>
+					<div class="edit_p">
+						<label>Tier Price：</label>
+						<input type="hidden" name="editFormData[tier_price]" class="tier_price_input"  />
+						<div class="tier_price" style="float:left;width:700px;">
+							<table style="">
+								<thead>
+									<tr>
+										<th>Qty</th>
+										<th>Price</th>
+										<th>Action</th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php if(is_array($tier_price) && !empty($tier_price)){  ?>
+										<?php foreach($tier_price as $one){ ?>
+										<tr>
+											<td>
+												<input class="tier_qty" type="text" value="<?= $one['qty'] ?>"> and above 
+											</td>
+											<td>
+												<input class="tier_price" type="text" value="<?= $one['price'] ?>">
+											</td>
+											<td>
+												<img src="<?= \Yii::$service->image->getImgUrl('/images/bkg_btn-close2.gif')  ?>">
+											</td>
+										</tr>
+										<?php } ?>
+									<?php } ?>
+								</tbody>
+								<tfoot style="text-align:right;">
+									<tr>
+										<td colspan="100" style="text-align:right;">						
+											<a rel="2" style="text-align:right;" href="javascript:void(0)" class="addProductTierPrice button">
+												<span>增加TierPrice</span>
+											</a>					
+										</td>				
+									</tr>			
+								</tfoot>
+							</table>
+							<script>
+								$(document).ready(function(){
+									$(".addProductTierPrice").click(function(){
+										str = "<tr>";
+										str +="<td><input class=\"tier_qty\" type=\"text\"   /> and above </td>";
+										str +="<td><input class=\"tier_price\" type=\"text\"   /></td>";
+										str +="<td><img src=\"<?= \Yii::$service->image->getImgUrl('/images/bkg_btn-close2.gif')  ?>\" /></td>";
+										str +="</tr>";
+										$(".tier_price table tbody").append(str);
+									});
+									
+								});
+							</script>
+						</div>
+					</div>
 				</div>
 				<div>
 					<?= $metaInfo ?>
