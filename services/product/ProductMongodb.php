@@ -30,6 +30,47 @@ class ProductMongodb implements ProductInterface
 			return new Product;
 		}
 	}
+	/**
+	 * @property $sku|Array 
+	 * @property $returnArr|boolean 返回的数据是否是数组格式，如果设置为
+	 *		false，则返回的是对象数据
+	 * @return  Array or Object
+	 * 通过sku 获取产品，一个产品
+	 */
+	public function getBySku($sku,$returnArr=true){
+		if($sku){
+			if($returnArr){
+				return Product::find()->asArray()
+					->where(['sku' => $sku])
+					->one()
+					;
+			}else{
+				return Product::findOne(['sku' => $sku]);
+			} 
+		}
+	}
+	
+	/**
+	 * @property $spu|Array 
+	 * @property $returnArr|boolean 返回的数据是否是数组格式，如果设置为
+	 *		false，则返回的是对象数据
+	 * @return  Array or Object
+	 *  通过spu 获取产品数组
+	 */
+	public function getBySpu($spu,$returnArr=true){
+		if($spu){
+			if($returnArr){
+				return Product::find()->asArray()
+					->where(['spu' => $spu])
+					->all();
+			}else{
+				return Product::find()
+					->where(['spu' => $spu])
+					->all();
+			} 
+		}
+	}
+	
 	/*
 	 * example filter:
 	 * [

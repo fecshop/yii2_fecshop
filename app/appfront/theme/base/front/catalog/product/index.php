@@ -18,6 +18,7 @@
 			</div>
 			<div class="product_info">
 				<h1><?= $name; ?></h1>
+				<div><?= $sku; ?></div>
 				<div class="price_info">
 					<?php # 价格部分
 						$priceView = [
@@ -31,9 +32,28 @@
 				
 				</div>
 				<div style="height:300px;">
+					<div class="product_options">
+						<?= $options; ?>
+					</div>
 					
-					
-					
+					<script>
+					<?php $this->beginBlock('product_options') ?>  
+					$(document).ready(function(){
+						$(".product_options a").click(function(){
+							$url = $(this).attr("rel");
+							if($url){
+								window.location.href=$url;
+							}else{
+								
+								
+							}
+							
+						});
+					});
+					<?php $this->endBlock(); ?>  
+					</script>  
+					<?php $this->registerJs($this->blocks['product_options'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
+
 					
 				</div>
 				<div class="tier_price_info">

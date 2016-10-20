@@ -1790,8 +1790,25 @@ padding: 0 0 0 20px;
 .tier_price_info table tr{}
 .tier_price_info table tr td{height:25px;width:50px;}
 
+.chose_size a {
+	border:1px solid #ccc;padding:2px 10px;margin:2px 4px;;
 
+}
 
+.chose_color{margin:2px 0 20px;}
 
+.product_options{margin:40px 0 0;}
+.product_options a {
+	display:block;float:left;margin:0 5px;
+}
 
+.product_options a.noactive{
+	border: 1px dashed #ccc;
+}
+.product_options a.current{
+	border:1px solid #cc0000;
+}
 
+.product_options a.active{
+	border:1px solid #ccc;
+}

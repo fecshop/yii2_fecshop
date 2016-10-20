@@ -76,7 +76,19 @@ class Product extends Service
 		return $this->_product->getByPrimaryKey($primaryKey);
 	}
 	
+	/**
+	 * 通过sku查询产品
+	 */
+	protected function actionGetBySku($sku){
+		return $this->_product->getBySku($sku);
+	}
 	
+	/**
+	 * 通过spu查询产品
+	 */
+	protected function actionGetBySpu($spu){
+		return $this->_product->getBySpu($spu);
+	}
 	
 	/**
 	 * @property $filter|Array
