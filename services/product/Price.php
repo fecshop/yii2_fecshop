@@ -40,6 +40,13 @@ class Price extends Service
 			'value' 	=> $price,
 		];
 	}
+	
+	protected function actionFormatSamplePrice($price){
+		$currencyInfo = $this->getCurrentInfo();
+		$price = $price * $currencyInfo['rate'];
+		$price = ceil($price*100)/100;
+		return $currencyInfo['symbol'].$price;
+	}
 	/**
 	 * 得到单个产品的最终价格。支持tier price 如果是tier price 需要把qty 以及tier Price传递过来
 	 * @property  $price 		 | Float  产品的价格

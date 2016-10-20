@@ -1769,13 +1769,26 @@ padding: 0 0 0 20px;
 
 .account-register  .back-link{font-size:11px;margin-top:10px;}
 
-
-
-
-
-
-
-
+.product_info .price_info .price.special_active{
+	text-decoration: line-through;
+}
+.product_info .price_info .special_active{
+	float:left;
+	line-height:30px;
+	margin-right:10px;
+}
+.product_info  .special_price {
+	color:#cc0000;
+	font-size:25px;
+}
+.tier_price_info table{ 
+	border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+	width:auto;
+}
+.tier_price_info table tr{}
+.tier_price_info table tr td{height:25px;width:50px;}
 
 
 

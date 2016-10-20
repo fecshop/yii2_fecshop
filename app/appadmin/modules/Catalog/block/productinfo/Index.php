@@ -19,6 +19,7 @@ use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockInterface;
  */
 class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 {
+	protected $_copyUrl;
 	/**
 	 * init param function ,execute in construct
 	 */
@@ -31,6 +32,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 		 * delete data url
 		 */
 		$this->_deleteUrl 	= CUrl::getUrl("catalog/productinfo/managerdelete");
+		$this->_copyUrl		= CUrl::getUrl("catalog/productinfo/manageredit",['operate'=>'copy']);
 		/**
 		 * service component, data provider
 		 */
@@ -338,6 +340,8 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 			$str .= '<td>
 						<a title="编辑" target="dialog" class="btnEdit" mask="true" drawable="true" width="1000" height="580" href="'.$this->_editUrl.'?'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" >编辑</a>
 						<a title="删除" target="ajaxTodo" href="'.$this->_deleteUrl.'?'.$csrfString.'&'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" class="btnDel">删除</a>
+						<br/>
+						<a title="复制" target="dialog" class="button" mask="true" drawable="true" width="1000" height="580" href="'.$this->_copyUrl.'&'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" ><span>复制</span></a>
 					</td>';
 			$str .= '</tr>';
 		}

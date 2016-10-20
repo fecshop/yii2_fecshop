@@ -190,6 +190,7 @@ function thissubmit(thiss){
 <div class="pageContent"> 
 	<form  method="post" action="<?= $saveUrl ?>" class="pageForm required-validate" onsubmit="return thissubmit(this, dialogAjaxDoneCloseAndReflush);">
 		<?php echo CRequest::getCsrfInputHtml();  ?>	
+		<input type="hidden" name="operate"  value="<?=  $operate ?>" />
 		<input type="hidden" class="primary_info"  value="<?= $primaryInfo ?>" />
 		<div class="tabs" >
 			<div class="tabsHeader">

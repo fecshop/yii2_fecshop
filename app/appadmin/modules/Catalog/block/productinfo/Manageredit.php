@@ -61,7 +61,8 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 			//'editBar' 	=> $this->getEditBar(),
 			//'textareas'	=> $this->_textareas,
 			//'lang_attr'	=> $this->_lang_attr,
-			'saveUrl' 	=> $this->_saveUrl,
+			'saveUrl' 		=> $this->_saveUrl,
+			'operate'		=> Yii::$app->request->get('operate'),
 		];
 	}
 	
@@ -184,6 +185,16 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 		 * you must convert string datetime to time , use strtotime function.
 		 */
 		// var_dump()
+		
+		if(Yii::$app->request->post('operate') == 'copy'){
+			
+			if(isset($this->_param['_id'])){
+				unset($this->_param['_id']);
+				//echo 111;
+				//var_dump($this->_param);
+				//exit;
+			}	
+		}
 		$this->_service->save($this->_param,'catalog/product/index');
 		$errors = Yii::$service->helper->errors->get();
 		if(!$errors ){

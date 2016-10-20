@@ -26,9 +26,12 @@ class Index {
 		$productImgSize = Yii::$app->controller->module->params['productImgSize'];
 		$productImgMagnifier = Yii::$app->controller->module->params['productImgMagnifier'];
 		$this->initProduct();
+		
 		return [
-			'name' => Yii::$service->store->getStoreAttrVal($this->_product['name'],'name'),
-			'image'=> $this->_product['image'],
+			'name' 					=> Yii::$service->store->getStoreAttrVal($this->_product['name'],'name'),
+			'image'					=> $this->_product['image'],
+			'price_info'			=> $this->getProductPriceInfo(),
+			'tier_price'			=> $this->_product['tier_price'],
 			'media_size' => [
 				'small_img_width'  => $productImgSize['small_img_width'],
 				'small_img_height' => $productImgSize['small_img_height'],
@@ -37,6 +40,18 @@ class Index {
 			'productImgMagnifier'  => $productImgMagnifier,
 		];
 	}
+	
+	
+	
+	protected function getProductPriceInfo(){
+		$price			= $this->_product['price'];
+		$special_price	= $this->_product['special_price'];
+		$special_from	= $this->_product['special_from'];
+		$special_to		= $this->_product['special_to'];
+		return Yii::$service->product->price->getCurrentCurrencyProductPriceInfo($price,$special_price,$special_from,$special_to);
+		
+	}
+		
 	
 	protected function initProduct(){
 		$primaryKey = Yii::$service->product->getPrimaryKey();
