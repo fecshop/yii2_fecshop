@@ -27,8 +27,6 @@ class Index {
 		$productImgMagnifier = Yii::$app->controller->module->params['productImgMagnifier'];
 		$this->initProduct();
 		
-		
-		
 		return [
 			
 			'name' 					=> Yii::$service->store->getStoreAttrVal($this->_product['name'],'name'),
@@ -59,7 +57,16 @@ class Index {
 		return $coll['coll'];
 		
 	}
-	
+	/**
+	 * @property $data | Array 和当前产品的spu相同，但sku不同的产品  数组。
+	 * @property $current_size | String 当前产品的size值
+	 * @property $current_color | String 当前产品的颜色值
+	 * @return Array 分别为
+	 *		$all_color 所有的颜色数组
+	 *		$all_size  所有的尺码数组
+	 *		$color_2_size 当前尺码下的所有颜色数组。
+	 *		$size_2_color 当前颜色下的所有尺码数组。
+	 */
 	protected function getColorAndSizeInfo($data,$current_size,$current_color){
 		$all_color 		= [];
 		$all_size 		= [];
@@ -105,7 +112,11 @@ class Index {
 		}
 		return [$all_color,$all_size,$color_2_size,$size_2_color ];
 	}
-	
+	/**
+	 * 这个有点像定制化的范畴，目前我只做了color和size这类
+	 * 衣服类产品需要用到的属性，对于其他的类似属性，就需要自己做定制修改了
+	 * @return 返回和当前产品spu相同的其他产品，然后以颜色和尺码的方式罗列出来。
+	 */
 	protected function getSameSpuInfo(){
 		//echo $this->_product['sku'];
 		//var_dump($this->_product);
@@ -115,20 +126,12 @@ class Index {
 			return ;
 		}
 		$data = $this->getSpuData();
-		
 		list($all_color,$all_size,$color_2_size,$size_2_color) = $this->getColorAndSizeInfo($data,$current_size,$current_color);
-		//var_dump($color_2_size);
-		//var_dump($data);
-		
-		
 		$str = '';
 		$all_size = $this->sortSizeArr($all_size);
-		//var_dump($color_2_size);
-		//var_dump($all_color);
 		if(is_array($all_color) && !empty($all_color)){
 			$str .= '<div class="chose_color">';
 			foreach($all_color as $color => $info){
-				
 				$main_img = isset($info['image']['main']['image']) ? $info['image']['main']['image'] : '';
 				$url = '';
 				$active = 'class="active"';
@@ -136,7 +139,6 @@ class Index {
 					$url = Yii::$service->url->getUrl($color_2_size[$color]['url_key']);
 				}else{
 					$url = Yii::$service->url->getUrl($info['url_key']);
-					
 				}
 				if($color == $current_color){
 					$active = 'class="current"';
@@ -146,13 +148,11 @@ class Index {
 			$str .= '<div class="clear"></div>';
 			$str .= '</div>';
 		}
-		
 		if(is_array($all_size) && !empty($all_size)){
 			$str .= '<div class="chose_size">';
 			foreach($all_size as $size => $info){
 				$url = '';
 				$active = 'class="noactive"';
-				
 				if(isset($size_2_color[$size])){
 					$url = Yii::$service->url->getUrl($size_2_color[$size]['url_key']);
 					$active = 'class="active"';
@@ -168,9 +168,14 @@ class Index {
 		//echo $str;exit;
 		return $str;
 	}
-	
+	/**
+	 *	@property $data | Array  各个尺码对应的产品数组
+	 *  @return Array 排序后的数组
+	 *		该函数，按照在配置中的size的顺序，将$data中的数据进行排序，让其按照尺码的由小到大的顺序
+	 * 		排列，譬如 ：s,m,l,xl,xxl,xxxl等
+	 */
 	protected function sortSizeArr($data){
-		# ��size����һ��
+		# 对size排序一下
 		$size = [];
 		$attr_group = $this->_product['attr_group'];
 		$attrInfo = Yii::$service->product->getGroupAttrInfo($attr_group);
@@ -186,7 +191,10 @@ class Index {
 		}
 		return $data;
 	}
-	
+	/**
+	 * @return  Array
+	 *  得到当前货币状态下的产品的价格和特价信息。
+	 */
 	protected function getProductPriceInfo(){
 		$price			= $this->_product['price'];
 		$special_price	= $this->_product['special_price'];
@@ -195,8 +203,16 @@ class Index {
 		return Yii::$service->product->price->getCurrentCurrencyProductPriceInfo($price,$special_price,$special_from,$special_to);
 		
 	}
-		
-	
+	/**
+	 * 初始化数据包括 
+	 * 主键值：$this->_primaryVal
+	 * 当前产品对象：$this->_product
+	 * Meta keywords ， Meta Description等信息的设置。
+	 * Title的设置。
+	 * 根据当前产品的attr_group(属性组信息)重新给Product Model增加相应的属性组信息
+	 * 然后，重新获取当前产品对象：$this->_product，此时加入了配置中属性组对应的属性。
+	 *
+	 */
 	protected function initProduct(){
 		$primaryKey = Yii::$service->product->getPrimaryKey();
 		$primaryVal = Yii::$app->request->get($primaryKey);
@@ -218,20 +234,20 @@ class Index {
 		Yii::$app->view->title = $this->_title;
 		//$this->_where = $this->initWhere();
 		
-		# ͨ�������ѯ�������飬�õ��������Ӧ�������б�
-		# Ȼ�����²�ѯ��Ʒ
+		# 通过上面查询的属性组，得到属性组对应的属性列表
+		# 然后重新查询产品
 		$attr_group = $this->_product['attr_group'];
 		$attrInfo = Yii::$service->product->getGroupAttrInfo($attr_group);
 		if(is_array($attrInfo) && !empty($attrInfo)){
 			$attrs = array_keys($attrInfo);
 			\fecshop\models\mongodb\Product::addCustomProductAttrs($attrs);
 		}
-		# ���²�ѯ��Ʒ��Ϣ��
+		# 重新查询产品信息。
 		$product 	= Yii::$service->product->getByPrimaryKey($primaryVal);
 		$this->_product = $product ;
 	}
 	
-	# ���м����
+	# 面包屑导航
 	protected function breadcrumbs($name){
 		if(Yii::$app->controller->module->params['category_breadcrumbs']){
 			$parent_info = Yii::$service->category->getAllParentInfo($this->_category['parent_id']);
