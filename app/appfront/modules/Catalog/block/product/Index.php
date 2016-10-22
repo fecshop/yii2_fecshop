@@ -28,21 +28,22 @@ class Index {
 		$this->initProduct();
 		
 		return [
-			
 			'name' 					=> Yii::$service->store->getStoreAttrVal($this->_product['name'],'name'),
 			'image'					=> $this->_product['image'],
 			'sku'					=> $this->_product['sku'],
 			'price_info'			=> $this->getProductPriceInfo(),
 			'tier_price'			=> $this->_product['tier_price'],
 			'media_size' => [
-				'small_img_width'  => $productImgSize['small_img_width'],
-				'small_img_height' => $productImgSize['small_img_height'],
-				'middle_img_width' => $productImgSize['middle_img_width'],
+				'small_img_width'  	=> $productImgSize['small_img_width'],
+				'small_img_height' 	=> $productImgSize['small_img_height'],
+				'middle_img_width' 	=> $productImgSize['middle_img_width'],
 			],
-			'productImgMagnifier'  => $productImgMagnifier,
+			'productImgMagnifier'  	=> $productImgMagnifier,
 			'options'				=> $this->getSameSpuInfo(),
+			'custom_option'			=> $this->_product['custom_option'],
 		];
 	}
+	
 	
 	protected function getSpuData(){
 		$spu	= $this->_product['spu'];
@@ -127,46 +128,8 @@ class Index {
 		}
 		$data = $this->getSpuData();
 		list($all_color,$all_size,$color_2_size,$size_2_color) = $this->getColorAndSizeInfo($data,$current_size,$current_color);
-		$str = '';
-		$all_size = $this->sortSizeArr($all_size);
-		if(is_array($all_color) && !empty($all_color)){
-			$str .= '<div class="chose_color">';
-			foreach($all_color as $color => $info){
-				$main_img = isset($info['image']['main']['image']) ? $info['image']['main']['image'] : '';
-				$url = '';
-				$active = 'class="active"';
-				if(isset($color_2_size[$color])){
-					$url = Yii::$service->url->getUrl($color_2_size[$color]['url_key']);
-				}else{
-					$url = Yii::$service->url->getUrl($info['url_key']);
-				}
-				if($color == $current_color){
-					$active = 'class="current"';
-				}
-				$str .= '<a '.$active.' href="javascript:void(0)" rel="'.$url.'"><img src="'.Yii::$service->product->image->getResize($main_img,[50,55],false).'"/></a>';
-			}
-			$str .= '<div class="clear"></div>';
-			$str .= '</div>';
-		}
-		if(is_array($all_size) && !empty($all_size)){
-			$str .= '<div class="chose_size">';
-			foreach($all_size as $size => $info){
-				$url = '';
-				$active = 'class="noactive"';
-				if(isset($size_2_color[$size])){
-					$url = Yii::$service->url->getUrl($size_2_color[$size]['url_key']);
-					$active = 'class="active"';
-				}
-				if($size == $current_size){
-					$active = 'class="current"';
-				}
-				$str .= '<a '.$active.' href="javascript:void(0)" rel="'.$url.'"><span>'.$size.'</span></a>';
-			}
-			$str .= '<div class="clear"></div>';
-			$str .= '</div>';
-		}
-		//echo $str;exit;
-		return $str;
+		$all_size = $this->sortSizeArr($all_size); 
+		return [$current_color,$current_size,$all_color,$all_size,$color_2_size,$size_2_color];
 	}
 	/**
 	 *	@property $data | Array  各个尺码对应的产品数组

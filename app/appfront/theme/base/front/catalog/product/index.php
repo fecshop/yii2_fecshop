@@ -33,27 +33,38 @@
 				</div>
 				<div style="height:300px;">
 					<div class="product_options">
-						<?= $options; ?>
+						<?php # options部分
+							$optionsView = [
+								'view'	=> 'catalog/product/index/options.php'
+							];
+							$optionsParam = [
+								'options' => $options,
+							];
+						?>
+						<?= Yii::$service->page->widget->render($optionsView,$optionsParam); ?>
+					
+					</div>
+					<div class="product_custom_options">
+						<?php # options部分
+							$optionsView = [
+								'view'	=> 'catalog/product/index/custom_option.php'
+							];
+							$optionsParam = [
+								'custom_option' => $custom_option,
+							];
+						?>
+						<?= Yii::$service->page->widget->render($optionsView,$optionsParam); ?>
+					
 					</div>
 					
-					<script>
-					<?php $this->beginBlock('product_options') ?>  
-					$(document).ready(function(){
-						$(".product_options a").click(function(){
-							$url = $(this).attr("rel");
-							if($url){
-								window.location.href=$url;
-							}else{
-								
-								
-							}
-							
-						});
-					});
-					<?php $this->endBlock(); ?>  
-					</script>  
-					<?php $this->registerJs($this->blocks['product_options'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
-
+					<div class="product_qty">
+						<div>Qty:</div>
+						<div>
+							<input type="text" name="qty" class="qty" value="1" />
+						</div>
+						<div class="clear"></div>
+					</div>
+					
 					
 				</div>
 				<div class="tier_price_info">
