@@ -1,10 +1,9 @@
-<?php
-	list($current_color,$current_size,$all_color,$all_size,$color_2_size,$size_2_color) = $parentThis['options'];
-?>
-
-<?php  ?>
-<?php	if(is_array($all_color) && !empty($all_color)){  ?>
-		<div class="chose_color">
+<?php list($current_color,$current_size,$all_color,$all_size,$color_2_size,$size_2_color) = $parentThis['options']; ?>
+<?php if(is_array($all_color) && !empty($all_color)){  ?>
+	<div class="pg">
+		<div class="label">Color:</div>
+		<div class="chose_color rg">
+			<ul>
 <?php		foreach($all_color as $color => $info){ ?>
 <?php			$main_img = isset($info['image']['main']['image']) ? $info['image']['main']['image'] : ''; ?>
 <?php			$url = ''; ?>
@@ -17,16 +16,24 @@
 <?php			if($color == $current_color){ ?>
 <?php				$active = 'class="current"'; ?>
 <?php			} ?>
-
-			<a <?= $active ?> href="javascript:void(0)" rel="<?= $url ?>"><img src="<?= Yii::$service->product->image->getResize($main_img,[50,55],false) ?>"/></a>
+			<li <?= $active ?>>
+				<a <?= $active ?> href="javascript:void(0)" rel="<?= $url ?>"><img src="<?= Yii::$service->product->image->getResize($main_img,[50,55],false) ?>"/></a>
+				<b></b>
+			</li>
 <?php		} ?>
+			</ul>
 			<div class="clear"></div>
 		</div>
+		<div class="clear"></div>
+	</div>
 <?php	
 	}
 ?>
 <?php	if(is_array($all_size) && !empty($all_size)){ ?>
-		<div class="chose_size">
+	<div class="pg">
+		<div class="label size-label">Size:</div>
+		<div class="chose_size rg">
+			<ul>
 <?php		foreach($all_size as $size => $info){ ?>
 <?php			$url = ''; ?>
 <?php			$active = 'class="noactive"'; ?>
@@ -37,10 +44,16 @@
 <?php			if($size == $current_size){ ?>
 <?php				$active = 'class="current"'; ?>
 <?php			} ?>
-				<a <?=$active ?> href="javascript:void(0)" rel="<?= $url ?>"><span><?= $size ?></span></a>
+				<li <?= $active ?>>
+					<a <?=$active ?> href="javascript:void(0)" rel="<?= $url ?>"><span><?= $size ?></span></a>
+					<b></b>
+				</li>
 <?php		}	?>
+			</ul>
 			<div class="clear"></div>
 		</div>
+		<div class="clear"></div>
+	</div>
 <?php	}	?>
 <script>
 <?php $this->beginBlock('product_options') ?>  

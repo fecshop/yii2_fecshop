@@ -11,7 +11,9 @@ $productImgMagnifier = $parentThis['productImgMagnifier'];
 	$middle_img_width = $media_size['middle_img_width'];
 ?>
 <?php  $main_img = isset($image['main']['image']) ? $image['main']['image'] : '' ?>
-<img id="zoom_03" src="<?= Yii::$service->product->image->getResize($main_img,$middle_img_width,false) ?>" data-zoom-image="<?= Yii::$service->product->image->getUrl($main_img);  ?>"/>
+<div class="product-main-img">
+	<img id="zoom_03" src="<?= Yii::$service->product->image->getResize($main_img,$middle_img_width,false) ?>" data-zoom-image="<?= Yii::$service->product->image->getUrl($main_img);  ?>"/>
+</div>
 <?php
 	if(isset($image['gallery']) && is_array($image['gallery']) && !empty($image['gallery'])){
 		$gallerys = $image['gallery'];
@@ -26,21 +28,34 @@ $productImgMagnifier = $parentThis['productImgMagnifier'];
 	}
 	if(is_array($gallerys) && !empty($gallerys)){
 ?>
-		<div id="gal1" class="owl-carousel">
+		<div class="product-img-box">
+			<div class="gallery-img">
+				<a href="javascript:;" class="pre_images"></a>
+				<div class="box-img" id="gal1">
+					<div class="list-img" >
 		<?php	
 			foreach($gallerys as $gallery){
 				$image		= $gallery['image'];
 				$sort_order = $gallery['sort_order'];
 				$label 		= $gallery['label'];
 		?>
-			<a href="#" data-image="<?= Yii::$service->product->image->getResize($image,$middle_img_width,false) ?>" data-zoom-image="<?= Yii::$service->product->image->getUrl($image);  ?>">
-				<img class="elevateZoom lazyOwl" id="img_01" data-src="<?= Yii::$service->product->image->getResize($image,[$small_img_width,$small_img_height],false) ?>" />
-			</a>
+						<a href="#" data-image="<?= Yii::$service->product->image->getResize($image,$middle_img_width,false) ?>" data-zoom-image="<?= Yii::$service->product->image->getUrl($image);  ?>">
+							<img class="elevateZoom lazyOwl" id="img_01" src="<?= Yii::$service->product->image->getResize($image,[$small_img_width,$small_img_height],false) ?>" />
+						</a>
 		<?php
 			}
 		?>
+					</div>
+				</div>
+				<a href="javascript:;" class="next_images"></a>
+				<div class="clear"></div>
+			</div>
 		</div>
+	<div class="clear"></div>
 <?php } ?>
+
+
+
 
 
 <script>
@@ -67,14 +82,43 @@ $(document).ready(function(){
 		return false;
 	});
 	$(document).ready(function(){
-		$("#gal1").owlCarousel({
-			items : 4,
-			lazyLoad : true,
-			navigation : true,
-			scrollPerPage : true,
-			pagination:false,
-			itemsCustom : false,
-			slideSpeed : 900
+		jQuery(".next_images").click(function(){
+			//83
+			i = 0;
+			jQuery(".product-img-box .box-img .list-img img").each(function(){
+				i++;
+			});
+			maxright = 83*(i-4);
+			nowright = jQuery(".product-img-box .list-img").css("top");
+			nowright = parseFloat(nowright.replace("px",""));
+			abs_nowright = Math.abs(nowright);
+			//alert(nowright);
+			if(abs_nowright >= maxright && (nowright < 0)){
+				jQuery(".product-img-box .list-img").animate({top: '0px'}, "slow");  
+			}else{
+				jQuery(".product-img-box .list-img").animate({top: '-=125px'}, "fast"); 
+			}		
+		});
+		
+		jQuery(".pre_images").click(function(){
+			
+			//83
+			i = 0;
+			jQuery(".product-img-box .box-img .list-img img").each(function(){
+				i++;
+			});
+			maxright = 83*(i-4);
+			nowright = jQuery(".product-img-box .list-img").css("top");
+			nowright = parseFloat(nowright.replace("px",""));
+			abs_nowright = Math.abs(nowright);
+			
+			if(nowright<0){
+				
+				jQuery(".product-img-box .list-img").animate({top: '+=125px'}, "fast"); 
+			}else{
+				jQuery(".product-img-box .list-img").animate({top: '0px'}, "slow"); 
+			}	
+			 
 		});
 	});
 });

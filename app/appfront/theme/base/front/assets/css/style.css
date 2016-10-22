@@ -740,9 +740,12 @@ font-family: Arial;
     }
 
 .product_view{}
-.product_view .media_img{width:400px;float:left;}
-.product_view .product_info{width:780px;float:right;}
+.product_view .media_img{width:530px;float:left;}
+.product_view .product_info{width:620px;float:right;}
 .product_view .proList{}
+.product-img-box{float:left; width:125px;}
+.product-main-img{float:right;}
+
 
 #gallery_01 img{border:2px solid white;}
 #gal1  img{border:1px solid #ccc;padding:4px;margin:5px;  }
@@ -1406,6 +1409,11 @@ input[type="submit"]:active{
     -webkit-box-shadow: inset 0px 0px 10px #4c6ba9;
 }
 
+button.redBtn:focus , button.redBtn:active {
+	background:none;
+	box-shadow:none;
+}
+
 .addressedit .address_country {
     width: 272px;
 }
@@ -1666,12 +1674,6 @@ border: solid 1px #adadad;
     text-decoration:none;
     color:#000;
 }
-.myFavorite_nohove {
-background: url("../images/scroll/favourite.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
-float: left;
-margin: 11px 0 0 10px;
-padding: 0 0 0 20px;
-}
 
 .login_box_file{
     width:320px;height:28px;float:left;
@@ -1771,6 +1773,7 @@ padding: 0 0 0 20px;
 
 .product_info .price_info .price.special_active{
 	text-decoration: line-through;
+	margin:3px 0 0 3px;
 }
 .product_info .price_info .special_active{
 	float:left;
@@ -1791,15 +1794,18 @@ padding: 0 0 0 20px;
 .tier_price_info table tr td{height:25px;width:50px;}
 
 .chose_size a {
-	border:1px solid #ccc;padding:2px 10px;margin:2px 4px;;
-
+	 border: 1px solid #ccc;
+    font-size: 11px;
+    height: 35px;
+    line-height: 35px;
+    width: 35px;
 }
 
 .chose_color{margin:2px 0 20px;}
 
 .product_options{margin:40px 0 0;}
 .product_options a {
-	display:block;float:left;margin:0 5px;
+	display:block;float:left;
 }
 
 .product_options a.noactive{
@@ -1826,34 +1832,143 @@ padding: 0 0 0 20px;
 	float:left;display:block;width:80px;
 }
 
+.pg .label{width:80px;float:left;}
+
+.pg .rg{width:80px;float:left;}
+.pg .rg input{width:95px;padding:0 0 0 3px;}
+.product_view input , .product_view select{
+	height:26px;
+}
+
+.addtocart{margin:20px 0 0;}
+#js_registBtn{
+	float:left;width:190px;
+	font-size:14px;
+}
+.myFavorite_nohove {
+   background: rgba(0, 0, 0, 0) url("../images/favourite.png") no-repeat scroll 0 0;
+    float: left;
+    font-size: 12px;
+    margin: 18px 0 0 20px;
+    padding: 0 0 0 20px;
+}
+
+.product_info h1{font-size:15px;}
+
+.product_qty{margin:20px 0 0}
+
+.pg .rg.chose_color{width:auto;}
+.pg .rg.chose_size{width:auto;}
+
+.product_options .label{line-height:62px;}
+
+.product_options .size-label{line-height:32px;}
+
+.product_view{font-size:12px;}
+
+
+.product_options li.current b {
+    background: rgba(0, 0, 0, 0) url("../images/cur.png") no-repeat scroll 0 0;
+    bottom: 0;
+    display: block;
+    height: 6px;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    width: 8px;
+}
+
+ol, ul {
+    list-style: outside none none;
+}
+
+.product_options .rg li{
+	
+    color: #333;
+    cursor: pointer;
+    float: left;
+    margin: 5px;
+    text-align: center;
+	position: relative;
+	
+}
+
+.product_options a.active:hover{border:1px solid #cc0000 }
+
+
+
+.rbc_cold {
+    margin: 10px 0;
+	font-size:11px;
+}
+
+a:hover{text-decoration: underline;}
+.rbc_cold .review_star {
+    display: block;
+    float: left;
+    height: 15px;
+    margin: 0 10px 0 0;
+    text-align: right;
+    width: 95px;
+}
+.review_star_4 {
+    background: rgba(0, 0, 0, 0) url("../images/Star_4.png") no-repeat scroll 0 0;
+}
+.review_star {
+    display: block;
+    height: 15px;
+    width: 69px;
+}
+
+.item_code{color:#777;font-size:11px;
+padding:10px 0 6px;
+border-bottom:1px solid #bbb;
+}
+
+.price_info{margin:20px 0;}
 
 
 
 
 
+a.pre_images {
+    background: rgba(0, 0, 0, 0) url("../images/tag.png") no-repeat scroll -104px -80px;
+    border-radius: 0;
+    display: block;
+    height: 10px;
+    margin: 0 4px 5px 40px;
+    width: 23px;
+}
+
+a.next_images {
+    background: rgba(0, 0, 0, 0) url("../images/tag.png") no-repeat scroll -104px -95px;
+    display: block;
+    height: 10px;
+    margin: 8px 0 0 40px;
+    width: 23px;
+}
+
+.product-img-box .box-img {
+    height: 380px;
+    overflow: hidden;
+    width: 100%;
+}
 
 
+.product-img-box .list-img {
+    height: 10000px;
+    position: relative;
+    width: 100%;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.product-img-box img {
+    cursor:  pointer;
+}
+.gallery-img img {
+    border: 1px solid #ddd;
+    display: block;
+    margin: 0 0 15px;
+}
 
 
 
