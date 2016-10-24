@@ -41,6 +41,8 @@ class Index {
 			'productImgMagnifier'  	=> $productImgMagnifier,
 			'options'				=> $this->getSameSpuInfo(),
 			'custom_option'			=> $this->_product['custom_option'],
+			'description'			=> Yii::$service->store->getStoreAttrVal($this->_product['description'],'description'),
+		
 		];
 	}
 	

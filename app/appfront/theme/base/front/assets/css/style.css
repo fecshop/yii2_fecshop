@@ -1977,6 +1977,55 @@ a.next_images {
 
 
 
+.product_info{  
+    list-style:none;  
+    margin:0;  
+    padding:0;  
+    text-decoration:none;  
+    font-family:'Microsoft YaHei';  
+  
+}  
+
+
+.product_info li {
+    border-right: 2px solid #eee;
+    cursor: pointer;
+    float: left;
+    font-size: 13px;
+    height: 50px;
+    line-height: 50px;
+    padding: 0 15px;
+    text-align: center;
+    width: auto;
+}
+
+
+.product_info  ul{  
+    width:1200px;     
+    margin:0 auto;  
+}  
+.product_info  .nav{  
+    height:52px;  
+    width:100%;  
+    background:#f5f5f5;  
+}  
+.product_info  .nav .cur{  
+    background:#fff;  
+    border-top:2px solid #1a92cf;  
+    color:#1a92cf;  
+}  
+.product_info  .fixed{  
+    position:fixed;  
+    top:0;  
+    left:0;  
+}  
+.product_info  a{  
+    color:#505050;  
+} 
+
+
+
+
 
 
 

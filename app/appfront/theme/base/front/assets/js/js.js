@@ -45,5 +45,15 @@ $(document).ready(function(){
 		error:function (XMLHttpRequest, textStatus, errorThrown){}
 	});
 	
+	$("#goTop").click(function(){
+		$("html,body").animate({scrollTop:0},"slow");
+	});
+	
+	$("#goBottom").click(function(){
+		var screenb = $(document).height(); 
+								
+		$("html,body").animate({scrollTop:screenb},"slow");
+	});
+	
 });
 

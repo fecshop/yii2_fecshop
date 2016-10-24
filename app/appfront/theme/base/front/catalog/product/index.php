@@ -104,19 +104,119 @@
 			</div>
 			<div class="clear"></div>
 		</div>
+		
+		<div class="product_info">
+			<div class="nav" id="nav-container">  
+				<ul id="nav-box">
+					<li  class="nav_tab cur" rel="description">DESCRIPTION</li>  
+					<li  class="nav_tab" rel="reviews">REVIEWS</li>  
+					<li  class="nav_tab" rel="questions">QUESTIONS</li>  
+					<li   class="nav_tab" rel="wholesale">WHOLESALE</li>  
+				</ul>    
+			</div>  
+			<div id="text">  
+				<div class="text-description" style="width:100%;height:500px;background:green;text-align:center;">text1</div>  
+				<div class="text-reviews" style="width:100%;height:500px;background:yellow;text-align:center;">text2</div>  
+				<div class="text-questions" style="width:100%;height:500px;background:blue;text-align:center;">text3</div>   
+				<div class="text-wholesale" style="width:100%;height:500px;background:yellow;text-align:center;">text2</div>  
+				
+			</div> 
+		</div>
+		
 		<div class="proList">
 		</div>
 	</div>
 </div>
 
 <script>
-	<?php $this->beginBlock('add_to_cart') ?>  
+	
+	<?php $this->beginBlock('add_to_cart') ?>
+	// add to cart js	
 	$(document).ready(function(){
 	   $("#js_registBtn").click(function(){
 		   $(this).addClass("dataUp");
 		   
 	   });
 	});
+	<?php $this->endBlock(); ?> 
+	<?php $this->registerJs($this->blocks['add_to_cart'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
+
+	<?php $this->beginBlock('product_info_tab') ?> 
+	//tab 切换js
+	var navContainer = document.getElementById("nav-container");  
+	var navBox = document.getElementById("nav-box");  
+	var text = document.getElementById("text");  
+	var navBoxChild = navBox.children;  
+	var textChild = text.children;  
+	var num = navContainer.offsetTop;  
+	var a = navContainer.offsetHeight;  
+	window.onscroll = function(){  
+		var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;  
+		if(scrollTop >= num){  
+			navContainer.className = "nav fixed";  
+			text.style.paddingTop = a +"px";  
+		}else{  
+			navContainer.className = "nav";  
+			text.style.paddingTop = "";  
+		}  
+		//当导航与相应文档接触的时候自动切换  
+		//method1  
+		for(var i=0;i<navBoxChild.length;i++){  
+			if( scrollTop + a >= textChild[i].offsetTop){  
+				for(var j=0;j<navBoxChild.length;j++){  
+					navBoxChild[j].className = "";  
+				}  
+				navBoxChild[i].className = "cur";  
+		   }  
+		}  
+	};  
+	
+
+
+
+ 
+for(var i=0;i<navBoxChild.length;i++){  
+    var interval;  
+    navBoxChild[i].index = i;  
+    navBoxChild[i].onclick = function(){  
+        var self = this;  
+        clearInterval(interval); 
+		
+		if(document.body.scrollTop){
+			scroll = document.body;
+		}else if(document.documentElement.scrollTop){
+			scroll = document.documentElement;
+		}
+
+        interval = setInterval(function(){  
+            if(scroll.scrollTop + a<=textChild[self.index].offsetTop){  
+                scroll.scrollTop += 40;  
+                if(scroll.scrollTop + a>=textChild[self.index].offsetTop){  
+                    scroll.scrollTop = textChild[self.index].offsetTop-a;  
+                    clearInterval(interval);  
+                }  
+            }else{  
+                scroll.scrollTop /= 1.1;  
+                if(scroll.scrollTop + a<=textChild[self.index].offsetTop){  
+                    scroll.scrollTop = textChild[self.index].offsetTop-a;  
+                    clearInterval(interval);  
+                }  
+            }  
+        },40);  
+    };  
+}  
+
+	
 	<?php $this->endBlock(); ?>  
-</script>  
-<?php $this->registerJs($this->blocks['add_to_cart'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
+	<?php $this->registerJs($this->blocks['product_info_tab'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
+
+
+
+
+
+
+
+
+
+</script> 
+  
