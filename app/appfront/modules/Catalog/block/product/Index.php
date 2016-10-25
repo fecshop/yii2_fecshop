@@ -31,6 +31,7 @@ class Index {
 			'name' 					=> Yii::$service->store->getStoreAttrVal($this->_product['name'],'name'),
 			'image'					=> $this->_product['image'],
 			'sku'					=> $this->_product['sku'],
+			'spu'					=> $this->_product['spu'],
 			'price_info'			=> $this->getProductPriceInfo(),
 			'tier_price'			=> $this->_product['tier_price'],
 			'media_size' => [
@@ -42,7 +43,8 @@ class Index {
 			'options'				=> $this->getSameSpuInfo(),
 			'custom_option'			=> $this->_product['custom_option'],
 			'description'			=> Yii::$service->store->getStoreAttrVal($this->_product['description'],'description'),
-		
+			'_id'					=> $this->_product['_id'],
+			'review_count'			=> Yii::$service->product->review->getCountBySpu($this->_product['spu']),
 		];
 	}
 	

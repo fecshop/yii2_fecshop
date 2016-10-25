@@ -83,9 +83,12 @@ return [
 			],
 			'review' => [
 				'class' => 'fecshop\services\product\Review',
+				'filterByStore' => false,	# 是否通过store的值进行评论过滤？
+				'filterByLang'	=> false,	# 是否通过语言进行评论过滤？
 			],
 			'info' => [
 				'class' => 'fecshop\services\product\Info',
+				
 			],
 			'coll' => [
 				'class' => 'fecshop\services\product\Coll',
