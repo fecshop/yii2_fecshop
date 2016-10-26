@@ -122,13 +122,12 @@
 					<div class="text-reviews" style="">
 						<?php # review部分。
 							$reviewView = [
-								'view'	=> 'catalog/product/index/review.php'
-							];
-							$reviewParam = [
-								'_id' 			=> $_id,
-								'review_count'	=> $review_count,
+								'class' 		=> 'fecshop\app\appfront\modules\Catalog\block\product\Review',
+								'view'			=> 'catalog/product/index/review.php',
+								'product_id' 	=> $_id,
 								'spu'			=> $spu,
 							];
+							
 						?>
 						<?= Yii::$service->page->widget->render($reviewView,$reviewParam); ?>
 					</div>  
@@ -154,7 +153,6 @@
 	<?php $this->endBlock(); ?> 
 	<?php $this->registerJs($this->blocks['add_to_cart'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
 
-	
 	//tab 切换js
 	<?php $this->beginBlock('product_info_tab') ?> 
 	var navContainer = document.getElementById("nav-container");  
@@ -216,14 +214,5 @@
 	}  
 	<?php $this->endBlock(); ?>  
 	<?php $this->registerJs($this->blocks['product_info_tab'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
-
-
-
-
-
-
-
-
-
 </script> 
   

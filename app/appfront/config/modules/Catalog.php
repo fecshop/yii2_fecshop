@@ -70,6 +70,11 @@ return [
 				'middle_img_width' => 400,  # 主图的宽度
 			],
 			'productImgMagnifier' => false, # 是否已放大镜的方式显示，如果否，则是内窥的方式查看
+			
+			'review' => [
+				'add_captcha' => true , # 增加review页面是否开启验证码验证。
+				'productPageReviewCount' => 20, # 在产品页面显示的review的个数。
+			],
 		],
 	],
 ];

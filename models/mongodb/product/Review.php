@@ -17,7 +17,8 @@ class Review extends ActiveRecord
 {
     public static $_customAttrs;
 	
-	
+	const NOACTIVE_STATUS 	= 10;
+	const ACTIVE_STATUS 	= 1;
 	
 	public static function collectionName()
     {

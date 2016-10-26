@@ -22,6 +22,7 @@ class Review extends Service
 {
 	public $filterByStore;
 	public $filterByLang;
+	public $newReviewAudit;
 	/**
 	 * @property $arr | Array
 	 * 初始化review model的属性，因为每一个产品的可能添加的评论字段不同。
@@ -83,17 +84,41 @@ class Review extends Service
 	}
 	
 	/**
+	 * 得到review noactive status
+	 */
+	protected function actionNoActiveStatus(){
+		return ReviewModel::NOACTIVE_STATUS;
+	}
+	
+	/**
+	 * 得到review active status
+	 */
+	protected function actionActiveStatus(){
+		return ReviewModel::ACTIVE_STATUS;
+	}
+	
+	/**
 	 * @property $review_data | Array 
 	 * 
 	 * 增加评论
 	 */
 	protected function actionAddReview($review_data){
-		$this->initReviewAttr($review_data);
+		//$this->initReviewAttr($review_data);
 		$model = new ReviewModel;
 		if(isset($review_data['_id'])){
 			unset($review_data['_id']);
 		}
+		# 默认状态。
+		if($this->newReviewAudit){
+			$review_data['status'] = ReviewModel::NOACTIVE_STATUS;
+		}else{
+			$review_data['status'] = ReviewModel::ACTIVE_STATUS;
+		}
+		$review_data['store'] = Yii::$service->store->currentStore;
+		$review_data['lang_code'] = Yii::$service->store->currentLangCode;
+		$review_data['review_date'] = time();
 		$saveStatus = Yii::$service->helper->ar->save($model,$review_data);
+		
 		return true;
 	}
 	
@@ -102,9 +127,9 @@ class Review extends Service
 	 * 保存评论
 	 */
 	protected function actionUpdateReview($review_data){
-		$this->initReviewAttr($review_data);
-		$model = ReviewModel::findOne(['_id'=> $review_data[$primaryKey]]);
-		unset($review_data[$primaryKey]);
+		//$this->initReviewAttr($review_data);
+		$model = ReviewModel::findOne(['_id'=> $review_data['_id']]);
+		unset($review_data['_id']);
 		$saveStatus = Yii::$service->helper->ar->save($model,$review_data);
 		return true;
 	}

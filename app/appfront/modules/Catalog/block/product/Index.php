@@ -44,7 +44,7 @@ class Index {
 			'custom_option'			=> $this->_product['custom_option'],
 			'description'			=> Yii::$service->store->getStoreAttrVal($this->_product['description'],'description'),
 			'_id'					=> $this->_product['_id'],
-			'review_count'			=> Yii::$service->product->review->getCountBySpu($this->_product['spu']),
+			
 		];
 	}
 	

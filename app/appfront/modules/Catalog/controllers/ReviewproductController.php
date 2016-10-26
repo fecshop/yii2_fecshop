@@ -24,11 +24,20 @@ class ReviewproductController extends AppfrontController
 	# Ôö¼ÓÆÀÂÛ
     public function actionAdd()
     {
+		$editForm = Yii::$app->request->post('editForm');
+		if(!empty($editForm)){
+			$this->getBlock()->saveReview($editForm);
+		}
 		//echo 1;exit;
-		$data = $this->getBlock()->getLastData();
+		$data = $this->getBlock()->getLastData($editForm);
 		return $this->render($this->action->id,$data);
 	}
 	
+	public function actionLists()
+    {
+		$data = $this->getBlock()->getLastData($editForm);
+		return $this->render($this->action->id,$data);
+	}
 	
 }
 

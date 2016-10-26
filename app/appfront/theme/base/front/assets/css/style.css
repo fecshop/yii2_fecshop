@@ -1574,7 +1574,7 @@ td:nth-child(2n) {
     padding: 7px 0;
 }
 .review_description_right_span{
-    display:block;margin-bottom:23px ;line-height:20px;
+    display:block;margin-bottom:10px ;line-height:20px;
 }
 .review_description_centen{
     min-height:20px;word-break:break-all;padding-bottom:10px;
@@ -2175,19 +2175,44 @@ a.next_images {
 
 
 
+.pageToolbar{
+	background: #eee none repeat scroll 0 0;
+    height: 25px;
+    margin: 6px 0;
+    padding: 8px 15px;
+	font-size:14px;
+}
+
+.pageToolbar  .current {
+    color: #cc0000;
+	font-weight:bold;
+}
+.pageToolbar a,.pageToolbar span{
+	margin:0 1px ; 
+	width:20px; 
+	display:block;
+	text-align:center;
+	float:left;}
+.pageToolbar label.title{
+	float:left;margin:0 10px
+}
+
+.product-Reviews{
+	margin-top:40px;
+	
+}
 
 
+.review_lists .product_name{
+	//font-family: Georgia;
+    text-transform: uppercase;
+	font-size:13px;
+}
 
-
-
-
-
-
-
-
-
-
-
+.review_lists{
+	font-size:11px;
+	margin:20px 0 20px;
+}
 
 
 

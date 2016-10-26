@@ -85,6 +85,7 @@ return [
 				'class' => 'fecshop\services\product\Review',
 				'filterByStore' => false,	# 是否通过store的值进行评论过滤？
 				'filterByLang'	=> false,	# 是否通过语言进行评论过滤？
+				'newReviewAudit' => true ,  # 新的前台评论是否需要审核，true代表需要后台审核。
 			],
 			'info' => [
 				'class' => 'fecshop\services\product\Info',

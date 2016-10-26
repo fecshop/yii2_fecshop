@@ -17,8 +17,20 @@ use yii\base\InvalidValueException;
  */
 class Add {
 	
+	protected $_add_captcha;
 	
-	public function getLastData(){
+	public function getAddCaptcha(){
+		if(!$this->_add_captcha){
+			$reviewParam	= Yii::$app->getModule('catalog')->params['review'];
+			$this->_add_captcha	= isset($reviewParam['add_captcha']) ? $reviewParam['add_captcha'] : false;
+		}
+		return $this->_add_captcha;
+	}
+	
+	public function getLastData($editForm){
+		if(!is_array($editForm)){
+			$editForm = [];
+		}
 		$_id = Yii::$app->request->get('_id');
 		if(!$_id){
 			Yii::$service->page->message->addError('product _id  is empty');
@@ -37,12 +49,64 @@ class Add {
 		$url_key 		= $product['url_key'];
 		$name 			= Yii::$service->store->getStoreAttrVal($product['name'],'name');
 		return [
+			'product_id'	=> $_id,
 			'name' 			=> $name,
 			'spu' 			=> $spu,
 			'price_info' 	=> $price_info,
 			'main_img' 		=> $main_img,
+			'editForm'		=> $editForm,
+			'add_captcha'	=> $this->getAddCaptcha(),
 			'url'		=> Yii::$service->url->getUrl($url_key),
 		];
+	}
+	
+	public function saveReview($editForm){
+		$add_captcha = $this->getAddCaptcha();
+		$product_id = isset($editForm['product_id']) ? $editForm['product_id'] : '';
+		if(!$product_id){
+			Yii::$service->page->message->addError(['Product id can not empty']);
+			return;
+		}
+		$rate_star = isset($editForm['rate_star']) ? $editForm['rate_star'] : '';
+		if(!$rate_star){
+			Yii::$service->page->message->addError(['Rate Star can not empty']);
+			return;
+		}
+		$name = isset($editForm['name']) ? $editForm['name'] : '';
+		if(!$name){
+			Yii::$service->page->message->addError(['Your Name can not empty']);
+			return;
+		}
+		$summary = isset($editForm['summary']) ? $editForm['summary'] : '';
+		if(!$summary){
+			Yii::$service->page->message->addError(['Summary can not empty']);
+			return;
+		}
+		$review_content = isset($editForm['review_content']) ? $editForm['review_content'] : '';
+		if(!$review_content){
+			Yii::$service->page->message->addError(['Review content can not empty']);
+			return;
+		}
+		# captcha validate
+		$captcha = isset($editForm['captcha']) ? $editForm['captcha'] : '';
+		if($add_captcha && !$captcha){
+			Yii::$service->page->message->addError(['Captcha can not empty']);
+			return;
+		}else if($captcha && $add_captcha && !\Yii::$service->helper->captcha->validateCaptcha($captcha)){
+			Yii::$service->page->message->addError(['Captcha is not right']);
+			return;
+		}
+		$product = Yii::$service->product->getByPrimaryKey($product_id);
+		if(!$product['spu']){
+			Yii::$service->page->message->addError('product _id:'.$product_id.'  is not exist in product collection');
+			return ;
+		}
+		$editForm['spu'] = $product['spu'];
+		$editForm['status'] = $product['spu'];
+		Yii::$service->product->review->addReview($editForm);
+		Yii::$service->page->message->addCorrect('Add product review success,Thank you! you can click product image to continue this product.');
+		return true;
+	
 	}
 	
 	protected function getProductPriceInfo($product){
