@@ -6,7 +6,7 @@
  * @copyright Copyright (c) 2016 FecShop Software LLC
  * @license http://www.fecshop.com/license/
  */
-namespace fecshop\app\appadmin\modules\Cms\block\article;
+namespace fecshop\app\appadmin\modules\Catalog\block\productreview;
 use Yii;
 use fecshop\app\appadmin\modules\AppadminbaseBlockEdit;
 use fec\helpers\CUrl;
@@ -23,7 +23,7 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 	
 	
 	public function init(){
-		$this->_saveUrl = CUrl::getUrl('cms/article/managereditsave');
+		$this->_saveUrl = CUrl::getUrl('catalog/productreview/managereditsave');
 		parent::init();
 	}
 	# 传递给前端的数据 显示编辑form	
@@ -31,6 +31,7 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 		
 		return [
 			'editBar' 	=> $this->getEditBar(),
+			'review'	=> $this->_one,
 			'textareas'	=> $this->_textareas,
 			'lang_attr'	=> $this->_lang_attr,
 			'saveUrl' 	=> $this->_saveUrl,
@@ -38,26 +39,52 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 	}
 	
 	public function setService(){
-		$this->_service 	= Yii::$service->cms->article;
+		$this->_service 	= Yii::$service->product->review;
 	}
 	
 	
 	
 	public function getEditArr(){
+		
 		return [
 			[
-				'label'=>'标题',
-				'name'=>'title',
+				'label'=>'Spu',
+				'name'=>'product_spu',
 				'display'=>[
 					'type' => 'inputString',
-					'lang' => true,
 				],
 				'require' => 1,
 			],
 			
 			[
-				'label'=>'Url Key',
-				'name'=>'url_key',
+				'label'=>'产品ID',
+				'name'=>'product_id',
+				'display'=>[
+					'type' => 'inputString',
+				],
+				'require' => 1,
+			],
+			
+			[
+				'label'=>'评星',
+				'name'=>'rate_star',
+				'display'=>[
+					'type' => 'select',
+					'data' => [
+						1 	=> '1星',
+						2 	=> '2星',
+						3 	=> '3星',
+						4 	=> '4星',
+						5 	=> '5星',
+					]
+				],
+				'require' => 1,
+				'default' => 4,
+			],
+			
+			[
+				'label'=>'评论人姓名',
+				'name'=>'name',
 				'display'=>[
 					'type' => 'inputString',
 				],
@@ -65,52 +92,44 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 			],
 			
 			[
-				'label'=>'Meta Keywords',
-				'name'=>'meta_keywords',
+				'label'=>'评论标题',
+				'name'=>'summary',
 				'display'=>[
 					'type' => 'inputString',
-					'lang' => true,
 				],
 				'require' => 0,
 			],
 			
 			[
-				'label'=>'Meta Description',
-				'name'=>'meta_description',
+				'label'=>'评论内容',
+				'name'=>'review_content',
 				'display'=>[
 					'type' => 'textarea',
-					'lang' => true,
 					'rows'	=> 14,
 					'cols'	=> 110,
 				],
 				'require' => 0,
 			],
 			
-			[
-				'label'=>'Content',
-				'name'=>'content',
-				'display'=>[
-					'type' => 'textarea',
-					'lang' => true,
-					'rows'	=> 14,
-					'cols'	=> 110,
-				],
-				'require' => 0,
-			],
+			
+			
 			
 			[
-				'label'=>'用户状态',
+				'label'=>'审核状态',
 				'name'=>'status',
 				'display'=>[
 					'type' => 'select',
 					'data' => [
-						1 	=> '激活',
-						2 	=> '关闭',
+						1 	=> '已审核',
+						10 	=> '未审核',
 					]
 				],
 				'require' => 1,
-				'default' => 1,
+				'default' => 4,
 			],
+			
+			
+			
 		];
 	}
 	/**
@@ -123,7 +142,13 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 		 * if attribute is date or date time , db storage format is int ,by frontend pass param is int ,
 		 * you must convert string datetime to time , use strtotime function.
 		 */
-		$this->_service->save($this->_param,'cms/article/index');
+		$identity = Yii::$app->user->identity;
+		$audit_user_id = $identity['id'];
+		$this->_param['audit_user'] = $audit_user_id;
+		$this->_param['audit_date'] = time();
+		
+		//$this->_param['review_date'] = strtotime($this->_param['review_date']);
+		$this->_service->save($this->_param);
 		$errors = Yii::$service->helper->errors->get();
 		if(!$errors ){
 			echo  json_encode(array(
@@ -172,8 +197,60 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 	
 	
 	
+	public function audit(){
+		$ids = '';
+		if($id = CRequest::param($this->_primaryKey)){
+			$ids = $id;
+		}else if($ids = CRequest::param($this->_primaryKey.'s')){
+			$ids = explode(',',$ids);
+		}
+		$this->_service->auditReviewByIds($ids);
+		
+		$errors = Yii::$service->helper->errors->get();
+		if(!$errors ){
+			echo  json_encode(array(
+				"statusCode"=>"200",
+				"message"=>"批量审核评论通过 - 成功",
+			));
+			exit;
+		}else{
+			echo  json_encode(array(
+				"statusCode"=>"300",
+				"message"=>$errors,
+			));
+			exit;
+		}
+		
+		
+	}
 	
-	
+	public function auditRejected(){
+		$ids = '';
+		if($id = CRequest::param($this->_primaryKey)){
+			$ids = $id;
+		}else if($ids = CRequest::param($this->_primaryKey.'s')){
+			$ids = explode(',',$ids);
+		}
+		$this->_service->auditRejectedReviewByIds($ids);
+		
+		
+		$errors = Yii::$service->helper->errors->get();
+		if(!$errors ){
+			echo  json_encode(array(
+				"statusCode"=>"200",
+				"message"=>"批量审核评论拒绝 - 成功",
+			));
+			exit;
+		}else{
+			echo  json_encode(array(
+				"statusCode"=>"300",
+				"message"=>$errors,
+			));
+			exit;
+		}
+		
+		
+	}
 	
 	
 	

@@ -214,6 +214,41 @@ class Product extends Service
 	//}
 	
 	
+	/** 
+	 * @property $ids | Array
+	 */
+	protected function actionGetSkusByIds($ids){
+		$skus = [];
+		$_id = $this->getPrimaryKey();
+		if(!empty($ids) && is_array($ids)){
+			$ids_ob_arr = [];
+			foreach($ids as $id){
+				$ids_ob_arr = new \MongoId($id);
+			}
+			$filter =  [
+				'where'			=> [
+					['in',$_id,$ids_ob_arr],
+					
+				],
+				'asArray' => true,
+			];
+			$coll = $this->coll($filter);
+			$data = $coll['coll'];
+			if(!empty($data) && is_array($data)){
+				foreach($data as $one){
+					$skus[$one[$_id]->{'$id'}] = $one['sku'];
+				}
+			}
+		}
+		return $skus;
+	}
+	
+	
+	protected function actionUpdateProductReviewInfo($spu,$avag_rate,$count){
+		
+		return $this->_product->updateProductReviewInfo($spu,$avag_rate,$count);
+	}
+	
 }
 
 

@@ -25,7 +25,7 @@ class Review extends Service
 	public $newReviewAudit;
 	/**
 	 * @property $arr | Array
-	 * ��ʼ��review model�����ԣ���Ϊÿһ����Ʒ�Ŀ������ӵ������ֶβ�ͬ��
+	 * 初始化review model的属性，因为每一个产品的可能添加的评论字段不同。
 	 */
 	protected function actionInitReviewAttr($arr){
 		if(!empty($arr) && is_array($arr)){
@@ -36,9 +36,14 @@ class Review extends Service
 			ReviewModel::addCustomAttrs($attrs);
 		}
 	}
+	
+	public function getPrimaryKey(){
+		return '_id';
+	}
+	
 	/**
 	 * @property $spu | String.
-	 * ͨ��spu�ҵ�����������
+	 * 通过spu找到评论总数。
 	 */
 	protected function actionGetCountBySpu($spu){
 		$where = [
@@ -64,7 +69,7 @@ class Review extends Service
 	 * 		],
 	 * 		'asArray' => true,
 	 * ]
-	 * ͨ��spu�ҵ�����listing
+	 * 通过spu找到评论listing
 	 */
 	protected function actionGetListBySpu($filter){
 		
@@ -84,14 +89,14 @@ class Review extends Service
 	}
 	
 	/**
-	 * �õ�review noactive status
+	 * 得到review noactive status
 	 */
 	protected function actionNoActiveStatus(){
 		return ReviewModel::NOACTIVE_STATUS;
 	}
 	
 	/**
-	 * �õ�review active status
+	 * 得到review active status
 	 */
 	protected function actionActiveStatus(){
 		return ReviewModel::ACTIVE_STATUS;
@@ -100,15 +105,15 @@ class Review extends Service
 	/**
 	 * @property $review_data | Array 
 	 * 
-	 * ��������
+	 * 增加评论 前台增加评论调用的函数。
 	 */
 	protected function actionAddReview($review_data){
 		//$this->initReviewAttr($review_data);
 		$model = new ReviewModel;
-		if(isset($review_data['_id'])){
-			unset($review_data['_id']);
+		if(isset($review_data[$this->getPrimaryKey()])){
+			unset($review_data[$this->getPrimaryKey()]);
 		}
-		# Ĭ��״̬��
+		# 默认状态。
 		if($this->newReviewAudit){
 			$review_data['status'] = ReviewModel::NOACTIVE_STATUS;
 		}else{
@@ -124,12 +129,12 @@ class Review extends Service
 	
 	/**
 	 * @property $review_data | Array 
-	 * ��������
+	 * 保存评论 
 	 */
 	protected function actionUpdateReview($review_data){
 		//$this->initReviewAttr($review_data);
-		$model = ReviewModel::findOne(['_id'=> $review_data['_id']]);
-		unset($review_data['_id']);
+		$model = ReviewModel::findOne([$this->getPrimaryKey()=> $review_data[$this->getPrimaryKey()]]);
+		unset($review_data[$this->getPrimaryKey()]);
 		$saveStatus = Yii::$service->helper->ar->save($model,$review_data);
 		return true;
 	}
@@ -139,7 +144,7 @@ class Review extends Service
 	 * [
 	 * 		'numPerPage' 	=> 20,  	
 	 * 		'pageNum'		=> 1,
-	 * 		'orderBy'	=> ['_id' => SORT_DESC, 'sku' => SORT_ASC ],
+	 * 		'orderBy'	=> [$this->getPrimaryKey() => SORT_DESC, 'sku' => SORT_ASC ],
 	 * 		'where'			=> [
 				['>','price',1],
 				['<=','price',10]
@@ -147,7 +152,7 @@ class Review extends Service
 	 * 		],
 	 * 	'asArray' => true,
 	 * ]
-	 * �鿴review ���б�
+	 * 查看review 的列表
 	 */
 	protected function actionList($filter){
 		$query = ReviewModel::find();
@@ -159,15 +164,193 @@ class Review extends Service
 	}
 	/**
 	 * @property $_id | String
-	 * ��̨�༭ ͨ������id�ҵ�����
-	 * ע�⣺��Ϊÿ����Ʒ�����ۿ��ܼ������µ��ֶΣ���˲���ʹ��ActiveRecord�ķ�ʽȡ������
-	 * ʹ������ķ�ʽ���԰��ֶζ�ȡ������
+	 * 后台编辑 通过评论id找到评论
+	 * 注意：因为每个产品的评论可能加入了新的字段，因此不能使用ActiveRecord的方式取出来，
+	 * 使用下面的方式可以把字段都取出来。
 	 */
 	protected function actionGetByReviewId($_id){
 		
-		return ReviewModel::getCollection()->findOne(['_id' => $_id]);
+		return ReviewModel::getCollection()->findOne([$this->getPrimaryKey() => $_id]);
 		
 	}
+	
+	
+	
+	/**
+	 * get artile model by primary key.
+	 */
+	protected function actionGetByPrimaryKey($primaryKey){
+		if($primaryKey){
+			return ReviewModel::findOne($primaryKey);
+		}else{
+			return new ReviewModel;
+		}
+	}
+	
+	
+	
+	/**
+	 * @property $filter|Array
+	 * get artile collection by $filter
+	 * example filter:
+	 * [
+	 * 		'numPerPage' 	=> 20,  	
+	 * 		'pageNum'		=> 1,
+	 * 		'orderBy'	=> [$this->getPrimaryKey() => SORT_DESC, 'sku' => SORT_ASC ],
+			'where'			=> [
+				['>','price',1],
+				['<=','price',10]
+	 * 			['sku' => 'uk10001'],
+	 * 		],
+	 * 	'asArray' => true,
+	 * ]
+	 */
+	protected function actionColl($filter=''){
+		return $this->list($filter);
+	}
+	
+	/**
+	 * @property $one|Array , save one data .
+	 * @property $originUrlKey|String , article origin url key.
+	 * 评论，后台审核评论的保存方法。
+	 * 保存后，把评论信息更新到产品表中。	 
+	 */
+	protected function actionSave($one){
+		$currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
+		$primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
+		$one['status']		= (int)$one['status'];
+		$one['rate_star']	= (int)$one['rate_star'];
+		
+		if($primaryVal){
+			$model = ReviewModel::findOne($primaryVal);
+			if(!$model){
+				Yii::$service->helper->errors->add('ReviewModel '.$this->getPrimaryKey().' is not exist');
+				return;
+			}	
+		}else{
+			$model = new ReviewModel;
+			$model->created_admin_user_id = \fec\helpers\CUser::getCurrentUserId();
+			$primaryVal = new \MongoId;
+			$model->{$this->getPrimaryKey()} = $primaryVal;
+		}
+		//$review_data['status'] = ReviewModel::ACTIVE_STATUS;
+		$model->review_date = time();
+		unset($one[$this->getPrimaryKey()]);
+		$saveStatus = Yii::$service->helper->ar->save($model,$one);
+		$model->save();
+		# 更新评论信息到产品表中。
+		$this->updateProductSpuReview($model['product_spu']);
+		return true;
+	}
+	
+	protected function actionRemove($ids){
+		if(!$ids){
+			Yii::$service->helper->errors->add('remove id is empty');
+			return false;
+		}
+		if(is_array($ids) && !empty($ids)){
+			foreach($ids as $id){
+				$model = ReviewModel::findOne($id);
+				if(isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()]) ){
+					$product_spu = $model['product_spu'];
+					$model->delete();
+					# 更新评论信息到产品表中。
+					$this->updateProductSpuReview($product_spu);
+				}else{
+					//throw new InvalidValueException("ID:$id is not exist.");
+					Yii::$service->helper->errors->add("Review Remove Errors:ID $id is not exist.");
+					return false;
+				}
+			}	
+		}else{
+			$id = $ids;
+			$model = ReviewModel::findOne($id);
+			if(isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()]) ){
+				$model->delete();
+			}else{
+				Yii::$service->helper->errors->add("Review Remove Errors:ID:$id is not exist.");
+				return false;
+			}
+		}
+		return true;
+	}
+	/**
+	 * @property $ids | Array
+	 * 通过 $ids 数组，批量审核通过评论
+	 */
+	protected function actionAuditReviewByIds($ids){
+		if(is_array($ids) && !empty($ids)){
+			$identity = Yii::$app->user->identity;
+			$user_id  = $identity['id'];
+			foreach($ids as $id){
+				$model = ReviewModel::findOne($id);
+				if($model[$this->getPrimaryKey()]){
+					$model->audit_user  = $user_id;
+					$model->audit_date  = time();
+					$model->status		= ReviewModel::ACTIVE_STATUS;
+					$model->save();
+					# 更新评论信息到产品表中。
+					$this->updateProductSpuReview($model['product_spu']);
+				}
+			}
+		}
+		
+	}
+	
+	/**
+	 * @property $ids | Array
+	 * 通过 $ids 数组，批量审核评论拒绝
+	 */
+	protected function actionAuditRejectedReviewByIds($ids){
+		if(is_array($ids) && !empty($ids)){
+			$identity = Yii::$app->user->identity;
+			$user_id  = $identity['id'];
+			foreach($ids as $id){
+				$model = ReviewModel::findOne($id);
+				if($model[$this->getPrimaryKey()]){
+					$model->audit_user  = $user_id;
+					$model->audit_date  = time();
+					$model->status		= ReviewModel::NOACTIVE_STATUS;
+					$model->save();
+					# 更新评论的信息到产品表
+					$this->updateProductSpuReview($model['product_spu']);
+				}
+			}
+		}
+		
+	}
+	/**
+	 * @property $spu | String 
+	 * 当评论保存，更新评论的总数，平均评分信息到产品表的所有spu
+	 */
+	protected function actionUpdateProductSpuReview($spu){
+		$filter = [
+			'where'			=> [
+	  			['product_spu' => $spu],
+				['status' => ReviewModel::ACTIVE_STATUS],
+	  		],
+		];
+		$coll 	= $this->coll($filter);
+		
+		$count 	= $coll['count'];
+		$data 	= $coll['coll'];
+		$rate_total = 0;
+		if(!empty($data) && is_array($data)){
+			foreach($data as $one){
+				$rate_total += $one['rate_star'];
+			}
+		}
+		if($count == 0){
+			$avag_rate = 0;
+		}else{
+			$avag_rate = ceil($rate_total/$count);
+		
+		}
+		Yii::$service->product->updateProductReviewInfo($spu,$avag_rate,$count);
+		return true;
+	}
+	
+	
 	
 	
 	

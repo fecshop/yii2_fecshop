@@ -486,7 +486,18 @@ class ProductMongodb implements ProductInterface
 	//	;
 	//exit;
 		
-	
+	public function updateProductReviewInfo($spu,$avag_rate,$count){
+		$data = Product::find()->where([
+			'spu' => $spu
+		])->all();
+		if(!empty($data) && is_array($data)){
+			foreach($data as $one){
+				$one->reviw_rate_star_average = $avag_rate;
+				$one->review_count = $count;
+				$one->save() ;
+			}
+		}
+	}
 }
 
 

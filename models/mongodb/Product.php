@@ -81,6 +81,8 @@ class Product extends ActiveRecord
 			'updated_at',
 			'created_user_id',
 			'attr_group',
+			'reviw_rate_star_average',  #评论平均评分
+			'review_count'				#评论总数
 		];
 		if(is_array(self::$_customProductAttrs) && !empty(self::$_customProductAttrs)){
 			$origin = array_merge($origin,self::$_customProductAttrs);

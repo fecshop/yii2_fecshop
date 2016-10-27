@@ -34,18 +34,19 @@ class Review extends ActiveRecord
 		$origin = [
 			'_id', 
 			'product_spu',
+			'product_sku',
 			'product_id',
 			'rate_star',
 		    'name',
 	        'summary', 
-	        'review_content', 
-			'review_date',			# 
+	        'review_content', 		# 评论的内容
+			'review_date',			# 评论的最后更新时间
 			'store',			# store
 			'lang_code',		# 语言
-			'status',			# 审核状态
+			'status',			# 审核状态 10代表未审核，1代表已审核。
 			'audit_user',		# 审核账号
 			'audit_date',		# 审核时间
-	    ];
+		];
 		if($origin){ # 取原始的数据
 			return $origin;
 		}
