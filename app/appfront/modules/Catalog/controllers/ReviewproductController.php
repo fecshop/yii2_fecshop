@@ -24,9 +24,27 @@ class ReviewproductController extends AppfrontController
 	# 增加评论
     public function actionAdd()
     {
+		$reviewParam = Yii::$app->getModule('catalog')->params['review'];
+		$addReviewOnlyLogin = isset($reviewParam['addReviewOnlyLogin']) ? $reviewParam['addReviewOnlyLogin'] : false;
+		if($addReviewOnlyLogin && Yii::$app->user->isGuest){
+			$currentUrl = Yii::$service->url->getCurrentUrl();
+			Yii::$service->customer->setLoginSuccessRedirectUrl($currentUrl);
+			
+			# 如果评论产品必须登录用户，则跳转到用户登录页面
+			Yii::$service->url->redirectByUrlKey('customer/account/login');
+			
+		}
 		$editForm = Yii::$app->request->post('editForm');
 		if(!empty($editForm)){
-			$this->getBlock()->saveReview($editForm);
+			$saveStatus = $this->getBlock()->saveReview($editForm);
+			if($saveStatus){
+				$spu = Yii::$app->request->get('spu');
+				$_id = Yii::$app->request->get('_id');
+				if($spu && $_id){
+					$url = Yii::$service->url->getUrl('catalog/reviewproduct/lists',['spu' => $spu,'_id'=>$_id]);
+					$this->redirect($url);
+				}
+			}
 		}
 		//echo 1;exit;
 		$data = $this->getBlock()->getLastData($editForm);

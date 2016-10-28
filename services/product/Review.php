@@ -23,6 +23,28 @@ class Review extends Service
 	public $filterByStore;
 	public $filterByLang;
 	public $newReviewAudit;
+	
+	/**
+	 * 得到review noactive status，默认状态
+	 */
+	protected function actionNoActiveStatus(){
+		return ReviewModel::NOACTIVE_STATUS;
+	}
+	
+	/**
+	 * 得到review active status 审核通过的状态
+	 */
+	protected function actionActiveStatus(){
+		return ReviewModel::ACTIVE_STATUS;
+	}
+	/**
+	 * 得到review refuse status 审核拒绝的状态
+	 */
+	protected function actionRefuseStatus(){
+		return ReviewModel::REFUSE_STATUS;
+	}
+	
+	
 	/**
 	 * @property $arr | Array
 	 * 初始化review model的属性，因为每一个产品的可能添加的评论字段不同。
@@ -88,19 +110,7 @@ class Review extends Service
 		
 	}
 	
-	/**
-	 * 得到review noactive status
-	 */
-	protected function actionNoActiveStatus(){
-		return ReviewModel::NOACTIVE_STATUS;
-	}
 	
-	/**
-	 * 得到review active status
-	 */
-	protected function actionActiveStatus(){
-		return ReviewModel::ACTIVE_STATUS;
-	}
 	
 	/**
 	 * @property $review_data | Array 
@@ -115,13 +125,20 @@ class Review extends Service
 		}
 		# 默认状态。
 		if($this->newReviewAudit){
-			$review_data['status'] = ReviewModel::NOACTIVE_STATUS;
+			$review_data['status'] 	= ReviewModel::NOACTIVE_STATUS;
 		}else{
-			$review_data['status'] = ReviewModel::ACTIVE_STATUS;
+			$review_data['status'] 	= ReviewModel::ACTIVE_STATUS;
 		}
-		$review_data['store'] = Yii::$service->store->currentStore;
-		$review_data['lang_code'] = Yii::$service->store->currentLangCode;
+		$review_data['store'] 		= Yii::$service->store->currentStore;
+		$review_data['lang_code'] 	= Yii::$service->store->currentLangCode;
 		$review_data['review_date'] = time();
+		if(!Yii::$app->user->isGuest){
+			$identity = Yii::$app->user->identity;
+			$user_id = $identity['id'];
+			$review_data['user_id']		= $user_id ;
+		}
+		
+		$review_data['ip'] 			= \fec\helpers\CFunc::get_real_ip();
 		$saveStatus = Yii::$service->helper->ar->save($model,$review_data);
 		
 		return true;
@@ -310,7 +327,7 @@ class Review extends Service
 				if($model[$this->getPrimaryKey()]){
 					$model->audit_user  = $user_id;
 					$model->audit_date  = time();
-					$model->status		= ReviewModel::NOACTIVE_STATUS;
+					$model->status		= ReviewModel::REFUSE_STATUS;
 					$model->save();
 					# 更新评论的信息到产品表
 					$this->updateProductSpuReview($model['product_spu']);
@@ -350,8 +367,31 @@ class Review extends Service
 		return true;
 	}
 	
-	
-	
+	/**
+	 * @property $filter|Array
+	 * get artile collection by $filter
+	 * example filter:
+	 * [
+	 * 		'numPerPage' 	=> 20,  	
+	 * 		'pageNum'		=> 1,
+	 * 		'orderBy'	=> [$this->getPrimaryKey() => SORT_DESC, 'sku' => SORT_ASC ],
+			'where'			=> [
+				['>','price',1],
+				['<=','price',10]
+	 * 			['sku' => 'uk10001'],
+	 * 		],
+	 * 	'asArray' => true,
+	 * ]
+	 */
+	protected function actionGetReviewsByUserId($filter){
+		$query = ReviewModel::find();
+		$query = Yii::$service->helper->ar->getCollByFilter($query,$filter);
+		return [
+			'coll' => $query->all(),
+			'count'=> $query->count(),
+		];
+		
+	}
 	
 	
 	

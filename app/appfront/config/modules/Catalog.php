@@ -10,6 +10,9 @@ return [
 	'catalog' => [
 		'class' => '\fecshop\app\appfront\modules\Catalog\Module',
 		'params'=> [
+			###############################
+			## 		category部分设置	 ##
+			###############################
 			'category_breadcrumbs' => false, # 是否显示分类的面包屑导航。
 			/**
 			 * 注意：做侧栏分类产品过滤的属性，必须是select类型的，其他的类型请不要用，
@@ -62,7 +65,9 @@ return [
 					'1000-',
 				],
 			],
-			# 产品部分的设置
+			###############################
+			## 		Product部分设置		 ##
+			###############################
 			# 产品页面图片的设置
 			'productImgSize' => [
 				'small_img_width'  => 80,  # 底部小图的宽度
@@ -71,9 +76,20 @@ return [
 			],
 			'productImgMagnifier' => false, # 是否已放大镜的方式显示，如果否，则是内窥的方式查看
 			
+			###############################
+			##     Review部分设置		 ##
+			###############################
 			'review' => [
-				'add_captcha' => true , # 增加review页面是否开启验证码验证。
-				'productPageReviewCount' => 20, # 在产品页面显示的review的个数。
+				'add_captcha' 			 => true ,  # 增加review页面是否开启验证码验证。
+				'productPageReviewCount' => 20, 	# 在产品页面显示的review的个数。
+				'reviewPageReviewCount'	 => 40, 	# 在review列表页面，显示的review的个数
+				
+				'addReviewOnlyLogin'	 => true,   # 只有登录用户才有资格进行评论。
+				'ifShowCurrentUserNoAuditReview' => true, # 当前用户添加的评论，后台未审核的评论，是否显示？这个是通过ip来判断。
+				
+				'filterByStore' 		=> false,	# 是否通过store的值进行评论过滤？
+				'filterByLang'			=> true,	# 是否通过语言进行评论过滤？默认只显示当前的语言下的评论，也就是客户在添加评论的store的语言。
+				'newReviewAudit' 		=> true ,  	# 新的前台评论是否需要审核，true代表需要后台审核。
 			],
 		],
 	],

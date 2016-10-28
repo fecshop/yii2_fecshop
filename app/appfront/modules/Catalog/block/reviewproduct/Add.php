@@ -11,6 +11,8 @@ use Yii;
 use fec\helpers\CModule;
 use fec\helpers\CRequest;
 use yii\base\InvalidValueException;
+use fecshop\app\appfront\modules\Catalog\helpers\Review as ReviewHelper;
+
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
@@ -18,6 +20,10 @@ use yii\base\InvalidValueException;
 class Add {
 	
 	protected $_add_captcha;
+	
+	public function __construct(){
+		ReviewHelper::initReviewConfig();
+	}
 	
 	public function getAddCaptcha(){
 		if(!$this->_add_captcha){
@@ -47,10 +53,16 @@ class Add {
 		$image 			= $product['image'];
 		$main_img 		= isset($image['main']['image']) ? $image['main']['image'] : '';
 		$url_key 		= $product['url_key'];
-		$name 			= Yii::$service->store->getStoreAttrVal($product['name'],'name');
+		$product_name 			= Yii::$service->store->getStoreAttrVal($product['name'],'name');
+		$customer_name  = ''; 
+		if(!Yii::$app->user->isGuest){
+			$identity		= Yii::$app->user->identity;
+			$customer_name	= $identity['firstname'].' '.$identity['lastname'];
+		}
 		return [
+			'customer_name'	=> $customer_name,
 			'product_id'	=> $_id,
-			'name' 			=> $name,
+			'product_name' 	=> $product_name,
 			'spu' 			=> $spu,
 			'price_info' 	=> $price_info,
 			'main_img' 		=> $main_img,

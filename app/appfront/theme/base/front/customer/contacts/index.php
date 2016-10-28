@@ -73,7 +73,7 @@
 				<!--
 				<p class="back-link"><a href="http://10.10.10.252:3800/index.php/customer/account/"><small>? </small>Back</a></p>
 				-->
-				<button type="submit" title="Save" class="button" onclick="return check_contacts()"><span><span>Save</span></span></button>
+				<button type="submit" title="Save" class="button" onclick="return check_contacts()"><span><span>Submit</span></span></button>
 			</div>
 		</form>
 		</div>

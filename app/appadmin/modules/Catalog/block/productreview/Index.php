@@ -72,6 +72,9 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 	 * get search bar Arr config
 	 */
 	public function getSearchArr(){
+		$activeStatus = Yii::$service->product->review->activeStatus();
+		$refuseStatus = Yii::$service->product->review->refuseStatus();
+		$noActiveStatus = Yii::$service->product->review->noActiveStatus();
 		$data = [
 			[	# selecit的Int 类型
 				'type'=>'select',	 
@@ -79,8 +82,9 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 				'name'=>'status',
 				'columns_type' =>'int',  # int使用标准匹配， string使用模糊查询
 				'value'=> [					# select 类型的值
-					1=>'已审核',
-					10=>'未审核',
+					$noActiveStatus => '未审核',
+					$activeStatus	=> '审核通过',
+					$refuseStatus 	=> '审核拒绝',
 				],
 			],
 			[	# 字符串类型
@@ -108,6 +112,10 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 	 * 
 	 */
 	public function getTableFieldArr(){
+		$activeStatus = Yii::$service->product->review->activeStatus();
+		$refuseStatus = Yii::$service->product->review->refuseStatus();
+		$noActiveStatus = Yii::$service->product->review->noActiveStatus();
+		
 		$table_th_bar = [
 			[	
 				'orderField' 	=> '_id',
@@ -175,10 +183,11 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 			[	
 				'orderField'	=> 'status',
 				'label'			=> '审核状态',
-				'width'			=> '70',
+				'width'			=> '120',
 				'display'		=> [
-					1=>'已审核',
-					10=>'未审核',
+					$noActiveStatus => '未审核',
+					$activeStatus	=> '审核通过',
+					$refuseStatus 	=> '审核拒绝',
 				],
 			],
 			[	
@@ -309,7 +318,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 			
 		return '<ul class="toolBar">
 					<li><a title="确实要批量审核这些记录吗?" target="selectedTodo" rel="'.$this->_primaryKey.'s" postType="string" href="'.$this->_auditUrl.'" class="edit"><span>批量审核通过</span></a></li>
-					<li><a title="确实要批量审核拒绝这些记录吗?" target="selectedTodo" rel="'.$this->_primaryKey.'s" postType="string" href="'.$this->_auditRejectedUrl.'" class="edit"><span>批量审核拒绝通过</span></a></li>
+					<li><a title="确实要批量审核拒绝这些记录吗?" target="selectedTodo" rel="'.$this->_primaryKey.'s" postType="string" href="'.$this->_auditRejectedUrl.'" class="edit"><span>批量审核拒绝</span></a></li>
 					
 					<li><a target="dialog" height="580" width="1000" drawable="true" mask="true" class="edit" href="'.$this->_editUrl.'?'.$this->_primaryKey.'={sid_user}" ><span>修改</span></a></li>
 					<li><a title="确实要删除这些记录吗?" target="selectedTodo" rel="'.$this->_primaryKey.'s" postType="string" href="'.$this->_deleteUrl.'" class="delete"><span>批量删除</span></a></li>

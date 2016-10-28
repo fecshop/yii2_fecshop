@@ -45,6 +45,9 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 	
 	
 	public function getEditArr(){
+		$activeStatus = Yii::$service->product->review->activeStatus();
+		$refuseStatus = Yii::$service->product->review->refuseStatus();
+		$noActiveStatus = Yii::$service->product->review->noActiveStatus();
 		
 		return [
 			[
@@ -111,24 +114,19 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 				'require' => 0,
 			],
 			
-			
-			
-			
 			[
 				'label'=>'审核状态',
 				'name'=>'status',
 				'display'=>[
 					'type' => 'select',
 					'data' => [
-						1 	=> '已审核',
-						10 	=> '未审核',
+						$noActiveStatus => '未审核',
+						$activeStatus	=> '审核通过',
+						$refuseStatus 	=> '审核拒绝',
 					]
 				],
 				'require' => 1,
-				'default' => 4,
 			],
-			
-			
 			
 		];
 	}

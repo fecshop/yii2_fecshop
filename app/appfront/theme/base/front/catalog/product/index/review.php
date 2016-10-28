@@ -13,7 +13,7 @@
 					
 					<li>
 						<div class="review_description_left">
-							<a href="#" class="review_star review_star_5" onclick="javascript:return false;"></a>
+							<a href="#" class="review_star review_star_<?= $one['rate_star'] ?>" onclick="javascript:return false;"></a>
 							<p>By <?= $one['name'] ?></p>
 							<span><?= $one['review_date'] ? date('Y-m-d H:i:s',$one['review_date']) : '' ?></span>
 						</div>
@@ -25,7 +25,12 @@
 								<div class="review-content">
 									<?= $one['review_content'] ?>
 								</div>
-								<br>
+								<?php if($one['status'] == $noActiveStatus){ ?>  
+								<div class="moderation">
+									Your comment is awaiting moderation...
+								</div>
+								<?php } ?>
+								
 							</div>
 						</div>
 						<div class="clear"></div>

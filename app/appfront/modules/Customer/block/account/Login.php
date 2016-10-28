@@ -47,7 +47,8 @@ class Login {
 			}
 		}
 		if(!Yii::$app->user->isGuest){
-			Yii::$service->url->redirectByUrlKey('customer/account');
+			//Yii::$service->url->redirectByUrlKey('customer/account');
+			Yii::$service->customer->loginSuccessRedirect('customer/account');
 		}
 		$errors = Yii::$service->helper->errors->get(true);
 		if($errors){

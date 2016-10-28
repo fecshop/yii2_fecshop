@@ -11,7 +11,7 @@
 				
 				<div style="width:700px;float:left;">
 					<div style="">
-						<a href="<?= $url  ?>"><?= $name ?></a> 
+						<a href="<?= $url  ?>"><?= $product_name ?></a> 
 					</div>
 					<div class="product_info review_add_price">
 						<div class="price_info">
@@ -61,7 +61,7 @@
 								<strong>Your Name</strong><em class="product-description_em">*</em></label>
 								<div class="input-box">
 									
-									<input name="editForm[name]" id="review_email_field" class="input-text  review-input-text required-entry" value="<?=  $editForm['name'] ?>" type="text">
+									<input name="editForm[name]" id="review_email_field" class="input-text  review-input-text required-entry" value="<?=  $editForm['name'] ? $editForm['name'] : $customer_name ?>" type="text">
 								</div>
 								<span class="review_span_error" id="review_email_span"></span>
 							</li>

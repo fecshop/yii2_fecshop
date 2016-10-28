@@ -11,6 +11,8 @@ use Yii;
 use fec\helpers\CModule;
 use fec\helpers\CRequest;
 use yii\base\InvalidValueException;
+use fecshop\app\appfront\modules\Catalog\helpers\Review as ReviewHelper;
+
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
@@ -25,9 +27,14 @@ class Lists {
 	public  $numPerPage = 20;
 	public  $pageNum;
 	
+	public function __construct(){
+		ReviewHelper::initReviewConfig();
+	}
+	
 	protected function getProductPage($countTotal){
-		
-		
+		if($countTotal <= $this->numPerPage){
+			return '';
+		}
 		$config = [
 			'class' 		=> 'fecshop\app\appfront\widgets\Page',
 			'view'  		=> 'widgets/page.php',
@@ -79,6 +86,7 @@ class Lists {
 				'pageToolBar'	=> $pageToolBar,
 				'review_count'	=> $count,
 				'coll'			=> $coll ,
+				'noActiveStatus'=> Yii::$service->product->review->noActiveStatus(),
 				'addReviewUrl'	=> $addReviewUrl,
 				'name' 			=> $name,
 				'price_info' 	=> $price_info,
@@ -92,17 +100,28 @@ class Lists {
 	}
 	
 	public function getReviewsBySpu($spu){
-		
+		$currentIp = \fec\helpers\CFunc::get_real_ip();
 		$filter = [
 	  		'numPerPage' 	=> $this->numPerPage,  	
 	  		'pageNum'		=> $this->pageNum,
 	  		'orderBy'	=> [ $this->filterOrderBy => SORT_DESC ],
 	 		'where'			=> [
-				//['status' => Yii::$service->product->review->activeStatus()],
-	  			['product_spu' => $spu],
+				[
+					'$or' => [
+						[
+							'status' => Yii::$service->product->review->activeStatus(),
+							'product_spu' => $spu
+						],
+						[
+							'status' => Yii::$service->product->review->noActiveStatus(),
+							'product_spu' => $spu,
+							'ip' => $currentIp
+						]
+					]
+				],
 			],
 		];
-		return Yii::$service->product->review->list($filter);
+		return Yii::$service->product->review->getListBySpu($filter);
 		
 	}
 	

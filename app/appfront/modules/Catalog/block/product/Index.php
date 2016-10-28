@@ -32,6 +32,8 @@ class Index {
 			'image'					=> $this->_product['image'],
 			'sku'					=> $this->_product['sku'],
 			'spu'					=> $this->_product['spu'],
+			'review_count'			=> $this->_product['review_count'] ? $this->_product['review_count'] : 0,
+			'reviw_rate_star_average'	=> $this->_product['reviw_rate_star_average'] ? $this->_product['reviw_rate_star_average'] : 0,
 			'price_info'			=> $this->getProductPriceInfo(),
 			'tier_price'			=> $this->_product['tier_price'],
 			'media_size' => [

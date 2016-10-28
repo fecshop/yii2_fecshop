@@ -9,10 +9,10 @@
 						<div class="rbc_cold">
 							<span>
 								<span class="average_rating">Average rating :</span>
-								<span class="review_star review_star_4" style="font-weight:bold;" itemprop="average">0</span>  
+								<span class="review_star review_star_<?= $reviw_rate_star_average ?>" style="font-weight:bold;" itemprop="average"></span>  
 								
-								<a rel="nofollow" href="http://www.intosmile.com/fashion-solid-color-long-sleeve-round-neck-dress-1-1-1-1-1.html">
-									(<span itemprop="count">0 reviews</span>)
+								<a rel="nofollow" href="#text-reviews">
+									(<span itemprop="count"><?= $review_count ?> reviews</span>)
 								</a>
 							</span>
 						</div>
@@ -119,7 +119,7 @@
 					<div class="text-description" style="">
 						<?= $description; ?>
 					</div>  
-					<div class="text-reviews" style="">
+					<div class="text-reviews" id="text-reviews" style="">
 						<?php # review部分。
 							$reviewView = [
 								'class' 		=> 'fecshop\app\appfront\modules\Catalog\block\product\Review',

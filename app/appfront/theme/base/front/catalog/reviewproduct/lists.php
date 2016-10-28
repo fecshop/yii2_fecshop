@@ -1,4 +1,5 @@
 <div class="main container one-column">
+<?= Yii::$service->page->widget->render('flashmessage'); ?>
 	<div class="col-main">
 		<div class="std">
 			<div class="review_lists">
@@ -51,14 +52,17 @@
 				</div>
 				<div class="product-Reviews"> 
 					<div class="clear"></div>
-					
+					<div class="scroll_left">
+						<a href="">Product Review</a>
+					</div>
 					<div class="product-Reviews_top">
 						<?php  if(is_array($coll) && !empty($coll)){  ?>
 						<ul id="review_description">
 							<?php foreach($coll as $one){  ?>
+							
 							<li>
 								<div class="review_description_left">
-									<a href="#" class="review_star review_star_5" onclick="javascript:return false;"></a>
+									<a href="#" class="review_star review_star_<?= $one['rate_star'] ?>" onclick="javascript:return false;"></a>
 									<p>By <?= $one['name'] ?></p>
 									<span><?= $one['review_date'] ? date('Y-m-d H:i:s',$one['review_date']) : '' ?></span>
 								</div>
@@ -70,7 +74,14 @@
 										<div class="review-content">
 											<?= $one['review_content'] ?>
 										</div>
-										<br>
+										
+										<div class="moderation">
+										<?php if($one['status'] == $noActiveStatus){ ?>  
+											Your Review is awaiting moderation...
+										<?php }else if($one['status'] == $refuseStatus){ ?>
+											Your Review is refused.
+										<?php } ?>
+										</div>
 									</div>
 								</div>
 								<div class="clear"></div>
@@ -79,9 +90,11 @@
 						</ul>
 						<?php } ?>
 					</div>
+					<?php if($pageToolBar){ ?>
 					<div class="pageToolbar">
 						<label class="title">Page:</label><?= $pageToolBar ?>
 					</div>
+					<?php } ?>
 				</div>
 			</div>
 		</div>

@@ -11,6 +11,7 @@ use Yii;
 use fec\helpers\CModule;
 use fec\helpers\CRequest;
 use yii\base\InvalidValueException;
+use fecshop\app\appfront\modules\Catalog\helpers\Review as ReviewHelper;
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
@@ -21,6 +22,11 @@ class Review {
 	public  $spu;
 	public  $filterBySpu = true;
 	public  $filterOrderBy = 'review_date';
+	
+	public function __construct(){
+		# 初始化当前appfront的设置，覆盖service的初始设置。
+		ReviewHelper::initReviewConfig();
+	}
 	
 	public function getLastData(){
 		if(!$this->spu || !$this->product_id){
@@ -35,6 +41,7 @@ class Review {
 				'spu' => $this->spu,
 				'review_count'	=> $count,
 				'coll'			=> $coll ,
+				'noActiveStatus'=> Yii::$service->product->review->noActiveStatus(),
 			];
 		}
 		
@@ -44,17 +51,30 @@ class Review {
 	public function getReviewsBySpu($spu){
 		$review = Yii::$app->getModule('catalog')->params['review'];
 		$productPageReviewCount = isset($review['productPageReviewCount']) ? $review['productPageReviewCount'] : 10;
-		
+		$currentIp = \fec\helpers\CFunc::get_real_ip();
 		$filter = [
 	  		'numPerPage' 	=> $productPageReviewCount,  	
 	  		'pageNum'		=> 1,
 	  		'orderBy'	=> [ $this->filterOrderBy => SORT_DESC ],
 	 		'where'			=> [
-				//['status' => Yii::$service->product->review->activeStatus()],
-	  			['product_spu' => $spu],
+				[
+					'$or' => [
+						[
+							'status' => Yii::$service->product->review->activeStatus(),
+							'product_spu' => $spu
+						],
+						[
+							'status' => Yii::$service->product->review->noActiveStatus(),
+							'product_spu' => $spu,
+							'ip' => $currentIp
+						]
+					]
+				],
 			],
 		];
-		return Yii::$service->product->review->list($filter);
+		
+		# 调出来 review 信息。
+		return Yii::$service->product->review->getListBySpu($filter);
 		
 	}
 	

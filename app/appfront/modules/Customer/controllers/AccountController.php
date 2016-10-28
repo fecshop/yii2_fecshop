@@ -49,7 +49,9 @@ class AccountController extends AppfrontController
 		exit;
 		*/
 		$param = Yii::$app->request->post('editForm');
-		$this->getBlock()->login($param);
+		if(!empty($param) && is_array($param)){
+			$this->getBlock()->login($param);
+		}
 		$data = $this->getBlock()->getLastData();
 		return $this->render($this->action->id,$data);
 	}
@@ -68,10 +70,13 @@ class AccountController extends AppfrontController
 				if(isset($params_register['successAutoLogin']) && $params_register['successAutoLogin']  ){
 					Yii::$service->customer->login($param);
 				}
-				# 注册成功后，跳转的页面，如果值为false， 则不跳转。
-				if(isset($params_register['loginSuccessRedirectUrlKey']) && $params_register['loginSuccessRedirectUrlKey']  ){
-					$redirectUrl = Yii::$service->url->getUrl($params_register['loginSuccessRedirectUrlKey']);
-					Yii::$service->url->redirect($redirectUrl);
+				if(!Yii::$app->user->isGuest){
+					# 注册成功后，跳转的页面，如果值为false， 则不跳转。
+					$urlKey = 'customer/account';
+					if(isset($params_register['loginSuccessRedirectUrlKey']) && $params_register['loginSuccessRedirectUrlKey']  ){
+						$urlKey = $params_register['loginSuccessRedirectUrlKey'];
+					}
+					Yii::$service->customer->loginSuccessRedirect($urlKey);
 				}
 			}
 		}

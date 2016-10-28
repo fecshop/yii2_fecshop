@@ -1628,7 +1628,7 @@ height: 77px;
 border: solid 1px #adadad;
 }
 .product-Reviews_top{
-   padding: 20px 0 20px 10px;
+   padding: 8px 0 20px 10px;
     width: 100%;
 }
 .product-Reviews_bottom{
@@ -1899,12 +1899,27 @@ a:hover{text-decoration: underline;}
     display: block;
     float: left;
     height: 15px;
-    margin: 0 10px 0 0;
+    margin: 2px 10px 0 5px;
     text-align: right;
     width: 95px;
 }
+.review_star_5 {
+    background: rgba(0, 0, 0, 0) url("../images/Star_5.png") no-repeat scroll 0 0;
+}
 .review_star_4 {
     background: rgba(0, 0, 0, 0) url("../images/Star_4.png") no-repeat scroll 0 0;
+}
+.review_star_3 {
+    background: rgba(0, 0, 0, 0) url("../images/Star_3.png") no-repeat scroll 0 0;
+}
+.review_star_2 {
+    background: rgba(0, 0, 0, 0) url("../images/Star_2.png") no-repeat scroll 0 0;
+}
+.review_star_1 {
+    background: rgba(0, 0, 0, 0) url("../images/Star_1.png") no-repeat scroll 0 0;
+}
+.review_star_0 {
+    background: rgba(0, 0, 0, 0) url("../images/Star_0.png") no-repeat scroll 0 0;
 }
 .review_star {
     display: block;
@@ -2040,12 +2055,14 @@ a.next_images {
     overflow: hidden;
     padding: 10px 0 0;
     position: relative;
-    width: 1170px;
 }
-
+.review_lists  .scroll_left{
+	 border-bottom: 1px solid #ccc;
+	
+}
 .product-Reviews_top {
     padding: 20px 0 20px 10px;
-    width: 100%;
+    width: auto;
 }
 
 
@@ -2080,9 +2097,7 @@ a.next_images {
     font-family: Georgia;
     text-transform: uppercase;
 }
-.review_star_5 {
-    background: rgba(0, 0, 0, 0) url("../images/Star_5.png") no-repeat scroll 0 0;
-}
+
 .review_star {
     display: block;
     height: 15px;
@@ -2157,7 +2172,7 @@ a.next_images {
     border-radius: 2px;
     color: #777;
     height: 100px;
-    padding: 0 10px;
+    padding: 10px;
     resize: none;
     width: 676px;
 }
@@ -2214,19 +2229,49 @@ a.next_images {
 	margin:20px 0 20px;
 }
 
+.moderation , .review_moderation{
+	color:#ccc;
+	margin:10px 0;
+	font-style:italic;
+}
+
+.review_refuse{
+	color:#cc0000;
+	margin:10px 0;
+	font-style:italic;
+}
+
+.review_accept{
+	color:green;
+	margin:10px 0;
+	font-style:italic;
+}
+
+.average_rating{float:left;}
+
+#review_description li{min-height:90px;}
 
 
+.account_review_product .review_description_right_span{
+	margin-bottom:2px;
+	float:left;
+}
+.account_review_product  .review_description_centen{
+	margin-top:15px;
+}
+
+.review_date_time{
+	display:block;
+	float:right;
+}
 
 
-
-
-
-
-
-
-
-
-
+.account_review_product  .product_img{
+	display:block;margin:auto;width:120px;
+}
+.account_review_product  .review_star{
+	display:block;margin:auto;margin: 3px auto 10px;
+}
 
 
 

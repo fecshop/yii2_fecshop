@@ -22,7 +22,7 @@ use fecshop\models\mysqldb\Customer as CustomerModel;
 class Customer extends Service
 {
 	public $customer_register;
-	
+	const USER_LOGIN_SUCCESS_REDIRECT_URL_KEY = 'usr_login_success_redirect_url';
 	/**
 	 * 注册用户名字的最小长度
 	 */
@@ -200,14 +200,39 @@ class Customer extends Service
 	protected function actionFindByPasswordResetToken($token){
 		return CustomerModel::findByPasswordResetToken($token);
 	}
+	/**
+	 * @property $url|String
+	 * 在一些功能中，需要用户进行登录操作，等用户操作成功后，应该跳转到相应的页面中，这里通过session存储需要跳转到的url。
+	 * 某些页面 ， 譬如评论页面，需要用户登录后才能进行登录操作，那么可以通过这个方法把url set 进去，登录成功
+	 * 后，页面不会跳转到账户中心，而是需要操作的页面中。
+	 */
+	protected function actionSetLoginSuccessRedirectUrl($url){
+		return Yii::$app->session->set($this::USER_LOGIN_SUCCESS_REDIRECT_URL_KEY,$url);
+	}
+	/**
+	 * @property $url|String
+	 * 在一些功能中，需要用户进行登录操作，等用户操作成功后，应该跳转到相应的页面中，这里通过session得到需要跳转到的url。
+	 */
+	protected function actionGetLoginSuccessRedirectUrl(){
+		$url = Yii::$app->session->get($this::USER_LOGIN_SUCCESS_REDIRECT_URL_KEY);
+		return $url ? $url : '';
+	}
 	
-	
-	
-	
-	
-	
-	
-	
+	protected  function actionLoginSuccessRedirect($urlKey){
+		$url = $this->getLoginSuccessRedirectUrl();
+		
+		if($url){
+			# 这个优先级最高
+			# 在跳转之前，去掉这个session存储的值。跳转后，这个值必须失效。
+			Yii::$app->session->remove($this::USER_LOGIN_SUCCESS_REDIRECT_URL_KEY);
+			//echo Yii::$app->session->get($this::USER_LOGIN_SUCCESS_REDIRECT_URL_KEY);
+			//exit;
+			Yii::$service->url->redirect($url);
+			
+		}else{
+			Yii::$service->url->redirectByUrlKey($urlKey);
+		}
+	}
 	
 	
 	
