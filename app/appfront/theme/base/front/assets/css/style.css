@@ -715,7 +715,7 @@ font-family: Arial;
 .closeBtn {
 	background-image: url("../images/tag.png");
     background-repeat: no-repeat;
-    background-position: -80px -420px;
+    background-position: -164px 7px;
     display: inline-block;
     font-size: 0;
     height: 20px;

@@ -25,9 +25,13 @@ class AjaxController extends AppfrontController
 	public function actionIndex(){
 		$result_arr = [];
 		if(Yii::$app->request->isAjax){
+			
 			$result_arr['loginStatus'] 	= false;
 			$result_arr['favorite'] 	= false;
+			$result_arr['favorite_product_count'] 	= 0;
 			if(!Yii::$app->user->isGuest){
+				$identity = Yii::$app->user->identity;
+				$result_arr['favorite_product_count']  = $identity['favorite_product_count'] ? $identity['favorite_product_count'] : 0;
 				$result_arr['loginStatus'] = true;
 				$product_id = Yii::$app->request->get('product_id');
 				if($product_id){

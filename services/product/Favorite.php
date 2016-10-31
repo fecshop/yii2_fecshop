@@ -79,7 +79,24 @@ class Favorite extends Service
 		$one->updated_at = time();
 		$one->store = Yii::$service->store->currentStore;
 		$one->save();
+		# 更新该用户总的收藏产品个数到用户表
+		$this->updateUserFavoriteCount($user_id);
 		return true;
+	}
+	/**
+	 * @property $user_id | Int
+	 * 更新该用户总的收藏产品个数到用户表
+	 */
+	protected function updateUserFavoriteCount($user_id = ''){
+		$identity = Yii::$app->user->identity;
+		if(!$user_id){
+			$user_id  = $identity['id'];
+		}
+		if($user_id){
+			$count = FavoriteModel::find()->where(['user_id'=>$user_id])->count();
+			$identity->favorite_product_count = $count;
+			$identity->save();
+		}
 	}
 	/*
 	 * example filter:
@@ -118,8 +135,10 @@ class Favorite extends Service
 		]);
 		if($one['_id']){
 			$one->delete();
+			$this->updateUserFavoriteCount($user_id);
 			return true;
 		}
+		
 		return;
 	}
 	

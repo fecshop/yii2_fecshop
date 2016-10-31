@@ -47,6 +47,9 @@ $(document).ready(function(){
 				$(".myFavorite_nohove").addClass("act");
 				$(".myFavorite_nohove a").addClass("act");
 			}
+			if(data.favorite_product_count){
+				$("#js_favour_num").html(data.favorite_product_count);
+			}
 		},
 		error:function (XMLHttpRequest, textStatus, errorThrown){}
 	});

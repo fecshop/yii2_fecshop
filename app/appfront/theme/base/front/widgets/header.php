@@ -53,13 +53,13 @@
 					<ul>
 						<li><a href="<?= Yii::$service->url->getUrl('customer/point') ?>" rel="nofollow">My S Points</a></li>
 						<li><a href="<?= Yii::$service->url->getUrl('customer/order') ?>" rel="nofollow">My Orders</a></li>
-						<li><a href="<?= Yii::$service->url->getUrl('customer/wishlist') ?>" rel="nofollow">My Favorites</a></li>
-						<li><a href="<?= Yii::$service->url->getUrl('customer/product/review') ?>" rel="nofollow">Product Review</a></li>
+						<li><a href="<?= Yii::$service->url->getUrl('customer/productfavorite') ?>" rel="nofollow">My Favorites</a></li>
+						<li><a href="<?= Yii::$service->url->getUrl('customer/productreview') ?>" rel="nofollow">Product Review</a></li>
 					</ul>
 				</dd>
 			</dl>
 			<div class="mywish t_r">
-				<a href="<?= Yii::$service->url->getUrl('customer/wishlist') ?>">
+				<a href="<?= Yii::$service->url->getUrl('customer/productfavorite') ?>">
 					<span class="mywishbg"></span>
 				</a>
 				<span class="mywish-text" id="js_favour_num">0</span>
