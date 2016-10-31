@@ -87,6 +87,10 @@ return [
 				'filterByLang'	=> false,	# 是否通过语言进行评论过滤？
 				'newReviewAudit' => true ,  # 新的前台评论是否需要审核，true代表需要后台审核。
 			],
+			'favorite' => [
+				'class' => 'fecshop\services\product\Favorite',
+			],
+			/* #暂时没用
 			'info' => [
 				'class' => 'fecshop\services\product\Info',
 				
@@ -118,6 +122,7 @@ return [
 				],
 				
 			],
+			*/
 		],
 	],
 ];

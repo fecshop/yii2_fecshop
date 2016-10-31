@@ -1,7 +1,7 @@
 html {font-size: 100%;}
 body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote {margin: 0;padding: 0;}
-body {color: #333;font: 1em/1.55 Verdana,Arial,Helvetica,sans-serif;}
-a{color: #666;text-decoration: none;}
+body {color: #333;font: 1em/1.55 Verdana,Arial,Helvetica,sans-serif;font-weight:100;}
+a{color: #666;text-decoration: none;font-weight:100;}
 ol, ul {list-style: outside none none;}
 img{border:none;}
 h1, h2, h3, h4, h5, h6 {
@@ -1597,7 +1597,7 @@ td:nth-child(2n) {
 .favorite-Operation{
     height:30px;line-height:30px;margin-top: 10px;
 }
-.favorite-Operation span{
+.favorite-Operation a{
     text-align:center;display:inline-block;width:70px;height:30px;border:1px solid #ccc;cursor:pointer
 }
 .favorite-Operation-main {
@@ -1838,12 +1838,37 @@ border: solid 1px #adadad;
 	font-size:14px;
 }
 .myFavorite_nohove {
-   background: rgba(0, 0, 0, 0) url("../images/favourite.png") no-repeat scroll 0 0;
     float: left;
     font-size: 12px;
-    margin: 18px 0 0 20px;
+    margin: 15px 0 0 20px;
     padding: 0 0 0 20px;
 }
+
+.myFavorite_nohove i{
+	background: rgba(0, 0, 0, 0) url("../images/tag.png") no-repeat scroll -120px -48px;
+	
+    display: inline-block;
+    font-size: 0;
+    height: 27px;
+    margin-right: 5px;
+    vertical-align: -10px;
+    width: 27px;
+	
+}
+.myFavorite_nohove:hover i{
+	 background-position: -152px -48px;
+}
+.myFavorite_nohove:hover a{
+	color:#da6667;
+}
+
+.myFavorite_nohove.act i{
+	 background-position: -152px -48px;
+}
+.myFavorite_nohove.act a{
+	color:#da6667;
+}
+
 
 .product_info h1{font-size:15px;}
 

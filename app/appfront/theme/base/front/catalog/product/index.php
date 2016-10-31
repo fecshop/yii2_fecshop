@@ -2,7 +2,7 @@
 	<div class="col-main">
 		<div class="product_page">
 			<div class="product_view">
-				
+				<input type="hidden" class="product_view_id" value="<?=  $_id ?>">
 				<div class="product_info">
 					<h1><?= $name; ?></h1>
 					<div>
@@ -68,7 +68,8 @@
 							<button type="button" id="js_registBtn" class="redBtn"><em><span><i></i>Add To Cart</span></em></button>
 							
 							<div class="myFavorite_nohove" id="myFavorite">
-								<a href="javascript:void(0);" class="addheart" id="divMyFavorite" rel="nofollow" onclick="addFavorite(this)" value="http://www.intosmile.fr/favorite/product/add?sku=gyxh0682" url="">
+								<i></i>
+								<a href="javascript:void(0)" url="<?= Yii::$service->url->getUrl('catalog/favoriteproduct/add',['product_id'=>$_id]); ?>" class="addheart" id="divMyFavorite" rel="nofollow" >
 									Add to Favorites
 								</a>				
 							</div>
@@ -112,7 +113,7 @@
 						<li  class="nav_tab cur" rel="description">DESCRIPTION</li>  
 						<li  class="nav_tab" rel="reviews">REVIEWS</li>  
 						<li  class="nav_tab" rel="questions">SHIPPING & PAYMENT</li>  
-						<li   class="nav_tab" rel="wholesale">WHOLESALE</li>  
+						<!-- <li   class="nav_tab" rel="wholesale">WHOLESALE</li>   -->
 					</ul>    
 				</div>  
 				<div id="text">  
@@ -131,9 +132,23 @@
 						?>
 						<?= Yii::$service->page->widget->render($reviewView,$reviewParam); ?>
 					</div>  
-					<div class="text-questions" style="width:100%;height:500px;background:blue;text-align:center;">text3</div>   
-					<div class="text-wholesale" style="width:100%;height:500px;background:yellow;text-align:center;">text2</div>  
+					<div class="text-questions" style="">
+						<?php # payment部分。
+							$paymentView = [
+								'view'			=> 'catalog/product/index/payment.php',
+							];
+							
+						?>
+						<?= Yii::$service->page->widget->render($paymentView); ?>
 					
+					
+						
+					</div>  
+					<!--					
+					<div class="text-wholesale" style="width:100%;height:500px;background:yellow;text-align:center;">
+						
+					</div>  
+					-->
 				</div> 
 			</div>
 		</div>
@@ -148,6 +163,17 @@
 	$(document).ready(function(){
 	   $("#js_registBtn").click(function(){
 		   $(this).addClass("dataUp");
+	   });
+	   
+	   // product favorite
+	   $("#divMyFavorite").click(function(){
+			if($(this).hasClass('act')){
+				alert("You already favorite this product");
+			}else{
+				url = $(this).attr('url');
+				$(this).addClass('act');
+				window.location.href = url;
+			}
 	   });
 	});
 	<?php $this->endBlock(); ?> 

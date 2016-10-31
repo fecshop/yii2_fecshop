@@ -23,7 +23,7 @@ class Message extends Service
 	protected $_correctName = 'correct_message';
 	protected $_errorName = 'error_message';
 	/**
-	 * ���� correct message
+	 * 增加 correct message
 	 * @property $message | String
 	 */ 
 	protected function actionAddCorrect($message){
@@ -41,7 +41,7 @@ class Message extends Service
 		return Yii::$app->session->setFlash($this->_correctName,$message);
 	}
 	/**
-	 * ���� error message
+	 * 增加 error message
 	 * @property $message | String
 	 */ 
 	protected function actionAddError($message){
@@ -59,14 +59,33 @@ class Message extends Service
 		return Yii::$app->session->setFlash($this->_errorName,$message);
 	}
 	/**
-	 * ��ȡ correct message
+	 * 从service->helper_errors中取出来错误信息，加入到
+	 *   service->page->message 中。
+	 */ 
+	protected function actionAddByHelperErrors(){
+		$errors = Yii::$service->helper->errors->get(true);
+		if($errors){
+			if(is_array($errors) && !empty($errors)){
+				foreach($errors as $error){
+					if(is_array($error) && !empty($error)){
+						foreach($error as $er){
+							Yii::$service->page->message->addError($er);
+						}
+					}
+				}
+			} 
+		}
+		return true;
+	}
+	/**
+	 * 获取 correct message
 	 * @return Array
 	 */ 
 	protected function actionGetCorrects(){
 		return Yii::$app->session->getFlash($this->_correctName);
 	}
 	/**
-	 * ��ȡ error message
+	 * 获取 error message
 	 * @return Array
 	 */ 
 	protected function actionGetErrors(){

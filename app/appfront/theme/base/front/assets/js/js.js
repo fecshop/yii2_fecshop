@@ -20,16 +20,18 @@ $(document).ready(function(){
 	
 	// ajax get account login info
 	
-	loginInfoUrl = currentBaseUrl+"/customer/account/logininfo";
+	loginInfoUrl = currentBaseUrl+"/customer/ajax";
 	logoutUrl 	 = $(".logoutUrl").val();
-	
+	product_id   = $(".product_view_id").val();
+	product_id	 = product_id ? product_id : null;
 	jQuery.ajax({
 		async:true,
 		timeout: 6000,
 		dataType: 'json', 
 		type:'get',
 		data: {
-			'currentUrl':window.location.href
+			'currentUrl':window.location.href,
+			'product_id':product_id
 		},
 		url:loginInfoUrl,
 		success:function(data, textStatus){ 
@@ -40,6 +42,10 @@ $(document).ready(function(){
 				str += '<a href="'+logoutUrl+'" rel="nofollow">Logout</a>';
 				str += '</span>';
 				$(".login-text").html(str);
+			}
+			if(data.favorite){
+				$(".myFavorite_nohove").addClass("act");
+				$(".myFavorite_nohove a").addClass("act");
 			}
 		},
 		error:function (XMLHttpRequest, textStatus, errorThrown){}

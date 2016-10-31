@@ -53,16 +53,16 @@ class Page
 			//var_dump($behindPage);
 		}else if(($pageNum > $spaceShowNum)&&($pageNum < $endSpaceNum)){
 			$firstSpaceShow = true;
-			$lastSpaceShow = true;
-			$hiddenFrontStr = '...';
-			$hiddenBehindStr = '...';
+			$lastSpaceShow 	= true;
+			$hiddenFrontStr = '<span>...</span>';
+			$hiddenBehindStr= '<span>...</span>';
 			$frontPage[] = $pageNum - 1;
 			$behindPage[]= $pageNum + 1;
 			$behindPage[]= $pageNum + 2;
 		}else if($pageNum == 1){
 			$firstSpaceShow = false;
 			$lastSpaceShow = true;
-			$hiddenBehindStr = '...';
+			$hiddenBehindStr = '<span>...</span>';
 			$behindPage[]= $pageNum + 1;
 			$behindPage[]= $pageNum + 2;
 			$behindPage[]= $pageNum + 3;
@@ -70,7 +70,7 @@ class Page
 		}else if($pageNum == 2){
 			$firstSpaceShow = false;
 			$lastSpaceShow = true;
-			$hiddenBehindStr = '...';
+			$hiddenBehindStr = '<span>...</span>';
 			$frontPage[] = $pageNum - 1;
 			$behindPage[]= $pageNum + 1;
 			$behindPage[]= $pageNum + 2;
@@ -78,7 +78,7 @@ class Page
 		}else if($pageNum == 3){
 			$firstSpaceShow = false;
 			$lastSpaceShow = true;
-			$hiddenBehindStr = '...';
+			$hiddenBehindStr = '<span>...</span>';
 			$frontPage[] = $pageNum - 2;
 			$frontPage[] = $pageNum - 1;
 			$behindPage[]= $pageNum + 1;
@@ -86,7 +86,7 @@ class Page
 		}else if($pageNum == 4){
 			$firstSpaceShow = false;
 			$lastSpaceShow = true;
-			$hiddenBehindStr = '...';
+			$hiddenBehindStr = '<span>...</span>';
 			$frontPage[] = $pageNum - 3;
 			$frontPage[] = $pageNum - 2;
 			$frontPage[] = $pageNum - 1;
@@ -95,7 +95,7 @@ class Page
 		}else if($pageNum == $endSpaceNum){
 			$firstSpaceShow = true;
 			$lastSpaceShow = false;
-			$hiddenFrontStr = '...';
+			$hiddenFrontStr = '<span>...</span>';
 			$frontPage[]= $pageNum - 1;
 			$behindPage[]= $pageNum + 1;
 			$behindPage[]= $pageNum + 2;
@@ -104,7 +104,7 @@ class Page
 		}else if($pageNum == ($endSpaceNum + 1)){
 			$firstSpaceShow = true;
 			$lastSpaceShow = false;
-			$hiddenFrontStr = '...';
+			$hiddenFrontStr = '<span>...</span>';
 			$frontPage[]= $pageNum - 2;
 			$frontPage[]= $pageNum - 1;
 			$behindPage[]= $pageNum + 1;
@@ -112,7 +112,7 @@ class Page
 		}else if($pageNum == ($endSpaceNum + 2)){
 			$firstSpaceShow = true;
 			$lastSpaceShow = false;
-			$hiddenFrontStr = '...';
+			$hiddenFrontStr = '<span>...</span>';
 			$frontPage[]= $pageNum - 3;
 			$frontPage[]= $pageNum - 2;
 			$frontPage[]= $pageNum - 1;
@@ -120,7 +120,7 @@ class Page
 		}else if($pageNum == ($endSpaceNum + 3)){
 			$firstSpaceShow = true;
 			$lastSpaceShow = false;
-			$hiddenFrontStr = '...';
+			$hiddenFrontStr = '<span>...</span>';
 			$frontPage[]= $pageNum - 4;
 			$frontPage[]= $pageNum - 3;
 			$frontPage[]= $pageNum - 2;

@@ -91,6 +91,10 @@ return [
 				'filterByLang'			=> true,	# 是否通过语言进行评论过滤？默认只显示当前的语言下的评论，也就是客户在添加评论的store的语言。
 				'newReviewAudit' 		=> true ,  	# 新的前台评论是否需要审核，true代表需要后台审核。
 			],
+			
+			'favorite' => [
+				'addSuccessRedirectFavoriteList' => false , # 产品收藏成功后是否跳转到账户中心的收藏列表
+			]
 		],
 	],
 ];

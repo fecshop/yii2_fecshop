@@ -364,6 +364,7 @@ class Url extends Service
 		if($urlKey){
 			$url = $this->getUrl($urlKey,$params);
 			header("Location: $url");
+			exit;
 		}
 	}
 	

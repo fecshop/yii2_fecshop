@@ -40,7 +40,7 @@ class Store extends Service
 	 */
 	//public $currentTheme = 'default';
 	/**
-	 * current store code , this property will  init value with store code.
+	 * 当前store的key，也就是当前的store
 	 */
 	public $currentStore;
 	/**
