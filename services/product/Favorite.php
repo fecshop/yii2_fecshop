@@ -81,7 +81,23 @@ class Favorite extends Service
 		$one->save();
 		# 更新该用户总的收藏产品个数到用户表
 		$this->updateUserFavoriteCount($user_id);
+		$this->updateProductFavoriteCount($product_id);
 		return true;
+	}
+	/**
+	 * @property $product_id | String
+	 * 更新该产品被收藏的总个数。
+	 */
+	protected function updateProductFavoriteCount($product_id){
+		if($product_id){
+			$count = FavoriteModel::find()->where(['product_id'=>$product_id])->count();
+			$product = Yii::$service->product->getByPrimaryKey($product_id);
+			if($product['_id']){
+				$product->favorite_count = $count;
+				$product->save();
+			}
+		}
+		
 	}
 	/**
 	 * @property $user_id | Int
@@ -140,6 +156,7 @@ class Favorite extends Service
 		if($one['_id']){
 			$one->delete();
 			$this->updateUserFavoriteCount($user_id);
+			$this->updateProductFavoriteCount($product_id);
 			return true;
 		}
 		

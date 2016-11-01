@@ -85,6 +85,8 @@ class Product extends ActiveRecord
 			'review_count',					#评论总数
 			'reviw_rate_star_average_lang', #（语言）评论平均评分
 			'review_count_lang',			#（语言）评论总数
+			'favorite_count', 				# 产品被收藏的次数。
+		
 		];
 		if(is_array(self::$_customProductAttrs) && !empty(self::$_customProductAttrs)){
 			$origin = array_merge($origin,self::$_customProductAttrs);

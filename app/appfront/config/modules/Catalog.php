@@ -36,6 +36,16 @@ return [
 						'db_columns'=> 'score', # 对应数据库的字段
 						'direction'	=> 'desc',  # 排序方式
 					],
+					'review_count' => [
+						'label'   	=> 'Review',   # 显示的字符
+						'db_columns'=> 'review_count', # 对应数据库的字段
+						'direction'	=> 'desc',  # 排序方式
+					],
+					'favorite_count' => [
+						'label'   	=> 'Favorite',   # 显示的字符
+						'db_columns'=> 'favorite_count', # 对应数据库的字段
+						'direction'	=> 'desc',  # 排序方式
+					],
 					'new' => [
 						'label'   	=> 'New',
 						'db_columns'=> 'created_at',
