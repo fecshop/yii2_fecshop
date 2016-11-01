@@ -143,7 +143,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 			],
 			[	
 				'orderField'	=> 'firstname',
-				'label'			=> 'ming',
+				'label'			=> 'firstname',
 				'width'			=> '50',
 				'align' 		=> 'left',
 				

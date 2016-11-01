@@ -292,7 +292,7 @@ class Customer extends Service
 		return 'id';
 	}
 	
-	public function coll($filter=''){
+	protected function actionColl($filter=''){
 		$query = CustomerModel::find();
 		$query = Yii::$service->helper->ar->getCollByFilter($query,$filter);
 		//var_dump($query->all());exit;
@@ -300,6 +300,21 @@ class Customer extends Service
 			'coll' => $query->all(),
 			'count'=> $query->count(),
 		];
+	}
+	
+	protected function actionGetEmailByIds($user_ids){
+		$arr = [];
+		if(is_array($user_ids) && !empty($user_ids)){
+			$data = CustomerModel::find()->where([
+				'in','id',$user_ids
+			])->all();
+			if(is_array($data) && !empty($data)){
+				foreach($data as $one){
+					$arr[$one['id']] = $one['email'];
+				}
+			}
+		}
+		return $arr;
 	}
 	
 }

@@ -55,7 +55,7 @@ class Favorite extends Service
 		$user_id = (int)$user_id;
 		$productPrimaryKey =  Yii::$service->product->getPrimaryKey();
 		$product = Yii::$service->product->getByPrimaryKey($product_id);
-		# ¼ì²é²úÆ·ÊÇ·ñ´æÔÚ£¬Èç¹û²»´æÔÚ£¬Êä³ö±¨´íĞÅÏ¢¡£
+		# æ£€æŸ¥äº§å“æ˜¯å¦å­˜åœ¨ï¼Œå¦‚æœä¸å­˜åœ¨ï¼Œè¾“å‡ºæŠ¥é”™ä¿¡æ¯ã€‚
 		if(!isset($product[$productPrimaryKey])){
 			Yii::$service->helper->errors->add('product is not exist!');
 			return ;
@@ -79,13 +79,13 @@ class Favorite extends Service
 		$one->updated_at = time();
 		$one->store = Yii::$service->store->currentStore;
 		$one->save();
-		# ¸üĞÂ¸ÃÓÃ»§×ÜµÄÊÕ²Ø²úÆ·¸öÊıµ½ÓÃ»§±í
+		# æ›´æ–°è¯¥ç”¨æˆ·æ€»çš„æ”¶è—äº§å“ä¸ªæ•°åˆ°ç”¨æˆ·è¡¨
 		$this->updateUserFavoriteCount($user_id);
 		return true;
 	}
 	/**
 	 * @property $user_id | Int
-	 * ¸üĞÂ¸ÃÓÃ»§×ÜµÄÊÕ²Ø²úÆ·¸öÊıµ½ÓÃ»§±í
+	 * æ›´æ–°è¯¥ç”¨æˆ·æ€»çš„æ”¶è—äº§å“ä¸ªæ•°åˆ°ç”¨æˆ·è¡¨
 	 */
 	protected function updateUserFavoriteCount($user_id = ''){
 		$identity = Yii::$app->user->identity;
@@ -121,9 +121,13 @@ class Favorite extends Service
 		];
 		
 	}
+	
+	protected function actionColl($filter){
+		return $this->list($filter);
+	}
 	/**
 	 * @property $favorite_id|String 
-	 * Í¨¹ıidÉ¾³ıfavorite
+	 * é€šè¿‡idåˆ é™¤favorite
 	 */
 	protected function actionCurrentUserRemove($favorite_id){
 		$identity = Yii::$app->user->identity;
