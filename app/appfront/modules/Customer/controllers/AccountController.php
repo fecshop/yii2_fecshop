@@ -52,7 +52,7 @@ class AccountController extends AppfrontController
 		if(!empty($param) && is_array($param)){
 			$this->getBlock()->login($param);
 		}
-		$data = $this->getBlock()->getLastData();
+		$data = $this->getBlock()->getLastData($param);
 		return $this->render($this->action->id,$data);
 	}
 	/**

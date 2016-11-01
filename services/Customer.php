@@ -93,6 +93,31 @@ class Customer extends Service
 		}
 	}
 	
+	protected function actionSave($param){
+		$primaryKey = $this->getPrimaryKey();
+		$primaryVal = isset($param[$primaryKey]) ? $param[$primaryKey] : '';
+		if($primaryVal){
+			$model = $this->getByPrimaryKey($primaryVal);
+			if($model[$primaryKey]){
+				unset($param[$primaryKey]);
+				$param['updated_at'] = time();
+				$password = isset($param['password']) ? $param['password'] : '';
+				if($password){
+					$model->setPassword($password);
+					unset($param['password']);
+				}
+				$saveStatus = Yii::$service->helper->ar->save($model,$param);
+				if($saveStatus){
+					return true;
+				}else{
+					$errors = $model->errors;
+					Yii::$service->helper->errors->add($errors);
+					return false;
+				}
+			}
+		}
+	}
+	
 	/**
 	 * @property $customerId|Int
 	 * Get customer info by customerId, if customer id is empty, current customer id will be set, 
@@ -122,6 +147,18 @@ class Customer extends Service
 		$customerModel->updated_at = time();
 		$customerModel->setPassword($password);
 		$customerModel->save();
+	}
+	
+	protected function actionGetByPrimaryKey($val){
+		if($val){
+			$one = CustomerModel::findOne($val);
+			$primaryKey = $this->getPrimaryKey();
+			if($one[$primaryKey]){
+				return $one;
+			}else{
+				return new CustomerModel;
+			}
+		}
 	}
 	/**
 	 * @property $password|String

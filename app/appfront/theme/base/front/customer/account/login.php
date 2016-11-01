@@ -22,7 +22,7 @@
                         <li>
                             <label for="email" class="required"><em>*</em>Email Address</label>
                             <div class="input-box">
-                                <input name="editForm[email]" value="" id="email" class="input-text required-entry validate-email" title="Email Address" type="text">
+                                <input name="editForm[email]" value="<?= $email; ?>" id="email" class="input-text required-entry validate-email" title="Email Address" type="text">
                             </div>
                         </li> 
                         <li>

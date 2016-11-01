@@ -20,11 +20,13 @@ use fecshop\app\appfront\helper\mailer\Email;
 class Login {
 	
 	
-	public function getLastData(){
+	public function getLastData($param = ''){
 		$loginParam = \Yii::$app->getModule('customer')->params['login'];
 		$loginPageCaptcha = isset($loginParam['loginPageCaptcha']) ? $loginParam['loginPageCaptcha'] : false;
+		$email = isset($param['email']) ? $param['email'] : '';
 		return [
 			'loginPageCaptcha' => $loginPageCaptcha,
+			'email' => $email,
 		];
 	}
 	
