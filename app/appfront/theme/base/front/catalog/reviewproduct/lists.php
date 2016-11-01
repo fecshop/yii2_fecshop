@@ -32,10 +32,10 @@
 							<div class="rbc_cold">
 								<span>
 									<span class="average_rating">Average rating :</span>
-									<span class="review_star review_star_5" style="font-weight:bold;" itemprop="average">5</span>  
+									<span class="review_star review_star_<?= $reviw_rate_star_average ?>" style="font-weight:bold;" itemprop="average"></span>  
 									
 									<a rel="nofollow" href="http://www.intosmile.com/fashion-long-sleeve-round-neck-striped-knitted-sweater-1.html">
-										(<span itemprop="count">1 reviews</span>)
+										(<span itemprop="count"><?= $review_count ?> reviews</span>)
 									</a>
 								</span>
 							</div>					

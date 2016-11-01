@@ -486,14 +486,25 @@ class ProductMongodb implements ProductInterface
 	//	;
 	//exit;
 		
-	public function updateProductReviewInfo($spu,$avag_rate,$count){
+	public function updateProductReviewInfo($spu,$avag_rate,$count,$lang_code,$avag_lang_rate,$lang_count){
 		$data = Product::find()->where([
 			'spu' => $spu
 		])->all();
 		if(!empty($data) && is_array($data)){
+			$attrName =  'reviw_rate_star_average_lang';
+			$review_star_lang = Yii::$service->fecshoplang->getLangAttrName($attrName,$lang_code);
+			$attrName =  'review_count_lang';
+			$review_count_lang = Yii::$service->fecshoplang->getLangAttrName($attrName,$lang_code);
+			
 			foreach($data as $one){
-				$one->reviw_rate_star_average = $avag_rate;
-				$one->review_count = $count;
+				$one['reviw_rate_star_average'] = $avag_rate;
+				$one['review_count'] = $count;
+				$a 						= $one['reviw_rate_star_average_lang'];
+				$a[$review_star_lang]  	= $avag_lang_rate ;
+				$b 						= $one['review_count_lang'];
+				$b[$review_count_lang]  = $lang_count ;
+				$one['reviw_rate_star_average_lang'] = $a;
+				$one['review_count_lang']			 = $b;
 				$one->save() ;
 			}
 		}

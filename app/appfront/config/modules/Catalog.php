@@ -83,13 +83,9 @@ return [
 				'add_captcha' 			 => true ,  # 增加review页面是否开启验证码验证。
 				'productPageReviewCount' => 20, 	# 在产品页面显示的review的个数。
 				'reviewPageReviewCount'	 => 40, 	# 在review列表页面，显示的review的个数
-				
 				'addReviewOnlyLogin'	 => true,   # 只有登录用户才有资格进行评论。
 				'ifShowCurrentUserNoAuditReview' => true, # 当前用户添加的评论，后台未审核的评论，是否显示？这个是通过ip来判断。
-				
-				'filterByStore' 		=> false,	# 是否通过store的值进行评论过滤？
 				'filterByLang'			=> true,	# 是否通过语言进行评论过滤？默认只显示当前的语言下的评论，也就是客户在添加评论的store的语言。
-				'newReviewAudit' 		=> true ,  	# 新的前台评论是否需要审核，true代表需要后台审核。
 			],
 			
 			'favorite' => [

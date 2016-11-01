@@ -242,11 +242,17 @@ class Product extends Service
 		}
 		return $skus;
 	}
+	/**
+	 * @property $spu | String
+	 * @property $avag_rate | Int 产品的总平均得分
+	 * @property $count | Int 产品的总评论数
+	 * @property $avag_lang_rate | 当前语言的总平均得分
+	 * @property $lang_count | 当前语言的总评论数
+	 */
 	
-	
-	protected function actionUpdateProductReviewInfo($spu,$avag_rate,$count){
+	protected function actionUpdateProductReviewInfo($spu,$avag_rate,$count,$lang_code,$avag_lang_rate,$lang_count){
 		
-		return $this->_product->updateProductReviewInfo($spu,$avag_rate,$count);
+		return $this->_product->updateProductReviewInfo($spu,$avag_rate,$count,$lang_code,$avag_lang_rate,$lang_count);
 	}
 	
 }

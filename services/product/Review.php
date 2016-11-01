@@ -20,9 +20,8 @@ use fecshop\models\mongodb\product\Review as ReviewModel;
  */
 class Review extends Service
 {
-	public $filterByStore;
+	
 	public $filterByLang;
-	public $newReviewAudit;
 	
 	/**
 	 * 得到review noactive status，默认状态
@@ -71,9 +70,7 @@ class Review extends Service
 		$where = [
 			'product_spu' => $spu
 		];
-		if($this->filterByStore && ($currentStore = Yii::$service->store->currentStore)){
-			$where['store'] = $currentStore;
-		}
+		
 		if($this->filterByLang && ($currentLangCode = Yii::$service->store->currentLangCode)){
 			$where['lang_code'] = $currentLangCode;
 		}
@@ -95,9 +92,7 @@ class Review extends Service
 	 */
 	protected function actionGetListBySpu($filter){
 		
-		if($this->filterByStore && ($currentStore = Yii::$service->store->currentStore)){
-			$filter['where'][] = ['store' => $currentStore ];
-		}
+		
 		if($this->filterByLang && ($currentLangCode = Yii::$service->store->currentLangCode)){
 			$filter['where'][] = ['lang_code' => $currentLangCode ];
 		}
@@ -123,12 +118,9 @@ class Review extends Service
 		if(isset($review_data[$this->getPrimaryKey()])){
 			unset($review_data[$this->getPrimaryKey()]);
 		}
-		# 默认状态。
-		if($this->newReviewAudit){
-			$review_data['status'] 	= ReviewModel::NOACTIVE_STATUS;
-		}else{
-			$review_data['status'] 	= ReviewModel::ACTIVE_STATUS;
-		}
+		
+		$review_data['status'] 	= ReviewModel::NOACTIVE_STATUS;
+		
 		$review_data['store'] 		= Yii::$service->store->currentStore;
 		$review_data['lang_code'] 	= Yii::$service->store->currentLangCode;
 		$review_data['review_date'] = time();
@@ -256,7 +248,7 @@ class Review extends Service
 		$saveStatus = Yii::$service->helper->ar->save($model,$one);
 		$model->save();
 		# 更新评论信息到产品表中。
-		$this->updateProductSpuReview($model['product_spu']);
+		$this->updateProductSpuReview($model['product_spu'],$model['lang_code']);
 		return true;
 	}
 	
@@ -272,7 +264,7 @@ class Review extends Service
 					$product_spu = $model['product_spu'];
 					$model->delete();
 					# 更新评论信息到产品表中。
-					$this->updateProductSpuReview($product_spu);
+					$this->updateProductSpuReview($product_spu,$model['lang_code']);
 				}else{
 					//throw new InvalidValueException("ID:$id is not exist.");
 					Yii::$service->helper->errors->add("Review Remove Errors:ID $id is not exist.");
@@ -307,7 +299,7 @@ class Review extends Service
 					$model->status		= ReviewModel::ACTIVE_STATUS;
 					$model->save();
 					# 更新评论信息到产品表中。
-					$this->updateProductSpuReview($model['product_spu']);
+					$this->updateProductSpuReview($model['product_spu'],$model['lang_code']);
 				}
 			}
 		}
@@ -330,7 +322,7 @@ class Review extends Service
 					$model->status		= ReviewModel::REFUSE_STATUS;
 					$model->save();
 					# 更新评论的信息到产品表
-					$this->updateProductSpuReview($model['product_spu']);
+					$this->updateProductSpuReview($model['product_spu'],$model['lang_code']);
 				}
 			}
 		}
@@ -340,7 +332,7 @@ class Review extends Service
 	 * @property $spu | String 
 	 * 当评论保存，更新评论的总数，平均评分信息到产品表的所有spu
 	 */
-	protected function actionUpdateProductSpuReview($spu){
+	protected function actionUpdateProductSpuReview($spu,$lang_code){
 		$filter = [
 			'where'			=> [
 	  			['product_spu' => $spu],
@@ -352,18 +344,29 @@ class Review extends Service
 		$count 	= $coll['count'];
 		$data 	= $coll['coll'];
 		$rate_total = 0;
+		$rate_lang_total = 0;
+		$lang_count = 0;
 		if(!empty($data) && is_array($data)){
 			foreach($data as $one){
 				$rate_total += $one['rate_star'];
+				if($lang_code == $one['lang_code']){
+					$rate_lang_total += $one['rate_star'];
+					$lang_count++;
+				}
 			}
 		}
 		if($count == 0){
 			$avag_rate = 0;
 		}else{
 			$avag_rate = ceil($rate_total/$count);
-		
 		}
-		Yii::$service->product->updateProductReviewInfo($spu,$avag_rate,$count);
+		if($lang_count == 0){
+			$avag_lang_rate = 0;
+		}else{
+			$avag_lang_rate = ceil($rate_lang_total/$lang_count);
+		}
+		
+		Yii::$service->product->updateProductReviewInfo($spu,$avag_rate,$count,$lang_code,$avag_lang_rate,$lang_count);
 		return true;
 	}
 	

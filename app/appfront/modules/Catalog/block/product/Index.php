@@ -11,6 +11,8 @@ use Yii;
 use fec\helpers\CModule;
 use fec\helpers\CRequest;
 use yii\base\InvalidValueException;
+use fecshop\app\appfront\modules\Catalog\helpers\Review as ReviewHelper;
+
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
@@ -26,14 +28,16 @@ class Index {
 		$productImgSize = Yii::$app->controller->module->params['productImgSize'];
 		$productImgMagnifier = Yii::$app->controller->module->params['productImgMagnifier'];
 		$this->initProduct();
-		
+		ReviewHelper::initReviewConfig();
+		$ReviewAndStarCount = ReviewHelper::getReviewAndStarCount($this->_product);
+		list($review_count,$reviw_rate_star_average) = $ReviewAndStarCount;
 		return [
 			'name' 					=> Yii::$service->store->getStoreAttrVal($this->_product['name'],'name'),
 			'image'					=> $this->_product['image'],
 			'sku'					=> $this->_product['sku'],
 			'spu'					=> $this->_product['spu'],
-			'review_count'			=> $this->_product['review_count'] ? $this->_product['review_count'] : 0,
-			'reviw_rate_star_average'	=> $this->_product['reviw_rate_star_average'] ? $this->_product['reviw_rate_star_average'] : 0,
+			'review_count'			=> $review_count,
+			'reviw_rate_star_average'=> $reviw_rate_star_average,
 			'price_info'			=> $this->getProductPriceInfo(),
 			'tier_price'			=> $this->_product['tier_price'],
 			'media_size' => [

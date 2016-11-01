@@ -80,11 +80,14 @@ class Lists {
 			
 			$pageToolBar = $this->getProductPage($count);
 			$coll  = $data['coll'];
+			$ReviewAndStarCount = ReviewHelper::getReviewAndStarCount($product);
+			list($review_count,$reviw_rate_star_average) = $ReviewAndStarCount;
 			return [
 				'_id' => $this->product_id,
 				'spu' => $this->spu,
+				'review_count'				=> $review_count,
+				'reviw_rate_star_average'	=> $reviw_rate_star_average,
 				'pageToolBar'	=> $pageToolBar,
-				'review_count'	=> $count,
 				'coll'			=> $coll ,
 				'noActiveStatus'=> Yii::$service->product->review->noActiveStatus(),
 				'addReviewUrl'	=> $addReviewUrl,
@@ -98,6 +101,8 @@ class Lists {
 		
 		
 	}
+	
+	
 	
 	public function getReviewsBySpu($spu){
 		$currentIp = \fec\helpers\CFunc::get_real_ip();
