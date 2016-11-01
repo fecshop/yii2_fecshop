@@ -6,7 +6,7 @@
  * @copyright Copyright (c) 2016 FecShop Software LLC
  * @license http://www.fecshop.com/license/
  */
-namespace fecshop\app\appadmin\modules\Cms;
+namespace fecshop\app\appadmin\modules\Customer;
 use Yii;
 /**
  * @author Terry Zhao <2358269014@qq.com>
@@ -16,13 +16,13 @@ class Module extends \fec\AdminModule
 {
     public function init()
     {
-		 
-		# 浠ヤ笅浠ｇ爜蹇呴』鎸囧畾
+		
+		# 以下代码必须指定
         $this->controllerNamespace 	= 	__NAMESPACE__ . '\\controllers';
 		$this->_currentDir			= 	__DIR__ ;
 		$this->_currentNameSpace	=   __NAMESPACE__;
 		
-		# 鎸囧畾榛樿鐨刴an鏂囦欢
+		# 指定默认的man文件
 		$this->layout = "/main_ajax.php";
 		parent::init();  
 		

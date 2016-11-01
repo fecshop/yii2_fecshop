@@ -7,6 +7,7 @@
  * @license http://www.fecshop.com/license/
  */
 namespace fecshop\app\appadmin\modules;
+use Yii;
 use fec\helpers\CRequest;
 use fec\helpers\CUrl;
 use yii\base\Object;

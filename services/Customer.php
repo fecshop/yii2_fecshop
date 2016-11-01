@@ -83,6 +83,8 @@ class Customer extends Service
 		$model = new CustomerRegister;
 		$model->attributes = $param;
 		if($model->validate()){
+			$model->created_at = time();
+			$model->updated_at = time();
 			return $model->save();
 		}else{
 			$errors = $model->errors;
@@ -117,6 +119,7 @@ class Customer extends Service
 		}else if(is_object($identity)){
 			$customerModel = $identity;
 		}
+		$customerModel->updated_at = time();
 		$customerModel->setPassword($password);
 		$customerModel->save();
 	}
@@ -142,6 +145,7 @@ class Customer extends Service
 		//echo $password;exit;
 		$customerModel->setPassword($password);
 		$customerModel->removePasswordResetToken();
+		$customerModel->updated_at = time();
 		$customerModel->save();
 		return true;
 	}
@@ -188,6 +192,7 @@ class Customer extends Service
 		if($one){
 			
 			$one->generatePasswordResetToken();
+			$one->updated_at = time();
 			$one->save();
 			return $one->password_reset_token;
 		}
@@ -233,7 +238,31 @@ class Customer extends Service
 			Yii::$service->url->redirectByUrlKey($urlKey);
 		}
 	}
+	/**
+	 * 得到status为删除状态的值
+	 */ 
+	protected function actionGetStatusDeleted(){
+		return CustomerModel::STATUS_DELETED;
+	}
+	/**
+	 * 得到status为激活状态的值
+	 */ 
+	protected function actionGetStatusActive(){
+		return CustomerModel::STATUS_ACTIVE;
+	}
 	
+	protected function actionGetPrimaryKey(){
+		return 'id';
+	}
 	
+	public function coll($filter=''){
+		$query = CustomerModel::find();
+		$query = Yii::$service->helper->ar->getCollByFilter($query,$filter);
+		//var_dump($query->all());exit;
+		return [
+			'coll' => $query->all(),
+			'count'=> $query->count(),
+		];
+	}
 	
 }
