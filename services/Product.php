@@ -50,12 +50,57 @@ class Product extends Service
 	 *  属性组，以及属性组对应的属性，是在Product Service config中配置的。
 	 */
 	protected function actionGetGroupAttrInfo($productAttrGroup){
+		$arr = [];
 		if($productAttrGroup == $this->_defaultAttrGroup){
 			return [];
-		}else if(isset($this->customAttrGroup[$productAttrGroup])){
-			return isset($this->customAttrGroup[$productAttrGroup]) ? $this->customAttrGroup[$productAttrGroup] : [];
 		}
+		# 得到普通属性
+		if(isset($this->customAttrGroup[$productAttrGroup]['general_attr']) 
+				&& is_array($this->customAttrGroup[$productAttrGroup]['general_attr'])	
+		){
+			$arr = array_merge($arr,$this->customAttrGroup[$productAttrGroup]['general_attr']);
+		}
+		# 得到用于spu，细分sku的属性，譬如颜色尺码之类。
+		if(isset($this->customAttrGroup[$productAttrGroup]['spu_attr']) 
+				&& is_array($this->customAttrGroup[$productAttrGroup]['spu_attr'])	
+		){
+			$arr = array_merge($arr,$this->customAttrGroup[$productAttrGroup]['spu_attr']);
+		}
+		return $arr;
 	}
+	/**
+	 * @property $productAttrGroup|String
+	 * @return  一维数组
+	 *  得到这个产品属性组里面的 属性
+	 */
+	protected function actionGetSpuAttr($productAttrGroup){
+		$arr = [];
+		if($productAttrGroup == $this->_defaultAttrGroup){
+			return [];
+		}
+		
+		# 得到用于spu，细分sku的属性，譬如颜色尺码之类。
+		if(isset($this->customAttrGroup[$productAttrGroup]['spu_attr']) 
+				&& is_array($this->customAttrGroup[$productAttrGroup]['spu_attr'])	
+		){
+			$arr = array_merge($arr,$this->customAttrGroup[$productAttrGroup]['spu_attr']);
+		}
+		return array_keys($arr);
+	}
+	# spu的属性目前不能超过两个选项，譬如衣服同一个spu
+	# 不同的sku 是通过颜色和尺码进行区分的。此时， color 和 size 被称为spu属性
+	# 如果您有的产品可能有超过2个的spu属性，您可以通过拆分，将一个spu切分成多个spu
+	# 譬如：您的spu属性有三个： 颜色，尺码，材质。你可以把不同的材质设置成不同的spu
+	# 然后颜色和尺码作为spu属性，也就是同一个款式同一个材质的衣服，不同的颜色尺码是相同的spu，但是sku是不同的
+	protected function actionIsCorrectSpuConfig($productAttrGroup){
+		$spuAttrArr = $this->GetSpuAttr($productAttrGroup);
+		$count = count($spuAttrArr);
+		if( $count > 2 || $count <= 0 ){
+			return false;
+		}
+		return true;
+	}
+	
 	/**
 	 * 得到默认的产品属性组。
 	 */

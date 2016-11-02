@@ -55,10 +55,17 @@ class Index {
 	}
 	
 	
-	protected function getSpuData(){
+	protected function getSpuData($color,$size){
 		$spu	= $this->_product['spu'];
+		$select = ['name','image','url_key'];
+		if($color){
+			$select[] = $color;
+		}
+		if($size){
+			$select[] = $size;
+		}
 		$filter = [
-	  		'select' 	=> ['name','image','color','size','url_key'],  	
+	  		'select' 	=> $select,  	
 	   		'where'			=> [
 	 			['spu' => $spu],
 	  		],
@@ -73,47 +80,52 @@ class Index {
 	 * @property $current_size | String 当前产品的size值
 	 * @property $current_color | String 当前产品的颜色值
 	 * @return Array 分别为
-	 *		$all_color 所有的颜色数组
-	 *		$all_size  所有的尺码数组
-	 *		$color_2_size 当前尺码下的所有颜色数组。
-	 *		$size_2_color 当前颜色下的所有尺码数组。
+	 *		$all_attr1 所有的颜色数组
+	 *		$all_attr2  所有的尺码数组
+	 *		$attr1_2_attr2 当前尺码下的所有颜色数组。
+	 *		$attr2_2_attr1 当前颜色下的所有尺码数组。
 	 */
-	protected function getColorAndSizeInfo($data,$current_size,$current_color){
-		$all_color 		= [];
-		$all_size 		= [];
-		$color_2_size 	= [];
-		$size_2_color 	= [];
+	protected function getAttr1AndAttr2Info($data,$current_attr1,$current_attr2,$attr1,$attr2){
+		$all_attr1 		= [];
+		$all_attr2		= [];
+		$attr1_2_attr2 	= [];
+		$attr2_2_attr1 	= [];
+		//var_dump($data);
 		foreach($data as $one){
-			$color 	= $one['color'];
-			$size 	= $one['size'];
-			//echo $color;
+			$attr1_val 	= isset($one[$attr1]) ? $one[$attr1] : '';
+			$attr2_val 	= isset($one[$attr2]) ? $one[$attr2] : '';
+			//echo $attr1_val;
 			//echo $size;
 			//echo '##';
 			$image 	= $one['image'];
 			$name 	= $one['name'];
 			$url_key= $one['url_key'];
-			if($color || $size){
-				$all_color[$color] = [
-					'name' 		=> $name,
-					'image' 	=> $image,
-					'url_key' 	=> $url_key,
-				];
-				$all_size[$size] = [
-					'name' 		=> $name,
-					'image' 	=> $image,
-					'url_key' 	=> $url_key,
-				];
-				//echo $size.'#'.$current_size;
+			if($attr1_val || $attr2_val){
+				if($attr1_val){
+					$all_attr1[$attr1_val] = [
+						'name' 		=> $name,
+						'image' 	=> $image,
+						'url_key' 	=> $url_key,
+					];
+				}
+				if($attr2_val){
+					$all_attr2[$attr2_val] = [
+						'name' 		=> $name,
+						'image' 	=> $image,
+						'url_key' 	=> $url_key,
+					];
+				}
+				//echo $attr2_val.'#'.$current_attr2;
 				//echo '<br/>';
-				if($current_size == $size){
-					$color_2_size[$color] = [
+				if($attr2_val && $current_attr2 == $attr2_val){
+					$attr1_2_attr2[$attr1_val] = [
 						'name' 		=> $name,
 						'image' 	=> $image,
 						'url_key' 	=> $url_key,
 					]; 
 				}
-				if($current_color == $color){
-					$size_2_color[$size] = [
+				if($attr1_val && $current_attr1 == $attr1_val){
+					$attr2_2_attr1[$attr2_val] = [
 						'name' 		=> $name,
 						'image' 	=> $image,
 						'url_key' 	=> $url_key,
@@ -121,25 +133,49 @@ class Index {
 				}
 			}
 		}
-		return [$all_color,$all_size,$color_2_size,$size_2_color ];
+		return [$all_attr1,$all_attr2,$attr1_2_attr2,$attr2_2_attr1 ];
 	}
+	
+	
 	/**
+	 * 显示这个的前提是，该产品所在属性组对应的spu_attr 只有color 和size 两种
+	 * 也就是说，这个只针对服装做的一种方式，其他的会按照大众化的那种方式显示出来过滤。（下拉条）
 	 * 这个有点像定制化的范畴，目前我只做了color和size这类
 	 * 衣服类产品需要用到的属性，对于其他的类似属性，就需要自己做定制修改了
 	 * @return 返回和当前产品spu相同的其他产品，然后以颜色和尺码的方式罗列出来。
 	 */
 	protected function getSameSpuInfo(){
-		//echo $this->_product['sku'];
-		//var_dump($this->_product);
-		$current_color 	= isset($this->_product['color']) ? $this->_product['color'] :'';
-		$current_size 	= isset($this->_product['size']) ? $this->_product['size'] : '';
-		if(!$current_size && !$current_color){
+			
+		# 查看spu属性的个数是否是1个，或者2个，否则退出。
+		if(!Yii::$service->product->isCorrectSpuConfig($this->_product['attr_group'])){
+			return;
+		}
+		$spuAttrArr = Yii::$service->product->getSpuAttr($this->_product['attr_group']);
+		$arr = $spuAttrArr;
+		$attr1 = $arr[0];
+		$attr2 = isset($arr[1]) ? $arr[1] : '';
+		
+		# 开始逻辑处理
+		$current_attr1 	= isset($this->_product[$attr1]) ? $this->_product[$attr1] :'';
+		if($attr2){
+			$current_attr2 	= isset($this->_product[$attr2]) ? $this->_product[$attr2] : '';
+		}else{
+			$current_attr2 	= '';
+		}
+		//var_dump($arr);
+		//echo $attr1;exit;
+		
+		if(!$current_attr2 && !$current_attr1){
 			return ;
 		}
-		$data = $this->getSpuData();
-		list($all_color,$all_size,$color_2_size,$size_2_color) = $this->getColorAndSizeInfo($data,$current_size,$current_color);
-		$all_size = $this->sortSizeArr($all_size); 
-		return [$current_color,$current_size,$all_color,$all_size,$color_2_size,$size_2_color];
+	
+		$data = $this->getSpuData($attr1,$attr2);
+		list($all_attr1,$all_attr2,$attr1_2_attr2,$attr2_2_attr1 ) = $this->getAttr1AndAttr2Info($data,$current_attr1,$current_attr2,$attr1,$attr2);
+		if($attr2 == 'size'){
+			$all_attr2 = $this->sortSizeArr($all_attr2); 
+		}
+		//var_dump([$current_color,$current_attr2,$all_color,$all_size,$color_2_size,$size_2_color,$attr1,$attr2]); exit;
+		return [$current_attr1,$current_attr2,$all_attr1,$all_attr2,$attr1_2_attr2,$attr2_2_attr1,$attr1,$attr2];
 	}
 	/**
 	 *	@property $data | Array  各个尺码对应的产品数组
@@ -160,7 +196,9 @@ class Index {
 					$d_arr[$size] = $data[$size];
 				}
 			}
-			return $d_arr;
+			if(!$d_arr){
+				return $d_arr;
+			}
 		}
 		return $data;
 	}

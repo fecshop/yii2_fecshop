@@ -1,23 +1,25 @@
-<?php list($current_color,$current_size,$all_color,$all_size,$color_2_size,$size_2_color) = $parentThis['options']; ?>
-<?php if(is_array($all_color) && !empty($all_color)){  ?>
+<?php list($current_attr1,$current_attr2,$all_attr1,$all_attr2,$attr1_2_attr2,$attr2_2_attr1,$attr1,$attr2) = $parentThis['options']; ?>
+
+<?php # 这里是 一种类似京东的处理方式。  ?>
+<?php if(is_array($all_attr1) && !empty($all_attr1)){  ?>
 	<div class="pg">
-		<div class="label">Color:</div>
+		<div class="label"><?= ucfirst($attr1); ?>:</div>
 		<div class="chose_color rg">
 			<ul>
-<?php		foreach($all_color as $color => $info){ ?>
+<?php		foreach($all_attr1 as $attr1Val => $info){ ?>
 <?php			$main_img = isset($info['image']['main']['image']) ? $info['image']['main']['image'] : ''; ?>
 <?php			$url = ''; ?>
 <?php			$active = 'class="active"'; ?>
-<?php			if(isset($color_2_size[$color])){ ?>
-<?php				$url = Yii::$service->url->getUrl($color_2_size[$color]['url_key']); ?>
+<?php			if(isset($attr1_2_attr2[$attr1Val])){ ?>
+<?php				$url = Yii::$service->url->getUrl($attr1_2_attr2[$attr1Val]['url_key']); ?>
 <?php			}else{ ?>
 <?php				$url = Yii::$service->url->getUrl($info['url_key']); ?>
 <?php			} ?>
-<?php			if($color == $current_color){ ?>
+<?php			if($attr1Val == $current_attr1){ ?>
 <?php				$active = 'class="current"'; ?>
 <?php			} ?>
 			<li <?= $active ?>>
-				<a <?= $active ?> href="javascript:void(0)" rel="<?= $url ?>"><img src="<?= Yii::$service->product->image->getResize($main_img,[50,55],false) ?>"/></a>
+				<a title="<?= $attr1Val ?>" <?= $active ?> href="javascript:void(0)" rel="<?= $url ?>"><img src="<?= Yii::$service->product->image->getResize($main_img,[50,55],false) ?>"/></a>
 				<b></b>
 			</li>
 <?php		} ?>
@@ -29,23 +31,24 @@
 <?php	
 	}
 ?>
-<?php	if(is_array($all_size) && !empty($all_size)){ ?>
+
+<?php	if(is_array($all_attr2) && !empty($all_attr2)){ ?>
 	<div class="pg">
-		<div class="label size-label">Size:</div>
+		<div class="label size-label"><?= ucfirst($attr2); ?>:</div>
 		<div class="chose_size rg">
 			<ul>
-<?php		foreach($all_size as $size => $info){ ?>
+<?php		foreach($all_attr2 as $attr2Val => $info){ ?>
 <?php			$url = ''; ?>
 <?php			$active = 'class="noactive"'; ?>
-<?php			if(isset($size_2_color[$size])){ ?>
-<?php				$url = Yii::$service->url->getUrl($size_2_color[$size]['url_key']); ?>
+<?php			if(isset($attr2_2_attr1[$attr2Val])){ ?>
+<?php				$url = Yii::$service->url->getUrl($attr2_2_attr1[$attr2Val]['url_key']); ?>
 <?php				$active = 'class="active"'; ?>
 <?php			} ?>
-<?php			if($size == $current_size){ ?>
+<?php			if($attr2Val == $current_attr2){ ?>
 <?php				$active = 'class="current"'; ?>
 <?php			} ?>
 				<li <?= $active ?>>
-					<a <?=$active ?> href="javascript:void(0)" rel="<?= $url ?>"><span><?= $size ?></span></a>
+					<a <?=$active ?> href="javascript:void(0)" rel="<?= $url ?>"><span><?= $attr2Val ?></span></a>
 					<b></b>
 				</li>
 <?php		}	?>
@@ -67,5 +70,5 @@ $(document).ready(function(){
 });
 <?php $this->endBlock(); ?>  
 </script>  
-<?php $this->registerJs($this->blocks['product_options'],\yii\web\View::POS_END);//����д��js����ע�ᵽҳ��ײ� ?>
+<?php $this->registerJs($this->blocks['product_options'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
 

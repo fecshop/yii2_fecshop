@@ -228,7 +228,9 @@ class Index {
 		$filter_info  = [];
 		$filter_attrs = $this->getFilterAttr();
 		foreach($filter_attrs as $attr){
-			$filter_info[$attr] = Yii::$service->product->getFrontCategoryFilter($attr,$this->_where);
+			if($attr != 'price'){
+				$filter_info[$attr] = Yii::$service->product->getFrontCategoryFilter($attr,$this->_where);
+			}
 		}
 		return $filter_info;
 		
