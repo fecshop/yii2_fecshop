@@ -22,6 +22,7 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 {
 	public  $_saveUrl;
 	protected $_attr;
+	protected $_custom_option_list_str;
 	
 	public function init(){
 		$this->_saveUrl = CUrl::getUrl('catalog/productinfo/managereditsave');
@@ -63,7 +64,79 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 			//'lang_attr'	=> $this->_lang_attr,
 			'saveUrl' 		=> $this->_saveUrl,
 			'operate'		=> Yii::$app->request->get('operate'),
+			'custom_option_add' => $this->getCustomOptionAdd(),
+			'custom_option_img' => $this->getCustomOpImgHtml(),
+			'custom_option_list' => $this->_custom_option_list_str,
 		];
+	}
+	
+	
+	public function getCustomOptionAdd(){
+		$attr_group = $this->_one['attr_group'];
+		$currentAttrGroup = CRequest::param('attr_group');
+		if($currentAttrGroup){
+			$attr_group = $currentAttrGroup;
+		}
+		$str = '';
+		$this->_custom_option_list_str = '';
+		if($attr_group){
+			$custom_option_attr_info = Yii::$service->product->getCustomOptionAttrInfo($attr_group);
+			if(is_array($custom_option_attr_info) && !empty($custom_option_attr_info)){
+				$this->_custom_option_list_str .= '<table style=""><thead><tr>';
+					
+				foreach($custom_option_attr_info as $attr => $info){
+					$label = $info['label'];
+					$this->_custom_option_list_str .= '<th>'.$label.'</th>';	
+					
+					$str  .= '<div class="nps"><span >'.$label.':</span>';
+					$type = isset($info['display']['type']) ? $info['display']['type'] : '';
+					$data = isset($info['display']['data']) ? $info['display']['data'] : '';
+					if($type == 'select' && is_array($data) && !empty($data)){
+						$str .= '<select atr="'.$attr.'" class="custom_option_attr">';
+						foreach($info['display']['data'] as $k=>$v){
+							$str .= '<option value="'.$k.'">'.$v.'</option>';
+						}
+						$str .= '</select>';
+					}
+					$str  .= '</div>';
+				}
+				$str .= '<div class="nps"><span>Sku:</span><input style="width:40px;" type="text" class="custom_option_sku"  value="" /></div>
+						<div class="nps"><span>Qty:</span><input style="width:40px;" type="text" class="custom_option_qty"  value="" /></div>
+						<div class="nps"><span>Price:</span><input  style="width:40px;" type="text" class="custom_option_price"  value="" /></div>
+						<div class="nps" style="width:220px;"><a class=" button chose_custom_op_img" style="display: block;float: left; margin: -2px 10px 0;" ><span style="margin:0">选择图片</span></a><div class="chosened_img"></div></div>
+						<div class="nps"><a style="display: block;float: right; margin: -2px 10px 0;" class="button add_custom_option"><span style="margin:0">+</span></a></div>
+					';
+				
+				$this->_custom_option_list_str .= '<th>sku</th><th>qty</th><th>price</th><th>img</th><th>delete</th>';	
+				$this->_custom_option_list_str .= '<tr><thead>';
+				//$this->_custom_option_list_str .= '<tbody></tbody>';
+				//$this->_custom_option_list_str .= '</table>';
+				$this->_custom_option_list_str .= '<tbody>';
+				$custom_option = $this->_one['custom_option'];
+				if(is_array($custom_option) && !empty($custom_option)){
+					
+					foreach($custom_option  as $one){
+						$this->_custom_option_list_str .= '<tr>';
+						foreach($custom_option_attr_info as $attr => $info){
+							$val = $one[$attr];
+							$this->_custom_option_list_str .= '<td rel="'.$attr.'">'.$val.'</td>';
+						}
+						$this->_custom_option_list_str .= '<td class="custom_option_sku" rel="sku">'.$one['sku'].'</td>';
+						$this->_custom_option_list_str .= '<td rel="qty">'.$one['qty'].'</td>';
+						$this->_custom_option_list_str .= '<td rel="price">'.$one['price'].'</td>';
+						$this->_custom_option_list_str .= '<td rel="image"><img style="width:30px;" rel="'.$one['image'].'" src="'.Yii::$service->product->image->getUrl($one['image']).'"/></td>';
+						$this->_custom_option_list_str .= '<td><a title="删除"  href="javascript:void(0)" class="btnDel deleteCustomList">删除</a></td>';
+						$this->_custom_option_list_str .= '</tr>';
+					}
+					
+				}
+				$this->_custom_option_list_str .= '</tbody>';
+				$this->_custom_option_list_str .= '</table>';
+				
+			}
+		}
+		return $str;
+		
 	}
 	
 	
@@ -170,6 +243,28 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 	}
 	
 	
+	public function getCustomOpImgHtml(){
+		if(isset($this->_one['image']['main']) && !empty($this->_one['image']['main'])){
+			$main_image = $this->_one['image']['main'];
+		}
+		if(isset($this->_one['image']['gallery']) && !empty($this->_one['image']['gallery'])){
+			$gallery_image = $this->_one['image']['gallery'];
+		}
+		$str ='';
+			if(!empty($main_image) && is_array($main_image)){
+				$str .='<span><img  rel="'.$main_image['image'].'" style="width:80px;" src="'.Yii::$service->product->image->getUrl($main_image['image']).'"></span>';
+			}
+			if(!empty($gallery_image) && is_array($gallery_image)){
+				$i=2;
+				foreach($gallery_image as $gallery){
+					$str .='<span><img  rel="'.$gallery['image'].'" style="width:80px;" src="'.Yii::$service->product->image->getUrl($gallery['image']).'"></span>';
+					$i++;
+				}
+			}										
+		$str .=	'';
+		return $str;
+	}
+	
 	
 	public function getEditArr(){
 		
@@ -217,7 +312,19 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 		$request_param 		= CRequest::param();
 		$this->_param		= $request_param[$this->_editFormData];
 		$this->_param['attr_group'] 	= CRequest::param('attr_group');
-		$this->_param['custom_option'] 	= ($custom_option = CRequest::param('custom_option')) ? json_decode($custom_option,true) : '';
+		$custom_option = CRequest::param('custom_option');
+		//var_dump($custom_option);
+		$custom_option	= $custom_option ? json_decode($custom_option,true) : [];
+		$custom_option_arr = [];
+		if(is_array($custom_option) && !empty($custom_option)){
+			foreach($custom_option as $one){
+				$one['qty'] 	= (int)$one['qty'];
+				$one['price'] 	= (float)$one['price'];
+				$custom_option_arr[$one['sku']] = $one;
+			}
+		}
+		$this->_param['custom_option'] = $custom_option_arr;
+		//var_dump($this->_param['custom_option']);
 		$image_gallery 		= CRequest::param('image_gallery');
 		$image_main 		= CRequest::param('image_main');
 		$save_gallery = [];
@@ -339,26 +446,7 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 				}
 			}
 		}
-		$custom_option = isset($this->_param['custom_option']) ? $this->_param['custom_option'] : ''; 
-		if(is_array($custom_option) && !empty($custom_option) ){
-			$custom_option_af = [];
-			foreach($custom_option as $option){
-				$option['is_require'] = isset($option['is_require']) ? (int)$option['is_require'] : 0;
-				$option['sort_order'] = isset($option['sort_order']) ? (int)$option['sort_order'] : 0;
-				$data = isset($option['data']) ? $option['data'] : '';
-				$data_af = [];
-				if(!empty($data) && is_array($data)){
-					foreach($data as $d){
-						$d['price'] = isset($d['price']) ? (float)$d['price'] : 0;
-						$d['sort_order'] = isset($d['sort_order']) ? (int)$d['sort_order'] : 0;
-						$data_af[] = $d;
-					}
-				}
-				$option['data'] = $data_af;
-				$custom_option_af[] = $option;
-			}
-			$this->_param['custom_option'] = $custom_option_af;
-		}
+		
 		#tier price
 		$tier_price = $this->_param['tier_price'];
 		$tier_price_arr = [];

@@ -101,6 +101,18 @@ class Product extends Service
 		return true;
 	}
 	
+	protected function actionGetCustomOptionAttrInfo($productAttrGroup){
+		$arr = [];
+		if($productAttrGroup == $this->_defaultAttrGroup){
+			return [];
+		}
+		if(isset($this->customAttrGroup[$productAttrGroup]['custom_options']) 
+				&& is_array($this->customAttrGroup[$productAttrGroup]['custom_options'])	
+		){
+			return $this->customAttrGroup[$productAttrGroup]['custom_options'];
+		}
+	}
+	
 	/**
 	 * 得到默认的产品属性组。
 	 */
