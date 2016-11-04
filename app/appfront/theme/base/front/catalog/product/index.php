@@ -51,9 +51,14 @@
 								$optionsView = [
 									'class' =>  'fecshop\app\appfront\modules\Catalog\block\product\CustomOption',
 									'view'	=> 'catalog/product/index/custom_option.php',
-									'custom_option' => $custom_option,
-									'attr_group'	=> $attr_group,
+									'custom_option' 	=> $custom_option,
+									'attr_group'		=> $attr_group,
+									'middle_img_width' 	=> $media_size['middle_img_width'],
 								];
+								$optionsParam = [
+									
+								];
+								
 								
 							?>
 							<?= Yii::$service->page->widget->render($optionsView,$optionsParam); ?>

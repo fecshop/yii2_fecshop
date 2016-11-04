@@ -9,20 +9,21 @@
 		<input type="hidden" value="" class="product_custom_options"    />
 		<div class="label"><?= ucwords(str_replace("-"," ",str_replace("_"," ",$attr))) ?>:</div>
 		<div class="chose_<?= $attr  ?> rg  <?= $attr ?>">
-			<ul class="no_chosen_ul <?= $required; ?>" attr="<?= $attr ?>">
+			<ul  class="no_chosen_ul <?= $required; ?>" attr="<?= $attr ?>">
 <?php  			if(is_array($info) && !empty($info)){ ?>
 <?php  				foreach($info as $one){ ?>
 <?php					$val 		= $one['val'];  ?>
 <?php					$key 		= $one['key'];  ?>
 <?php					$image 		= $one['image'];  ?>
 			<?php   	if($image){  ?>
-				<li>
-					<a attr="<?= $attr ?>"  class="imgshow active" value="<?= $key ?>"><img src="<?= Yii::$service->product->image->getResize($image,[50,55],false) ?>" /></a>
+				<li id="gal1">
+					<a data-image="<?= Yii::$service->product->image->getResize($image,$middle_img_width,false) ?>"  data-zoom-image="<?= Yii::$service->product->image->getUrl($image);  ?>"  attr="<?= $attr ?>"  class="imgshow active_v"  value="<?= $key ?>">
+						<img  src="<?= Yii::$service->product->image->getResize($image,[50,55],false) ?>" /></a>
 					<b></b>
 				</li>
 			<?php   	}else{ ?>
 				<li>
-					<a attr="<?= $attr ?>" class="noimgshow active" value="<?= $key ?>"><?= $val ?></a>
+					<a attr="<?= $attr ?>" class="noimgshow active_v" value="<?= $key ?>"><?= $val ?></a>
 					<b></b>
 				</li>
 <?php   				}  ?>
@@ -117,12 +118,12 @@ $(document).ready(function(){
 					//alert(my_arr[attr]);
 					if($.inArray(val, c_my_arr[attr][attr]) > -1){
 						$(this).removeClass('no_active');
-						$(this).addClass('active');
+						$(this).addClass('active_v');
 					}else{
 						//alert(val);
 						//alert(222);
 						$(this).addClass('no_active');
-						$(this).removeClass('active');
+						$(this).removeClass('active_v');
 					}
 
 				});

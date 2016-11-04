@@ -20,6 +20,7 @@ class CustomOption {
 	
 	public $custom_option;
 	public $attr_group;
+	public $middle_img_width; # Í¼Æ¬µÄ¿í¶È¡£
 	protected $_custom_option_arr;
 	
 	public function getLastData(){
@@ -28,6 +29,7 @@ class CustomOption {
 		return [
 			'items' => $items ,
 			'custom_option_arr' => json_encode($this->_custom_option_arr),
+			'middle_img_width'  => $this->middle_img_width,
 		];
 	}
 	
@@ -49,14 +51,16 @@ class CustomOption {
 		$img_arr = [];
 		if(is_array($this->custom_option) && (!empty($this->custom_option))){
 			foreach($this->custom_option as $option){
-				$i = 0;
-				$this->_custom_option_arr[] = $option;
-				if(isset($option[$img_attr])){
-					$val = $option[$img_attr];
-					$img_arr[$val] = $option['image'];
-				}
-				foreach($option as $k=>$v){
-					$my_arr[$k][] = $v;
+				$qty = $option['qty'];
+				if($qty>0){
+					$this->_custom_option_arr[] = $option;
+					if(isset($option[$img_attr])){
+						$val = $option[$img_attr];
+						$img_arr[$val] = $option['image'];
+					}
+					foreach($option as $k=>$v){
+						$my_arr[$k][] = $v;
+					}
 				}
 			}
 		}
