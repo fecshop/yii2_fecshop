@@ -1803,9 +1803,7 @@ border: solid 1px #adadad;
 .product_options a.noactive{
 	border: 1px dashed #ccc;
 }
-.product_options a.current{
-	border:1px solid #cc0000;
-}
+
 
 .product_options a.active{
 	border:1px solid #ccc;
@@ -1874,8 +1872,7 @@ border: solid 1px #adadad;
 
 .product_qty{margin:20px 0 0}
 
-.pg .rg.chose_color{width:auto;}
-.pg .rg.chose_size{width:auto;}
+.product_options .pg .rg{width:auto;}
 
 .product_options .label{line-height:62px;}
 
@@ -2300,9 +2297,24 @@ a.next_images {
 
 
 
+.product_options a.no_active{
+	border: 1px dashed #ccc;
+    cursor:not-allowed;
+}
 
+.product_options a.noimgshow{
+    font-size: 11px;
+    height: 35px;
+    line-height: 35px;
+    width: 35px;
+}
 
-
-
+.product_options a.active{
+	border: 1px solid #ccc;
+   
+}
+.product_options a.current{
+	border:1px solid #cc0000;
+}
 
 

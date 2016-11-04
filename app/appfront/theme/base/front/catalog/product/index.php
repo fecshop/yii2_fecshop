@@ -46,11 +46,12 @@
 						<div class="product_custom_options">
 							<?php # custom options部分
 								$optionsView = [
-									'view'	=> 'catalog/product/index/custom_option.php'
-								];
-								$optionsParam = [
+									'class' =>  'fecshop\app\appfront\modules\Catalog\block\product\CustomOption',
+									'view'	=> 'catalog/product/index/custom_option.php',
 									'custom_option' => $custom_option,
+									'attr_group'	=> $attr_group,
 								];
+								
 							?>
 							<?= Yii::$service->page->widget->render($optionsView,$optionsParam); ?>
 						

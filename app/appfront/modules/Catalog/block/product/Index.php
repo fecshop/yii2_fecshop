@@ -36,6 +36,7 @@ class Index {
 			'image'					=> $this->_product['image'],
 			'sku'					=> $this->_product['sku'],
 			'spu'					=> $this->_product['spu'],
+			'attr_group'			=> $this->_product['attr_group'],
 			'review_count'			=> $review_count,
 			'reviw_rate_star_average'=> $reviw_rate_star_average,
 			'price_info'			=> $this->getProductPriceInfo(),
