@@ -1802,12 +1802,10 @@ border: solid 1px #adadad;
 
 .product_options a.noactive{
 	border: 1px dashed #ccc;
+	cursor: not-allowed;
 }
 
 
-.product_options a.active{
-	border:1px solid #ccc;
-}
 
 .product_custom_options .one_option{
 	margin:10px 0;
@@ -2310,11 +2308,13 @@ a.next_images {
 }
 
 .product_options a.active{
-	border: 1px solid #ccc;
+	border: 1px solid #777;
    
 }
 .product_options a.current{
 	border:1px solid #cc0000;
 }
-
-
+.tier_price_info .label{font-size: 11px;
+    margin: 0 0 6px;}
+.product_info_section{margin:5px 0px 15px;}
+.product_custom_options .product_options .label{line-height:45px;}

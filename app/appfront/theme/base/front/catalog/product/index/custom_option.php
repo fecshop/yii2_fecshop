@@ -2,17 +2,19 @@
 <?php	if(is_array($items) && !empty($items)){  ?>
 <div class="product_options">
 				
-<?php 	foreach($items as $attr => $info){  ?>
+<?php 	foreach($items as $attr => $v_info){  ?>
+<?php 	$info = $v_info['info'];  $require = $v_info['require']; ?>
+<?php 	$required = $require ? 'required' : '' ?>
 	<div class="pg">
-		<div class="label"><?= $attr ?>:</div>
+		<input type="hidden" value="" class="product_custom_options"    />
+		<div class="label"><?= ucwords(str_replace("-"," ",str_replace("_"," ",$attr))) ?>:</div>
 		<div class="chose_<?= $attr  ?> rg  <?= $attr ?>">
-			<ul class="no_chosen_ul" attr="<?= $attr ?>">
+			<ul class="no_chosen_ul <?= $required; ?>" attr="<?= $attr ?>">
 <?php  			if(is_array($info) && !empty($info)){ ?>
 <?php  				foreach($info as $one){ ?>
 <?php					$val 		= $one['val'];  ?>
 <?php					$key 		= $one['key'];  ?>
 <?php					$image 		= $one['image'];  ?>
-<?php					$require 	= $one['require'];  ?>
 			<?php   	if($image){  ?>
 				<li>
 					<a attr="<?= $attr ?>"  class="imgshow active" value="<?= $key ?>"><img src="<?= Yii::$service->product->image->getResize($image,[50,55],false) ?>" /></a>

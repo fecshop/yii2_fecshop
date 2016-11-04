@@ -70,13 +70,14 @@ class CustomOption {
 									'key' => $key,
 									'val' => $val,
 								];
-								$t_arr['require'] = isset($info['require']) ? $info['require'] : 0;
+								$require = isset($info['require']) ? $info['require'] : 0;
 								if(isset($info['showAsImg']) && $info['showAsImg']){
 									if(isset($img_arr[$key])){
 										$t_arr['image'] = $img_arr[$key];
 									}
 								}
-								$arr[$attr][] = $t_arr;
+								$arr[$attr]['info'][] = $t_arr;
+								$arr[$attr]['require'] = $require;
 							}
 						}
 					}

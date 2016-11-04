@@ -3,6 +3,8 @@
 		<div class="product_page">
 			<div class="product_view">
 				<input type="hidden" class="product_view_id" value="<?=  $_id ?>">
+				<input type="hidden" class="sku" value="<?= $sku; ?>" />
+				<input type="hidden" class="product_csrf" name="" value="" />
 				<div class="product_info">
 					<h1><?= $name; ?></h1>
 					<div>
@@ -18,6 +20,7 @@
 						</div>
 					</div>
 					<div class="item_code">Item Code: <?= $sku; ?></div>
+					
 					<div class="price_info">
 						<?php # 价格部分
 							$priceView = [
@@ -30,7 +33,7 @@
 						<?= Yii::$service->page->widget->render($priceView,$priceParam); ?>
 					
 					</div>
-					<div style="height:300px;">
+					<div class="product_info_section">
 						<div class="product_options">
 							<?php # options部分
 								$optionsView = [
@@ -66,7 +69,7 @@
 						</div>
 						
 						<div class="addtocart">
-							<button type="button" id="js_registBtn" class="redBtn"><em><span><i></i>Add To Cart</span></em></button>
+							<button  type="button" id="js_registBtn" class="redBtn addProductToCart"><em><span><i></i>Add To Cart</span></em></button>
 							
 							<div class="myFavorite_nohove" id="myFavorite">
 								<i></i>
@@ -162,9 +165,41 @@
 	// add to cart js	
 	<?php $this->beginBlock('add_to_cart') ?>
 	$(document).ready(function(){
-	   $("#js_registBtn").click(function(){
-		   $(this).addClass("dataUp");
-	   });
+		$(".addProductToCart").click(function(){
+			i = 1;
+			$(".product_custom_options .pg .rg ul.required").each(function(){
+				val = $(this).find("li.current a.current").attr("value");
+			    if(!val){
+				    $(this).parent().parent().css("border","1px dashed #cc0000").css('padding-left','10px').css("margin-left","-10px");
+					i = 0;
+				}else{
+					$(this).parent().parent().css("border","none").css('padding-left','0px').css("margin-left","0px");
+			    
+			    }
+			});
+			if(i){
+				custom_option = new Object();
+				$(".product_custom_options .pg .rg ul").each(function(){
+					$m = $(this).find("li.current a.current");
+					attr = $m.attr("attr");
+					value = $m.attr("value");
+					custom_option[attr] = value;
+				});
+				custom_option_json = JSON.stringify(custom_option);
+				alert(custom_option_json);
+				sku = $(".sku").val();
+				qty = $(".qty").val();
+				qty = qty ? qty : 1;
+				csrfName = $(".product_csrf").attr("name");
+				csrfVal  = $(".product_csrf").val();
+				
+				alert(csrfVal);
+				alert(csrfName);
+				$(".product_custom_options").val(custom_option_json);
+				$(this).addClass("dataUp");
+				// ajax 提交数据
+			}
+		});
 	   
 	   // product favorite
 	   $("#divMyFavorite").click(function(){

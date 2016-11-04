@@ -20,7 +20,7 @@ class AjaxController extends AppfrontController
 {
    
 	/**
-	 * ajax 请求 ，得到是否登录账户的信息
+	 * ajax 璇锋眰 锛屽緱鍒版槸鍚︾櫥褰曡处鎴风殑淇℃伅
 	 */
 	public function actionIndex(){
 		$result_arr = [];
@@ -29,15 +29,24 @@ class AjaxController extends AppfrontController
 			$result_arr['loginStatus'] 	= false;
 			$result_arr['favorite'] 	= false;
 			$result_arr['favorite_product_count'] 	= 0;
+			$product_id = Yii::$app->request->get('product_id');
 			if(!Yii::$app->user->isGuest){
 				$identity = Yii::$app->user->identity;
 				$result_arr['favorite_product_count']  = $identity['favorite_product_count'] ? $identity['favorite_product_count'] : 0;
 				$result_arr['loginStatus'] = true;
-				$product_id = Yii::$app->request->get('product_id');
 				if($product_id){
 					$favorite = Yii::$service->product->favorite->getByProductIdAndUserId($product_id);
 					$favorite ? ($result_arr['favorite'] = true) : '';
-				}
+				} 
+			}
+			if($product_id){
+				# 娣诲姞csrf鏁版嵁
+				$csrfName = \fec\helpers\CRequest::getCsrfName();
+				$csrfVal  = \fec\helpers\CRequest::getCsrfValue();
+				$result_arr['csrfName'] = $csrfName;
+				$result_arr['csrfVal']  = $csrfVal;
+				$result_arr['product_id']  = $product_id;
+			
 			}
 		}
 		echo json_encode($result_arr);

@@ -1,7 +1,7 @@
 <?php  $tier_price = $parentThis['tier_price'];   ?>
 
 <?php  if(is_array($tier_price) && !empty($tier_price) ) { ?>
-<div> Wholesale Prices </div>
+<div class="label"> Wholesale Prices :</div>
 	<table >
 		<tr>
 			<td>qty:</td>

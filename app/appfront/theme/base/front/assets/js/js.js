@@ -50,6 +50,12 @@ $(document).ready(function(){
 			if(data.favorite_product_count){
 				$("#js_favour_num").html(data.favorite_product_count);
 			}
+			if(data.csrfName && data.csrfVal && data.product_id){
+				$(".product_csrf").attr("name",data.csrfName);
+				$(".product_csrf").val(data.csrfVal);
+			}
+			
+			
 		},
 		error:function (XMLHttpRequest, textStatus, errorThrown){}
 	});
