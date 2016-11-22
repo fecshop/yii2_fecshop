@@ -42,10 +42,12 @@ class CustomOption {
 		$arr = [];
 		##在custom_option里面第一个属性
 		$img_attr = '';
-		foreach($custom_option_attr_info as $attr => $info){
-			if(isset($info['showAsImg']) && $info['showAsImg']){
-				$img_attr = $attr;
-				break;
+		if(is_array($custom_option_attr_info) && !empty($custom_option_attr_info)){
+			foreach($custom_option_attr_info as $attr => $info){
+				if(isset($info['showAsImg']) && $info['showAsImg']){
+					$img_attr = $attr;
+					break;
+				}
 			}
 		}
 		$img_arr = [];
