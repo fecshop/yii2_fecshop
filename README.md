@@ -13,6 +13,8 @@
 做一下，预计到明年5月份，后台，pc前台，手机web前台 ，命令控制台  这几个入口
 基本可以完善，多谢大家关注和你们的Star，谢谢，我会坚持把他写好。
 
+作者QQ：2358269014
+
 github: https://github.com/fancyecommerce/yii2_fecshop
 
 [![Latest Stable Version](https://poser.pugx.org/fancyecommerce/fecshop/v/stable)](https://packagist.org/packages/fancyecommerce/fecshop) [![Total Downloads](https://poser.pugx.org/fancyecommerce/fecshop/downloads)](https://packagist.org/packages/fancyecommerce/fecshop) [![Latest Unstable Version](https://poser.pugx.org/fancyecommerce/fecshop/v/unstable)](https://packagist.org/packages/fancyecommerce/fecshop)
