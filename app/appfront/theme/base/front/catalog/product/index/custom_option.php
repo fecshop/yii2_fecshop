@@ -1,7 +1,5 @@
-<?php  //var_dump($items);exit; ?>
 <?php	if(is_array($items) && !empty($items)){  ?>
 <div class="product_options">
-				
 <?php 	foreach($items as $attr => $v_info){  ?>
 <?php 	$info = $v_info['info'];  $require = $v_info['require']; ?>
 <?php 	$required = $require ? 'required' : '' ?>
@@ -38,19 +36,11 @@
 <?php	}  ?>
 
 <script>
-	
-	
-</script>
-<script>
 <?php $this->beginBlock('product_custom_option') ?>  
 $(document).ready(function(){
 	custom_option_arr = <?= $custom_option_arr ?>;
-	//for(x in custom_option_arr){
-	//	alert(custom_option_arr[x]['sku']);
-	//}
 	
 	$(".product_custom_options ul li a").click(function(){
-		
 		if(!$(this).hasClass('no_active')){
 			$chosen_custom_option_arr = [];
 			$(this).parent().parent().find("a").removeClass("current");
@@ -61,7 +51,7 @@ $(document).ready(function(){
 			$(this).parent().parent().addClass("chosen_ul");
 			$chosen_attr = [];
 			
-			// 选择后的部分
+			// custom option 被选择的部分的处理 - 开始
 			$c_arr = [];
 			$c_chosen_custom_option_arr = new Object();;
 			$(".product_custom_options ul li a.current").each(function(){
