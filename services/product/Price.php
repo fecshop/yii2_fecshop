@@ -73,7 +73,7 @@ class Price extends Service
 			$return_price = $price;
 		}
 		if($qty > 1){
-			$return_price = $this->getTierPrice($qty,$tier_price_arr,$return_price);
+			$return_price = $this->getTierPrice($qty,$tier_price,$return_price);
 		}
 		return $return_price;
 	}

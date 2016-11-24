@@ -88,11 +88,12 @@ return [
 			'favorite' => [
 				'class' => 'fecshop\services\product\Favorite',
 			],
-			/* #暂时没用
 			'info' => [
 				'class' => 'fecshop\services\product\Info',
 				
 			],
+			/* #暂时没用
+			
 			'coll' => [
 				'class' => 'fecshop\services\product\Coll',
 				//'numPerPage' => 50,	# default 

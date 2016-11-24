@@ -34,8 +34,41 @@ class Cart extends Service
 	 *
 	 */
 	protected function actionAddProductToCart($item){
+		$cart_qty 			= $item['qty'];
+		$custom_option 	= $item['custom_option'];
+		$product_id 	= $item['product_id'];
+		# 验证提交产品数据
+		$product = Yii::$service->product->getByPrimaryKey($product_id);
+		if(!$product['sku']){
+			Yii::$service->helper->errors->add('this product is not exist');
+			return;
+		}
+		$product_custom_option = $product['custom_option'];
+		$co_vd = Yii::$service->product->info->validateProductCustomOption($custom_option,$product['custom_option']);
+		if(!$co_vd){
+			return;
+		}
+		# 验证库存 是否库存满足？
+		Yii::$service->product->info->productIsCanSale($product,$cart_qty);
+		# 得到当前美元单价
+		$current_price = Yii::$service->product->price->getFinalPrice(
+			$product['price'],$product['special_price']	,
+			$product['special_from'],$product['special_to']	,
+			$cart_qty, $product['tier_price']
+		);
+		$base_row_total = $current_price * $cart_qty;
 		
+		$current_currency_price = Yii::$service->page->currency->getCurrentCurrencyPrice($current_price);
+		$row_total = $current_currency_price * $cart_qty;
 		
+		$weight = $product['weight'];
+		$row_weight = $weight * $cart_qty;
+		# 得到当前的cart，如果不存在，则新建cart信息
+		
+		# 开启事务，将产品信息插入到cart_item中
+		
+		# 将item的所有信息计算得到cart的总信息，然后更新cart表信息
+		# 加入优惠券信息，得到购物车总价，保存
 	}
 	
 	protected function actionGetUserCartInfo(){

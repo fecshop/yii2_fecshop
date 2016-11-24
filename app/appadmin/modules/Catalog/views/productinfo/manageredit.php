@@ -434,6 +434,7 @@ function thissubmit(thiss){
 									alert("select can not empty");
 								}
 								$str += '<td rel="'+attr+'">'+val+'</td>';
+								val = val.replace(" ", "*")
 								if(!general_sku){
 									general_sku = val;
 								}else{

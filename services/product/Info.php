@@ -20,64 +20,77 @@ use fecshop\models\mongodb\Product;
  */
 class Info extends Service
 {
-	private $_product;
-	
-	
 	/**
-	 * Get product info by special  $productId.
-	 * product language attributes will be set current language value.
-	 * product price will be process to current price.
-	 * image will return full image url
-	 * this function will be use for front product info page.
+	 * @property $custome_option | Array
+	 * $custome_option = [
+		"my_color" 	=> "red",
+		"my_size" 	=> "M",
+		"my_size2" 	=> "M2",
+		"my_size3" 	=> "L3"
+	 ]
+	 * 通过custom的各个值，生成custom option sku
 	 */
-	protected function actionGetProduct($productId='',$selectAttr=[])
-	{
-		//echo 33;exit;
-		if(!$this->_product){
-			
-			if(!$productId){
-				$productId = Yii::$service->product->getCurrentProductId();
-			}
-			if(!$productId){
-				throw new InvalidValueException('productId is empty,you must pass a ProductId');
-			}
-			$product = Product::findOne([
-				'_id' => (int)$productId
-			]);
-			if($product_id){
-				$product->
-				$this->_product = $product;
+	public function getCustomOptionSkuByValue($custome_option){
+		$str = '';
+		$arr = [];
+		if(is_array($custome_option) && !empty($custome_option)){
+			foreach($custome_option as $k=>$v){
+				$arr[] = str_replace(' ','*',$v);
 			}
 		}
-		return $this->_product;
-		
-		
-	
+		return implode('-',$arr);
 	}
-	
 	/**
-	 *  @property $product is object.
-	 *	convert product language attribute to current language value.
+	 * @property $custom_option | Array 前台传递的custom option 一维数组。
+	 * @property $product_custom_option | Array  数据库中存储的产品custom_option的值
+	 * 验证前台传递的custom option 是否正确。
 	 */
-	protected function actionGetCurrentLangProduct($product){
-		$lang_attrs = $this->getLangAttr();
-		foreach($lang_attrs as $attr){
-			$product->$attr = Yii::$service->store->getLangVal($product->$attr,$attr);
+	public function validateProductCustomOption($custom_option,$product_custom_option){
+		if(empty($product_custom_option) && empty($custom_option)){
+			return true; # 都为空，说明不需要验证。
 		}
+		if($custom_option){
+			$co_sku = $this->getCustomOptionSkuByValue($custom_option)；
+			//$product_custom_option = $product['custom_option'];
+			if(!is_array($product_custom_option)){
+				Yii::$service->helper->errors->add('this product custom option is error');
+				return;
+			}
+			foreach($product_custom_option as $p_sku => $option){
+				if($p_sku == $co_sku){
+					return true;
+				}
+			}
+		}
+		Yii::$service->helper->errors->add('this product custom option can not find in this product');
+		return false;		
 	}
 	
 	/**
-	 *	product language attributes array.
+	 * @property $product | Object  产品对象
+	 * @property $sale_qty| 想要购买的个数
+	 * 验证当前产品，是否是可以出售的。
 	 */
-	protected function actionGetLangAttr(){
-		return [
-			'name',
-			'title',
-			'meta_keywords',
-			'meta_description',
-			'short_description',
-			'description',
-		];
+	public static function productIsCanSale($product,$sale_qty){
+		$is_in_stock = $product['is_in_stock'];
+		$qty 		= $product['qty'];
+		if($is_in_stock == 1){
+			if($qty >= $sale_qty){
+				return true;
+			}
+		}
+		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
  
 }
