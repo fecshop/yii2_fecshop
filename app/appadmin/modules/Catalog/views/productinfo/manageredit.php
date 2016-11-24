@@ -208,6 +208,7 @@ function thissubmit(thiss){
 						<li><a href="javascript:;"><span>分类信息</span></a></li>
 						<li><a href="javascript:;"><span>属性组信息</span></a></li>
 						<li><a href="javascript:;"><span>自定义信息</span></a></li>
+						<li><a href="javascript:;"><span>相关产品信息</span></a></li>
 					</ul>
 				</div>
 			</div>
@@ -479,6 +480,14 @@ function thissubmit(thiss){
 					});
 					
 					</script>
+					
+					
+					
+					
+				</div>
+				
+				<div class="relation_list" style="margin:20px 2px;">
+						<?= $relation ?>	
 				</div>
 			</div>
 			<div class="tabsFooter">

@@ -2344,6 +2344,31 @@ a.next_images {
 	border: 1px dashed #ccc;
 }
 
+#owl-buy-also-buy .pro_img img {
+    height: 200px;
+    width: 100%;
+}
+
+
+
+#owl-buy-also-buy .pro_img a {
+    display: block;
+    height: 200px;
+    padding: 0 7.5px;
+    width: 180px;
+}
+
+.scrollBox #owl-buy-also-buy   span.my_shop_price{
+	font-size:14px;
+}
+
+.buy_also_buy{margin:60px 0 0;height:320px;}
+.buy_also_buy .scroll_left{margin:15px 0; border-bottom: 1px solid #ccc;}
+
+.buy_also_buy .scrollBox{height:280px;}
+
+
+
 
 
 

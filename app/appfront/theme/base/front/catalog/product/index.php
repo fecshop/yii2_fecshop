@@ -116,7 +116,26 @@
 				<div class="clear"></div>
 			</div>
 			
+			
+			<div>
+				<?php # tier price 部分。
+					$buyAlsoBuyView = [
+						'view'	=> 'catalog/product/index/buy_also_buy.php'
+					];
+					$buyAlsoBuyParam = [
+						'products' => $buy_also_buy,
+					];
+				?>
+				<?= Yii::$service->page->widget->render($buyAlsoBuyView,$buyAlsoBuyParam); ?>
+			
+			</div>
+			
+			<div class="clear"></div>
 			<div class="product_description_info">
+				
+				
+				
+				
 				<div class="nav" id="nav-container">  
 					<ul id="nav-box">
 						<li  class="nav_tab cur" rel="description">DESCRIPTION</li>  
@@ -283,3 +302,4 @@
 	<?php $this->registerJs($this->blocks['product_info_tab'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
 </script> 
   
+ 

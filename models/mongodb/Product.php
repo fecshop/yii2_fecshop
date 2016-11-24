@@ -86,6 +86,9 @@ class Product extends ActiveRecord
 			'reviw_rate_star_average_lang', #（语言）评论平均评分
 			'review_count_lang',			#（语言）评论总数
 			'favorite_count', 				# 产品被收藏的次数。
+			'relation_sku',			# 相关产品
+			'buy_also_buy_sku',		# 买了的还买了什么
+			'see_also_see_sku',		# 看了的还看了什么
 		
 		];
 		if(is_array(self::$_customProductAttrs) && !empty(self::$_customProductAttrs)){

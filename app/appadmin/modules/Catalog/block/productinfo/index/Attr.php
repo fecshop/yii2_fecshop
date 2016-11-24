@@ -65,6 +65,44 @@ class Attr
 	}
 	
 	
+	public function getRelationInfo(){
+		return [
+			[
+				'label'=>'相关产品sku（逗号隔开）',
+				'name'=>'relation_sku',
+				'display'=>[
+					'type' => 'inputString',
+					
+				],
+				'require' => 0,
+			],
+			
+			
+			
+			[
+				'label'=>'买了还买sku（逗号隔开）',
+				'name'=>'buy_also_buy_sku',
+				'display'=>[
+					'type' => 'inputString',
+					
+				],
+				'require' => 0,
+			],
+			
+			[
+				'label'=>'看了还看sku（逗号隔开）',
+				'name'=>'see_also_see_sku',
+				'display'=>[
+					'type' => 'inputString',
+					
+				],
+				'require' => 0,
+			],
+			
+		];
+	}
+	
+	
 	public function getBaseInfo(){
 		return [
 			[

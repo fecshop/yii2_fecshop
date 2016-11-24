@@ -51,7 +51,7 @@ class Index {
 			'custom_option'			=> $this->_product['custom_option'],
 			'description'			=> Yii::$service->store->getStoreAttrVal($this->_product['description'],'description'),
 			'_id'					=> $this->_product['_id'],
-			
+			'buy_also_buy'			=> $this->getProductBySkus($skus),
 		];
 	}
 	
@@ -274,5 +274,28 @@ class Index {
 		}else{
 			Yii::$service->page->breadcrumbs->active = false;
 		}
+	}
+	
+	protected function getProductBySkus($skus){
+		$buy_also_buy_sku = $this->_product['buy_also_buy_sku'];
+		if($buy_also_buy_sku){
+			$skus = explode(',',$buy_also_buy_sku);
+			if(is_array($skus) && !empty($skus)){
+				$filter['select'] = [
+					'sku','spu','name','image',
+					'price','special_price',
+					'special_from','special_to',
+					'url_key','score',
+				];
+				$filter['where'] = ['in','sku',$skus];
+				$products = Yii::$service->product->getProducts($filter);
+				//var_dump($products);
+				$products = Yii::$service->category->product->convertToCategoryInfo($products);
+				return $products;
+			}
+			
+		}
+		
+		
 	}
 }
