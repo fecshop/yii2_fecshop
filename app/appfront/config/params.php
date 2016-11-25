@@ -3,6 +3,7 @@ return [
 	/* appfront base theme dir   */
 	'appfrontBaseTheme' 	=> '@fecshop/app/appfront/theme/base/front',
 	'appfrontBaseLayoutName'=> 'main.php',
+	'appName' => 'appfront',
 	'mailer'	=> [
 		
 		#在邮件中显示的Store的名字

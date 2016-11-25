@@ -50,7 +50,7 @@ class Info extends Service
 			return true; # 都为空，说明不需要验证。
 		}
 		if($custom_option){
-			$co_sku = $this->getCustomOptionSkuByValue($custom_option)；
+			$co_sku = $this->getCustomOptionSkuByValue($custom_option);
 			//$product_custom_option = $product['custom_option'];
 			if(!is_array($product_custom_option)){
 				Yii::$service->helper->errors->add('this product custom option is error');
@@ -64,6 +64,31 @@ class Info extends Service
 		}
 		Yii::$service->helper->errors->add('this product custom option can not find in this product');
 		return false;		
+	}
+	/**
+	 * 通过返回的值，得到product custom option 的sku key
+	 */
+	/**
+	 * 通过前台传递的custom option 得到customOptionSku
+	 */
+	public function getProductCOSku($custom_option_sku,$product_custom_option){
+		if(is_array($product_custom_option) && !empty($product_custom_option)){
+			foreach($product_custom_option as $co_sku => $info){
+				$bool = true;
+				if(is_array($info) && !empty($info)){
+					foreach($info as $k=>$v){
+						if(isset($custom_option_sku[$k]) && ($custom_option_sku[$k] != $v)){
+							$bool = false;
+							break;
+						}
+					}
+					if($bool){
+						return $co_sku;
+					}
+				}
+				
+			}
+		}
 	}
 	
 	/**

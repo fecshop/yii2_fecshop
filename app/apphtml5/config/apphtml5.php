@@ -21,6 +21,7 @@ return [
 		/* appfront base theme dir   */
 		'appfrontBaseTheme' 	=> '@fecshop/app/apphtml5/theme/base/front',
 		'appfrontBaseLayoutName'=> 'main.php',
+		'appName' => 'apphtml5',
 	],
 	# language config.
 	'components' => [

@@ -54,6 +54,9 @@ $(document).ready(function(){
 				$(".product_csrf").attr("name",data.csrfName);
 				$(".product_csrf").val(data.csrfVal);
 			}
+			if(data.cart_qty){
+				$("#js_cart_items").html(data.cart_qty);
+			}
 			
 			
 		},

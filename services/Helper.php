@@ -19,6 +19,25 @@ use fec\helpers\CUrl;
  */
 class Helper extends Service
 {
+	protected $_app_name;
+	
+	/**
+	 * 得到当前的app入口的名字，譬如 appfront apphtml5  appserver等
+	 */
+	public function getAppName(){
+		return   Yii::$app->params['appName'];
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 }

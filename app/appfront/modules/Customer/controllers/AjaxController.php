@@ -48,6 +48,8 @@ class AjaxController extends AppfrontController
 				$result_arr['product_id']  = $product_id;
 			
 			}
+			$cartQty = Yii::$service->cart->getCartItemQty();
+			$result_arr['cart_qty'] = $cartQty; 
 		}
 		echo json_encode($result_arr);
 		exit;

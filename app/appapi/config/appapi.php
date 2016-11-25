@@ -15,8 +15,8 @@ foreach (glob(__DIR__ . '/modules/*.php') as $filename){
 # 此处也可以重写fecshop的组件。供调用。
 return [
 	'modules'=>$modules,
-	'params'	=> [
-		
+	'params' => [
+		'appName' => 'appapi',
 	],
 	'components' => [
 		'urlManager' => [

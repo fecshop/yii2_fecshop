@@ -1,10 +1,10 @@
 <?php	if(is_array($items) && !empty($items)){  ?>
 <div class="product_options">
+	<input type="hidden" value="" class="product_custom_options"    />
 <?php 	foreach($items as $attr => $v_info){  ?>
 <?php 	$info = $v_info['info'];  $require = $v_info['require']; ?>
 <?php 	$required = $require ? 'required' : '' ?>
 	<div class="pg">
-		<input type="hidden" value="" class="product_custom_options"    />
 		<div class="label"><?= ucwords(str_replace("-"," ",str_replace("_"," ",$attr))) ?>:</div>
 		<div class="chose_<?= $attr  ?> rg  <?= $attr ?>">
 			<ul  class="no_chosen_ul <?= $required; ?>" attr="<?= $attr ?>">

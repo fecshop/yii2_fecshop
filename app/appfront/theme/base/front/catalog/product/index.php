@@ -210,18 +210,43 @@
 					custom_option[attr] = value;
 				});
 				custom_option_json = JSON.stringify(custom_option);
-				alert(custom_option_json);
+				//alert(custom_option_json);
 				sku = $(".sku").val();
 				qty = $(".qty").val();
 				qty = qty ? qty : 1;
 				csrfName = $(".product_csrf").attr("name");
 				csrfVal  = $(".product_csrf").val();
 				
-				alert(csrfVal);
-				alert(csrfName);
 				$(".product_custom_options").val(custom_option_json);
 				$(this).addClass("dataUp");
 				// ajax 提交数据
+				
+				addToCartUrl = "<?= Yii::$service->url->getUrl('checkout/cart/add'); ?>";
+				$data = {};
+				$data['custom_option'] 	= custom_option_json;
+				$data['product_id'] 	= "<?= $_id ?>";
+				$data['qty'] 			= qty;
+				$data[csrfName] 		= csrfVal;
+				jQuery.ajax({
+					async:true,
+					timeout: 6000,
+					dataType: 'json', 
+					type:'post',
+					data: $data,
+					url:addToCartUrl,
+					success:function(data, textStatus){ 
+						if(data.status == 'success'){
+							items_count = data.items_count;
+							$("#js_cart_items").html(items_count);
+							alert('add to cart success');
+						}else{
+							alert('add to cart fail');
+						}
+						
+					},
+					error:function (XMLHttpRequest, textStatus, errorThrown){}
+				});
+				
 			}
 		});
 	   
@@ -239,6 +264,7 @@
 	<?php $this->endBlock(); ?> 
 	<?php $this->registerJs($this->blocks['add_to_cart'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
 
+	
 	//tab 切换js
 	<?php $this->beginBlock('product_info_tab') ?> 
 	var navContainer = document.getElementById("nav-container");  

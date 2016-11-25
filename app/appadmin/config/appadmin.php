@@ -32,4 +32,7 @@ return [
 			],
 		],
     ],
+	'params' => [
+		'appName' => 'appadmin',
+	],
 ];
