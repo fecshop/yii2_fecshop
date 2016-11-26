@@ -17,7 +17,8 @@ use fecshop\app\appfront\modules\AppfrontController;
  */
 class CartController extends AppfrontController
 {
-    
+    public $enableCsrfValidation = false;
+	
 	public function actionAdd(){
 		$this->enableCsrfValidation = true;
 		$custom_option 	= Yii::$app->request->post('custom_option');
