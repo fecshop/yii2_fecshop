@@ -19,6 +19,13 @@ class CartController extends AppfrontController
 {
     public $enableCsrfValidation = false;
 	
+	
+	public function actionIndex(){
+		$data = $this->getBlock()->getLastData();
+		return $this->render($this->action->id,$data);
+		
+	}
+	
 	public function actionAdd(){
 		$this->enableCsrfValidation = true;
 		$custom_option 	= Yii::$app->request->post('custom_option');

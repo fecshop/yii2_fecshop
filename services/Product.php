@@ -101,6 +101,10 @@ class Product extends Service
 		return true;
 	}
 	
+	protected function actionIsActive($status){
+		return ($status == 1) ? true : false;
+	}
+	
 	protected function actionGetCustomOptionAttrInfo($productAttrGroup){
 		$arr = [];
 		if($productAttrGroup == $this->_defaultAttrGroup){

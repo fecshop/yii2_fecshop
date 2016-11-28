@@ -531,6 +531,7 @@ del.my_shop_price {
 #footer {
     color: #7f7f7f;
     overflow-x: hidden;
+	width:100%;
 }
 .footer-container {
     margin-top: 50px;
@@ -2366,6 +2367,263 @@ a.next_images {
 .buy_also_buy .scroll_left{margin:15px 0; border-bottom: 1px solid #ccc;}
 
 .buy_also_buy .scrollBox{height:280px;}
+
+
+
+
+
+.shopping-cart-img {
+    background: rgba(0, 0, 0, 0) url("../images/scart_step1.gif") repeat scroll 0 0;
+    height: 36px;
+    margin: 20px auto 5px;
+    width: 834px;
+}
+.shopping-cart-div {
+    position: relative;
+}
+.data-table {
+    width: 100%;
+}
+
+.data-table thead {
+    background-color: #f2f2f2;
+}
+.shopping-cart-div .data-table thead tr {
+    border: medium none;
+}
+
+
+.shopping-cart-div .data-table tr th {
+    border: medium none;
+}
+
+.shopping-cart-div .data-table tr {
+    border-bottom: 1px solid #ccc;
+}
+
+.shopping-cart-div .data-table tr td {
+    border: medium none;
+}
+#shopping-cart-table .a-right {
+    text-align: center !important;
+}
+
+.cartqtydown {
+    background: rgba(0, 0, 0, 0) url("../images/jj.png") no-repeat scroll -4px -1px;
+    float: left;
+    height: 10px;
+    margin: 12px 4px 0 0;
+    width: 10px;
+}
+
+
+#shopping-cart-table .qty {
+    float: left;
+    text-align: center;
+    width: 15px !important;
+}
+
+a.cartqtyup {
+    background: rgba(0, 0, 0, 0) url("../images/jj.png") no-repeat scroll -4px -25px;
+    float: left;
+    height: 10px;
+    margin: 12px 0 0 3px;
+    width: 10px;
+}
+
+.cart .cart-collaterals {
+    padding: 25px 0 0;
+}
+.btn-remove2 {
+    background: rgba(0, 0, 0, 0) url("../images/btn_trash.gif") no-repeat scroll 0 0;
+    display: block;
+    font-size: 0;
+    height: 16px;
+    line-height: 0;
+    overflow: hidden;
+    text-indent: -999em;
+    width: 16px;
+}
+
+
+#discount-coupon-form .discount-form label {
+     color: #999;
+    display: block;
+    font-size: 11px;
+    font-weight: 100;
+    margin: 8px 0 10px;
+}
+
+#discount-coupon-form .input-box {
+    float: left;
+}
+
+body #discount-coupon-form div.buttons-cou {
+    float: left;
+}
+
+
+.discount-form .submitbutton {
+    background: #ccc none repeat scroll 0 0;
+    border-radius: 0;
+    font-size: 14px;
+    height: 31px;
+    line-height: 31px;
+}
+
+
+
+.cart .totals {
+    float: right;
+    width: 494px;
+}
+
+.cart .cart-collaterals .col2-set {
+    float: left;
+    width: 400px;
+}
+.proceed_to_checkout {
+    margin-top: 35px;
+    text-align: right;
+}
+
+#shopping-cart-totals-table2 {
+    border-top: 1px solid #333;
+    font-size: 14px;
+    margin: 16px 0 0;
+}
+
+.cart .totals table th, .cart .totals table td {
+    padding: 5px;
+}
+
+.std b, .std strong {
+    font-weight: bold;
+}
+
+
+.price {
+    white-space: nowrap !important;
+}
+* {
+    margin: 0;
+    padding: 0;
+}
+.std b, .std strong {
+    font-weight: bold;
+}
+strong {
+    font-weight: bold;
+}
+#shopping-cart-totals-table2 .a-right {
+    color: #2ab4c4;
+    font-size: 18px;
+}
+#shopping-cart-totals-table2 .a-right {
+    color: #2ab4c4;
+    font-size: 18px;
+}
+
+
+.proceed_to_checkout {
+    margin-top: 35px;
+    text-align: right;
+}
+
+
+
+.proceed_to_checkout button.button {
+      display: block;
+    float: right;
+}
+
+
+a.express_paypal{
+	background: rgba(0, 0, 0, 0) url("../images/paypaltopay.jpg") repeat scroll 0 0;
+    display: block;
+    float: right;
+    height: 30px;
+    width: 154px;
+}
+
+.proceed_to_checkout .or{
+	 display: block;
+    float: right;
+    font-weight: bold;
+    line-height: 32px;
+    margin: 0 5px;
+}
+
+.proceed_to_checkout button.button span {
+    font-size: 20px;
+}
+
+
+.cart-collaterals .col2-set .col-2 {
+    float: left;
+}
+
+
+
+#discount-coupon-form .discount {
+    width: 500px;
+}
+
+
+
+
+
+#discount-coupon-form .input-box {
+    float: left;
+}
+
+body #discount-coupon-form div.buttons-cou {
+    float: left;
+}
+#discount-coupon-form #coupon_code {
+    border-radius: 0;
+    height: 29px;
+    width: 200px;
+}
+
+.discount-form .submitbutton:hover{
+	background-color:#4c8b99;
+}
+
+h2 {
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 1.25;
+	padding:0 0 2px 0;
+}
+
+.a-center {
+    text-align: center !important;
+}
+.product-name {
+    font-size: 1em;
+    font-weight: normal;
+}
+
+
+.product_info .price_info .no-special {
+    line-height: 30px;
+    margin-right: 10px;
+	color: #cc0000;
+    font-size: 25px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

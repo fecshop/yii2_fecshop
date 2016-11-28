@@ -63,6 +63,10 @@ class Cart extends Service
 		
 	}
 	
+	protected function actionGetCartInfo(){
+		return Yii::$service->cart->quote->getCartInfo();
+	}
+	
 	/**
 	 * 初始化
 	 */

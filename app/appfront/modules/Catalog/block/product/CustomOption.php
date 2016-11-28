@@ -20,6 +20,7 @@ class CustomOption {
 	
 	public $custom_option;
 	public $attr_group;
+	public $product_id;
 	public $middle_img_width; # Í¼Æ¬µÄ¿í¶È¡£
 	protected $_custom_option_arr;
 	
@@ -28,6 +29,7 @@ class CustomOption {
 		//var_dump($items);exit;
 		return [
 			'items' => $items ,
+			'product_id'     	=> $this->product_id,
 			'custom_option_arr' => json_encode($this->_custom_option_arr),
 			'middle_img_width'  => $this->middle_img_width,
 		];

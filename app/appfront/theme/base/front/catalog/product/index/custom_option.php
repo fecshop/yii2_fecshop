@@ -173,8 +173,55 @@ $(document).ready(function(){
 				});
 				
 			});
+			// 如果全部选择完成，需要到ajax请求，得到最后的价格
+			i = 1;
+			$(".product_custom_options .pg .rg ul.required").each(function(){
+				val = $(this).find("li.current a.current").attr("value");
+			    attr  = $(this).find("li.current a.current").attr("attr");
+				if(!val){
+				   i = 0;
+				}
+			});
+			if(i){
+				for(x in custom_option_arr){
+					one = custom_option_arr[x];	
+					j = 1;
+					$(".product_custom_options .pg .rg ul.required").each(function(){
+						val = $(this).find("li.current a.current").attr("value");
+						attr  = $(this).find("li.current a.current").attr("attr");
+						if(one[attr] != val){
+							j = 0;
+							//break;
+						}
+					});
+					if(j){
+						getCOUrl = "<?= Yii::$service->url->getUrl('catalog/product/getcoprice'); ?>";
+						custom_option_sku = one['sku'];
+						product_id = "<?=  $product_id ?>";
+						qty = $(".qty").val();
+						$data = {
+							custom_option_sku:custom_option_sku,
+							qty:qty,
+							product_id:product_id
+						};
+						jQuery.ajax({
+						async:true,
+						timeout: 6000,
+						dataType: 'json', 
+						type:'get',
+						data: $data,
+						url:getCOUrl,
+						success:function(data, textStatus){ 
+							$(".price_info").html(data.price);
+						},
+						error:function (XMLHttpRequest, textStatus, errorThrown){}
+					});
+					}
+				}
+			}
 		}
 	});
+	
 	
 	
 	

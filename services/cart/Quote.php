@@ -124,6 +124,22 @@ class Quote extends Service
 	}
 	
 	
+	public function getCartInfo(){
+		$cart_id = $this->getCartId();
+		if(!$cart_id){
+			return ;
+		}
+		
+		$this->getMyCart();
+		$items_qty = $this->_my_cart['items_count'];
+		if($items_qty <= 0){
+			return ;
+		}
+		
+		$cart_product = Yii::$service->cart->quoteItem->getCartProductInfo();
+		
+	}
+	
 	
 	
 }

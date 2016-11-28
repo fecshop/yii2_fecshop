@@ -101,6 +101,41 @@ class QuoteItem extends Service
 		return $item_qty;
 	}
 	
+	/**
+	 * 得到当前购物车的产品价格信息。
+	 */
+	public function getCartProductInfo(){
+		$cart_id = Yii::$service->cart->quote->getCartId();
+		$products = [];
+		$product_total = 0;
+		if($cart_id){
+			$data = MyCartItem::find()->where([
+				'cart_id' => $cart_id
+			])->all();
+			if(is_array($data) && !empty($data)){
+				foreach($data as $one){
+					$product_id = $one['product_id'];
+					$qty = $one['qty'];
+					$custom_option_sku = $one['custom_option_sku'];
+					$product_price = Yii::$service->product->price->getCartPriceByProductId($product_id,$qty,$custom_option_sku);
+					$product_row_price = $product_price * $qty;
+					$product_total += $product_row_total;
+					$products[] = [
+						'product_id' 		=> $product_id ,
+						'qty' 				=> $qty ,
+						'custom_option_sku' => $custom_option_sku ,
+						'product_price' 	=> $product_price ,
+						'product_row_price' => $product_row_price ,
+					];
+				}
+				return [
+					'products' 		=> $products,
+					'product_total' => $product_total,
+				];
+			}
+		}
+	}
+	
 	
 	
 }

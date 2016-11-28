@@ -77,6 +77,70 @@ class Price extends Service
 		}
 		return $return_price;
 	}
+	
+	/**
+	 * @property $productId | String  
+	 * @property $qty | Int 
+	 * @property $custom_option_sku | String 
+	 * 通过产品以及个数，custonOptionSku 得到产品的最终价格
+	 */
+	protected function actionGetCartPriceByProductId($productId,$qty,$custom_option_sku){
+		$product = Yii::$service->product->getByPrimaryKey($productId);
+		$custom_option_price = 0;
+		$status = isset($product['status']) ? $product['status'] : 0;
+		
+		if($product['price'] && Yii::$service->product->isActive($status)){
+			$price	= $product['price'];
+			$special_price 	= isset($product['special_price']) ? $product['special_price'] : 0;
+			$special_from	= isset($product['special_from']) ? $product['special_from'] : '';
+			$special_to  	= isset($product['special_to']) ? $product['special_to'] : '';
+			$tier_price		= isset($product['tier_price']) ? $product['tier_price'] : [];
+			$custom_option  = isset($product['custom_option']) ? $product['custom_option'] : '';
+			
+			if(!empty($custom_option) && $custom_option_sku && isset($custom_option[$custom_option_sku])){
+				if($co = $custom_option[$custom_option_sku]){
+					$custom_option_price = isset($co['price']) ? $co['price'] : 0;
+				}
+			}
+			return $this->getCartPrice(
+				$price			, $special_price,
+				$special_from	, $special_to,
+				$qty			, $custom_option_price,
+				$tier_price
+			);
+		}
+		
+	}
+	
+	# 产品加入购物车，得到相应个数的最终价格。
+	protected function actionGetCartPrice(
+		$price			, $special_price,
+		$special_from	, $special_to,
+		$qty=''			, $custom_option_price,
+		$tier_price=[]	, $format = 1
+	){
+		if($this->specialPriceisActive($price,$special_price,$special_from,$special_to)){
+			$return_price = $special_price;
+		}else{
+			$return_price = $price;
+		}
+		
+		if($qty > 1){
+			$return_price = $this->getTierPrice($qty,$tier_price,$return_price);
+			
+		}
+		$return_price = $return_price + $custom_option_price;
+		if($format){
+			$format_price = $this->formatPrice($return_price);
+			return $format_price   ;
+		}else{
+			return $return_price;
+		}
+		
+		
+	}
+	
+	
 	/**
 	 * @property $qty | Int 
 	 * @property $price | Float 一个产品的单价(如果有特价，那么这个值是一个产品的特价)
@@ -93,14 +157,18 @@ class Price extends Service
 		}
 		$t_price = $price;
 		if(is_array($tier_price_arr) && !empty($tier_price_arr)){
+			
 			foreach($tier_price_arr  as $one){
+				
 				$t_qty = $one['qty'];
-				if($t_qty <= $qty){
+				$t_price = $one['price'];
+				
+				if($t_qty < $qty){
 					continue;
 				}else{
+					
 					return $t_price;
 				}
-				$t_price = $one['price'];
 			}
 		}
 		return $t_price;

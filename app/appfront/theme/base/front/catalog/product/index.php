@@ -46,6 +46,7 @@
 							<?= Yii::$service->page->widget->render($optionsView,$optionsParam); ?>
 						
 						</div>
+						
 						<div class="product_custom_options">
 							<?php # custom options部分
 								$optionsView = [
@@ -53,6 +54,7 @@
 									'view'	=> 'catalog/product/index/custom_option.php',
 									'custom_option' 	=> $custom_option,
 									'attr_group'		=> $attr_group,
+									'product_id'		=> $_id ,
 									'middle_img_width' 	=> $media_size['middle_img_width'],
 								];
 								$optionsParam = [
@@ -238,7 +240,7 @@
 						if(data.status == 'success'){
 							items_count = data.items_count;
 							$("#js_cart_items").html(items_count);
-							alert('add to cart success');
+							window.location.href="<?= Yii::$service->url->getUrl("checkout/cart") ?>";
 						}else{
 							alert('add to cart fail');
 						}
@@ -260,6 +262,57 @@
 				window.location.href = url;
 			}
 	   });
+	   // 改变个数的时候，价格随之变动
+	   $(".qty").blur(function(){
+			// 如果全部选择完成，需要到ajax请求，得到最后的价格
+			i = 1;
+			$(".product_custom_options .pg .rg ul.required").each(function(){
+				val = $(this).find("li.current a.current").attr("value");
+				attr  = $(this).find("li.current a.current").attr("attr");
+				if(!val){
+				   i = 0;
+				}
+			});
+			if(i){
+				getCOUrl = "<?= Yii::$service->url->getUrl('catalog/product/getcoprice'); ?>";
+				product_id = "<?=  $_id ?>";		
+				qty = $(".qty").val();
+				custom_option_sku = '';
+				for(x in custom_option_arr){
+					one = custom_option_arr[x];	
+					j = 1;
+					$(".product_custom_options .pg .rg ul.required").each(function(){
+						val = $(this).find("li.current a.current").attr("value");
+						attr  = $(this).find("li.current a.current").attr("attr");
+						if(one[attr] != val){
+							j = 0;
+							//break;
+						}
+					});
+					if(j){
+						custom_option_sku = one['sku'];
+						break;
+					}
+				}
+				$data = {
+					custom_option_sku:custom_option_sku,
+					qty:qty,
+					product_id:product_id
+				};
+				jQuery.ajax({
+					async:true,
+					timeout: 6000,
+					dataType: 'json', 
+					type:'get',
+					data: $data,
+					url:getCOUrl,
+					success:function(data, textStatus){ 
+						$(".price_info").html(data.price);
+					},
+					error:function (XMLHttpRequest, textStatus, errorThrown){}
+				});
+			}
+		});
 	});
 	<?php $this->endBlock(); ?> 
 	<?php $this->registerJs($this->blocks['add_to_cart'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>

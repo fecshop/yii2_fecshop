@@ -9,8 +9,7 @@
 	</div>
 	<div class="clear"></div>
 <?php }else{  ?>
-	<div class="price">
-		<span class="price_symbol"><?= $price_info['price']['symbol']  ?></span>
-		<span class="price_val"><?= $price_info['price']['value'] ?></span>
+	<div class="price no-special">
+		<?= $price_info['price']['symbol']  ?><?= $price_info['price']['value'] ?>
 	</div>
 <?php } ?>
