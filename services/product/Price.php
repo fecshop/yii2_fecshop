@@ -164,11 +164,16 @@ class Price extends Service
 				$t_price = $one['price'];
 				
 				if($t_qty < $qty){
+					$parent_price = $t_price;
 					continue;
 				}else{
-					
-					return $t_price;
+					if($parent_price){
+						return $parent_price;
+					}else{
+						return $price;
+					}
 				}
+				
 			}
 		}
 		return $t_price;

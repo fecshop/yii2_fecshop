@@ -51,7 +51,7 @@ class Currency extends Service
 	/**
 	 * Get all currencys info.
 	 */
-	protected function ActionGetCurrencys($currencyCode=''){
+	protected function actionGetCurrencys($currencyCode=''){
 		if(!$this->_currencys){
 			foreach($this->currencys as $code => $info){
 				$this->_currencys[$code] = [

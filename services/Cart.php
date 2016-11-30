@@ -57,6 +57,7 @@ class Cart extends Service
 		return true;
 		
 	}
+	
 	# 得到购物车中产品的个数
 	protected function actionGetCartItemQty(){
 		return Yii::$service->cart->quote->getCartItemCount();

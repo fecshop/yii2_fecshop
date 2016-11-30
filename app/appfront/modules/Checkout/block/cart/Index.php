@@ -1,7 +1,7 @@
 <?php
 /*
- * ´æ·Å Ò»Ð©»ù±¾µÄ·ÇÊý¾Ý¿âÊý¾Ý Èç html
- * ¶¼ÊÇÊý×é
+ * å­˜æ”¾ ä¸€äº›åŸºæœ¬çš„éžæ•°æ®åº“æ•°æ® å¦‚ html
+ * éƒ½æ˜¯æ•°ç»„
  */
 namespace fecshop\app\appfront\modules\checkout\block\cart;
 use Yii;
@@ -14,15 +14,56 @@ class Index {
 	public function getLastData(){
 		
 		$this->initHead();
+		$currency_info = Yii::$service->page->currency->getCurrencyInfo();
 		return [
-			
+			'cart_info' => $this->getCartInfo(),
+			'currency_info' => $currency_info,
 		];
 	}
-	
+	/** @return data example
+	 *	[
+	 *				'grand_total' 	=> $grand_total,
+	 *				'shipping_cost' => $shippingCost,
+	 *				'coupon_cost' 	=> $couponCost,
+	 *				'product_total' => $product_total,
+	 *				'products' 		=> $products,
+	 *	]
+	 *			ä¸Šé¢çš„productsæ•°ç»„çš„ä¸ªæ•°å¦‚ä¸‹ï¼š	
+	 *			$products[] = [
+	 *					'product_id' 		=> $product_id ,
+	 *					'qty' 				=> $qty ,
+	 *					'custom_option_sku' => $custom_option_sku ,
+	 *					'product_price' 	=> $product_price ,
+	 *					'product_row_price' => $product_row_price ,
+	 *					'product_name'		=> $one['name'],
+	 *					'product_url'		=> $one['url_key'],
+	 *					'product_image'		=> $one['image'],
+	 *				];
+	 */
 	public function getCartInfo(){
+		$cart_info = Yii::$service->cart->getCartInfo();
+		//var_dump($cart_info);
+		//exit;
+		if(isset($cart_info['products']) && is_array($cart_info['products'])){
+			foreach($cart_info['products'] as $k=>$product_one){
+				$cart_info['products'][$k]['name'] = Yii::$service->store->getStoreAttrVal($product_one['product_name'],'name');
+				if(isset($product_one['product_image']['main']['image'])){
+					$cart_info['products'][$k]['image'] = $product_one['product_image']['main']['image'];
+				}
+				$cart_info['products'][$k]['url'] = Yii::$service->url->getUrl($product_one['product_url']);
+				$custom_option = isset($product_one['custom_option']) ? $product_one['custom_option'] : '';
+				$custom_option_sku = $product_one['custom_option_sku'];
+				if(isset($custom_option[$custom_option_sku]) && !empty($custom_option[$custom_option_sku])){
+					$cart_info['products'][$k]['custom_option_info'] = $custom_option[$custom_option_sku];
+					$custom_option_image = isset($custom_option[$custom_option_sku]['image']) ? $custom_option[$custom_option_sku]['image'] : '';
+					if($custom_option_image){
+						$cart_info['products'][$k]['image'] = $custom_option_image;
+					}
+				}
+			}
+		}
 		
-		# µÃµ½µ¥¸ö²úÆ·µÄ¼Û¸ñ
-		//Yii::$service->product->price->getCartPriceByProductId($productId,$qty,$custom_option_sku);
+		return $cart_info;
 	}
 	
 	public function initHead(){

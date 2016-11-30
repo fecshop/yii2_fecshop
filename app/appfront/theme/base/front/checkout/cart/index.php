@@ -8,8 +8,10 @@
 					
 					</div>
 				</div>
-				
-			   <div>
+				<?php if(is_array($cart_info) && !empty($cart_info)){   ?>
+			    <div>
+					<?php if(is_array($cart_info['products']) && (!empty($cart_info['products']))){ ?>
+								
 					<div class="shopping-cart-div">
 						<div class="shopping-cart-ab">
 						</div>
@@ -38,24 +40,34 @@
 								
 							</tfoot>
 							<tbody>
+								<?php foreach($cart_info['products'] as $product_one){ ?>
+								
 								<tr class="first last odd">
 									<td>
-										<a href="http://www.intosmile.com/retro-deep-v-neck-irregular-tassels-hem-sleeveless-dress.html" title="Retro Deep V-neck Irregular Tassels Hem Sleeveless Dress" class="product-image">
-										<img src="http://img.intosmile.com/media/catalog/product/cache/110/110/710aa4d924f51b2be23e7fd5eda0d13f/g/y/gyxh0849onfancy.jpg" alt="2121" width="75" height="75">
+										<a href="<?= $product_one['url'] ?>" title="<?= $product_one['name'] ?>" class="product-image">
+										<img src="<?= Yii::$service->product->image->getResize($product_one['image'],[100,100],false) ?>" alt="2121" width="75" height="75">
 										</a>
 									</td>
 									
 									<td>
 										<h2 class="product-name">
-											<a href="http://www.intosmile.com/retro-deep-v-neck-irregular-tassels-hem-sleeveless-dress.html">Retro Deep V-neck Irregular Tassels Hem Sleeveless Dress</a>
+											<a href="<?= $product_one['url'] ?>"><?= $product_one['name'] ?></a>
 										</h2>
-										<ul><li>Color:Black </li><li>Size:S </li></ul>
+										<?php  if(is_array($product_one['custom_option_info'])){  ?>
+										<ul>
+											<?php foreach($product_one['custom_option_info'] as $label => $val){  ?>
+												<?php   if(!in_array($label,['qty','sku','price','image'])){   ?>
+												<li><?= $label ?>:<?= $val ?> </li>
+												<?php }  ?>
+											<?php }  ?>
+										</ul>
+										<?php }  ?>
 									</td>
 									
 									
 									<td class="a-right">
 										<span class="cart-price">
-											<span class="price">$19.00</span>                
+											<span class="price"><?=  $currency_info['symbol'];  ?><?= $product_one['product_price']; ?></span>                
 										</span>
 
 									</td>
@@ -63,7 +75,7 @@
 									<td class="a-center">
 										<div style="width:80px;">
 											<a href="javascript:void(0)" class="cartqtydown changeitemqty" rel="266551" num="-1"></a>
-											<input name="cart[qty]" size="4" title="Qty" class="input-text qty" rel="266551" maxlength="12" value="1">
+											<input name="cart[qty]" size="4" title="Qty" class="input-text qty" rel="266551" maxlength="12" value="<?= $product_one['qty']; ?>">
 											<a href="javascript:void(0)" class="cartqtyup changeitemqty" rel="266551" num="1"></a>
 											<div class="clear"></div>
 										</div>
@@ -72,18 +84,21 @@
 				
 									<td class="a-right">
 										<span class="cart-price">
-											<span class="price">$19.00</span>                            
+											<span class="price"><?=  $currency_info['symbol'];  ?><?= $product_one['product_row_price']; ?></span>                            
 										</span>
 									</td>
 									<td class="a-center last">
 										<a href="http://www.intosmile.com/checkout/cart/remove?item_id=266551&amp;unec=aHR0cDovL3d3dy5pbnRvc21pbGUuY29tL2NoZWNrb3V0L2NhcnQ=" title="Remove item" class="btn-remove btn-remove2">Remove item</a>
 									</td>
-							</tr>						
+								</tr>
+								<?php  }  ?>
+								
 							</tbody>
 						</table>
-						
 					</div>
+					<?php  }  ?>
 				</div>
+				
 				<div class="cart-collaterals">
 					<div class="col2-set">
 						<div class="col-1">
@@ -165,6 +180,7 @@
 					</div>
 					<div class="clear"></div>
 				</div>
+				<?php } ?>
 			</div>
 		</div>
 	</div>

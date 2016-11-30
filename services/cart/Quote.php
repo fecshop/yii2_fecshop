@@ -123,7 +123,9 @@ class Quote extends Service
 		$this->_my_cart = MyCart::findOne($cart_id);
 	}
 	
-	
+	/**
+	 * 得到购物车的信息
+	 */
 	public function getCartInfo(){
 		$cart_id = $this->getCartId();
 		if(!$cart_id){
@@ -136,8 +138,34 @@ class Quote extends Service
 			return ;
 		}
 		
-		$cart_product = Yii::$service->cart->quoteItem->getCartProductInfo();
-		
+		$cart_product_info = Yii::$service->cart->quoteItem->getCartProductInfo();
+		if(is_array($cart_product_info)){
+			
+			$products = $cart_product_info['products'];
+			$product_total = $cart_product_info['product_total'];
+			if($products && $product_total){
+				$shippingCost   = $this->getShippingCost();
+				$couponCost		= $this->getCouponCost();
+				$grand_total	= $product_total + $shippingCost - $couponCost;
+				
+				return [
+					'grand_total' 	=> $grand_total,
+					'shipping_cost' => $shippingCost,
+					'coupon_cost' 	=> $couponCost,
+					'product_total' => $product_total,
+					'products' 		=> $products,
+				];
+			}
+			
+		}
+	}
+	
+	public function getShippingCost(){
+		return 0;
+	}
+	
+	public function getCouponCost(){
+		return 0;
 	}
 	
 	

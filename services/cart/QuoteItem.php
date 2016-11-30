@@ -114,20 +114,37 @@ class QuoteItem extends Service
 			])->all();
 			if(is_array($data) && !empty($data)){
 				foreach($data as $one){
+					//var_dump($one['product_id']);
 					$product_id = $one['product_id'];
-					$qty = $one['qty'];
-					$custom_option_sku = $one['custom_option_sku'];
-					$product_price = Yii::$service->product->price->getCartPriceByProductId($product_id,$qty,$custom_option_sku);
-					$product_row_price = $product_price * $qty;
-					$product_total += $product_row_total;
-					$products[] = [
-						'product_id' 		=> $product_id ,
-						'qty' 				=> $qty ,
-						'custom_option_sku' => $custom_option_sku ,
-						'product_price' 	=> $product_price ,
-						'product_row_price' => $product_row_price ,
-					];
+					$product_one = Yii::$service->product->getByPrimaryKey($product_id);
+					if($product_one['_id']){
+						$qty = $one['qty'];
+						$custom_option_sku = $one['custom_option_sku'];
+						$product_price = Yii::$service->product->price->getCartPriceByProductId($product_id,$qty,$custom_option_sku);
+						//var_dump($product_id);
+						//var_dump($qty);
+						//var_dump($custom_option_sku);
+						//echo "<br/>";
+						//var_dump($product_price);
+						$product_price = isset($product_price['value']) ? $product_price['value'] : 0;
+						$product_row_price = $product_price * $qty;
+						//$product_row_price['code'] = $product_price['code'];
+						//$product_row_price['symbol'] = $product_price['symbol'];
+						$product_total += $product_row_price;
+						$products[] = [
+							'product_id' 		=> $product_id ,
+							'qty' 				=> $qty ,
+							'custom_option_sku' => $custom_option_sku ,
+							'product_price' 	=> $product_price ,
+							'product_row_price' => $product_row_price ,
+							'product_name'		=> $product_one['name'],
+							'product_url'		=> $product_one['url_key'],
+							'product_image'		=> $product_one['image'],
+							'custom_option'		=> $product_one['custom_option'],
+						];
+					}
 				}
+				//var_dump($product_total);
 				return [
 					'products' 		=> $products,
 					'product_total' => $product_total,
