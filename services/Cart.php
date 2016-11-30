@@ -96,7 +96,69 @@ class Cart extends Service
 	}
 	*/
 	
+	/**
+	 * @property $item_id | Int 购物车产品表的id字段
+	 * 通过item id 将购物车中的某个产品的个数加一
+	 */
+	protected function actionAddOneItem($item_id){
+		$innerTransaction = Yii::$app->db->beginTransaction();
+		try {
+			$status = Yii::$service->cart->quoteItem->addOneItem($item_id);
+			if(!$status){
+				$innerTransaction->rollBack();
+				return false;
+			}
+			Yii::$service->cart->quote->computeCartInfo();
+			$innerTransaction->commit();
+			return true;
+		} catch (Exception $e) {
+			$innerTransaction->rollBack();
+		}
+		return false;
+		
+	}
+	/**
+	 * @property $item_id | Int 购物车产品表的id字段
+	 * 通过item id 将购物车中的某个产品的个数减一
+	 */
+	protected function actionLessOneItem($item_id){
+		$innerTransaction = Yii::$app->db->beginTransaction();
+		try {
+			$status = Yii::$service->cart->quoteItem->lessOneItem($item_id);
+			if(!$status){
+				$innerTransaction->rollBack();
+				return false;
+			}
+			Yii::$service->cart->quote->computeCartInfo();
 	
+			$innerTransaction->commit();
+			return true;
+		} catch (Exception $e) {
+			$innerTransaction->rollBack();
+		}
+		return false;
+	}
+	
+	/**
+	 * @property $item_id | Int 购物车产品表的id字段
+	 * 通过item id 删除购物车中的某个产品
+	 */
+	protected function actionRemoveItem($item_id){
+		$innerTransaction = Yii::$app->db->beginTransaction();
+		try {
+			$status = Yii::$service->cart->quoteItem->removeItem($item_id);
+			if(!$status){
+				$innerTransaction->rollBack();
+				return false;
+			}
+			Yii::$service->cart->quote->computeCartInfo();
+			$innerTransaction->commit();
+			return true;
+		} catch (Exception $e) {
+			$innerTransaction->rollBack();
+		}
+		return false;
+	}
 	
 	protected function actionGetUserCartInfo(){
 		
@@ -164,14 +226,7 @@ class Cart extends Service
 		
 	}
 	
-	/**
-	 * $item_ids
-	 * remove cart items by $items_ids
-	 */
-	protected function actionRemoveItems($item_ids){
-		
-		
-	}
+	
 	
 	/**
 	 * clear cart product.

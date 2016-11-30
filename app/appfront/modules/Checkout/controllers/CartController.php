@@ -56,6 +56,30 @@ class CartController extends AppfrontController
 		}
 		exit;
 	}
+	
+	public function actionUpdateinfo(){
+		$item_id = Yii::$app->request->get('item_id');
+		$up_type = Yii::$app->request->get('up_type');
+		
+		if($up_type == 'add_one'){
+			
+			$status = Yii::$service->cart->addOneItem($item_id);
+		}else if($up_type == 'less_one'){
+			
+			$status = Yii::$service->cart->lessOneItem($item_id);
+		}else if($up_type == 'remove'){
+			$status = Yii::$service->cart->removeItem($item_id);
+		}
+		if($status){
+			echo json_encode([
+				'status' => 'success'
+			]);
+		}else{
+			echo json_encode([
+				'status' => 'fail'
+			]);
+		}
+	}
 }
 
 

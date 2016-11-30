@@ -1,5 +1,10 @@
+<?php
+use fecshop\app\appfront\helper\Format;
+?>
 <div class="main container one-column">
 	<div class="col-main">
+	<?php if(is_array($cart_info) && !empty($cart_info)){   ?>
+			    
 		<div class="product_page">
 			
 			<div class="cart">
@@ -8,8 +13,7 @@
 					
 					</div>
 				</div>
-				<?php if(is_array($cart_info) && !empty($cart_info)){   ?>
-			    <div>
+				<div>
 					<?php if(is_array($cart_info['products']) && (!empty($cart_info['products']))){ ?>
 								
 					<div class="shopping-cart-div">
@@ -56,9 +60,9 @@
 										<?php  if(is_array($product_one['custom_option_info'])){  ?>
 										<ul>
 											<?php foreach($product_one['custom_option_info'] as $label => $val){  ?>
-												<?php   if(!in_array($label,['qty','sku','price','image'])){   ?>
+												
 												<li><?= $label ?>:<?= $val ?> </li>
-												<?php }  ?>
+												
 											<?php }  ?>
 										</ul>
 										<?php }  ?>
@@ -67,16 +71,16 @@
 									
 									<td class="a-right">
 										<span class="cart-price">
-											<span class="price"><?=  $currency_info['symbol'];  ?><?= $product_one['product_price']; ?></span>                
+											<span class="price"><?=  $currency_info['symbol'];  ?><?= Format::price($product_one['product_price']); ?></span>                
 										</span>
 
 									</td>
 				   
 									<td class="a-center">
 										<div style="width:80px;">
-											<a href="javascript:void(0)" class="cartqtydown changeitemqty" rel="266551" num="-1"></a>
-											<input name="cart[qty]" size="4" title="Qty" class="input-text qty" rel="266551" maxlength="12" value="<?= $product_one['qty']; ?>">
-											<a href="javascript:void(0)" class="cartqtyup changeitemqty" rel="266551" num="1"></a>
+											<a href="javascript:void(0)" class="cartqtydown changeitemqty" rel="<?= $product_one['item_id']; ?>" num="<?= $product_one['qty']; ?>"></a>
+											<input name="cart[qty]" size="4" title="Qty" class="input-text qty" rel="<?= $product_one['item_id']; ?>" maxlength="12" value="<?= $product_one['qty']; ?>">
+											<a href="javascript:void(0)" class="cartqtyup changeitemqty" rel="<?= $product_one['item_id']; ?>" num="<?= $product_one['qty']; ?>"></a>
 											<div class="clear"></div>
 										</div>
 									</td>
@@ -84,11 +88,11 @@
 				
 									<td class="a-right">
 										<span class="cart-price">
-											<span class="price"><?=  $currency_info['symbol'];  ?><?= $product_one['product_row_price']; ?></span>                            
+											<span class="price"><?=  $currency_info['symbol'];  ?><?= Format::price($product_one['product_row_price']); ?></span>                            
 										</span>
 									</td>
 									<td class="a-center last">
-										<a href="http://www.intosmile.com/checkout/cart/remove?item_id=266551&amp;unec=aHR0cDovL3d3dy5pbnRvc21pbGUuY29tL2NoZWNrb3V0L2NhcnQ=" title="Remove item" class="btn-remove btn-remove2">Remove item</a>
+										<a href="javascript:void(0)"  rel="<?= $product_one['item_id']; ?>" title="Remove item" class="btn-remove btn-remove2">Remove item</a>
 									</td>
 								</tr>
 								<?php  }  ?>
@@ -137,17 +141,17 @@
 										<td style="" class="a-left" colspan="1">
 											Item Subtotal:    </td>
 										<td style="" class="a-right">
-											<span class="price">$19.00</span>    </td>
+											<span class="price"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['product_total']); ?></span>    </td>
 									</tr><tr>
 										<td style="" class="a-left" colspan="1">
 											Shipping    </td>
 										<td style="" class="a-right">
-											<span class="price">$0.00</span>    </td>
+											<span class="price"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['shipping_cost']); ?></span>    </td>
 									</tr><tr>
 										<td style="" class="a-left" colspan="1">
 											Coupon:    </td>
 										<td style="" class="a-right">
-											<span class="price">-$0.00</span>    </td>
+											<span class="price">-<?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['coupon_cost']); ?></span>    </td>
 									</tr>
 								</tbody>
 							</table>
@@ -162,7 +166,7 @@
 											<strong>Grand Total</strong>
 										</td>
 										<td style="" class="a-right">
-											<strong><span class="price">$19.00</span></strong>
+											<strong><span class="price"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['grand_total']) ?></span></strong>
 										</td>
 									</tr>
 								</tbody>
@@ -180,8 +184,100 @@
 					</div>
 					<div class="clear"></div>
 				</div>
-				<?php } ?>
+				
 			</div>
 		</div>
+	<?php }else{ ?>
+		<div class="empty_cart">
+			Your Cart is empty, You Can <a rel="nofollow" href="<?= Yii::$service->url->homeUrl() ?>">Click Here to Home Page</a>
+		
+		
+		
+		</div>
+	<?php  } ?>
 	</div>
 </div>
+
+<script>
+	// add to cart js	
+<?php $this->beginBlock('changeCartInfo') ?>
+$(document).ready(function(){
+	currentUrl = "<?= Yii::$service->url->getUrl('checkout/cart') ?>"
+	updateCartInfoUrl = "<?= Yii::$service->url->getUrl('checkout/cart/updateinfo') ?>"
+	$(".cartqtydown").click(function(){
+		$item_id = $(this).attr("rel");
+		num = $(this).attr("num");
+		if(num > 1){
+			$data = {
+				item_id:$item_id,
+				up_type:"less_one"
+			};
+			jQuery.ajax({
+				async:true,
+				timeout: 6000,
+				dataType: 'json', 
+				type:'get',
+				data: $data,
+				url:updateCartInfoUrl,
+				success:function(data, textStatus){ 
+					if(data.status == 'success'){
+						window.location.href=currentUrl;
+					}
+				},
+				error:function (XMLHttpRequest, textStatus, errorThrown){}
+			});
+		}
+	});
+	
+	$(".cartqtyup").click(function(){
+		$item_id = $(this).attr("rel");
+		$data = {
+			item_id:$item_id,
+			up_type:"add_one"
+		};
+		jQuery.ajax({
+			async:true,
+			timeout: 6000,
+			dataType: 'json', 
+			type:'get',
+			data: $data,
+			url:updateCartInfoUrl,
+			success:function(data, textStatus){ 
+				if(data.status == 'success'){
+					window.location.href=currentUrl;
+				}
+			},
+			error:function (XMLHttpRequest, textStatus, errorThrown){}
+		});
+		
+	});
+	
+	$(".btn-remove").click(function(){
+		$item_id = $(this).attr("rel");
+		
+		$data = {
+			item_id:$item_id,
+			up_type:"remove"
+		};
+		jQuery.ajax({
+			async:true,
+			timeout: 6000,
+			dataType: 'json', 
+			type:'get',
+			data: $data,
+			url:updateCartInfoUrl,
+			success:function(data, textStatus){ 
+				if(data.status == 'success'){
+					window.location.href=currentUrl;
+				}
+			},
+			error:function (XMLHttpRequest, textStatus, errorThrown){}
+		});
+		
+	});
+	
+});
+
+<?php $this->endBlock(); ?> 
+<?php $this->registerJs($this->blocks['changeCartInfo'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
+</script>

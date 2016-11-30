@@ -132,6 +132,7 @@ class QuoteItem extends Service
 						//$product_row_price['symbol'] = $product_price['symbol'];
 						$product_total += $product_row_price;
 						$products[] = [
+							'item_id' => $one['item_id'],
 							'product_id' 		=> $product_id ,
 							'qty' 				=> $qty ,
 							'custom_option_sku' => $custom_option_sku ,
@@ -153,6 +154,58 @@ class QuoteItem extends Service
 		}
 	}
 	
+	public function addOneItem($item_id){
+		$cart_id = Yii::$service->cart->quote->getCartId();
+		if($cart_id){
+			$one = MyCartItem::find()->where([
+				'cart_id' => $cart_id,
+				'item_id' => $item_id,
+			])->one();
+			if($one['item_id']){
+				$one['qty'] = $one['qty'] + 1;
+				$one->save();
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
+	public function lessOneItem($item_id){
+		$cart_id = Yii::$service->cart->quote->getCartId();
+		if($cart_id){
+			
+			$one = MyCartItem::find()->where([
+				'cart_id' => $cart_id,
+				'item_id' => $item_id,
+			])->one();
+			if($one['item_id']){
+				
+				if($one['qty'] > 1){
+					$one['qty'] = $one['qty'] - 1;
+					$one->save();
+					
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public function removeItem($item_id){
+		$cart_id = Yii::$service->cart->quote->getCartId();
+		if($cart_id){
+			$one = MyCartItem::find()->where([
+				'cart_id' => $cart_id,
+				'item_id' => $item_id,
+			])->one();
+			if($one['item_id']){
+				$one->delete();
+				return true;
+			}
+		}
+		return false;
+	}
 	
 	
 }
