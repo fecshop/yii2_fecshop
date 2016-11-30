@@ -121,16 +121,11 @@ class QuoteItem extends Service
 						$qty = $one['qty'];
 						$custom_option_sku = $one['custom_option_sku'];
 						$product_price = Yii::$service->product->price->getCartPriceByProductId($product_id,$qty,$custom_option_sku);
-						//var_dump($product_id);
-						//var_dump($qty);
-						//var_dump($custom_option_sku);
-						//echo "<br/>";
-						//var_dump($product_price);
+						
 						$product_price = isset($product_price['value']) ? $product_price['value'] : 0;
 						$product_row_price = $product_price * $qty;
-						//$product_row_price['code'] = $product_price['code'];
-						//$product_row_price['symbol'] = $product_price['symbol'];
 						$product_total += $product_row_price;
+						$productSpuOptions = $this->getProductSpuOptions($product_one);
 						$products[] = [
 							'item_id' => $one['item_id'],
 							'product_id' 		=> $product_id ,
@@ -142,16 +137,41 @@ class QuoteItem extends Service
 							'product_url'		=> $product_one['url_key'],
 							'product_image'		=> $product_one['image'],
 							'custom_option'		=> $product_one['custom_option'],
+							'spu_options' 			=> $productSpuOptions,  
 						];
 					}
 				}
-				//var_dump($product_total);
+				//var_dump($product_total);  
 				return [
 					'products' 		=> $products,
 					'product_total' => $product_total,
 				];
 			}
 		}
+	}
+	/**
+	 * 得到产品的spu对应的属性以及值。
+	 */
+	protected function getProductSpuOptions($productOb){
+		$custom_option_info_arr = [];
+		if(isset($productOb['attr_group']) && !empty($productOb['attr_group'])){
+			$productAttrGroup = $productOb['attr_group'];
+			$attrInfo = Yii::$service->product->getGroupAttrInfo($productAttrGroup);
+			if(is_array($attrInfo) && !empty($attrInfo)){
+				$attrs = array_keys($attrInfo);
+				\fecshop\models\mongodb\Product::addCustomProductAttrs($attrs);
+			}
+			$productOb = Yii::$service->product->getByPrimaryKey($productOb['_id']->{'$id'});
+			$spuArr = Yii::$service->product->getSpuAttr($productAttrGroup);
+			if(is_array($spuArr) && !empty($spuArr)){
+				foreach($spuArr as $spu_attr){
+					if(isset($productOb[$spu_attr]) && !empty($productOb[$spu_attr])){
+						$custom_option_info_arr[$spu_attr] = $productOb[$spu_attr];
+					}
+				}
+			}
+		}
+		return $custom_option_info_arr ;
 	}
 	
 	public function addOneItem($item_id){
