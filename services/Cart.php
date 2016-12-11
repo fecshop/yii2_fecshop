@@ -63,38 +63,13 @@ class Cart extends Service
 		return Yii::$service->cart->quote->getCartItemCount();
 		
 	}
-	
+	/**
+	 * 得到购物车中的信息。
+	 */ 
 	protected function actionGetCartInfo(){
 		return Yii::$service->cart->quote->getCartInfo();
 	}
 	
-	/**
-	 * 初始化
-	 */
-	/*
-	protected function initAddItem($product_id,$co_sku,$qty){
-		$product = $this->_product;
-		
-		$base_price = Yii::$service->product->price->getFinalPrice(
-			$product['price'],$product['special_price']	,
-			$product['special_from'],$product['special_to']	,
-			$qty, $product['tier_price']
-		);
-		$base_row_total = $base_price * $qty;
-		
-		$current_currency_price = Yii::$service->page->currency->getCurrentCurrencyPrice($base_price);
-		$row_total = $current_currency_price * $qty;
-		
-		$weight = $product['weight'];
-		$row_weight = $weight * $qty;
-		
-		$this->_add_item = [
-			'product_id'		=> $product_id,
-			'co_sku'			=> $co_sku,
-			'qty' 				=> $qty,
-		];
-	}
-	*/
 	
 	/**
 	 * @property $item_id | Int 购物车产品表的id字段
@@ -159,15 +134,15 @@ class Cart extends Service
 		}
 		return false;
 	}
-	
-	protected function actionGetUserCartInfo(){
+	/**
+	 * @property $coupon_code 优惠卷码
+	 * @return boolean 优惠券使用成功则返回true，失败则返回false
+	 */
+	protected function actionAddCoupon($coupon_code){
 		
 		
 	}
 	
-	protected function actionChangeItemQty($sku){
-		
-	}
 	
 	/**
 	 *  merge cart , if current cart currency is not equals to user cart currency when user login account.
@@ -177,23 +152,8 @@ class Cart extends Service
 		
 	}
 	
-	/**
-	 * change current cart currency 
-	 * 1. check if currency is allowed to change.
-	 */
-	protected function actionChangeCartCurrency(){
-		
-		
-	}
 	
-	/**
-	 * @property $language|String
-	 * change current language , cart product  language change to current language.
-	 */
-	protected function actionChangeProductLanguage($language=''){
-		
-		
-	}
+	
 	
 	/**
 	 * @property $address|Array

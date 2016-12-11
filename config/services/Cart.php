@@ -19,6 +19,9 @@ return [
 			'info' => [
 				'class' => 'fecshop\services\cart\Info',
 			],
+			'coupon' => [
+				'class' => 'fecshop\services\cart\Coupon',
+			],
 		],
 	],
 ];
