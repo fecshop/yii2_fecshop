@@ -89,6 +89,16 @@ class Currency extends Service
 		return $price;
 	}
 	/**
+	 * 通过当前的货币价格得到默认货币的价格
+	 */
+	protected function actionGetDefaultCurrencyPrice($current_price){
+		if(isset($this->currencys[$this->getCurrentCurrency()]['rate'])){
+			$rate = $this->currencys[$this->getCurrentCurrency()]['rate'];
+			if($rate)
+				return ceil($price / $rate  * 100)/100;
+		}
+	}
+	/**
 	 * service Store bootstrap(Yii::$app->store->bootstrap()),
 	 * call this function to init currency.
 	 * 1. if current currency is set (get value from session), none will be done.

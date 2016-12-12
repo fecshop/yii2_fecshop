@@ -137,7 +137,7 @@ class Quote extends Service
 		if($items_qty <= 0){
 			return ;
 		}
-		
+		$coupon_code = $this->_my_cart['coupon_code'];
 		$cart_product_info = Yii::$service->cart->quoteItem->getCartProductInfo();
 		if(is_array($cart_product_info)){
 			
@@ -145,7 +145,7 @@ class Quote extends Service
 			$product_total = $cart_product_info['product_total'];
 			if($products && $product_total){
 				$shippingCost   = $this->getShippingCost();
-				$couponCost		= $this->getCouponCost();
+				$couponCost		= $this->getCouponCost($product_total,$coupon_code);
 				$grand_total	= $product_total + $shippingCost - $couponCost;
 				
 				return [
@@ -163,11 +163,20 @@ class Quote extends Service
 	public function getShippingCost(){
 		return 0;
 	}
-	
-	public function getCouponCost(){
-		return 0;
+	/**
+	 * 得到优惠券的折扣金额
+	 */
+	public function getCouponCost($product_total,$coupon_code){
+		$dc_price = Yii::$service->page->currency->getDefaultCurrencyPrice($product_total);
+		$dc_discount = Yii::$service->cart->coupon->getDiscount($coupon_code,$dc_price);
+		return $dc_discount;
 	}
 	
-	
+	public function setCartCoupon($coupon_code){
+		$my_cart = $this->getMyCart();
+		$my_cart->coupon_code = $coupon_code;
+		$my_cart->save();
+		return true;
+	}
 	
 }

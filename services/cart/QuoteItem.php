@@ -134,6 +134,7 @@ class QuoteItem extends Service
 							'product_price' 	=> $product_price ,
 							'product_row_price' => $product_row_price ,
 							'product_name'		=> $product_one['name'],
+							'product_weight'	=> $product_one['weight'],
 							'product_url'		=> $product_one['url_key'],
 							'product_image'		=> $product_one['image'],
 							'custom_option'		=> $product_one['custom_option'],
