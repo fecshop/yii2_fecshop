@@ -25,7 +25,8 @@ class Coupon extends Service
 	
 	
 	protected function actionGetPrimaryKey(){
-		return MyCoupon::getPrimaryKey();
+		
+		return 'coupon_id';
 	}
 	/**
 	 * @property $primaryKey | Int
@@ -51,7 +52,7 @@ class Coupon extends Service
 		if(!$this->_coupon_usage_model){
 			$one = MyCouponUsage::findOne([
 				'customer_id' => $customer_id,
-				'coupon_id'  => $couponModel['id'];
+				'coupon_id'  => $couponModel['id'],
 			]);
 			if($one['customer_id']){
 				$this->_coupon_usage_model = $one;
@@ -116,14 +117,33 @@ class Coupon extends Service
 	 */
 	protected function actionSave($one){
 		$time = time();
-		$primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
+		$primaryKey = $this->getPrimaryKey();
+		$primaryVal = isset($one[$primaryKey]) ? $one[$primaryKey] : '';
 		if($primaryVal){
 			$model = MyCoupon::findOne($primaryVal);
 			if(!$model){
 				Yii::$service->helper->errors->add('coupon '.$this->getPrimaryKey().' is not exist');
 				return;
+			}else{
+				$o_one = MyCoupon::find()
+					->where(['coupon_code' =>$one['coupon_code']])
+					->andWhere(['!=',$primaryKey,$primaryVal])
+					->one()
+					;
+				if($o_one[$primaryKey]){
+					Yii::$service->helper->errors->add('coupon_code must be unique');
+					return;
+				}
 			}	
 		}else{
+			$o_one = MyCoupon::find()
+				->where(['coupon_code' =>$one['coupon_code']])
+				->one()
+				;
+			if($o_one[$primaryKey]){
+				Yii::$service->helper->errors->add('coupon_code must be unique');
+				return;
+			}
 			$model = new MyCoupon;
 			$model->created_at = time();
 			if(isset(Yii::$app->user)){
