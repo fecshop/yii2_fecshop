@@ -57,6 +57,25 @@ class CartController extends AppfrontController
 		exit;
 	}
 	
+	/**
+	 * 购物车中添加优惠券
+	 */
+	public function actionAddcoupon(){
+		$coupon_code = Yii::$app->request->post('coupon_code');
+		
+		echo $coupon_code;
+		exit;
+	}
+		/**
+	 * 购物车中取消优惠券
+	 */
+	public function actionCancelcoupon(){
+		
+		
+	}
+	
+	
+	
 	public function actionUpdateinfo(){
 		$item_id = Yii::$app->request->get('item_id');
 		$up_type = Yii::$app->request->get('up_type');

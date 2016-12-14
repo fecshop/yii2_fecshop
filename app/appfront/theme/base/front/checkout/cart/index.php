@@ -108,23 +108,24 @@ use fecshop\app\appfront\helper\Format;
 						<div class="col-1">
 						</div>
 						<div class="col-2">
-							<form id="discount-coupon-form" action="http://www.intosmile.com/checkout/cart/couponpost" method="post">
+							<form id="discount-coupon-form" >
 								<div class="discount">
 									<h2>Discount Codes</h2>
 									<div class="discount-form">
 										<label for="coupon_code">Enter your coupon code if you have one.</label>
-										<input name="_csrf" id="csrf_coupone" value="" type="hidden">
 										<div class="input-box">
-											<input style="color:#777;" class="input-text" id="coupon_code" name="coupon_code" value="">
+											<input type="hidden" class="couponType"  value="<?= $cart_info['coupon_code'] ? 1 : 2 ; ?>"  />
+											<input style="color:#777;" class="input-text" id="coupon_code" name="coupon_code" value="<?= $cart_info['coupon_code']; ?>">
 										</div>
 										<div class="buttons-cou">
-											<a href="javascript:void(0)" onclick="cartcouponsubmit()" class="submitbutton"><span><span>Add Coupon</span></span> </a>
+											<a href="javascript:void(0)" class="add_coupon_submit submitbutton"><span><span>Add Coupon</span></span> </a>
 											
 										</div>
 										<div class="clear"></div>
 									</div>
 								</div>
 							</form>
+							
 							
 						</div>
 					</div>
@@ -174,7 +175,7 @@ use fecshop\app\appfront\helper\Format;
 						</div>
 						<div class="proceed_to_checkout">
 							
-							<button onclick="location.href='http://www.intosmile.com/checkout/onepage'" type="button" title="Proceed to Checkout" class="button btn-proceed-checkout btn-checkout"><span><span>Proceed to Pay</span></span></button>
+							<button onclick="location.href='<?= Yii::$service->url->getUrl('checkout/onepage');  ?>'" type="button" title="Proceed to Checkout" class="button btn-proceed-checkout btn-checkout"><span><span>Proceed to Pay</span></span></button>
 							
 							<span class="or">- OR - </span>
 							<a class="express_paypal" href="<?= Yii::$service->url->getUrl('paypal/express/start');    ?>">
@@ -275,6 +276,39 @@ $(document).ready(function(){
 		});
 		
 	});
+	
+	$(".add_coupon_submit").click(function(){
+		coupon_code = $("#coupon_code").val();
+		coupon_type = $(".couponType").val();
+		coupon_url = "";
+		if(coupon_type == 2){
+			coupon_url = "<?=  Yii::$service->url->getUrl('checkout/cart/addcoupon'); ?>";
+		}else if(coupon_type == 1){
+			coupon_url = "<?=  Yii::$service->url->getUrl('checkout/cart/cancelcoupon'); ?>";
+		}
+		if(!coupon_code){
+			alert("coupon can not empty!");
+		}
+		//coupon_url = $("#discount-coupon-form").attr("action");
+		jQuery.ajax({
+			async:true,
+			timeout: 6000,
+			dataType: 'json', 
+			type:'post',
+			data: {"coupon_code":coupon_code},
+			url:coupon_url,
+			success:function(data, textStatus){ 
+				if(data.status == 'success'){
+					window.location.href=currentUrl;
+				}
+			},
+			error:function (XMLHttpRequest, textStatus, errorThrown){}
+		});
+			
+		
+	});
+	
+	
 	
 });
 

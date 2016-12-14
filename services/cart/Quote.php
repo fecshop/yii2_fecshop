@@ -149,6 +149,7 @@ class Quote extends Service
 				$grand_total	= $product_total + $shippingCost - $couponCost;
 				
 				return [
+					'coupon_code'	=> $coupon_code,
 					'grand_total' 	=> $grand_total,
 					'shipping_cost' => $shippingCost,
 					'coupon_cost' 	=> $couponCost,

@@ -22,6 +22,7 @@ class Index {
 	}
 	/** @return data example
 	 *	[
+	 *				'coupon_code' 	=> $coupon_code,	
 	 *				'grand_total' 	=> $grand_total,
 	 *				'shipping_cost' => $shippingCost,
 	 *				'coupon_cost' 	=> $couponCost,
