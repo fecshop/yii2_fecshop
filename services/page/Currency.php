@@ -95,7 +95,7 @@ class Currency extends Service
 		if(isset($this->currencys[$this->getCurrentCurrency()]['rate'])){
 			$rate = $this->currencys[$this->getCurrentCurrency()]['rate'];
 			if($rate)
-				return ceil($price / $rate  * 100)/100;
+				return ceil($current_price / $rate  * 100)/100;
 		}
 	}
 	/**

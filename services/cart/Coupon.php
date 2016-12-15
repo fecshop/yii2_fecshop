@@ -67,6 +67,7 @@ class Coupon extends Service
 	protected function actionGetCouponModel($coupon_code){
 		if(!$this->_coupon_model){
 			$one = MyCoupon::findOne(['coupon_code' => $coupon_code]);
+			
 			if($one['coupon_code']){
 				$this->_coupon_model = $one;
 			}
@@ -209,14 +210,16 @@ class Coupon extends Service
 		}
 		$customer_id = Yii::$app->user->identity->id;
 		if($customer_id){
+			
 			# 判断优惠券是否存在，是否过期，是否超出最大使用次数
 			$couponModel = $this->getCouponModel($coupon_code);
 			# 存在
 			if($couponModel){
+				
 				$expiration_date = $couponModel['expiration_date'];
 				# 未过期
 				if($expiration_date > time()){
-					$couponUsageModel = $this->getCouponUsageModel($customer_id,$couponModel['id']);
+					$couponUsageModel = $this->getCouponUsageModel($customer_id,$couponModel['coupon_id']);
 					
 					$times_used = 0;
 					if($couponUsageModel['times_used']){
@@ -226,9 +229,16 @@ class Coupon extends Service
 					# 次数限制
 					if($times_used < $users_per_customer){
 						return true;
+					}else{
+						Yii::$service->helper->errors->add("The coupon has exceeded the maximum number of uses");
 					}
-					
+				}else{
+					Yii::$service->helper->errors->add("coupon is expired");
+				
 				}
+			}else{
+				Yii::$service->helper->errors->add("coupon is not exist");
+				
 			}
 		}
 	}
@@ -243,7 +253,8 @@ class Coupon extends Service
 			$discount 	= $couponModel['discount'];
 			if($conditions <= $dc_price){
 				if($type == 1){ # 百分比
-					$discount_cost = (100 - $discount) * $dc_price;
+				
+					$discount_cost = $discount/100 * $dc_price;
 				}else if($type == 2){ # 直接折扣
 					$discount_cost = $dc_price - $discount;
 				}
@@ -260,11 +271,17 @@ class Coupon extends Service
 		}
 		$customer_id = Yii::$app->user->identity->id;
 		if($customer_id){
-			if($cu_model = $this->_coupon_usage_model){
+			$cu_model = $this->_coupon_usage_model;
+			if(!$cu_model){
+				$cu_model = new MyCouponUsage;
+				$cu_model->times_used 	= 1; 
+				$cu_model->customer_id 	= $customer_id; 
+			}else{
 				$cu_model->times_used += 1; 
-				$cu_model->save();
-				return true;
 			}
+			$cu_model->save();
+			return true;
+			
 		}
 	}
 	
@@ -275,8 +292,10 @@ class Coupon extends Service
 	 * 如果优惠券可以使用，则使用优惠券进行打折。更新购物车信息。
 	 */
 	protected function actionAddCoupon($coupon_code){
+		
 		if($this->couponIsActive($coupon_code)){
-			$couponModel= $this->getByCouponCode($coupon_code);
+			$couponModel= $this->getCouponModel($coupon_code);
+			
 			$type 		= $couponModel['type'];
 			$conditions = $couponModel['conditions'];
 			$discount 	= $couponModel['discount'];
@@ -285,24 +304,42 @@ class Coupon extends Service
 			
 			$product_total = isset($cartProduct['product_total']) ? $cartProduct['product_total'] : 0;
 			if($product_total){
+				//var_dump($product_total);
 				$dc_price = Yii::$service->page->currency->getDefaultCurrencyPrice($product_total);
+				
 				if($dc_price > $conditions){
+					//echo 3333;
+					//echo 22;
 					# 事务更新购物侧的coupon 和优惠券的使用情况。
 					$innerTransaction = Yii::$app->db->beginTransaction();
 					try {
 						$set_status = Yii::$service->cart->quote->setCartCoupon($coupon_code);
 						$up_status  = $this->updateCouponUsage();
+						
 						if($set_status && $up_status){
+							
 							$innerTransaction->commit();
+							
 							return true;
 						}
 						$innerTransaction->rollBack();
 					} catch (Exception $e) {
 						$innerTransaction->rollBack();
 					}
+				}else{
+					Yii::$service->helper->errors->add('The coupon can be used if the product amount in the shopping cart is more than '.$conditions.' dollars');
+				
 				}
 			}
 		}
+	}
+	
+	# 取消优惠券
+	protected function actionCancelCoupon($coupon_code){
+		#1. 在购物车中去除掉优惠券
+		#2. 在coupon usage中减少1
+		#3. 在coupon中使用总数减少1
+		
 	}
 	
 	

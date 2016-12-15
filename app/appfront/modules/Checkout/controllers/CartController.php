@@ -61,16 +61,87 @@ class CartController extends AppfrontController
 	 * 购物车中添加优惠券
 	 */
 	public function actionAddcoupon(){
-		$coupon_code = Yii::$app->request->post('coupon_code');
+		if(Yii::$app->user->isGuest){
+			# 记忆一下登录成功返回购物车页面
+			$cartUrl = Yii::$service->url->getUrl('checkout/cart');
+			Yii::$service->customer->setLoginSuccessRedirectUrl($cartUrl);
+			echo json_encode([
+				'status' => 'fail',
+				'content'=> 'nologin',
+			]);
+			exit;
+		}
+		$coupon_code = trim(Yii::$app->request->post('coupon_code'));
 		
-		echo $coupon_code;
-		exit;
+		if($coupon_code){
+			Yii::$service->cart->coupon->addCoupon($coupon_code);
+			$error_arr = Yii::$service->helper->errors->get(true);
+			
+			if(!empty($error_arr)){
+				$error_str = implode(',',$error_arr);
+				echo json_encode([
+					'status' => 'fail',
+					'content'=> $error_str,
+				]);
+				exit;
+			}else{
+				echo json_encode([
+					'status' => 'success',
+					'content'=> 'add coupon success',
+				]);
+				exit;
+			}
+		}else{
+			echo json_encode([
+				'status' => 'fail',
+				'content'=> 'coupon is empty',
+			]);
+			exit;
+		}
+		
 	}
 		/**
 	 * 购物车中取消优惠券
 	 */
 	public function actionCancelcoupon(){
 		
+		if(Yii::$app->user->isGuest){
+			# 记忆一下登录成功返回购物车页面
+			$cartUrl = Yii::$service->url->getUrl('checkout/cart');
+			Yii::$service->customer->setLoginSuccessRedirectUrl($cartUrl);
+			echo json_encode([
+				'status' => 'fail',
+				'content'=> 'nologin',
+			]);
+			exit;
+		}
+		$coupon_code = trim(Yii::$app->request->post('coupon_code'));
+		
+		if($coupon_code){
+			Yii::$service->cart->coupon->cancelCoupon($coupon_code);
+			$error_arr = Yii::$service->helper->errors->get(true);
+			
+			if(!empty($error_arr)){
+				$error_str = implode(',',$error_arr);
+				echo json_encode([
+					'status' => 'fail',
+					'content'=> $error_str,
+				]);
+				exit;
+			}else{
+				echo json_encode([
+					'status' => 'success',
+					'content'=> 'add coupon success',
+				]);
+				exit;
+			}
+		}else{
+			echo json_encode([
+				'status' => 'fail',
+				'content'=> 'coupon is empty',
+			]);
+			exit;
+		}
 		
 	}
 	

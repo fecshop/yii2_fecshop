@@ -118,10 +118,11 @@ use fecshop\app\appfront\helper\Format;
 											<input style="color:#777;" class="input-text" id="coupon_code" name="coupon_code" value="<?= $cart_info['coupon_code']; ?>">
 										</div>
 										<div class="buttons-cou">
-											<a href="javascript:void(0)" class="add_coupon_submit submitbutton"><span><span>Add Coupon</span></span> </a>
+											<a href="javascript:void(0)" class="add_coupon_submit submitbutton"><span><span><?= $cart_info['coupon_code'] ? 'Cancel Coupon' : 'Add Coupon' ; ?></span></span> </a>
 											
 										</div>
 										<div class="clear"></div>
+										<div class="coupon_add_log"></div>
 									</div>
 								</div>
 							</form>
@@ -300,6 +301,10 @@ $(document).ready(function(){
 			success:function(data, textStatus){ 
 				if(data.status == 'success'){
 					window.location.href=currentUrl;
+				}else if(data.content == 'nologin'){
+					window.location.href="<?=  Yii::$service->url->getUrl('customer/account/login'); ?>";
+				}else{
+					$(".coupon_add_log").html(data.content);
 				}
 			},
 			error:function (XMLHttpRequest, textStatus, errorThrown){}
