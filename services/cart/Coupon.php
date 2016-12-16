@@ -22,7 +22,12 @@ use fecshop\models\mysqldb\cart\CouponUsage as MyCouponUsage;
 class Coupon extends Service
 {
 	
-	
+	protected $_useCouponInit; # 是否初始化这个百年两
+	protected $_customer_id;   # 用户id
+	protected $_coupon_code;   # 优惠卷码
+	protected $_coupon_model;  # 优惠券model
+	protected $_coupon_usage_model; # 优惠券使用次数记录model
+	 
 	
 	protected function actionGetPrimaryKey(){
 		
@@ -43,19 +48,26 @@ class Coupon extends Service
 		}
 	}
 	
-	protected $_coupon_model;
-	protected $_coupon_usage_model;
 	
 	
+	protected function actionGetCouponUsageModel($customer_id='',$coupon_id=''){
 	
-	protected function actionGetCouponUsageModel($customer_id,$coupon_id){
 		if(!$this->_coupon_usage_model){
-			$one = MyCouponUsage::findOne([
-				'customer_id' => $customer_id,
-				'coupon_id'  => $couponModel['id'],
-			]);
-			if($one['customer_id']){
-				$this->_coupon_usage_model = $one;
+			if(!$customer_id){
+				$customer_id = $this->_customer_id;
+			}
+			if(!$coupon_id){
+				$couponModel 	= $this->getCouponModel();
+				$coupon_id 		= isset($couponModel['coupon_id']) ? $couponModel['coupon_id'] : '';
+			}
+			if($customer_id && $coupon_id){
+				$one = MyCouponUsage::findOne([
+					'customer_id' => $customer_id,
+					'coupon_id'  => $coupon_id,
+				]);
+				if($one['customer_id']){
+					$this->_coupon_usage_model = $one;
+				}
 			}
 		}
 		if($this->_coupon_usage_model){
@@ -64,8 +76,12 @@ class Coupon extends Service
 	}
 	
 	
-	protected function actionGetCouponModel($coupon_code){
+	protected function actionGetCouponModel($coupon_code = ''){
+		
 		if(!$this->_coupon_model){
+			if(!$coupon_code){
+				$coupon_code = $this->_coupon_code;
+			}
 			$one = MyCoupon::findOne(['coupon_code' => $coupon_code]);
 			
 			if($one['coupon_code']){
@@ -199,28 +215,51 @@ class Coupon extends Service
 		}
 		return true;
 	}
+	
 	/**
-	 * @property $coupon_code | String 优惠卷码
-	 * @property $customer_id | Int 用户的id，如果为空，则使用当前的用户id
+	 * @property $coupon_code | String  优惠卷码
+	 * 初始化对象变量，这个函数是在使用优惠券 和 取消优惠券的时候，
+	 * 调用相应方法前，通过这个函数初始化类变量
+	 * $_useCouponInit # 是否初始化过，如果初始化过了，则不会执行
+	 * $_customer_id   # 用户id
+	 * $_coupon_code   # 优惠卷码
+	 * $_coupon_model  # 优惠券model
+	 * $_coupon_usage_model # 优惠券使用次数记录model
+	 * $
 	 */
-	protected function actionCouponIsActive($coupon_code,$customer_id = ''){
-		# 是否是登录用户，非登录不能使用
-		if(Yii::$app->user->isGuest){
-			return false;
-		}
-		$customer_id = Yii::$app->user->identity->id;
-		if($customer_id){
+	
+	protected function useCouponInit($coupon_code){
+		if(!$this->_useCouponInit){
+			# $this->_customer_id
+			if(Yii::$app->user->isGuest){
+				$this->_customer_id = '';
+			}else{
+				if(Yii::$app->user->identity->id){
+					$this->_customer_id = Yii::$app->user->identity->id;
+				}
+			}
+			# $this->getCouponUsageModel();
+			# $this->getCouponModel();
 			
-			# 判断优惠券是否存在，是否过期，是否超出最大使用次数
-			$couponModel = $this->getCouponModel($coupon_code);
-			# 存在
-			if($couponModel){
-				
+			# $this->_coupon_code
+			$this->_coupon_code = $coupon_code;
+			
+			$this->_useCouponInit = 1;
+		}
+	}
+	/**
+	 * 
+	 */
+	# $this->getCouponUsageModel();
+	# $this->getCouponModel();
+	protected function couponIsActive(){
+		
+		if($this->_customer_id){
+			if($couponModel = $this->getCouponModel()){
 				$expiration_date = $couponModel['expiration_date'];
 				# 未过期
 				if($expiration_date > time()){
-					$couponUsageModel = $this->getCouponUsageModel($customer_id,$couponModel['coupon_id']);
-					
+					$couponUsageModel = $this->getCouponUsageModel();
 					$times_used = 0;
 					if($couponUsageModel['times_used']){
 						$times_used = $couponUsageModel['times_used'];
@@ -245,15 +284,14 @@ class Coupon extends Service
 	
 	protected function actionGetDiscount($coupon_code,$dc_price){
 		$discount_cost = 0;
-		if($this->couponIsActive($coupon_code)){
-			$this->_coupon_model;
-			$couponModel = $this->getCouponModel($coupon_code);
+		$this->useCouponInit($coupon_code);
+		if($this->couponIsActive()){
+			$couponModel = $this->getCouponModel();
 			$type 		= $couponModel['type'];
 			$conditions = $couponModel['conditions'];
 			$discount 	= $couponModel['discount'];
 			if($conditions <= $dc_price){
 				if($type == 1){ # 百分比
-				
 					$discount_cost = $discount/100 * $dc_price;
 				}else if($type == 2){ # 直接折扣
 					$discount_cost = $dc_price - $discount;
@@ -263,25 +301,54 @@ class Coupon extends Service
 		return $discount_cost;
 	}
 	
+	/**
+	 * @property $type | String     add or cancel
+	 * @return boolean
+	 * 增加或者减少优惠券使用的次数
+	 */
 	
-	
-	protected function actionUpdateCouponUsage(){
-		if(Yii::$app->user->isGuest){
-			return false;
-		}
-		$customer_id = Yii::$app->user->identity->id;
-		if($customer_id){
-			$cu_model = $this->_coupon_usage_model;
-			if(!$cu_model){
-				$cu_model = new MyCouponUsage;
-				$cu_model->times_used 	= 1; 
-				$cu_model->customer_id 	= $customer_id; 
-			}else{
-				$cu_model->times_used += 1; 
+	protected function updateCouponUse($type){
+		if($this->_customer_id){
+			$c_model = $this->getCouponModel();
+			if($c_model){
+				if($type == 'add'){
+					$cu_model = $this->getCouponUsageModel();
+						if(!$cu_model){
+							$cu_model = new MyCouponUsage;
+							$cu_model->times_used 	= 1; 
+							$cu_model->customer_id 	= $customer_id; 
+							$cu_model->coupon_id 	= $c_model['coupon_id'];
+						}else{
+							$cu_model->times_used += 1; 
+						}
+						$cu_model->save();
+						$times_used = $c_model->times_used ? $c_model->times_used : 0;
+						$c_model->times_used = $times_used + 1;
+						$c_model->save();
+						return true;
+					
+				}else if($type == 'cancel'){
+					
+					$couponModel 	= $this->getCouponModel();
+					
+					$cu_model = $this->getCouponUsageModel();
+					
+					if($cu_model){
+						
+						$cu_model->times_used -= 1; 
+						$times_used = $c_model->times_used ? $c_model->times_used : 0;
+						$times_used = $times_used - 1;
+						if($cu_model->times_used >= 0 && $times_used >= 0){
+							
+							$cu_model->save();
+							$c_model->times_used = $times_used;
+							$c_model->save();
+							return true;
+						}
+					}
+					
+				}
 			}
-			$cu_model->save();
-			return true;
-			
 		}
 	}
 	
@@ -291,11 +358,11 @@ class Coupon extends Service
 	 * 如果当前购物车没有使用优惠券，则检查优惠券是否可以使用
 	 * 如果优惠券可以使用，则使用优惠券进行打折。更新购物车信息。
 	 */
+	
 	protected function actionAddCoupon($coupon_code){
-		
-		if($this->couponIsActive($coupon_code)){
-			$couponModel= $this->getCouponModel($coupon_code);
-			
+		$this->useCouponInit($coupon_code);
+		if($this->couponIsActive()){
+			$couponModel= $this->getCouponModel();
 			$type 		= $couponModel['type'];
 			$conditions = $couponModel['conditions'];
 			$discount 	= $couponModel['discount'];
@@ -308,18 +375,13 @@ class Coupon extends Service
 				$dc_price = Yii::$service->page->currency->getDefaultCurrencyPrice($product_total);
 				
 				if($dc_price > $conditions){
-					//echo 3333;
-					//echo 22;
 					# 事务更新购物侧的coupon 和优惠券的使用情况。
 					$innerTransaction = Yii::$app->db->beginTransaction();
 					try {
 						$set_status = Yii::$service->cart->quote->setCartCoupon($coupon_code);
-						$up_status  = $this->updateCouponUsage();
-						
+						$up_status  = $this->updateCouponUse('add');
 						if($set_status && $up_status){
-							
 							$innerTransaction->commit();
-							
 							return true;
 						}
 						$innerTransaction->rollBack();
@@ -335,12 +397,32 @@ class Coupon extends Service
 	}
 	
 	# 取消优惠券
+	# $this->getCouponUsageModel();
+	# $this->getCouponModel();
+	# $this->useCouponInit($coupon_code);
 	protected function actionCancelCoupon($coupon_code){
-		#1. 在购物车中去除掉优惠券
-		#2. 在coupon usage中减少1
-		#3. 在coupon中使用总数减少1
 		
+		$this->useCouponInit($coupon_code);
+		if($this->_customer_id){
+			//$couponModel = $this->getCouponModel($coupon_code);
+			//$couponUsageModel = $this->getCouponUsageModel($customer_id,$coupon_id);
+			$innerTransaction = Yii::$app->db->beginTransaction();
+			try {
+				$couponModel = $this->getCouponModel($coupon_code);
+				
+				$up_status = $this->updateCouponUse('cancel');
+				$cancel_status = Yii::$service->cart->quote->cancelCartCoupon($coupon_code);
+				//echo $up_status.'##'.$set_status;
+				//echo 555;
+				if($up_status && $cancel_status){
+					$innerTransaction->commit();
+					return true;
+				}	
+				$innerTransaction->rollBack();
+			} catch (Exception $e) {
+				$innerTransaction->rollBack();
+			}
+		}	
 	}
-	
 	
 }

@@ -91,6 +91,7 @@ class AccountController extends AppfrontController
 		$rt = Yii::$app->request->get('rt');
 		if(!Yii::$app->user->isGuest){
 			Yii::$app->user->logout();
+			Yii::$service->cart->clearCart();
 		}
 		if($rt){
 			$redirectUrl = base64_decode($rt);

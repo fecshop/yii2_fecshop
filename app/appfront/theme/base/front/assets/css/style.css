@@ -2586,6 +2586,7 @@ body #discount-coupon-form div.buttons-cou {
     width: 200px;
 }
 
+
 .discount-form .submitbutton:hover{
 	background-color:#4c8b99;
 }
@@ -2615,8 +2616,7 @@ h2 {
 
 
 
-
-
+.coupon_add_log{font-size:11px;margin:5px 0 0;color:#cc0000}
 
 
 

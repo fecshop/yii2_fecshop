@@ -21,57 +21,15 @@ class Quote extends Service
 {
 	
 	
-	protected $_my_cart;		# 购物车cart对象
-	protected $_cart_id;
+	
+	
 	const SESSION_CART_ID = 'current_session_cart_id';
 	
-	public $items_count;
+	protected $_cart_id;
+	protected $_cart;
 	
 	/**
-	 * 得到购物车中产品的个数。
-	 */
-	public function getCartItemCount(){
-		$cart_id = Yii::$app->session->get(self::SESSION_CART_ID);
-		if($cart_id){
-			$cart_id = $this->getCartId();
-			if($cart_id ){
-				$cart = $this->getMyCart();
-				return $cart['items_count'] ? $cart['items_count'] : 0;
-			}
-		}
-		return 0;
-	}
-	
-	public function computeCartInfo(){
-		$cart_id = $this->getCartId();
-		if($cart_id){
-			if(!$this->_my_cart){
-				$this->getMyCart();
-			}
-			$item_qty = Yii::$service->cart->quoteItem->getItemQty();
-			$this->items_count = $item_qty;
-			$this->_my_cart->items_count = $item_qty;
-			$this->_my_cart->save();
-		}
-		
-		
-	}
-	/**
-	 * 返回当前的购物车Db对象
-	 */
-	public function getMyCart(){
-		if(!$this->_my_cart){
-			if($cart_id = $this->getCartId()){
-				if(!$this->_my_cart){
-					$this->_my_cart = MyCart::findOne(['cart_id'=>$cart_id]);
-				}
-			}else{
-				$this->createCart();
-			}
-		}
-		return $this->_my_cart;
-	}
-	
+	 
 	public function getCartId(){
 		if(!$this->_cart_id){
 			$cart_id = Yii::$app->session->get(self::SESSION_CART_ID);
@@ -85,17 +43,108 @@ class Quote extends Service
 		}
 		return $this->_cart_id;
 	}
+	 
+	*/
 	
+	
+	# 得到cart_id
+	public function getCartId(){
+		if(!$this->_cart_id){
+			$cart_id = Yii::$app->session->get(self::SESSION_CART_ID);
+			$this->_cart_id = $cart_id;	
+		}
+		return $this->_cart_id;
+	}
+	
+	#
+	public function getCart(){
+		if(!$this->_cart){
+			$cart_id = $this->getCartId();
+			
+			if(!$cart_id){
+				$this->createCart();
+			}else{
+				
+				$one = MyCart::findOne(['cart_id' => $cart_id]);
+				if($one['cart_id']){
+					$this->_cart = $one;
+				}
+			}
+		}
+		return $this->_cart;
+	}
+	
+	public function setCart($cart){
+		$this->_cart = $cart;
+	}
+	
+	
+	
+	
+	/**
+	 * 得到购物车中产品的个数。头部的ajax请求一般访问这个
+	 */
+	public function getCartItemCount(){
+		$items_count = 0;
+		if($cart_id = $this->getCartId()){
+			$one = MyCart::findOne(['cart_id' => $cart_id]);
+			if($one['items_count']){
+				$items_count = $one['items_count'];
+			}
+		}
+		return $items_count;
+	}
+	/**
+	 * 当购物车的产品变动后，更新cart表的产品总数
+	 */
+	public function computeCartInfo(){
+		$item_qty = Yii::$service->cart->quoteItem->getItemQty();
+		$cart =  $this->getCart();
+		$cart->items_count = $item_qty;
+		$cart->save();
+		return true;
+	}
+	
+	public function getCartItemsCount(){
+		$cart =  $this->getCart();
+		return $cart->items_count;
+	}
+	/**
+	 * 返回当前的购物车Db对象
+	 */
+	/*
+	public function getMyCart(){
+		if(!$this->_my_cart){
+			if($cart_id = $this->getCartId()){
+				if(!$this->_my_cart){
+					$this->_my_cart = MyCart::findOne(['cart_id'=>$cart_id]);
+				}
+			}else{
+				$this->createCart();
+			}
+		}
+		return $this->_my_cart;
+	}
+	*/
+	
+	/**
+	 * @property $cart_id | int
+	 * 设置cart_id 到类变量以及session
+	 */
 	protected function setCartId($cart_id){
 		$this->_cart_id = $cart_id;
 		Yii::$app->session->set(self::SESSION_CART_ID,$cart_id);
+	}
+	
+	protected function actionClearCart(){
+		Yii::$app->session->remove(self::SESSION_CART_ID);
 	}
 	
 	/**
 	 * 初始化创建cart信息，
 	 * 在用户的第一个产品加入购物车时，会在数据库中创建购物车
 	 */
-	protected function createCart(){
+	protected function actionCreateCart(){
 		$myCart = new MyCart;
 		$myCart->store = Yii::$service->store->currentStore;
 		$myCart->created_at = time();
@@ -119,8 +168,7 @@ class Quote extends Service
 		$myCart->save();
 		$cart_id = Yii::$app->db->getLastInsertId();
 		$this->setCartId($cart_id);
-		
-		$this->_my_cart = MyCart::findOne($cart_id);
+		$this->setCart(MyCart::findOne($cart_id));
 	}
 	
 	/**
@@ -132,12 +180,12 @@ class Quote extends Service
 			return ;
 		}
 		
-		$this->getMyCart();
-		$items_qty = $this->_my_cart['items_count'];
+		$cart = $this->getCart();
+		$items_qty = $cart['items_count'];
 		if($items_qty <= 0){
 			return ;
 		}
-		$coupon_code = $this->_my_cart['coupon_code'];
+		$coupon_code = $cart['coupon_code'];
 		$cart_product_info = Yii::$service->cart->quoteItem->getCartProductInfo();
 		if(is_array($cart_product_info)){
 			
@@ -174,10 +222,79 @@ class Quote extends Service
 	}
 	
 	public function setCartCoupon($coupon_code){
-		$my_cart = $this->getMyCart();
-		$my_cart->coupon_code = $coupon_code;
-		$my_cart->save();
+		$cart = $this->getCart();
+		$cart->coupon_code = $coupon_code;
+		$cart->save();
 		return true;
 	}
+	
+	public function cancelCartCoupon($coupon_code){
+		$cart = $this->getCart();
+		$cart->coupon_code = null;
+		$cart->save();
+		return true;
+	}
+	
+	
+	public function mergeCartAfterUserLogin(){
+		if(!Yii::$app->user->isGuest){
+			$identity = Yii::$app->user->identity;
+			$email = $identity->email;
+			$email_cart = $this->getCartByEmail($email);
+			$cart_id = $this->getCartId();
+			if(!$email_cart){
+				//echo 111;exit;
+				if($cart_id){
+					$cart = $this->getCart();
+					if($cart){
+						$cart['customer_email'] = $email ;
+						$cart['customer_is_guest'] = 2;
+						$cart->save();
+					}
+				}
+			}else{
+				//echo 22;exit;
+				$cart = $this->getCart();
+				if(!$cart || !$cart_id){
+					//echo 111;exit;
+					$cart_id = $email_cart['cart_id'];
+					$this->setCartId($cart_id);
+				}else{
+					# 将无用户产品（当前）和 购物车中的产品（登录用户对应的购物车）进行合并。
+					$new_cart_id = $email_cart['cart_id'];
+					if($cart['coupon_code']){
+						# 如果有优惠券则取消，以登录用户的购物车的优惠券为准。
+						Yii::$service->cart->coupon->cancelCoupon($cart['coupon_code']);
+					}
+					# 将当前购物车产品表的cart_id 改成 登录用户对应的cart_id
+					Yii::$service->cart->quoteItem->updateCartId($new_cart_id,$cart_id);
+					# 当前的购物车删除掉
+					$cart->delete();
+					# 设置当前的cart_id
+					$this->setCartId($new_cart_id);
+					# 设置当前的cart
+					$this->setCart($email_cart);
+					# 重新计算购物车中产品的个数
+					$this->computeCartInfo();
+					
+				}
+			}
+		}
+	}
+	
+	
+	public function getCartByEmail($email){
+		if($email){
+			$one = MyCart::findOne(['customer_email' => $email]);
+			if($one['cart_id']){
+				return $one;
+			}
+		}
+	}
+	
+	
+	
+	
+	
 	
 }

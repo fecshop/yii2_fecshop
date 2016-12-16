@@ -45,8 +45,6 @@ class Cart extends Service
 			$item['custom_option_sku'] = $custom_option_sku;
 		}
 		
-		
-		Yii::$service->cart->quote->getMyCart();
 		$innerTransaction = Yii::$app->db->beginTransaction();
 		try {
 			Yii::$service->cart->quoteItem->addItem($item);
@@ -148,6 +146,7 @@ class Cart extends Service
 	 *  merge cart , if current cart currency is not equals to user cart currency when user login account.
 	 */
 	protected function actionMergeCartAfterUserLogin(){
+		Yii::$service->cart->quote->mergeCartAfterUserLogin();
 		
 		
 	}
@@ -192,8 +191,7 @@ class Cart extends Service
 	 * clear cart product.
 	 */
 	protected function actionClearCart(){
-		
-		
+		Yii::$service->cart->quote->clearCart();
 	}
 	
 	/**

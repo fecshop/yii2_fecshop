@@ -63,15 +63,6 @@ class Manageredit  extends AppadminbaseBlockEdit implements AppadminbaseBlockEdi
 				'require' => 1,
 			],
 			
-			[
-				'label'=>'使用次数',
-				'name'=>'times_used',
-				'display'=>[
-					'type' => 'inputString',
-					
-				],
-				'require' => 1,
-			],
 			
 			
 			[

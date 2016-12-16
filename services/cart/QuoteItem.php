@@ -34,7 +34,10 @@ class QuoteItem extends Service
 	
 	public function addItem($item){
 		$cart_id = Yii::$service->cart->quote->getCartId();
-		
+		if(!$cart_id){
+			Yii::$service->cart->quote->createCart();
+			$cart_id = Yii::$service->cart->quote->getCartId();
+		}
 		# 查看是否存在此产品，如果存在，则相加个数
 		$item_one = MyCartItem::find()->where([
 			'cart_id' 	=> $cart_id,
@@ -226,6 +229,17 @@ class QuoteItem extends Service
 			}
 		}
 		return false;
+	}
+	
+	
+	public function updateCartId($new_cart_id,$cart_id){
+		if($cart_id && $new_cart_id){
+			MyCartItem::updateAll(
+				['cart_id'=>$new_cart_id],  # $attributes
+				'cart_id = '.$cart_id       # $condition
+			);
+		}
+		//Customer::updateAll(['status' => 1], 'status = 2');
 	}
 	
 	
