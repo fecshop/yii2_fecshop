@@ -34,7 +34,7 @@ class Module extends AppfrontModule
 		
 		# 指定默认的man文件
 		//$this->layout = "home.php";
-		Yii::$service->page->theme->layoutFile = 'main.php';
+		Yii::$service->page->theme->layoutFile = 'one_step_checkout.php';
 		parent::init();  
 		
     }

@@ -1,8 +1,5 @@
 <?php
-/*
- * 存放 一些基本的非数据库数据 如 html
- * 都是数组
- */
+
 namespace fecshop\app\appfront\modules\checkout\block\cart;
 use Yii;
 use fec\helpers\CModule;

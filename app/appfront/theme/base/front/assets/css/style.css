@@ -2619,12 +2619,24 @@ h2 {
 .coupon_add_log{font-size:11px;margin:5px 0 0;color:#cc0000}
 
 
+fieldset {
+    border: 0 none;
+}
+
+h1.onestepcheckout-title{padding-bottom:2px;}
+
+p.onestepcheckout-description {
+    margin-bottom:2px;
+}
+#onestepcheckout-login-link {
+	font-size:11px;
+}
 
 
-
-
-
-
+p.onestepcheckout-login-link {
+    line-height: 11px;
+    padding-top: 4px;
+}
 
 
 
