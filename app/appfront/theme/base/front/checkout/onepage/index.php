@@ -161,22 +161,23 @@
 					</div>				</div>
 				<p class="onestepcheckout-numbers onestepcheckout-numbers-3">Payment method</p>
 				
-				<div class="payment-methods">
-					<dl id="checkout-payment-method-load">
-						<dt>
-							<span class="no-display"><input checked="checked" name="payment[method]" value="paypal_standard" id="p_method_paypal_standard" type="radio"></span>
-							<label for="p_method_paypal_standard">
-								<p class="payment"></p>
-								<div class="clear"></div>
-							</label>
-						</dt>
-						<dd class="payment-method" id="container_payment_method_paypal_standard">
-							<ul style="" id="payment_form_paypal_standard" class="form-list">
-								<li class="form-alt"></li>
-							</ul>
-						</dd>
-					</dl>
-				</div>				
+				
+				<div class="price_info">
+					<?php # 价格部分
+						$priceView = [
+							'view'	=> 'checkout/onepage/index/payment.php'
+						];
+						$priceParam = [
+							'payments' => $payments,
+							'current_payment_mothod' => $current_payment_mothod,
+						];
+					?>
+					<?= Yii::$service->page->widget->render($priceView,$priceParam); ?>
+				
+				</div>
+
+
+
 					
 				<div class="onestepcheckout-coupons">
 					<div style="display: none;" id="coupon-notice"></div>

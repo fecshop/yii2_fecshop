@@ -50,6 +50,11 @@ return [
 				'case_sensitive'=> false , // 是否区分大小写，false代表不区分
 			],
 			
+			'country' => [
+				'class' => 'fecshop\services\helper\Country',
+				//'default_country' => 'US',
+			],
+			
 		],
 	],
 ];
