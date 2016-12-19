@@ -7,6 +7,7 @@
 
 演示地址：http://fecshop.appfront.fancyecommerce.com/
 
+Fecshop 全称为Fancy ECommerce Shop，是一款优秀的开源电商系统，遵循[OSL3.0协议](http://www.oschina.net/question/28_8527)，
 截止到2016-12-19号，除了支付部分，其他的基本都已经完成，关注fecshop的
 在等2-3个月，也就是明年2,3月份，版本已经就可以出来，2017年4,5月份在把手机web
 做一下，预计到明年5月份，后台，pc前台，手机web前台 ，命令控制台  这几个入口
@@ -40,9 +41,6 @@ github: https://github.com/fancyecommerce/yii2_fecshop
 
 > 项目已经开始,本项目由Terry筹划，预计到2017-05-01出来第一个正式版本。
 
-架构特色：参看详细介绍：[Fecshop 架构特色](http://www.fecshop.com/doc/fecshop-guide/cn-1.0/guide-fecshop-about-fecshop.html)
-
-中文博客：[yii2 教程](http://www.fancyecommerce.com).
 
 
 
@@ -59,6 +57,10 @@ github: https://github.com/fancyecommerce/yii2_fecshop
 
 2、架构特色
 -----------
+
+架构特色：参看详细介绍：[Fecshop 架构特色](http://www.fecshop.com/doc/fecshop-guide/cn-1.0/guide-fecshop-about-fecshop.html)
+
+中文博客：[yii2 教程](http://www.fancyecommerce.com).
 
 Fecshop 全称为Fancy ECommerce Shop，是一款优秀的开源电商系统，遵循[OSL3.0协议](http://www.oschina.net/question/28_8527)，
 目的是为了方便yii2用户快速的
