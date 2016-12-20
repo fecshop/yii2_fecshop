@@ -176,7 +176,7 @@
 		//alert(shipping_method);
 		country = $(".billing_country").val();
 		address_id = $(".address_list").val();
-		$(".onestepcheckout-summary").html('&lt;div style="text-align:center;min-height:40px;"&gt;&lt;img src="http://www.intosmile.com/skin/default/images/ajax-loader.gif"  /&gt;&lt;/div&gt;');
+		$(".onestepcheckout-summary").html('<div style="text-align:center;min-height:40px;"><img src="http://www.intosmile.com/skin/default/images/ajax-loader.gif"  /></div>');
 		ajaxurl = "http://www.intosmile.com/checkout/onepage/getshipping";
 		state   = $(".inputstate").val();
 		$.ajax({
@@ -262,7 +262,7 @@
 					value = $(this).val();
 					if(!value){
 						i++;
-						$(this).after('&lt;div style=""  class="validation-advice"&gt;This is a required field.&lt;/div&gt;');
+						$(this).after('<div style=""  class="validation-advice">This is a required field.</div>');
 					}
 				});
 				if(!i){
@@ -287,8 +287,8 @@
 				
 				if(addressid){
 					
-					$(".onestepcheckout-shipping-method-block").html('&lt;div style="text-align:center;min-height:40px;"&gt;&lt;img src="http://www.intosmile.com/skin/default/images/ajax-loader.gif"  /&gt;&lt;/div&gt;');
-					$(".onestepcheckout-summary").html('&lt;div style="text-align:center;min-height:40px;"&gt;&lt;img src="http://www.intosmile.com/skin/default/images/ajax-loader.gif"  /&gt;&lt;/div&gt;');
+					$(".onestepcheckout-shipping-method-block").html('<div style="text-align:center;min-height:40px;"><img src="http://www.intosmile.com/skin/default/images/ajax-loader.gif"  /></div>');
+					$(".onestepcheckout-summary").html('<div style="text-align:center;min-height:40px;"><img src="http://www.intosmile.com/skin/default/images/ajax-loader.gif"  /></div>');
 					shipping_method = $("input[name=shipping_method]:checked").val();
 					ajaxurl = "http://www.intosmile.com/checkout/onepage/changeaddress";
 					$.ajax({
@@ -324,8 +324,8 @@
 			shipping_method = $("input[name=shipping_method]:checked").val();
 			//alert(shipping_method);
 			
-			$(".onestepcheckout-shipping-method-block").html('&lt;div style="text-align:center;min-height:40px;"&gt;&lt;img src="http://www.intosmile.com/skin/default/images/ajax-loader.gif"  /&gt;&lt;/div&gt;');
-			$(".onestepcheckout-summary").html('&lt;div style="text-align:center;min-height:40px;"&gt;&lt;img src="http://www.intosmile.com/skin/default/images/ajax-loader.gif"  /&gt;&lt;/div&gt;');
+			$(".onestepcheckout-shipping-method-block").html('<div style="text-align:center;min-height:40px;"><img src="http://www.intosmile.com/skin/default/images/ajax-loader.gif"  /></div>');
+			$(".onestepcheckout-summary").html('<div style="text-align:center;min-height:40px;"><img src="http://www.intosmile.com/skin/default/images/ajax-loader.gif"  /></div>');
 			ajaxurl = "http://www.intosmile.com/checkout/onepage/getshipping";
 			$.ajax({
 				async:false,
