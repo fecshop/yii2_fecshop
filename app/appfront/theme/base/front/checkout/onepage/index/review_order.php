@@ -23,12 +23,24 @@ use fecshop\app\appfront\helper\Format;
 					<a href="<?= $product['url'] ?>" title="<?= $product['name'] ?>" class="product-image">
 						<img src="<?= Yii::$service->product->image->getResize($product['image'],[100,100],false) ?>" alt="2121" width="75" height="75">
 					</a>
+					
 				</td>
 				
 				<td class="name">
-					<a href="<?= $product['url'] ?>" title="<?= $product['name'] ?>" class="product-image">
-						<?= $product['name'] ?>
-					</a>
+					<h2 class="product-name">
+						<a href="<?= $product['url'] ?>" title="<?= $product['name'] ?>" class="product-image">
+							<?= $product['name'] ?>
+						</a>
+					</h2>
+					<?php  if(is_array($product['custom_option_info'])){  ?>
+					<ul>
+						<?php foreach($product['custom_option_info'] as $label => $val){  ?>
+							
+							<li><?= $label ?>:<?= $val ?> </li>
+							
+						<?php }  ?>
+					</ul>
+					<?php }  ?>
 				</td>
 				<td class="qty"><?= $product['qty']; ?></td>
 				<td class="total"><span class="price"><?=  $currency_info['symbol'];  ?><?= Format::price($product['product_row_price']); ?></span></td>
