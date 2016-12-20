@@ -13,85 +13,128 @@ use yii\base\InvalidConfigException;
 use fec\helpers\CSession;
 use fec\helpers\CUrl;
 /**
- * Payment services
+ * Shipping services
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
 class Shipping extends Service
 {
+	public $shippingConfig;
 	
-	# µÃµ½ÔË·Ñ·½·¨¡£
-	public static function getShippingMethod($method=''){
-		$allmethod = CConfig::param("shipping_method");
+	/**
+	 * @property $method | String ï¼Œshipping_method key
+	 * @return Array ï¼Œå¾—åˆ°é…ç½®
+	 */
+	protected  function actionGetShippingMethod($method=''){
+		$allmethod = $this->shippingConfig;
 		if($method){
 			return $allmethod[$method];
 		}else{
 			return $allmethod;
 		}
 	}
-	
-	# µÃµ½Ä¬ÈÏµÄÔË·Ñ·½·¨¡£
-	public static function getDefaultShipping(){
+	/**
+	 * @return string ,å¾—åˆ°é»˜è®¤çš„è¿è´¹æ–¹æ³• shipping_method key
+	 */
+	protected  function actionGetDefaultShipping(){
 		$allmethod = self::getShippingMethod();
 		foreach($allmethod as $k=>$method){
 			return $k;
 		}
 	}
 	
-	# ÔÚÏÂµ¥Ò³Ãæ£¬µÃµ½¶©µ¥µÄÔË·Ñhtml
-	public static function getShippingHtml($weight,$shipping_method,$country){
-		//echo "$weight,$shipping_method,$country";exit;
-		$shippingName = '';
-		//$now_shipping = $this->_shipping_method;
-		//$this->_address_country
-		$now_shipping = $shipping_method;
-		if($now_shipping){
-			$shippingName = $now_shipping;
+	# é€šè¿‡æ–¹æ³•ï¼Œé‡é‡ï¼Œå›½å®¶ï¼Œçœï¼Œå¾—åˆ°ç¾Žå…ƒçŠ¶æ€çš„è¿è´¹é‡‘é¢
+	/**
+	 * @proeprty $shipping_method è´§è¿æ–¹å¼çš„key
+	 * @proeprty $weight äº§å“çš„æ€»é‡é‡
+	 * @proeprty $country è´§è¿å›½å®¶
+	 * @proeprty $region  è´§è¿çœä»½
+	 * @return Float é€šè¿‡è®¡ç®—ï¼Œå¾—åˆ°åœ¨é»˜è®¤è´§å¸ä¸‹çš„è¿è´¹é‡‘é¢ã€‚
+	 */
+	protected function actionGetShippingCostByCsvWeight($shipping_method,$weight,$country,$region='*'){
+		$shippingArr = $this->getShippingByTableCsv($shipping_method);
+		$priceData = [];
+		if(isset($shippingArr[$country][$region])){
+			$priceData = $shippingArr[$country][$region];
+		}else if(isset($shippingArr[$country]['*'])){
+			$priceData = $shippingArr[$country]['*'];
+		}else{
+			$priceData = $shippingArr['*']['*'];
 		}
-		if(!$shippingName){
-			$shippingName = self::getDefaultShipping();
-		}
-		
-		$allshipping = self::getShippingMethod();
-		//$weight = $this->quote['total_weight'];
-		$sr = '';
-		$shipping_i = 1;
-		foreach($allshipping as $method=>$shipping){
-			$label = $shipping['label'];
-			$name = $shipping['name'];
-			# µÃµ½ÔË·ÑµÄ½ð¶î
-			$cost = self::getShippingCostWithSymbols($method,$weight,$country);
-			$currentCurrencyCost = $cost['currentCurrencyCost'];
-			//echo $method."#".$shippingName."<br/>";
-			if($shippingName == $method){
-				$check = ' checked="checked" ';
-			}else{
-				$check = '';
+		//var_dump($priceData);
+		$prev_weight = 0;
+		$prev_price  = 0;
+		$last_price  = 0;
+		if(is_array($priceData)){
+			foreach($priceData as $data){
+				$csv_weight = (float)$data[0];
+				$csv_price  = (float)$data[1];
+				if($weight>=$csv_weight){
+					$prev_weight 	= $csv_weight;
+					$prev_price		= $csv_price;
+					continue;
+				}else{
+					$last_price = $prev_price;
+					break;
+				}
 			}
-			//echo $check;
-			$sr .= '<div class="shippingmethods">
-							<dd class="flatrate">'.Translate::__($label).'</dd>
-							<dt>
-								<input data-role="none" '.$check.' type="radio" id="s_method_flatrate_flatrate'.$shipping_i.'" value="'.$method.'" class="validate-one-required-by-name" name="shipping_method">
-								<label for="s_method_flatrate_flatrate'.$shipping_i.'">'.Translate::__($name).'
-									<strong>                 
-										<span class="price">'.$currentCurrencyCost.'</span>
-									</strong>
-								</label>
-							</dt>
-						</div>';
-			$shipping_i++;
+			if(!$last_price){
+				$last_price = $csv_price;
+			}
+			return $last_price;
 		}
-		return $sr;
 	}
 	
+	/**
+	 * @proeprty $shipping_method è´§è¿æ–¹å¼çš„key
+	 * @proeprty $weight äº§å“çš„æ€»é‡é‡
+	 * @proeprty $country è´§è¿å›½å®¶
+	 * @return Array å½“å‰è´§å¸ä¸‹çš„è¿è´¹çš„é‡‘é¢ã€‚
+	 *		è¿è´¹æ˜¯é€šè¿‡csvè¡¨æ ¼å†…å®¹è®¡ç®—è€Œæ¥ï¼Œå¦‚æžœcost==0ï¼Œé‚£ä¹ˆä»£è¡¨å…é‚®çš„æ–¹å¼ã€‚
+	 *		è¯¥æ–¹æ³•ä¸ºï¼šå½“å‰é‡é‡ä¸‹ï¼Œæ‰€æœ‰çš„è¿è´¹æ–¹å¼å¯¹åº”çš„è¿è´¹éƒ½è®¡ç®—å‡ºæ¥ï¼Œå±•ç¤ºåœ¨ä¸‹å•é¡µé¢ï¼Œè®©ç”¨æˆ·é€‰æ‹©ã€‚
+	 */
+	protected  function actionGetShippingCostWithSymbols($shipping_method,$weight,$country ='',$region='*'){
+		//echo $weight;
+		$allmethod = $this->getShippingMethod();
+		$m = $allmethod[$shipping_method];
+		if(!empty($m) && is_array($m)){
+			$cost = $m['cost'];
+			# csvæ–¹å¼
+			if($cost === 'csv'){
+				#é€šè¿‡ è¿è´¹æ–¹å¼ï¼Œé‡é‡ï¼Œå›½å®¶ï¼Œå¾—åˆ°ç¾Žå…ƒçš„è¿è´¹ 
+				$usdCost = $this->getShippingCostByCsvWeight($shipping_method,$weight,$country,$region);
+				//echo $usdCost;
+				$currentCost = Yii::$service->page->currency->getCurrentCurrencyPrice($usdCost);
+				return [
+					'currentCost'   => $currentCost,
+					'defaultCost'	=> $usdCost,
+				];
+			# $cost = 0 ä»£è¡¨ä¸ºfree shippingæ–¹å¼
+			}else if($cost == 0){
+				return [
+					'currentCost'  => number_format(0,2) ,
+					'defaultCost'	=> 0,
+				];
+			}
+		}
+	}
 	
+	/**
+	 * @property $shipping_method | String  
+	 * @return å¾—åˆ°è´§è¿æ–¹å¼çš„åå­—
+	 */
+	protected static function actionGetShippingLabelByMethod($shipping_method){
+		$s = $this->getShippingMethod($shipping_method);
+		return $s['label'];
+	}
 	
-	
-	
-	public static function getShippingByTableCsv($method){
+	/**
+	 * @property $shipping_method | String è´§è¿æ–¹å¼çš„key 
+	 * @return Array ï¼Œé€šè¿‡csvè¡¨æ ¼ï¼Œå¾—åˆ°å¯¹åº”çš„è¿è´¹æ•°ç»„ä¿¡æ¯
+	 */
+	protected function getShippingByTableCsv($shipping_method){
 		$commonDir = Yii::getAlias('@common');
-		$csv = $commonDir."/config/shipping/".$method.".csv";
+		$csv = $commonDir."/config/shipping/".$shipping_method.".csv";
 		$fp = fopen($csv, "r"); 
 		$shippingArr = [];
 		$i = 0;
@@ -112,105 +155,7 @@ class Shipping extends Service
 		return $shippingArr;
 	}
 	
-	# Í¨¹ý·½·¨£¬ÖØÁ¿£¬¹ú¼Ò£¬Ê¡£¬µÃµ½ÃÀÔª×´Ì¬µÄÔË·Ñ½ð¶î
-	public static function getShippingCostByCsvWeight($method,$weight,$country,$Region='*'){
-		$shippingArr = self::getShippingByTableCsv($method);
-		$priceData = [];
-		if(isset($shippingArr[$country][$Region])){
-			$priceData = $shippingArr[$country][$Region];
-		}else{
-			$priceData = $shippingArr['*']['*'];
-		}
-		
-		$prev_weight = 0;
-		$prev_price = 0;
-		$last_price = 0;
-		foreach($priceData as $data){
-			$csv_weight = (float)$data[0];
-			$csv_price  = (float)$data[1];
-			if($weight>=$csv_weight){
-				$prev_weight 	= $csv_weight;
-				$prev_price		= $csv_price;
-				continue;
-			}else{
-				$last_price = $prev_price;
-				break;
-			}
-		}
-		if(!$last_price){
-			$last_price = $csv_price;
-		}
-		//return floor($last_price*$weight*100)/100;
-		return $last_price;
-	}
 	
-	# µÃµ½ÔË·ÑµÄ½ð¶î¡£
-	# ·µ»ØÎªÒ»¸öÊý×é Ä¬ÈÏ»õ±Ò×´Ì¬ÏÂµÄ»õ±Ò  µ±Ç°»õ±Ò×´Ì¬ÏÂµÄ»õ±Ò¡£
-	public static function getShippingCostWithSymbols($method,$weight,$country =''){
-		
-		$allmethod = self::getShippingMethod();
-		$m = $allmethod[$method];
-		
-		if(!empty($m) && is_array($m)){
-			$cost = $m['cost'];
-			# csv·½Ê½
-			if($cost === 'csv'){
-				#Í¨¹ý ÔË·Ñ·½Ê½£¬ÖØÁ¿£¬¹ú¼Ò£¬µÃµ½ÃÀÔªµÄÔË·Ñ 
-				$usdCost = self::getShippingCostByCsvWeight($method,$weight,$country);
-				//$usdCost = CCurrency::getPertyData($usdCost);
-				$currentCost = CCurrency::getCurrentPertyPrice($usdCost);
-				return [
-					'defaultCost'=>CCurrency::getDefaultSymbols().number_format($usdCost,2) ,
-					'currentCurrencyCost'=>CCurrency::getCurrentSymbols().number_format($currentCost,2) ,
-				];
-			# $cost = 0 ´ú±íÎªfree shipping·½Ê½
-			}else{
-				return [
-					'defaultCost'=>CCurrency::getDefaultSymbols().number_format(0,2) ,
-					'currentCurrencyCost'=>CCurrency::getDefaultSymbols().number_format(0,2) ,
-				];
-			}
-		}
-	}
-	
-	
-	
-	
-	# Í¨¹ý·½·¨ºÍÖØÁ¿µÃµ½ÔË·Ñ 
-	# ·µ»ØÖµÎªÊý×é£¬  defaultCostÊÇÄ¬ÈÏ»õ±ÒµÄÔË·ÑÖµ¡£ currentCurrencyCostÊÇµ±Ç°»õ±Ò×´Ì¬µÄÔË·ÑÖµ 
-	public static function getShippingCost($method,$weight,$country =''){
-		$allmethod = self::getShippingMethod();
-		$m = $allmethod[$method];
-		
-		if(!empty($m) && is_array($m)){
-			$cost = $m['cost'];
-			# csv·½Ê½
-			if($cost === 'csv'){
-				#Í¨¹ý ÔË·Ñ·½Ê½£¬ÖØÁ¿£¬¹ú¼Ò£¬µÃµ½ÃÀÔªµÄÔË·Ñ 
-				$usdCost = self::getShippingCostByCsvWeight($method,$weight,$country);
-				//$usdCost = CCurrency::getPertyData($usdCost);
-				$currentCost = CCurrency::getCurrentPertyPrice($usdCost);
-				return [
-					'defaultCost'=>$usdCost ,
-					'currentCurrencyCost'=>$currentCost,
-				];
-			}else{
-				return [
-					'defaultCost'=>0 ,
-					'currentCurrencyCost'=>0,
-				];
-			}
-		}
-	}
-	
-	
-	
-	
-	# µÃµ½ shipping Lable
-	public static function getShippingLabelByMethod($shipping_method){
-		$s = self::getShippingMethod($shipping_method);
-		return $s['label'];
-	}
 
 
 

@@ -48,6 +48,7 @@ class Currency extends Service
 	protected $_currentCurrency;
 	protected $_currencys;
 	
+	
 	/**
 	 * Get all currencys info.
 	 */
@@ -67,6 +68,11 @@ class Currency extends Service
 		return $this->_currencys;
 	}
 	
+	protected function actionGetCurrentSymbol(){
+		if(isset($this->currencys[$this->getCurrentCurrency()]['symbol'])){
+			return $this->currencys[$this->getCurrentCurrency()]['symbol'];
+		}
+	}
 	
 	/**
 	 * property $price|Float 

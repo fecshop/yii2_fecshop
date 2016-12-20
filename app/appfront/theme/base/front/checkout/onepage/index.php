@@ -134,50 +134,29 @@
 			</div>
 
 			<div class="onestepcheckout-column-middle">
-				<div class="onestepcheckout-shipping-method">
-					<p class="onestepcheckout-numbers onestepcheckout-numbers-2">Shipping method</p>
-					<div class="onestepcheckout-shipping-method-block">    
-						<dl class="shipment-methods"><div class="shippingmethods">
-							<dd class="flatrate">Free shipping( 7-20 work days)</dd>
-							<dt>
-								<input data-role="none" checked="checked" id="s_method_flatrate_flatrate1" value="free_shipping" class="validate-one-required-by-name" name="shipping_method" type="radio">
-								<label for="s_method_flatrate_flatrate1">HKBRAM
-									<strong>                 
-										<span class="price">$0.00</span>
-									</strong>
-								</label>
-							</dt>
-						</div><div class="shippingmethods">
-							<dd class="flatrate">Fast Shipping( 5-10 work days)</dd>
-							<dt>
-								<input data-role="none" id="s_method_flatrate_flatrate2" value="fast_shipping" class="validate-one-required-by-name" name="shipping_method" type="radio">
-								<label for="s_method_flatrate_flatrate2">HKDHL
-									<strong>                 
-										<span class="price">$31.90</span>
-									</strong>
-								</label>
-							</dt>
-						</div></dl>
-					</div>				</div>
-				<p class="onestepcheckout-numbers onestepcheckout-numbers-3">Payment method</p>
-				
-				
-				<div class="price_info">
-					<?php # 价格部分
-						$priceView = [
-							'view'	=> 'checkout/onepage/index/payment.php'
-						];
-						$priceParam = [
-							'payments' => $payments,
-							'current_payment_mothod' => $current_payment_mothod,
-						];
-					?>
-					<?= Yii::$service->page->widget->render($priceView,$priceParam); ?>
-				
-				</div>
-
-
-
+				<?php # shipping部分
+					$shippingView = [
+						'view'	=> 'checkout/onepage/index/shipping.php'
+					];
+					$shippingParam = [
+						'shippings' => $shippings,
+					];
+				?>
+				<?= Yii::$service->page->widget->render($shippingView,$shippingParam); ?>
+			
+		
+		
+				<?php # payment部分
+					$paymentView = [
+						'view'	=> 'checkout/onepage/index/payment.php'
+					];
+					$paymentParam = [
+						'payments' => $payments,
+						'current_payment_mothod' => $current_payment_mothod,
+					];
+				?>
+				<?= Yii::$service->page->widget->render($paymentView,$paymentParam); ?>
+			
 					
 				<div class="onestepcheckout-coupons">
 					<div style="display: none;" id="coupon-notice"></div>
@@ -187,59 +166,19 @@
 					<input value="" id="id_couponcode" name="onestepcheckout-couponcode" class="input-text" type="text">
 					<br>
 					<button style="" type="button" class="submitbutton form-button-alt" id="onestepcheckout-coupon-add">Apply Coupon</button>
-				</div>			</div>
+				</div>
+			</div>
 
 			<div class="onestepcheckout-column-right">
-				<p class="onestepcheckout-numbers onestepcheckout-numbers-4">Review your order</p>
-				<div class="onestepcheckout-summary">
-					<table class="onestepcheckout-summary">
-						<thead>
-							<tr>
-								<th class="name">Product</th>
-								<th class="qty">Qty</th>
-								<th class="total">Subtotal</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-						<td class="name"><a target="_blank" href="http://www.intosmile.com/classic-style-solid-color-lace-up-round-toe-flat-boots-for-women.html">Classic Style Solid Color Lace-up Round Toe Flat Boots For Women</a></td>
-						<td class="qty">1</td>
-						<td class="total"><span class="price">$35.00</span></td>
-					</tr>						</tbody>
-					</table>
-
-					<table class="onestepcheckout-totals">
-						<tbody>
-							<tr>
-								<td class="title">Subtotal</td>
-								<td class="value">
-									<span class="price">$35.00</span>       
-								</td>
-							</tr>
-							<tr>
-								<td class="title">Shipping</td>
-								<td class="value">
-									<span class="price">$0.00</span> 
-								</td>
-							</tr>
-							<tr>
-								<td class="title">Discount</td>
-								<td class="value">
-									<span class="price">-$0.00</span> 
-								</td>
-							</tr>
-							<tr class="grand-total">
-								<td class="title">Grand total</td>
-								<td class="value">
-									<span class="price">$35.00</span>   
-								</td>
-							</tr>						</tbody>
-					</table>
-				</div>
-				<div class="onestepcheckout-place-order">
-					<span><img src="http://www.intosmile.com/skin/default/images/scroll/waitPage.gif"></span>
-					<a class="large orange onestepcheckout-button" href="javascript:void(0)" id="onestepcheckout-place-order">Place order now</a>
-				</div>
+				<?php # review order部分
+					$reviewOrderView = [
+						'view'	=> 'checkout/onepage/index/review_order.php'
+					];
+					$reviewOrderParam = [
+					];
+				?>
+				<?= Yii::$service->page->widget->render($reviewOrderView,$reviewOrderParam); ?>
+			
 			</div>
 			<div style="clear: both;">&nbsp;</div>
 		</div>

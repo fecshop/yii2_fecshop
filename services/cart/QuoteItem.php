@@ -22,7 +22,7 @@ class QuoteItem extends Service
 	
 	
 	protected $_my_cart_item;	# 购物车cart item 对象
-	
+	protected $_cart_product_info;
 	
 	/*
 	 $item = [
@@ -111,46 +111,50 @@ class QuoteItem extends Service
 		$cart_id = Yii::$service->cart->quote->getCartId();
 		$products = [];
 		$product_total = 0;
+		$product_weight = 0;
 		if($cart_id){
-			$data = MyCartItem::find()->where([
-				'cart_id' => $cart_id
-			])->all();
-			if(is_array($data) && !empty($data)){
-				foreach($data as $one){
-					//var_dump($one['product_id']);
-					$product_id = $one['product_id'];
-					$product_one = Yii::$service->product->getByPrimaryKey($product_id);
-					if($product_one['_id']){
-						$qty = $one['qty'];
-						$custom_option_sku = $one['custom_option_sku'];
-						$product_price = Yii::$service->product->price->getCartPriceByProductId($product_id,$qty,$custom_option_sku);
-						
-						$product_price = isset($product_price['value']) ? $product_price['value'] : 0;
-						$product_row_price = $product_price * $qty;
-						$product_total += $product_row_price;
-						$productSpuOptions = $this->getProductSpuOptions($product_one);
-						$products[] = [
-							'item_id' => $one['item_id'],
-							'product_id' 		=> $product_id ,
-							'qty' 				=> $qty ,
-							'custom_option_sku' => $custom_option_sku ,
-							'product_price' 	=> $product_price ,
-							'product_row_price' => $product_row_price ,
-							'product_name'		=> $product_one['name'],
-							'product_weight'	=> $product_one['weight'],
-							'product_url'		=> $product_one['url_key'],
-							'product_image'		=> $product_one['image'],
-							'custom_option'		=> $product_one['custom_option'],
-							'spu_options' 			=> $productSpuOptions,  
-						];
+			if(!isset($this->_cart_product_info[$cart_id])){
+				$data = MyCartItem::find()->where([
+					'cart_id' => $cart_id
+				])->all();
+				if(is_array($data) && !empty($data)){
+					foreach($data as $one){
+						$product_id = $one['product_id'];
+						$product_one = Yii::$service->product->getByPrimaryKey($product_id);
+						if($product_one['_id']){
+							$qty = $one['qty'];
+							$custom_option_sku = $one['custom_option_sku'];
+							$product_price = Yii::$service->product->price->getCartPriceByProductId($product_id,$qty,$custom_option_sku);
+							$product_price = isset($product_price['value']) ? $product_price['value'] : 0;
+							$product_row_price = $product_price * $qty;
+							$product_total += $product_row_price;
+							$p_wt = $product_one['weight'] * $qty;
+							$product_weight += $p_wt;
+							$productSpuOptions = $this->getProductSpuOptions($product_one);
+							$products[] = [
+								'item_id' => $one['item_id'],
+								'product_id' 		=> $product_id ,
+								'qty' 				=> $qty ,
+								'custom_option_sku' => $custom_option_sku ,
+								'product_price' 	=> $product_price ,
+								'product_row_price' => $product_row_price ,
+								'product_name'		=> $product_one['name'],
+								'product_weight'	=> $p_wt,
+								'product_url'		=> $product_one['url_key'],
+								'product_image'		=> $product_one['image'],
+								'custom_option'		=> $product_one['custom_option'],
+								'spu_options' 			=> $productSpuOptions,  
+							];
+						}
 					}
+					$this->_cart_product_info[$cart_id] = [
+						'products' 		=> $products,
+						'product_total' => $product_total,
+						'product_weight'=> $product_weight,
+					];
 				}
-				//var_dump($product_total);  
-				return [
-					'products' 		=> $products,
-					'product_total' => $product_total,
-				];
 			}
+			return $this->_cart_product_info[$cart_id];
 		}
 	}
 	/**
