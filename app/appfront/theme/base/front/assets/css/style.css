@@ -1498,7 +1498,7 @@ button.redBtn:focus , button.redBtn:active {
     border-width: 0 1px;
 }
 td:nth-child(2n) {
-    background: #f7f7f7 none repeat scroll 0 0;
+    background: #fefefe none repeat scroll 0 0;
 }
 .data-table td {
     border: 1px solid #ddd;
