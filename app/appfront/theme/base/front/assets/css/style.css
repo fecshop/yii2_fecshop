@@ -2649,4 +2649,6 @@ p.onestepcheckout-login-link {
 .onestepcheckout-summary ul li{padding:0}
 .onestepcheckout-summary ul{margin:4px 0 0;}
 
-
+#billing_address .address_list {
+    width: 200px;
+}
