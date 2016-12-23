@@ -5,29 +5,32 @@
 			<input class="thiscsrf" value="dTJOYlNrbGktV3s0PgxYBSBELw5hCRoYO1EdGzwuQSA8ShEyKwInXQ==" name="_csrf" type="hidden">	<input name="coupon_code" class="coupon_code" type="hidden">
 		</form>
 			
-		<form action="http://www.intosmile.com/checkout/onepage" method="post" id="onestepcheckout-form">
-			<input class="thiscsrf" value="dTJOYlNrbGktV3s0PgxYBSBELw5hCRoYO1EdGzwuQSA8ShEyKwInXQ==" name="_csrf" type="hidden">	<fieldset style="margin: 0;" class="group-select">
-
+		<form action="<?= Yii::$service->url->getUrl('checkout/onepage'); ?>" method="post" id="onestepcheckout-form">
+			<input class="thiscsrf" value="dTJOYlNrbGktV3s0PgxYBSBELw5hCRoYO1EdGzwuQSA8ShEyKwInXQ==" name="_csrf" type="hidden">	
+			<fieldset style="margin: 0;" class="group-select">
 				<h1 class="onestepcheckout-title">Checkout</h1>
 				<p class="onestepcheckout-description">Welcome to the checkout. Fill in the fields below to complete your purchase!</p>
 				<p class="onestepcheckout-login-link">
-					<a href="http://www.intosmile.com/customer/account/login/" id="onestepcheckout-login-link">Already registered? Click here to login.</a>
+					<a href="<?= Yii::$service->url->getUrl('customer/account/login'); ?>" id="onestepcheckout-login-link">Already registered? Click here to login.</a>
 				</p>
-
 				<div class="onestepcheckout-threecolumns checkoutcontainer onestepcheckout-skin-generic onestepcheckout-enterprise">
 					<div class="onestepcheckout-column-left">
 						<?php # address 部门
+							//echo $address_view_file;
 							$addressView = [
-								'view'	=> 'checkout/onepage/index/address_select.php'
+								'view'	=> $address_view_file,
 							];
+							//var_dump($address_list);
 							$addressParam = [
+								'cart_address_id' => $cart_address_id,
+								'address_list'	  => $address_list,
+								'customer_info'	  => $customer_info,
 								//'payments' => $payments,
 								//'current_payment_mothod' => $current_payment_mothod,
 							];
 						?>
 						<?= Yii::$service->page->widget->render($addressView,$addressParam); ?>
 					
-						
 					</div>
 
 					<div class="onestepcheckout-column-middle">

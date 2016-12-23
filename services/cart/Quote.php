@@ -171,6 +171,49 @@ class Quote extends Service
 		$this->setCart(MyCart::findOne($cart_id));
 	}
 	
+	public function addCustomerDefautAddressToCart(){
+		if(!Yii::$app->user->isGuest){
+			$cart = $this->getCart();
+			# 购物车没有customer address  id，则
+			# 使用登录用户的默认address
+			$identity = Yii::$app->user->identity;
+			//echo $cart['customer_id'] ;
+			//echo "##";
+			//echo $identity['id'];
+			//exit;
+			if($cart['customer_id'] == $identity['id']){
+				if(!isset($cart['customer_address_id']) || empty($cart['customer_address_id'])){
+					$defaultAddress = Yii::$service->customer->address->getDefaultAddress();
+					if(is_array($defaultAddress) && !empty($defaultAddress)){
+						$cart->customer_telephone = isset($defaultAddress['telephone']) ? $defaultAddress['telephone'] : '';
+						$cart->customer_email= isset($defaultAddress['email']) ? $defaultAddress['email'] : '';
+						$cart->customer_firstname= isset($defaultAddress['first_name']) ? $defaultAddress['first_name'] : '';
+						$cart->customer_lastname= isset($defaultAddress['last_name']) ? $defaultAddress['last_name'] : '';
+						$cart->customer_address_id= isset($defaultAddress['address_id']) ? $defaultAddress['address_id'] : '';
+						$cart->customer_address_country= isset($defaultAddress['country']) ? $defaultAddress['country'] : '';
+						$cart->customer_address_state= isset($defaultAddress['state']) ? $defaultAddress['state'] : '';
+						$cart->customer_address_city= isset($defaultAddress['city']) ? $defaultAddress['city'] : '';
+						$cart->customer_address_zip= isset($defaultAddress['zip']) ? $defaultAddress['zip'] : '';
+						$cart->customer_address_street1= isset($defaultAddress['street1']) ? $defaultAddress['street1'] : '';
+						$cart->customer_address_street2= isset($defaultAddress['street2']) ? $defaultAddress['street2'] : '';
+						$cart->save();
+						$this->setCart($cart);
+						
+					}
+				
+				}
+			}
+		}
+	}
+	
+	public function hasAddressId(){
+		$cart = $this->getCart();
+		$address_id = $cart['customer_address_id'];
+		if($address_id){
+			return true;
+		}
+	}
+	
 	/**
 	 * 得到购物车的信息
 	 */
@@ -239,17 +282,24 @@ class Quote extends Service
 	public function mergeCartAfterUserLogin(){
 		if(!Yii::$app->user->isGuest){
 			$identity = Yii::$app->user->identity;
+			$customer_id = $identity['id'];
 			$email = $identity->email;
-			$email_cart = $this->getCartByEmail($email);
+			$customer_firstname = $identity->firstname;
+			$customer_lastname  = $identity->lastname;
+			$customer_cart = $this->getCartByCustomerId($customer_id);
 			$cart_id = $this->getCartId();
-			if(!$email_cart){
+			if(!$customer_cart){
 				//echo 111;exit;
 				if($cart_id){
 					$cart = $this->getCart();
 					if($cart){
 						$cart['customer_email'] = $email ;
+						$cart['customer_id'] = $customer_id ;
+						$cart['customer_firstname'] = $customer_firstname ;
+						$cart['customer_lastname'] = $customer_lastname ;
 						$cart['customer_is_guest'] = 2;
 						$cart->save();
+						
 					}
 				}
 			}else{
@@ -257,11 +307,11 @@ class Quote extends Service
 				$cart = $this->getCart();
 				if(!$cart || !$cart_id){
 					//echo 111;exit;
-					$cart_id = $email_cart['cart_id'];
+					$cart_id = $customer_cart['cart_id'];
 					$this->setCartId($cart_id);
 				}else{
 					# 将无用户产品（当前）和 购物车中的产品（登录用户对应的购物车）进行合并。
-					$new_cart_id = $email_cart['cart_id'];
+					$new_cart_id = $customer_cart['cart_id'];
 					if($cart['coupon_code']){
 						# 如果有优惠券则取消，以登录用户的购物车的优惠券为准。
 						Yii::$service->cart->coupon->cancelCoupon($cart['coupon_code']);
@@ -273,7 +323,7 @@ class Quote extends Service
 					# 设置当前的cart_id
 					$this->setCartId($new_cart_id);
 					# 设置当前的cart
-					$this->setCart($email_cart);
+					$this->setCart($customer_cart);
 					# 重新计算购物车中产品的个数
 					$this->computeCartInfo();
 					
@@ -283,9 +333,9 @@ class Quote extends Service
 	}
 	
 	
-	public function getCartByEmail($email){
+	public function getCartByCustomerId($customer_id){
 		if($email){
-			$one = MyCart::findOne(['customer_email' => $email]);
+			$one = MyCart::findOne(['customer_id' => $customer_id]);
 			if($one['cart_id']){
 				return $one;
 			}

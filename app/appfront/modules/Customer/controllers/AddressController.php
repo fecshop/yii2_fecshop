@@ -18,7 +18,8 @@ use fecshop\app\appfront\modules\AppfrontController;
 class AddressController extends AppfrontController
 {
     //protected $_registerSuccessRedirectUrlKey = 'customer/account';
-	
+	public $enableCsrfValidation = false;
+	 
 	public function init(){
 		if(Yii::$app->user->isGuest){
 			Yii::$service->url->redirectByUrlKey('customer/account/login');
@@ -39,6 +40,12 @@ class AddressController extends AppfrontController
 		$data = $this->getBlock()->getLastData();
 		return $this->render($this->action->id,$data);
 	}
+	
+	public function actionChangecountry(){
+		$this->getBlock('edit')->getAjaxState();
+		
+	}
+	
 	
 }
 

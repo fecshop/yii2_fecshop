@@ -6,17 +6,54 @@ use fec\helpers\CModule;
 use fec\helpers\CRequest;
 class Index {
 	protected $_payment_mothod;
+	protected $_address_view_file;
+	protected $_address_id;
+	protected $_address_list;
+	protected $_custom_info;
+	
 	public function getLastData(){
 		$currency_info = Yii::$service->page->currency->getCurrencyInfo();
+		#
+		Yii::$service->cart->quote->addCustomerDefautAddressToCart();
+		$this->initAddress();
+		$this->initCustomerInfo();
 		return [
-			'payments' => $this->getPayment(),
-			'shippings' => $this->getShippings(),
-			'current_payment_mothod' => $this->_payment_mothod,
-			'cart_info'  => $this->getCartInfo(),
-			'currency_info' => $currency_info,
+			'payments' 					=> $this->getPayment(),
+			'shippings' 				=> $this->getShippings(),
+			'current_payment_mothod' 	=> $this->_payment_mothod,
+			'cart_info'  				=> $this->getCartInfo(),
+			'currency_info' 			=> $currency_info,
+			'address_view_file' 		=> $this->_address_view_file,
+		
+			'cart_address_id'			=> $this->_address_id,
+			'address_list'				=> $this->_address_list,
+			'customer_info'				=> $this->_custom_info,
 		];
 	}
 	
+	public function initCustomerInfo(){
+		if(!Yii::$app->user->isGuest){
+			$identity = Yii::$app->user->identity;
+			$this->_custom_info['email'] = $identity['email'];
+			$this->_custom_info['first_name'] = $identity['firstname'];
+			$this->_custom_info['last_name'] = $identity['lastname'];
+		}
+	}
+	
+	public function initAddress(){
+		$cart = Yii::$service->cart->quote->getCart();
+		$address_id = $cart['customer_address_id'];
+		
+		if($address_id){
+			$this->_address_id = $address_id;
+			$this->_address_view_file = 'checkout/onepage/index/address_select.php';
+			$this->_address_list = Yii::$service->customer->address->currentAddressList();
+			
+		}else{
+			$this->_address_view_file = 'checkout/onepage/index/address.php';
+		}
+		
+	}
 	
 	
 	public function getCartInfo(){
