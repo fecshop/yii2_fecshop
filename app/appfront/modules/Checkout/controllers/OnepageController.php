@@ -25,6 +25,14 @@ class OnepageController extends AppfrontController
 		
 	}
 	
+	
+	public function actionChangecountry(){
+		$this->getBlock('index')->ajaxChangecountry();
+		
+	}
+	
+	
+	
 }
 
 

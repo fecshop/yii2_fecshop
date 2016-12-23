@@ -1,5 +1,7 @@
 <?php  $address_list = $parentThis['address_list'];   ?>
 <?php  $cart_address_id = $parentThis['cart_address_id'];   ?>
+<?php  $country_select = $parentThis['country_select'];   ?>
+<?php  $state_html = $parentThis['state_html'];   ?>
 <?php  $customer_info = $parentThis['customer_info'];   
 	$email = isset($customer_info['email']) ? $customer_info['email'] : '';
 	$first_name = isset($customer_info['first_name']) ? $customer_info['first_name'] : '';
@@ -66,7 +68,7 @@
 						<div class="input-box input-country">
 							<label for="billing:country">Country <span class="required">*</span></label>
 									<select title="Country" class="billing_country validate-select" id="billing:country" name="billing[country]">
-									
+										<?=  $country_select ?>
 									</select>
 							</div>
 					</li>
@@ -81,7 +83,11 @@
 							<label for="billing:zip">Zip Code <span class="required">*</span></label>
 							<input value="" class="validate-zip-international required-entry input-text" id="billing:zip" name="billing[zip]" title="Zip Code" type="text">
 						</div>
-						<div class="input-box input-state"><label for="billing:state" class="required">State <span class="required">*</span></label><input value="" class="required-entry input-text inputstate" title="State" name="billing[state]" id="billing:state" type="text"></div>
+						<div class="input-box input-state"><label for="billing:state" class="required">State <span class="required">*</span></label>
+							<div class="state_html">
+							<?=  $state_html ?>
+							</div>
+						</div>
 					</li>
 					<li class="control">
 						<input class="save_in_address_book checkbox" id="billing:save_in_address_book" title="Save in address book" value="1" name="billing[save_in_address_book]" checked="checked" type="checkbox"><label for="billing:save_in_address_book">Save in address book</label>

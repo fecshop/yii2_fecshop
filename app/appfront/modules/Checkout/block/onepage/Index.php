@@ -10,13 +10,18 @@ class Index {
 	protected $_address_id;
 	protected $_address_list;
 	protected $_custom_info;
+	protected $_country;
+	protected $_stateHtml;
 	
 	public function getLastData(){
 		$currency_info = Yii::$service->page->currency->getCurrencyInfo();
+		$this->_country = Yii::$service->helper->country->getDefaultCountry();
 		#
 		Yii::$service->cart->quote->addCustomerDefautAddressToCart();
 		$this->initAddress();
+		$this->initCountry();
 		$this->initCustomerInfo();
+		$this->initState();
 		return [
 			'payments' 					=> $this->getPayment(),
 			'shippings' 				=> $this->getShippings(),
@@ -28,8 +33,47 @@ class Index {
 			'cart_address_id'			=> $this->_address_id,
 			'address_list'				=> $this->_address_list,
 			'customer_info'				=> $this->_custom_info,
+			'country_select'			=> $this->_countrySelect,
+			//'state_select'			=> $this->_stateSelect,
+			'state_html'				=> $this->_stateHtml,
 		];
 	}
+	public function initCountry(){
+		//echo $this->_country;
+		$this->_countrySelect = Yii::$service->helper->country->getAllCountryOptions('','',$this->_country);
+		//var_dump($this->_countrySelect );
+		
+	}
+	
+	public function initState($country = ''){
+		$state = isset($this->_address['state']) ? $this->_address['state'] : '';
+		if(!$country){
+			$country = $this->_country;
+		}
+		$stateHtml = Yii::$service->helper->country->getStateOptionsByContryCode($country,$state);
+		if(!$stateHtml){
+			$stateHtml = '<input id="state" name="billing[state]" value="'.$state.'" title="State" class="address_state input-text" style="" type="text">';
+		}else{
+			$stateHtml = '<select id="address:state" class="address_state validate-select" title="State" name="billing[state]">
+							<option value="">Please select region, state or province</option>'
+						.$stateHtml.'</select>';
+												
+		}
+		$this->_stateHtml = $stateHtml;
+		
+	}
+	
+	
+	public function ajaxChangecountry(){
+		$country = Yii::$app->request->get('country');
+		$state = $this->initState($country);
+		echo json_encode([
+			'state' => $this->_stateHtml,
+		]);
+		exit;
+	}
+	
+	
 	
 	public function initCustomerInfo(){
 		if(!Yii::$app->user->isGuest){

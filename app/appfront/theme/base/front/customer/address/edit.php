@@ -1,11 +1,6 @@
 <div class="main container two-columns-left">
 	<div class="col-main account_center">
-		<script>
-			function  sbt(thiss, navTabAjaxDone){
-				
-				return validateCallback(thiss, navTabAjaxDone);
-			}
-		</script>
+		
 
 		<div class="std">
 			<div>

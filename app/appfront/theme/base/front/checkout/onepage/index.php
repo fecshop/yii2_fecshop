@@ -22,9 +22,11 @@
 							];
 							//var_dump($address_list);
 							$addressParam = [
-								'cart_address_id' => $cart_address_id,
-								'address_list'	  => $address_list,
-								'customer_info'	  => $customer_info,
+								'cart_address_id' 	=> $cart_address_id,
+								'address_list'	  	=> $address_list,
+								'customer_info'	  	=> $customer_info,
+								'country_select'  	=> $country_select,
+								'state_html'  	  	=> $state_html,
 								//'payments' => $payments,
 								//'current_payment_mothod' => $current_payment_mothod,
 							];
@@ -166,7 +168,8 @@
 		});
 		
 		$("#id_create_account").click(function(){
-			if($(this).attr("checked")){
+			
+			if($(this).is(':checked')){
 				$("#onestepcheckout-li-password").show();
 				$("#onestepcheckout-li-password input").addClass("required-entry");
 			}else{
@@ -246,13 +249,13 @@
 		//$(document).on(".billing_country","click",function(){
 		$(".billing_country").change(function(){
 			country = $(this).val();
-			state   = $(".inputstate").val();
+			//state   = $(".address_state").val();
 			shipping_method = $("input[name=shipping_method]:checked").val();
 			//alert(shipping_method);
 			
 			$(".onestepcheckout-shipping-method-block").html('<div style="text-align:center;min-height:40px;"><img src="http://www.intosmile.com/skin/default/images/ajax-loader.gif"  /></div>');
 			$(".onestepcheckout-summary").html('<div style="text-align:center;min-height:40px;"><img src="http://www.intosmile.com/skin/default/images/ajax-loader.gif"  /></div>');
-			ajaxurl = "http://www.intosmile.com/checkout/onepage/getshipping";
+			ajaxurl = "<?= Yii::$service->url->getUrl('checkout/onepage/changecountry'); ?>";
 			$.ajax({
 				async:false,
 				timeout: 8000,
@@ -261,14 +264,14 @@
 				data: {
 						'country':country,
 						'shipping_method':shipping_method,
-						'state':state
+						//'state':state
 						},
 				url:ajaxurl,
 				success:function(data, textStatus){ 
 					
-					$(".onestepcheckout-shipping-method").html(data.shippint_html);
-					$(".onestepcheckout-summary").html(data.total_html);
-					$(".input-state").html(data.state);
+					//$(".onestepcheckout-shipping-method").html(data.shippint_html);
+					//$(".onestepcheckout-summary").html(data.total_html);
+					$(".state_html").html(data.state);
 					//$(".onestepcheckout-summary tbody").html(data.product_html);
 					//$(".onestepcheckout-totals tbody").html(data.total_html);
 						
@@ -298,6 +301,8 @@
 		});
 		
 		
+					
+					
 		
 
 	});	
