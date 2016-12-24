@@ -118,7 +118,14 @@ class CartController extends AppfrontController
 		$coupon_code = trim(Yii::$app->request->post('coupon_code'));
 		
 		if($coupon_code){
-			Yii::$service->cart->coupon->cancelCoupon($coupon_code);
+			$cancelStatus = Yii::$service->cart->coupon->cancelCoupon($coupon_code);
+			if(!$cancelStatus){
+				echo json_encode([
+					'status' => 'fail',
+					'content'=> 'coupon is not exist;',
+				]);
+				exit;
+			}
 			$error_arr = Yii::$service->helper->errors->get(true);
 			
 			if(!empty($error_arr)){

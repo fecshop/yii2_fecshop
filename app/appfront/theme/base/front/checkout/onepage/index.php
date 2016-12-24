@@ -153,14 +153,17 @@
 			coupon_code = $("#id_couponcode").val();
 			coupon_type = $(".couponType").val();
 			coupon_url = "";
+			$succ_coupon_type = 0;
 			if(coupon_type == 2){
 				coupon_url = "<?=  Yii::$service->url->getUrl('checkout/cart/addcoupon'); ?>";
+				$succ_coupon_type = 1;
 			}else if(coupon_type == 1){
 				coupon_url = "<?=  Yii::$service->url->getUrl('checkout/cart/cancelcoupon'); ?>";
+				$succ_coupon_type = 2;
 			}
 			//alert(coupon_type);
 			if(!coupon_code){
-				alert("coupon can not empty!");
+				//alert("coupon can not empty!");
 			}
 			//coupon_url = $("#discount-coupon-form").attr("action");
 			//alert(coupon_url);
@@ -173,9 +176,17 @@
 				url:coupon_url,
 				success:function(data, textStatus){ 
 					if(data.status == 'success'){
-						window.location.href=currentUrl;
+						$(".couponType").val($succ_coupon_type);
+						hml = $('.add_coupon_submit').html();
+						if(hml == 'Add Coupon'){
+							$('.add_coupon_submit').html('Cancel Coupon');
+						}else{
+							$('.add_coupon_submit').html('Add Coupon');
+						}
+						$(".coupon_add_log").html("");
+						ajaxreflush();
 					}else if(data.content == 'nologin'){
-						window.location.href="<?=  Yii::$service->url->getUrl('customer/account/login'); ?>";
+						$(".coupon_add_log").html("you must login your account before you use coupon");
 					}else{
 						$(".coupon_add_log").html(data.content);
 					}

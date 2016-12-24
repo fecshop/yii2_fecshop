@@ -404,23 +404,25 @@ class Coupon extends Service
 		
 		$this->useCouponInit($coupon_code);
 		if($this->_customer_id){
-			//$couponModel = $this->getCouponModel($coupon_code);
-			//$couponUsageModel = $this->getCouponUsageModel($customer_id,$coupon_id);
-			$innerTransaction = Yii::$app->db->beginTransaction();
-			try {
-				$couponModel = $this->getCouponModel($coupon_code);
-				
-				$up_status = $this->updateCouponUse('cancel');
-				$cancel_status = Yii::$service->cart->quote->cancelCartCoupon($coupon_code);
-				//echo $up_status.'##'.$set_status;
-				//echo 555;
-				if($up_status && $cancel_status){
-					$innerTransaction->commit();
-					return true;
-				}	
-				$innerTransaction->rollBack();
-			} catch (Exception $e) {
-				$innerTransaction->rollBack();
+			$couponModel = $this->getCouponModel($coupon_code);
+			if($couponModel){
+				//$couponModel = $this->getCouponModel($coupon_code);
+				//$couponUsageModel = $this->getCouponUsageModel($customer_id,$coupon_id);
+				$innerTransaction = Yii::$app->db->beginTransaction();
+				try {
+					
+					$up_status = $this->updateCouponUse('cancel');
+					$cancel_status = Yii::$service->cart->quote->cancelCartCoupon($coupon_code);
+					//echo $up_status.'##'.$set_status;
+					//echo 555;
+					if($up_status && $cancel_status){
+						$innerTransaction->commit();
+						return true;
+					}	
+					$innerTransaction->rollBack();
+				} catch (Exception $e) {
+					$innerTransaction->rollBack();
+				}
 			}
 		}	
 	}
