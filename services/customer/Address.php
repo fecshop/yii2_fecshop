@@ -199,12 +199,16 @@ class Address extends Service
 					if(isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()]) ){
 						if($customer_id){
 							if($model['customer_id'] == $customer_id){
+								
+								$this->removeCartAddress($model['customer_id'],$id);
 								$model->delete();
 							}else{
 								Yii::$service->helper->errors->add("remove address is not current customer address");
 							}
 						}else{
+							$this->removeCartAddress($model['customer_id'],$id);
 							$model->delete();
+							
 						}
 						
 					}else{
@@ -218,12 +222,14 @@ class Address extends Service
 			if(isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()]) ){
 				if($customer_id){
 					if($model['customer_id'] == $customer_id){
+						$this->removeCartAddress($model['customer_id'],$id);
 						$model->delete();
 					}else{
 						Yii::$service->helper->errors->add("remove address is not current customer address");
 				
 					}
 				}else{
+					$this->removeCartAddress($model['customer_id'],$id);
 					$model->delete();
 				}
 						
@@ -251,6 +257,17 @@ class Address extends Service
 			
 		}
 		return true;
+	}
+	
+	# 删除购物车中的address部分。
+	protected function removeCartAddress($customer_id,$address_id){
+		$cart = Yii::$service->cart->quote->getCartByCustomerId($customer_id);
+		if(isset($cart['customer_address_id']) &&  !empty($cart['customer_address_id'])){
+			if($cart['customer_address_id'] == $address_id){
+				$cart->customer_address_id = '';
+				$cart->save();
+			}
+		}
 	}
 	
 	/**
