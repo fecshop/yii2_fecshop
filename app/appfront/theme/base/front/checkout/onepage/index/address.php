@@ -86,6 +86,9 @@
 							<input value="1" name="create_account" id="id_create_account" type="checkbox">
 							<label style="display:inline" for="id_create_account">Create an account for later use</label>
 						</div>
+						<div class="label_create_account">
+						
+						</div>
 					</li>
 					<li style="display: none;" id="onestepcheckout-li-password">
 						<div class="input-box input-password">

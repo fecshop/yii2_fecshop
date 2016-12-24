@@ -131,7 +131,7 @@ class CartController extends AppfrontController
 			}else{
 				echo json_encode([
 					'status' => 'success',
-					'content'=> 'add coupon success',
+					'content'=> 'cacle coupon success',
 				]);
 				exit;
 			}

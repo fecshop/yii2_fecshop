@@ -43,8 +43,7 @@ class Login {
 		}
 		if(is_array($param) && !empty($param)){
 			Yii::$service->customer->login($param);
-			# 合并购物车数据
-			Yii::$service->cart->mergeCartAfterUserLogin();
+			
 			# 发送邮件
 			if($param['email']){
 				$this->sendLoginEmail($param['email']);

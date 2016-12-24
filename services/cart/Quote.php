@@ -27,6 +27,7 @@ class Quote extends Service
 	
 	protected $_cart_id;
 	protected $_cart;
+	protected $_shipping_cost;
 	
 	/**
 	 
@@ -170,7 +171,7 @@ class Quote extends Service
 		$this->setCartId($cart_id);
 		$this->setCart(MyCart::findOne($cart_id));
 	}
-	
+	/*
 	public function addCustomerDefautAddressToCart(){
 		if(!Yii::$app->user->isGuest){
 			$cart = $this->getCart();
@@ -205,6 +206,7 @@ class Quote extends Service
 			}
 		}
 	}
+	*/
 	
 	public function hasAddressId(){
 		$cart = $this->getCart();
@@ -229,9 +231,10 @@ class Quote extends Service
 			return ;
 		}
 		$coupon_code = $cart['coupon_code'];
+		$shipping_method = $cart['shipping_method'];
 		$cart_product_info = Yii::$service->cart->quoteItem->getCartProductInfo();
 		if(is_array($cart_product_info)){
-			
+			$product_weight = $cart_product_info['product_weight'];
 			$products = $cart_product_info['products'];
 			$product_total = $cart_product_info['product_total'];
 			if($products && $product_total){
@@ -246,14 +249,24 @@ class Quote extends Service
 					'coupon_cost' 	=> $couponCost,
 					'product_total' => $product_total,
 					'products' 		=> $products,
+					'product_weight'=> $product_weight,
 				];
 			}
 			
 		}
 	}
+	public function setShippingCost($shippingCost){
+		$this->_shipping_cost = $shippingCost;
+	}
 	
-	public function getShippingCost(){
-		return 0;
+	public function getShippingCost($shipping_method='',$weight='',$country='',$region='*'){
+		if(!$this->_shipping_cost){
+			$shippingCost = Yii::$service->shipping->getShippingCostWithSymbols($shipping_method,$weight,$country,$region);
+			if(isset($shippingCost['currentCost'])){
+				$this->_shipping_cost = $shippingCost['currentCost'];
+			}
+		}
+		return $this->_shipping_cost;
 	}
 	/**
 	 * 得到优惠券的折扣金额

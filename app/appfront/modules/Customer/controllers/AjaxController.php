@@ -55,6 +55,19 @@ class AjaxController extends AppfrontController
 		exit;
 	}
 	
+	public function actionIsregister(){
+		$email = Yii::$app->request->get('email');
+		if(Yii::$service->customer->isRegistered($email)){
+			echo json_encode([
+				'registered' => 1
+			]);
+		}else{
+			echo json_encode([
+				'registered' => 2
+			]);
+		}
+	}
+	
 }
 
 

@@ -36,16 +36,17 @@
 					</div>
 
 					<div class="onestepcheckout-column-middle">
-						<?php # shipping部分
-							$shippingView = [
-								'view'	=> 'checkout/onepage/index/shipping.php'
-							];
-							$shippingParam = [
-								'shippings' => $shippings,
-							];
-						?>
-						<?= Yii::$service->page->widget->render($shippingView,$shippingParam); ?>
-					
+						<div class="shipping_method_html">
+							<?php # shipping部分
+								$shippingView = [
+									'view'	=> 'checkout/onepage/index/shipping.php'
+								];
+								$shippingParam = [
+									'shippings' => $shippings,
+								];
+							?>
+							<?= Yii::$service->page->widget->render($shippingView,$shippingParam); ?>
+						</div>
 				
 				
 						<?php # payment部分
@@ -77,17 +78,18 @@
 					</div>
 
 					<div class="onestepcheckout-column-right">
-						<?php # review order部分
-							$reviewOrderView = [
-								'view'	=> 'checkout/onepage/index/review_order.php'
-							];
-							$reviewOrderParam = [
-								'cart_info' => $cart_info,
-								'currency_info' => $currency_info,
-							];
-						?>
-						<?= Yii::$service->page->widget->render($reviewOrderView,$reviewOrderParam); ?>
-					
+						<div class="review_order_view">
+							<?php # review order部分
+								$reviewOrderView = [
+									'view'	=> 'checkout/onepage/index/review_order.php'
+								];
+								$reviewOrderParam = [
+									'cart_info' => $cart_info,
+									'currency_info' => $currency_info,
+								];
+							?>
+							<?= Yii::$service->page->widget->render($reviewOrderView,$reviewOrderParam); ?>
+							</div>
 					</div>
 					<div style="clear: both;">&nbsp;</div>
 				</div>
@@ -98,40 +100,55 @@
 
 <script>
 <?php $this->beginBlock('placeOrder') ?>
-	
+	function validateEmail(email) {
+		var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		return re.test(email);
+	}
+	// ajax
 	function ajaxreflush(){
 		shipping_method = $("input[name=shipping_method]:checked").val();
 		//alert(shipping_method);
 		country = $(".billing_country").val();
 		address_id = $(".address_list").val();
-		$(".onestepcheckout-summary").html('<div style="text-align:center;min-height:40px;"><img src="http://www.intosmile.com/skin/default/images/ajax-loader.gif"  /></div>');
-		ajaxurl = "http://www.intosmile.com/checkout/onepage/getshipping";
-		state   = $(".inputstate").val();
-		$.ajax({
-			async:false,
-			timeout: 8000,
-			dataType: 'json', 
-			type:'get',
-			data: {
-					'country':country,
-					'shipping_method':shipping_method,
-					'address_id':address_id,
-					'state':state,
-					},
-			url:ajaxurl,
-			success:function(data, textStatus){ 
+		state   = $(".address_state").val();
+		//alert(state);
+		if(country || address_id){
+			$(".onestepcheckout-summary").html('<div style="text-align:center;min-height:40px;"><img src="<?= Yii::$service->image->getImgUrl('images/ajax-loader.gif'); ?>"  /></div>');
+			$(".onestepcheckout-shipping-method-block").html('<div style="text-align:center;min-height:40px;"><img src="<?= Yii::$service->image->getImgUrl('images/ajax-loader.gif'); ?>"  /></div>');
 				
-				$(".onestepcheckout-summary").html(data.total_html)
-				$(".input-state").html(data.state);
+			ajaxurl = "<?= Yii::$service->url->getUrl('checkout/onepage/ajaxupdateorder');  ?>";
+			
+			
+			$.ajax({
+				async:false,
+				timeout: 8000,
+				dataType: 'json', 
+				type:'get',
+				data: {
+						'country':country,
+						'shipping_method':shipping_method,
+						'address_id':address_id,
+						'state':state,
+						},
+				url:ajaxurl,
+				success:function(data, textStatus){ 
+					status = data.status;
+					if(status == 'success'){
+						$(".review_order_view").html(data.reviewOrderHtml)
+						$(".shipping_method_html").html(data.shippingHtml);
 					
-			},
-			error:function (XMLHttpRequest, textStatus, errorThrown){
-					
-			}
-		});
+					}
+						
+				},
+				error:function (XMLHttpRequest, textStatus, errorThrown){
+						
+				}
+			});
+		}
 	}	
 	$(document).ready(function(){
 		currentUrl = "<?= Yii::$service->url->getUrl('checkout/onepage') ?>"
+		//优惠券
 		$(".add_coupon_submit").click(function(){
 			coupon_code = $("#id_couponcode").val();
 			coupon_type = $(".couponType").val();
@@ -141,10 +158,12 @@
 			}else if(coupon_type == 1){
 				coupon_url = "<?=  Yii::$service->url->getUrl('checkout/cart/cancelcoupon'); ?>";
 			}
+			//alert(coupon_type);
 			if(!coupon_code){
 				alert("coupon can not empty!");
 			}
 			//coupon_url = $("#discount-coupon-form").attr("action");
+			//alert(coupon_url);
 			$.ajax({
 				async:true,
 				timeout: 6000,
@@ -167,18 +186,51 @@
 			
 		});
 		
+		// 对于非登录用户，可以填写密码，进行注册账户，这里进行信息的检查。
 		$("#id_create_account").click(function(){
-			
 			if($(this).is(':checked')){
-				$("#onestepcheckout-li-password").show();
-				$("#onestepcheckout-li-password input").addClass("required-entry");
+				email = $("input[name='billing[email]']").val();
+				if(!email){
+					$(this).prop('checked', false);
+					$(".label_create_account").html(" email address is empty, you must Fill in email ");
+				}else{
+					thischeckbox = this;
+					if(!validateEmail(email)){
+						$(this).prop('checked', false);
+						$(".label_create_account").html(" email address format is error ");
+						
+					}else{
+						// ajax  get if  email is register
+						$.ajax({
+							async:true,
+							timeout: 6000,
+							dataType: 'json', 
+							type:'get',
+							data: {"email":email},
+							url:"<?= Yii::$service->url->getUrl('customer/ajax/isregister'); ?>",
+							success:function(data, textStatus){ 
+								if(data.registered == 2){
+									$(".label_create_account").html("");
+									$("#onestepcheckout-li-password").show();
+									$("#onestepcheckout-li-password input").addClass("required-entry");
+					
+								}else{
+									$(thischeckbox).prop('checked', false);
+									$(".label_create_account").html(" email is registered , you must fill in another email ");
+								}
+							},
+							error:function (XMLHttpRequest, textStatus, errorThrown){}
+						});
+					}
+				}
 			}else{
+				$(".label_create_account").html("");
 				$("#onestepcheckout-li-password").hide();
 				$("#onestepcheckout-li-password input").removeClass("required-entry");
 			}
 		});
 		
-		
+		//下单(这个部分未完成。)
 		$("#onestepcheckout-place-order").click(function(){
 			$(".validation-advice").remove();
 			i = 0;
@@ -201,6 +253,7 @@
 			}
 		});
 		
+		//登录用户切换地址列表
 		$(".address_list").change(function(){
 			val = $(this).val();
 			if(!val){
@@ -215,96 +268,70 @@
 				addressid = $(this).val();
 				
 				if(addressid){
-					
-					$(".onestepcheckout-shipping-method-block").html('<div style="text-align:center;min-height:40px;"><img src="http://www.intosmile.com/skin/default/images/ajax-loader.gif"  /></div>');
-					$(".onestepcheckout-summary").html('<div style="text-align:center;min-height:40px;"><img src="http://www.intosmile.com/skin/default/images/ajax-loader.gif"  /></div>');
-					shipping_method = $("input[name=shipping_method]:checked").val();
-					ajaxurl = "http://www.intosmile.com/checkout/onepage/changeaddress";
-					$.ajax({
-						async:false,
-						timeout: 8000,
-						dataType: 'json', 
-						type:'get',
-						data: {
-								'address_id':addressid,
-								'shipping_method':shipping_method
-								},
-						url:ajaxurl,
-						success:function(data, textStatus){ 
-							
-							$(".onestepcheckout-shipping-method").html(data.shippint_html);
-							$(".onestepcheckout-summary").html(data.total_html)
-							//$(".onestepcheckout-summary tbody").html(data.product_html);
-							//$(".onestepcheckout-totals tbody").html(data.total_html);
-								
-						},
-						error:function (XMLHttpRequest, textStatus, errorThrown){
-								
-						}
-					});
+					ajaxreflush();
 				}
 			}
 		});
 		
-		//$(document).on(".billing_country","click",function(){
+		// 国家选择后，state需要清空，重新选择或者填写
 		$(".billing_country").change(function(){
 			country = $(this).val();
 			//state   = $(".address_state").val();
-			shipping_method = $("input[name=shipping_method]:checked").val();
+			//shipping_method = $("input[name=shipping_method]:checked").val();
 			//alert(shipping_method);
 			
-			$(".onestepcheckout-shipping-method-block").html('<div style="text-align:center;min-height:40px;"><img src="http://www.intosmile.com/skin/default/images/ajax-loader.gif"  /></div>');
-			$(".onestepcheckout-summary").html('<div style="text-align:center;min-height:40px;"><img src="http://www.intosmile.com/skin/default/images/ajax-loader.gif"  /></div>');
+			//$(".onestepcheckout-shipping-method-block").html('<div style="text-align:center;min-height:40px;"><img src="http://www.intosmile.com/skin/default/images/ajax-loader.gif"  /></div>');
+			//$(".onestepcheckout-summary").html('<div style="text-align:center;min-height:40px;"><img src="http://www.intosmile.com/skin/default/images/ajax-loader.gif"  /></div>');
 			ajaxurl = "<?= Yii::$service->url->getUrl('checkout/onepage/changecountry'); ?>";
+			
 			$.ajax({
-				async:false,
+				async:true,
 				timeout: 8000,
 				dataType: 'json', 
 				type:'get',
 				data: {
 						'country':country,
-						'shipping_method':shipping_method,
+						//'shipping_method':shipping_method,
 						//'state':state
 						},
 				url:ajaxurl,
 				success:function(data, textStatus){ 
-					
-					//$(".onestepcheckout-shipping-method").html(data.shippint_html);
-					//$(".onestepcheckout-summary").html(data.total_html);
 					$(".state_html").html(data.state);
-					//$(".onestepcheckout-summary tbody").html(data.product_html);
-					//$(".onestepcheckout-totals tbody").html(data.total_html);
-						
+					
 				},
 				error:function (XMLHttpRequest, textStatus, errorThrown){
 						
 				}
 			});
-				
+			ajaxreflush();	
 		});
 		
-	
+		// state select 改变后的事件
+		$(".input-state").off("change").on("change","select.address_state",function(){
+			ajaxreflush();
+		});
+		// state input 改变后的事件
+		$(".input-state").off("blur").on("blur","input.address_state",function(){
+			ajaxreflush();
+		});
+		
+		
+		//改变shipping methos
 		$(".onestepcheckout-column-middle").off("click").on("click","input[name=shipping_method]",function(){
 			ajaxreflush();
-			
 		});
 		
 		
 		
-		$("#billing_address_list").off("change").on("change",".selectstate",function(){
-			value = $(".selectstate option:selected").text();
-			if($(".selectstate").val()){
-				$(".inputstate").val(value);
-			}else{
-				$(".inputstate").val('');
-			}
-		});
+		//$("#billing_address_list").off("change").on("change",".selectstate",function(){
+		//	value = $(".selectstate option:selected").text();
+		//	if($(".selectstate").val()){
+		//		$(".inputstate").val(value);
+		//	}else{
+		//		$(".inputstate").val('');
+		//	}
+		//});
 		
-		
-					
-					
-		
-
 	});	
 <?php $this->endBlock(); ?> 
 <?php $this->registerJs($this->blocks['placeOrder'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>

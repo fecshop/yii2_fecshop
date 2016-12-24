@@ -316,7 +316,7 @@ class Coupon extends Service
 						if(!$cu_model){
 							$cu_model = new MyCouponUsage;
 							$cu_model->times_used 	= 1; 
-							$cu_model->customer_id 	= $customer_id; 
+							$cu_model->customer_id 	= $this->_customer_id; 
 							$cu_model->coupon_id 	= $c_model['coupon_id'];
 						}else{
 							$cu_model->times_used += 1; 

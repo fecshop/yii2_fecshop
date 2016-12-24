@@ -97,6 +97,7 @@ class Shipping extends Service
 		//echo $weight;
 		$allmethod = $this->getShippingMethod();
 		$m = $allmethod[$shipping_method];
+		//var_dump($m );exit;
 		if(!empty($m) && is_array($m)){
 			$cost = $m['cost'];
 			# csv方式

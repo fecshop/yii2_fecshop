@@ -24,7 +24,7 @@
 								$str = ''; 
 							}
 					?>
-					<option <?= $str  ?> value="<?= $address_id ?>"><?= $info ?></option>
+					<option <?= $str  ?> value="<?= $address_id ?>"><?= $info['address'] ?></option>
 					
 					<?php  }  ?>
 					<?php  }  ?>

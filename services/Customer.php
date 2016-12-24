@@ -67,6 +67,10 @@ class Customer extends Service
 		$model->password = $data['password'];
 		$loginStatus = $model->login();
 		$errors = $model->errors;
+		if(empty($errors)){
+			# 合并购物车数据
+			Yii::$service->cart->mergeCartAfterUserLogin();
+		}
 		//var_dump($errors);
 		//exit;
 		Yii::$service->helper->errors->add($errors);
@@ -90,6 +94,15 @@ class Customer extends Service
 			$errors = $model->errors;
 			Yii::$service->helper->errors->add($errors);
 			return false;;
+		}
+	}
+	
+	protected function actionIsRegistered($email){
+		$customer = CustomerModel::findOne(['email' => $email]);
+		if($customer['email']){
+			return true;
+		}else{
+			return false;
 		}
 	}
 	

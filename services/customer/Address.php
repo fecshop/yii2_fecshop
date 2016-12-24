@@ -21,6 +21,8 @@ use fecshop\services\Service;
  */
 class Address extends Service
 {
+	protected  $currentCountry;
+	protected  $currentState;
 	
 	protected function actionGetPrimaryKey(){
 		
@@ -76,6 +78,8 @@ class Address extends Service
 		];
 	}
 	
+	
+	
 	protected function actionCurrentAddressList(){
 		$arr = [];
 		if(!Yii::$app->user->isGuest){
@@ -92,6 +96,7 @@ class Address extends Service
 					'asArray' => true,
 				];
 				$coll = $this->coll($filter);
+				$ii = 0;
 				if(is_array($coll['coll']) && !empty($coll['coll'])){
 					foreach($coll['coll'] as $one){
 						$address_id = $one['address_id'];
@@ -101,6 +106,7 @@ class Address extends Service
 						$telephone = $one['telephone'];
 						$street1 = $one['street1'];
 						$street2 = $one['street2'];
+						$is_default = $one['is_default'];
 						$city = $one['city'];
 						$state = Yii::$service->helper->country->getStateByContryCode($one['country'],$one['state']);
 						//$state = $one['state'];
@@ -109,7 +115,20 @@ class Address extends Service
 						$str = $first_name.' '.$last_name.' '.$email.' '.
 								$street1.' '.$street2.' '.$city.' '.$state.' '.$country.' '.
 								$zip;
-						$arr[$address_id] = $str;
+						if($is_default == 1){
+							$ii = 1;
+						}
+						$arr[$address_id] = [
+							'address' => $str,
+							'is_default'=>$is_default,
+						];
+					}
+					if(!$ii){
+						# 如果没有默认的地址，则取第一个当默认
+						foreach($arr as $k=>$v){
+							$arr[$k]['is_default'] = 1;
+							break;
+						}
 					}
 				}
 			}
@@ -239,6 +258,7 @@ class Address extends Service
 	 * @return Array Or ''
 	 * 得到customer的默认地址。
 	 */
+	/*
 	protected function actionGetDefaultAddress($customer_id = ''){
 		if(!$customer_id){
 			$identity = Yii::$app->user->identity;
@@ -260,6 +280,7 @@ class Address extends Service
 			}
 		}
 	}
+	*/
 	
 	
 	

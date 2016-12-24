@@ -11,22 +11,28 @@ class Index {
 	protected $_address_list;
 	protected $_custom_info;
 	protected $_country;
+	protected $_state;
 	protected $_stateHtml;
 	
 	public function getLastData(){
+		$cartInfo = $this->getCartInfo();
+		//var_dump($cartInfo);
+		if(!isset($cartInfo['products']) || !is_array($cartInfo['products']) || empty($cartInfo['products'])){
+			Yii::$service->url->redirectByUrlKey('checkout/cart');
+		}
 		$currency_info = Yii::$service->page->currency->getCurrencyInfo();
-		$this->_country = Yii::$service->helper->country->getDefaultCountry();
 		#
-		Yii::$service->cart->quote->addCustomerDefautAddressToCart();
+		//Yii::$service->cart->quote->addCustomerDefautAddressToCart();
 		$this->initAddress();
 		$this->initCountry();
-		$this->initCustomerInfo();
+		
+		//$this->initCustomerInfo();
 		$this->initState();
 		return [
 			'payments' 					=> $this->getPayment(),
 			'shippings' 				=> $this->getShippings(),
 			'current_payment_mothod' 	=> $this->_payment_mothod,
-			'cart_info'  				=> $this->getCartInfo(),
+			'cart_info'  				=> $cartInfo,
 			'currency_info' 			=> $currency_info,
 			'address_view_file' 		=> $this->_address_view_file,
 		
@@ -38,10 +44,110 @@ class Index {
 			'state_html'				=> $this->_stateHtml,
 		];
 	}
+	
+	/**
+	 * 初始化地址信息，首先从当前用户里面取值，然后从cart表中取数据覆盖
+	 * 1. 初始化 $this->_address，里面保存的各个地址信息。
+	 * 2. 如果是登录用户，而且
+	 */
+	public function initAddress(){
+		$cart = Yii::$service->cart->quote->getCart();
+		$address_id = $cart['customer_address_id'];
+		
+		$address_info = [];	
+		if(!Yii::$app->user->isGuest){
+			$identity = Yii::$app->user->identity;
+			$address_info['email'] 		= $identity['email'];
+			$address_info['first_name'] = $identity['firstname'];
+			$address_info['last_name'] 	= $identity['lastname'];
+		}
+		if(isset($cart['customer_email']) && !empty($cart['customer_email'])){
+			$address_info['email'] = $cart['customer_email'];
+		}
+		
+		if(isset($cart['customer_firstname']) && !empty($cart['customer_firstname'])){
+			$address_info['first_name'] = $cart['customer_firstname'];
+		}
+		
+		if(isset($cart['customer_lastname']) && !empty($cart['customer_lastname'])){
+			$address_info['last_name'] = $cart['customer_lastname'];
+		}
+		
+		if(isset($cart['customer_telephone']) && !empty($cart['customer_telephone'])){
+			$address_info['telephone'] = $cart['customer_telephone'];
+		}
+		
+		if(isset($cart['customer_address_country']) && !empty($cart['customer_address_country'])){
+			$address_info['country'] = $cart['customer_address_country'];
+			$this->_country = $address_info['country'];
+		}
+		
+		if(isset($cart['customer_address_state']) && !empty($cart['customer_address_state'])){
+			$address_info['state'] = $cart['customer_address_state'];
+		}
+		
+		if(isset($cart['customer_address_city']) && !empty($cart['customer_address_city'])){
+			$address_info['city'] = $cart['customer_address_city'];
+		}
+		
+		if(isset($cart['customer_address_zip']) && !empty($cart['customer_address_zip'])){
+			$address_info['zip'] = $cart['customer_address_zip'];
+		}
+		 
+		if(isset($cart['customer_address_street1']) && !empty($cart['customer_address_street1'])){
+			$address_info['street1'] = $cart['customer_address_street1'];
+		}
+		
+		if(isset($cart['customer_address_street2']) && !empty($cart['customer_address_street2'])){
+			$address_info['street2'] = $cart['customer_address_street2'];
+		}
+		$this->_address = $address_info;
+		$this->_address_list = Yii::$service->customer->address->currentAddressList();
+		//var_dump($this->_address_list);
+		# 如果购物车存在customer_address_id，而且用户地址中中也存在customer_address_id
+		if($address_id && isset($this->_address_list[$address_id]) && !empty($this->_address_list[$address_id])){
+			$this->_address_id = $address_id;
+			$this->_address_view_file = 'checkout/onepage/index/address_select.php';
+			$addressModel = Yii::$service->customer->address->getByPrimaryKey($this->_address_id);
+			if($addressModel['country']){
+				$this->_country = $addressModel['country'];
+				$this->_address['country'] = $this->_country;
+			}
+			if($addressModel['state']){
+				$this->_state = $addressModel['state'];
+				$this->_address['state'] = $this->_state;
+			}
+		}else if(is_array($this->_address_list) && !empty($this->_address_list)){
+			# 用户存在地址列表，但是，cart中没有customer_address_id
+			# 这种情况下，从列表中取出来一个地址，然后设置成当前的地址。
+			foreach($this->_address_list as $adss_id => $info){
+				if($info['is_default'] == 1){
+					$this->_address_id = $adss_id;
+					$this->_address_view_file = 'checkout/onepage/index/address_select.php';
+					$addressModel = Yii::$service->customer->address->getByPrimaryKey($this->_address_id);
+					if($addressModel['country']){
+						$this->_country = $addressModel['country'];
+						$this->_address['country'] = $this->_country;
+					}
+					if($addressModel['state']){
+						$this->_state = $addressModel['state'];
+						$this->_address['state'] = $this->_state;
+					}
+					break;
+				}
+			}
+		}else{
+			$this->_address_view_file = 'checkout/onepage/index/address.php';
+		}
+		if(!$this->_country){
+			$this->_country = Yii::$service->helper->country->getDefaultCountry();
+		}
+		
+	}
+	
+	
 	public function initCountry(){
-		//echo $this->_country;
 		$this->_countrySelect = Yii::$service->helper->country->getAllCountryOptions('','',$this->_country);
-		//var_dump($this->_countrySelect );
 		
 	}
 	
@@ -74,7 +180,7 @@ class Index {
 	}
 	
 	
-	
+	/*
 	public function initCustomerInfo(){
 		if(!Yii::$app->user->isGuest){
 			$identity = Yii::$app->user->identity;
@@ -83,21 +189,8 @@ class Index {
 			$this->_custom_info['last_name'] = $identity['lastname'];
 		}
 	}
+	*/
 	
-	public function initAddress(){
-		$cart = Yii::$service->cart->quote->getCart();
-		$address_id = $cart['customer_address_id'];
-		
-		if($address_id){
-			$this->_address_id = $address_id;
-			$this->_address_view_file = 'checkout/onepage/index/address_select.php';
-			$this->_address_list = Yii::$service->customer->address->currentAddressList();
-			
-		}else{
-			$this->_address_view_file = 'checkout/onepage/index/address.php';
-		}
-		
-	}
 	
 	
 	public function getCartInfo(){
@@ -159,15 +252,23 @@ class Index {
 	
 	
 	
-	public function getShippings(){
-		$country = Yii::$service->helper->country->getDefaultCountry();
+	
+	public function getShippings($current_shipping_method = ''){
+		$country = $this->_country;
+		if(!$this->_state){
+			$region = '*';
+		}else{
+			$region = $this->_state;
+		}
 		$cartInfo = Yii::$service->cart->quoteItem->getCartProductInfo();
-		
+		//echo $country ;
 		$product_weight = $cartInfo['product_weight'];
 		# 传递当前的货运方式，这个需要从cart中选取，
 		# 如果cart中没有shipping_method，那么该值为空
-		$current_shipping_method = '';
-		$region='*';
+		if(!$current_shipping_method){
+			$cart = Yii::$service->cart->quote->getCart();
+			$current_shipping_method = isset($cart['shipping_method']) ? $cart['shipping_method'] : '';
+		}
 		$shippingArr = $this->getShippingArr($product_weight,$current_shipping_method,$country,$region);
 		return $shippingArr ;
 	}
@@ -246,4 +347,76 @@ class Index {
 		}
 		return $arr;
 	}
+	
+	# ajax 更新部分
+	public function ajaxUpdateOrder(){
+		$country 			= Yii::$app->request->get('country');
+		$shipping_method 	= Yii::$app->request->get('shipping_method');
+		$address_id 		= Yii::$app->request->get('address_id');
+		$state 				= Yii::$app->request->get('state');
+		if($address_id){
+			$this->_address_id = $address_id;
+			$addressModel = Yii::$service->customer->address->getByPrimaryKey($this->_address_id);
+			if($addressModel['country']){
+				$country = $addressModel['country'];
+				$this->_country = $addressModel['country'];
+			}
+			if($addressModel['state']){
+				$state = $addressModel['state'];
+				$this->_state = $addressModel['state'];
+			}
+		}else if($country){
+			$this->_country = $country;
+			if(!$state){
+				$state = '*';
+			}
+			$this->_state = $state;
+		}
+		if($this->_country && $this->_state){
+			$shippings = $this->getShippings($shipping_method);
+			$payments  = $this->getPayment();
+			
+			$shippingView = [
+				'view'	=> 'checkout/onepage/index/shipping.php'
+			];
+			$shippingParam = [
+				'shippings' => $shippings,
+			];
+			$shippingHtml = Yii::$service->page->widget->render($shippingView,$shippingParam);
+			
+			# 先通过item计算出来重量
+			$quoteItem = Yii::$service->cart->quoteItem->getCartProductInfo();
+			$product_weight = $quoteItem['product_weight'];
+			# 得到运费
+			$shippingCost 	= Yii::$service->shipping->getShippingCostWithSymbols($shipping_method,$product_weight,$country,$state);
+			
+			$shipping_cost  = 0;
+			if(isset($shippingCost['currentCost'])){
+				$shipping_cost = $shippingCost['currentCost'];
+			}
+			# 设置cart的运费部分。
+			Yii::$service->cart->quote->setShippingCost($shipping_cost);
+			# 得到当前货币
+			$currency_info = Yii::$service->page->currency->getCurrencyInfo();
+			$reviewOrderView = [
+				'view'	=> 'checkout/onepage/index/review_order.php'
+			];
+			$cart_info 		= $this->getCartInfo();
+			$reviewOrderParam = [
+				'cart_info' => $cart_info,
+				'currency_info' => $currency_info,
+			];
+			$reviewOrderHtml = Yii::$service->page->widget->render($reviewOrderView,$reviewOrderParam); 
+			
+			echo json_encode([
+				'status' 		=> 'success',
+				'shippingHtml' 	=> $shippingHtml,
+				'reviewOrderHtml' 	=> $reviewOrderHtml,
+			]);	
+			exit;			
+		}
+	}
+	
+	
+	
 }
