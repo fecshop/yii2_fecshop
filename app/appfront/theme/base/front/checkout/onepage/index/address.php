@@ -98,11 +98,11 @@
 					<li style="display: none;" id="onestepcheckout-li-password">
 						<div class="input-box input-password">
 							<label for="billing:customer_password">Password</label><br>
-							<input name="billing[customer_password]" id="billing:customer_password" title="Password" value="" class="validate-password input-text" type="password">
+							<input name="billing[customer_password]" id="billing:customer_password" title="Password" value="" class="validate-password input-text customer_password" type="password">
 						</div>
 						<div class="input-box input-password">
 							<label for="billing:confirm_password">Confirm password</label><br>
-							<input name="billing[confirm_password]" title="Confirm Password" id="billing:confirm_password" value="" class="validate-password input-text" type="password">
+							<input name="billing[confirm_password]" title="Confirm Password" id="billing:confirm_password" value="" class="validate-password input-text customer_confirm_password" type="password">
 						</div>
 					</li>
 					<?php }  ?>

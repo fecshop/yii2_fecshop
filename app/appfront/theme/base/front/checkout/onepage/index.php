@@ -291,16 +291,20 @@
 				}
 				// password 是否长度大于6，并且两个密码一致
 				if($("#id_create_account").is(':checked')){
-					new_user_pass = $("#billing:customer_password").val();
-					new_user_pass_cm = $("#billing:billing:confirm_password").val();
+					
+					new_user_pass = $(".customer_password").val();
+					new_user_pass_cm = $(".customer_confirm_password").val();
+					//alert(new_user_pass);
+					//alert(new_user_pass.length);
+					//alert(new_user_pass_cm);
 					if(new_user_pass.length < 6){
-						$("#billing:customer_password").after('<div style=""  class="validation-advice">Password length must be greater than or equal to 6</div>');
+						$(".customer_password").after('<div style=""  class="validation-advice">Password length must be greater than or equal to 6</div>');
 						i++;
-					}else if(new_user_pass.length < 6){
-						$("#billing:billing:confirm_password").after('<div style=""  class="validation-advice">Password length must be greater than or equal to 6</div>');
+					}else if(new_user_pass_cm.length < 6){
+						$(".customer_confirm_password").after('<div style=""  class="validation-advice">Password length must be greater than or equal to 6</div>');
 						i++;
-					}else if(new_user_pass != new_user_pass){
-						$("#billing:billing:confirm_password").after('<div style=""  class="validation-advice">The passwords are inconsistent</div>');
+					}else if(new_user_pass != new_user_pass_cm){
+						$(".customer_confirm_password").after('<div style=""  class="validation-advice">The passwords are inconsistent</div>');
 						i++; 
 					}  
 				}
