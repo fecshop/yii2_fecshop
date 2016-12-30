@@ -54,7 +54,6 @@ class CartController extends AppfrontController
 				exit;
 			}
 		}
-		exit;
 	}
 	
 	/**

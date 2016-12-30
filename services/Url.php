@@ -366,7 +366,6 @@ class Url extends Service
 			$url = $this->getUrl($urlKey,$params);
 			//session_commit();
 			header("Location: $url");
-			//exit;
 		}
 	}
 	

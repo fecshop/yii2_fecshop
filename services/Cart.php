@@ -52,6 +52,7 @@ class Cart extends Service
 		} catch (Exception $e) {
 			$innerTransaction->rollBack();
 		}
+		
 		return true;
 		
 	}
