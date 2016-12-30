@@ -7,15 +7,15 @@
 			<?php 	foreach($shippings as $shipping){ ?>
 			
 			<div class="shippingmethods">
-				<dd class="flatrate"><?= $shipping['label'] ?></dd>
-				<dt>
+				<div class="flatrate"><?= $shipping['label'] ?></div>
+				<div>
 					<input data-role="none" <?= $shipping['check'] ?> type="radio" id="s_method_flatrate_flatrate<?= $shipping['shipping_i'] ?>" value="<?= $shipping['method'] ?>" class="validate-one-required-by-name" name="shipping_method">
 					<label for="s_method_flatrate_flatrate<?= $shipping['shipping_i'] ?>"><?= $shipping['name'] ?>
 						<strong>                 
 							<span class="price"><?= $shipping['cost'] ?></span>
 						</strong>
 					</label>
-				</dt>
+				</div>
 			</div>
 			<?php 	} ?>
 			<?php } ?>

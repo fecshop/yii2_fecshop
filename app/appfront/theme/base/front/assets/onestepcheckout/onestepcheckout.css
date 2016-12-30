@@ -348,7 +348,7 @@ fieldset.group-select {
     padding: 4px 0;
 }
 
-.shipment-methods dd {
+.shipment-methods .flatrate{
        font-size: 12px;
     font-weight: bold;
     margin: 15px 0 5px;
