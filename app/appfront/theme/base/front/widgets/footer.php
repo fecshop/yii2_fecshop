@@ -39,7 +39,7 @@
 					</p>
 					<form action="<?=  Yii::$service->url->getUrl('customer/newsletter') ?>" method="get" id="newsletter-validate-detail">
 						<div class="newsletter-container">
-							<input type="text" name="email" id="newsletter" placeholder="<?= Yii::$service->page->translate->__('Enter your email adress'); ?>..." title="Sign up for our newsletter" class="input-text form-control required-entry validate-email input-block-level">
+							<input type="text" name="email" id="newsletter" placeholder="<?= Yii::$service->page->translate->__('Enter your email adress'); ?>..." title="Sign up for our newsletter" class="input-text form-control  validate-email input-block-level">
 							<button type="submit" title="Subscribe" class="newsletter-button">
 							JOIN</button>
 						</div>

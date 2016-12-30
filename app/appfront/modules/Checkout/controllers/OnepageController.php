@@ -17,9 +17,10 @@ use fecshop\app\appfront\modules\AppfrontController;
  */
 class OnepageController extends AppfrontController
 {
-    public $enableCsrfValidation = false;
+    public $enableCsrfValidation = true;
 	
 	public function actionIndex(){
+		var_dump(Yii::$app->request->post());
 		$data = $this->getBlock()->getLastData();
 		return $this->render($this->action->id,$data);
 		

@@ -77,8 +77,5 @@ use fecshop\app\appfront\helper\Format;
 			</tr>						</tbody>
 	</table>
 </div>
-<div class="onestepcheckout-place-order">
-	<span><img src="http://www.intosmile.com/skin/default/images/scroll/waitPage.gif"></span>
-	<a class="large orange onestepcheckout-button" href="javascript:void(0)" id="onestepcheckout-place-order">Place order now</a>
-</div>
+
 <?php  } ?>

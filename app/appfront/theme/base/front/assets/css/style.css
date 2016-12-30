@@ -2644,10 +2644,16 @@ p.onestepcheckout-login-link {
 	
 }
 
-.onestepcheckout-place-order img{display:none;}
-
+.onestepcheckout-place-order-loading {display:none;}
 .onestepcheckout-summary ul li{padding:0}
 .onestepcheckout-summary ul{margin:4px 0 0;}
+
+.onestepcheckout-place-order.visit #onestepcheckout-place-order{
+	background-color:#ccc;
+}
+.onestepcheckout-place-order.visit  .onestepcheckout-place-order-loading {
+	display:block;
+}
 
 #billing_address .address_list {
     width: 200px;

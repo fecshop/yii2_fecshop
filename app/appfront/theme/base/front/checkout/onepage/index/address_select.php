@@ -95,8 +95,6 @@
 				</ul>							
 			</div>
 		</li>
-		<li>
-			<input value="1" id="billing:use_for_shipping_yes" name="billing[use_for_shipping]" type="hidden">
-		</li>
+		
 	</ul>
 </div>

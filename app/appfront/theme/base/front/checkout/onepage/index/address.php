@@ -58,6 +58,7 @@
 									</select>
 							</div>
 					</li>
+					
 					<li class="clearfix">
 						<div class="input-box input-city">
 							<label for="billing:city">City <span class="required">*</span></label>
@@ -65,15 +66,19 @@
 						</div>
 					</li>
 					<li class="clearfix">
-						<div class="input-box input-zip">
-							<label for="billing:zip">Zip Code <span class="required">*</span></label>
-							<input value="" class="validate-zip-international required-entry input-text" id="billing:zip" name="billing[zip]" title="Zip Code" type="text">
-						</div>
-						<div class="input-box input-state"><label for="billing:state" class="required">State <span class="required">*</span></label>
+						
+						<div class="input-box input-state"><label for="billing:state" class="required">State<span class="required">*</span></label>
 							<div class="state_html">
 							<?=  $state_html ?>
 							</div>
 						</div>
+					</li>
+					<li class="clearfix">
+						<div class="input-box input-zip">
+							<label for="billing:zip">Zip Code <span class="required">*</span></label>
+							<input value="" class="validate-zip-international required-entry input-text" id="billing:zip" name="billing[zip]" title="Zip Code" type="text">
+						</div>
+						
 					</li>
 					<?php if(!Yii::$app->user->isGuest){  ?>
 					<li class="control">
@@ -104,8 +109,6 @@
 				</ul>							
 			</div>
 		</li>
-		<li>
-			<input value="1" id="billing:use_for_shipping_yes" name="billing[use_for_shipping]" type="hidden">
-		</li>
+		
 	</ul>
 </div>

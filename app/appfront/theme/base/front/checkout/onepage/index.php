@@ -1,12 +1,7 @@
 <div class="main container one-column">
 	<div class="col-main">
-	
-		<form class="coupon_code_form" action="http://www.intosmile.com/checkout/onepage/coupon" method="post">
-			<input class="thiscsrf" value="dTJOYlNrbGktV3s0PgxYBSBELw5hCRoYO1EdGzwuQSA8ShEyKwInXQ==" name="_csrf" type="hidden">	<input name="coupon_code" class="coupon_code" type="hidden">
-		</form>
-			
 		<form action="<?= Yii::$service->url->getUrl('checkout/onepage'); ?>" method="post" id="onestepcheckout-form">
-			<input class="thiscsrf" value="dTJOYlNrbGktV3s0PgxYBSBELw5hCRoYO1EdGzwuQSA8ShEyKwInXQ==" name="_csrf" type="hidden">	
+			<?= \fec\helpers\CRequest::getCsrfInputHtml(); ?>
 			<fieldset style="margin: 0;" class="group-select">
 				<h1 class="onestepcheckout-title">Checkout</h1>
 				<p class="onestepcheckout-description">Welcome to the checkout. Fill in the fields below to complete your purchase!</p>
@@ -89,7 +84,12 @@
 								];
 							?>
 							<?= Yii::$service->page->widget->render($reviewOrderView,$reviewOrderParam); ?>
-							</div>
+							
+						</div>
+						<div class="onestepcheckout-place-order">
+							<a class="large orange onestepcheckout-button" href="javascript:void(0)" id="onestepcheckout-place-order">Place order now</a>
+							<div class="onestepcheckout-place-order-loading"><img src="<?= Yii::$service->image->getImgUrl('images/opc-ajax-loader.gif'); ?>">&nbsp;&nbsp;Please wait, processing your order...</div>
+						</div>
 					</div>
 					<div style="clear: both;">&nbsp;</div>
 				</div>
@@ -240,28 +240,79 @@
 				$("#onestepcheckout-li-password input").removeClass("required-entry");
 			}
 		});
-		
+		//###########################
 		//下单(这个部分未完成。)
 		$("#onestepcheckout-place-order").click(function(){
 			$(".validation-advice").remove();
 			i = 0;
+			j = 0;
 			address_list = $(".address_list").val();
+			// shipping
+			shipment_method = $(".onestepcheckout-shipping-method-block input[name='shipping_method']:checked").val();
+			//alert(shipment_method);
+			if(!shipment_method){
+				$(".shipment-methods").after('<div style=""  class="validation-advice">This is a required field.</div>');
+				j = 1;
+			}
+			//alert(j);
+			//payment  
+			payment_method = $("#checkout-payment-method-load input[name='payment_method']:checked").val();
+			//alert(shipment_method);
+			if(!payment_method){
+				$(".checkout-payment-method-load").after('<div style=""  class="validation-advice">This is a required field.</div>');
+				j = 1;
+			}
+			
+			
+			
 			if(address_list){
-				$(".onestepcheckout-place-order span").show();
-				$("#onestepcheckout-form").submit();
+				if(!j){
+					$(".onestepcheckout-place-order").addClass('visit');
+				
+					$("#onestepcheckout-form").submit();
+				}
 			}else{
+				//alert(11);
+				//alert(j);
 				$("#onestepcheckout-form .required-entry").each(function(){
 					value = $(this).val();
 					if(!value){
+						//alert(this);
+						//alert($(this).attr('name'));
 						i++;
 						$(this).after('<div style=""  class="validation-advice">This is a required field.</div>');
 					}
 				});
-				if(!i){
-					$(".onestepcheckout-place-order span").show();
+				//email  format validate
+				user_email = $("#billing_address .validate-email").val();
+				if(user_email && !validateEmail(user_email)){
+					$("#billing_address .validate-email").after('<div style=""  class="validation-advice">E-mail format is incorrect.</div>');
+					i++;
+				}
+				// password 是否长度大于6，并且两个密码一致
+				if($("#id_create_account").is(':checked')){
+					new_user_pass = $("#billing:customer_password").val();
+					new_user_pass_cm = $("#billing:billing:confirm_password").val();
+					if(new_user_pass.length < 6){
+						$("#billing:customer_password").after('<div style=""  class="validation-advice">Password length must be greater than or equal to 6</div>');
+						i++;
+					}else if(new_user_pass.length < 6){
+						$("#billing:billing:confirm_password").after('<div style=""  class="validation-advice">Password length must be greater than or equal to 6</div>');
+						i++;
+					}else if(new_user_pass != new_user_pass){
+						$("#billing:billing:confirm_password").after('<div style=""  class="validation-advice">The passwords are inconsistent</div>');
+						i++; 
+					}  
+				}
+				
+				//alert(222);
+				if(!i && !j){
+					//alert(333);
+					$(".onestepcheckout-place-order").addClass('visit');
 					$("#onestepcheckout-form").submit();
 				}
 			}
+			
 		});
 		
 		//登录用户切换地址列表
