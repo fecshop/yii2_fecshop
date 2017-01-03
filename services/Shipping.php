@@ -25,12 +25,24 @@ class Shipping extends Service
 	 * @property $method | String ，shipping_method key
 	 * @return Array ，得到配置
 	 */
-	protected  function actionGetShippingMethod($method=''){
+	protected  function actionGetShippingMethod($shipping_method=''){
 		$allmethod = $this->shippingConfig;
-		if($method){
-			return $allmethod[$method];
+		if($shipping_method){
+			return $allmethod[$shipping_method];
 		}else{
 			return $allmethod;
+		}
+	}
+	/**
+	 * @property $shipping_method | String
+	 * @return boolean 发货方式
+	 */
+	protected function actionIfIsCorrect($shipping_method){
+		$allmethod = $this->shippingConfig;
+		if(isset($allmethod[$shipping_method]) && !empty($allmethod[$shipping_method])){
+			return true;
+		}else{
+			return false;
 		}
 	}
 	/**

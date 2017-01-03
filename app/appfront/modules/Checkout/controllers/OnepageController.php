@@ -21,8 +21,19 @@ class OnepageController extends AppfrontController
 	
 	public function actionIndex(){
 		var_dump(Yii::$app->request->post());
-		$data = $this->getBlock()->getLastData();
-		return $this->render($this->action->id,$data);
+		/*
+		$_csrf = Yii::$app->request->post('_csrf');
+		if($_csrf){
+			$status = $this->getBlock('placeorder')->getLastData();
+			//if(!$status){
+			//	$data = $this->getBlock()->getLastData();
+			//	return $this->render($this->action->id,$data);
+			//}
+		}else{
+		*/
+			$data = $this->getBlock()->getLastData();
+			return $this->render($this->action->id,$data);
+		//}
 		
 	}
 	

@@ -43,6 +43,19 @@ class Address extends Service
 		}
 	}
 	
+	protected function actionGetAddressByIdAndCustomerId($address_id,$customer_id){
+		$primaryKey = $this->getPrimaryKey();
+		$one = MyAddress::findOne([
+			$primaryKey 	=> $address_id,
+			'customer_id' 	=> $customer_id,
+		]);
+		
+		if($one[$primaryKey]){
+			return $one;
+		}else{
+			return false;
+		}
+	}
 	
 	
 	/**
