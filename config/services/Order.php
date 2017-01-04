@@ -11,7 +11,7 @@ return [
 		'paymentStatus' => [
 			'pending' => 'pending', #未付款订单状态
 			'processing' => 'processing' # 已付款订单状态
-		]
+		],
 		
 		'requiredAddressAttr' => [ # 必填的订单字段。
 			'first_name',
