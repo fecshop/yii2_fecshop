@@ -23,6 +23,11 @@ class Order extends Service
 	public $requiredAddressAttr; # 必填的订单字段。
 	public $paymentStatus; # 订单支付状态。
 	
+	/**
+	 * @property $billing | Array
+	 * @return boolean
+	 * 检查地址的必填。
+	 */
 	protected function actionCheckRequiredAddressAttr($billing){
 		//$this->requiredAddressAttr;
 		if(is_array($this->requiredAddressAttr) && !empty($this->requiredAddressAttr)){

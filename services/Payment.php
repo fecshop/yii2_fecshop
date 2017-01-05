@@ -52,6 +52,18 @@ class Payment extends Service
 		return $arr;
 	}
 	
-	
+	/**
+	 * @property $shipping_method | String
+	 * @return boolean 发货方式
+	 */
+	protected function actionIfIsCorrectStandard($payment_method){
+		$paymentConfig = $this->paymentConfig;
+		$standard = isset($paymentConfig['standard']) ? $paymentConfig['standard'] : '';
+		if(isset($standard[$payment_method]) && !empty($standard[$payment_method])){
+			return true;
+		}else{
+			return false;
+		}
+	}
 	
 }

@@ -148,7 +148,6 @@ class Cart extends Service
 	protected function actionMergeCartAfterUserLogin(){
 		Yii::$service->cart->quote->mergeCartAfterUserLogin();
 		
-		
 	}
 	
 	
@@ -158,33 +157,13 @@ class Cart extends Service
 	 * @property $address|Array
 	 * save cart address.like,,  customer name,tel,email,address ,,etc,,.
 	 */
-	protected function actionSaveCartAddress($address){
-		
-		
+	protected function actionUpdateGuestCart($address,$shipping_method,$payment_method){
+		Yii::$service->cart->quote->updateGuestCart($address,$shipping_method,$payment_method);
 	}
 	
-	/**
-	 * @property $shippingId | Int 
-	 * 1.check if $shippingId is effective
-	 * 2.add or change shipping to cart.
-	 * 3.change shipping cost after change
-	 * 
-	 */
-	protected function actionSaveCartShipping($shippingId){
-		
-		
+	protected function actionUpdateLoginCart($address_id,$shipping_method,$payment_method){
+		Yii::$service->cart->quote->updateLoginCart($address_id,$shipping_method,$payment_method);
 	}
-	
-	/**
-	 * @property $payment | Int 
-	 * 1.check if $paymentId is effective
-	 * 2.add or change payment to cart.
-	 */
-	protected function actionSaveCartPayment($paymentId){
-		
-		
-	}
-	
 	
 	
 	/**

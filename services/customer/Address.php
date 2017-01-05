@@ -151,7 +151,24 @@ class Address extends Service
 	
 	/**
 	 * @property $one|Array , save one data .
-	 * @return  Int  保存coupon成功后，返回保存的id。    
+	 * @return  Int  保存coupon成功后，返回保存的id。
+	 * example $one = [
+		'first_name' => '',
+		'last_name' => '',
+		'email' => '',
+		'company' => '',
+		'telephone' => '',
+		'fax' => '',
+		'street1' => '',
+		'street2' => '',
+		'city' => '',
+		'state' => '',
+		'zip' => '',
+		'country' => '',
+		'customer_id' => '',
+		'is_default' => '',
+		
+	 ];
 	 */
 	protected function actionSave($one){
 		$time = time();

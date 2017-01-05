@@ -57,6 +57,67 @@ class Quote extends Service
 		return $this->_cart_id;
 	}
 	
+	
+	/**
+	 * @property $address|Array 地址信息数组
+	 * @property $shipping_method | String 货运方式
+	 * @property $payment_method | String 支付方式
+	 * @property boolean
+	 * 更新游客购物车信息
+	 */
+	public function updateGuestCart($address,$shipping_method,$payment_method);
+		$cart = $this->getCurrentCart();
+		if($cart){
+			$cart->customer_firstname 		= $address['first_name'];
+			$cart->customer_lastname 		= $address['last_name'];
+			$cart->customer_email 			= $address['email'];
+			$cart->customer_telephone 		= $address['telephone'];
+			$cart->customer_address_street1 = $address['street1'];
+			$cart->customer_address_street2 = $address['street2'];
+			$cart->customer_address_country = $address['country'];
+			$cart->customer_address_city 	= $address['city'];
+			$cart->customer_address_state 	= $address['state'];
+			$cart->customer_address_zip 	= $address['zip'];
+			
+			$cart->shipping_method 	= $shipping_method;
+			$cart->payment_method 	= $payment_method;
+			return $cart->save();
+		}
+	}
+	
+	/**
+	 * @property $address_id | int 用户customer address id
+	 * @property $shipping_method 货运方式
+	 * @property $payment_method  支付方式
+	 * @property boolean
+	 * 更新登录用户的cart信息
+	 */
+	public function updateLoginCart($address_id,$shipping_method,$payment_method);
+		$cart = $this->getCurrentCart();
+		if($cart && $address_id){
+			$cart->customer_address_id 		= $address_id;
+			$cart->shipping_method 	= $shipping_method;
+			$cart->payment_method 	= $payment_method;
+			return $cart->save();
+		}
+	}
+	/**
+	 * @return Object
+	 * 得到当前的cart
+	 */
+	public function getCurrentCart(){
+		if(!$this->_cart){
+			$cart_id = $this->getCartId();
+			if($cart_id){
+				$one = MyCart::findOne(['cart_id' => $cart_id]);
+				if($one['cart_id']){
+					$this->_cart = $one;
+				}
+			}
+		}
+		return $this->_cart;
+	}
+	
 	#
 	public function getCart(){
 		if(!$this->_cart){
