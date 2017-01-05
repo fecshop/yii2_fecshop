@@ -9,6 +9,7 @@
 return [
 	'cms' => [
 		'class' => '\fecshop\app\appfront\modules\Cms\Module',
+		/*
 		'params'=> [
 			'home_title' 			=> [
 				'home_title_en' => 'Fecshop Home Page En',
@@ -38,5 +39,6 @@ return [
 			
 		
 		],
+		*/
 	],
 ];
