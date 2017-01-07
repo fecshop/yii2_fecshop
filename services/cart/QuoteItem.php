@@ -124,10 +124,17 @@ class QuoteItem extends Service
 						if($product_one['_id']){
 							$qty = $one['qty'];
 							$custom_option_sku = $one['custom_option_sku'];
-							$product_price = Yii::$service->product->price->getCartPriceByProductId($product_id,$qty,$custom_option_sku);
-							$product_price = isset($product_price['value']) ? $product_price['value'] : 0;
+							$product_price_arr = Yii::$service->product->price->getCartPriceByProductId($product_id,$qty,$custom_option_sku,2);
+							$curr_product_price= isset($product_price_arr['curr_price']) ? $product_price_arr['curr_price'] : 0;
+							$base_product_price= isset($product_price_arr['base_price']) ? $product_price_arr['base_price'] : 0;
+							$product_price = isset($curr_product_price['value']) ? $curr_product_price['value'] : 0;
+							
 							$product_row_price = $product_price * $qty;
 							$product_total += $product_row_price;
+							
+							$base_product_row_price = $base_product_price * $qty;
+							$base_product_total += $base_product_row_price;
+							
 							$p_wt = $product_one['weight'] * $qty;
 							$product_weight += $p_wt;
 							$productSpuOptions = $this->getProductSpuOptions($product_one);
@@ -136,8 +143,13 @@ class QuoteItem extends Service
 								'product_id' 		=> $product_id ,
 								'qty' 				=> $qty ,
 								'custom_option_sku' => $custom_option_sku ,
+								
 								'product_price' 	=> $product_price ,
 								'product_row_price' => $product_row_price ,
+								
+								'base_product_price' 	=> $base_product_price ,
+								'base_product_row_price' => $base_product_row_price ,
+								
 								'product_name'		=> $product_one['name'],
 								'product_weight'	=> $p_wt,
 								'product_url'		=> $product_one['url_key'],
@@ -150,6 +162,7 @@ class QuoteItem extends Service
 					$this->_cart_product_info[$cart_id] = [
 						'products' 		=> $products,
 						'product_total' => $product_total,
+						'base_product_total' => $base_product_total,
 						'product_weight'=> $product_weight,
 					];
 				}

@@ -298,17 +298,35 @@ class Quote extends Service
 			$product_weight = $cart_product_info['product_weight'];
 			$products = $cart_product_info['products'];
 			$product_total = $cart_product_info['product_total'];
-			if($products && $product_total){
+			$base_product_total = $cart_product_info['base_product_total'];
+			if($products && $product_total){ 
 				$shippingCost   = $this->getShippingCost();
-				$couponCost		= $this->getCouponCost($product_total,$coupon_code);
-				$grand_total	= $product_total + $shippingCost - $couponCost;
+				$currShippingCost = $shippingCost['currCost'];
+				$baseShippingCost = $shippingCost['baseCost'];
+				$couponCost		= $this->getCouponCost([$base_product_total,$product_total],$coupon_code);
+					
+				$baseDiscountCost = $couponCost['currCost'];
+				$currDiscountCost = $couponCost['baseCost'];
 				
+				$curr_grand_total	= $product_total + $currShippingCost - $currDiscountCost;
+				$base_grand_total	= $base_product_total + $baseShippingCost - $baseDiscountCost;
+				
+	 
 				return [
+					'store'			=> $cart['store'],
+					'items_count'	=> $cart['items_count'],
 					'coupon_code'	=> $coupon_code,
-					'grand_total' 	=> $grand_total,
-					'shipping_cost' => $shippingCost,
-					'coupon_cost' 	=> $couponCost,
+					'grand_total' 	=> $base_grand_total,
+					'shipping_cost' => $currShippingCost,
+					'coupon_cost' 	=> $currDiscountCost,
 					'product_total' => $product_total,
+					
+					'base_grand_total' 		=> $base_grand_total,
+					'base_shipping_cost' 	=> $baseShippingCost,
+					'base_coupon_cost' 		=> $baseDiscountCost,
+					'base_product_total' 	=> $base_product_total,
+					
+					
 					'products' 		=> $products,
 					'product_weight'=> $product_weight,
 				];
@@ -316,6 +334,15 @@ class Quote extends Service
 			
 		}
 	}
+	
+	/**
+	 * @property $shippingCost | Array ,example:
+	 * 	[
+	 *		'currCost'   => 33.22,
+	 *		'baseCost'	=> 26.44,
+	 *	];
+	 */
+	 
 	public function setShippingCost($shippingCost){
 		$this->_shipping_cost = $shippingCost;
 	}
@@ -323,18 +350,25 @@ class Quote extends Service
 	public function getShippingCost($shipping_method='',$weight='',$country='',$region='*'){
 		if(!$this->_shipping_cost){
 			$shippingCost = Yii::$service->shipping->getShippingCostWithSymbols($shipping_method,$weight,$country,$region);
-			if(isset($shippingCost['currentCost'])){
-				$this->_shipping_cost = $shippingCost['currentCost'];
-			}
+			$this->_shipping_cost = $shippingCost
+			//if(isset($shippingCost['currentCost'])){
+			//	$this->_shipping_cost = $shippingCost['currentCost'];
+			//}
 		}
 		return $this->_shipping_cost;
 	}
 	/**
 	 * 得到优惠券的折扣金额
+	 * @return Array  , example:
+	 * [
+	 *	'baseCost' => $base_discount_cost,
+	 *	'currCost' => $curr_discount_cost 
+	 * ]
 	 */
 	public function getCouponCost($product_total,$coupon_code){
-		$dc_price = Yii::$service->page->currency->getDefaultCurrencyPrice($product_total);
-		$dc_discount = Yii::$service->cart->coupon->getDiscount($coupon_code,$dc_price);
+		list($base_product_total,$product_total) = $product_total;
+		//$dc_price = Yii::$service->page->currency->getDefaultCurrencyPrice($product_total);
+		$dc_discount = Yii::$service->cart->coupon->getDiscount($coupon_code,$base_product_total);
 		return $dc_discount;
 	}
 	

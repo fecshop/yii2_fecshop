@@ -119,14 +119,14 @@ class Shipping extends Service
 				//echo $usdCost;
 				$currentCost = Yii::$service->page->currency->getCurrentCurrencyPrice($usdCost);
 				return [
-					'currentCost'   => $currentCost,
-					'defaultCost'	=> $usdCost,
+					'currCost'   => $currentCost,
+					'baseCost'	=> $usdCost,
 				];
 			# $cost = 0 代表为free shipping方式
 			}else if($cost == 0){
 				return [
-					'currentCost'  => number_format(0,2) ,
-					'defaultCost'	=> 0,
+					'currCost'  => number_format(0,2) ,
+					'baseCost'	=> 0,
 				];
 			}
 		}

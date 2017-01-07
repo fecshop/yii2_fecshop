@@ -168,8 +168,32 @@ class Order extends Service
 		return true;
 	}
 	
-	
-	
+	/**
+	 * generate order by current Cart.
+	 */
+	protected function actionGenerateOrderByCart($address,$shipping_method,$payment_method){
+		$cart = Yii::$service->cart->quote->getCurrentCart();
+		if(!$cart){
+			Yii::$service->helper->errors->add('current cart is empty');
+		}
+		$currency_info = Yii::$service->page->currency->getCurrencyInfo();
+		$currency_code = $currency_info['code'];
+		$currency_rate = $currency_info['rate'];
+		$cartInfo = Yii::$service->cart->getCartInfo();
+		$myOrder = new MyOrder;
+		$paymentStatus = $this->paymentStatus;
+		$myOrder['order_status'] 	= $paymentStatus['pending'];
+		$myOrder['store'] 			= $cartInfo['store'];
+		$myOrder['created_at'] 		= time();
+		$myOrder['update_at'] 		= time();
+		$myOrder['items_count']		= $cartInfo['items_count'];
+		$myOrder['total_weight']	= $cartInfo['product_weight'];
+		$myOrder['order_currency_code']		= $currency_code;
+		$myOrder['order_to_base_rate']		= $currency_rate;
+		$myOrder['grand_total']		= $cartInfo['grand_total'];
+		
+		
+	}
 	
 	/**
 	 * get order list by customer account id.

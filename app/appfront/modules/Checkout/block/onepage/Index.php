@@ -314,7 +314,7 @@ class Index {
 				# 得到运费的金额
 				$cost = Yii::$service->shipping->getShippingCostWithSymbols($method,$weight,$country,$region);
 				//var_dump($cost);
-				$currentCurrencyCost = $cost['currentCost'];
+				$currentCurrencyCost = $cost['currCost'];
 				$symbol = Yii::$service->page->currency->getCurrentSymbol();
 				if($current_shipping_method == $method){
 					$check = ' checked="checked" ';
@@ -390,12 +390,12 @@ class Index {
 			# 得到运费
 			$shippingCost 	= Yii::$service->shipping->getShippingCostWithSymbols($shipping_method,$product_weight,$country,$state);
 			
-			$shipping_cost  = 0;
-			if(isset($shippingCost['currentCost'])){
-				$shipping_cost = $shippingCost['currentCost'];
-			}
+			//$shipping_cost  = 0;
+			//if(isset($shippingCost['currentCost'])){
+			//	$shipping_cost = $shippingCost['currentCost'];
+			//}
 			# 设置cart的运费部分。
-			Yii::$service->cart->quote->setShippingCost($shipping_cost);
+			Yii::$service->cart->quote->setShippingCost($shippingCost);
 			# 得到当前货币
 			$currency_info = Yii::$service->page->currency->getCurrencyInfo();
 			$reviewOrderView = [

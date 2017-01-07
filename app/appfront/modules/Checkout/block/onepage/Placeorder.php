@@ -13,14 +13,19 @@ class Placeorder{
 	public function getLastData(){
 		$post = Yii::$app->request->post();
 		if(is_array($post) && !empty($post)){
+			# 检查前台传递的数据的完整性
 			if($this->checkOrderInfoAndInit($post)){
+				# 如果与注册账号，则注册，登录并把地址写入到用户的address中
 				$this->guestCreateAndLoginAccountAndSaveAddress($post);
-				$this->updateGuestCart($post);
-				# 将购物车数据，生成订单。
-				
+				if(empty($this->_check_error)){
+					# 如果是游客，则更新信息到cart中存储。
+					$this->updateGuestCart($post);
+					# 将购物车数据，生成订单。
+					Yii::$service->order->generateOrderByCart($this->_billing,$this->_shipping_method,$this->_payment_method);
+				}
 			}
 		}
-		
+		//$this->_check_error
 		return [
 		
 		];

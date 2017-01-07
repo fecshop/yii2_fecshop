@@ -292,13 +292,17 @@ class Coupon extends Service
 			$discount 	= $couponModel['discount'];
 			if($conditions <= $dc_price){
 				if($type == 1){ # 百分比
-					$discount_cost = $discount/100 * $dc_price;
+					$base_discount_cost = $discount/100 * $dc_price;
 				}else if($type == 2){ # 直接折扣
-					$discount_cost = $dc_price - $discount;
+					$base_discount_cost = $dc_price - $discount;
 				}
+				$curr_discount_cost = Yii::$service->page->currency->getCurrentCurrencyPrice($base_discount_cost);
 			}
 		}
-		return $discount_cost;
+		return [
+			'baseCost' => $base_discount_cost,
+			'currCost' => $curr_discount_cost
+		];
 	}
 	
 	/**

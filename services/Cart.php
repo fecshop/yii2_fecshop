@@ -136,10 +136,10 @@ class Cart extends Service
 	 * @property $coupon_code 优惠卷码
 	 * @return boolean 优惠券使用成功则返回true，失败则返回false
 	 */
-	protected function actionAddCoupon($coupon_code){
+	//protected function actionAddCoupon($coupon_code){
 		
 		
-	}
+	//}
 	
 	
 	/**
@@ -173,13 +173,7 @@ class Cart extends Service
 		Yii::$service->cart->quote->clearCart();
 	}
 	
-	/**
-	 * generate order by current Cart.
-	 */
-	protected function actionGenerateOrderByCart(){
-		
-		
-	}
+	
 	
 	/**
 	 * add cart items by pending order Id

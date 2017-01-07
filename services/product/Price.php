@@ -82,9 +82,10 @@ class Price extends Service
 	 * @property $productId | String  
 	 * @property $qty | Int 
 	 * @property $custom_option_sku | String 
+	 @property $format | Int , 返回的价格的格式，0代表为美元格式，1代表为当前货币格式，2代表美元和当前货币格式都有
 	 * 通过产品以及个数，custonOptionSku 得到产品的最终价格
 	 */
-	protected function actionGetCartPriceByProductId($productId,$qty,$custom_option_sku){
+	protected function actionGetCartPriceByProductId($productId,$qty,$custom_option_sku,$format = 1){
 		$product = Yii::$service->product->getByPrimaryKey($productId);
 		$custom_option_price = 0;
 		$status = isset($product['status']) ? $product['status'] : 0;
@@ -106,18 +107,22 @@ class Price extends Service
 				$price			, $special_price,
 				$special_from	, $special_to,
 				$qty			, $custom_option_price,
-				$tier_price
+				$tier_price 	, $format
 			);
 		}
 		
 	}
 	
 	# 产品加入购物车，得到相应个数的最终价格。
+	/**
+	 *
+	 * @property $format | Int , 返回的价格的格式，0代表为美元格式，1代表为当前货币格式，2代表美元和当前货币格式都有
+	 */
 	protected function actionGetCartPrice(
 		$price			, $special_price,
 		$special_from	, $special_to,
 		$qty=''			, $custom_option_price,
-		$tier_price=[]	, $format = 1
+		$tier_price=[]	, $format = 1 
 	){
 		if($this->specialPriceisActive($price,$special_price,$special_from,$special_to)){
 			$return_price = $special_price;
@@ -130,9 +135,15 @@ class Price extends Service
 			
 		}
 		$return_price = $return_price + $custom_option_price;
-		if($format){
+		if($format == 1){
 			$format_price = $this->formatPrice($return_price);
 			return $format_price   ;
+		}else if($format == 2){
+			$format_price = $this->formatPrice($return_price);
+			return [
+				'base_price' => $return_price,
+				'curr_price' => $format_price,
+			];
 		}else{
 			return $return_price;
 		}
