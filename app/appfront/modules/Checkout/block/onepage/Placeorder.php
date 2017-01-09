@@ -20,6 +20,10 @@ class Placeorder{
 				if(empty($this->_check_error)){
 					# 如果是游客，则更新信息到cart中存储。
 					$this->updateGuestCart($post);
+					# 设置checkout type
+					$serviceOrder = Yii::$service->order;
+					$checkout_type = $serviceOrder::CHECKOUT_TYPE_STANDARD;
+					$serviceOrder->setCheckoutType($checkout_type);
 					# 将购物车数据，生成订单。
 					Yii::$service->order->generateOrderByCart($this->_billing,$this->_shipping_method,$this->_payment_method);
 				}
@@ -151,7 +155,11 @@ class Placeorder{
 							$this->_check_error[] = Yii::$service->helper->errors->get();
 							return false;
 						}
-						$this->_billing = $address_one;
+						$arr['customer_id'] = $customer_id;
+						foreach($address_one as $k=>$v){
+							$arr[$k] = $v;
+						}
+						$this->_billing = $arr;
 					}
 				}
 			}	

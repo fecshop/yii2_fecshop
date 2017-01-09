@@ -22,7 +22,21 @@ class Order extends Service
 {
 	public $requiredAddressAttr; # 必填的订单字段。
 	public $paymentStatus; # 订单支付状态。
+	protected $checkout_type;
+	const CHECKOUT_TYPE_STANDARD = 'standard';
+	const CHECKOUT_TYPE_EXPRESS = 'express';
 	
+	protected function actionSetCheckoutType($checkout_type){
+		$arr = [self::CHECKOUT_TYPE_STANDARD,self::CHECKOUT_TYPE_EXPRESS];
+		if(in_array($checkout_type,$arr)){
+			$this->checkout_type = $checkout_type;
+			return true;
+		}
+		return false;
+	}
+	protected function actionGetCheckoutType(){
+		return $this->checkout_type;
+	}
 	/**
 	 * @property $billing | Array
 	 * @return boolean
@@ -194,7 +208,40 @@ class Order extends Service
 		$myOrder['total_weight']	= $cartInfo['product_weight'];
 		$myOrder['order_currency_code']		= $currency_code;
 		$myOrder['order_to_base_rate']		= $currency_rate;
-		$myOrder['grand_total']		= $cartInfo['grand_total'];
+		
+		$myOrder['grand_total']				= $cartInfo['grand_total'];
+		$myOrder['base_grand_total']		= $cartInfo['base_grand_total'];
+		$myOrder['subtotal']				= $cartInfo['product_total'];
+		$myOrder['base_subtotal']			= $cartInfo['base_product_total'];
+		$myOrder['subtotal_with_discount']	= $cartInfo['coupon_cost'];
+		$myOrder['base_subtotal_with_discount']	= $cartInfo['base_coupon_cost'];
+		$myOrder['shipping_total']			= $cartInfo['shipping_cost'];
+		$myOrder['base_shipping_total']		= $cartInfo['base_shipping_cost'];
+		
+		$myOrder['checkout_method']			= $this->getCheckoutType();
+		if($address['customer_id']){
+			$is_guest = 2;
+		}else{
+			$is_guest = 1;
+		}
+		$myOrder['customer_id']				= $address['customer_id'];
+		$myOrder['customer_email']			= $address['email'];
+		$myOrder['customer_firstname']		= $address['first_name'];
+		$myOrder['customer_lastname']		= $address['last_name'];
+		$myOrder['customer_is_guest']		= $is_guest;
+		$myOrder['customer_telephone']		= $address['telephone'];
+		$myOrder['customer_address_country']= $address['country'];
+		$myOrder['customer_address_state']	= $address['state'];
+		$myOrder['customer_address_city']	= $address['city'];
+		$myOrder['customer_address_zip']	= $address['zip'];
+		$myOrder['customer_address_street1']= $address['street1'];
+		$myOrder['customer_address_street2']= $address['street2'];
+		
+		$myOrder['coupon_code']				= $cartInfo['coupon_code'];
+		$myOrder['payment_method']			= $shipping_method;
+		$myOrder['shipping_method']			= $payment_method;
+		$myOrder->save();
+		
 		
 		
 	}
