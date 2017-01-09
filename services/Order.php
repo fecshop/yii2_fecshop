@@ -12,7 +12,7 @@ use yii\base\InvalidValueException;
 use yii\base\InvalidConfigException;
 use fec\helpers\CSession;
 use fecshop\models\mysqldb\Order as MyOrder;
-use fecshop\models\mysqldb\Order\Item as MyOrderItem;
+use fecshop\models\mysqldb\order\Item as MyOrderItem;
 /**
  * Order services
  * @author Terry Zhao <2358269014@qq.com>
@@ -249,7 +249,7 @@ class Order extends Service
 		if($orderModel[$this->getPrimaryKey()]){
 			$orderModel['increment_id'] = $increment_id ;
 			$orderModel->save();
-			$this->saveOrderItem($cartInfo['products'],$order_id);
+			$this->saveOrderItem($cartInfo['products'],$order_id,$cartInfo['store']);
 			return true;
 		}
 		return false;
@@ -282,8 +282,30 @@ class Order extends Service
 	 * @property $order_id | Int 
 	 * 保存订单的item信息
 	*/
-	protected function saveOrderItem($items,$order_id){
-		
+	protected function saveOrderItem($items,$order_id,$store){
+		if(is_array($items) && !empty($items) && $order_id && $store){
+			foreach($items as $item){
+				$myOrderItem = new MyOrderItem;
+				$myOrderItem['order_id'] = $order_id;
+				$myOrderItem['store'] = $store;
+				$myOrderItem['created_at'] = time();
+				$myOrderItem['updated_at'] = time();
+				$myOrderItem['product_id'] = $item['product_id'];
+				$myOrderItem['sku'] = $item['sku'];
+				$myOrderItem['name'] = $item['name'];
+				$myOrderItem['custom_option_sku'] = $item['custom_option_sku'];
+				$myOrderItem['image'] = $item['product_image'];
+				$myOrderItem['weight'] = $item['product_weight'];
+				$myOrderItem['qty'] = $item['qty'];
+				$myOrderItem['row_weight'] = $item['product_row_weight'];
+				$myOrderItem['price'] = $item['product_price'];
+				$myOrderItem['base_price'] = $item['product_row_price'];
+				$myOrderItem['row_total'] = $item['product_row_price'];
+				$myOrderItem['base_row_total'] = $item['base_product_row_price'];
+				$myOrderItem['redirect_url'] = $item['product_url'];
+				$myOrderItem->save();
+			}
+		}
 	}
 	/**
 	 * @property $order_id | Int
