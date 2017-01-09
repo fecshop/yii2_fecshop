@@ -92,32 +92,34 @@ class Placeorder{
 		# shipping method写入到cart中
 		# payment method 写入到cart中
 		if(!Yii::$app->user->isGuest){
-			$identity = Yii::$app->user->identity;
-			$customer_id = $identity['id'];
-			$one = [
-				'first_name' 	=> $billing['first_name'],
-				'last_name' 	=> $billing['last_name'],
-				'email' 		=> $billing['email'],
-				'company' 		=> '',
-				'telephone' 	=> $billing['telephone'],
-				'fax' 			=> '',
-				'street1' 		=> $billing['street1'],
-				'street2' 		=> $billing['street2'],
-				'city' 			=> $billing['city'],
-				'state' 		=> $billing['state'],
-				'zip' 			=> $billing['zip'],
-				'country' 		=> $billing['country'],
-				'customer_id' 	=> $customer_id,
-				'is_default' 	=> 1,
-			];
-			$address_id = Yii::$service->customer->address->save($one);
+			$address_id = $post['address_id'];
 			if(!$address_id){
-				Yii::$service->helper->errors->add('new customer address save fail');
-				return false;
+				$identity = Yii::$app->user->identity;
+				$customer_id = $identity['id'];
+				$one = [
+					'first_name' 	=> $billing['first_name'],
+					'last_name' 	=> $billing['last_name'],
+					'email' 		=> $billing['email'],
+					'company' 		=> '',
+					'telephone' 	=> $billing['telephone'],
+					'fax' 			=> '',
+					'street1' 		=> $billing['street1'],
+					'street2' 		=> $billing['street2'],
+					'city' 			=> $billing['city'],
+					'state' 		=> $billing['state'],
+					'zip' 			=> $billing['zip'],
+					'country' 		=> $billing['country'],
+					'customer_id' 	=> $customer_id,
+					'is_default' 	=> 1,
+				];
+				$address_id = Yii::$service->customer->address->save($one);
+				if(!$address_id){
+					Yii::$service->helper->errors->add('new customer address save fail');
+					return false;
+				}
+				//echo "$address_id,$this->_shipping_method,$this->_payment_method";
+				return Yii::$service->cart->updateLoginCart($address_id,$this->_shipping_method,$this->_payment_method);
 			}
-			//echo "$address_id,$this->_shipping_method,$this->_payment_method";
-			return Yii::$service->cart->updateLoginCart($address_id,$this->_shipping_method,$this->_payment_method);
-			
 		}
 		
 		return true;
@@ -146,15 +148,9 @@ class Placeorder{
 		$address_id = isset($post['address_id']) ? $post['address_id'] : '';
 		$billing = isset($post['billing']) ? $post['billing'] : '';
 		
-		if($billing && is_array($billing)){
-			# 检查address的必写字段是否都存在
-			//var_dump($billing);exit;
-			if(!Yii::$service->order->checkRequiredAddressAttr($billing)){
-				
-				return false;
-			}
-			$this->_billing = $billing;
-		}else if($address_id){
+		
+		if($address_id){
+			
 			if(Yii::$app->user->isGuest){
 				Yii::$service->helper->errors->add('address id can not use for guest');
 				return false; # address_id 这种情况，必须是登录用户。
@@ -181,6 +177,14 @@ class Placeorder{
 					}
 				}
 			}	
+		}else if($billing && is_array($billing)){
+			# 检查address的必写字段是否都存在
+			//var_dump($billing);exit;
+			if(!Yii::$service->order->checkRequiredAddressAttr($billing)){
+				
+				return false;
+			}
+			$this->_billing = $billing;
 		}
 		$shipping_method= isset($post['shipping_method']) ? $post['shipping_method'] : '';
 		$payment_method = isset($post['payment_method']) ? $post['payment_method'] : '';
