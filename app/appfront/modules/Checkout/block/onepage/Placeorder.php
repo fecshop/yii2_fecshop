@@ -51,33 +51,38 @@ class Placeorder{
 	 */
 	public function guestCreateAndLoginAccountAndSaveAddress($post){
 		$create_account = $post['create_account'];
+		$billing		= $post['billing'];
+		if(!is_array($billing) || empty($billing)){
+			Yii::$service->helper->errors->add('billing must be array and can not empty');
+			return false;	
+		}
 		if($create_account){
-			$customer_password = $post['customer_password'];
-			$confirm_password  = $post['confirm_password'];
+			$customer_password = $billing['customer_password'];
+			$confirm_password  = $billing['confirm_password'];
 			if($customer_password  != $confirm_password){
 				Yii::$service->helper->errors->add('the passwords are inconsistent');
 				return false;
 			}
 			$passMin = Yii::$service->customer->getRegisterPassMinLength();
 			$passMax = Yii::$service->customer->getRegisterPassMaxLength();
-			if($customer_password < $passMin){
+			if(strlen($customer_password) < $passMin){
 				Yii::$service->helper->errors->add('password must Greater than '.$passMin);
 				return false;
 			}
-			if($customer_password > $passMax){
+			if(strlen($customer_password) > $passMax){
 				Yii::$service->helper->errors->add('password must less than '.$passMax);
 				return false;
 			}
-			$param['email'] 	= $post['email'];
-			$param['password'] 	= $post['customer_password'];
-			$param['firstname'] = $post['first_name'];
-			$param['lastname'] 	= $post['last_name'];
+			$param['email'] 	= $billing['email'];
+			$param['password'] 	= $billing['customer_password'];
+			$param['firstname'] = $billing['first_name'];
+			$param['lastname'] 	= $billing['last_name'];
 			if(!Yii::$service->customer->register($param)){
 				return false;
 			}else{
 				Yii::$service->customer->Login([
-					'email'		=> $post['email'],
-					'password'	=> $post['customer_password']
+					'email'		=> $billing['email'],
+					'password'	=> $billing['customer_password']
 				]);
 			}
 		}
@@ -90,18 +95,18 @@ class Placeorder{
 			$identity = Yii::$app->user->identity;
 			$customer_id = $identity['id'];
 			$one = [
-				'first_name' 	=> $post['first_name'],
-				'last_name' 	=> $post['last_name'],
-				'email' 		=> $post['email'],
+				'first_name' 	=> $billing['first_name'],
+				'last_name' 	=> $billing['last_name'],
+				'email' 		=> $billing['email'],
 				'company' 		=> '',
-				'telephone' 	=> $post['telephone'],
+				'telephone' 	=> $billing['telephone'],
 				'fax' 			=> '',
-				'street1' 		=> $post['street1'],
-				'street2' 		=> $post['street2'],
-				'city' 			=> $post['city'],
-				'state' 		=> $post['state'],
-				'zip' 			=> $post['zip'],
-				'country' 		=> $post['country'],
+				'street1' 		=> $billing['street1'],
+				'street2' 		=> $billing['street2'],
+				'city' 			=> $billing['city'],
+				'state' 		=> $billing['state'],
+				'zip' 			=> $billing['zip'],
+				'country' 		=> $billing['country'],
 				'customer_id' 	=> $customer_id,
 				'is_default' 	=> 1,
 			];
