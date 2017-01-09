@@ -137,7 +137,7 @@ class Order extends Service
 	 * @property $ids | Int or Array   
 	 * @return boolean
 	 * 如果传入的是id数组，则删除多个
-	 * 如果传入的是Int，则删除一个coupon
+	 * 如果传入的是Int，则删除一个
 	 * 
 	 */
 	protected function actionRemove($ids){
@@ -169,7 +169,11 @@ class Order extends Service
 	}
 	
 	/**
-	 * generate order by current Cart.
+	 * @property $address | Array 货运地址
+	 * @property $shipping_method | String 货运快递方式
+	 * @property $payment_method | Array 支付方式、
+	 * @return boolean 通过购物车的数据生成订单是否成功
+	 * 通过购物车中的产品信息，以及传递的货运地址，货运快递方式，支付方式生成订单。
 	 */
 	protected function actionGenerateOrderByCart($address,$shipping_method,$payment_method){
 		$cart = Yii::$service->cart->quote->getCurrentCart();
@@ -179,7 +183,7 @@ class Order extends Service
 		$currency_info = Yii::$service->page->currency->getCurrencyInfo();
 		$currency_code = $currency_info['code'];
 		$currency_rate = $currency_info['rate'];
-		$cartInfo = Yii::$service->cart->getCartInfo();
+		$cartInfo = Yii::$service->cart->getCartInfo($shipping_method,$weight,$country,$region);
 		$myOrder = new MyOrder;
 		$paymentStatus = $this->paymentStatus;
 		$myOrder['order_status'] 	= $paymentStatus['pending'];
