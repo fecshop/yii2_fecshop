@@ -162,7 +162,7 @@ class Cart extends Service
 	}
 	
 	protected function actionUpdateLoginCart($address_id,$shipping_method,$payment_method){
-		Yii::$service->cart->quote->updateLoginCart($address_id,$shipping_method,$payment_method);
+		return Yii::$service->cart->quote->updateLoginCart($address_id,$shipping_method,$payment_method);
 	}
 	
 	

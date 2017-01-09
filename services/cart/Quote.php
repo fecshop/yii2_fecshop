@@ -75,6 +75,7 @@ class Quote extends Service
 	public function updateLoginCart($address_id,$shipping_method,$payment_method){
 		$cart = $this->getCurrentCart();
 		if($cart && $address_id){
+			
 			$cart->customer_address_id 		= $address_id;
 			$cart->shipping_method 	= $shipping_method;
 			$cart->payment_method 	= $payment_method;
@@ -277,6 +278,7 @@ class Quote extends Service
 	 * 如果没有问题，返回购物车的信息。
 	 */
 	public function getCartInfo($shipping_method='',$country='',$region='*'){
+		//echo 333;exit;
 		$cart_id = $this->getCartId();
 		if(!$cart_id){
 			return false;
@@ -300,8 +302,12 @@ class Quote extends Service
 				$shippingCost   = $this->getShippingCost($shipping_method,$product_weight,$country,$region);
 				$currShippingCost = $shippingCost['currCost'];
 				$baseShippingCost = $shippingCost['baseCost'];
-				$couponCost		= $this->getCouponCost([$base_product_total,$product_total],$coupon_code);
-					
+				//echo 333;
+				//var_dump([$base_product_total,$product_total]);
+				//exit;
+				//echo $coupon_code;exit;
+				$couponCost		= $this->getCouponCost($base_product_total,$coupon_code);
+				
 				$baseDiscountCost = $couponCost['currCost'];
 				$currDiscountCost = $couponCost['baseCost'];
 				
@@ -358,8 +364,12 @@ class Quote extends Service
 	 *	];
 	 *  得到快递运费金额。
 	 */
-	public function getShippingCost($shipping_method='',$weight='',$country='',$region='*'){
+	public function getShippingCost($shipping_method='',$weight='',$country='',$region=''){
+		if(!$region){
+			$region='*';
+		}
 		if(!$this->_shipping_cost){
+			//echo "$shipping_method,$weight,$country,$region";
 			$shippingCost = Yii::$service->shipping->getShippingCostWithSymbols($shipping_method,$weight,$country,$region);
 			$this->_shipping_cost = $shippingCost;
 			//if(isset($shippingCost['currentCost'])){
@@ -376,10 +386,12 @@ class Quote extends Service
 	 *	'currCost' => $curr_discount_cost  # 当前货币的优惠金额
 	 * ]
 	 */
-	public function getCouponCost($product_total,$coupon_code){
-		list($base_product_total,$product_total) = $product_total;
+	public function getCouponCost($base_product_total,$coupon_code){
+		//echo '###'; var_dump($product_total);exit;
+		//list($base_product_total,$product_total) = $product_total;
 		//$dc_price = Yii::$service->page->currency->getDefaultCurrencyPrice($product_total);
 		$dc_discount = Yii::$service->cart->coupon->getDiscount($coupon_code,$base_product_total);
+		//var_dump($dc_discount);exit;
 		return $dc_discount;
 	}
 	/**

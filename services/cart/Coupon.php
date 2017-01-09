@@ -290,7 +290,9 @@ class Coupon extends Service
 			$type 		= $couponModel['type'];
 			$conditions = $couponModel['conditions'];
 			$discount 	= $couponModel['discount'];
+			//echo $conditions.'##'.$dc_price;;exit;
 			if($conditions <= $dc_price){
+				
 				if($type == 1){ # 百分比
 					$base_discount_cost = $discount/100 * $dc_price;
 				}else if($type == 2){ # 直接折扣

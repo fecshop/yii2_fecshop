@@ -22,6 +22,7 @@ class Order extends Service
 {
 	public $requiredAddressAttr; # 必填的订单字段。
 	public $paymentStatus; # 订单支付状态。
+	public $increment_id = 1000000000;
 	protected $checkout_type;
 	const CHECKOUT_TYPE_STANDARD = 'standard';
 	const CHECKOUT_TYPE_EXPRESS = 'express';
@@ -52,6 +53,7 @@ class Order extends Service
 				}
 			}
 		}
+		return true;
 	}
 	
 	
@@ -203,7 +205,7 @@ class Order extends Service
 		$myOrder['order_status'] 	= $paymentStatus['pending'];
 		$myOrder['store'] 			= $cartInfo['store'];
 		$myOrder['created_at'] 		= time();
-		$myOrder['update_at'] 		= time();
+		$myOrder['updated_at'] 		= time();
 		$myOrder['items_count']		= $cartInfo['items_count'];
 		$myOrder['total_weight']	= $cartInfo['product_weight'];
 		$myOrder['order_currency_code']		= $currency_code;
@@ -241,9 +243,56 @@ class Order extends Service
 		$myOrder['payment_method']			= $shipping_method;
 		$myOrder['shipping_method']			= $payment_method;
 		$myOrder->save();
+		$order_id = Yii::$app->db->getLastInsertId();
+		$increment_id = $this->generateIncrementIdByOrderId($order_id);
+		$orderModel = $this->getByPrimaryKey($order_id);
+		if($orderModel[$this->getPrimaryKey()]){
+			$orderModel['increment_id'] = $increment_id ;
+			$orderModel->save();
+			$this->saveOrderItem($cartInfo['products'],$order_id);
+			return true;
+		}
+		return false;
+	}
+	/**
+	 * @property $items | Array , example:
+	 *	$itmes = [
+	 *		[
+	 *			'item_id' => $one['item_id'],
+	 *			'product_id' 		=> $product_id ,
+	 *			'sku'				=> $product_one['sku'],
+	 *			'name'				=> Yii::$service->store->getStoreAttrVal($product_one['name'],'name'),
+	 *			'qty' 				=> $qty ,
+	 *			'custom_option_sku' => $custom_option_sku ,
+	 *			'product_price' 	=> $product_price ,
+	 *			'product_row_price' => $product_row_price ,
+	 *			
+	 *			'base_product_price' 	=> $base_product_price ,
+	 *			'base_product_row_price' => $base_product_row_price ,
+	 *			
+	 *			'product_name'		=> $product_one['name'],
+	 *			'product_weight'	=> $p_wt,
+	 *			'product_row_weight'=> $p_wt * $qty,
+	 *			'product_url'		=> $product_one['url_key'],
+	 *			'product_image'		=> $product_one['image'],
+	 *			'custom_option'		=> $product_one['custom_option'],
+	 *			'spu_options' 			=> $productSpuOptions,
+	 *		]
+	 *	];
+	 * @property $order_id | Int 
+	 * 保存订单的item信息
+	*/
+	protected function saveOrderItem($items,$order_id){
 		
-		
-		
+	}
+	/**
+	 * @property $order_id | Int
+	 * @return $increment_id | Int
+	 * 通过 order_id 生成订单号。
+	 */
+	protected function generateIncrementIdByOrderId($order_id){
+		$increment_id = (int)$this->increment_id + (int)$order_id;
+		return $increment_id;
 	}
 	
 	/**

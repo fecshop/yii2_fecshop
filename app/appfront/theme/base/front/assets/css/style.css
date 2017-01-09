@@ -2419,8 +2419,9 @@ a.next_images {
 
 #shopping-cart-table .qty {
     float: left;
+    padding: 0;
     text-align: center;
-    width: 15px !important;
+    width: 25px !important;
 }
 
 a.cartqtyup {

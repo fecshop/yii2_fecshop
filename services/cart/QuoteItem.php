@@ -157,9 +157,10 @@ class QuoteItem extends Service
 							$products[] = [
 								'item_id' => $one['item_id'],
 								'product_id' 		=> $product_id ,
+								'sku'				=> $product_one['sku'],
+								'name'				=> Yii::$service->store->getStoreAttrVal($product_one['name'],'name'),
 								'qty' 				=> $qty ,
 								'custom_option_sku' => $custom_option_sku ,
-								
 								'product_price' 	=> $product_price ,
 								'product_row_price' => $product_row_price ,
 								
@@ -168,6 +169,7 @@ class QuoteItem extends Service
 								
 								'product_name'		=> $product_one['name'],
 								'product_weight'	=> $p_wt,
+								'product_row_weight'=> $p_wt * $qty,
 								'product_url'		=> $product_one['url_key'],
 								'product_image'		=> $product_one['image'],
 								'custom_option'		=> $product_one['custom_option'],
