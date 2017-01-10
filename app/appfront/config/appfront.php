@@ -38,7 +38,7 @@ return [
 		'user' => [
 			'identityClass' => 'fecshop\models\mysqldb\Customer',
 			# 是否cookie 登录。
-			'enableAutoLogin' => true,
+			'enableAutoLogin' => false,
 		],
 		
 		'errorHandler' => [

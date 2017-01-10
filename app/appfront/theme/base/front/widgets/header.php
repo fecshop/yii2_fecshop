@@ -51,7 +51,7 @@
 				</dt>
 				<dd style="">
 					<ul>
-						<li><a href="<?= Yii::$service->url->getUrl('customer/point') ?>" rel="nofollow">My S Points</a></li>
+						<li><a href="<?= Yii::$service->url->getUrl('customer/account') ?>" rel="nofollow">My Account</a></li>
 						<li><a href="<?= Yii::$service->url->getUrl('customer/order') ?>" rel="nofollow">My Orders</a></li>
 						<li><a href="<?= Yii::$service->url->getUrl('customer/productfavorite') ?>" rel="nofollow">My Favorites</a></li>
 						<li><a href="<?= Yii::$service->url->getUrl('customer/productreview') ?>" rel="nofollow">Product Review</a></li>
