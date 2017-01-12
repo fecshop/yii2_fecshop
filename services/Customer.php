@@ -70,10 +70,9 @@ class Customer extends Service
 		if(empty($errors)){
 			# 合并购物车数据
 			Yii::$service->cart->mergeCartAfterUserLogin();
+		}else{
+			Yii::$service->helper->errors->add($errors);
 		}
-		//var_dump($errors);
-		//exit;
-		Yii::$service->helper->errors->add($errors);
 		return $loginStatus;
 	}
 	/**

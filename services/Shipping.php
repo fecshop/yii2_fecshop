@@ -20,6 +20,8 @@ use fec\helpers\CUrl;
 class Shipping extends Service
 {
 	public $shippingConfig;
+	public $shippingCsvDir; # 存放运费csv表格的文件路径。
+	public $defaultShippingMethod;
 	
 	/**
 	 * @property $method | String ，shipping_method key
@@ -28,7 +30,7 @@ class Shipping extends Service
 	protected  function actionGetShippingMethod($shipping_method=''){
 		$allmethod = $this->shippingConfig;
 		if($shipping_method){
-			return $allmethod[$shipping_method];
+			return isset($allmethod[$shipping_method]) ? $allmethod[$shipping_method] : '';
 		}else{
 			return $allmethod;
 		}
@@ -47,12 +49,19 @@ class Shipping extends Service
 	}
 	/**
 	 * @return string ,得到默认的运费方法 shipping_method key
+	 * 配置中$this->shippingConfig 第一个参数就是默认
 	 */
 	protected  function actionGetDefaultShipping(){
-		$allmethod = self::getShippingMethod();
-		foreach($allmethod as $k=>$method){
-			return $k;
+		if($shippingMethod = $this->defaultShippingMethod){
+			if(isset($shippingMethod['enable']) && $shippingMethod['enable']){
+				$shipping = isset($shippingMethod['shipping']) ? $shippingMethod['shipping'] : '';
+				if($shipping && $this->getShippingMethod($shipping)){
+					return $shipping;
+				}
+			}
+			
 		}
+		return '';
 	}
 	
 	# 通过方法，重量，国家，省，得到美元状态的运费金额
@@ -146,8 +155,9 @@ class Shipping extends Service
 	 * @return Array ，通过csv表格，得到对应的运费数组信息
 	 */
 	protected function getShippingByTableCsv($shipping_method){
-		$commonDir = Yii::getAlias('@common');
-		$csv = $commonDir."/config/shipping/".$shipping_method.".csv";
+		//$shippingCsvDir = '@common/config/shipping';
+		$commonDir = Yii::getAlias($this->shippingCsvDir);
+		$csv = $commonDir."/".$shipping_method.".csv";
 		$fp = fopen($csv, "r"); 
 		$shippingArr = [];
 		$i = 0;

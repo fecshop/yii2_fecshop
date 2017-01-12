@@ -49,7 +49,7 @@ use fecshop\app\appfront\helper\Format;
 								<tr class="first last odd">
 									<td>
 										<a href="<?= $product_one['url'] ?>" title="<?= $product_one['name'] ?>" class="product-image">
-										<img src="<?= Yii::$service->product->image->getResize($product_one['image'],[100,100],false) ?>" alt="2121" width="75" height="75">
+										<img src="<?= Yii::$service->product->image->getResize($product_one['image'],[100,100],false) ?>" alt="<?= $product_one['name'] ?>" width="75" height="75">
 										</a>
 									</td>
 									

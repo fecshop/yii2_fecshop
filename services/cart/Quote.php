@@ -216,6 +216,9 @@ class Quote extends Service
 		}
 		$myCart->remote_ip = \fec\helpers\CFunc::get_real_ip();
 		$myCart->app_name  = Yii::$service->helper->getAppName();
+		if($defaultShippingMethod = Yii::$service->shipping->getDefaultShipping()){
+			$myCart->shipping_method = $defaultShippingMethod;
+		}
 		$myCart->save();
 		$cart_id = Yii::$app->db->getLastInsertId();
 		$this->setCartId($cart_id);
@@ -276,6 +279,9 @@ class Quote extends Service
 	 * @property $region | String 省市
 	 * @return boolean OR array ，如果存在问题返回false
 	 * 如果没有问题，返回购物车的信息。
+	 * 对于可选参数，如果不填写，就是返回当前的购物车的数据。
+	 * 对于填写了参数，返回的是填写参数后的数据，这个一般是用户选择了了货运方式，国家等，然后
+	 * 实时的计算出来数据反馈给用户，但是，用户选择的数据并没有进入cart表
 	 */
 	public function getCartInfo($shipping_method='',$country='',$region='*'){
 		//echo 333;exit;
@@ -471,7 +477,7 @@ class Quote extends Service
 	 * 通过用户的customer_id，在cart表中找到对应的购物车
 	 */
 	public function getCartByCustomerId($customer_id){
-		if($email){
+		if($customer_id){
 			$one = MyCart::findOne(['customer_id' => $customer_id]);
 			if($one['cart_id']){
 				return $one;

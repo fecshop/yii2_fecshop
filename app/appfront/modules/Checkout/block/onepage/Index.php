@@ -1,5 +1,4 @@
 <?php
-
 namespace fecshop\app\appfront\modules\checkout\block\onepage;
 use Yii;
 use fec\helpers\CModule;
@@ -16,13 +15,10 @@ class Index {
 	
 	public function getLastData(){
 		$cartInfo = $this->getCartInfo();
-		//var_dump($cartInfo);
 		if(!isset($cartInfo['products']) || !is_array($cartInfo['products']) || empty($cartInfo['products'])){
 			Yii::$service->url->redirectByUrlKey('checkout/cart');
 		}
 		$currency_info = Yii::$service->page->currency->getCurrencyInfo();
-		#
-		//Yii::$service->cart->quote->addCustomerDefautAddressToCart();
 		$this->initAddress();
 		$this->initCountry();
 		
@@ -179,23 +175,14 @@ class Index {
 		exit;
 	}
 	
-	
-	/*
-	public function initCustomerInfo(){
-		if(!Yii::$app->user->isGuest){
-			$identity = Yii::$app->user->identity;
-			$this->_custom_info['email'] = $identity['email'];
-			$this->_custom_info['first_name'] = $identity['firstname'];
-			$this->_custom_info['last_name'] = $identity['lastname'];
-		}
-	}
-	*/
-	
-	
-	
+	/**
+	 * @return $cart_info | Array
+	 * 本函数为从数据库中得到购物车中的数据，然后结合产品表
+	 * 在加入一些产品数据，最终补全所有需要的信息。
+	 * 
+	 */
 	public function getCartInfo(){
 		$cart_info = Yii::$service->cart->getCartInfo();
-		
 		if(isset($cart_info['products']) && is_array($cart_info['products'])){
 			foreach($cart_info['products'] as $k=>$product_one){
 				# 设置名字，得到当前store的语言名字。
@@ -206,7 +193,6 @@ class Index {
 				}
 				# 产品的url
 				$cart_info['products'][$k]['url'] = Yii::$service->url->getUrl($product_one['product_url']);
-				
 				$custom_option = isset($product_one['custom_option']) ? $product_one['custom_option'] : '';
 				$custom_option_sku = $product_one['custom_option_sku'];
 				# 将在产品页面选择的颜色尺码等属性显示出来。
@@ -219,7 +205,6 @@ class Index {
 				}
 			}
 		}
-		
 		return $cart_info;
 	}
 	
