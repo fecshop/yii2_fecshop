@@ -174,10 +174,11 @@ class Index {
 												
 		}
 		$this->_stateHtml = $stateHtml;
-		
+		 
 	}
-	
-	
+	/**
+	 * 当改变国家的时候，ajax获取省市信息
+	 */
 	public function ajaxChangecountry(){
 		$country = Yii::$app->request->get('country');
 		$state = $this->initState($country);
@@ -246,10 +247,19 @@ class Index {
 		}
 		return $custom_option_info_arr;
 	}
-	
-	
-	
-	
+	/**
+	 * @property $current_shipping_method | String  当前选择的货运方式
+	 * @return Array，数据格式为：
+	 * [
+	 *		'method'=> $method,
+	 *		'label' => $label,
+	 *		'name'  => $name,
+	 *		'cost'  => $symbol.$currentCurrencyCost,
+	 *		'check' => $check,
+	 *		'shipping_i' => $shipping_i,
+	 *	]
+	 * 根据选择的货运方式，得到费用等信息。
+	 */
 	public function getShippings($current_shipping_method = ''){
 		$country = $this->_country;
 		if(!$this->_state){
@@ -269,8 +279,11 @@ class Index {
 		$shippingArr = $this->getShippingArr($product_weight,$current_shipping_method,$country,$region);
 		return $shippingArr ;
 	}
-	
-	
+	/**
+	 * @return 得到所有的支付方式
+	 * 在获取的同时，判断$this->_payment_mothod 是否存在，不存在则取
+	 * 第一个支付方式，作为$this->_payment_mothod的值。
+	 */
 	public function getPayment(){
 		$paymentArr = Yii::$service->payment->getStandardPaymentArr();
 		if(!$this->_payment_mothod){
@@ -283,23 +296,13 @@ class Index {
 	}
 	
 	
-	# 在下单页面，得到订单的运费html
 	/**
 	 * @property $weight | Float , 总量
 	 * @property $shipping_method | String  $shipping_method key
 	 * @property $country | String  国家
-	 * @return String ， 通过上面的三个参数，得到各个运费方式对应的运费。
-	 * 			最后生成html
+	 * @return Array ， 通过上面的三个参数，得到各个运费方式对应的运费等信息。
 	 */
 	public  function getShippingArr($weight,$current_shipping_method,$country,$region='*'){
-		//$shippingName = '';
-		//$now_shipping = $shipping_method;
-		//if($now_shipping){
-		//	$shippingName = $now_shipping;
-		//}
-		//if(!$shippingName){
-		//	$shippingName = Yii::$service->shipping->getDefaultShipping();
-		//}
 		$allshipping = Yii::$service->shipping->getShippingMethod();
 		$sr = '';
 		$shipping_i = 1;
@@ -326,27 +329,33 @@ class Index {
 					'check' => $check,
 					'shipping_i' => $shipping_i,
 				];
-				/*
-				$sr .= '<div class="shippingmethods">
-								<dd class="flatrate">'.$label.'</dd>
-								<dt>
-									<input data-role="none" '.$check.' type="radio" id="s_method_flatrate_flatrate'.$shipping_i.'" value="'.$method.'" class="validate-one-required-by-name" name="shipping_method">
-									<label for="s_method_flatrate_flatrate'.$shipping_i.'">'.$name.'
-										<strong>                 
-											<span class="price">'.$symbol.$currentCurrencyCost.'</span>
-										</strong>
-									</label>
-								</dt>
-							</div>';
-				*/
+			
 				$shipping_i++;
 			}
 		}
 		return $arr;
 	}
 	
-	# ajax 更新部分
-	public function ajaxUpdateOrder(){
+	/**
+     * js函数 ajaxreflush() 执行后，就会执行这个函数
+	 * 在
+	 * 1.切换address list,
+	 * 2.取消coupon，
+	 * 3.切换国家和省市信息，
+	 * 4.更改货运方式等
+	 * 集中情况下，就会触发执行当前函数，
+	 * 该函数会根据传递的参数，重新计算shipping 和order 部分信息，返回
+	 * 给前端。
+	 * @proeprty Array，
+	 * @return json_encode(Array)，Array格式如下：
+	 *  [
+	 *		'status' 		=> 'success',
+	 *		'shippingHtml' 	=> $shippingHtml,
+	 *		'reviewOrderHtml' 	=> $reviewOrderHtml,
+	 *	]
+	 * 返回给js后，js根据数据将信息更新到相应的部分。
+	 */
+	public function ajaxUpdateOrderAndShipping(){
 		$country 			= Yii::$app->request->get('country');
 		$shipping_method 	= Yii::$app->request->get('shipping_method');
 		$address_id 		= Yii::$app->request->get('address_id');
@@ -372,7 +381,11 @@ class Index {
 		if($this->_country && $this->_state){
 			$shippings = $this->getShippings($shipping_method);
 			$payments  = $this->getPayment();
-			
+			/**
+			 * 下面是Fecshop的widget，通过一个一个数据数组+第一个view文件
+			 * 组合得到对应的html代码，返回给$shippingHtml
+			 * 由于fecshop多多模板系统，预先从高级别的模板路径中依次查找view文件，存在则使用该view文件
+			 */
 			$shippingView = [
 				'view'	=> 'checkout/onepage/index/shipping.php'
 			];
@@ -380,19 +393,22 @@ class Index {
 				'shippings' => $shippings,
 			];
 			$shippingHtml = Yii::$service->page->widget->render($shippingView,$shippingParam);
-			
-			# 先通过item计算出来重量
+			/**
+			 * 先通过item计算出来重量,得到运费 然后setShippingCost($shippingCost)，将当前根据传递参数计算
+			 * 出来的运费结果set到quote.shippingCost中，
+			 * 原因：这里是用户勾选切换国家地址进行的运费计算反馈给用户，但是该信息不更新到数据库，仅仅显示出来
+			 * 相应的费用给用户看，因此，shippingCost通过传递的参数计算出来设置到quote中，而不是通过数据库中保存
+			 * 的信息计算。
+			 */
 			$quoteItem = Yii::$service->cart->quoteItem->getCartProductInfo();
 			$product_weight = $quoteItem['product_weight'];
-			# 得到运费
 			$shippingCost 	= Yii::$service->shipping->getShippingCostWithSymbols($shipping_method,$product_weight,$country,$state);
-			
-			//$shipping_cost  = 0;
-			//if(isset($shippingCost['currentCost'])){
-			//	$shipping_cost = $shippingCost['currentCost'];
-			//}
-			# 设置cart的运费部分。
 			Yii::$service->cart->quote->setShippingCost($shippingCost);
+			
+			/**
+			 * 下面通过当前的货币，购物车信息等数组数据，+上view文件
+			 * 返回order部分的html内容。
+			 */
 			# 得到当前货币
 			$currency_info = Yii::$service->page->currency->getCurrencyInfo();
 			$reviewOrderView = [
@@ -404,7 +420,6 @@ class Index {
 				'currency_info' => $currency_info,
 			];
 			$reviewOrderHtml = Yii::$service->page->widget->render($reviewOrderView,$reviewOrderParam); 
-			
 			echo json_encode([
 				'status' 		=> 'success',
 				'shippingHtml' 	=> $shippingHtml,

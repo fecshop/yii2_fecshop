@@ -44,7 +44,7 @@ class OnepageController extends AppfrontController
 	}
 	
 	public function actionAjaxupdateorder(){
-		$this->getBlock('index')->ajaxUpdateOrder();
+		$this->getBlock('index')->ajaxUpdateOrderAndShipping();
 		
 	}
 	
