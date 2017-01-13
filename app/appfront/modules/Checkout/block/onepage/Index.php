@@ -1,8 +1,19 @@
 <?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
 namespace fecshop\app\appfront\modules\checkout\block\onepage;
 use Yii;
 use fec\helpers\CModule;
 use fec\helpers\CRequest;
+/**
+ * @author Terry Zhao <2358269014@qq.com>
+ * @since 1.0
+ */
 class Index {
 	protected $_payment_mothod;
 	protected $_address_view_file;
@@ -21,8 +32,6 @@ class Index {
 		$currency_info = Yii::$service->page->currency->getCurrencyInfo();
 		$this->initAddress();
 		$this->initCountry();
-		
-		//$this->initCustomerInfo();
 		$this->initState();
 		return [
 			'payments' 					=> $this->getPayment(),
@@ -99,8 +108,8 @@ class Index {
 		}
 		$this->_address = $address_info;
 		$this->_address_list = Yii::$service->customer->address->currentAddressList();
-		//var_dump($this->_address_list);
-		# 如果购物车存在customer_address_id，而且用户地址中中也存在customer_address_id
+		# 如果购物车存在customer_address_id，而且用户地址中也存在customer_address_id
+		# 则执行if{}内代码。
 		if($address_id && isset($this->_address_list[$address_id]) && !empty($this->_address_list[$address_id])){
 			$this->_address_id = $address_id;
 			$this->_address_view_file = 'checkout/onepage/index/address_select.php';
@@ -115,7 +124,7 @@ class Index {
 			}
 		}else if(is_array($this->_address_list) && !empty($this->_address_list)){
 			# 用户存在地址列表，但是，cart中没有customer_address_id
-			# 这种情况下，从列表中取出来一个地址，然后设置成当前的地址。
+			# 这种情况下，从用户地址列表中取出来默认地址，然后设置成当前的地址。
 			foreach($this->_address_list as $adss_id => $info){
 				if($info['is_default'] == 1){
 					$this->_address_id = $adss_id;
@@ -138,15 +147,18 @@ class Index {
 		if(!$this->_country){
 			$this->_country = Yii::$service->helper->country->getDefaultCountry();
 		}
-		
 	}
 	
-	
+	/**
+	 * 初始化国家下拉条。
+	 */
 	public function initCountry(){
 		$this->_countrySelect = Yii::$service->helper->country->getAllCountryOptions('','',$this->_country);
 		
 	}
-	
+	/**
+	 * 初始化省市
+	 */
 	public function initState($country = ''){
 		$state = isset($this->_address['state']) ? $this->_address['state'] : '';
 		if(!$country){
