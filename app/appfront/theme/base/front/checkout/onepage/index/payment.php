@@ -15,7 +15,11 @@
 					<dd id="container_payment_method_<?= $payment ?>" class="payment-method" style="">
 						<ul class="form-list" id="payment_form_<?= $payment ?>" style="">
 							<li>
+							<?php if(isset($info['imageUrl']) && !empty($info['imageUrl'])){ ?>
+							
 								<img style="margin:10px 0 8px 0" src="<?= $info['imageUrl'] ?>">
+							
+							<?php } ?>
 							</li>
 							<li class="form-alt">
 								<?= $info['supplement'] ?>	

@@ -28,6 +28,9 @@ class OnepageController extends AppfrontController
 			if(!$status){
 				var_dump(Yii::$service->helper->errors->get());
 				exit;
+			}else{
+				$startUrl = Yii::$service->payment->getStandardStartUrl();
+				
 			}
 		}
 		

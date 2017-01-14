@@ -208,6 +208,7 @@ class Placeorder{
 			}
 		}
 		$this->_shipping_method = $shipping_method;
+		Yii::$service->payment->setPaymentMethod($this->_shipping_method);
 		$this->_payment_method = $payment_method;
 		return true;
 	}
