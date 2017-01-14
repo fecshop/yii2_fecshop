@@ -26,11 +26,8 @@ class OnepageController extends AppfrontController
 		if($_csrf){
 			$status = $this->getBlock('placeorder')->getLastData();
 			if(!$status){
-				var_dump(Yii::$service->helper->errors->get());
-				exit;
-			}else{
-				$startUrl = Yii::$service->payment->getStandardStartUrl();
-				
+				//var_dump(Yii::$service->helper->errors->get());
+				//exit;
 			}
 		}
 		

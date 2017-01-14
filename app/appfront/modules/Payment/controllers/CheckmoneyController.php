@@ -20,8 +20,10 @@ class CheckmoneyController extends AppfrontController
     public $enableCsrfValidation = true;
 	
 	public function actionStart(){
-		$data = $this->getBlock()->getLastData();
-		return $this->render($this->action->id,$data);
+		$incrementId = Yii::$service->order->getSessionIncrementId();
+		echo $incrementId;
+		//$data = $this->getBlock()->getLastData();
+		//return $this->render($this->action->id,$data);
 	}
 	
 	

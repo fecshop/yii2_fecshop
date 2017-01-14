@@ -24,8 +24,9 @@ class Order extends Service
 	public $paymentStatus; # 订单支付状态。
 	public $increment_id = 1000000000;
 	protected $checkout_type;
-	const CHECKOUT_TYPE_STANDARD = 'standard';
-	const CHECKOUT_TYPE_EXPRESS = 'express';
+	const CHECKOUT_TYPE_STANDARD 	= 'standard';
+	const CHECKOUT_TYPE_EXPRESS 	= 'express';
+	const CURRENT_ORDER_CREAMENT_ID = 'current_order_creament_id';
 	
 	protected function actionSetCheckoutType($checkout_type){
 		$arr = [self::CHECKOUT_TYPE_STANDARD,self::CHECKOUT_TYPE_EXPRESS];
@@ -250,9 +251,23 @@ class Order extends Service
 			$orderModel['increment_id'] = $increment_id ;
 			$orderModel->save();
 			$this->saveOrderItem($cartInfo['products'],$order_id,$cartInfo['store']);
+			$this->setSessionIncrementId($increment_id);
 			return true;
 		}
 		return false;
+	}
+	/**
+	 * @property $increment_id | String ,order订单号
+	 * 将生成的订单号写入session
+	 */
+	protected function actionSetSessionIncrementId($increment_id){
+		Yii::$app->session->set(self::CURRENT_ORDER_CREAMENT_ID,$increment_id);
+	}
+	/**
+	 * 从session中取出来订单号
+	 */
+	protected function actionGetSessionIncrementId(){
+		Yii::$app->session->get(self::CURRENT_ORDER_CREAMENT_ID);
 	}
 	/**
 	 * @property $items | Array , example:
