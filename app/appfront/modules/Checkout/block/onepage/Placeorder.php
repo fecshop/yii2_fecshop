@@ -15,26 +15,26 @@ use fec\helpers\CRequest;
  * @since 1.0
  */
 class Placeorder{
-	
-	public $_check_error;
+	/**
+	 * 用户的账单地址信息，通过用户传递的信息计算而来。
+	 */
 	public $_billing;
+	/**
+	 * 用户的货运方式
+	 */
 	public $_shipping_method;
+	/**
+	 * 用户的支付方式
+	 */
 	public $_payment_method;
 	
 	public function getLastData(){
 		$post = Yii::$app->request->post();
 		if(is_array($post) && !empty($post)){
-			//echo 444;
 			# 检查前台传递的数据的完整性
 			if($this->checkOrderInfoAndInit($post)){
-				//echo 555;
-				//exit;
-				# 如果与注册账号，则注册，登录并把地址写入到用户的address中
+				# 如果游客用户勾选了注册账号，则注册，登录，并把地址写入到用户的address中
 				$gus_status = $this->guestCreateAndLoginAccountAndSaveAddress($post);
-				//var_dump(Yii::$service->helper->errors->get());
-				//echo 33;
-				//exit;
-				//echo $gus_status;exit;
 				if($gus_status){
 					# 如果是游客，则更新信息到cart中存储。
 					$this->updateGuestCart($post);
@@ -47,16 +47,13 @@ class Placeorder{
 					return true;
 				}
 			}else{
-				///var_dump(Yii::$service->helper->errors->get());
-				//echo 33;
-				//exit;
+				
 			}
-			
 		}
-		
 		return false;
 	}
 	/**
+	 * @property $post|Array，前台传递参数数组。 
 	 * 如果游客选择了创建账户，并且输入了密码，则使用address email作为账号，
 	 * 进行账号的注册和登录。
 	 */
@@ -97,11 +94,12 @@ class Placeorder{
 				]);
 			}
 		}
-		
-		# 保存货运地址到customer address ，然后把生成的
-		# address_id 写入到cart中。
-		# shipping method写入到cart中
-		# payment method 写入到cart中
+		/**
+		 * 保存货运地址到customer address ，然后把生成的
+		 * address_id 写入到cart中。
+		 * shipping method写入到cart中
+		 * payment method 写入到cart中
+		 */
 		if(!Yii::$app->user->isGuest){
 			$address_id = $post['address_id'];
 			if(!$address_id){
@@ -132,7 +130,6 @@ class Placeorder{
 				return Yii::$service->cart->updateLoginCart($address_id,$this->_shipping_method,$this->_payment_method);
 			}
 		}
-		
 		return true;
 	}
 	/**
@@ -140,28 +137,19 @@ class Placeorder{
 	 */
 	public function updateGuestCart(){
 		if(Yii::$app->user->isGuest){
-			Yii::$service->cart->updateGuestCart($this->_billing,$this->_shipping_method,$this->_payment_method);
+			return Yii::$service->cart->updateGuestCart($this->_billing,$this->_shipping_method,$this->_payment_method);
 		}
 	}
-
-	//$create_account = isset($billing['create_account']) ? $billing['create_account'] : '';
-	//$customer_password 	= isset($billing['customer_password']) ? $billing['customer_password'] : '';
-	//$confirm_password 	= isset($billing['confirm_password']) ? $billing['confirm_password'] : '';
-	
 	/**
 	 * @property $post | Array
 	 * @return boolean 
 	 * 检查前台传递的信息是否正确。同时初始化一部分类变量
 	 */
 	public function checkOrderInfoAndInit($post){
-		
 		$address_one = '';
 		$address_id = isset($post['address_id']) ? $post['address_id'] : '';
 		$billing = isset($post['billing']) ? $post['billing'] : '';
-		
-		
 		if($address_id){
-			
 			if(Yii::$app->user->isGuest){
 				Yii::$service->helper->errors->add('address id can not use for guest');
 				return false; # address_id 这种情况，必须是登录用户。

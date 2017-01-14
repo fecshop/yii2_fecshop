@@ -81,10 +81,11 @@
 						
 					</li>
 					<?php if(!Yii::$app->user->isGuest){  ?>
+					<!--
 					<li class="control">
 						<input class="save_in_address_book checkbox" id="billing:save_in_address_book" title="Save in address book" value="1" name="billing[save_in_address_book]" checked="checked" type="checkbox"><label for="billing:save_in_address_book">Save in address book</label>
 					</li>  
-					
+					-->
 					<?php }else{ ?>
 					<li class="clearfix">
 						<div class="input-box">
