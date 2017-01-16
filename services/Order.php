@@ -59,7 +59,6 @@ class Order extends Service
 	
 	
 	protected function actionGetPrimaryKey(){
-		
 		return 'order_id';
 	}
 	/**
@@ -184,6 +183,18 @@ class Order extends Service
 		}
 		return true;
 	}
+	/**
+	 * @property $increment_id | String , 订单号
+	 * @return Object （MyOrder），返回 MyOrder model
+	 * 通过订单号，得到订单信息。
+	 */
+	protected function actionGetByIncrementId($increment_id){
+		$one = MyOrder::findOne(['increment_id' => $increment_id]);
+		$primaryKey = $this->getPrimaryKey();
+		if($one[$primaryKey]){
+			return $one;
+		}
+	}
 	
 	/**
 	 * @property $address | Array 货运地址
@@ -241,8 +252,8 @@ class Order extends Service
 		$myOrder['customer_address_street2']= $address['street2'];
 		
 		$myOrder['coupon_code']				= $cartInfo['coupon_code'];
-		$myOrder['payment_method']			= $shipping_method;
-		$myOrder['shipping_method']			= $payment_method;
+		$myOrder['payment_method']			= $payment_method;
+		$myOrder['shipping_method']			= $shipping_method;
 		$myOrder->save();
 		$order_id = Yii::$app->db->getLastInsertId();
 		$increment_id = $this->generateIncrementIdByOrderId($order_id);
@@ -252,6 +263,7 @@ class Order extends Service
 			$orderModel->save();
 			$this->saveOrderItem($cartInfo['products'],$order_id,$cartInfo['store']);
 			$this->setSessionIncrementId($increment_id);
+			
 			return true;
 		}
 		return false;
@@ -261,13 +273,14 @@ class Order extends Service
 	 * 将生成的订单号写入session
 	 */
 	protected function actionSetSessionIncrementId($increment_id){
+		
 		Yii::$app->session->set(self::CURRENT_ORDER_CREAMENT_ID,$increment_id);
 	}
 	/**
 	 * 从session中取出来订单号
 	 */
 	protected function actionGetSessionIncrementId(){
-		Yii::$app->session->get(self::CURRENT_ORDER_CREAMENT_ID);
+		return Yii::$app->session->get(self::CURRENT_ORDER_CREAMENT_ID);
 	}
 	/**
 	 * @property $items | Array , example:

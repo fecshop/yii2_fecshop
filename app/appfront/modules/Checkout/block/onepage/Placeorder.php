@@ -44,7 +44,6 @@ class Placeorder{
 					$serviceOrder->setCheckoutType($checkout_type);
 					# 将购物车数据，生成订单。
 					Yii::$service->order->generateOrderByCart($this->_billing,$this->_shipping_method,$this->_payment_method);
-					
 					$startUrl = Yii::$service->payment->getStandardStartUrl();
 					Yii::$service->url->redirect($startUrl);
 					//return true;
@@ -211,8 +210,9 @@ class Placeorder{
 			}
 		}
 		$this->_shipping_method = $shipping_method;
-		Yii::$service->payment->setPaymentMethod($this->_shipping_method);
 		$this->_payment_method = $payment_method;
+		Yii::$service->payment->setPaymentMethod($this->_payment_method);
+		
 		return true;
 	}
 	

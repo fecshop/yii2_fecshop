@@ -64,7 +64,7 @@ class Cart extends Service
 	/**
 	 * 得到购物车中的信息。
 	 */ 
-	protected function actionGetCartInfo($shipping_method,$country,$region){
+	protected function actionGetCartInfo($shipping_method='',$country='',$region='*'){
 		return Yii::$service->cart->quote->getCartInfo($shipping_method,$country,$region);
 	}
 	
