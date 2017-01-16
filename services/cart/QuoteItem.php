@@ -286,6 +286,7 @@ class QuoteItem extends Service
 	/**
 	 * @property $cart_id | int 购物车id
 	 * 删除购物车中的所有产品。
+	 * 注意：清空购物车并不是清空所有信息，仅仅是清空用户购物车中的产品。
 	 */
 	public function removeItemByCartId($cart_id=''){
 		if(!$cart_id){
@@ -297,7 +298,7 @@ class QuoteItem extends Service
 				//'item_id' => $item_id,
 			]);
 			# 重新计算购物车的数量
-			Yii::$service->cart->quote->computeCartInfo();
+			Yii::$service->cart->quote->computeCartInfo(0);
 		}
 		return true;
 	}

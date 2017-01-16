@@ -283,6 +283,12 @@ class Order extends Service
 		return Yii::$app->session->get(self::CURRENT_ORDER_CREAMENT_ID);
 	}
 	/**
+	 * 从session中销毁订单号
+	 */
+	protected function actionRemoveSessionIncrementId(){
+		return Yii::$app->session->remove(self::CURRENT_ORDER_CREAMENT_ID);
+	}
+	/**
 	 * @property $items | Array , example:
 	 *	$itmes = [
 	 *		[

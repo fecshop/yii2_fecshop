@@ -146,11 +146,16 @@ class Quote extends Service
 		return $items_count;
 	}
 	/**
+	 * @property $item_qty | Int ，当$item_qty 不等于null时，代表
+	 * 		已经知道购物车中产品的个数，不需要去cart_item表中查询。
+	 *		譬如清空购物车操作，直接就知道产品个数肯定为零。
 	 * 当购物车的产品变动后，更新cart表的产品总数
 	 */
-	public function computeCartInfo(){
-		$item_qty = Yii::$service->cart->quoteItem->getItemQty();
-		$cart =  $this->getCart();
+	public function computeCartInfo($item_qty = null){
+		if($item_qty === null){
+			$item_qty = Yii::$service->cart->quoteItem->getItemQty();
+		}
+		$cart = $this->getCart();
 		$cart->items_count = $item_qty;
 		$cart->save();
 		return true;
