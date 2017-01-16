@@ -19,10 +19,11 @@ class Index {
 	protected $_address_view_file;
 	protected $_address_id;
 	protected $_address_list;
-	protected $_custom_info;
 	protected $_country;
 	protected $_state;
 	protected $_stateHtml;
+	protected $_cartAddress;
+	protected $_cart_address;
 	
 	public function getLastData(){
 		$cartInfo = $this->getCartInfo();
@@ -33,6 +34,7 @@ class Index {
 		$this->initAddress();
 		$this->initCountry();
 		$this->initState();
+		
 		return [
 			'payments' 					=> $this->getPayment(),
 			'shippings' 				=> $this->getShippings(),
@@ -40,10 +42,9 @@ class Index {
 			'cart_info'  				=> $cartInfo,
 			'currency_info' 			=> $currency_info,
 			'address_view_file' 		=> $this->_address_view_file,
-		
+			'cart_address'				=> $this->_address,
 			'cart_address_id'			=> $this->_address_id,
 			'address_list'				=> $this->_address_list,
-			'customer_info'				=> $this->_custom_info,
 			'country_select'			=> $this->_countrySelect,
 			//'state_select'			=> $this->_stateSelect,
 			'state_html'				=> $this->_stateHtml,
@@ -56,6 +57,8 @@ class Index {
 	 * 2. 如果是登录用户，而且
 	 */
 	public function initAddress(){
+		//$this->_cart_address = Yii::$service->cart->quote->getCartAddress();
+		
 		$cart = Yii::$service->cart->quote->getCart();
 		$address_id = $cart['customer_address_id'];
 		
@@ -108,6 +111,7 @@ class Index {
 		}
 		$this->_address = $address_info;
 		$this->_address_list = Yii::$service->customer->address->currentAddressList();
+		//var_dump($this->_address_list);
 		# 如果购物车存在customer_address_id，而且用户地址中也存在customer_address_id
 		# 则执行if{}内代码。
 		if($address_id && isset($this->_address_list[$address_id]) && !empty($this->_address_list[$address_id])){
@@ -143,6 +147,10 @@ class Index {
 			}
 		}else{
 			$this->_address_view_file = 'checkout/onepage/index/address.php';
+			# 从购物车里面取出来数据。 $_cartAddress
+			$cart_info = Yii::$service->cart->getCartInfo();
+			
+			
 		}
 		if(!$this->_country){
 			$this->_country = Yii::$service->helper->country->getDefaultCountry();

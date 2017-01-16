@@ -23,6 +23,10 @@ class Quote extends Service
 	protected $_cart_id;
 	protected $_cart;
 	protected $_shipping_cost;
+	/**
+	 * 存储购物车的信息。
+	 */
+	protected $cartInfo; 
 	
 	/**
 	 * @return Int  得到cart_id
@@ -272,6 +276,49 @@ class Quote extends Service
 			return true;
 		}
 	}
+	/**
+	 * 得到购物车中的用户地址信息
+	 *
+	 */
+	public function getCartAddress(){
+		$email = '';
+		$first_name = '';
+		$last_name = '';
+		if(!Yii::$app->user->isGuest){
+			$identity 	= Yii::$app->user->identity;
+			$email 		= isset($identity['email']) ? $identity['email'] : '';
+			$first_name = isset($identity['first_name']) ? $identity['first_name'] : '';
+			$last_name  = isset($identity['last_name']) ? $identity['last_name'] : '';
+		}
+		$cart = $this->getCurrentCart();
+		$customer_email = isset($cart['customer_email']) ? $cart['customer_email'] : '';
+		$customer_firstname = isset($cart['customer_firstname']) ? $cart['customer_firstname'] : '';
+		$customer_lastname = isset($cart['customer_lastname']) ? $cart['customer_lastname'] : '';
+		$customer_telephone = isset($cart['customer_telephone']) ? $cart['customer_telephone'] : '';
+		$customer_address_country = isset($cart['customer_address_country']) ? $cart['customer_address_country'] : '';
+		$customer_address_state = isset($cart['customer_address_state']) ? $cart['customer_address_state'] : '';
+		$customer_address_city = isset($cart['customer_address_city']) ? $cart['customer_address_city'] : '';
+		$customer_address_zip = isset($cart['customer_address_zip']) ? $cart['customer_address_zip'] : '';
+		$customer_address_street1 = isset($cart['customer_address_street1']) ? $cart['customer_address_street1'] : '';
+		$customer_address_street2 = isset($cart['customer_address_street2']) ? $cart['customer_address_street2'] : '';
+	
+		$customer_email 	= $customer_email ? $customer_email : $email;
+		$customer_firstname = $customer_firstname ? $customer_firstname : $first_name;
+		$customer_lastname 	= $customer_lastname ? $customer_lastname : $last_name;
+		return [
+			'first_name' 	=> $customer_firstname,
+			'last_name' 	=> $customer_lastname,
+			'email' 		=> $customer_email,
+			'telephone' 	=> $customer_telephone,
+			'country' => $customer_address_country,
+			'state' => $customer_address_state,
+			'city' => $customer_address_city,
+			'zip' => $customer_address_zip,
+			'street1' => $customer_address_street1,
+			'street2' => $customer_address_street2,
+			
+		];
+	}
 	
 	/**
 	 * @property $shipping_method | String  传递的货运方式
@@ -285,64 +332,68 @@ class Quote extends Service
 	 */
 	public function getCartInfo($shipping_method='',$country='',$region='*'){
 		//echo 333;exit;
-		$cart_id = $this->getCartId();
-		if(!$cart_id){
-			return false;
-		}
-		$cart = $this->getCart();
-		$items_qty = $cart['items_count'];
-		if($items_qty <= 0){
-			return false;
-		}
-		$coupon_code = $cart['coupon_code'];
-		if(!$shipping_method){
-			$shipping_method = $cart['shipping_method'];
-		}
-		$cart_product_info = Yii::$service->cart->quoteItem->getCartProductInfo();
-		if(is_array($cart_product_info)){
-			$product_weight = $cart_product_info['product_weight'];
-			$products = $cart_product_info['products'];
-			$product_total = $cart_product_info['product_total'];
-			$base_product_total = $cart_product_info['base_product_total'];
-			if($products && $product_total){ 
-				$shippingCost   = $this->getShippingCost($shipping_method,$product_weight,$country,$region);
-				$currShippingCost = $shippingCost['currCost'];
-				$baseShippingCost = $shippingCost['baseCost'];
-				//echo 333;
-				//var_dump([$base_product_total,$product_total]);
-				//exit;
-				//echo $coupon_code;exit;
-				$couponCost		= $this->getCouponCost($base_product_total,$coupon_code);
-				
-				$baseDiscountCost = $couponCost['currCost'];
-				$currDiscountCost = $couponCost['baseCost'];
-				
-				$curr_grand_total	= $product_total + $currShippingCost - $currDiscountCost;
-				$base_grand_total	= $base_product_total + $baseShippingCost - $baseDiscountCost;
-				
-	 
-				return [
-					'store'			=> $cart['store'],				# store nme
-					'items_count'	=> $cart['items_count'],		# 购物车中的产品总数
-					'coupon_code'	=> $coupon_code,				# coupon卷码
-					
-					'grand_total' 	=> $base_grand_total,			# 当前货币总金额
-					'shipping_cost' => $currShippingCost,			# 当前货币，运费
-					'coupon_cost' 	=> $currDiscountCost,			# 当前货币，优惠券优惠金额
-					'product_total' => $product_total,				# 当前货币，购物车中产品的总金额
-					
-					'base_grand_total' 		=> $base_grand_total,	# 基础货币总金额
-					'base_shipping_cost' 	=> $baseShippingCost,	# 基础货币，运费
-					'base_coupon_cost' 		=> $baseDiscountCost,	# 基础货币，优惠券优惠金额
-					'base_product_total' 	=> $base_product_total, # 基础货币，购物车中产品的总金额
-					
-					
-					'products' 		=> $products,		#产品信息。
-					'product_weight'=> $product_weight,	#产品的总重量。
-				];
+		$cartInfoKey = $shipping_method.'-shipping-'.$country.'-country-'.$region.'-region';
+		if(!isset($this->cartInfo[$cartInfoKey])){
+			$cart_id = $this->getCartId();
+			if(!$cart_id){
+				return false;
 			}
-			
+			$cart = $this->getCart();
+			$items_qty = $cart['items_count'];
+			if($items_qty <= 0){
+				return false;
+			}
+			$coupon_code = $cart['coupon_code'];
+			if(!$shipping_method){
+				$shipping_method = $cart['shipping_method'];
+			}
+			$cart_product_info = Yii::$service->cart->quoteItem->getCartProductInfo();
+			if(is_array($cart_product_info)){
+				$product_weight = $cart_product_info['product_weight'];
+				$products = $cart_product_info['products'];
+				$product_total = $cart_product_info['product_total'];
+				$base_product_total = $cart_product_info['base_product_total'];
+				if($products && $product_total){ 
+					$shippingCost   = $this->getShippingCost($shipping_method,$product_weight,$country,$region);
+					$currShippingCost = $shippingCost['currCost'];
+					$baseShippingCost = $shippingCost['baseCost'];
+					//echo 333;
+					//var_dump([$base_product_total,$product_total]);
+					//exit;
+					//echo $coupon_code;exit;
+					$couponCost		= $this->getCouponCost($base_product_total,$coupon_code);
+					
+					$baseDiscountCost = $couponCost['currCost'];
+					$currDiscountCost = $couponCost['baseCost'];
+					
+					$curr_grand_total	= $product_total + $currShippingCost - $currDiscountCost;
+					$base_grand_total	= $base_product_total + $baseShippingCost - $baseDiscountCost;
+					
+		 
+					$this->cartInfo[$cartInfoKey] = [
+						'store'			=> $cart['store'],				# store nme
+						'items_count'	=> $cart['items_count'],		# 购物车中的产品总数
+						'coupon_code'	=> $coupon_code,				# coupon卷码
+						
+						'grand_total' 	=> $base_grand_total,			# 当前货币总金额
+						'shipping_cost' => $currShippingCost,			# 当前货币，运费
+						'coupon_cost' 	=> $currDiscountCost,			# 当前货币，优惠券优惠金额
+						'product_total' => $product_total,				# 当前货币，购物车中产品的总金额
+						
+						'base_grand_total' 		=> $base_grand_total,	# 基础货币总金额
+						'base_shipping_cost' 	=> $baseShippingCost,	# 基础货币，运费
+						'base_coupon_cost' 		=> $baseDiscountCost,	# 基础货币，优惠券优惠金额
+						'base_product_total' 	=> $base_product_total, # 基础货币，购物车中产品的总金额
+						
+						
+						'products' 		=> $products,		#产品信息。
+						'product_weight'=> $product_weight,	#产品的总重量。
+					];
+				}
+				
+			}
 		}
+		return $this->cartInfo[$cartInfoKey];
 	}
 	
 	/**

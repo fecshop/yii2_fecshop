@@ -91,8 +91,15 @@ class Address extends Service
 		];
 	}
 	
+	protected function actionCurrentAddress(){
+		
+		
+	}
 	
-	
+	/**
+	 * 
+	 *
+	 */
 	protected function actionCurrentAddressList(){
 		$arr = [];
 		if(!Yii::$app->user->isGuest){
@@ -121,13 +128,14 @@ class Address extends Service
 						$street2 = $one['street2'];
 						$is_default = $one['is_default'];
 						$city = $one['city'];
-						$state = Yii::$service->helper->country->getStateByContryCode($one['country'],$one['state']);
-						//$state = $one['state'];
+						
+						//$state = Yii::$service->helper->country->getStateByContryCode($one['country'],$one['state']);
+						$state = $one['state'];
 						$zip = $one['zip'];
 						$country = Yii::$service->helper->country->getCountryNameByKey($one['country']);
 						$str = $first_name.' '.$last_name.' '.$email.' '.
 								$street1.' '.$street2.' '.$city.' '.$state.' '.$country.' '.
-								$zip;
+								$zip.' '.$telephone;
 						if($is_default == 1){
 							$ii = 1;
 						}
