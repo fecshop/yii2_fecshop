@@ -36,9 +36,23 @@ return [
 		],
 		
 		'user' => [
-			'identityClass' => 'fecshop\models\mysqldb\Customer',
+			'class' 			=> 'fecshop\yii\web\User',
+			'identityClass' 	=> 'fecshop\models\mysqldb\Customer',
 			# 是否cookie 登录。
-			'enableAutoLogin' => false,
+			/**
+			 * @var boolean whether to enable cookie-based login. Defaults to false.
+			 * Note that this property will be ignored if [[enableSession]] is false.
+			 * 设置为true的好处为，当浏览器关掉在打开，可以自动登录。
+			 */
+			'enableAutoLogin' 	=> true,
+			
+			/** 
+			 * authTimeout => 56666, 
+			 * 这里请不要设置authTimeout，为了让customer账户session
+			 * 和cart的session保持一致，设置超时时间请统一在session组件
+			 * 中设置超时时间。
+			 */
+			//'authTimeout' 		=> 56666,
 		],
 		
 		'errorHandler' => [

@@ -61,7 +61,7 @@ class Customer extends Service
 	 * like :['email'=>'xxx@xxx.com','password'=>'xxxx']
 	 */
 	protected function actionLogin($data){
-		
+	
 		$model = new CustomerLogin;
 		$model->email 	 = $data['email'];
 		$model->password = $data['password'];

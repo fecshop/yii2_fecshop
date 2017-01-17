@@ -26,10 +26,11 @@ class Quote extends Service
 	/**
 	 * 存储购物车的信息。
 	 */
-	protected $cartInfo; 
-	
+	protected $cartInfo;
+
 	/**
 	 * @return Int  得到cart_id
+	 * Cart的session的超时时间由session组件决定。
 	 */
 	public function getCartId(){
 		if(!$this->_cart_id){
@@ -188,9 +189,11 @@ class Quote extends Service
 	/**
 	 * @property $cart_id | int
 	 * 设置cart_id类变量以及session中记录当前cartId的值
+	 * Cart的session的超时时间由session组件决定。
 	 */
-	protected function setCartId($cart_id){
+	protected function actionSetCartId($cart_id){
 		$this->_cart_id = $cart_id;
+		
 		Yii::$app->session->set(self::SESSION_CART_ID,$cart_id);
 	}
 	/**
@@ -514,15 +517,17 @@ class Quote extends Service
 						Yii::$service->cart->coupon->cancelCoupon($cart['coupon_code']);
 					}
 					# 将当前购物车产品表的cart_id 改成 登录用户对应的cart_id
-					Yii::$service->cart->quoteItem->updateCartId($new_cart_id,$cart_id);
-					# 当前的购物车删除掉
-					$cart->delete();
-					# 设置当前的cart_id
-					$this->setCartId($new_cart_id);
-					# 设置当前的cart
-					$this->setCart($customer_cart);
-					# 重新计算购物车中产品的个数
-					$this->computeCartInfo();
+					if($new_cart_id && $cart_id && ($new_cart_id != $cart_id)){
+						Yii::$service->cart->quoteItem->updateCartId($new_cart_id,$cart_id);
+						# 当前的购物车删除掉
+						$cart->delete();
+						# 设置当前的cart_id
+						$this->setCartId($new_cart_id);
+						# 设置当前的cart
+						$this->setCart($customer_cart);
+						# 重新计算购物车中产品的个数
+						$this->computeCartInfo();
+					}
 				}
 			}
 		}
