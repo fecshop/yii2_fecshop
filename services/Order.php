@@ -76,8 +76,30 @@ class Order extends Service
 		}
 	}
 	
+	protected function actionGetOrderInfoById($order_id){
+		if(!$order_id){
+			return ;
+		}
+		$one = MyOrder::findOne($order_id);
+		$primaryKey = $this->getPrimaryKey();
+		if(!isset($one[$primaryKey]) || empty($one[$primaryKey])){
+			return ;
+		}
+		
+		$order_info = [];
+		foreach($one as $k=>$v){
+			$order_info[$k] = $v;
+		}
+		$order_info['products'] = $this->getOrderItemsByOrderId($order_id);
+		return $order_info;
+	}
 	
-	
+	protected function actionGetOrderItemsByOrderId($order_id){
+		$items = MyOrderItem::find()->asArray()->where([
+			'order_id' => $order_id,
+		])->all();
+		return $items ;
+	}
 	/**
 	 * @property $filter|Array
 	 * @return Array;
@@ -104,13 +126,11 @@ class Order extends Service
 				$coll[$k] = $one;
 			}
 		}
-		//var_dump($one);
 		return [
 			'coll' => $coll,
 			'count'=> $query->count(),
 		];
 	}
-	
 	/**
 	 * @property $one|Array , save one data .
 	 * @return  Int  保存coupon成功后，返回保存的id。    
@@ -238,7 +258,12 @@ class Order extends Service
 		}else{
 			$is_guest = 1;
 		}
-		$myOrder['customer_id']				= $address['customer_id'];
+		if(!Yii::$app->user->isGuest){
+			$customer_id = Yii::$app->user->identity->id;
+		}else{
+			$customer_id = '';
+		}
+		$myOrder['customer_id']				= $customer_id;
 		$myOrder['customer_email']			= $address['email'];
 		$myOrder['customer_firstname']		= $address['first_name'];
 		$myOrder['customer_lastname']		= $address['last_name'];
@@ -328,7 +353,7 @@ class Order extends Service
 				$myOrderItem['sku'] = $item['sku'];
 				$myOrderItem['name'] = $item['name'];
 				$myOrderItem['custom_option_sku'] = $item['custom_option_sku'];
-				$myOrderItem['image'] = $item['product_image'];
+				$myOrderItem['image'] = isset($item['product_image']['main']['image']) ? $item['product_image']['main']['image'] : '' ;
 				$myOrderItem['weight'] = $item['product_weight'];
 				$myOrderItem['qty'] = $item['qty'];
 				$myOrderItem['row_weight'] = $item['product_row_weight'];

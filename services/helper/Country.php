@@ -116,21 +116,26 @@ class Country extends Service
 	/**
 	 * @property $countryCode |String 国家简码
 	 * @property $stateCode | String 省市简码
-	 * @return String OR Array 如果不传递省市简码，那么返回的是该国家对应的省市
-	 *		如果传递省市简码，传递的是省市的全称
+	 * @return String OR Array 如果不传递省市简码，那么返回的是该国家对应的省市数组
+	 *		如果传递省市简码，传递的是省市的名称
 	 */
 	
 	public function getStateByContryCode($countryCode,$stateCode=''){
-		$countrys = $this->getCountryStateArr();
+		$countryStates = $this->getCountryStateArr();
+		$returnStateArr = [];
+		$returnStateName = '';
 		if($countryCode){
 			if($stateCode){
-				if(isset($countrys[$countryCode][$stateCode]) && !empty($countrys[$countryCode][$stateCode])){
-					return $countrys[$countryCode][$stateCode];
+				if(isset($countryStates[$countryCode][$stateCode]) && !empty($countryStates[$countryCode][$stateCode])){
+					$returnStateName = $countryStates[$countryCode][$stateCode];
 				}
+				return $returnStateName ? $returnStateName : $stateCode;
+				
 			}else{
-				if(isset($countrys[$countryCode]) && !empty($countrys[$countryCode])){
-					return $countrys[$countryCode];
+				if(isset($countryStates[$countryCode]) && !empty($countryStates[$countryCode]) && is_array($countryStates[$countryCode])){
+					$returnStateArr = $countryStates[$countryCode];
 				}
+				return $returnStateArr;
 			}
 		}
 	}

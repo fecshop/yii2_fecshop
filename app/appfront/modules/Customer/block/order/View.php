@@ -18,8 +18,39 @@ use yii\base\InvalidValueException;
 class View {
 	
 	public function getLastData(){
-		return [
-		
-		];
+		$order_id = Yii::$app->request->get('order_id');
+		$order_info = $this->getCustomerOrderInfo($order_id);
+		return $order_info;
 	}
+	
+	public function getCustomerOrderInfo($order_id){
+		if($order_id){
+			$order_info = Yii::$service->order->getOrderInfoById($order_id);
+			if(isset($order_info['customer_id']) && !empty($order_info['customer_id'])){
+				$identity = Yii::$app->user->identity;
+				$customer_id = $identity->id;
+				if($order_info['customer_id'] == $customer_id){
+					$order_info['customer_address_state'] =Yii::$service->helper->country->getStateByContryCode($order_info['customer_address_country'],$order_info['customer_address_state']);
+					//echo $order_info['customer_address_state'];
+					$order_info['customer_address_country'] = Yii::$service->helper->country->getCountryNameByKey($order_info['customer_address_country']);
+					//echo $order_info['customer_address_country'].$order_info['customer_address_state'];
+					$currency_code = $order_info['order_currency_code'];
+					$order_info['currency_symbol'] = Yii::$service->page->currency->getSymbol($currency_code);
+					return $order_info;
+				}
+			}
+		}
+		
+		return [];
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

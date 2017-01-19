@@ -175,6 +175,7 @@ class QuoteItem extends Service
 								'custom_option'		=> $product_one['custom_option'],
 								'spu_options' 			=> $productSpuOptions,  
 							];
+							//var_dump($product_one['image']);exit;
 						}
 					}
 					$this->_cart_product_info[$cart_id] = [

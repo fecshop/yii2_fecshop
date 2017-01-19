@@ -1,12 +1,15 @@
+<?php
+use fecshop\app\appfront\helper\Format;
+?>
 <div class="main container two-columns-left">
 	<div class="col-main account_center">
 		<div class="std">
 			<div style="margin:19px 0 0">
 				<div class="my_account_order">
 					<div class="page-title title-buttons">
-						<h1>Order #intosmileEn000015519				pending				</h1>
+						<h1>Order #<?=  $increment_id ?>				<?=  $order_status ?>				</h1>
 					</div>
-					<p class="order-date">2016-10-13 17:24:42</p>
+					<p class="order-date"><?=  date('Y-m-d H:i:s',$created_at); ?></p>
 					<div class="col2-set order-info-box">
 						<div class="col-1">
 							<div class="box">
@@ -14,9 +17,9 @@
 								<h2>Shipping Address</h2>
 							</div>
 							<div class="box-content">
-								<address>firstname lastname<br>
-								street2<br>street1<br>city,state,TC,<br>
-								T:32423432432
+								<address><?=  $customer_firstname ?> <?=  $customer_lastname ?><br>
+								<?=  $customer_address_street1 ?><br><?=  $customer_address_street2 ?><br><?=  $customer_address_city ?>,<?=  $customer_address_state ?>,<?=  $customer_address_country ?><br>
+								T:<?=  $customer_telephone ?>
 
 								</address>
 							</div>
@@ -27,7 +30,7 @@
 									<h2>Shipping Method</h2>
 								</div>
 								<div class="box-content">
-								Free shipping( 7-20 work days) - HKBRAM             
+								<?=  $shipping_method ?>             
 								</div>
 							</div>				</div>
 						<div class="col-2">
@@ -36,7 +39,7 @@
 									<h2>Payment Method</h2>
 								</div>
 								<div class="box-content">
-									<p><strong>PayPal Website Payments Standard</strong></p>
+									<p><strong><?=  $payment_method ?></strong></p>
 								</div>
 							</div>				</div>
 					</div>
@@ -54,6 +57,7 @@
 							<thead>
 								<tr class="first last">
 									<th>Product Name</th>
+									<th>Product Image</th>
 									<th>Sku</th>
 									<th class="a-right">Price</th>
 									<th class="a-center">Qty</th>
@@ -62,64 +66,79 @@
 							</thead>
 							<tfoot>
 								<tr class="subtotal first">
-									<td class="a-right" colspan="4">Subtotal</td>
-									<td class="last a-right"><span class="price">$7.99</span></td>
+									<td class="a-right" colspan="5">Subtotal</td>
+									<td class="last a-right"><span class="price"><?= $currency_symbol ?><?=  Format::price($subtotal); ?></span></td>
 								</tr>
 								<tr class="shipping">
-									<td class="a-right" colspan="4">Shipping &amp; Handling</td>
+									<td class="a-right" colspan="5">Shipping &amp; Handling</td>
 									<td class="last a-right">
-										<span class="price">$0.00</span>    
+										<span class="price"><?= $currency_symbol ?><?=  Format::price($shipping_total); ?></span>    
 									</td>
 								</tr>
 								<tr class="discount">
-									<td class="a-right" colspan="4">Discount</td>
+									<td class="a-right" colspan="5">Discount</td>
 									<td class="last a-right">
-										<span class="price">$0.00</span>    
+										<span class="price"><?= $currency_symbol ?><?=  Format::price($subtotal_with_discount); ?></span>    
 									</td>
 								</tr>
 								<tr class="grand_total last">
-									<td class="a-right" colspan="4">
+									<td class="a-right" colspan="5">
 										<strong>Grand Total</strong>
 									</td>
 									<td class="last a-right">
-										<strong><span class="price">$7.99</span></strong>
+										<strong><span class="price"><?= $currency_symbol ?><?=  Format::price($grand_total); ?></span></strong>
 									</td>
 								</tr>
 							</tfoot>
-							<tbody class="odd"><tr id="order-item-row-145548" class="border first">
-									<td>
-										<h3 class="product-name">Creative Crystal Skull Shot Glass Cup Novetly </h3>
-										<dl class="item-options">
+							<tbody class="odd">
+								<?php if(is_array($products) && !empty($products)){  ?>
+									<?php foreach($products as $product){ ?>
+									<tr id="order-item-row" class="border first">	
+										<td>
+											<a href="<?=  Yii::$service->url->getUrl($product['redirect_url']) ; ?>">
+												<h3 class="product-name">
+													<?= $product['name'] ?>
+												</h3>
+											</a>
+											<dl class="item-options">
+												
+											</dl>
 											
-										</dl>
-										
-									</td>
-									<td>grdx01001</td>
-									<td class="a-right">
-										<span class="price-excl-tax">
-											<span class="cart-price">
-												<span class="price">$7.99</span>                    
+										</td>
+										<td>
+											<a href="<?=  Yii::$service->url->getUrl($product['redirect_url']) ; ?>">
+												<img src="<?= Yii::$service->product->image->getResize($product['image'],[100,100],false) ?>" alt="<?= $product['name'] ?>" width="75" height="75">
+											</a>
+										</td>
+										<td><?= $product['sku'] ?></td>
+										<td class="a-right">
+											<span class="price-excl-tax">
+												<span class="cart-price">
+													<span class="price"><?= $currency_symbol ?><?= Format::price($product['price']); ?></span>                    
+												</span>
 											</span>
-										</span>
-										<br>
-									</td>
-									<td class="a-right">
-										<span class="nobr">Ordered:<strong>1</strong><br>
-										</span>
-									</td>
-									<td class="a-right last">
-										<span class="price-excl-tax">
-											<span class="cart-price">
-												<span class="price">$7.99</span>                    
+											<br>
+										</td>
+										<td class="a-right">
+											<span class="nobr" ><strong><?= $product['qty'] ?></strong><br>
 											</span>
-										</span>
-										<br>
-									</td>
-								</tr></tbody>								   
+										</td>
+										<td class="a-right last">
+											<span class="price-excl-tax">
+												<span class="cart-price">
+													<span class="price"><?= $currency_symbol ?><?= Format::price($product['row_total']); ?></span>                    
+												</span>
+											</span>
+											<br>
+										</td>
+									</tr>
+									<?php } ?>
+								<?php } ?>
+								</tbody>								   
 						</table>
 
 						<div class="buttons-set">
-							<p class="back-link"><a href="http://www.intosmile.com/customer/order/index"><small>? </small>Back to My Orders</a></p>
+							<p class="back-link"><a href="<?= Yii::$service->url->getUrl('customer/order/index'); ?>"><small>? </small>Back to My Orders</a></p>
 						</div>
 					</div>
 				</div>

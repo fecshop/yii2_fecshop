@@ -34,9 +34,11 @@ class Placeorder{
 			# 检查前台传递的数据的完整性
 			if($this->checkOrderInfoAndInit($post)){
 				# 如果游客用户勾选了注册账号，则注册，登录，并把地址写入到用户的address中
-				$gus_status = $this->guestCreateAndLoginAccountAndSaveAddress($post);
-				if($gus_status){
+				$gus_status = $this->guestCreateAndLoginAccount($post);
+				$save_address_status = $this->saveNewAddress($post);
+				if($gus_status && $save_address_status){
 					# 如果是游客，则更新信息到cart中存储。
+					
 					$this->updateGuestCart($post);
 					# 设置checkout type
 					$serviceOrder = Yii::$service->order;
@@ -59,7 +61,7 @@ class Placeorder{
 	 * 如果游客选择了创建账户，并且输入了密码，则使用address email作为账号，
 	 * 进行账号的注册和登录。
 	 */
-	public function guestCreateAndLoginAccountAndSaveAddress($post){
+	public function guestCreateAndLoginAccount($post){
 		$create_account = $post['create_account'];
 		$billing		= $post['billing'];
 		if(!is_array($billing) || empty($billing)){
@@ -96,13 +98,18 @@ class Placeorder{
 				]);
 			}
 		}
-		/**
-		 * 保存货运地址到customer address ，然后把生成的
-		 * address_id 写入到cart中。
-		 * shipping method写入到cart中
-		 * payment method 写入到cart中
-		 */
+		return true;
+	}
+	/**
+	 * @property $post | Array
+	 * 登录用户，保存货运地址到customer address ，然后把生成的
+	 * address_id 写入到cart中。
+	 * shipping method写入到cart中
+	 * payment method 写入到cart中
+	 */
+	public function saveNewAddress($post){
 		if(!Yii::$app->user->isGuest){
+			$billing		= $post['billing'];
 			$address_id = $post['address_id'];
 			if(!$address_id){
 				$identity = Yii::$app->user->identity;
@@ -134,6 +141,7 @@ class Placeorder{
 		}
 		return true;
 	}
+	
 	/**
 	 * 如果是游客，那么保存货运地址到购物车表。
 	 */
