@@ -32,14 +32,39 @@ class Item extends Service
 		])->all();
 		foreach($items as $k=>$one){
 			$product_id = $one['product_id'];
-			$product_one = Yii::$service->product->getByPrimaryKey($product_id);	
+			$product_one = Yii::$service->product->getByPrimaryKey($product_id);
+				
 			$productSpuOptions = $this->getProductSpuOptions($product_one);
+			//var_dump($productSpuOptions);
 			$items[$k]['spu_options'] = $productSpuOptions;
 			$items[$k]['custom_option']	= $product_one['custom_option'];
 			$items[$k]['custom_option_info'] = $this->getProductOptions($items[$k]);
-				
+			$items[$k]['image'] = $this->getProductImage($product_one,$one);	
+		
 		}
 		return $items ;
+	}
+	/**
+	 * @property $product_one | Object, product model
+	 * @property $item_one | Array , order item
+	 * 得到产品的图片。
+	 */
+	public function getProductImage($product_one,$item_one){
+		$custom_option = $product_one['custom_option'];
+		$custom_option_sku = $item_one['custom_option_sku'];
+		$image = '';
+		# 设置图片
+		if(isset($product_one['image']['main']['image'])){
+			$image = $product_one['image']['main']['image'];
+		}
+		$custom_option_image = isset($custom_option[$custom_option_sku]['image']) ? $custom_option[$custom_option_sku]['image'] : '';
+		if($custom_option_image){
+			$image = $custom_option_image;
+		}
+		if(!$image){
+			$image = $item_one['image']	;
+		}
+		return $image;
 	}
 	/**
 	 * @property $item_one | Array , order item
