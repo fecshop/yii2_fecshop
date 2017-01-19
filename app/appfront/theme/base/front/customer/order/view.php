@@ -18,7 +18,7 @@ use fecshop\app\appfront\helper\Format;
 							</div>
 							<div class="box-content">
 								<address><?=  $customer_firstname ?> <?=  $customer_lastname ?><br>
-								<?=  $customer_address_street1 ?><br><?=  $customer_address_street2 ?><br><?=  $customer_address_city ?>,<?=  $customer_address_state ?>,<?=  $customer_address_country ?><br>
+								<?=  $customer_address_street1 ?><br><?=  $customer_address_street2 ?><br><?=  $customer_address_city ?>,<?=  $customer_address_state_name ?>,<?=  $customer_address_country_name ?><br>
 								T:<?=  $customer_telephone ?>
 
 								</address>
@@ -100,6 +100,15 @@ use fecshop\app\appfront\helper\Format;
 													<?= $product['name'] ?>
 												</h3>
 											</a>
+											<?php  if(is_array($product['custom_option_info'])){  ?>
+											<ul>
+												<?php foreach($product['custom_option_info'] as $label => $val){  ?>
+													
+													<li><?= $label ?>:<?= $val ?> </li>
+													
+												<?php }  ?>
+											</ul>
+											<?php }  ?>
 											<dl class="item-options">
 												
 											</dl>

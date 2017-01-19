@@ -85,21 +85,18 @@ class Order extends Service
 		if(!isset($one[$primaryKey]) || empty($one[$primaryKey])){
 			return ;
 		}
-		
 		$order_info = [];
 		foreach($one as $k=>$v){
 			$order_info[$k] = $v;
 		}
-		$order_info['products'] = $this->getOrderItemsByOrderId($order_id);
+		$order_info['customer_address_state_name'] =Yii::$service->helper->country->getStateByContryCode($order_info['customer_address_country'],$order_info['customer_address_state']);
+		$order_info['customer_address_country_name'] = Yii::$service->helper->country->getCountryNameByKey($order_info['customer_address_country']);
+		$order_info['currency_symbol'] = Yii::$service->page->currency->getSymbol($order_info['order_currency_code']);
+		$order_info['products'] = Yii::$service->order->item->getByOrderId($order_id);
 		return $order_info;
 	}
 	
-	protected function actionGetOrderItemsByOrderId($order_id){
-		$items = MyOrderItem::find()->asArray()->where([
-			'order_id' => $order_id,
-		])->all();
-		return $items ;
-	}
+	
 	/**
 	 * @property $filter|Array
 	 * @return Array;
@@ -286,7 +283,7 @@ class Order extends Service
 		if($orderModel[$this->getPrimaryKey()]){
 			$orderModel['increment_id'] = $increment_id ;
 			$orderModel->save();
-			$this->saveOrderItem($cartInfo['products'],$order_id,$cartInfo['store']);
+			Yii::$service->order->item->saveOrderItems($cartInfo['products'],$order_id,$cartInfo['store']);
 			$this->setSessionIncrementId($increment_id);
 			
 			return true;
@@ -313,59 +310,7 @@ class Order extends Service
 	protected function actionRemoveSessionIncrementId(){
 		return Yii::$app->session->remove(self::CURRENT_ORDER_CREAMENT_ID);
 	}
-	/**
-	 * @property $items | Array , example:
-	 *	$itmes = [
-	 *		[
-	 *			'item_id' => $one['item_id'],
-	 *			'product_id' 		=> $product_id ,
-	 *			'sku'				=> $product_one['sku'],
-	 *			'name'				=> Yii::$service->store->getStoreAttrVal($product_one['name'],'name'),
-	 *			'qty' 				=> $qty ,
-	 *			'custom_option_sku' => $custom_option_sku ,
-	 *			'product_price' 	=> $product_price ,
-	 *			'product_row_price' => $product_row_price ,
-	 *			
-	 *			'base_product_price' 	=> $base_product_price ,
-	 *			'base_product_row_price' => $base_product_row_price ,
-	 *			
-	 *			'product_name'		=> $product_one['name'],
-	 *			'product_weight'	=> $p_wt,
-	 *			'product_row_weight'=> $p_wt * $qty,
-	 *			'product_url'		=> $product_one['url_key'],
-	 *			'product_image'		=> $product_one['image'],
-	 *			'custom_option'		=> $product_one['custom_option'],
-	 *			'spu_options' 			=> $productSpuOptions,
-	 *		]
-	 *	];
-	 * @property $order_id | Int 
-	 * 保存订单的item信息
-	*/
-	protected function saveOrderItem($items,$order_id,$store){
-		if(is_array($items) && !empty($items) && $order_id && $store){
-			foreach($items as $item){
-				$myOrderItem = new MyOrderItem;
-				$myOrderItem['order_id'] = $order_id;
-				$myOrderItem['store'] = $store;
-				$myOrderItem['created_at'] = time();
-				$myOrderItem['updated_at'] = time();
-				$myOrderItem['product_id'] = $item['product_id'];
-				$myOrderItem['sku'] = $item['sku'];
-				$myOrderItem['name'] = $item['name'];
-				$myOrderItem['custom_option_sku'] = $item['custom_option_sku'];
-				$myOrderItem['image'] = isset($item['product_image']['main']['image']) ? $item['product_image']['main']['image'] : '' ;
-				$myOrderItem['weight'] = $item['product_weight'];
-				$myOrderItem['qty'] = $item['qty'];
-				$myOrderItem['row_weight'] = $item['product_row_weight'];
-				$myOrderItem['price'] = $item['product_price'];
-				$myOrderItem['base_price'] = $item['product_row_price'];
-				$myOrderItem['row_total'] = $item['product_row_price'];
-				$myOrderItem['base_row_total'] = $item['base_product_row_price'];
-				$myOrderItem['redirect_url'] = $item['product_url'];
-				$myOrderItem->save();
-			}
-		}
-	}
+	
 	/**
 	 * @property $order_id | Int
 	 * @return $increment_id | Int

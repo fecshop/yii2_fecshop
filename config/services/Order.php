@@ -26,7 +26,9 @@ return [
 		],
 		# ×Ó·þÎñ
 		'childService' => [
-			
+			'item' => [
+				'class' => 'fecshop\services\order\Item',
+			],
 		],
 	],
 ];

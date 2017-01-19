@@ -68,7 +68,7 @@ class Index {
 				$custom_option = isset($product_one['custom_option']) ? $product_one['custom_option'] : '';
 				$custom_option_sku = $product_one['custom_option_sku'];
 				# 将在产品页面选择的颜色尺码等属性显示出来。
-				$custom_option_info_arr = $this->getProductOptions($product_one,$custom_option_sku);
+				$custom_option_info_arr = $this->getProductOptions($product_one);
 				$cart_info['products'][$k]['custom_option_info'] = $custom_option_info_arr;
 				# 设置相应的custom option 对应的图片
 				$custom_option_image = isset($custom_option[$custom_option_sku]['image']) ? $custom_option[$custom_option_sku]['image'] : '';
@@ -84,7 +84,7 @@ class Index {
 	/**
 	 * 将产品页面选择的颜色尺码等显示出来，包括custom option 和spu options部分的数据
 	 */
-	public function getProductOptions($product_one,$custom_option_sku){
+	public function getProductOptions($product_one){
 		$custom_option_info_arr = [];
 		$custom_option = isset($product_one['custom_option']) ? $product_one['custom_option'] : '';
 		$custom_option_sku = $product_one['custom_option_sku'];
