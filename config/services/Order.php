@@ -9,11 +9,11 @@ return [
 	'order' => [
 		'class' => 'fecshop\services\Order',
 		'paymentStatus' => [
-			'pending' => 'pending', #Î´¸¶¿î¶©µ¥×´Ì¬
-			'processing' => 'processing' # ÒÑ¸¶¿î¶©µ¥×´Ì¬
+			'pending' => 'pending', #æœªä»˜æ¬¾è®¢å•çŠ¶æ€
+			'processing' => 'processing' # å·²ä»˜æ¬¾è®¢å•çŠ¶æ€
 		],
 		
-		'requiredAddressAttr' => [ # ±ØÌîµÄ¶©µ¥×Ö¶Î¡£
+		'requiredAddressAttr' => [ # å¿…å¡«çš„è®¢å•å­—æ®µã€‚
 			'first_name',
 			'last_name',
 			'email',
@@ -24,7 +24,7 @@ return [
 			'state',
 			'zip'
 		],
-		# ×Ó·þÎñ
+		# å­æœåŠ¡
 		'childService' => [
 			'item' => [
 				'class' => 'fecshop\services\order\Item',

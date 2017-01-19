@@ -8,7 +8,7 @@
 return [
 	'cart' => [
 		'class' => 'fecshop\services\Cart',
-		# ×Ó·þÎñ
+		# å­æœåŠ¡
 		'childService' => [
 			'quote' => [
 				'class' => 'fecshop\services\cart\Quote',

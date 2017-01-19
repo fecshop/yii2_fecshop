@@ -24,7 +24,7 @@ class Item extends Service
 	/**
 	 * @property $order_id | Int 
 	 * @return Array
-	 * Í¨¹ıorder_id µÃµ½ËùÓĞµÄitems
+	 * é€šè¿‡order_id å¾—åˆ°æ‰€æœ‰çš„items
 	 */
 	protected function actionGetByOrderId($order_id){
 		$items = MyOrderItem::find()->asArray()->where([
@@ -47,13 +47,13 @@ class Item extends Service
 	/**
 	 * @property $product_one | Object, product model
 	 * @property $item_one | Array , order item
-	 * µÃµ½²úÆ·µÄÍ¼Æ¬¡£
+	 * å¾—åˆ°äº§å“çš„å›¾ç‰‡ã€‚
 	 */
 	public function getProductImage($product_one,$item_one){
 		$custom_option = $product_one['custom_option'];
 		$custom_option_sku = $item_one['custom_option_sku'];
 		$image = '';
-		# ÉèÖÃÍ¼Æ¬
+		# è®¾ç½®å›¾ç‰‡
 		if(isset($product_one['image']['main']['image'])){
 			$image = $product_one['image']['main']['image'];
 		}
@@ -68,9 +68,9 @@ class Item extends Service
 	}
 	/**
 	 * @property $item_one | Array , order item
-	 * Í¨¹ı$item_one µÄ$item_one['custom_option_sku']£¬$item_one['custom_option'] , $item_one['spu_options']
+	 * é€šè¿‡$item_one çš„$item_one['custom_option_sku']ï¼Œ$item_one['custom_option'] , $item_one['spu_options']
 	 * @return Array
-	 * ½«spuµÄÑ¡ÔñÊôĞÔºÍ×Ô¶¨ÒåÊôĞÔcustom_option ×éºÏÆğÀ´£¬·µ»ØÒ»¸öÍ³Ò»µÄÊı×é
+	 * å°†spuçš„é€‰æ‹©å±æ€§å’Œè‡ªå®šä¹‰å±æ€§custom_option ç»„åˆèµ·æ¥ï¼Œè¿”å›ä¸€ä¸ªç»Ÿä¸€çš„æ•°ç»„
 	 */
 	public function getProductOptions($item_one){
 		$custom_option_sku = $item_one['custom_option_sku'];	
@@ -96,11 +96,11 @@ class Item extends Service
 	}
 	
 	/**
-	 * @property $productOb | Object£¬ÀàĞÍ£º\fecshop\models\mongodb\Product
-	 * µÃµ½²úÆ·µÄspu¶ÔÓ¦µÄÊôĞÔÒÔ¼°Öµ¡£
-	 * ¸ÅÄî - spu options£ºµ±¶à¸ö²úÆ·ÊÇÍ¬Ò»¸öspu£¬µ«ÊÇ²»Í¬µÄskuµÄÊ±ºò£¬ËûÃÇµÄ²úÆ·±íÀïÃæµÄ
-	 * spu attr µÄÖµÊÇ²»Í¬µÄ£¬Æ©Èç¶ÔÓ¦Ğ¬×Ó£¬size ºÍ color ¾ÍÊÇspu attr£¬¶ÔÓÚÍ¬Ò»¿îĞ¬×Ó£¬ËûÃÇ
-	 * ÊÇÍ¬Ò»¸öspu£¬¶ÔÓÚ³ßÂë£¬ÑÕÉ«²»Í¬µÄĞ¬×Ó£¬ÊÇ²»Í¬µÄsku£¬ËûÃÇµÄspu attr ¾ÍÊÇ color ºÍ size¡£
+	 * @property $productOb | Objectï¼Œç±»å‹ï¼š\fecshop\models\mongodb\Product
+	 * å¾—åˆ°äº§å“çš„spuå¯¹åº”çš„å±æ€§ä»¥åŠå€¼ã€‚
+	 * æ¦‚å¿µ - spu optionsï¼šå½“å¤šä¸ªäº§å“æ˜¯åŒä¸€ä¸ªspuï¼Œä½†æ˜¯ä¸åŒçš„skuçš„æ—¶å€™ï¼Œä»–ä»¬çš„äº§å“è¡¨é‡Œé¢çš„
+	 * spu attr çš„å€¼æ˜¯ä¸åŒçš„ï¼Œè­¬å¦‚å¯¹åº”é‹å­ï¼Œsize å’Œ color å°±æ˜¯spu attrï¼Œå¯¹äºåŒä¸€æ¬¾é‹å­ï¼Œä»–ä»¬
+	 * æ˜¯åŒä¸€ä¸ªspuï¼Œå¯¹äºå°ºç ï¼Œé¢œè‰²ä¸åŒçš„é‹å­ï¼Œæ˜¯ä¸åŒçš„skuï¼Œä»–ä»¬çš„spu attr å°±æ˜¯ color å’Œ sizeã€‚
 	 */
 	protected function getProductSpuOptions($productOb){
 		$custom_option_info_arr = [];
@@ -150,7 +150,7 @@ class Item extends Service
 	 *		]
 	 *	];
 	 * @property $order_id | Int 
-	 * ±£´æ¶©µ¥µÄitemĞÅÏ¢
+	 * ä¿å­˜è®¢å•çš„itemä¿¡æ¯
 	*/
 	protected function actionSaveOrderItems($items,$order_id,$store){
 		if(is_array($items) && !empty($items) && $order_id && $store){
