@@ -136,9 +136,9 @@ use fecshop\app\appfront\helper\Format;
 								<?php } ?>
 								</tbody>								   
 						</table>
-
+						<br/>
 						<div class="buttons-set">
-							<p class="back-link"><a href="<?= Yii::$service->url->getUrl('customer/order/index'); ?>"><small>? </small>Back to My Orders</a></p>
+							<p class="back-link"><a href="<?= Yii::$service->url->getUrl('customer/order/index'); ?>"><small> « </small>Back to My Orders</a></p>
 						</div>
 					</div>
 				</div>
