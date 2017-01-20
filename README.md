@@ -22,9 +22,9 @@ Fecshop 全称为Fancy ECommerce Shop，是基于php Yii2框架之上开发的�
 性能方面的要求越来越高，Fecshop采用了nosql和mysql结合的方式，
 关系型表放到mysql中，譬如优惠券，购物车，订单等，
 非关系型数据表（非关系型代表不会出现多表强事务类型操作）
-放到mysql中，缓存用redis，搜索用ElasticSearch（目前用的
-mongodb的fullTextSearch，mongodb的搜索有分词功能，
-相对来说可以应付一般的搜索）。
+放到mongodb中，缓存用redis，搜索目前用的是mongodb的FullTextSearch功能，
+支持一些主流语言的分词与搜索，不过目前不支持中文 切词 搜索，
+后期扩展一下用ElasticSearch来进行搜索（ElasticSearch有中文插件，安装后支持中文分词）。
 
 
 作者QQ：2358269014
