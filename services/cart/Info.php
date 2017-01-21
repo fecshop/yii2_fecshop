@@ -23,18 +23,18 @@ class Info extends Service
 	public  function validateProduct($item,$product){
 		$qty 				= $item['qty'];
 		$product_id 		= $item['product_id'];
-		# ÑéÖ¤Ìá½»²úÆ·Êý¾Ý
-		# ÑéÖ¤²úÆ·ÊÇ·ñ´æÔÚ
+		# éªŒè¯æäº¤äº§å“æ•°æ®
+		# éªŒè¯äº§å“æ˜¯å¦å­˜åœ¨
 		if(!$product['sku']){
 			Yii::$service->helper->errors->add('this product is not exist');
 			return false;
 		}
-		# ÑéÖ¤¿â´æ ÊÇ·ñ¿â´æÂú×ã£¿
+		# éªŒè¯åº“å­˜ æ˜¯å¦åº“å­˜æ»¡è¶³ï¼Ÿ
 		$canSale = Yii::$service->product->info->productIsCanSale($product,$qty);
 		if(!$canSale){
 			return false;
 		}
-		# ÑéÖ¤²úÆ·ÊÇ·ñ
+		# éªŒè¯äº§å“æ˜¯å¦
 		if($product['status'] != 1){
 			Yii::$service->helper->errors->add('product is not active');
 			return false;

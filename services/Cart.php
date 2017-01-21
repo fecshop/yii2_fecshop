@@ -29,22 +29,25 @@ class Cart extends Service
 	 *		'custom_option_sku' => ['color'=>'red','size'=>'l'],
 	 *		'qty' 				=> 22,
 	 * ];
+	 * 注意： $item['custom_option_sku'] 除了为上面的数组格式，还可以为字符串
+	 * 为字符串的时候，字符串标示的就是产品的custom option  sku
 	 */
 	protected function actionAddProductToCart($item){
 		$product = Yii::$service->product->getByPrimaryKey($item['product_id']);
 		$productValidate = Yii::$service->cart->info->validateProduct($item,$product);
 		if(!$productValidate){
+			$get = Yii::$service->helper->errors->get();
 			return false;
 		}
-		//echo $item['custom_option_sku'];
 		if(isset($item['custom_option_sku']) && !empty($item['custom_option_sku'])){
-			$custom_option_sku = Yii::$service->cart->info->getCustomOptionSku($item,$product);
-			if(!$custom_option_sku){
-				return false;
+			if(is_array($item['custom_option_sku'])){
+				$custom_option_sku = Yii::$service->cart->info->getCustomOptionSku($item,$product);
+				if(!$custom_option_sku){
+					return false;
+				}
 			}
 			$item['custom_option_sku'] = $custom_option_sku;
 		}
-		
 		$innerTransaction = Yii::$app->db->beginTransaction();
 		try {
 			Yii::$service->cart->quoteItem->addItem($item);

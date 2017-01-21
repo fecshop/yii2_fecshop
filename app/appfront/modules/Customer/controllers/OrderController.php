@@ -38,6 +38,11 @@ class OrderController extends AppfrontController
 		return $this->render($this->action->id,$data);
 	}
 	
+	public function actionReorder(){
+		$data = $this->getBlock()->getLastData();
+		return $this->render($this->action->id,$data);
+	}
+	
 }
 
 
