@@ -23,6 +23,7 @@ class Store extends Service
 	 */
 	public $stores; 
 	
+	public $store;
 	/**
 	 * current store language,for example: en_US,fr_FR 
 	 */
@@ -47,6 +48,9 @@ class Store extends Service
 	 * current language code example : fr  es cn ru.
 	 */
 	public $currentLangCode;
+	
+	public $thirdLogin;
+	
 	/**
 	 *	Bootstrap:init website,  class property $currentLang ,$currentTheme and $currentStore.
 	 *  if you not config this ,default class property will be set.
@@ -62,6 +66,7 @@ class Store extends Service
 				if($host[1] == $store_code){
 					$this->html5DevideCheckAndRedirect($store_code,$store);
 					Yii::$service->store->currentStore = $store_code;
+					Yii::$service->store->store = $store;
 					if(isset($store['language']) && !empty($store['language'])){
 						Yii::$service->store->currentLang = $store['language'];
 						Yii::$service->store->currentLangCode = Yii::$service->fecshoplang->getLangCodeByLanguage($store['language']);

@@ -51,6 +51,15 @@ return [
 			'wholesale' => [
 				'class' 		=> 'fecshop\services\customer\Wholesale',
 			],
+			
+			'facebook' => [
+				'class' 		=> 'fecshop\services\customer\Facebook',
+				
+			],
+			'google' => [
+				'class' 		=> 'fecshop\services\customer\Google',
+			
+			],
 		],
 	],
 ];

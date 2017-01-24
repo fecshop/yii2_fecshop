@@ -162,6 +162,12 @@ class AccountController extends AppfrontController
 		return $this->render($this->action->id,$data);
 	}
 	
+	public function actionFacebook(){
+		
+	}
+	public function actionGoogle(){
+		
+	}
 }
 
 

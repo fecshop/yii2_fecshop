@@ -13,6 +13,7 @@ use fec\helpers\CRequest;
 use yii\base\InvalidValueException;
 use fecshop\app\appfront\helper\mailer\Email;
 
+
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
@@ -27,6 +28,8 @@ class Login {
 		return [
 			'loginPageCaptcha' => $loginPageCaptcha,
 			'email' => $email,
+			'googleLoginUrl' => Yii::$service->customer->google->getLoginUrl('customer/google/loginv'),
+			'facebookLoginUrl' => Yii::$service->customer->facebook->getLoginUrl('customer/facebook/loginv'),
 		];
 	}
 	
@@ -75,4 +78,7 @@ class Login {
 			Email::sendLoginEmail($emailAddress);
 		}
 	}
+	
+	
+	
 }

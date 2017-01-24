@@ -893,20 +893,25 @@ button.pinkBtn span {
 
 .account-login .registered-users .buttons-set button {
     font: bold 14px/35px Segoeui-Bold,Myriad Pro,Verdana,serif;
-    margin: -55px 0 0 20px;
-    position: absolute;
+    margin: 0 0 0 -3px;
    
 }
 
 
 .account-login .registered-users .buttons-set a.f-left {
-     color: #777;
+    color: #777;
     font-size: 12px;
     line-height: 35px;
-    margin: -53px 0 0 200px;
+    margin: 4px 0 0 30px;
     position: absolute;
 }
 
+.registered-users #js_registBtn{
+	width:160px;
+}
+.fago_login{
+	margin:18px 0 0 -3px;
+}
 
 .account-create  h1 {
     border-bottom: 1px solid #ddd;
