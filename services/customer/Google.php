@@ -25,7 +25,12 @@ class Google extends Service
 	
 	# µÃµ½¹È¸èµÇÂ¼µÄurl
 	public function getLoginUrl($urlKey){
-		
+		Global $googleapiinfo;
+		$thirdLogin = Yii::$service->store->thirdLogin;
+		//var_dump($thirdLogin);
+		//echo 1111;
+		$googleapiinfo['GOOGLE_CLIENT_ID'] = isset($thirdLogin['google']['CLIENT_ID']) ? $thirdLogin['google']['CLIENT_ID'] : '';
+		$googleapiinfo['GOOGLE_CLIENT_SECRET'] = isset($thirdLogin['google']['CLIENT_SECRET']) ? $thirdLogin['google']['CLIENT_SECRET'] : '';
 		//echo $lib_google_base.'/Social.php';exit;
 		$lib_google_base = Yii::getAlias("@fecshop/lib/google");
 		include $lib_google_base.'/Social.php';

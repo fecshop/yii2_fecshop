@@ -103,6 +103,7 @@ class Store extends Service
 					 * current domian is config is store config.
 					 */
 					$init_compelte = 1;
+					$this->thirdLogin = $store['thirdLogin'];
 					break;
 				}
 			}

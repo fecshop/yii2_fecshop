@@ -20,16 +20,25 @@ use fecshop\app\appfront\modules\AppfrontController;
  */
 class GoogleController extends AppfrontController
 {
-   
+   public $enableCsrfValidation = false;
 	
 	public function actionLoginv(){
-		Session::set("logintype","google");
-		$lib_google_base = Yii::getAlias("@common/lib/google");
-		include $lib_google_base.'/Social.php';
-		$redirectUrl = Url::getUrl("google/account/loginv");
-		$Social_obj= new \Social($redirectUrl);
-		$user = $Social_obj->google();
 		
+		Yii::$app->session->set("logintype","google");
+		$thirdLogin = Yii::$service->store->thirdLogin;
+		//var_dump($thirdLogin);
+		//echo 1111;
+		$googleapiinfo['GOOGLE_CLIENT_ID'] = isset($thirdLogin['google']['CLIENT_ID']) ? $thirdLogin['google']['CLIENT_ID'] : '';
+		$googleapiinfo['GOOGLE_CLIENT_SECRET'] = isset($thirdLogin['google']['CLIENT_SECRET']) ? $thirdLogin['google']['CLIENT_SECRET'] : '';
+		$lib_google_base = Yii::getAlias("@fecshop/lib/google");
+		
+		include $lib_google_base.'/Social.php';
+		$urlKey = "customer/google/loginv";
+		$redirectUrl = Yii::$service->url->getUrl($urlKey);
+		$Social_obj= new \Social($redirectUrl);
+		
+		$user = $Social_obj->google();
+		var_dump($user);exit;
 		if(is_array($user) && !empty($user)){
 			$fullname = $user['name'];
 			$email = $user['email'];
@@ -41,6 +50,7 @@ class GoogleController extends AppfrontController
 	}
 	
 	# googleÕË»§µÇÂ¼
+	# http://fecshop.appfront.fancyecommerce.com/index.php/customer/google/login
 	public function accountLogin($full_name,$email){
 		
 		$name_arr = explode(" ",$full_name);
@@ -52,7 +62,8 @@ class GoogleController extends AppfrontController
 			'email' 		=>$email,
 		
 		];
-		User::registerThirdPartyAccountAndLogin($user,"google");
+		var_dump($user);exit;
+		//User::registerThirdPartyAccountAndLogin($user,"google");
 			
 		
 		echo "<script>
