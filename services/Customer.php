@@ -329,4 +329,62 @@ class Customer extends Service
 		return $arr;
 	}
 	
+	
+	
+	#2. 创建第三方用户的账户，密码自动生成
+	/**
+	 * @property  $user | Array ,example:
+	 * ['first_name' => $first_name,'last_name' => $last_name,'email' => $email,]
+	 * @property  $type | String 代表第三方登录的名称，譬如google，facebook
+	 * @return boolean
+	 * 
+	 */
+	protected function actionRegisterThirdPartyAccountAndLogin($user,$type){
+		if(!(isset($user['password']) && $user['password'] )){
+			$user['password'] = $this->getRandomPassword();
+		}
+		# 查看邮箱是否存在
+		$email = $user['email'];
+		$customer_one = Yii::$service->customer->getUserIdentityByEmail($email);
+		if($customer_one){
+			$loginStatus = Yii::$service->customer->login($user);
+			if($loginStatus){
+				return true;
+			}
+		# 不存在，注册。
+		}else{
+			$registerData = [
+				'email' 	=> $email,
+				'firstname' => $user['first_name'],
+				'lastname' 	=> $user['last_name'],
+				'password' 	=> $user['password'],
+				'type'		=> $type,
+			];
+			$registerStatus = Yii::$service->customer->register($registerData);
+			if($registerStatus){
+				$loginStatus = Yii::$service->customer->login($registerData);
+				if($loginStatus){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	
+	
+	# 生成账户密码
+	protected  function getRandomPassword(){
+		
+		srand((double)microtime()*1000000);//create a random number feed.
+		$ychar	=	"0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z";
+		$list	=	explode(",",$ychar);
+		for($i=0;$i<6;$i++){
+			$randnum=rand(0,35); // 10+26;
+			$authnum.=$list[$randnum];
+		}
+		//return $authnum;
+		return $authnum;
+	}
+	
 }

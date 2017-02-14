@@ -30,51 +30,51 @@ use Facebook\HttpClients\FacebookHttpable;
  */
 class FacebookController extends AppfrontController
 {
-   
+    
+	# http://fecshop.appfront.fancyecommerce.com/customer/facebook/loginv
+	/**
+	 * facebook è´¦å·åœ¨facebookç¡®è®¤åï¼Œè¿”å›ç½‘ç«™çš„urlåœ°å€ã€‚
+	 */
 	public function actionLoginv(){
-		Session::set('fbs',1);
-		$facebook_app_id = Config::param("facebook_app_id");
-		$facebook_app_secret = Config::param("facebook_app_secret");
-	
-	
+		Yii::$app->session->set('fbs',1);
+		$thirdLogin = Yii::$service->store->thirdLogin;
+		$facebook_app_id 		= isset($thirdLogin['facebook']['facebook_app_id']) ? $thirdLogin['facebook']['facebook_app_id'] : '';
+		$facebook_app_secret 	= isset($thirdLogin['facebook']['facebook_app_secret']) ? $thirdLogin['facebook']['facebook_app_secret'] : '';
 		FacebookSession::setDefaultApplication($facebook_app_id,$facebook_app_secret);
-		$redirectUrl = Url::getUrl("customer/facebook/loginv");
+		$redirectUrl = Yii::$service->url->getUrl("customer/facebook/loginv");
 		$helper = new FacebookRedirectLoginHelper($redirectUrl,$facebook_app_id,$facebook_app_secret);
-
 		try {
-		  $session = $helper->getSessionFromRedirect();
+			$session = $helper->getSessionFromRedirect();
 		} catch( FacebookRequestException $ex ) {
-		  // When Facebook returns an error
+			// When Facebook returns an error
 		} catch( Exception $ex ) {
-		  // When validation fails or other local issues
+			// When validation fails or other local issues
 		}
 		//echo 1;
 		//var_dump($session);
 		// see if we have a session
 		if ( isset( $session ) ) {
-		  // graph api request for user data
-		  $request = new FacebookRequest( $session, 'GET', '/me' );
-		  $response = $request->execute();
-		  // get response
-		  $graphObject = $response->getGraphObject();
-				$fbid = $graphObject->getProperty('id');              // To Get Facebook ID
-				$fbfullname = $graphObject->getProperty('name'); // To Get Facebook full name
-				$femail = $graphObject->getProperty('email');    // To Get Facebook email ID
+			// graph api request for user data
+			$request = new FacebookRequest( $session, 'GET', '/me' );
+			$response = $request->execute();
+			// get response
+			$graphObject = $response->getGraphObject();
+			$fbid = $graphObject->getProperty('id');              // To Get Facebook ID
+			$fbfullname = $graphObject->getProperty('name'); // To Get Facebook full name
+			$femail = $graphObject->getProperty('email');    // To Get Facebook email ID
 			/* ---- Session Variables -----*/
-				$_SESSION['FBID'] = $fbid;           
-				$_SESSION['FULLNAME'] = $fbfullname;
-				$_SESSION['EMAIL'] =  $femail;
-				
-				$this->accountLogin();
-				exit;
-				
+			$_SESSION['FBID'] = $fbid;           
+			$_SESSION['FULLNAME'] = $fbfullname;
+			$_SESSION['EMAIL'] =  $femail;
+			$this->accountLogin();
+			exit;
 		}else {
 			$loginUrl = $helper->getLoginUrl();
 			header("Location: ".$loginUrl);
 		}
 	}
 	
-	# facebookÕË»§µÇÂ¼
+	# facebookè´¦æˆ·ç™»å½•
 	public function accountLogin(){
 		$fb_id 		= $_SESSION['FBID'];
 		$full_name 	= $_SESSION['FULLNAME'];
@@ -87,35 +87,12 @@ class FacebookController extends AppfrontController
 			'last_name' 	=>$last_name,
 			'email' 		=>$email,
 		];
-		User::registerThirdPartyAccountAndLogin($user,"facebook");
+		Yii::$service->customer->registerThirdPartyAccountAndLogin($user,"facebook");	
 		echo "<script>
 					window.close();
 					window.opener.location.reload();
 				</script>";
-	}
-	
-	
-	#2. ´´½¨µÚÈı·½ÓÃ»§µÄÕË»§£¬ÃÜÂë×Ô¶¯Éú³É
-	public static function registerThirdPartyAccountAndLogin($user,$type){
-		if(!(isset($user['password']) && $user['password'] )){
-			$user['password'] = self::getRandomPassword();
-		}
-		# ²é¿´ÓÊÏäÊÇ·ñ´æÔÚ
-		$email = $user['email'];
-		$model = Help::getModel('customer_accout');
-		$customer = $model->findOne(["email"=>$email]);
-		# Èç¹û´æÔÚ£¬Ôò²»ĞèÒª×¢²á¡£
-		if(is_array($customer) && !empty($customer)){
-			self::Login($customer);
-			return true;
-		# ²»´æÔÚ£¬×¢²á¡£
-		}else{
-			if($user = self::registerAccount($user,$type)){
-				self::Login($user);
-				return true;
-			}
-		}
-	
+		exit;
 	}
 }
 

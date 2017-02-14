@@ -11,7 +11,6 @@ use Yii;
 use fec\helpers\CModule;
 use fec\helpers\CRequest;
 use fecshop\app\appfront\modules\AppfrontController;
-use fecshop\app\appfront\helper\test\My;
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
