@@ -55,8 +55,9 @@
 						
 						<div class="clear"></div>
 						<div class="buttons-set">
-							<a href="<?= Yii::$service->url->getUrl('customer/account/forgotpassword');  ?>" class="f-left">Forgot Your Password?</a>
 							<button type="submit" id="js_registBtn" class="redBtn"><em><span><i></i>SIGN IN</span></em></button>
+							<a href="<?= Yii::$service->url->getUrl('customer/account/forgotpassword');  ?>" class="f-left">Forgot Your Password?</a>
+							
 						</div>
 						<div class="clear"></div>
 						<div class="fago_login">

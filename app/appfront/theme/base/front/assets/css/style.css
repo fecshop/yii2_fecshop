@@ -899,15 +899,18 @@ button.pinkBtn span {
 
 
 .account-login .registered-users .buttons-set a.f-left {
-    color: #777;
+        color: #777;
     font-size: 12px;
     line-height: 35px;
-    margin: 4px 0 0 30px;
-    position: absolute;
+    width: 160px;
+    float: left;
+    display: block;
+	margin: 2px 0 0 20px;
 }
 
 .registered-users #js_registBtn{
 	width:160px;
+	display:block;
 }
 .fago_login{
 	margin:18px 0 0 -3px;
