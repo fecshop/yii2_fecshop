@@ -11,6 +11,13 @@ $this->title = $name;
 ?>
 <div class="main container one-column">
 	<div class="col-main">
+		<div class="content-404 text-center">
+			<img class="image404" src="<?=  Yii::$service->image->getImgUrl('images/404.png','appfront') ?>" class="img-responsive" alt=""  />
+			<h1><b>OPPS!</b> We Couldn’t Find this Page</h1>
+			<p>Please contact us if you think this is a server error. Thank you..</p>
+			<h2><a href="<?= Yii::$service->url->homeUrl(); ?>">Bring me back Home</a></h2>
+		</div>
+		<!--
 		<div class="site-error">
 
 			<h1><?= Html::encode($this->title) ?></h1>
@@ -27,4 +34,5 @@ $this->title = $name;
 			</p>
 
 		</div>
+		-->
 </div>

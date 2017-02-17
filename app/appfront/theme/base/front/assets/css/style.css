@@ -2676,4 +2676,35 @@ height: 33px;
 color:#cc0000;
 }
 
+.text-center {
+    text-align: center;
+}
+
+.image404{width:600px;}
+
+.content-404 h1 {
+    color: #363432;
+    font-family: "Roboto",sans-serif;
+    font-size: 41px;
+    font-weight: 300;
+}
+
+.content-404 h1 {
+    color: #363432;
+    font-family: "Roboto",sans-serif;
+    font-size: 41px;
+    font-weight: 300;
+}
+
+.content-404 p {
+    color: #363432;
+    font-family: "Roboto",sans-serif;
+    font-size: 18px;
+}
+
+
+
+
+
+
 

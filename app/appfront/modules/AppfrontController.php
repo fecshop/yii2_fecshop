@@ -53,9 +53,11 @@ class AppfrontController extends FecController
 		if(!$this->blockNamespace){
 			throw new \yii\web\HttpException(406,'blockNamespace is empty , you should config it in module->blockNamespace or controller blockNamespace ');
 		}
-		
+		$viewId = $this->id;
+		$viewId = str_replace('/','\\',$viewId);
 		$relativeFile = '\\'.$this->blockNamespace;
-		$relativeFile .= '\\'.$this->id.'\\'.ucfirst($blockName);
+		$relativeFile .= '\\'.$viewId.'\\'.ucfirst($blockName);
+		
 		return new $relativeFile;
 	}
 	
