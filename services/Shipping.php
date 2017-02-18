@@ -145,7 +145,7 @@ class Shipping extends Service
 	 * @property $shipping_method | String  
 	 * @return 得到货运方式的名字
 	 */
-	protected static function actionGetShippingLabelByMethod($shipping_method){
+	protected  function actionGetShippingLabelByMethod($shipping_method){
 		$s = $this->getShippingMethod($shipping_method);
 		return $s['label'];
 	}

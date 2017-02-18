@@ -210,8 +210,36 @@ class Order extends Service
 		$primaryKey = $this->getPrimaryKey();
 		if($one[$primaryKey]){
 			return $one;
+		}else{
+			return false;
 		}
 	}
+	
+	
+	/**
+	 * @property $increment_id | String , 订单号
+	 * @return Object （MyOrder），返回 MyOrder model
+	 * 通过订单号，得到订单以及订单产品信息。
+	 */
+	protected function actionGetInfoByIncrementId($increment_id){
+		//echo 1;exit;
+		$order = $this->getByIncrementId($increment_id);
+		$orderInfo = [];
+		if($order){
+			$primaryKey = $this->getPrimaryKey();
+			$order_id 	= $order[$primaryKey];
+			$items 		= Yii::$service->order->item->getByOrderId($order_id);
+			foreach($order as $k=>$v){
+				$orderInfo[$k] = $v;
+			}
+			$orderInfo['items'] = $items;
+			return $orderInfo;
+		}else{
+			return ;
+		}
+		
+	}
+	
 	
 	/**
 	 * @property $address | Array 货运地址
@@ -320,6 +348,8 @@ class Order extends Service
 		$increment_id = (int)$this->increment_id + (int)$order_id;
 		return $increment_id;
 	}
+	
+	
 	
 	/**
 	 * get order list by customer account id.

@@ -20,6 +20,7 @@ class StandardController extends AppfrontController
     public $enableCsrfValidation = true;
 	
 	public function actionStart(){
+		Yii::$service->page->theme->layoutFile = 'blank.php';
 		$data = $this->getBlock()->getLastData();
 		return $this->render($this->action->id,$data);
 	}
