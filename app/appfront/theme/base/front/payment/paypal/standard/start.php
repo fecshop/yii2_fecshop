@@ -16,15 +16,16 @@
 			<input id="cpp_header_image" name="cpp_header_image" value="<?= $paypal_logo_img  ?>" type="hidden"/>
 			<input id="item_name" name="item_name" value="<?= $store_name  ?>" type="hidden"/>
 			<input id="charset" name="charset" value="utf-8" type="hidden"/>
-			<input id="amount" name="amount" value="<?= $order['grand_total']  ?>" type="hidden"/>
+			
+			<input id="amount" name="amount" value="<?= $order['grand_total'] ? (str_replace(',','',number_format($order['grand_total'],2))) : number_format(0,2)  ?>" type="hidden"/>
 			<input id="tax" name="tax" value="<?= $tax  ?>" type="hidden"/>
-			<input id="shipping" name="shipping" value="<?= $order['shipping_total'] ? $order['shipping_total'] : 0 ?>" type="hidden"/>
-			<input id="discount_amount" name="discount_amount" value="<?= $order['subtotal_with_discount'] ? $order['subtotal_with_discount'] : 0  ?>" type="hidden"/>
+			<input id="shipping" name="shipping" value="<?= $order['shipping_total'] ? (str_replace(',','',number_format($order['shipping_total'],2))) : number_format(0,2)  ?>" type="hidden"/>
+			<input id="discount_amount" name="discount_amount" value="<?= $order['subtotal_with_discount'] ? (str_replace(',','',number_format($order['subtotal_with_discount'],2))) : number_format(0,2)  ?>" type="hidden"/>
 			<?= $product_items_and_shipping ?>
 			<input id="cmd" name="cmd" value="<?= $cmd  ?>" type="hidden"/>
 			<input id="upload" name="upload" value="<?= $upload  ?>" type="hidden"/>
 			<input id="tax_cart" name="tax_cart" value="<?= $tax_cart  ?>" type="hidden"/>
-			<input id="discount_amount_cart" name="discount_amount_cart" value="<?= $order['subtotal_with_discount'] ? $order['subtotal_with_discount'] : 0  ?>" type="hidden"/>
+			<input id="discount_amount_cart" name="discount_amount_cart" value="<?= $order['subtotal_with_discount'] ? (str_replace(',','',number_format($order['subtotal_with_discount'],2))) : number_format(0,2)  ?>" type="hidden"/>
 			<?= $address_html ?>
 			<span class="field-row">
 			<input id="submit_to_paypal_button" name="" value="Click here if you are not redirected within 10 seconds ..." type="submit" class=" submit"/>

@@ -70,7 +70,7 @@ class Start {
 		$state			= Yii::$service->helper->country->getStateByContryCode($countryCode,$stateCode);
 		$str = '
 			<input id="city" name="city" value="'.$order['customer_address_city'].'" type="hidden"/>
-			<input id="country" name="country" value="'.$countryCode.'" type="hidden"/>
+			<input id="country" name="country" value="'.$country.'" type="hidden"/>
 			<input id="email" name="email"  value="'.$order['customer_email'].'" type="hidden"/>
 			<input id="first_name" name="first_name" value="'.$order['customer_firstname'].'" type="hidden"/>
 			<input id="last_name" name="last_name" value="'.$order['customer_lastname'].'" type="hidden"/>
@@ -91,7 +91,8 @@ class Start {
 			$sku = isset($item['sku']) ? $item['sku'] : '';
 			$name = isset($item['name']) ? $item['name'] : '';
 			$qty = isset($item['qty']) ? $item['qty'] : '';
-			$price = isset($item['price']) ? $item['price'] : '';
+			$price = isset($item['price']) ? str_replace(',','',number_format($item['price'],2)) : number_format($item['price'],0);
+			
 			$custom_option_info = isset($item['custom_option_info']) ? $item['custom_option_info'] : '';
 			if($sku && $qty && $price){
 				$str .= '
@@ -115,6 +116,8 @@ class Start {
 			$i++;
 		}
 		$shipping_total  = $order['shipping_total'];
+		$shipping_total = str_replace(',','',number_format($shipping_total,2));
+			
 		$shipping_method = $order['shipping_method'];
 		$shipping_label  = Yii::$service->shipping->getShippingLabelByMethod($shipping_method);
 		$str .= '

@@ -126,6 +126,7 @@ class Index {
 				$this->_state = $addressModel['state'];
 				$this->_address['state'] = $this->_state;
 			}
+			
 		}else if(is_array($this->_address_list) && !empty($this->_address_list)){
 			# 用户存在地址列表，但是，cart中没有customer_address_id
 			# 这种情况下，从用户地址列表中取出来默认地址，然后设置成当前的地址。
@@ -145,6 +146,7 @@ class Index {
 					break;
 				}
 			}
+			
 		}else{
 			$this->_address_view_file = 'checkout/onepage/index/address.php';
 			# 从购物车里面取出来数据。 $_cartAddress
@@ -155,6 +157,7 @@ class Index {
 		if(!$this->_country){
 			$this->_country = Yii::$service->helper->country->getDefaultCountry();
 		}
+		
 	}
 	
 	/**
