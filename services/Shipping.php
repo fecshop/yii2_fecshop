@@ -51,7 +51,7 @@ class Shipping extends Service
 	 * @return string ,得到默认的运费方法 shipping_method key
 	 * 配置中$this->shippingConfig 第一个参数就是默认
 	 */
-	protected  function actionGetDefaultShipping(){
+	protected  function actionGetDefaultShippingMethod(){
 		if($shippingMethod = $this->defaultShippingMethod){
 			if(isset($shippingMethod['enable']) && $shippingMethod['enable']){
 				$shipping = isset($shippingMethod['shipping']) ? $shippingMethod['shipping'] : '';
@@ -62,6 +62,21 @@ class Shipping extends Service
 			
 		}
 		return '';
+	}
+	/**
+	 * @proeprty $customShippingMethod 自定义的货运方式，这个一般是通过前端传递过来的shippingMethod
+	 * @proeprty $cartShippingMethod   购物车中的货运方式，这个是从购物车表中取出来的。
+	 * @return String 返回当前的货运方式。
+	 */
+	protected function actionGetCurrentShippingMethod($customShippingMethod='',$cartShippingMethod=''){
+		if($customShippingMethod){
+			return $customShippingMethod;
+		}
+		if($cartShippingMethod){
+			return $cartShippingMethod;
+		}else{
+			return Yii::$service->shipping->getDefaultShippingMethod();
+		}
 	}
 	
 	# 通过方法，重量，国家，省，得到美元状态的运费金额
@@ -116,6 +131,9 @@ class Shipping extends Service
 	 */
 	protected  function actionGetShippingCostWithSymbols($shipping_method,$weight,$country ='',$region='*'){
 		//echo $weight;
+		//echo $country;
+		//echo $region;
+		//echo $shipping_method;
 		$allmethod = $this->getShippingMethod();
 		$m = $allmethod[$shipping_method];
 		//var_dump($m );exit;
@@ -123,6 +141,7 @@ class Shipping extends Service
 			$cost = $m['cost'];
 			# csv方式
 			if($cost === 'csv'){
+				
 				#通过 运费方式，重量，国家，得到美元的运费 
 				$usdCost = $this->getShippingCostByCsvWeight($shipping_method,$weight,$country,$region);
 				//echo $usdCost;

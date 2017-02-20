@@ -9,7 +9,7 @@
 			<div class="shippingmethods">
 				<div class="flatrate"><?= $shipping['label'] ?></div>
 				<div>
-					<input data-role="none" <?= $shipping['check'] ?> type="radio" id="s_method_flatrate_flatrate<?= $shipping['shipping_i'] ?>" value="<?= $shipping['method'] ?>" class="validate-one-required-by-name" name="shipping_method">
+					<input data-role="none" <?= $shipping['checked'] ? 'checked="checked"' : '' ?> type="radio" id="s_method_flatrate_flatrate<?= $shipping['shipping_i'] ?>" value="<?= $shipping['method'] ?>" class="validate-one-required-by-name" name="shipping_method">
 					<label for="s_method_flatrate_flatrate<?= $shipping['shipping_i'] ?>"><?= $shipping['name'] ?>
 						<strong>                 
 							<span class="price"><?= $shipping['cost'] ?></span>

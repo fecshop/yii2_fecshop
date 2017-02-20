@@ -80,7 +80,6 @@ class Quote extends Service
 	public function updateLoginCart($address_id,$shipping_method,$payment_method){
 		$cart = $this->getCurrentCart();
 		if($cart && $address_id){
-			
 			$cart->customer_address_id 		= $address_id;
 			$cart->shipping_method 	= $shipping_method;
 			$cart->payment_method 	= $payment_method;
@@ -228,7 +227,7 @@ class Quote extends Service
 		}
 		$myCart->remote_ip = \fec\helpers\CFunc::get_real_ip();
 		$myCart->app_name  = Yii::$service->helper->getAppName();
-		if($defaultShippingMethod = Yii::$service->shipping->getDefaultShipping()){
+		if($defaultShippingMethod = Yii::$service->shipping->getDefaultShippingMethod()){
 			$myCart->shipping_method = $defaultShippingMethod;
 		}
 		$myCart->save();
@@ -347,10 +346,13 @@ class Quote extends Service
 				return false;
 			}
 			$cart = $this->getCart();
+			
 			$items_qty = $cart['items_count'];
 			if($items_qty <= 0){
 				return false;
 			}
+			//var_dump($cart);
+			//echo "########".$cart['shipping_method'];
 			$coupon_code = $cart['coupon_code'];
 			if(!$shipping_method){
 				$shipping_method = $cart['shipping_method'];
@@ -358,13 +360,18 @@ class Quote extends Service
 			$cart_product_info = Yii::$service->cart->quoteItem->getCartProductInfo();
 			if(is_array($cart_product_info)){
 				$product_weight = $cart_product_info['product_weight'];
+				
 				$products = $cart_product_info['products'];
 				$product_total = $cart_product_info['product_total'];
 				$base_product_total = $cart_product_info['base_product_total'];
 				if($products && $product_total){ 
-					$shippingCost   = $this->getShippingCost($shipping_method,$product_weight,$country,$region);
-					$currShippingCost = $shippingCost['currCost'];
-					$baseShippingCost = $shippingCost['baseCost'];
+					$currShippingCost = 0;
+					$baseShippingCost = 0;
+					if($shipping_method && $product_weight && $country){
+						$shippingCost   = $this->getShippingCost($shipping_method,$product_weight,$country,$region);
+						$currShippingCost = $shippingCost['currCost'];
+						$baseShippingCost = $shippingCost['baseCost'];
+					}
 					//echo 333;
 					//var_dump([$base_product_total,$product_total]);
 					//exit;
@@ -381,7 +388,8 @@ class Quote extends Service
 						'store'			=> $cart['store'],				# store nme
 						'items_count'	=> $cart['items_count'],		# 购物车中的产品总数
 						'coupon_code'	=> $coupon_code,				# coupon卷码
-						
+						'shipping_method'	=> $shipping_method,
+						'payment_method'	=> $cart['payment_method'],
 						'grand_total' 	=> $curr_grand_total,			# 当前货币总金额
 						'shipping_cost' => $currShippingCost,			# 当前货币，运费
 						'coupon_cost' 	=> $currDiscountCost,			# 当前货币，优惠券优惠金额
@@ -396,6 +404,7 @@ class Quote extends Service
 						'products' 		=> $products,		#产品信息。
 						'product_weight'=> $product_weight,	#产品的总重量。
 					];
+					
 				}
 				
 			}

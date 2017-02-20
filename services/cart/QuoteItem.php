@@ -168,8 +168,8 @@ class QuoteItem extends Service
 								'base_product_row_price' => $base_product_row_price ,
 								
 								'product_name'		=> $product_one['name'],
-								'product_weight'	=> $p_wt,
-								'product_row_weight'=> $p_wt * $qty,
+								'product_weight'	=> $product_one['weight'],
+								'product_row_weight'=> $p_wt,
 								'product_url'		=> $product_one['url_key'],
 								'product_image'		=> $product_one['image'],
 								'custom_option'		=> $product_one['custom_option'],

@@ -256,7 +256,10 @@ class Order extends Service
 		$currency_info = Yii::$service->page->currency->getCurrencyInfo();
 		$currency_code = $currency_info['code'];
 		$currency_rate = $currency_info['rate'];
-		$cartInfo = Yii::$service->cart->getCartInfo($shipping_method,$weight,$country,$region);
+		$country		= $address['country'];
+		$state		= $address['state'];
+		//echo "$shipping_method,$country,$state";exit;
+		$cartInfo = Yii::$service->cart->getCartInfo($shipping_method,$country,$state);
 		$myOrder = new MyOrder;
 		$paymentStatus = $this->paymentStatus;
 		$myOrder['order_status'] 	= $paymentStatus['pending'];

@@ -26,7 +26,7 @@ return [
 		# 该值必须在上面的配置 $shippingConfig中存在，如果不存在，则返回为空。
 		'defaultShippingMethod' => [
 			'enable'	=> true, # 如果值为true，那么用户在cart生成的时候，就会填写上默认的货运方式。
-			'shipping' => 'free_shipping',
+			'shipping' => 'fast_shipping',
 		],
 	]
 ];

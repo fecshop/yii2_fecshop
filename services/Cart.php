@@ -161,7 +161,7 @@ class Cart extends Service
 	 * save cart address.like,,  customer name,tel,email,address ,,etc,,.
 	 */
 	protected function actionUpdateGuestCart($address,$shipping_method,$payment_method){
-		Yii::$service->cart->quote->updateGuestCart($address,$shipping_method,$payment_method);
+		return Yii::$service->cart->quote->updateGuestCart($address,$shipping_method,$payment_method);
 	}
 	
 	protected function actionUpdateLoginCart($address_id,$shipping_method,$payment_method){

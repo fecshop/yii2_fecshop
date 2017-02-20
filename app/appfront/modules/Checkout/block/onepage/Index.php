@@ -15,7 +15,8 @@ use fec\helpers\CRequest;
  * @since 1.0
  */
 class Index {
-	protected $_payment_mothod;
+	protected $_payment_method;
+	protected $_shipping_method;
 	protected $_address_view_file;
 	protected $_address_id;
 	protected $_address_list;
@@ -24,9 +25,11 @@ class Index {
 	protected $_stateHtml;
 	protected $_cartAddress;
 	protected $_cart_address;
+	protected $_cart_info;
 	
 	public function getLastData(){
 		$cartInfo = $this->getCartInfo();
+		
 		if(!isset($cartInfo['products']) || !is_array($cartInfo['products']) || empty($cartInfo['products'])){
 			Yii::$service->url->redirectByUrlKey('checkout/cart');
 		}
@@ -38,8 +41,8 @@ class Index {
 		return [
 			'payments' 					=> $this->getPayment(),
 			'shippings' 				=> $this->getShippings(),
-			'current_payment_mothod' 	=> $this->_payment_mothod,
-			'cart_info'  				=> $cartInfo,
+			'current_payment_method' 	=> $this->_payment_method,
+			'cart_info'  				=> Yii::$service->cart->getCartInfo($this->_shipping_method,$this->_country,$this->_state),
 			'currency_info' 			=> $currency_info,
 			'address_view_file' 		=> $this->_address_view_file,
 			'cart_address'				=> $this->_address,
@@ -126,6 +129,34 @@ class Index {
 				$this->_state = $addressModel['state'];
 				$this->_address['state'] = $this->_state;
 			}
+			if($addressModel['first_name']){
+				$this->_address['first_name'] = $addressModel['first_name'];
+			}
+			
+			if($addressModel['last_name']){
+				$this->_address['last_name'] = $addressModel['last_name'];
+			}
+			
+			if($addressModel['email']){
+				$this->_address['email'] = $addressModel['email'];
+			}
+			
+			if($addressModel['telephone']){
+				$this->_address['telephone'] = $addressModel['telephone'];
+			}
+			
+			if($addressModel['street1']){
+				$this->_address['street1'] = $addressModel['street1'];
+			}
+			if($addressModel['street2']){
+				$this->_address['street2'] = $addressModel['street2'];
+			}
+			if($addressModel['city']){
+				$this->_address['city'] = $addressModel['city'];
+			}
+			if($addressModel['zip']){
+				$this->_address['zip'] = $addressModel['zip'];
+			}
 			
 		}else if(is_array($this->_address_list) && !empty($this->_address_list)){
 			# 用户存在地址列表，但是，cart中没有customer_address_id
@@ -143,6 +174,34 @@ class Index {
 						$this->_state = $addressModel['state'];
 						$this->_address['state'] = $this->_state;
 					}
+					if($addressModel['first_name']){
+						$this->_address['first_name'] = $addressModel['first_name'];
+					}
+					
+					if($addressModel['last_name']){
+						$this->_address['last_name'] = $addressModel['last_name'];
+					}
+					
+					if($addressModel['email']){
+						$this->_address['email'] = $addressModel['email'];
+					}
+					
+					if($addressModel['telephone']){
+						$this->_address['telephone'] = $addressModel['telephone'];
+					}
+					
+					if($addressModel['street1']){
+						$this->_address['street1'] = $addressModel['street1'];
+					}
+					if($addressModel['street2']){
+						$this->_address['street2'] = $addressModel['street2'];
+					}
+					if($addressModel['city']){
+						$this->_address['city'] = $addressModel['city'];
+					}
+					if($addressModel['zip']){
+						$this->_address['zip'] = $addressModel['zip'];
+					}
 					break;
 				}
 			}
@@ -150,14 +209,12 @@ class Index {
 		}else{
 			$this->_address_view_file = 'checkout/onepage/index/address.php';
 			# 从购物车里面取出来数据。 $_cartAddress
-			$cart_info = Yii::$service->cart->getCartInfo();
-			
-			
+			//$cart_info = Yii::$service->cart->getCartInfo();
 		}
 		if(!$this->_country){
 			$this->_country = Yii::$service->helper->country->getDefaultCountry();
+			$this->_address['country'] = $this->_country;
 		}
-		
 	}
 	
 	/**
@@ -205,31 +262,35 @@ class Index {
 	 * 在加入一些产品数据，最终补全所有需要的信息。
 	 * 
 	 */
-	public function getCartInfo(){
-		$cart_info = Yii::$service->cart->getCartInfo();
-		if(isset($cart_info['products']) && is_array($cart_info['products'])){
-			foreach($cart_info['products'] as $k=>$product_one){
-				# 设置名字，得到当前store的语言名字。
-				$cart_info['products'][$k]['name'] = Yii::$service->store->getStoreAttrVal($product_one['product_name'],'name');
-				# 设置图片
-				if(isset($product_one['product_image']['main']['image'])){
-					$cart_info['products'][$k]['image'] = $product_one['product_image']['main']['image'];
-				}
-				# 产品的url
-				$cart_info['products'][$k]['url'] = Yii::$service->url->getUrl($product_one['product_url']);
-				$custom_option = isset($product_one['custom_option']) ? $product_one['custom_option'] : '';
-				$custom_option_sku = $product_one['custom_option_sku'];
-				# 将在产品页面选择的颜色尺码等属性显示出来。
-				$custom_option_info_arr = $this->getProductOptions($product_one,$custom_option_sku);
-				$cart_info['products'][$k]['custom_option_info'] = $custom_option_info_arr;
-				# 设置相应的custom option 对应的图片
-				$custom_option_image = isset($custom_option[$custom_option_sku]['image']) ? $custom_option[$custom_option_sku]['image'] : '';
-				if($custom_option_image){
-					$cart_info['products'][$k]['image'] = $custom_option_image;
+	public function getCartInfo($shipping_method,$country,$state){
+		if(!$this->_cart_info){
+			$cart_info = Yii::$service->cart->getCartInfo($shipping_method,$country,$state);
+			if(isset($cart_info['products']) && is_array($cart_info['products'])){
+				foreach($cart_info['products'] as $k=>$product_one){
+					# 设置名字，得到当前store的语言名字。
+					$cart_info['products'][$k]['name'] = Yii::$service->store->getStoreAttrVal($product_one['product_name'],'name');
+					# 设置图片
+					if(isset($product_one['product_image']['main']['image'])){
+						$cart_info['products'][$k]['image'] = $product_one['product_image']['main']['image'];
+					}
+					# 产品的url
+					$cart_info['products'][$k]['url'] = Yii::$service->url->getUrl($product_one['product_url']);
+					$custom_option = isset($product_one['custom_option']) ? $product_one['custom_option'] : '';
+					$custom_option_sku = $product_one['custom_option_sku'];
+					# 将在产品页面选择的颜色尺码等属性显示出来。
+					$custom_option_info_arr = $this->getProductOptions($product_one,$custom_option_sku);
+					$cart_info['products'][$k]['custom_option_info'] = $custom_option_info_arr;
+					# 设置相应的custom option 对应的图片
+					$custom_option_image = isset($custom_option[$custom_option_sku]['image']) ? $custom_option[$custom_option_sku]['image'] : '';
+					if($custom_option_image){
+						$cart_info['products'][$k]['image'] = $custom_option_image;
+					}
 				}
 			}
+			$this->_cart_info = $cart_info;
+			
 		}
-		return $cart_info;
+		return $this->_cart_info;
 	}
 	
 	/**
@@ -271,39 +332,64 @@ class Index {
 	 *	]
 	 * 根据选择的货运方式，得到费用等信息。
 	 */
-	public function getShippings($current_shipping_method = ''){
+	public function getShippings($custom_shipping_method = ''){
+		
 		$country = $this->_country;
 		if(!$this->_state){
 			$region = '*';
 		}else{
 			$region = $this->_state;
 		}
-		$cartInfo = Yii::$service->cart->quoteItem->getCartProductInfo();
+		$cartProductInfo = Yii::$service->cart->quoteItem->getCartProductInfo();
 		//echo $country ;
-		$product_weight = $cartInfo['product_weight'];
+		$product_weight = $cartProductInfo['product_weight'];
 		# 传递当前的货运方式，这个需要从cart中选取，
 		# 如果cart中没有shipping_method，那么该值为空
-		if(!$current_shipping_method){
-			$cart = Yii::$service->cart->quote->getCart();
-			$current_shipping_method = isset($cart['shipping_method']) ? $cart['shipping_method'] : '';
-		}
+		//var_dump($this->_cart_info);
+		$cartShippingMethod = $this->_cart_info['shipping_method'];
+		//echo "$custom_shipping_method,$cartShippingMethod";
+		$current_shipping_method = Yii::$service->shipping->getCurrentShippingMethod($custom_shipping_method,$cartShippingMethod);
+		
+		$this->_shipping_method  = $current_shipping_method;
 		$shippingArr = $this->getShippingArr($product_weight,$current_shipping_method,$country,$region);
 		return $shippingArr ;
 	}
+	
+	
 	/**
 	 * @return 得到所有的支付方式
-	 * 在获取的同时，判断$this->_payment_mothod 是否存在，不存在则取
-	 * 第一个支付方式，作为$this->_payment_mothod的值。
+	 * 在获取的同时，判断$this->_payment_method 是否存在，不存在则取
+	 * 第一个支付方式，作为$this->_payment_method的值。
 	 */
 	public function getPayment(){
 		$paymentArr = Yii::$service->payment->getStandardPaymentArr();
-		if(!$this->_payment_mothod){
-			foreach($paymentArr as $k => $v){
-				$this->_payment_mothod = $k;
-				break;
+		$pArr = [];
+		if(!$this->_payment_method){
+			if(isset($this->_cart_info['payment_method']) && !empty($this->_cart_info['payment_method'])){
+				$this->_payment_method = $this->_cart_info['payment_method'];
+			}
+			//echo $this->_payment_method;
+			if(!$this->_payment_method){
+				$i = 0;
+				foreach($paymentArr as $k => $v){
+					$i++;
+					if($i == 1){
+						$this->_payment_method = $k;
+						$v['checked'] = true;
+					}
+					$pArr[$k] = $v;
+				}
+			}else{
+				foreach($paymentArr as $k => $v){
+					if($this->_payment_method == $k){
+						$v['checked'] = true;
+					}
+					$pArr[$k] = $v;
+				}
+				//var_dump($paymentArr);
 			}
 		}
-		return $paymentArr;
+		return $pArr;
 	}
 	
 	
@@ -328,16 +414,16 @@ class Index {
 				$currentCurrencyCost = $cost['currCost'];
 				$symbol = Yii::$service->page->currency->getCurrentSymbol();
 				if($current_shipping_method == $method){
-					$check = ' checked="checked" ';
+					$checked =  true;
 				}else{
-					$check = '';
+					$checked = '';
 				}
 				$arr[] = [
 					'method'=> $method,
 					'label' => $label,
 					'name'  => $name,
 					'cost'  => $symbol.$currentCurrencyCost,
-					'check' => $check,
+					'checked' => $checked,
 					'shipping_i' => $shipping_i,
 				];
 			
@@ -425,7 +511,8 @@ class Index {
 			$reviewOrderView = [
 				'view'	=> 'checkout/onepage/index/review_order.php'
 			];
-			$cart_info 		= $this->getCartInfo();
+			$cart_info 		= $this->getCartInfo($shipping_method,$this->_country,$this->_state);
+			
 			$reviewOrderParam = [
 				'cart_info' => $cart_info,
 				'currency_info' => $currency_info,

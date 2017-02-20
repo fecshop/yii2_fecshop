@@ -19,6 +19,8 @@ class Placeorder{
 	 * 用户的账单地址信息，通过用户传递的信息计算而来。
 	 */
 	public $_billing;
+	
+	public $_address_id;
 	/**
 	 * 用户的货运方式
 	 */
@@ -37,9 +39,8 @@ class Placeorder{
 				$gus_status = $this->guestCreateAndLoginAccount($post);
 				$save_address_status = $this->saveNewAddress($post);
 				if($gus_status && $save_address_status){
-					# 如果是游客，则更新信息到cart中存储。
-					
-					$this->updateGuestCart($post);
+					# 更新Cart信息
+					$this->updateCart();
 					# 设置checkout type
 					$serviceOrder = Yii::$service->order;
 					$checkout_type = $serviceOrder::CHECKOUT_TYPE_STANDARD;
@@ -131,6 +132,7 @@ class Placeorder{
 					'is_default' 	=> 1,
 				];
 				$address_id = Yii::$service->customer->address->save($one);
+				$this->_address_id = $address_id;
 				if(!$address_id){
 					Yii::$service->helper->errors->add('new customer address save fail');
 					return false;
@@ -145,9 +147,11 @@ class Placeorder{
 	/**
 	 * 如果是游客，那么保存货运地址到购物车表。
 	 */
-	public function updateGuestCart(){
+	public function updateCart(){
 		if(Yii::$app->user->isGuest){
 			return Yii::$service->cart->updateGuestCart($this->_billing,$this->_shipping_method,$this->_payment_method);
+		}else{
+			return Yii::$service->cart->updateLoginCart($this->_address_id,$this->_shipping_method,$this->_payment_method);
 		}
 	}
 	/**
@@ -160,6 +164,7 @@ class Placeorder{
 		$address_id = isset($post['address_id']) ? $post['address_id'] : '';
 		$billing = isset($post['billing']) ? $post['billing'] : '';
 		if($address_id){
+			$this->_address_id = $address_id;
 			if(Yii::$app->user->isGuest){
 				Yii::$service->helper->errors->add('address id can not use for guest');
 				return false; # address_id 这种情况，必须是登录用户。
