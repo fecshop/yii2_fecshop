@@ -371,19 +371,18 @@ class Quote extends Service
 					//echo $coupon_code;exit;
 					$couponCost		= $this->getCouponCost($base_product_total,$coupon_code);
 					
-					$baseDiscountCost = $couponCost['currCost'];
-					$currDiscountCost = $couponCost['baseCost'];
+					$baseDiscountCost = $couponCost['baseCost'];
+					$currDiscountCost = $couponCost['currCost'];
 					
 					$curr_grand_total	= $product_total + $currShippingCost - $currDiscountCost;
 					$base_grand_total	= $base_product_total + $baseShippingCost - $baseDiscountCost;
 					
-		 
 					$this->cartInfo[$cartInfoKey] = [
 						'store'			=> $cart['store'],				# store nme
 						'items_count'	=> $cart['items_count'],		# 购物车中的产品总数
 						'coupon_code'	=> $coupon_code,				# coupon卷码
 						
-						'grand_total' 	=> $base_grand_total,			# 当前货币总金额
+						'grand_total' 	=> $curr_grand_total,			# 当前货币总金额
 						'shipping_cost' => $currShippingCost,			# 当前货币，运费
 						'coupon_cost' 	=> $currDiscountCost,			# 当前货币，优惠券优惠金额
 						'product_total' => $product_total,				# 当前货币，购物车中产品的总金额
