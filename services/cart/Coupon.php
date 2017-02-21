@@ -378,7 +378,7 @@ class Coupon extends Service
 			$product_total = isset($cartProduct['product_total']) ? $cartProduct['product_total'] : 0;
 			if($product_total){
 				//var_dump($product_total);
-				$dc_price = Yii::$service->page->currency->getDefaultCurrencyPrice($product_total);
+				$dc_price = Yii::$service->page->currency->getBaseCurrencyPrice($product_total);
 				
 				if($dc_price > $conditions){
 					# 事务更新购物侧的coupon 和优惠券的使用情况。

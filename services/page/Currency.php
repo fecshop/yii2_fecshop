@@ -122,14 +122,17 @@ class Currency extends Service
 	}
 	/**
 	 * @property $current_price | Float 当前货币下的价格
-	 * @return 默认货币下的价格
-	 * 通过当前的货币价格得到默认货币的价格，这是一个反推的过程，
-	 * 需要特别注意的是：这种反推方法换算得到的默认货币的价格，和原来的默认货币价格，
+	 * @return 基础货币下的价格
+	 * 通过当前的货币价格得到基础货币的价格，这是一个反推的过程，
+	 * 需要特别注意的是：这种反推方法换算得到的基础货币的价格，和原来的基础货币价格，
 	 * 可能有0.01的误差，因为默认货币换算成当前货币的算法为小数点后两位进一法得到的。
 	 */
-	protected function actionGetDefaultCurrencyPrice($current_price){
-		if(isset($this->currencys[$this->getCurrentCurrency()]['rate'])){
-			$rate = $this->currencys[$this->getCurrentCurrency()]['rate'];
+	protected function actionGetBaseCurrencyPrice($current_price,$current_currency=''){
+		if(!$current_currency){
+			$current_currency = $this->getCurrentCurrency();
+		}
+		if(isset($this->currencys[$current_currency]['rate'])){
+			$rate = $this->currencys[$current_currency]['rate'];
 			if($rate)
 				return ceil($current_price / $rate  * 100)/100;
 		}

@@ -462,7 +462,7 @@ class Quote extends Service
 	public function getCouponCost($base_product_total,$coupon_code){
 		//echo '###'; var_dump($product_total);exit;
 		//list($base_product_total,$product_total) = $product_total;
-		//$dc_price = Yii::$service->page->currency->getDefaultCurrencyPrice($product_total);
+		//$dc_price = Yii::$service->page->currency->getBaseCurrencyPrice($product_total);
 		$dc_discount = Yii::$service->cart->coupon->getDiscount($coupon_code,$base_product_total);
 		//var_dump($dc_discount);exit;
 		return $dc_discount;

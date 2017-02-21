@@ -11,6 +11,7 @@ use Yii;
 use yii\base\InvalidValueException;
 use yii\base\InvalidConfigException;
 use fecshop\models\mysqldb\IpnMessage;
+use fecshop\services\Service;
 /**
  * Payment Paypal services
  * @author Terry Zhao <2358269014@qq.com>
@@ -33,16 +34,26 @@ class Paypal extends Service
     public $payment_status_processed  		= 'processed';
     public $payment_status_voided     		= 'voided';
 	
+	public $use_local_certs = true;
 	
 	protected $_postData;
 	protected $_order;
 	
 	public function receiveIpn(){
+		
+		
 		if($this->verifySecurity()){
 			# 验证数据是否已经发送
 			if($this->isNotDuplicate()){
 				# 验证数据是否被篡改。
+				
+				
+		
+		
+		
+		
 				if($this->isNotDistort()){
+					
 					$this->updateOrderAndCoupon();
 				}else{
 					# 如果数据和订单数据不一致，而且，支付状态为成功，则此订单
@@ -66,8 +77,6 @@ class Paypal extends Service
 	
 	protected function getVerifyUrl(){
 		$urlParamStr = '';
-		
-		
 		if($this->_postData){
 			foreach ($this->_postData as $k => $v) {
 				$urlParamStr .= '&'.$k.'='.urlencode($v);
@@ -81,16 +90,23 @@ class Paypal extends Service
 	}
 	
 	protected function curlGet($url){
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_VERBOSE, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT,60);
-		// Turn off the server and peer verification (TrustManager Concept).
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		// Get response from the server.
-		$httpResponse = curl_exec($ch);
+		$ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $req);
+        curl_setopt($ch, CURLOPT_SSLVERSION, 6);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+
+        // This is often required if the server is missing a global cert bundle, or is using an outdated one.
+        if ($this->use_local_certs) {
+            curl_setopt($ch, CURLOPT_CAINFO, __DIR__ . "/cert/paypal.crt");
+        }
+        curl_setopt($ch, CURLOPT_FORBID_REUSE, 1);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Connection: Close'));
+        $httpResponse = curl_exec($ch);
 		return $httpResponse;
 	}
 	
@@ -107,11 +123,11 @@ class Paypal extends Service
 		if(is_array($ipn) && !empty($ipn)){
 			return false;
 		}else{
-			$IpnMessage = new IpnMessage();
+			$IpnMessage = new IpnMessage;
 			$IpnMessage->txn_id = $this->_postData['txn_id'];
 			$IpnMessage->payment_status = $this->_postData['payment_status'];
 			$IpnMessage->updated_at = time();
-			$IpnMessage->Insert();
+			$IpnMessage->save();
 			return true;
 		}
 	}
@@ -124,9 +140,9 @@ class Paypal extends Service
 	 */
 	protected function isNotDistort(){
 		//Yii::$app->mylog->log("begin isNotDistort..");
-		$increment_id 		= this->_postData['invoice'];
-		$mc_gross 			= this->_postData['mc_gross'];
-		$mc_currency 		= this->_postData['mc_currency'];
+		$increment_id 		= $this->_postData['invoice'];
+		$mc_gross 			= $this->_postData['mc_gross'];
+		$mc_currency 		= $this->_postData['mc_currency'];
 		
 		if($increment_id && $mc_gross && $mc_currency){
 			$this->_order = Yii::$service->order->getByIncrementId($increment_id);;
@@ -152,6 +168,9 @@ class Paypal extends Service
 	 * 更新订单状态。
 	 */
 	public function updateOrderAndCoupon($orderstatus = ''){
+		
+		
+		
 		if($this->_postData['txn_type']){
 			$this->_order->txn_type = $this->_postData['txn_type'];	
 		}	
@@ -176,7 +195,7 @@ class Paypal extends Service
 		if($this->_postData['mc_fee']){
 			$this->_order->payment_fee = $this->_postData['mc_fee'];
 			$currency = $this->_postData['mc_currency'];
-			$this->_order->base_payment_fee = Currency::getBaseCurrencyFromOther($this->_postData['mc_fee'],$currency);
+			$this->_order->base_payment_fee = Yii::$service->page->currency->getBaseCurrencyPrice($this->_postData['mc_fee'],$currency);
 		}
 		if($this->_postData['payment_type']){
 			$this->_order->payment_type = $this->_postData['payment_type'];
@@ -194,35 +213,33 @@ class Paypal extends Service
 				# 指定了订单状态
 				$this->_order->order_status = $orderstatus;
 				$this->_order->save();
+				$payment_status = strtolower($this->_postData['payment_status']);
 				//Yii::$app->mylog->log('save_'.$orderstatus);
 			}else{
-				switch (strtolower($this->_postData['payment_status'])) {
-					case $this->payment_status_completed :
-						$this->_order->order_status = Yii::$service->order->payment_status_processing;
-						# 更新订单信息
-						$this->_order->save();
-						# 更新库存
-						//$orderitem = Salesorderitem::find()->asArray()->where(['order_id'=>$this->_order->order_id])->all();
-						//Order::updateProductStockQty($orderitem);
-						# 更新coupon使用量
-						//$customer_id = $this->_order['customer_id'];
-						//$coupon_code = $this->_order['coupon_code'];
-						//if($customer_id && $coupon_code){
-						//	Coupon::CouponTakeEffect($customer_id,$coupon_code);
-						//}
-						#LOG
-						//Yii::$app->mylog->log('save_'.Order::ORDER_PROCESSING);
-						break;
-					case $this->payment_status_failed :
-						$this->_order->order_status = Yii::$service->order->payment_status_canceled;
-						$this->_order->save();
-						break;
-					case $this->payment_status_refunded :
-						$this->_order->order_status = Yii::$service->order->payment_status_canceled;
-						$this->_order->save();
-						break;
-					default:
-						break;
+				$payment_status = strtolower($this->_postData['payment_status']);
+				if($payment_status == $this->payment_status_completed) {
+					$this->_order->order_status = Yii::$service->order->payment_status_processing;
+					# 更新订单信息
+					$this->_order->save();
+					# 更新库存
+					//$orderitem = Salesorderitem::find()->asArray()->where(['order_id'=>$this->_order->order_id])->all();
+					//Order::updateProductStockQty($orderitem);
+					# 更新coupon使用量
+					//$customer_id = $this->_order['customer_id'];
+					//$coupon_code = $this->_order['coupon_code'];
+					//if($customer_id && $coupon_code){
+					//	Coupon::CouponTakeEffect($customer_id,$coupon_code);
+					//}
+					#LOG
+					//Yii::$app->mylog->log('save_'.Order::ORDER_PROCESSING);
+			}else if($payment_status == $this->payment_status_failed){
+					$this->_order->order_status = Yii::$service->order->payment_status_canceled;
+					$this->_order->save();
+				}else if($payment_status == $this->payment_status_refunded){		
+					$this->_order->order_status = Yii::$service->order->payment_status_canceled;
+					$this->_order->save();
+				}else{
+					
 				}
 			}	
 			$innerTransaction->commit();

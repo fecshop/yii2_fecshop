@@ -33,6 +33,7 @@ return [
 					
 					# 第三方支付网站的url
 					'payment_url'=>'https://www.sandbox.paypal.com/cgi-bin/webscr',
+					//'ipn_url'	 => 'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr'
 					# 用户名
 					'user' => 'zqy234api1-facilitator@126.com',
 					# 账号
