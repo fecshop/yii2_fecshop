@@ -17,7 +17,7 @@ use fecshop\app\appfront\modules\AppfrontController;
  */
 class StandardController extends AppfrontController
 {
-    public $enableCsrfValidation = true;
+    public $enableCsrfValidation = false;
 	
 	public function actionStart(){
 		Yii::$service->page->theme->layoutFile = 'blank.php';
@@ -31,7 +31,13 @@ class StandardController extends AppfrontController
 	}
 	
 	public function actionIpn(){
-		
+		Yii::$service->payment->paypal->receiveIpn();
+	}
+	
+	public function actionCancel(){
+		Yii::$service->order->cancel();
+		Yii::$service->url->redirectByUrlKey('checkout/onepage');
+		exit;
 	}
 	
 	

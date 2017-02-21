@@ -70,7 +70,13 @@ return [
 				],
 			],
 			
-		]
+		],
+		'childService' => [
+			'paypal' => [
+				'class' 		=> 'fecshop\services\payment\Paypal',
+				
+			],
+		],
 	]
 ];
 

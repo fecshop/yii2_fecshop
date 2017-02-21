@@ -21,7 +21,16 @@ use fecshop\models\mysqldb\order\Item as MyOrderItem;
 class Order extends Service
 {
 	public $requiredAddressAttr; # 必填的订单字段。
-	public $paymentStatus; # 订单支付状态。
+	//public $paymentStatus; # 订单支付状态。
+	
+	public $payment_status_pending 			= 'pending';
+	public $payment_status_processing 		= 'processing';
+	public $payment_status_canceled 		= 'canceled';
+	public $payment_status_complete 		= 'complete';
+	public $payment_status_holded 			= 'holded';
+	public $payment_status_suspected_fraud 	= 'suspected_fraud';
+	# $this->payment_status_pending
+	
 	public $increment_id = 1000000000;
 	protected $checkout_type;
 	const CHECKOUT_TYPE_STANDARD 	= 'standard';
@@ -261,8 +270,7 @@ class Order extends Service
 		//echo "$shipping_method,$country,$state";exit;
 		$cartInfo = Yii::$service->cart->getCartInfo($shipping_method,$country,$state);
 		$myOrder = new MyOrder;
-		$paymentStatus = $this->paymentStatus;
-		$myOrder['order_status'] 	= $paymentStatus['pending'];
+		$myOrder['order_status'] 	= $this->payment_status_pending;
 		$myOrder['store'] 			= $cartInfo['store'];
 		$myOrder['created_at'] 		= time();
 		$myOrder['updated_at'] 		= time();
@@ -370,6 +378,27 @@ class Order extends Service
 		
 	}
 	
+	/**
+	 * @property $increment_id | String
+	 * @return boolean 
+	 * 取消订单，更新订单的状态为cancel。
+	 */
+	protected function actionCancel($increment_id = ''){
+		if(!$increment_id){
+			$increment_id = $this->getSessionIncrementId();
+		}
+		if($increment_id){
+			$order = $this->getByIncrementId($increment_id);
+			if($order){
+				$cancalStatus = $this->payment_status_canceled;
+				$order->order_status = $cancalStatus;
+				$order->updated_at = time();
+				$order->save();
+				return true;
+			}
+		}
+		return false;
+	}
 	
 	
 }

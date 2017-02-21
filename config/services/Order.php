@@ -8,11 +8,8 @@
 return [
 	'order' => [
 		'class' => 'fecshop\services\Order',
-		'paymentStatus' => [
-			'pending' => 'pending', #未付款订单状态
-			'processing' => 'processing' # 已付款订单状态
-		],
 		
+		//'increment_id' => '',
 		'requiredAddressAttr' => [ # 必填的订单字段。
 			'first_name',
 			'last_name',
