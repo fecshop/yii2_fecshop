@@ -89,7 +89,7 @@ class Paypal extends Service
 		return $verifyUrl;
 	}
 	
-	protected function curlGet($url){
+	protected function curlGet($url,$i=0){
 		$ch = curl_init($url);
         curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
         curl_setopt($ch, CURLOPT_POST, 1);
@@ -98,7 +98,7 @@ class Paypal extends Service
         curl_setopt($ch, CURLOPT_SSLVERSION, 6);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
-
+		curl_setopt($ch, CURLOPT_TIMEOUT,30);
         // This is often required if the server is missing a global cert bundle, or is using an outdated one.
         if ($this->use_local_certs) {
             curl_setopt($ch, CURLOPT_CAINFO, __DIR__ . "/cert/paypal.crt");
@@ -107,6 +107,14 @@ class Paypal extends Service
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Connection: Close'));
         $httpResponse = curl_exec($ch);
+		if(!$httpResponse){
+			$i++;
+			if($i<=5){
+				return $this->curlGet($url,$i);
+			}else{
+				return $httpResponse;
+			}
+		}
 		return $httpResponse;
 	}
 	
