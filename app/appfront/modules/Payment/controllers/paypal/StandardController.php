@@ -27,9 +27,7 @@ class StandardController extends AppfrontController
 	}
 	
 	
-	public function actionSuccess(){
-		
-	}
+	
 	
 	public function actionIpn(){
 		Yii::$service->payment->paypal->receiveIpn();

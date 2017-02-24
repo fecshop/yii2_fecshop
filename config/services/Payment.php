@@ -16,7 +16,7 @@ return [
 					'supplement' 			=> 'Off-line Money Payments', # 补充
 					'style'					=> '<style></style>',  # 补充css
 					'start_url' 			=> '@homeUrl/payment/checkmoney/start',
-					'success_redirect_url' 	=> '@homeUrl/payment/checkmoney/success',
+					'success_redirect_url' 	=> '@homeUrl/payment/success',
 				],
 				'paypal_standard' => [
 					'label' 				=> 'PayPal Website Payments Standard',
@@ -27,7 +27,7 @@ return [
 					# 接收IPN消息的页面。
 					'IPN_url' 				=> '@homeUrl/payment/paypal/standard/ipn',
 					# 在第三方支付成功后，跳转到网站的页面
-					'success_redirect_url' 	=> '@homeUrl/payment/paypal/standard/success',
+					'success_redirect_url' 	=> '@homeUrl/payment/success',
 					# 进入paypal支付页面，点击取消进入网站的页面。
 					'cancel_url'			=> '@homeUrl/payment/paypal/standard/cancel',
 					
