@@ -1,3 +1,6 @@
+<?php
+use fecshop\app\appfront\helper\Format;
+?>
 <?php  $shippings = $parentThis['shippings'];   ?>
 <div class="onestepcheckout-shipping-method">
 	<p class="onestepcheckout-numbers onestepcheckout-numbers-2">Shipping method</p>
@@ -12,7 +15,7 @@
 					<input data-role="none" <?= $shipping['checked'] ? 'checked="checked"' : '' ?> type="radio" id="s_method_flatrate_flatrate<?= $shipping['shipping_i'] ?>" value="<?= $shipping['method'] ?>" class="validate-one-required-by-name" name="shipping_method">
 					<label for="s_method_flatrate_flatrate<?= $shipping['shipping_i'] ?>"><?= $shipping['name'] ?>
 						<strong>                 
-							<span class="price"><?= $shipping['cost'] ?></span>
+							<span class="price"><?= $shipping['symbol'] ?><?= Format::price($shipping['cost']); ?></span>
 						</strong>
 					</label>
 				</div>

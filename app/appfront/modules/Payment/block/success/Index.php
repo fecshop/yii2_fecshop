@@ -21,9 +21,12 @@ class Index {
 	public function getLastData(){
 		$increment_id 		= Yii::$service->order->getSessionIncrementId();
 		$order 				= Yii::$service->order->getInfoByIncrementId($increment_id);
-		
-		# Çå¿Õ¹ºÎï³µ¡£ÕâÀïÕë¶ÔµÄÊÇÎ´µÇÂ¼ÓÃ»§½øĞĞ¹ºÎï³µÇå¿Õ¡£
-		Yii::$service->cart->clearCart();
+		# æ¸…ç©ºè´­ç‰©è½¦ã€‚è¿™é‡Œé’ˆå¯¹çš„æ˜¯æœªç™»å½•ç”¨æˆ·è¿›è¡Œè´­ç‰©è½¦æ¸…ç©ºã€‚
+		if(Yii::$app->user->isGuest){
+			Yii::$service->cart->clearCartProduct();
+		}
+		# æ¸…ç©ºsessionä¸­å­˜å‚¨çš„å½“å‰è®¢å•ç¼–å·ã€‚
+		Yii::$service->order->removeSessionIncrementId();
 		return [
 			'increment_id' => $increment_id,
 			'order'			=> $order,

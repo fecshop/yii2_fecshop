@@ -288,6 +288,7 @@ class QuoteItem extends Service
 	 * @property $cart_id | int 购物车id
 	 * 删除购物车中的所有产品。
 	 * 注意：清空购物车并不是清空所有信息，仅仅是清空用户购物车中的产品。
+	 * 另外，购物车的数目更改后，需要更新cart中产品个数的信息。
 	 */
 	public function removeItemByCartId($cart_id=''){
 		if(!$cart_id){

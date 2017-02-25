@@ -17,8 +17,8 @@ use yii\base\InvalidValueException;
 class Format
 {
 	
-	public static function price($price){
-		return number_format($price,2);
+	public static function price($price,$bits=2){
+		return number_format($price,$bits);
 	}
 	
 	

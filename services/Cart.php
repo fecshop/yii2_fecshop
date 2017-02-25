@@ -170,12 +170,18 @@ class Cart extends Service
 	
 	
 	/**
-	 * clear cart product.
+	 * 清空购物车中的产品
+	 */
+	protected function actionClearCartProduct(){
+		Yii::$service->cart->quoteItem->removeItemByCartId();
+	}
+	
+	/**
+	 * 完全与当前购物车脱节，如果产品添加购物车，会创建新的cart_id
 	 */
 	protected function actionClearCart(){
 		Yii::$service->cart->quote->clearCart();
 	}
-	
 	
 	
 	/**

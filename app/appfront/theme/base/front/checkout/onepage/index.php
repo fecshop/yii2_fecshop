@@ -22,7 +22,7 @@
 								'customer_info'	  	=> $customer_info,
 								'country_select'  	=> $country_select,
 								'state_html'  	  	=> $state_html,
-								//'cart_address'		=> $cart_address,
+								'cart_address'		=> $cart_address,
 								//'payments' => $payments,
 								//'current_payment_mothod' => $current_payment_mothod,
 							];

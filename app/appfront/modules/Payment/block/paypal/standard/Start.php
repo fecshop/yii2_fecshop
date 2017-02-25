@@ -41,7 +41,6 @@ class Start {
 		$payment_url 		= Yii::$service->payment->getStandardPaymentUrl();
 		$account 			= Yii::$service->payment->getStandardAccount();
 		
-		
 		return [
 			'loader_img' 		=> $loaderImg,
 			'paypal_logo_img' 	=> $paypalLogoImg,
@@ -60,7 +59,6 @@ class Start {
 			'product_items_and_shipping'		=> $this->getProductItemsAndShipping($order),
 			'address_html'		=> $this->getAddressHtml($order),
 		];
-		
 	}
 	
 	public function getAddressHtml($order){

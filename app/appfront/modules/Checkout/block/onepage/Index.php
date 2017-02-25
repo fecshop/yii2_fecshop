@@ -37,12 +37,15 @@ class Index {
 		$this->initAddress();
 		$this->initCountry();
 		$this->initState();
+		$shippings =  $this->getShippings();
+		$last_cart_info = Yii::$service->cart->getCartInfo($this->_shipping_method,$this->_country,$this->_state);
+		
 		
 		return [
 			'payments' 					=> $this->getPayment(),
-			'shippings' 				=> $this->getShippings(),
+			'shippings' 				=> $shippings,
 			'current_payment_method' 	=> $this->_payment_method,
-			'cart_info'  				=> Yii::$service->cart->getCartInfo($this->_shipping_method,$this->_country,$this->_state),
+			'cart_info'  				=> $last_cart_info ,
 			'currency_info' 			=> $currency_info,
 			'address_view_file' 		=> $this->_address_view_file,
 			'cart_address'				=> $this->_address,
@@ -409,8 +412,11 @@ class Index {
 				$label = $shipping['label'];
 				$name = $shipping['name'];
 				# 得到运费的金额
-				$cost = Yii::$service->shipping->getShippingCostWithSymbols($method,$weight,$country,$region);
+				//echo "$method,$weight,$country,$region";
+				// getShippingCostWithSymbols
+				$cost = Yii::$service->shipping->getShippingCost($method,$weight,$country,$region);
 				//var_dump($cost);
+				//echo "##"
 				$currentCurrencyCost = $cost['currCost'];
 				$symbol = Yii::$service->page->currency->getCurrentSymbol();
 				if($current_shipping_method == $method){
@@ -422,7 +428,8 @@ class Index {
 					'method'=> $method,
 					'label' => $label,
 					'name'  => $name,
-					'cost'  => $symbol.$currentCurrencyCost,
+					'cost'  => $currentCurrencyCost,
+					'symbol' => $symbol,
 					'checked' => $checked,
 					'shipping_i' => $shipping_i,
 				];
@@ -499,7 +506,7 @@ class Index {
 			 */
 			$quoteItem = Yii::$service->cart->quoteItem->getCartProductInfo();
 			$product_weight = $quoteItem['product_weight'];
-			$shippingCost 	= Yii::$service->shipping->getShippingCostWithSymbols($shipping_method,$product_weight,$country,$state);
+			$shippingCost 	= Yii::$service->shipping->getShippingCost($shipping_method,$product_weight,$country,$state);
 			Yii::$service->cart->quote->setShippingCost($shippingCost);
 			
 			/**

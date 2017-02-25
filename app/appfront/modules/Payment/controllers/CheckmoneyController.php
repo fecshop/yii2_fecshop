@@ -28,9 +28,9 @@ class CheckmoneyController extends PaymentController
 			$complateUrl = Yii::$service->payment->getStandardSuccessRedirectUrl($payment_method);
 			if($complateUrl){
 				# 登录用户，在支付前清空购物车。
-				if(!Yii::$app->user->isGuest){
-					Yii::$service->cart->clearCart();
-				}
+				//if(!Yii::$app->user->isGuest){
+				//	Yii::$service->cart->clearCartProduct();
+				//}
 				Yii::$service->url->redirect($complateUrl);
 				exit;
 			}
@@ -48,7 +48,7 @@ class CheckmoneyController extends PaymentController
 		];
 		# 清理购物车中的产品。(游客用户的购物车在成功页面清空)
 		if(Yii::$app->user->isGuest){
-			Yii::$service->cart->clearCart();
+			Yii::$service->cart->clearCartProduct();
 		}
 		# 清理session中的当前的increment_id
 		Yii::$service->order->removeSessionIncrementId();

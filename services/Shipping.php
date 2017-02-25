@@ -88,6 +88,9 @@ class Shipping extends Service
 	 * @return Float 通过计算，得到在默认货币下的运费金额。
 	 */
 	protected function actionGetShippingCostByCsvWeight($shipping_method,$weight,$country,$region='*'){
+		if(!$weight){
+			return 0; 
+		}
 		$shippingArr = $this->getShippingByTableCsv($shipping_method);
 		$priceData = [];
 		if(isset($shippingArr[$country][$region])){
@@ -129,7 +132,7 @@ class Shipping extends Service
 	 *		运费是通过csv表格内容计算而来，如果cost==0，那么代表免邮的方式。
 	 *		该方法为：当前重量下，所有的运费方式对应的运费都计算出来，展示在下单页面，让用户选择。
 	 */
-	protected  function actionGetShippingCostWithSymbols($shipping_method,$weight,$country ='',$region='*'){
+	protected  function actionGetShippingCost($shipping_method,$weight,$country ='',$region='*'){
 		//echo $weight;
 		//echo $country;
 		//echo $region;
@@ -148,13 +151,13 @@ class Shipping extends Service
 				$currentCost = Yii::$service->page->currency->getCurrentCurrencyPrice($usdCost);
 				return [
 					'currCost'   => $currentCost,
-					'baseCost'	=> $usdCost,
+					'baseCost'	 => $usdCost,
 				];
 			# $cost = 0 代表为free shipping方式
 			}else if($cost == 0){
 				return [
 					'currCost'  => number_format(0,2) ,
-					'baseCost'	=> 0,
+					'baseCost'	=> number_format(0,2),
 				];
 			}
 		}

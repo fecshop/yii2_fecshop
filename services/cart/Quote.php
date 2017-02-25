@@ -196,11 +196,10 @@ class Quote extends Service
 		Yii::$app->session->set(self::SESSION_CART_ID,$cart_id);
 	}
 	/**
-	 * 清空购物车。只删除购物车中的产品，但是购物车中的信息保留。
+	 * 完全与当前购物车脱节，如果产品添加购物车，会创建新的cart_id
 	 */
 	protected function actionClearCart(){
-		Yii::$service->cart->quoteItem->removeItemByCartId();
-		//Yii::$app->session->remove(self::SESSION_CART_ID);
+		Yii::$app->session->remove(self::SESSION_CART_ID);
 	}
 	/**
 	 * 初始化创建cart信息，
@@ -443,7 +442,7 @@ class Quote extends Service
 		}
 		if(!$this->_shipping_cost){
 			//echo "$shipping_method,$weight,$country,$region";
-			$shippingCost = Yii::$service->shipping->getShippingCostWithSymbols($shipping_method,$weight,$country,$region);
+			$shippingCost = Yii::$service->shipping->getShippingCost($shipping_method,$weight,$country,$region);
 			$this->_shipping_cost = $shippingCost;
 			//if(isset($shippingCost['currentCost'])){
 			//	$this->_shipping_cost = $shippingCost['currentCost'];
