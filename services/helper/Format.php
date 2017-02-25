@@ -27,7 +27,7 @@ class Format extends Service
 	 * @property $number | Float
 	 * @property $bits | Int
 	 * @return $number | Float 
-	 * 返回格式化形式的
+	 * 杩斿洖鏍煎紡鍖栧舰寮忕殑
 	 */
 	public function number_format($number,$bits=2){
 		return number_format($number,$bits,'.','');

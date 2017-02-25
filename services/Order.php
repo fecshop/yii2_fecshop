@@ -324,7 +324,6 @@ class Order extends Service
 			$orderModel->save();
 			Yii::$service->order->item->saveOrderItems($cartInfo['products'],$order_id,$cartInfo['store']);
 			$this->setSessionIncrementId($increment_id);
-			# 将订单里面的一些信息，保存到购物车中，譬如货运地址信息等。
 			
 			# 如果是登录用户，那么，在生成订单后，需要清空购物车。
 			if(!Yii::$app->user->isGuest){
