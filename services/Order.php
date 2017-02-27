@@ -32,6 +32,9 @@ class Order extends Service
 	# $this->payment_status_pending
 	
 	public $increment_id = 1000000000;
+	public $minuteBeforeThatReturnPendingStock = 60;
+	public $orderCountThatReturnPendingStock = 30;
+	
 	protected $checkout_type;
 	const CHECKOUT_TYPE_STANDARD 	= 'standard';
 	const CHECKOUT_TYPE_EXPRESS 	= 'express';
@@ -416,5 +419,36 @@ class Order extends Service
 		return false;
 	}
 	
+	
+	/**
+	 * 将xx时间内未支付的pending订单取消掉，并释放产品库存。
+	 */
+	protected function actionReturnPendingStock(){
+		$minute = $this->minuteBeforeThatReturnPendingStock;
+		$begin_time =strtotime(date('Y-m-d H:i:s'). ' -'.$minute.' minutes ');
+		$filter = [
+	  		'where'			=> [
+				['<','updated_at',$begin_time],
+				['order_status' => $this->payment_status_pending],
+				['if_is_return_stock' => 2],
+	  		],
+			'numPerPage' 	=> $this->orderCountThatReturnPendingStock,  	
+	  		'pageNum'		=> 1,
+			
+		];
+		$data = $this->coll($filter);
+		$coll = $data['coll'];
+		$count = $data['count'];
+		if($count > 0){
+			foreach($coll as $one){
+				$order_id = $one['order_id'];
+				$product_items = Yii::$service->order->item->getByOrderId($order_id,true);
+				Yii::$service->product->stock->returnQty($product_items);
+				$one->if_is_return_stock = 1;
+				$one->save();
+			}
+		}
+		
+	}
 	
 }

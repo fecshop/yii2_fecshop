@@ -1,7 +1,7 @@
 脚本说明
 ========
 
-### 1. fullSearchSync.sh
+### 1. search/fullSearchSync.sh
 
 此脚本是初始化产品数据到相应的搜索引擎中的表中
 目前只有mongodb的fullTextSearch 和Xun Search
@@ -37,6 +37,7 @@ Xun Search 只支持中文，
 4.1 将产品的url自定义重新跑一次。包括分类，产品等
 4.2 将urlRewrite表中残留的重新数据，但是在产品和分类中不存在的清空。
 
-
+### 5.returnPendingProductQtyStock.sh
+cron执行，将60分钟内没有支付的订单的库存释放，并将订单状态设置为cancel。
 
 

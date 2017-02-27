@@ -23,13 +23,17 @@ class Item extends Service
 {
 	/**
 	 * @property $order_id | Int 
+	 * @property $onlyFromTable | 从数据库取出不做处理
 	 * @return Array
 	 * 通过order_id 得到所有的items
 	 */
-	protected function actionGetByOrderId($order_id){
+	protected function actionGetByOrderId($order_id,$onlyFromTable=false){
 		$items = MyOrderItem::find()->asArray()->where([
 			'order_id' => $order_id,
 		])->all();
+		if($onlyFromTable){
+			return $items;
+		}
 		foreach($items as $k=>$one){
 			$product_id = $one['product_id'];
 			$product_one = Yii::$service->product->getByPrimaryKey($product_id);

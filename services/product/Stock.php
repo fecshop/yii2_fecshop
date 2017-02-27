@@ -31,16 +31,16 @@ class Stock extends Service
 	/**
 	 * @property $items | Array ， example:
 	 * 	[
-			[
-				'sku' => 'xxxxx',
-				'qty' => 2,
-				'custom_option_sku' => 'cos_1',  # 存在该项，则应该到产品的
-			],
-			[
-				'sku' => 'yyyyy',
-				'qty' => 1,
-			],
-		]
+	 *		[
+	 *			'sku' => 'xxxxx',
+	 *			'qty' => 2,
+	 *			'custom_option_sku' => 'cos_1',  # 存在该项，则应该到产品的
+	 *		],
+	 *		[
+	 *			'sku' => 'yyyyy',
+	 *			'qty' => 1,
+	 *		],
+	 *	]
 	 * @return boolean 
 	 * 扣除产品库存。如果扣除成功，则返回true，如果返回失败，则返回false
 	 */
@@ -85,16 +85,16 @@ class Stock extends Service
 	/**
 	 * @property $items | Array ， example:
 	 * 	[
-			[
-				'sku' => 'xxxxx',
-				'qty' => 2,
-				'custom_option_sku' => 'cos_1',  # 存在该项，则应该到产品的
-			],
-			[
-				'sku' => 'yyyyy',
-				'qty' => 1,
-			],
-		]
+	 *		[
+	 *			'sku' => 'xxxxx',
+	 *			'qty' => 2,
+	 *			'custom_option_sku' => 'cos_1',  # 存在该项，则应该到产品的
+	 *		],
+	 *		[
+	 *			'sku' => 'yyyyy',
+	 *			'qty' => 1,
+	 *		],
+	 *	]
 	 * @return boolean 
 	 * 检查产品的库存是否允许扣除。如果扣除成功，则返回true，如果返回失败，则返回false
 	 */
@@ -142,11 +142,22 @@ class Stock extends Service
 	}
 	
 	/**
-	 * @property $product_items | Array 
+	 * @property $product_items | Array ， example:
+	 * 	[
+	 *		[
+	 *			'sku' => 'xxxxx',
+	 *			'qty' => 2,
+	 *			'custom_option_sku' => 'cos_1',  # 存在该项，则应该到产品的
+	 *		],
+	 *		[
+	 *			'sku' => 'yyyyy',
+	 *			'qty' => 1,
+	 *		],
+	 *	]
 	 * @return boolean 
 	 * 返还产品库存。
 	 */
-	protected  function actionReturn($product_items){
+	protected  function actionReturnQty($product_items){
 		# 开始扣除库存。
 		if(is_array($product_items) && !empty($product_items)){
 			foreach($product_items as $k=>$item){
