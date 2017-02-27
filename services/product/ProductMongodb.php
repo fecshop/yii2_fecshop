@@ -40,13 +40,17 @@ class ProductMongodb implements ProductInterface
 	public function getBySku($sku,$returnArr=true){
 		if($sku){
 			if($returnArr){
-				return Product::find()->asArray()
+				$product =  Product::find()->asArray()
 					->where(['sku' => $sku])
 					->one()
 					;
 			}else{
-				return Product::findOne(['sku' => $sku]);
+				$product = Product::findOne(['sku' => $sku]);
 			} 
+			$primaryKey = $this->getPrimaryKey() ;
+			if(isset($product[$primaryKey]) && !empty($product[$primaryKey])){
+				return $product;
+			}
 		}
 	}
 	

@@ -140,8 +140,8 @@ class Product extends Service
 	/**
 	 * 通过sku查询产品
 	 */
-	protected function actionGetBySku($sku){
-		return $this->_product->getBySku($sku);
+	protected function actionGetBySku($sku,$returnArr=true){
+		return $this->_product->getBySku($sku,$returnArr);
 	}
 	
 	/**

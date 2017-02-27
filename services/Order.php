@@ -269,6 +269,12 @@ class Order extends Service
 		$state		= $address['state'];
 		//echo "$shipping_method,$country,$state";exit;
 		$cartInfo = Yii::$service->cart->getCartInfo($shipping_method,$country,$state);
+		# 检查产品是否有库存，如果没有库存则返回false
+		$deductStatus = Yii::$service->product->stock->checkItemsStock($cartInfo['products']);
+		if(!$deductStatus){
+			return false;
+		}	
+		
 		$myOrder = new MyOrder;
 		$myOrder['order_status'] 	= $this->payment_status_pending;
 		$myOrder['store'] 			= $cartInfo['store'];
@@ -324,19 +330,20 @@ class Order extends Service
 			$orderModel->save();
 			Yii::$service->order->item->saveOrderItems($cartInfo['products'],$order_id,$cartInfo['store']);
 			$this->setSessionIncrementId($increment_id);
-			
+			# 扣除库存。（订单生成后，库存产品库存。）
+			#     （备注）需要另起一个脚本，用来处理半个小时后，还没有支付的订单，将订单取消，然后将订单里面的产品库存返还。
+			# 			如果是无限库存（没有库存就去采购的方式），那么不需要跑这个脚本，将库存设置的非常大即可。
+			Yii::$service->product->stock->deduct($cartInfo['products']);
+		
 			# 如果是登录用户，那么，在生成订单后，需要清空购物车。
 			if(!Yii::$app->user->isGuest){
 				Yii::$service->cart->clearCartProduct();
 			}
-			# 扣除库存。
-			#     （备注）需要另起一个脚本，用来处理半个小时后，还没有支付的订单，将订单取消，然后将订单里面的产品库存返还。
-			# 			如果是无限库存（没有库存就去采购的方式），那么不需要跑这个脚本，将库存设置的非常大即可。
-			
-			
 			return true;
+		}else{
+			Yii::$service->helper->errors->add('generate order fail');
+			return false;
 		}
-		return false;
 	}
 	/**
 	 * @property $increment_id | String ,order订单号

@@ -18,47 +18,49 @@ use yii\base\InvalidValueException;
 class Start {
 	
 	public function getLastData(){
-		 
 		$loaderImg 			= Yii::$service->image->getImgUrl('images/loader.gif','appfront');
 		$paypalLogoImg 		= Yii::$service->image->getImgUrl('custom/logo.png','appfront');		
 		
 		$increment_id 		= Yii::$service->order->getSessionIncrementId();
-		$order 				= Yii::$service->order->getInfoByIncrementId($increment_id);
-		//var_dump($order);
-		//exit;
-		Yii::$service->payment->setPaymentMethod($order['payment_method']);
-		$success_redirect_url 	= Yii::$service->payment->getStandardSuccessRedirectUrl();
-		$cancel_url 			= Yii::$service->payment->getStandardCancelUrl(); 
-		$ipn_url 				= Yii::$service->payment->getStandardIpnUrl();
-		$store_name 			= Yii::$service->store->currentStore;
-		
-		$payment_action 	= "sale";
-		$cmd 				= '_cart';
-		$upload 			= 1;
-		$tax 				= 0.00;
-		$tax_cart 			= 0.00;
-		
-		$payment_url 		= Yii::$service->payment->getStandardPaymentUrl();
-		$account 			= Yii::$service->payment->getStandardAccount();
-		
-		return [
-			'loader_img' 		=> $loaderImg,
-			'paypal_logo_img' 	=> $paypalLogoImg,
-			'order' 			=> $order,
-			'success_redirect_url' => $success_redirect_url,
-			'cancel_url' 		=> $cancel_url,
-			'ipn_url' 			=> $ipn_url,
-			'store_name' 		=> $store_name,
-			'payment_action' 	=> $payment_action,
-			'cmd' 				=> $cmd,
-			'upload' 			=> $upload,
-			'tax' 				=> $tax,
-			'tax_cart' 			=> $tax_cart,
-			'payment_url'	 	=> $payment_url,
-			'account' 			=> $account,
-			'product_items_and_shipping'		=> $this->getProductItemsAndShipping($order),
-			'address_html'		=> $this->getAddressHtml($order),
-		];
+		if($increment_id){
+			$order 				= Yii::$service->order->getInfoByIncrementId($increment_id);
+			if($order){
+				//var_dump($order);exit;
+				Yii::$service->payment->setPaymentMethod($order['payment_method']);
+				$success_redirect_url 	= Yii::$service->payment->getStandardSuccessRedirectUrl();
+				$cancel_url 			= Yii::$service->payment->getStandardCancelUrl(); 
+				$ipn_url 				= Yii::$service->payment->getStandardIpnUrl();
+				$store_name 			= Yii::$service->store->currentStore;
+				
+				$payment_action 	= "sale";
+				$cmd 				= '_cart';
+				$upload 			= 1;
+				$tax 				= 0.00;
+				$tax_cart 			= 0.00;
+				
+				$payment_url 		= Yii::$service->payment->getStandardPaymentUrl();
+				$account 			= Yii::$service->payment->getStandardAccount();
+				
+				return [
+					'loader_img' 		=> $loaderImg,
+					'paypal_logo_img' 	=> $paypalLogoImg,
+					'order' 			=> $order,
+					'success_redirect_url' => $success_redirect_url,
+					'cancel_url' 		=> $cancel_url,
+					'ipn_url' 			=> $ipn_url,
+					'store_name' 		=> $store_name,
+					'payment_action' 	=> $payment_action,
+					'cmd' 				=> $cmd,
+					'upload' 			=> $upload,
+					'tax' 				=> $tax,
+					'tax_cart' 			=> $tax_cart,
+					'payment_url'	 	=> $payment_url,
+					'account' 			=> $account,
+					'product_items_and_shipping'		=> $this->getProductItemsAndShipping($order),
+					'address_html'		=> $this->getAddressHtml($order),
+				];
+			}
+		}
 	}
 	
 	public function getAddressHtml($order){

@@ -82,10 +82,12 @@ class Coupon extends Service
 			if(!$coupon_code){
 				$coupon_code = $this->_coupon_code;
 			}
-			$one = MyCoupon::findOne(['coupon_code' => $coupon_code]);
-			
-			if($one['coupon_code']){
-				$this->_coupon_model = $one;
+			if($coupon_code){
+				$one = MyCoupon::findOne(['coupon_code' => $coupon_code]);
+				
+				if($one['coupon_code']){
+					$this->_coupon_model = $one;
+				}
 			}
 		}
 		if($this->_coupon_model){
@@ -276,7 +278,7 @@ class Coupon extends Service
 				
 				}
 			}else{
-				Yii::$service->helper->errors->add("coupon is not exist");
+				//Yii::$service->helper->errors->add("coupon is not exist");
 				
 			}
 		}

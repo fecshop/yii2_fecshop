@@ -64,14 +64,15 @@ class Message extends Service
 	 */ 
 	protected function actionAddByHelperErrors(){
 		$errors = Yii::$service->helper->errors->get(true);
+		var_dump($errors);
 		if($errors){
 			if(is_array($errors) && !empty($errors)){
 				foreach($errors as $error){
-					if(is_array($error) && !empty($error)){
-						foreach($error as $er){
-							Yii::$service->page->message->addError($er);
-						}
-					}
+					//if(is_array($error) && !empty($error)){
+					//	foreach($error as $er){
+							Yii::$service->page->message->addError($error);
+						//}
+					//}
 				}
 			} 
 		}

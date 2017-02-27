@@ -37,27 +37,29 @@ class Placeorder{
 			if($this->checkOrderInfoAndInit($post)){
 				# 如果游客用户勾选了注册账号，则注册，登录，并把地址写入到用户的address中
 				$gus_status = $this->guestCreateAndLoginAccount($post);
-				$save_address_status = $this->saveNewAddress($post);
+				$save_address_status = $this->updateAddress($post);
 				if($gus_status && $save_address_status){
-					# 更新Cart信息
-					$this->updateCart();
+					# 更新Cart信息  
+					//$this->updateCart();
 					# 设置checkout type
 					$serviceOrder = Yii::$service->order;
 					$checkout_type = $serviceOrder::CHECKOUT_TYPE_STANDARD;
 					$serviceOrder->setCheckoutType($checkout_type);
 					# 将购物车数据，生成订单。
-					Yii::$service->order->generateOrderByCart($this->_billing,$this->_shipping_method,$this->_payment_method);
-					
-					$startUrl = Yii::$service->payment->getStandardStartUrl();
-					
-					Yii::$service->url->redirect($startUrl);
-					exit;
-					//return true;
+					$genarateStatus = Yii::$service->order->generateOrderByCart($this->_billing,$this->_shipping_method,$this->_payment_method);
+					if($genarateStatus){
+						$startUrl = Yii::$service->payment->getStandardStartUrl();
+						Yii::$service->url->redirect($startUrl);
+						exit;
+						//return true;
+					}
 				}
 			}else{
 				
 			}
 		}
+		//echo 333;exit;
+		Yii::$service->page->message->addByHelperErrors();
 		return false;
 	}
 	/**
@@ -109,12 +111,12 @@ class Placeorder{
 	 * 登录用户，保存货运地址到customer address ，然后把生成的
 	 * address_id 写入到cart中。
 	 * shipping method写入到cart中
-	 * payment method 写入到cart中
+	 * payment method 写入到cart中 updateCart 
 	 */
-	public function saveNewAddress($post){
+	public function updateAddress($post){
 		if(!Yii::$app->user->isGuest){
 			$billing		= $post['billing'];
-			$address_id = $post['address_id'];
+			$address_id 	= $post['address_id'];
 			if(!$address_id){
 				$identity = Yii::$app->user->identity;
 				$customer_id = $identity['id'];
@@ -141,8 +143,11 @@ class Placeorder{
 					return false;
 				}
 				//echo "$address_id,$this->_shipping_method,$this->_payment_method";
-				return Yii::$service->cart->updateLoginCart($address_id,$this->_shipping_method,$this->_payment_method);
+				
 			}
+			return Yii::$service->cart->updateLoginCart($this->_address_id,$this->_shipping_method,$this->_payment_method);
+		}else{
+			return Yii::$service->cart->updateGuestCart($this->_billing,$this->_shipping_method,$this->_payment_method);
 		}
 		return true;
 	}
@@ -150,6 +155,7 @@ class Placeorder{
 	/**
 	 * 如果是游客，那么保存货运地址到购物车表。
 	 */
+	/*
 	public function updateCart(){
 		if(Yii::$app->user->isGuest){
 			return Yii::$service->cart->updateGuestCart($this->_billing,$this->_shipping_method,$this->_payment_method);
@@ -157,6 +163,8 @@ class Placeorder{
 			return Yii::$service->cart->updateLoginCart($this->_address_id,$this->_shipping_method,$this->_payment_method);
 		}
 	}
+	*/
+	
 	/**
 	 * @property $post | Array
 	 * @return boolean 

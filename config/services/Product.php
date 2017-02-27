@@ -92,6 +92,10 @@ return [
 				'class' => 'fecshop\services\product\Info',
 				
 			],
+			'stock' => [
+				'class' => 'fecshop\services\product\Stock',
+				
+			],
 			/* #暂时没用
 			
 			'coll' => [

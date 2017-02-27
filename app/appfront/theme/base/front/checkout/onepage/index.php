@@ -1,5 +1,7 @@
 <div class="main container one-column">
 	<div class="col-main">
+		<?= Yii::$service->page->widget->render('flashmessage'); ?>
+
 		<form action="<?= Yii::$service->url->getUrl('checkout/onepage'); ?>" method="post" id="onestepcheckout-form">
 			<?= \fec\helpers\CRequest::getCsrfInputHtml(); ?>
 			<fieldset style="margin: 0;" class="group-select">
