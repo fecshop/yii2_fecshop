@@ -28,7 +28,7 @@ class Index {
 	protected $_cart_info;
 	
 	public function getLastData(){
-		$cartInfo = $this->getCartInfo();
+		$cartInfo = Yii::$service->cart->getCartInfo();
 		
 		if(!isset($cartInfo['products']) || !is_array($cartInfo['products']) || empty($cartInfo['products'])){
 			Yii::$service->url->redirectByUrlKey('checkout/cart');
@@ -38,8 +38,7 @@ class Index {
 		$this->initCountry();
 		$this->initState();
 		$shippings =  $this->getShippings();
-		$last_cart_info = Yii::$service->cart->getCartInfo($this->_shipping_method,$this->_country,$this->_state);
-		
+		$last_cart_info = $this->getCartInfo($this->_shipping_method,$this->_country,$this->_state);
 		
 		return [
 			'payments' 					=> $this->getPayment(),
