@@ -34,20 +34,24 @@ class Cart extends Service
 	 */
 	protected function actionAddProductToCart($item){
 		$product = Yii::$service->product->getByPrimaryKey($item['product_id']);
-		$productValidate = Yii::$service->cart->info->validateProduct($item,$product);
-		if(!$productValidate){
-			$get = Yii::$service->helper->errors->get();
-			return false;
-		}
+		# 根据传递的值，得到custom_option_sku的值。
 		if(isset($item['custom_option_sku']) && !empty($item['custom_option_sku'])){
 			if(is_array($item['custom_option_sku'])){
 				$custom_option_sku = Yii::$service->cart->info->getCustomOptionSku($item,$product);
+				
 				if(!$custom_option_sku){
+					Yii::$service->helper->errors->add('product custom_option_sku is not exist');
 					return false;
 				}
 			}
 			$item['custom_option_sku'] = $custom_option_sku;
 		}
+		# 检查产品满足加入购物车的条件
+		$productValidate = Yii::$service->cart->info->checkProductBeforeAdd($item,$product);
+		if(!$productValidate){
+			return false;
+		}
+		# 开始加入购物车
 		$innerTransaction = Yii::$app->db->beginTransaction();
 		try {
 			Yii::$service->cart->quoteItem->addItem($item);

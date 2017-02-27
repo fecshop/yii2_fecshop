@@ -19,10 +19,27 @@ use fecshop\models\mysqldb\Cart\Item as MyCartItem;
  */
 class Info extends Service
 {
+	# 上架状态产品加入购物车时，
+	# 如果addToCartCheckSkuQty设置为true，则需要检查产品qty是否>购买qty，
+	# 如果设置为false，则不需要，也就是说产品库存qty小于购买qty，也是可以加入购物车的。
+	public $addToCartCheckSkuQty = true;
 	
-	public  function validateProduct($item,$product){
+	/**
+	 * @property $item | Array  , example 
+	 * $item = [
+	 *		'product_id' 		=> 22222,
+	 *		'custom_option_sku' => ['color'=>'red','size'=>'l'],
+	 *		'qty' 				=> 22,
+	 * ];
+	 * @proeprty $product | Object , Product Model
+	 * return boolean 是否满足条件
+	 * 在产品加入购物车之前，检查产品是否存在，产品的状态，库存状态等
+	 * 满足条件返回true
+	 */
+	public  function checkProductBeforeAdd($item,$product){
 		$qty 				= $item['qty'];
 		$product_id 		= $item['product_id'];
+		$custom_option_sku  = $item['custom_option_sku'];
 		# 验证提交产品数据
 		# 验证产品是否存在
 		if(!$product['sku']){
@@ -30,10 +47,24 @@ class Info extends Service
 			return false;
 		}
 		# 验证库存 是否库存满足？
-		$canSale = Yii::$service->product->info->productIsCanSale($product,$qty);
-		if(!$canSale){
-			return false;
+		if($this->addToCartCheckSkuQty){
+			# 验证：1.上架状态， 2.库存个数是否大于购买个数
+			# 该验证方式是默认验证方式
+			if(!Yii::$service->product->stock->productIsInStock($product,$qty ,$custom_option_sku)){
+				Yii::$service->helper->errors->add('product is Stock Out');
+				
+				return false;
+			}
+		}else{
+			# 验证：1.上架状态
+			if(!Yii::$service->product->stock->checkOnShelfStatus($product['is_in_stock'])){
+				Yii::$service->helper->errors->add('product is Stock Out');
+			
+				return false;
+			}
 		}
+		
+		
 		# 验证产品是否
 		if($product['status'] != 1){
 			Yii::$service->helper->errors->add('product is not active');
@@ -61,18 +92,7 @@ class Info extends Service
 	}
 	
 	
-	public function productIsCanSale($product,$qty){
-		if($product['is_in_stock'] != 1){
-			Yii::$service->helper->errors->add('this product is stock out');
-			return false;
-		}
-		if($qty > $product['qty']){
-			Yii::$service->helper->errors->add('product qty add to cart is gt  product stock count');
-			return false;
-		}
-		
-		
-	}
+	
 	
 	
 	

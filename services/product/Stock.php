@@ -186,10 +186,10 @@ class Stock extends Service
 	 * 返还产品库存。
 	 */
 	protected function actionProductIsInStock($product,$sale_qty,$custom_option_sku){
+		
 		$is_in_stock = $product['is_in_stock'];
 		$product_qty = $product['qty'];
-		
-		if($is_in_stock == 1){
+		if($this->checkOnShelfStatus($is_in_stock)){
 			if($custom_option_sku){
 				$custom_option = $product['custom_option'];
 				if(isset($custom_option[$custom_option_sku]['qty']) && !empty($custom_option[$custom_option_sku]['qty'])){
@@ -206,8 +206,17 @@ class Stock extends Service
 	}
 	
 	
-	
-	
+	/**
+	 * @property $is_in_stock | Int,  状态
+	 * @return boolean 
+	 * 检查产品是否是上架上台
+	 */
+	protected function actionCheckOnShelfStatus($is_in_stock){
+		if($is_in_stock == 1){
+			return true;
+		}
+		return false;
+	}
 	
 	
 	

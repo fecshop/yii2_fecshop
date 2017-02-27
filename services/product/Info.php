@@ -91,21 +91,6 @@ class Info extends Service
 		}
 	}
 	
-	/**
-	 * @property $product | Object  产品对象
-	 * @property $sale_qty| 想要购买的个数
-	 * 验证当前产品，是否是可以出售的。
-	 */
-	public static function productIsCanSale($product,$sale_qty){
-		$is_in_stock = $product['is_in_stock'];
-		$qty 		= $product['qty'];
-		if($is_in_stock == 1){
-			if($qty >= $sale_qty){
-				return true;
-			}
-		}
-		
-	}
 	
 	
 	
