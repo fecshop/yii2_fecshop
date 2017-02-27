@@ -29,12 +29,21 @@ class Errors extends Service
 		}
 	}
 	
-	public function get($arrayFormat=false){
+	/**
+	 * @property $separator 如果是false，则返回数组，
+	 *						如果是true则返回用| 分隔的字符串
+	 *						如果是传递的分隔符的值，譬如“,”，则返回用这个分隔符分隔的字符串
+	 *
+	 */
+	public function get($separator=false){
 		if($this->_errors){
 			$errors = $this->_errors;
 			$this->_errors = false;
-			if(!$arrayFormat){
-				return implode('|',$errors);
+			if(!$separator){
+				if($separator === true){
+					$separator = '|';
+				}
+				return implode($separator,$errors);
 			}else{
 				return $errors;
 			}

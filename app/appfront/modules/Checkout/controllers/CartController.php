@@ -52,6 +52,14 @@ class CartController extends AppfrontController
 					'items_count' => Yii::$service->cart->quote->getCartItemsCount(),
 				]);
 				exit;
+			}else{
+				$errors = Yii::$service->helper->errors->get(',');
+				echo json_encode([
+					'status' => 'fail',
+					'content'=> $errors,
+					//'items_count' => Yii::$service->cart->quote->getCartItemsCount(),
+				]);
+				exit;
 			}
 		}
 	}

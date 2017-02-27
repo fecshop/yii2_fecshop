@@ -242,7 +242,9 @@
 							$("#js_cart_items").html(items_count);
 							window.location.href="<?= Yii::$service->url->getUrl("checkout/cart") ?>";
 						}else{
-							alert('add to cart fail');
+							content = data.content;
+							$(".addProductToCart").removeClass("dataUp");
+							alert(content);
 						}
 						
 					},

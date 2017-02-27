@@ -51,7 +51,7 @@ class Info extends Service
 			# 验证：1.上架状态， 2.库存个数是否大于购买个数
 			# 该验证方式是默认验证方式
 			if(!Yii::$service->product->stock->productIsInStock($product,$qty ,$custom_option_sku)){
-				Yii::$service->helper->errors->add('product is Stock Out');
+				Yii::$service->helper->errors->add('the qty of product stocks is less than your purchase qty');
 				
 				return false;
 			}
@@ -63,9 +63,7 @@ class Info extends Service
 				return false;
 			}
 		}
-		
-		
-		# 验证产品是否
+		# 验证产品是否是激活状态
 		if($product['status'] != 1){
 			Yii::$service->helper->errors->add('product is not active');
 			return false;
