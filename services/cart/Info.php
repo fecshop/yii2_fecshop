@@ -19,6 +19,12 @@ use fecshop\models\mysqldb\Cart\Item as MyCartItem;
  */
 class Info extends Service
 {
+	
+	/**
+	 * 单个sku加入购物车的最大个数。
+	 */
+	public $maxCountAddToCart = 100;
+	
 	# 上架状态产品加入购物车时，
 	# 如果addToCartCheckSkuQty设置为true，则需要检查产品qty是否>购买qty，
 	# 如果设置为false，则不需要，也就是说产品库存qty小于购买qty，也是可以加入购物车的。
@@ -40,6 +46,11 @@ class Info extends Service
 		$qty 				= $item['qty'];
 		$product_id 		= $item['product_id'];
 		$custom_option_sku  = $item['custom_option_sku'];
+		# 加入购物车的产品个数超出 购物车中产品的最大个数。
+		if($qty > $this->maxCountAddToCart){
+			Yii::$service->helper->errors->add('The number of products added to the shopping cart can not exceed '.$this->maxCountAddToCart);
+			return false;
+		}
 		# 验证提交产品数据
 		# 验证产品是否存在
 		if(!$product['sku']){

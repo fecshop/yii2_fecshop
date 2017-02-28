@@ -21,6 +21,7 @@ use fecshop\models\mysqldb\Cart\Item as MyCartItem;
 class Cart extends Service
 {
 	
+	
 	/**
 	 * 将某个产品加入到购物车中
 	 * @property $item|Array
@@ -31,6 +32,7 @@ class Cart extends Service
 	 * ];
 	 * 注意： $item['custom_option_sku'] 除了为上面的数组格式，还可以为字符串
 	 * 为字符串的时候，字符串标示的就是产品的custom option  sku
+	 * 
 	 */
 	protected function actionAddProductToCart($item){
 		$product = Yii::$service->product->getByPrimaryKey($item['product_id']);
