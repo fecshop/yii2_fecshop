@@ -63,7 +63,20 @@ class Review extends ActiveRecord
 	
 	
 	
-	
+	public static function create_index(){
+		$indexs = [
+			['product_spu' 		=> -1],
+			['product_sku' 		=> -1],
+			['product_id' => -1],
+			['user_id' => -1],
+			
+		];
+      
+		$options = ['background' => true, 'socketTimeoutMS' => 300000];
+		foreach($indexs as $columns){
+			self::getCollection()->createIndex($columns,$options);
+		}
+	}
 	
 	
 	

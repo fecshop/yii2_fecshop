@@ -98,7 +98,20 @@ class Product extends ActiveRecord
     }
 	
 	
-	
+
+
+	public static function create_index(){
+		$indexs = [
+			['spu' 		=> -1],
+			['sku' 		=> -1],
+			['category' => -1],
+		];
+      
+		$options = ['background' => true, 'socketTimeoutMS' => 300000];
+		foreach($indexs as $columns){
+			self::getCollection()->createIndex($columns,$options);
+		}
+	}
 	
 	
 	

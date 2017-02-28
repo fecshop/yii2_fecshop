@@ -36,6 +36,20 @@ class Article extends ActiveRecord
 			'created_at',
 			'updated_at',
 			'created_user_id',
+			
 		];
     }
+	
+	public static function create_index(){
+		$indexs = [
+			['url_key' 		=> -1],
+			
+		];
+      
+		$options = ['background' => true, 'socketTimeoutMS' => 300000];
+		foreach($indexs as $columns){
+			self::getCollection()->createIndex($columns,$options);
+		}
+	}
+	
 }

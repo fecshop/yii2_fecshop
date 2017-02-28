@@ -38,7 +38,18 @@ class Favorite extends ActiveRecord
     }
 	
 	
-	
+	public static function create_index(){
+		$indexs = [
+			['user_id' 		=> -1],
+			['product_id' 		=> -1],
+			
+		];
+      
+		$options = ['background' => true, 'socketTimeoutMS' => 300000];
+		foreach($indexs as $columns){
+			self::getCollection()->createIndex($columns,$options);
+		}
+	}
 	
 	
 	

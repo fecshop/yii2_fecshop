@@ -36,4 +36,16 @@ class UrlRewrite extends ActiveRecord
 		'created_at',
 		];
     }
+	
+	public static function create_index(){
+		$indexs = [
+			['custom_url_key' 		=> -1],
+			
+		];
+      
+		$options = ['background' => true, 'socketTimeoutMS' => 300000];
+		foreach($indexs as $columns){
+			self::getCollection()->createIndex($columns,$options);
+		}
+	}
 }

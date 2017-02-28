@@ -13,7 +13,7 @@ use yii\base\InvalidConfigException;
 use fec\helpers\CSession;
 use fec\helpers\CUrl;
 use fecshop\services\Service;
-use fecshop\models\mongodb\Newsletter as MongoNewsletter;
+use fecshop\models\mongodb\customer\Newsletter as MongoNewsletter;
 /**
  * Page Newsletter services
  * @author Terry Zhao <2358269014@qq.com>
