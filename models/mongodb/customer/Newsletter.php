@@ -37,4 +37,20 @@ class Newsletter extends ActiveRecord
 	public static function primaryKey(){
 		return '_id';
 	}
+	
+	
+	public static function create_index(){
+		$indexs = [
+			['email' 		=> -1],
+			
+		];
+      
+		$options = ['background' => true, 'socketTimeoutMS' => 300000];
+		foreach($indexs as $columns){
+			self::getCollection()->createIndex($columns,$options);
+		}
+	}
+	
+	
+	
 }

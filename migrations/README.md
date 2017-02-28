@@ -25,9 +25,14 @@
 2.2 mongodb(导入mongodb的表，数据，索引):
 
 ```
-./yii mongodb-migrate/create  --interactive=0 --migrationPath=@fecshop/migrations/mongodb
+./yii mongodb-migrate  --interactive=0 --migrationPath=@fecshop/migrations/mongodb
 ```
 
+2.2.2 mongodb的示例数据存放路径为：
+
+/vendor/fancyecommerce/fecshop/migrations/mongodb-example-data/example_data.js
+
+可以通过mongodb的后台，或者通过php的rockmongo安装这些mongodb中的示例数据。
 
 
 
