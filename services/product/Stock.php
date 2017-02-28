@@ -165,8 +165,12 @@ class Stock extends Service
 				$sale_qty = $item['qty'];
 				$custom_option_sku = $item['custom_option_sku'];
 				if($sku && $sale_qty){
-					$product = Yii::$service->product->getBySku($sku);
+					echo "SKU:".$sku."\n";
+					echo "sale_qty:".$sale_qty."\n";
+					$product = Yii::$service->product->getBySku($sku,false);
 					if($product){
+						echo $product->sku."\n";
+						echo $custom_option_sku."\n\n\n";
 						if(!$custom_option_sku){
 							$is_in_stock = $product['is_in_stock'];
 							$product_qty = $product['qty'];

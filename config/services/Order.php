@@ -22,9 +22,9 @@ return [
 			'zip'
 		],
 		#处理多少分钟后，支付状态为pending的订单，归还库存。
-		'minuteBeforeThatReturnPendingStock' =>  60,
+		'minuteBeforeThatReturnPendingStock' 	=>  60,
 		# 一次性处理多少个pending订单。
-		'orderCountThatReturnPendingStock' =>  30,
+		'orderCountThatReturnPendingStock' 		=>  30,
 		# 子服务
 		'childService' => [
 			'item' => [

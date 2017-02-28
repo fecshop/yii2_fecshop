@@ -18,6 +18,7 @@ class ProductController extends Controller
 {
 	
 	public function actionReturnpendingstock(){
+		
 		Yii::$service->order->returnPendingStock();
 	}
 	

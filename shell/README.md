@@ -40,4 +40,17 @@ Xun Search 只支持中文，
 ### 5.returnPendingProductQtyStock.sh
 cron执行，将60分钟内没有支付的订单的库存释放，并将订单状态设置为cancel。
 
+### 6.order/returnPendingProductQtyStock.sh
+将一段时间内还是pending的订单的库存返还给产品。
+
+
+
+
+
+
+
+
+
+
+
 

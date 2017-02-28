@@ -424,6 +424,7 @@ class Order extends Service
 	 * 将xx时间内未支付的pending订单取消掉，并释放产品库存。
 	 */
 	protected function actionReturnPendingStock(){
+		
 		$minute = $this->minuteBeforeThatReturnPendingStock;
 		$begin_time =strtotime(date('Y-m-d H:i:s'). ' -'.$minute.' minutes ');
 		$filter = [
@@ -434,11 +435,13 @@ class Order extends Service
 	  		],
 			'numPerPage' 	=> $this->orderCountThatReturnPendingStock,  	
 	  		'pageNum'		=> 1,
-			
+			'asArray'		=> false,
 		];
+		
 		$data = $this->coll($filter);
 		$coll = $data['coll'];
 		$count = $data['count'];
+		
 		if($count > 0){
 			foreach($coll as $one){
 				$order_id = $one['order_id'];

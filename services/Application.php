@@ -26,7 +26,7 @@ class Application
         $this->childService = $config;
     }
 	/**
-	 * µÃµ½services ÀïÃæÅäÖÃµÄ×Ó·þÎñchildServiceµÄÊµÀý
+	 * å¾—åˆ°services é‡Œé¢é…ç½®çš„å­æœåŠ¡childServiceçš„å®žä¾‹
 	 */
 	public function getChildService($childServiceName){
 		if(!$this->_childService[$childServiceName]){
