@@ -1,4 +1,4 @@
-1. 生成的命令：
+### 1. 生成迁移文件的命令：
 
 1.1 生成mysql文件
 ./yii migrate/create   --migrationPath=@fecshop/migrations/mysqldb    fecshop_tables
@@ -7,7 +7,7 @@
 ./yii mongodb-migrate/create   --migrationPath=@fecshop/migrations/mongodb    fecshop_tables
 
 
-2. 迁移的命令
+### 2. 迁移的命令（导入数据库表）
 2.1 mysql
 ./yii migrate --interactive=0 --migrationPath=@fecshop/migrations/mysqldb
 
