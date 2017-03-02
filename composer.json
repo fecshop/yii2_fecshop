@@ -25,7 +25,7 @@
   "require": {  
 	"php": ">=5.4.0",  
 	"yiisoft/yii2": ">=2.0.9" ,
-	"fancyecommerce/fec_admin":"~1.3.6.2",
+	"fancyecommerce/fec_admin":"~1.3.6.3",
 	"yiisoft/yii2-mongodb": "~2.1.0" ,
 	"skeeks/yii2-assets-auto-compress": "*",
 	"hightman/xunsearch": "*@beta"
