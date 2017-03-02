@@ -171,8 +171,8 @@ class m170228_072156_fecshop_tables extends Migration
 			) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 			","
 			INSERT INTO `admin_user` (`id`, `username`, `password_hash`, `password_reset_token`, `email`, `person`, `code`, `auth_key`, `status`, `created_at`, `updated_at`, `password`, `access_token`, `allowance`, `allowance_updated_at`, `created_at_datetime`, `updated_at_datetime`, `birth_date`) VALUES
-			(1, 'terry', '$2y$13$EyK1HyJtv4A/19Jb8gB5y.4SQm5y93eMeHjUf35ryLyd2dWPJlh8y', NULL, 'zqy234@126.com', '', '3333', 'HH-ZlZXirlG-egyz8OTtl9EVj9fvKW00', 1, 1441763620, 1475825406, '', 'yrYWR7kY-A9bUAP6UUZgCR3yi3ALtUh-', 599, 1452491877, '2016-01-12 09:41:44', '2016-10-07 15:30:06', NULL),
-			(2, 'admin', '$2y$13$T5ZFrLpJdTEkAoAdnC6A/u8lh/pG.6M0qAZBo1lKE.6x6o3V6yvVG', NULL, '3727@qq.com', '超级管理员', '111', '_PYjb4PdIIY332LquBRC5tClZUXV0zm_', 1, NULL, 1468917063, '', '1Gk6ZNn-QaBaKFI4uE2bSw0w3N7ej72q', NULL, NULL, '2016-01-11 09:41:52', '2016-06-26 01:40:55', NULL);
+			(1, 'terry', '".'$2y$13$EyK1HyJtv4A/19Jb8gB5y.4SQm5y93eMeHjUf35ryLyd2dWPJlh8y'."', NULL, 'zqy234@126.com', '', '3333', 'HH-ZlZXirlG-egyz8OTtl9EVj9fvKW00', 1, 1441763620, 1475825406, '', 'yrYWR7kY-A9bUAP6UUZgCR3yi3ALtUh-', 599, 1452491877, '2016-01-12 09:41:44', '2016-10-07 15:30:06', NULL),
+			(2, 'admin', '".'$2y$13$T5ZFrLpJdTEkAoAdnC6A/u8lh/pG.6M0qAZBo1lKE.6x6o3V6yvVG'."', NULL, '3727@qq.com', '超级管理员', '111', '_PYjb4PdIIY332LquBRC5tClZUXV0zm_', 1, NULL, 1468917063, '', '1Gk6ZNn-QaBaKFI4uE2bSw0w3N7ej72q', NULL, NULL, '2016-01-11 09:41:52', '2016-06-26 01:40:55', NULL);
 			","
 			CREATE TABLE IF NOT EXISTS `admin_user_role` (
 			  `id` int(20) NOT NULL AUTO_INCREMENT,
