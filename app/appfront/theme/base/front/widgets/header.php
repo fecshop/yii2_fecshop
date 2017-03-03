@@ -10,6 +10,8 @@
 <div id="top_nav">
 	<input type="hidden" class="currentBaseUrl" value="<?= $currentBaseUrl ?>" />
 	<input type="hidden" class="logoutUrl" value="<?= $logoutUrl ?>" />
+	<input type="hidden" class="logoutStr" value="<?= Yii::$service->page->translate->__('Logout'); ?>" />
+	
 	<input type="hidden" class="welcome_str" value="<?= Yii::$service->page->translate->__('Welcome!'); ?>" />
 	<div class="top_nav_inner">	    
 		<div class="top_nav_left">
@@ -41,7 +43,7 @@
 		<div class="top_nav_right">
 			<div class="login-text t_r">
 				<span id="js_isNotLogin">
-					<a href="<?= Yii::$service->url->getUrl('customer/account/login') ?>" rel="nofollow">Sign In / Join Free</a>
+					<a href="<?= Yii::$service->url->getUrl('customer/account/login') ?>" rel="nofollow"><?= Yii::$service->page->translate->__('Sign In / Join Free'); ?></a>
 				</span>
 				
 			</div>
@@ -51,10 +53,10 @@
 				</dt>
 				<dd style="">
 					<ul>
-						<li><a href="<?= Yii::$service->url->getUrl('customer/account') ?>" rel="nofollow">My Account</a></li>
-						<li><a href="<?= Yii::$service->url->getUrl('customer/order') ?>" rel="nofollow">My Orders</a></li>
-						<li><a href="<?= Yii::$service->url->getUrl('customer/productfavorite') ?>" rel="nofollow">My Favorites</a></li>
-						<li><a href="<?= Yii::$service->url->getUrl('customer/productreview') ?>" rel="nofollow">Product Review</a></li>
+						<li><a href="<?= Yii::$service->url->getUrl('customer/account') ?>" rel="nofollow"><?= Yii::$service->page->translate->__('My Account'); ?></a></li>
+						<li><a href="<?= Yii::$service->url->getUrl('customer/order') ?>" rel="nofollow"><?= Yii::$service->page->translate->__('My Orders'); ?></a></li>
+						<li><a href="<?= Yii::$service->url->getUrl('customer/productfavorite') ?>" rel="nofollow"><?= Yii::$service->page->translate->__('My Favorites'); ?></a></li>
+						<li><a href="<?= Yii::$service->url->getUrl('customer/productreview') ?>" rel="nofollow"><?= Yii::$service->page->translate->__('Product Review'); ?></a></li>
 					</ul>
 				</dd>
 			</dl>

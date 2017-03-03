@@ -15,6 +15,7 @@
 	<?php  foreach($items as $item){  $i++; ?>
 		<?php  ($i == $count) ? ($str = '') : ($str = '>')  ?>
 		<?php $name = isset($item['name']) ? $item['name'] : ''; ?>
+		<?php $name = Yii::$service->page->translate->__($name); ?>
 		<?php $url  = isset($item['url']) ? $item['url'] : ''; ?>
 		<?php  if($name){ ?>
 			<?php  if($url){ ?>

@@ -18,7 +18,7 @@ if(isset($parentThis['filter_price']) && !empty($parentThis['filter_price']) && 
 		$attrUrlStr = Yii::$service->url->category->attrValConvertUrlStr($attr);
 		if(is_array($filter) && !empty($filter)){
 			echo '<div class="filter_attr">';
-			echo '<div class="filter_attr_title">'.$attr.'</div>';
+			echo '<div class="filter_attr_title">'.Yii::$service->page->translate->__($attr).'</div>';
 			echo '<div class="filter_attr_info">';
 			foreach($filter as $item){
 				$val = $item['val'];

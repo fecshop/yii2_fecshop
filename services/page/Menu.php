@@ -64,7 +64,7 @@ class Menu extends Service
 			$display =  isset($displayHome['display']) ?$displayHome['display'] : '';
 			if($enable && $display){
 				$arr[] = [
-					'name' => $display,
+					'name' => Yii::$service->page->translate->__($display),
 					'url'	=> Yii::$service->url->homeUrl(),
 				];
 			}
@@ -98,11 +98,14 @@ class Menu extends Service
 		$cMenu = [];
 		if(is_array($customMenu) && !empty($customMenu)){
 			foreach($customMenu as $k=>$menu){
-				$name = $menu['name'];
-				if(is_array($name)){
-					$name = Yii::$service->store->getStoreAttrVal($name,'name');
-					$menu['name'] = $name;
-				}
+				//echo $menu['name'];
+				$name = Yii::$service->page->translate->__($menu['name']);
+				$menu['name'] = $name;				
+				//echo $name;
+				//if(is_array($name)){
+					//$name = Yii::$service->store->getStoreAttrVal($name,'name');
+					
+				//}
 				$urlPath = $menu['urlPath'];
 				$menu['url'] = Yii::$service->url->getUrl($urlPath);
 				$cMenu[$k] = $menu;

@@ -83,7 +83,7 @@
 			<img src="<?= Yii::$service->image->getImgUrl('images/pp.png','appfront'); ?>" />
 		</div>
 		<div class="container">
-			<div id="copy">Copyright Notice &copy;2016 FecShop.com All rights reserved .</div>
+			<div id="copy"><?= Yii::$service->page->translate->__('Copyright Notice') ?> &copy;2016 FecShop.com <?= Yii::$service->page->translate->__('All rights reserved') ?> .</div>
 		</div>
 	</div>
 </footer>

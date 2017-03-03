@@ -10,7 +10,7 @@
 <div class="main container">
 	<?=  Yii::$service->cms->staticblock->getStoreContentByIdentify('home-big-img','appfront') ?>
 	<div class="mt10">
-		<h4 class="sectionBox_h"><span>BEST SELLER</span><em><a href="">MORE</a></em></h4>
+		<h4 class="sectionBox_h best_seller"><span><?= Yii::$service->page->translate->__('best seller'); ?></span><em><a href=""><?= Yii::$service->page->translate->__('more'); ?></a></em></h4>
 		<div class="pro-content">
 			<?php
 				$parentThis['products'] = $bestSellerProducts;
@@ -23,8 +23,9 @@
 		</div>
 
 	</div>
+	<div class="clear"></div>
 	<div class="mt10" style="margin-top:34px;">
-		<h4 class="sectionBox_h"><span>FEATURED PRODUCTS</span><em><a href="">MORE</a></em></h4>
+		<h4 class="sectionBox_h featured"><span><?= Yii::$service->page->translate->__('featured products'); ?></span><em><a href=""><?= Yii::$service->page->translate->__('more'); ?></a></em></h4>
 		<div class="pro-content">
 			<?php
 				$parentThis['products'] = $bestFeaturedProducts;

@@ -17,7 +17,7 @@ if(isset($parentThis['filters']) && !empty($parentThis['filters']) && is_array($
 		$attrUrlStr = Yii::$service->url->category->attrValConvertUrlStr($attr);
 		if(is_array($filter) && !empty($filter)){
 			echo '<div class="filter_attr">';
-			echo '<div class="filter_attr_title">'.$attr.'</div>';
+			echo '<div class="filter_attr_title">'.Yii::$service->page->translate->__($attr).'</div>';
 			echo '<div class="filter_attr_info">';
 			foreach($filter as $item){
 				$val = $item['_id'];
@@ -26,7 +26,7 @@ if(isset($parentThis['filters']) && !empty($parentThis['filters']) && is_array($
 					$urlInfo = Yii::$service->url->category->getFilterChooseAttrUrl($attrUrlStr,$val,'p');
 					$url = $urlInfo['url'];
 					$selected = $urlInfo['selected'] ? 'class="checked"' : '';
-					echo '<a '.$selected.' href="'.$url.'">'.$val.'('.$count.')</a><br/>';
+					echo '<a '.$selected.' href="'.$url.'">'.Yii::$service->page->translate->__($val).'('.$count.')</a><br/>';
 				}
 			}
 			echo '</div>';

@@ -417,7 +417,6 @@ address, article, aside, audio, canvas, details, figcaption, figure, footer, hea
 
 
 .pro-content {
-    height: 496px;
     margin-top: 14px;
     width: 100%;
 }
@@ -433,7 +432,7 @@ address, article, aside, audio, canvas, details, figcaption, figure, footer, hea
 
 .scrollBox {
     float: right;
-    height: 496px;
+    height: 572px;
     position: relative;
     width: 1200px;
 }
@@ -2702,9 +2701,9 @@ color:#cc0000;
     font-size: 18px;
 }
 
+.sectionBox_h{text-transform:Uppercase}
 
-
-
+.sectionBox_h.featured{margin-top:20px 0 0 }
 
 
 

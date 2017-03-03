@@ -36,10 +36,12 @@ $(document).ready(function(){
 		url:loginInfoUrl,
 		success:function(data, textStatus){ 
 			welcome = $('.welcome_str').val();
+			logoutStr = $('.logoutStr').val();
 			if(data.loginStatus){
-				str = '<span id="welcome">'+welcome+'</span>';
+				customer_name = data.customer_name;
+				str = '<span id="welcome">'+welcome+' '+customer_name+',</span>';
 				str += '<span id="js_isNotLogin">';
-				str += '<a href="'+logoutUrl+'" rel="nofollow">Logout</a>';
+				str += '<a href="'+logoutUrl+'" rel="nofollow">'+logoutStr+'</a>';
 				str += '</span>';
 				$(".login-text").html(str);
 			}
