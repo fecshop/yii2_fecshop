@@ -110,6 +110,9 @@ class Image extends Service
 		$imgResize = [$width , $height];
 		*/
 		$originImgPath = $this->getDir($imageVal);
+		if(!file_exists($originImgPath)){
+			$originImgPath = $this->getDir($this->defaultImg);
+		}
 		$waterImgPath = '';
 		if($isWatered){
 			$waterImgPath = $this->getDir('/'.$this->waterImg);
@@ -119,6 +122,7 @@ class Image extends Service
 			\fec\helpers\CImage::saveResizeMiddleWaterImg($originImgPath,$newPath,$imgResize,$waterImgPath);
 		}
 		return $newUrl;
+		
 	}
 	
 	protected function getProductNewPath($imageVal,$imgResize,$waterImgPath){
