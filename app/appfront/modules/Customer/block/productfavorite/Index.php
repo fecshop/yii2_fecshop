@@ -54,11 +54,12 @@ class Index {
 		$product_ids = [];
 		$favorites = [];
 		foreach($coll as $one){
+			
 			$p_id = $one['product_id'];
 			$product_ids[] = new \MongoId($p_id) ;
 			$favorites[$p_id] = [
 				'updated_at' => $one['updated_at'],
-				'favorite_id' => $one['_id']->{'$id'},
+				'favorite_id' => (string)$one['_id'],
 			];
 		}
 		# 得到产品的信息
@@ -78,7 +79,7 @@ class Index {
 		$product_arr = [];
 		if(is_array($data['coll']) && !empty($data['coll'])){
 			foreach($data['coll'] as $one){
-				$p_id = $one['_id']->{'$id'};
+				$p_id = (string)$one['_id'];
 				$one['updated_at']  = $favorites[$p_id]['updated_at'];
 				$one['favorite_id'] = $favorites[$p_id]['favorite_id'];
 				$product_arr[] = $one;

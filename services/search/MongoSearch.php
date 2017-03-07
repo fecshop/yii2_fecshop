@@ -258,12 +258,12 @@ class MongoSearch extends Service implements SearchInterface
 			 */
 			$s_data = [];
 			foreach($data as $one){
-				$_id = $one['_id']->{'$id'};
+				$_id = (string)$one['_id'];
 				$s_data[$_id] = $one;
 			}
 			$return_data = [];
 			foreach($productIds as $product_id){
-				$return_data[] = $s_data[$product_id->{'$id'}];
+				$return_data[] = $s_data[(string)$product_id];
 			}
 			return [
 				'coll' => $return_data ,

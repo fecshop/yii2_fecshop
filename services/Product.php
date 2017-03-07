@@ -297,7 +297,7 @@ class Product extends Service
 			$data = $coll['coll'];
 			if(!empty($data) && is_array($data)){
 				foreach($data as $one){
-					$skus[$one[$_id]->{'$id'}] = $one['sku'];
+					$skus[(string)$one[$_id]] = $one['sku'];
 				}
 			}
 		}

@@ -52,7 +52,7 @@ class XunSearch extends Service implements SearchInterface
 					if(!empty($this->searchLang) && is_array($this->searchLang)){
 						foreach($this->searchLang as $langCode){
 							$XunSearchModel = new XunSearchModel();
-							$XunSearchModel->_id = $one['_id']->{'$id'};
+							$XunSearchModel->_id = (string)$one['_id'];
 							$one['name'] 		= Yii::$service->fecshoplang->getLangAttrVal($one_name,'name',$langCode);
 							$one['description'] = Yii::$service->fecshoplang->getLangAttrVal($one_description,'description',$langCode);
 							$one['short_description'] = Yii::$service->fecshoplang->getLangAttrVal($one_short_description,'short_description',$langCode);
@@ -165,12 +165,12 @@ class XunSearch extends Service implements SearchInterface
 			 */
 			$s_data = [];
 			foreach($data as $one){
-				$_id = $one['_id']->{'$id'};
+				$_id = (string)$one['_id'];
 				$s_data[$_id] = $one;
 			}
 			$return_data = [];
 			foreach($productIds as $product_id){
-				$return_data[] = $s_data[$product_id->{'$id'}];
+				$return_data[] = $s_data[(string)$product_id];
 			}
 			return [
 				'coll' => $return_data ,
@@ -229,7 +229,7 @@ class XunSearch extends Service implements SearchInterface
 	 */
 	protected function actionRemoveByProductId($product_id){
 		if(is_object($product_id)){
-			$product_id = $product_id->{'$id'};
+			$product_id = (string)$product_id;
 			$model = XunSearchModel::findOne($product_id);
 			$model->delete();
 		}

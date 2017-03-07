@@ -205,7 +205,7 @@ class QuoteItem extends Service
 				$attrs = array_keys($attrInfo);
 				\fecshop\models\mongodb\Product::addCustomProductAttrs($attrs);
 			}
-			$productOb = Yii::$service->product->getByPrimaryKey($productOb['_id']->{'$id'});
+			$productOb = Yii::$service->product->getByPrimaryKey((string)$productOb['_id']);
 			$spuArr = Yii::$service->product->getSpuAttr($productAttrGroup);
 			if(is_array($spuArr) && !empty($spuArr)){
 				foreach($spuArr as $spu_attr){

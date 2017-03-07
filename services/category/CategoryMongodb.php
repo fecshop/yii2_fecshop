@@ -141,7 +141,7 @@ class CategoryMongodb implements CategoryInterface
 		$data = Category::find()->where(['parent_id'=>$id])->all();
 		if(!empty($data)){
 			foreach($data as $one){
-				$idVal = $one['_id']->{'$id'};
+				$idVal = (string)$one['_id'];
 				if($this->hasChildCategory($idVal)){
 					$this->removeChildCate($idVal);
 				}
@@ -171,7 +171,7 @@ class CategoryMongodb implements CategoryInterface
 		$idKey= $this->getPrimaryKey();
 		if(!empty($categorys)){
 			foreach($categorys as $cate){
-				$idVal = $cate[$idKey]->{'$id'};
+				$idVal = (string)$cate[$idKey];
 				$arr[$idVal] = [
 					$idKey 	=> $idVal,
 					'name' 	=> Yii::$service->fecshoplang->getLangAttrVal($cate['name'],'name',$lang),
@@ -228,7 +228,7 @@ class CategoryMongodb implements CategoryInterface
 		if(isset($category['_id']) && !empty($category['_id']) ){
 			$currentUrlKey 		= $category['url_key'];
 			$currentName 		= $category['name'];
-			$currentId			= $category['_id']->{'$id'};
+			$currentId			= (string)$category['_id'];
 			
 			$currentCategory[] = [
 				'_id' 		=> $currentId,
@@ -260,7 +260,7 @@ class CategoryMongodb implements CategoryInterface
 		$currentCategory 	= Category::findOne($category_id);
 		$currentUrlKey 		= $currentCategory['url_key'];
 		$currentName 		= $currentCategory['name'];
-		$currentId			= $currentCategory['_id']->{'$id'};
+		$currentId			= (string)$currentCategory['_id'];
 		$returnData['current'] = [
 			'_id' 		=> $currentId,
 			'name' 		=> $currentName,
@@ -291,7 +291,7 @@ class CategoryMongodb implements CategoryInterface
 		])->all();
 		if(is_array($cate) && !empty($cate)){
 			foreach($cate as $one){
-				$c_id = $one['_id']->{'$id'};
+				$c_id = (string)$one['_id'];
 				$data[$c_id] = [
 					'name' 		=> $one['name'],
 					'url_key'	=> $one['url_key'],
@@ -321,7 +321,7 @@ class CategoryMongodb implements CategoryInterface
 					if(is_array($cate) && !empty($cate)){
 						//echo '**********';
 						foreach($cate as $one){
-							$c_id = $one['_id']->{'$id'};
+							$c_id = (string)$one['_id'];
 							$data[$c_id] = [
 								'name' 		=> $one['name'],
 								'url_key'	=> $one['url_key'],
@@ -358,7 +358,7 @@ class CategoryMongodb implements CategoryInterface
 			foreach($data as $one){
 				$currentUrlKey 		= $one['url_key'];
 				$currentName 		= $one['name'];
-				$currentId			= $one['_id']->{'$id'};
+				$currentId			= (string)$one['_id'];
 				
 				$arr[$currentId] = [
 					//'_id' 		=> $currentId,

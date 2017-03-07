@@ -39,12 +39,12 @@ class Menu extends Service
 		if(is_array($data) && !empty($data)){
 			foreach($data as $category){
 				$categoryOne = [
-					'_id'		=> $category['_id']->{'$id'},
+					'_id'		=> (string)$category['_id'],
 					'name' 		=> Yii::$service->store->getStoreAttrVal($category['name'],'name'),
 					'menu_custom'=> Yii::$service->store->getStoreAttrVal($category['menu_custom'],'menu_custom'),
 					'url' 		=> Yii::$service->url->getUrl($category['url_key']),
 				];
-				$childMenu = $this->getCategoryMenuArr($category['_id']->{'$id'});
+				$childMenu = $this->getCategoryMenuArr((string)$category['_id']);
 				if($childMenu){
 					$categoryOne['childMenu'] = $childMenu;
 				}
