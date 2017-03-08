@@ -3,7 +3,7 @@
 		<div class="std">
 			<div style="margin:19px 0 0">
 				<div class="page-title">
-					<h2>My Favorite</h2>
+					<h2><?= Yii::$service->page->translate->__('My Favorite');?></h2>
 				</div>
 				<div style="width:100%;min-height:500px;">
 					<div style="width:100%;">
@@ -39,12 +39,12 @@
 										</div>
 										<div class="favorite-Operation" style="display:inline-block;float:right; margin-top: 0px;">
 											<a href="<?= Yii::$service->url->getUrl('customer/productfavorite',['type'=>'remove','favorite_id' => $one['favorite_id']]); ?>">
-												Delete
+												<?= Yii::$service->page->translate->__('Delete');?>
 											</a>
 										</div>
 										<div class="clear"></div>
 										<div style="font-weight:100">
-											Favorite Date:<?= date('Y-m-d H:i:s',$one['updated_at']) ?>
+											<?= Yii::$service->page->translate->__('Favorite Date:');?><?= date('Y-m-d H:i:s',$one['updated_at']) ?>
 										</div>
 									</div>	
 									

@@ -9,7 +9,7 @@
 					<div class="">
 						<ul class="">
 							<li>
-								<label class="required" for="email">Email Address</label>
+								<label class="required" for="email"><?= Yii::$service->page->translate->__('Email Address');?></label>
 								<div class="input-box">
 									<input class="input-text required-entry" maxlength="255" title="Email" value="<?= $email ?>" name="address[email]" id="customer_email"   type="text">
 									
@@ -17,7 +17,7 @@
 							</li>
 							<li class="">
 								<div class="field name-firstname">
-									<label class="required" for="firstname">First Name</label>
+									<label class="required" for="firstname"><?= Yii::$service->page->translate->__('First Name');?></label>
 									<div class="input-box">
 										<input class="input-text required-entry" maxlength="255" title="First Name" value="<?= $first_name ?>" name="address[first_name]" id="firstname" type="text">
 									</div>
@@ -25,7 +25,7 @@
 							</li>
 							<li>
 								<div class="field name-lastname">
-									<label class="required" for="lastname">Last Name</label>
+									<label class="required" for="lastname"><?= Yii::$service->page->translate->__('Last Name');?></label>
 									<div class="input-box">
 										<input class="input-text required-entry" maxlength="255" title="Last Name" value="<?= $last_name ?>" name="address[last_name]" id="lastname" type="text">
 									</div>
@@ -35,7 +35,7 @@
 							
 							<li>
 								<div class="field name-lastname">
-										<label class="required" for="lastname">Telephone</label>
+										<label class="required" for="lastname"><?= Yii::$service->page->translate->__('Telephone');?></label>
 										<div class="input-box">
 											<input class="input-text required-entry" maxlength="255" title="Last Name" value="<?= $telephone ?>" name="address[telephone]" id="lastname" type="text">
 										</div>
@@ -45,7 +45,7 @@
 							
 							<li>
 								<div class="field name-lastname">
-										<label class="required" for="lastname">Country</label>
+										<label class="required" for="lastname"><?= Yii::$service->page->translate->__('Country');?></label>
 										<div class="input-box">
 											<select id="address:country" class="address_country validate-select" title="Country" name="address[country]">
 												<?= $countrySelect;  ?>
@@ -58,7 +58,7 @@
 							
 							<li>
 								<div class="field name-lastname">
-										<label class="required" for="lastname">State</label>
+										<label class="required" for="lastname"><?= Yii::$service->page->translate->__('State');?></label>
 										<div class="input-box state_html">
 											<?= $stateHtml;  ?>
 											
@@ -69,7 +69,7 @@
 							
 							<li>
 								<div class="field name-lastname">
-										<label class="required" for="lastname">City</label>
+										<label class="required" for="lastname"><?= Yii::$service->page->translate->__('City');?></label>
 										<div class="input-box">
 											<input class="input-text required-entry" maxlength="255" title="Last Name" value="<?= $city ?>" name="address[city]" id="lastname" type="text">
 										</div>
@@ -79,7 +79,7 @@
 							
 							<li>
 								<div class="field name-lastname">
-										<label class="required" for="lastname">street1</label>
+										<label class="required" for="lastname"><?= Yii::$service->page->translate->__('street1');?></label>
 										<div class="input-box">
 											<input class="input-text required-entry" maxlength="255" title="Last Name" value="<?= $street1 ?>" name="address[street1]" id="lastname" type="text">
 										</div>
@@ -89,7 +89,7 @@
 							
 							<li>
 								<div class="field name-lastname">
-										<label  for="lastname">street2</label>
+										<label  for="lastname"><?= Yii::$service->page->translate->__('street2');?></label>
 										<div class="input-box">
 											<input class="input-text optional" maxlength="255" title="street2" value="<?= $street2 ?>" name="address[street2]" id="lastname" type="text">
 										</div>
@@ -99,7 +99,7 @@
 							
 							<li>
 								<div class="field name-lastname">
-										<label class="required" for="lastname">Zip Code</label>
+										<label class="required" for="lastname"><?= Yii::$service->page->translate->__('Zip Code');?></label>
 										<div class="input-box">
 											<input class="input-text required-entry" maxlength="255" title="Last Name" value="<?= $zip ?>" name="address[zip]" id="lastname" type="text">
 										</div>
@@ -111,7 +111,7 @@
 								<div class="field name-lastname">
 									<div class="input-box">
 										<input name="address[is_default]" value="1" title="Save in address book" id="address:is_default" class="address_is_default checkbox" <?= $is_default_str; ?> type="checkbox">
-										<label for="address:is_default" style="display:inline;">Is Default</label>
+										<label for="address:is_default" style="display:inline;"><?= Yii::$service->page->translate->__('Is Default');?></label>
 										
 									</div>
 								</div>
@@ -122,7 +122,7 @@
 					</div>
 					
 					
-					<a href="javascript:void(0)" onclick="submit_address()" class="submitbutton"><span><span>Save</span></span> </a>
+					<a href="javascript:void(0)" onclick="submit_address()" class="submitbutton"><span><span><?= Yii::$service->page->translate->__('Save');?></span></span> </a>
 					
 				</form>
 			</div>

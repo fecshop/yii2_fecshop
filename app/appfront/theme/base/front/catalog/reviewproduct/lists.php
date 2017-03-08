@@ -31,20 +31,20 @@
 						<div style="margin:20px 0 0">
 							<div class="rbc_cold">
 								<span>
-									<span class="average_rating">Average rating :</span>
+									<span class="average_rating"><?= Yii::$service->page->translate->__('Average rating :');?></span>
 									<span class="review_star review_star_<?= $reviw_rate_star_average ?>" style="font-weight:bold;" itemprop="average"></span>  
 									
 									<a rel="nofollow" href="http://www.intosmile.com/fashion-long-sleeve-round-neck-striped-knitted-sweater-1.html">
-										(<span itemprop="count"><?= $review_count ?> reviews</span>)
+										(<span itemprop="count"><?= $review_count ?> <?= Yii::$service->page->translate->__('reviews');?></span>)
 									</a>
 								</span>
 							</div>					
 							<a href="<?= $url ?>"  class="submitbutton">
-								<span><span> Add To Cart</span></span> 
+								<span><span> <?= Yii::$service->page->translate->__('Add To Cart');?></span></span> 
 							</a>
 							
 							<a style="margin-left:10px" href="<?= $addReviewUrl ?>" onclick="" class="submitbutton">
-								<span><span> Add Review</span></span> 
+								<span><span> <?= Yii::$service->page->translate->__('Add Review');?></span></span> 
 							</a>	 
 						</div>
 					</div>
@@ -53,7 +53,7 @@
 				<div class="product-Reviews"> 
 					<div class="clear"></div>
 					<div class="scroll_left">
-						<a href="">Product Review</a>
+						<a href=""><?= Yii::$service->page->translate->__('Product Review');?></a>
 					</div>
 					<div class="product-Reviews_top">
 						<?php  if(is_array($coll) && !empty($coll)){  ?>
@@ -63,7 +63,7 @@
 							<li>
 								<div class="review_description_left">
 									<a href="#" class="review_star review_star_<?= $one['rate_star'] ?>" onclick="javascript:return false;"></a>
-									<p>By <?= $one['name'] ?></p>
+									<p><?= Yii::$service->page->translate->__('By');?> <?= $one['name'] ?></p>
 									<span><?= $one['review_date'] ? date('Y-m-d H:i:s',$one['review_date']) : '' ?></span>
 								</div>
 								<div class="review_description_right">
@@ -77,9 +77,9 @@
 										
 										<div class="moderation">
 										<?php if($one['status'] == $noActiveStatus){ ?>  
-											Your Review is awaiting moderation...
+											<?= Yii::$service->page->translate->__('Your Review is awaiting moderation...');?>
 										<?php }else if($one['status'] == $refuseStatus){ ?>
-											Your Review is refused.
+											<?= Yii::$service->page->translate->__('Your Review is refused.');?>
 										<?php } ?>
 										</div>
 									</div>
@@ -92,7 +92,7 @@
 					</div>
 					<?php if($pageToolBar){ ?>
 					<div class="pageToolbar">
-						<label class="title">Page:</label><?= $pageToolBar ?>
+						<label class="title"><?= Yii::$service->page->translate->__('Page:');?></label><?= $pageToolBar ?>
 					</div>
 					<?php } ?>
 				</div>

@@ -10,7 +10,7 @@
 						<div class="product-Reviews"> 
 							<div class="clear"></div>
 							<div class="scroll_left">
-								<a href="">Product Review</a>
+								<a href=""><?= Yii::$service->page->translate->__('Product Review');?></a>
 							</div>
 							<div class="product-Reviews_top">
 								<?php  if(is_array($coll) && !empty($coll)){  ?>
@@ -38,15 +38,15 @@
 												
 												<?php if($one['status'] == $noActiveStatus){ ?>  
 												<div class="review_moderation">
-													Your Review is awaiting moderation...
+													<?= Yii::$service->page->translate->__('Your Review is awaiting moderation...');?>
 												</div>
 												<?php }else if($one['status'] == $refuseStatus){ ?>
 												<div class="review_refuse">
-													Your Review is refused.
+													<?= Yii::$service->page->translate->__('Your Review is refused.');?>
 												</div>
 												<?php }else if($one['status'] == $activeStatus){ ?>
 												<div class="review_accept">
-													Your Review is accept.
+													<?= Yii::$service->page->translate->__('Your Review is accept.');?>
 												</div>
 												<?php } ?>
 											</div>
@@ -59,7 +59,7 @@
 							</div>
 							<?php if($pageToolBar){ ?>
 							<div class="pageToolbar">
-								<label class="title">Page:</label><?= $pageToolBar ?>
+								<label class="title"><?= Yii::$service->page->translate->__('Page:');?></label><?= $pageToolBar ?>
 							</div>
 							<?php } ?>
 						</div>

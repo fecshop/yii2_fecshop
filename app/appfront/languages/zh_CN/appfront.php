@@ -36,7 +36,7 @@ return [
  'Sign In / Join Free'			=> '登录账户',
  'My Orders'					=> '我的订单',
  'My Favorites'					=> '我的收藏',
- 'Product Review'				=> '我的评论',
+ 'My Review'					=> '我的评论',
  'Products keyword'				=> '搜索产品',
  
  # 自定义菜单翻译
@@ -80,7 +80,7 @@ return [
  
  # 用户注册页面
  'Create an Account'			=> '创建新账户',
- 'Personal Information'					=> '个人账户信息',
+ 'Personal Information'			=> '个人账户信息',
  'First Name'					=> '名',
  'Last Name'					=> '姓',
  'Sign Up for Newsletter'		=> '订阅邮件',
@@ -92,8 +92,9 @@ return [
  'This is a required field.'	=> '这是一个必填选项',
  'Please enter a valid email address. For example johndoe@domain.com.'					
 								=> '请填写一个正确的邮箱，譬如：johndoe@domain.com。',
- 'first name length must between'	=> '名字的长度范围：',
- 'last name length must between'	=> '姓的长度范围',
+ 'first name length must between'
+								=> '名字的长度范围：',
+ 'last name length must between'=> '姓的长度范围',
  'Please enter 6 or more characters. Leading or trailing spaces will be ignored.'					
 								=> '请输入6个或更多字符。 前导或尾随空格将被忽略。',
  'Please make sure your passwords match. '					
@@ -142,38 +143,70 @@ return [
 								=> '重置密码成功，您可以{logUrlB}点击这里{logUrlE}进行登录',
  'Your Reset Password Token is Expired, You can {logUrlB} click here {logUrlE} to retrieve it '	
 								=> '您重置密码的token已经过期，您可以{logUrlB}点击这里{logUrlE}重新发送',
- 'Dashboard'					=> '我的信息中心',
- 'Dashboard'					=> '我的信息中心',
- 'Dashboard'					=> '我的信息中心',
- 'Dashboard'					=> '我的信息中心',
- 'Dashboard'					=> '我的信息中心',
- 'Dashboard'					=> '我的信息中心',
- 'Dashboard'					=> '我的信息中心',
  
+ # 用户中心 - 账户信息 - 编辑
+ 'Edit Account Information'		=> '编辑账号信息',
+ 'Change Password'				=> '更改密码',
+ 'Current Password'				=> '当前密码',
+ 'New Password'					=> '新密码',
+ 'Confirm New Password'			=> '确认新密码',
+ 
+ # 用户中心 - 货运地址 - 编辑
+ 'Country'						=> '国家',
+ 'State'						=> '省',
+ 'City'							=> '城市',
+ 'street1'						=> '街道1',
+ 'street2'						=> '街道2',
+ 'Zip Code'						=> '邮政编码',
+ 'Is Default'					=> '默认',
+ 'Save'							=> '保存',
+ # 用户中心 - 货运地址 - 列表
+ 'Operation'					=> '操作',
+ 'Delete'						=> '删除',
+ 'Default'						=> '默认',
+ 'Add New Address'				=> '增加新地址',
+ 'Modify'						=> '修改',
+ # 用户中心 - 我的订单 - 列表
+ 'Page:'						=> '页数：',
+ 'Reorder'						=> '重新下单',
+ 'View Order'					=> '查看订单',
+ 'Customer Order'				=> '我的订单',
+ 'Order #'						=> '订单编号',
+ 'Date'							=> '日期',
+ 'Ship To'						=> '收货人',
+ 'Order Total'					=> '订单总额',
+ 'Order Status'					=> '订单状态',
+ # 用户中心 - 我的订单 - 详细
+ 'pending'						=> '未付款',
+ 'suspected_fraud'				=> '涉嫌欺诈',
+ 'processing'					=> '已付款',
+ 'Shipping Address'				=> '货运地址',
+ 'T:'							=> '手机/电话：',
+ 'Payment Method'				=> '支付方式',
+ 'Shipping Method'				=> '货运地址',
+ 'Items Ordered'				=> '订单产品列表',
+ 'Product Name'					=> '产品名称',
+ 'Product Image'				=> '产品图片',
+ 'Sku'							=> '产品编码',
+ 'Price'						=> '价格',
+ 'Qty'							=> '个数',
+ 'Subtotal'						=> '小计',
+ 'Shipping Cost'				=> '运费',
+ 'Discount'						=> '折扣优惠',
+ 'Grand Total'					=> '总额',
+ # 用户中心 - 我的产品评论
+ 'Your Review is accept.'		=> '您的评论已通过',
+ 'Your Review is refused.'		=> '您的评论已被拒绝',
+ 'Your Review is awaiting moderation...'		
+								=> '您的评论在等待审核',
+ # 用户中心 - 我的收藏
+ 'Favorite Date:'				=> '收藏时间：',
+
  # contacts页面
- 
- 
  'Name'					=> '名字',
  'Telephone'					=> '电话',
  'Comment'					=> '留言内容',
  'Contacts'					=> '联系我们',
- 'Dashboard'					=> '我的信息中心',
- 'Dashboard'					=> '我的信息中心',
- 'Dashboard'					=> '我的信息中心',
- 'Dashboard'					=> '我的信息中心',
- 'Dashboard'					=> '我的信息中心',
- 'Dashboard'					=> '我的信息中心',
- 'Dashboard'					=> '我的信息中心',
- 'Dashboard'					=> '我的信息中心',
- 'Dashboard'					=> '我的信息中心',
- 'Dashboard'					=> '我的信息中心',
- 'Dashboard'					=> '我的信息中心',
- 'Dashboard'					=> '我的信息中心',
- 'Dashboard'					=> '我的信息中心',
- 'Dashboard'					=> '我的信息中心',
- 'Dashboard'					=> '我的信息中心',
- 'Dashboard'					=> '我的信息中心',
-
  
  # 产品详细页面 - 颜色尺码
  'My Color:'					=> '我的颜色：',
@@ -181,9 +214,10 @@ return [
  'My Size2:'					=> '我的尺码2：',
  'My Size3:'					=> '我的尺码3：',
  'Color:'						=> '颜色：',
+ 'color:'						=> '颜色：',
  'Size:'						=> '尺码：',
  //'color'						=> '颜色',
- //'size'							=> '尺码',						
+ //'size'						=> '尺码',						
  'one-color'					=> '单色',
  'red'							=> '红色',
  'white'						=> '白色',
@@ -243,8 +277,12 @@ return [
  '3) Your Payment will be processed and a receipt will be sent to your email inbox.'
 								=> '3）您的付款将被处理，并且收据将发送到您的电子邮件收件箱。',
  '2. Credit Card'				=> '2. 信用卡',
- # 产品评论部分
  
+ # 产品评论部分
+ 'Rate'							=> '评分',
+ 'Your Name'					=> '您的名字',
+ 'Summary of Your Review'		=> '您的产品评价内容',
+ 'Average rating :'					=> '平均评分',
  'Product Review'				=> '产品评论',
  'By'							=> '由',
  'Your comment is awaiting moderation'						
@@ -253,8 +291,20 @@ return [
  'View  All Review'				=> '查看所有评论',
  'Wholesale Prices :'			=> '批发价格：',
  'Price:'						=> '价格：', 
- 'Follow'						=> '关注我们',
- 'Follow'						=> '关注我们',
+ 
+ 
+ # 购物车
+ 'Your Cart is empty, You Can {urlB} Click Here to Home Page {urlE}'	
+								=> '您的购物车为空，您可以{urlB}点击这里进入首页{urlE}',
+ 'Unit Price'					=> '单价',
+ 'Discount Codes'					=> '优惠券',
+ 'Enter your coupon code if you have one.'					=> '如果您有优惠券，请在下面填写',
+ 'Cancel Coupon'					=> '取消优惠券',
+ 'Add Coupon'					=> '添加优惠券',
+ 'Dashboard'					=> '我的信息中心',
+ 'Dashboard'					=> '我的信息中心',
+ 'OR'							=> '或',
+ 'Proceed to Pay'				=> '继续支付',
  'Follow'						=> '关注我们',
  'Follow'						=> '关注我们',
  'Follow'						=> '关注我们',

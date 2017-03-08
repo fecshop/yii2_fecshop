@@ -33,10 +33,10 @@ use fecshop\app\appfront\helper\Format;
 							<thead>
 								<tr class="first last">
 									<th rowspan="1">&nbsp;</th>
-									<th rowspan="1"><span class="nobr">Product Name</span></th>
-									<th class="a-center" colspan="1"><span class="nobr">Unit Price</span></th>
-									<th rowspan="1" class="a-center">Qty</th>
-									<th class="a-center" colspan="1">Subtotal</th>
+									<th rowspan="1"><span class="nobr"><?= Yii::$service->page->translate->__('Product Name');?></span></th>
+									<th class="a-center" colspan="1"><span class="nobr"><?= Yii::$service->page->translate->__('Unit Price');?></span></th>
+									<th rowspan="1" class="a-center"><?= Yii::$service->page->translate->__('Qty');?></th>
+									<th class="a-center" colspan="1"><?= Yii::$service->page->translate->__('Subtotal');?></th>
 									<th rowspan="1" class="a-center">&nbsp;</th>
 								</tr>
 												</thead>
@@ -61,7 +61,7 @@ use fecshop\app\appfront\helper\Format;
 										<ul>
 											<?php foreach($product_one['custom_option_info'] as $label => $val){  ?>
 												
-												<li><?= $label ?>:<?= $val ?> </li>
+												<li><?= Yii::$service->page->translate->__(ucwords($label).':') ?><?= Yii::$service->page->translate->__($val) ?> </li>
 												
 											<?php }  ?>
 										</ul>
@@ -92,7 +92,7 @@ use fecshop\app\appfront\helper\Format;
 										</span>
 									</td>
 									<td class="a-center last">
-										<a href="javascript:void(0)"  rel="<?= $product_one['item_id']; ?>" title="Remove item" class="btn-remove btn-remove2">Remove item</a>
+										<a href="javascript:void(0)"  rel="<?= $product_one['item_id']; ?>" title="Remove item" class="btn-remove btn-remove2"><?= Yii::$service->page->translate->__('Remove item');?></a>
 									</td>
 								</tr>
 								<?php  }  ?>
@@ -110,15 +110,15 @@ use fecshop\app\appfront\helper\Format;
 						<div class="col-2">
 							<form id="discount-coupon-form" >
 								<div class="discount">
-									<h2>Discount Codes</h2>
+									<h2><?= Yii::$service->page->translate->__('Discount Codes');?></h2>
 									<div class="discount-form">
-										<label for="coupon_code">Enter your coupon code if you have one.</label>
+										<label for="coupon_code"><?= Yii::$service->page->translate->__('Enter your coupon code if you have one.');?></label>
 										<div class="input-box">
 											<input type="hidden" class="couponType"  value="<?= $cart_info['coupon_code'] ? 1 : 2 ; ?>"  />
 											<input style="color:#777;" class="input-text" id="coupon_code" name="coupon_code" value="<?= $cart_info['coupon_code']; ?>">
 										</div>
 										<div class="buttons-cou">
-											<a href="javascript:void(0)" class="add_coupon_submit submitbutton"><span><span><?= $cart_info['coupon_code'] ? 'Cancel Coupon' : 'Add Coupon' ; ?></span></span> </a>
+											<a href="javascript:void(0)" class="add_coupon_submit submitbutton"><span><span><?= Yii::$service->page->translate->__($cart_info['coupon_code'] ? 'Cancel Coupon' : 'Add Coupon') ; ?></span></span> </a>
 											
 										</div>
 										<div class="clear"></div>
@@ -141,17 +141,17 @@ use fecshop\app\appfront\helper\Format;
 								<tbody>
 									<tr>
 										<td style="" class="a-left" colspan="1">
-											Item Subtotal:    </td>
+											<?= Yii::$service->page->translate->__('Subtotal');?> :   </td>
 										<td style="" class="a-right">
 											<span class="price"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['product_total']); ?></span>    </td>
 									</tr><tr>
 										<td style="" class="a-left" colspan="1">
-											Shipping    </td>
+											<?= Yii::$service->page->translate->__('Shipping Cost');?>    </td>
 										<td style="" class="a-right">
 											<span class="price"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['shipping_cost']); ?></span>    </td>
 									</tr><tr>
 										<td style="" class="a-left" colspan="1">
-											Coupon:    </td>
+											<?= Yii::$service->page->translate->__('Discount');?> :    </td>
 										<td style="" class="a-right">
 											<span class="price">-<?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['coupon_cost']); ?></span>    </td>
 									</tr>
@@ -165,7 +165,7 @@ use fecshop\app\appfront\helper\Format;
 								<tbody>
 									<tr>
 										<td style="" class="a-left" colspan="1">
-											<strong>Grand Total</strong>
+											<strong><?= Yii::$service->page->translate->__('Grand Total');?></strong>
 										</td>
 										<td style="" class="a-right">
 											<strong><span class="price"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['grand_total']) ?></span></strong>
@@ -176,9 +176,9 @@ use fecshop\app\appfront\helper\Format;
 						</div>
 						<div class="proceed_to_checkout">
 							
-							<button onclick="location.href='<?= Yii::$service->url->getUrl('checkout/onepage');  ?>'" type="button" title="Proceed to Checkout" class="button btn-proceed-checkout btn-checkout"><span><span>Proceed to Pay</span></span></button>
+							<button onclick="location.href='<?= Yii::$service->url->getUrl('checkout/onepage');  ?>'" type="button" title="Proceed to Checkout" class="button btn-proceed-checkout btn-checkout"><span><span><?= Yii::$service->page->translate->__('Proceed to Pay');?></span></span></button>
 							
-							<span class="or">- OR - </span>
+							<span class="or">- <?= Yii::$service->page->translate->__('OR');?> - </span>
 							<a class="express_paypal" href="<?= Yii::$service->url->getUrl('paypal/express/start');    ?>">
 							
 							</a>
@@ -191,8 +191,11 @@ use fecshop\app\appfront\helper\Format;
 		</div>
 	<?php }else{ ?>
 		<div class="empty_cart">
-			Your Cart is empty, You Can <a rel="nofollow" href="<?= Yii::$service->url->homeUrl() ?>">Click Here to Home Page</a>
-		
+			
+		<?php
+			$param = ['urlB' => '<a rel="nofollow" href="'.Yii::$service->url->homeUrl().'">','urlE' =>'</a>'];
+		?>
+		<?= Yii::$service->page->translate->__('Your Cart is empty, You Can {urlB} Click Here to Home Page {urlE}',$param);?>
 		
 		
 		</div>
