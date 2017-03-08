@@ -5,10 +5,9 @@
 		<form action="<?= Yii::$service->url->getUrl('checkout/onepage'); ?>" method="post" id="onestepcheckout-form">
 			<?= \fec\helpers\CRequest::getCsrfInputHtml(); ?>
 			<fieldset style="margin: 0;" class="group-select">
-				<h1 class="onestepcheckout-title">Checkout</h1>
-				<p class="onestepcheckout-description">Welcome to the checkout. Fill in the fields below to complete your purchase!</p>
+				<p class="onestepcheckout-description"><?= Yii::$service->page->translate->__('Welcome to the checkout,Fill in the fields below to complete your purchase');?> !</p>
 				<p class="onestepcheckout-login-link">
-					<a href="<?= Yii::$service->url->getUrl('customer/account/login'); ?>" id="onestepcheckout-login-link">Already registered? Click here to login.</a>
+					<a href="<?= Yii::$service->url->getUrl('customer/account/login'); ?>" id="onestepcheckout-login-link"><?= Yii::$service->page->translate->__('Already registered? Click here to login');?>.</a>
 				</p>
 				<div class="onestepcheckout-threecolumns checkoutcontainer onestepcheckout-skin-generic onestepcheckout-enterprise">
 					<div class="onestepcheckout-column-left">
@@ -61,8 +60,8 @@
 							
 						<div class="onestepcheckout-coupons">
 							<div style="display: none;" id="coupon-notice"></div>
-							<div class="op_block_title">Coupon codes (optional)</div>
-							<label for="id_couponcode">Enter your coupon code if you have one.</label>
+							<div class="op_block_title"><?= Yii::$service->page->translate->__('Coupon codes (optional)');?></div>
+							<label for="id_couponcode"><?= Yii::$service->page->translate->__('Enter your coupon code if you have one.');?></label>
 							
 							<input type="hidden" class="couponType"  value="<?= $cart_info['coupon_code'] ? 1 : 2 ; ?>"  />
 							<input style="color:#777;" class="input-text" id="id_couponcode" name="coupon_code" value="<?= $cart_info['coupon_code']; ?>">
@@ -90,8 +89,8 @@
 							
 						</div>
 						<div class="onestepcheckout-place-order">
-							<a class="large orange onestepcheckout-button" href="javascript:void(0)" id="onestepcheckout-place-order">Place order now</a>
-							<div class="onestepcheckout-place-order-loading"><img src="<?= Yii::$service->image->getImgUrl('images/opc-ajax-loader.gif'); ?>">&nbsp;&nbsp;Please wait, processing your order...</div>
+							<a class="large orange onestepcheckout-button" href="javascript:void(0)" id="onestepcheckout-place-order"><?= Yii::$service->page->translate->__('Place order now');?></a>
+							<div class="onestepcheckout-place-order-loading"><img src="<?= Yii::$service->image->getImgUrl('images/opc-ajax-loader.gif'); ?>">&nbsp;&nbsp;<?= Yii::$service->page->translate->__('Please wait, processing your order...');?></div>
 						</div>
 					</div>
 					<div style="clear: both;">&nbsp;</div>

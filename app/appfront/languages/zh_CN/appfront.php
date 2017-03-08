@@ -183,7 +183,7 @@ return [
  'Shipping Address'				=> '货运地址',
  'T:'							=> '手机/电话：',
  'Payment Method'				=> '支付方式',
- 'Shipping Method'				=> '货运地址',
+ 'Shipping Method'				=> '货运方式',
  'Items Ordered'				=> '订单产品列表',
  'Product Name'					=> '产品名称',
  'Product Image'				=> '产品图片',
@@ -297,31 +297,42 @@ return [
  'Your Cart is empty, You Can {urlB} Click Here to Home Page {urlE}'	
 								=> '您的购物车为空，您可以{urlB}点击这里进入首页{urlE}',
  'Unit Price'					=> '单价',
- 'Discount Codes'					=> '优惠券',
- 'Enter your coupon code if you have one.'					=> '如果您有优惠券，请在下面填写',
- 'Cancel Coupon'					=> '取消优惠券',
+ 'Discount Codes'				=> '优惠券',
+ 'Enter your coupon code if you have one.'					
+								=> '如果您有优惠券，请在下面填写',
+ 'Cancel Coupon'				=> '取消优惠券',
  'Add Coupon'					=> '添加优惠券',
  'Dashboard'					=> '我的信息中心',
  'Dashboard'					=> '我的信息中心',
  'OR'							=> '或',
  'Proceed to Pay'				=> '继续支付',
- 'Follow'						=> '关注我们',
- 'Follow'						=> '关注我们',
- 'Follow'						=> '关注我们',
- 'Follow'						=> '关注我们',
- 'Follow'						=> '关注我们',
- 'Follow'						=> '关注我们',
- 'Follow'						=> '关注我们',
- 'Follow'						=> '关注我们',
- 'Follow'						=> '关注我们',
- 'Follow'						=> '关注我们',
- 'Follow'						=> '关注我们',
- 'Follow'						=> '关注我们',
- 'Follow'						=> '关注我们',
- 'Follow'						=> '关注我们',
- 'Follow'						=> '关注我们',
- 'Follow'						=> '关注我们',
- 'Follow'						=> '关注我们',
+ # 下单页面
+ 'Checkout'						=> '支付',
+ 'Welcome to the checkout,Fill in the fields below to complete your purchase'						
+								=> '欢迎结帐，填写以下字段以完成购买',
+ 'Already registered? Click here to login'						
+								=> '已经注册？ 点击此处登录',
+ 'Coupon codes (optional)'		=> '优惠券代码（可选）',
+ 'Place order now'						=> '支付订单',
+ 'Please wait, processing your order...'						
+								=> '正在处理您的订单，请稍候...',
+ 'Create an account for later use'						
+								=> '创建帐户以供以后使用',
+ 'Billing address'						=> '帐单地址',
+ 'Street'						=> '街道',
+ 'New Address'						=> '新地址',
+ 'Check / Money Order'						=> '现金支付',
+  															
+ 'Off-line Money Payments'						=> '线下现金支付',
+ 'PayPal Website Payments Standard'	
+								=> '贝宝标准支付',
+ 'You will be redirected to the PayPal website when you place an order. '
+								=> '当您下订单时，您将被重定向到PayPal网站。',
+ 'Free shipping( 7-20 work days)'						
+								=> '免邮费( 7-20 工作日)',
+ 'Fast Shipping( 5-10 work days)'						
+								=> '快速邮寄( 5-10 工作日)',
+ 'Review your order'						=> '订单详细',
  'Follow'						=> '关注我们',
  'Follow'						=> '关注我们',
  'Follow'						=> '关注我们',
