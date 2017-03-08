@@ -5,23 +5,23 @@
 	
 	<div class="account-create">
 		<div class="page-title">
-			<h1>Forgot Password</h1>
+			<h1><?= Yii::$service->page->translate->__('Forgot Password'); ?></h1>
 		</div>
 		<form action="<?= Yii::$service->url->getUrl('customer/account/resetpassword',['resetToken'=>$resetToken]); ?>" method="post" id="form-validate">
 				
 			<div class="fieldset" style="width:auto">
-				<h2 class="legend">Select your new password</h2>
+				<h2 class="legend"><?= Yii::$service->page->translate->__('Select your new password'); ?></h2>
 				<ul class="form-list">
 					
 					<li>
-						<label for="email_address" class="required"><em>*</em>Email Address</label>
+						<label for="email_address" class="required"><em>*</em><?= Yii::$service->page->translate->__('Email Address'); ?></label>
 						<div class="input-box">
 							<input name="editForm[email]" id="email_address" value="<?= $email ?>" title="Email Address" class="input-text validate-email required-entry" type="text">
 						</div>
 					</li>
 					<li>
 						<div class="field">
-							<label for="password" class="required"><em>*</em>Password</label>
+							<label for="password" class="required"><em>*</em><?= Yii::$service->page->translate->__('Password'); ?></label>
 							<div class="input-box">
 								<input name="editForm[password]" id="password" title="Password" class="input-text required-entry validate-password" type="password">
 							</div>
@@ -29,7 +29,7 @@
 					</li>
 					<li>
 						<div class="field">
-							<label for="confirmation" class="required"><em>*</em>Confirm Password</label>
+							<label for="confirmation" class="required"><em>*</em><?= Yii::$service->page->translate->__('Confirm Password'); ?></label>
 							<div class="input-box">
 								<input name="editForm[confirmation]" title="Confirm Password" id="confirmation" class="input-text required-entry validate-cpassword" type="password">
 							</div>
@@ -41,8 +41,8 @@
 			<?= \fec\helpers\CRequest::getCsrfInputHtml();  ?>
 			<input type="hidden"  name="editForm[resetToken]"  value="<?= $resetToken ?>" />
 			<div class="buttons-set">
-				<p class="required">* Required Fields</p>
-				<button type="button" id="js_registBtn" class="redBtn"><em><span><i></i>Submit</span></em></button>
+				
+				<button type="button" id="js_registBtn" class="redBtn"><em><span><i></i><?= Yii::$service->page->translate->__('Submit'); ?></span></em></button>
 				
 			</div>
 			<div class="clear"></div>
@@ -50,10 +50,10 @@
 	</div>
 	
 	<?php 
-	$requiredValidate 			= 'This is a required field.';
-	$emailFormatValidate 		= 'Please enter a valid email address. For example johndoe@domain.com.';
-	$passwordLenghtValidate 	= 'Please enter 6 or more characters. Leading or trailing spaces will be ignored.';
-	$passwordMatchValidate 		= 'Please make sure your passwords match. ';
+	$requiredValidate 			= Yii::$service->page->translate->__('This is a required field.');
+	$emailFormatValidate 		= Yii::$service->page->translate->__('Please enter a valid email address. For example johndoe@domain.com.');
+	$passwordLenghtValidate 	= Yii::$service->page->translate->__('Please enter 6 or more characters. Leading or trailing spaces will be ignored.');
+	$passwordMatchValidate 		= Yii::$service->page->translate->__('Please make sure your passwords match.');
 	//$minNameLength = 2;
 	//$maxNameLength = 20;
 	//$minPassLength = 6;  
@@ -134,7 +134,10 @@
 
 <?php  }else{  ?>
 	<div>
-		Your Reset Password Token is Expired, You can <a href="<?= $forgotPasswordUrl?>">click here</a> to retrieve it 
+		<?php
+			$param = ['logUrlB' => '<a href="'.$forgotPasswordUrl.'">','logUrlE' => '</a> '];
+		?>
+		<?= Yii::$service->page->translate->__('Your Reset Password Token is Expired, You can {logUrlB} click here {logUrlE} to retrieve it ',$param); ?>
 		
 	</div>
 <?php  } ?>

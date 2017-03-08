@@ -10,16 +10,16 @@
 					<div>
 						<div class="rbc_cold">
 							<span>
-								<span class="average_rating">Average rating :</span>
+								<span class="average_rating"><?= Yii::$service->page->translate->__('Average rating'); ?> :</span>
 								<span class="review_star review_star_<?= $reviw_rate_star_average ?>" style="font-weight:bold;" itemprop="average"></span>  
 								
 								<a rel="nofollow" href="#text-reviews">
-									(<span itemprop="count"><?= $review_count ?> reviews</span>)
+									(<span itemprop="count"><?= $review_count ?> <?= Yii::$service->page->translate->__('reviews'); ?></span>)
 								</a>
 							</span>
 						</div>
 					</div>
-					<div class="item_code">Item Code: <?= $sku; ?></div>
+					<div class="item_code"><?= Yii::$service->page->translate->__('Item Code:'); ?> <?= $sku; ?></div>
 					
 					<div class="price_info">
 						<?php # 价格部分
@@ -68,7 +68,7 @@
 						</div>
 						
 						<div class="product_qty pg">
-							<div class="label">Qty:</div>
+							<div class="label"><?= Yii::$service->page->translate->__('Qty:'); ?></div>
 							<div class="rg">
 								<input type="text" name="qty" class="qty" value="1" />
 							</div>
@@ -76,12 +76,12 @@
 						</div>
 						
 						<div class="addtocart">
-							<button  type="button" id="js_registBtn" class="redBtn addProductToCart"><em><span><i></i>Add To Cart</span></em></button>
+							<button  type="button" id="js_registBtn" class="redBtn addProductToCart"><em><span><i></i><?= Yii::$service->page->translate->__('Add To Cart'); ?></span></em></button>
 							
 							<div class="myFavorite_nohove" id="myFavorite">
 								<i></i>
 								<a href="javascript:void(0)" url="<?= Yii::$service->url->getUrl('catalog/favoriteproduct/add',['product_id'=>$_id]); ?>" class="addheart" id="divMyFavorite" rel="nofollow" >
-									Add to Favorites
+									<?= Yii::$service->page->translate->__('Add to Favorites'); ?>
 								</a>				
 							</div>
 							<div class="clear"></div>
@@ -140,9 +140,9 @@
 				
 				<div class="nav" id="nav-container">  
 					<ul id="nav-box">
-						<li  class="nav_tab cur" rel="description">DESCRIPTION</li>  
-						<li  class="nav_tab" rel="reviews">REVIEWS</li>  
-						<li  class="nav_tab" rel="questions">SHIPPING & PAYMENT</li>  
+						<li  class="nav_tab cur" rel="description"><?= Yii::$service->page->translate->__('Description'); ?></li>  
+						<li  class="nav_tab" rel="reviews"><?= Yii::$service->page->translate->__('Reviews'); ?></li>  
+						<li  class="nav_tab" rel="questions"><?= Yii::$service->page->translate->__('Shipping & Payment'); ?></li>  
 						<!-- <li   class="nav_tab" rel="wholesale">WHOLESALE</li>   -->
 					</ul>    
 				</div>  
@@ -257,7 +257,7 @@
 	   // product favorite
 	   $("#divMyFavorite").click(function(){
 			if($(this).hasClass('act')){
-				alert("You already favorite this product");
+				alert("<?= Yii::$service->page->translate->__('You already favorite this product'); ?>");
 			}else{
 				url = $(this).attr('url');
 				$(this).addClass('act');

@@ -1,7 +1,7 @@
 <?php  if(is_array($parentThis['products']) && !empty($parentThis['products'])){ ?>
 <div class="buy_also_buy" >
 	<div class="scroll_left">
-		<a href="">Customers Who Bought This Item Also Bought</a>
+		<a href=""><?= Yii::$service->page->translate->__('Customers Who Bought This Item Also Bought'); ?></a>
 	</div>
 	<div class="scrollBox">	
 		<div class="viewport" style="overflow: hidden; position: relative;">

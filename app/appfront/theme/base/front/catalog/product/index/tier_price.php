@@ -1,10 +1,10 @@
 <?php  $tier_price = $parentThis['tier_price'];   ?>
 
 <?php  if(is_array($tier_price) && !empty($tier_price) ) { ?>
-<div class="label"> Wholesale Prices :</div>
+<div class="label"> <?= Yii::$service->page->translate->__('Wholesale Prices :'); ?></div>
 	<table >
 		<tr>
-			<td>qty:</td>
+			<td><?= Yii::$service->page->translate->__('Qty:'); ?></td>
 		<?php $i = 1;  ?>
 		<?php  foreach($tier_price as $one){  ?>
 			<?php if($i != 1){  ?>
@@ -22,7 +22,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>price:</td>
+			<td><?= Yii::$service->page->translate->__('Price:'); ?></td>
 		<?php  foreach($tier_price as $one){  ?>
 			<td><?= Yii::$service->product->price->formatSamplePrice($one['price']); ?></td>
 		<?php  }  ?>

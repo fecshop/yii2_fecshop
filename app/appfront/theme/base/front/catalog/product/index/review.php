@@ -2,7 +2,7 @@
 <div class="product-Reviews">
 	<div id="pic_list_2" class="scroll_horizontal">
 		<div class="scroll_left">
-			<a href="">Product Review</a>
+			<a href=""><?= Yii::$service->page->translate->__('Product Review'); ?></a>
 		</div>
 		<div class="clear"></div>
 		<div class="box">
@@ -14,7 +14,7 @@
 					<li>
 						<div class="review_description_left">
 							<a href="#" class="review_star review_star_<?= $one['rate_star'] ?>" onclick="javascript:return false;"></a>
-							<p>By <?= $one['name'] ?></p>
+							<p><?= Yii::$service->page->translate->__('By'); ?> <?= $one['name'] ?></p>
 							<span><?= $one['review_date'] ? date('Y-m-d H:i:s',$one['review_date']) : '' ?></span>
 						</div>
 						<div class="review_description_right">
@@ -27,7 +27,7 @@
 								</div>
 								<?php if($one['status'] == $noActiveStatus){ ?>  
 								<div class="moderation">
-									Your comment is awaiting moderation...
+									<?= Yii::$service->page->translate->__('Your comment is awaiting moderation'); ?>...
 								</div>
 								<?php } ?>
 								
@@ -41,13 +41,13 @@
 			</div>
 			<div class="clear"></div>
 			<a class="submitbutton" href="<?= Yii::$service->url->getUrl('catalog/reviewproduct/add',['spu'=>$spu,'_id'=>$_id]); ?>" >
-				Add Review
+				<?= Yii::$service->page->translate->__('Add Review'); ?>
 			</a>
 			<div class="clear"></div>
 			
 			<div class="view_all_review">
 				<a href="<?= Yii::$service->url->getUrl('catalog/reviewproduct/lists',['spu'=>$spu,'_id'=>$_id]); ?>" >
-					View  All Review(<?= $review_count; ?>) 
+					<?= Yii::$service->page->translate->__('View  All Review'); ?>(<?= $review_count; ?>) 
 				</a>
 			</div>
 		</div>

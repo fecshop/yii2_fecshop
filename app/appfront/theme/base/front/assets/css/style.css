@@ -981,7 +981,9 @@ form label.required em {
 
 
 .account-create #form-validate .buttons-set p.back-link {
-    margin: 15px 0 0;
+   display: block;
+    float: left;
+    margin: 10px 0 0 8px;
    
 }
 
@@ -1769,7 +1771,13 @@ border: solid 1px #adadad;
 
 
 
-.account-register  .back-link{font-size:11px;margin-top:10px;}
+.account-register .back-link {
+    display: block;
+    float: left;
+    font-size: 11px;
+    height: 30px;
+    padding: 5px 8px;
+}
 
 .product_info .price_info .price.special_active{
 	text-decoration: line-through;
@@ -2309,7 +2317,8 @@ a.next_images {
     font-size: 11px;
     height: 35px;
     line-height: 35px;
-    width: 35px;
+    min-width: 15px;
+    padding: 0 10px;
 }
 
 .product_options a.active , .product_options a.active_v{

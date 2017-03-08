@@ -3,19 +3,19 @@
 		<div class="std">
 			<div style="margin:19px 0 0">
 				<div class="page-title">
-					<h2>My Dashboard</h2>
+					<h2><?= Yii::$service->page->translate->__('My Dashboard'); ?></h2>
 				</div>
 				<div class="welcome-msg">
-					<p class="hello"><strong>Hello,  !</strong></p>
-					<p>From your My Account Dashboard you have the ability to view a snapshot of your recent account activity and update your account information. Select a link below to view or edit information.</p>
+					<p class="hello"><strong><?= Yii::$service->page->translate->__('Hello'); ?>,  !</strong></p>
+					<p><?= Yii::$service->page->translate->__('From your My Account Dashboard you have the ability to view a snapshot of your recent account activity and update your account information. Select a link below to view or edit information.'); ?></p>
 				</div>
 				<div class="box-account box-info">
 					<div class="col2-set">
 						<div class="col-1">
 							<div class="box">
 								<div class="box-title">
-									<h3>Contact Information</h3>
-									<a href="<?= $accountEditUrl ?>">Edit</a>
+									<h3><?= Yii::$service->page->translate->__('Contact Information'); ?></h3>
+									<a href="<?= $accountEditUrl ?>"><?= Yii::$service->page->translate->__('Edit'); ?></a>
 								</div>
 								<div class="box-content">
 									<div>
@@ -35,12 +35,12 @@
 							<div class="col-1">
 								<div class="box">
 									<div class="box-title">
-										<h3>Address Book</h3>
+										<h3><?= Yii::$service->page->translate->__('My Address Book'); ?></h3>
 										
 									</div>
 									<div class="box-content">
-										<p>You Can Manager Your Address. </p>
-										<a href="<?= $accountAddressUrl ?>">Manager Addresses</a>
+										<p><?= Yii::$service->page->translate->__('You Can Manager Your Address'); ?>. </p>
+										<a href="<?= $accountAddressUrl ?>"><?= Yii::$service->page->translate->__('Manager Addresses'); ?></a>
 									</div>
 									
 								</div>
@@ -48,12 +48,12 @@
 							<div class="col-2">
 								<div class="box">
 									<div class="box-title">
-										<h3>Order</h3>
+										<h3><?= Yii::$service->page->translate->__('My Order'); ?></h3>
 										
 									</div>
 									<div class="box-content">
-										<p>You Can View Your Order. </p>
-										<a href="<?= $accountOrderUrl ?>">View</a>
+										<p><?= Yii::$service->page->translate->__('You Can View Your Order'); ?>. </p>
+										<a href="<?= $accountOrderUrl ?>"><?= Yii::$service->page->translate->__('View'); ?></a>
 									</div>
 								</div>
 							</div>

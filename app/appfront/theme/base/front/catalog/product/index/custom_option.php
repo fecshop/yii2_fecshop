@@ -5,7 +5,7 @@
 <?php 	$info = $v_info['info'];  $require = $v_info['require']; ?>
 <?php 	$required = $require ? 'required' : '' ?>
 	<div class="pg">
-		<div class="label"><?= ucwords(str_replace("-"," ",str_replace("_"," ",$attr))) ?>:</div>
+		<div class="label"><?= Yii::$service->page->translate->__(ucwords(str_replace("-"," ",str_replace("_"," ",$attr))).':'); ?></div>
 		<div class="chose_<?= $attr  ?> rg  <?= $attr ?>">
 			<ul  class="no_chosen_ul <?= $required; ?>" attr="<?= $attr ?>">
 <?php  			if(is_array($info) && !empty($info)){ ?>
@@ -21,7 +21,7 @@
 				</li>
 			<?php   	}else{ ?>
 				<li>
-					<a attr="<?= $attr ?>" class="noimgshow active_v" value="<?= $key ?>"><?= $val ?></a>
+					<a attr="<?= $attr ?>" class="noimgshow active_v" value="<?= $key ?>"><?= Yii::$service->page->translate->__($val); ?></a>
 					<b></b>
 				</li>
 <?php   				}  ?>

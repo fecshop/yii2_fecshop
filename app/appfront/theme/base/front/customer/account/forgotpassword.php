@@ -3,16 +3,16 @@
 
 	<div class="account-create">
 		<div class="page-title">
-			<h1>Forgot Password</h1>
+			<h1><?= Yii::$service->page->translate->__('Forgot Password'); ?></h1>
 		</div>
         <form action="<?= Yii::$service->url->getUrl('customer/account/forgotpasswordsubmit'); ?>" method="post" id="form-validate">
 			
 			<div class="fieldset" style="width:auto">
-				<h2 class="legend">Confirm your identity to reset password</h2>
+				<h2 class="legend"><?= Yii::$service->page->translate->__('Confirm your identity to reset password'); ?></h2>
 				<ul class="form-list">
 					
 					<li>
-						<label for="email_address" class="required"><em>*</em>Email Address</label>
+						<label for="email_address" class="required"><em>*</em><?= Yii::$service->page->translate->__('Email Address'); ?></label>
 						<div class="input-box">
 							<input name="editForm[email]" id="email_address" value="<?= $email ?>" title="Email Address" class="input-text validate-email required-entry" type="text">
 						</div>
@@ -21,7 +21,7 @@
 					<?php  if($forgotCaptcha){   ?>
 					<li>
 						<div class="field">
-                            <label for="captcha" class="required"><em>*</em>Captcha</label>
+                            <label for="captcha" class="required"><em>*</em><?= Yii::$service->page->translate->__('Captcha'); ?></label>
                             <div  class="input-box forgot-captha register-captcha ">
 								<input type="text" name="editForm[captcha]" value="" size=10 class="login-captcha-input required-entry"> 
 								<img class="login-captcha-img"  title="click refresh" src="<?= Yii::$service->url->getUrl('site/helper/captcha'); ?>" align="absbottom" onclick="this.src='<?= Yii::$service->url->getUrl('site/helper/captcha'); ?>?'+Math.random();"></img>
@@ -48,9 +48,9 @@
 			
 			<?= \fec\helpers\CRequest::getCsrfInputHtml();  ?>
 			<div class="buttons-set">
-				<p class="required">* Required Fields</p>
-				<button type="button" id="js_registBtn" class="redBtn"><em><span><i></i>Submit</span></em></button>
-				<p class="back-link"><a href="<?= Yii::$service->url->getUrl('customer/account/login'); ?>" class="back-link"><small>« </small>Back</a></p>
+				
+				<button type="button" id="js_registBtn" class="redBtn"><em><span><i></i><?= Yii::$service->page->translate->__('Submit'); ?></span></em></button>
+				<p class="back-link"><a href="<?= Yii::$service->url->getUrl('customer/account/login'); ?>" class="back-link"><small>« </small><?= Yii::$service->page->translate->__('Back'); ?></a></p>
 				
 			</div>
 			<div class="clear"></div>

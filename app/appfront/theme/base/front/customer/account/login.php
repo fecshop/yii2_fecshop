@@ -3,40 +3,40 @@
 
 	<div class="account-login">
 		<div class="page-title">
-			<h1>Login or Create an Account</h1>
+			<h1><?= Yii::$service->page->translate->__('Login or Create an Account'); ?></h1>
 		</div>
 		<form action="<?= Yii::$service->url->getUrl("customer/account/login");  ?>" method="post" id="login-form">
 			<div class="col2-set">
 				<div class="col-1 new-users">
 					<div class="content">
-						<h2>New Customers</h2>
-						<p>By creating an account with our store, you will be able to move through the checkout process faster, store multiple shipping addresses, view and track your orders in your account and more.</p>
+						<h2><?= Yii::$service->page->translate->__('New Customers'); ?></h2>
+						<p><?= Yii::$service->page->translate->__('By creating an account with our store, you will be able to move through the checkout process faster, store multiple shipping addresses, view and track your orders in your account and more.'); ?></p>
 					</div>
-					<button onclick="window.location='<?= Yii::$service->url->getUrl('customer/account/register') ?>';" type="button" title="Create an Account" class="redBtn"><em><span><i></i>REGISTER</span></em></button>
+					<button onclick="window.location='<?= Yii::$service->url->getUrl('customer/account/register') ?>';" type="button" title="Create an Account" class="redBtn"><em><span><i></i><?= Yii::$service->page->translate->__('register'); ?></span></em></button>
 				</div>   
 				<div class="col-2 registered-users">
 					<div class="content">
-						<h2>Registered Customers</h2>
-						<p>If you have an account with us, please log in.</p>
+						<h2><?= Yii::$service->page->translate->__('Registered Customers'); ?></h2>
+						<p><?= Yii::$service->page->translate->__('If you have an account with us, please log in.'); ?></p>
 						<ul class="form-list">
 							<li>
-								<label for="email" class="required"><em>*</em>Email Address</label>
+								<label for="email" class="required"><em>*</em><?= Yii::$service->page->translate->__('Email Address'); ?></label>
 								<div class="input-box">
 									<input name="editForm[email]" value="<?= $email; ?>" id="email" class="input-text required-entry validate-email" title="Email Address" type="text">
 								</div>
 							</li> 
 							<li>
-								<label for="pass" class="required"><em>*</em>Password</label>
+								<label for="pass" class="required"><em>*</em><?= Yii::$service->page->translate->__('Password'); ?></label>
 								<div class="input-box">
 									<input name="editForm[password]" class="input-text required-entry validate-password" id="pass" title="Password" type="password">
 								</div>
 							</li>
 							<?php if($loginPageCaptcha){  ?>
 							<li>
-								<label for="captcha" class="required"><em>*</em>Captcha</label>
+								<label for="captcha" class="required"><em>*</em><?= Yii::$service->page->translate->__('Captcha'); ?></label>
 								<div class="input-box login-captcha">
 									<input type="text" name="editForm[captcha]" value="" size=10 class="login-captcha-input"> 
-									<img class="login-captcha-img"  title="点击刷新" src="<?= Yii::$service->url->getUrl('site/helper/captcha'); ?>" align="absbottom" onclick="this.src='<?= Yii::$service->url->getUrl('site/helper/captcha'); ?>?'+Math.random();"></img>
+									<img class="login-captcha-img"  title="<?= Yii::$service->page->translate->__('click refresh'); ?>" src="<?= Yii::$service->url->getUrl('site/helper/captcha'); ?>" align="absbottom" onclick="this.src='<?= Yii::$service->url->getUrl('site/helper/captcha'); ?>?'+Math.random();"></img>
 									<i class="refresh-icon"></i>
 								</div>
 								<script>
@@ -55,8 +55,8 @@
 						
 						<div class="clear"></div>
 						<div class="buttons-set">
-							<button type="submit" id="js_registBtn" class="redBtn"><em><span><i></i>SIGN IN</span></em></button>
-							<a href="<?= Yii::$service->url->getUrl('customer/account/forgotpassword');  ?>" class="f-left">Forgot Your Password?</a>
+							<button type="submit" id="js_registBtn" class="redBtn"><em><span><i></i><?= Yii::$service->page->translate->__('Sign In'); ?></span></em></button>
+							<a href="<?= Yii::$service->url->getUrl('customer/account/forgotpassword');  ?>" class="f-left"><?= Yii::$service->page->translate->__('Forgot Your Password?'); ?></a>
 							
 						</div>
 						<div class="clear"></div>

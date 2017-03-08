@@ -126,7 +126,7 @@ class AccountController extends AppfrontController
 		$editForm = Yii::$app->request->post('editForm');
 		$data = [
 			'forgotPasswordUrl' => Yii::$service->url->getUrl('customer/account/forgotpassword'),
-			'contactUrl'		=> Yii::$service->url->getUrl('contacts/index/index'),
+			'contactUrl'		=> Yii::$service->url->getUrl('customer/contacts'),
 		];
 		if(!empty($editForm)){
 			$identity = $this->getBlock('forgotpassword')->sendForgotPasswordMailer($editForm);
