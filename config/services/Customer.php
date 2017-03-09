@@ -9,9 +9,9 @@ return [
 	'customer' => [
 		'class' => 'fecshop\services\Customer',
 		'customer_register' => [
-			'min_name_length' => 2,  # 注册账号的firstname, lastname的最小长度
+			'min_name_length' => 1,  # 注册账号的firstname, lastname的最小长度
 			'max_name_length' => 30, # 注册账号的firstname, lastname的最大长度
-			'min_pass_length' => 2,  # 注册账号的密码的最小长度
+			'min_pass_length' => 6,  # 注册账号的密码的最小长度
 			'max_pass_length' => 30, # 注册账号的密码的最大长度
 		],
 		# 子服务

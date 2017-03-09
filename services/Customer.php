@@ -71,7 +71,7 @@ class Customer extends Service
 			# 合并购物车数据
 			Yii::$service->cart->mergeCartAfterUserLogin();
 		}else{
-			Yii::$service->helper->errors->add($errors);
+			Yii::$service->helper->errors->addByModelErrors($errors);
 		}
 		return $loginStatus;
 	}
@@ -123,7 +123,7 @@ class Customer extends Service
 					return true;
 				}else{
 					$errors = $model->errors;
-					Yii::$service->helper->errors->add($errors);
+					Yii::$service->helper->errors->addByModelErrors($errors);
 					return false;
 				}
 			}

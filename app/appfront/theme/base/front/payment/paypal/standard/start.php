@@ -1,6 +1,6 @@
 <html>
 	<body>
-		You will be redirected to the PayPal website in a few seconds
+		<?= Yii::$service->page->translate->__('You will be redirected to the PayPal website in a few seconds...');  ?>
 		<img src="<?= $loader_img  ?>" />
 		<?php // https://www.paypal.com/cgi-bin/webscr ?>
 		<form action="<?= $payment_url ?>" id="paypal_standard_checkout" name="paypal_standard_checkout" method="POST">
@@ -28,7 +28,7 @@
 			<input id="discount_amount_cart" name="discount_amount_cart" value="<?= $order['subtotal_with_discount'] ? (str_replace(',','',number_format($order['subtotal_with_discount'],2))) : number_format(0,2)  ?>" type="hidden"/>
 			<?= $address_html ?>
 			<span class="field-row">
-			<input id="submit_to_paypal_button" name="" value="Click here if you are not redirected within 10 seconds ..." type="submit" class=" submit"/>
+			<input id="submit_to_paypal_button" name="" value="<?= Yii::$service->page->translate->__('Click here if you are not redirected within 10 seconds ...');  ?>" type="submit" class=" submit"/>
 			</span>
 		</form>
 		<script type="text/javascript">

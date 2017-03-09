@@ -68,7 +68,7 @@ return [
  'By creating an account with our store, you will be able to move through the checkout process faster, store multiple shipping addresses, view and track your orders in your account and more.'						
 								=> '在我们的店铺里面注册账户，您可以快速的下单，保存您的货运地址，查看或追踪您的订单信息，等等',
  'register'						=> '注册',
- 'Registered Customers'			=> '用户注册',
+ 'Registered Customers'			=> '已注册用户',
  'If you have an account with us, please log in.'						
 								=> '如果您已经注册了一个用户，请直接登录',
  'Email Address'				=> '邮箱地址',
@@ -226,6 +226,8 @@ return [
  'My Size3:'					=> '我的尺码3：',
  'Color:'						=> '颜色：',
  'color:'						=> '颜色：',
+ 'color'						=> '颜色',
+ 'size'							=> '尺码',
  'Size:'						=> '尺码：',
  //'color'						=> '颜色',
  //'size'						=> '尺码',						
@@ -436,9 +438,13 @@ return [
  'Follow'						=> '关注我们',
  'Follow'						=> '关注我们',
  'Follow'						=> '关注我们',
- 'Follow'						=> '关注我们',
- 'Follow'						=> '关注我们',
  'this email is exist!'						=> '该邮箱地址已经被注册',
+ 
+  # paypal 跳转中间页面
+ 'Click here if you are not redirected within 10 seconds ...'
+								=> '如果您在10秒内未重定向，请点击此处...',
+ 'You will be redirected to the PayPal website in a few seconds...'
+								=> '您将在几秒钟后重定向到PayPal网站...',
  
  
  # 订单支付成功页面
