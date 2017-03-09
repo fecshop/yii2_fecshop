@@ -7,7 +7,7 @@
 		
 		<?php  $frontNumPerPage = $query_item['frontNumPerPage']; ?>
 		<?php if(is_array($frontNumPerPage) && !empty($frontNumPerPage)){ ?>
-			<b>Show Per Page:</b>
+			<b><?= Yii::$service->page->translate->__('Show Per Page:') ?></b>
 			<select class="product_num_per_page">	
 				<?php foreach($frontNumPerPage as $np){   ?>
 					<?php $selected = $np['selected'] ? 'selected="selected"' : ''; ?>

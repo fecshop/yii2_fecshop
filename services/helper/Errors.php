@@ -23,12 +23,34 @@ class Errors extends Service
 	protected $_errors = false ;
 	public $status = true;
 	
-	public function add($errros){
+	/**
+	 * @property $errros | String , 错误信息
+	 * @property $arr | Array 变量替换对应的数组
+	 * Yii::$service->helper->errors->add('Hello, {username}!', ['username' => $username])
+	 */
+	public function add($errros,$arr = []){
 		if($errros){
+			$errros = Yii::$service->page->translate->__($errros,$arr);
 			$this->_errors[] = $errros;
 		}
 	}
 	
+	public function addByModelErrors($model_errors){
+		$error_arr = [];
+		if(is_array($model_errors)){
+			foreach($model_errors as $errors){
+				$arr = [];
+				
+				foreach($errors as $s){
+					$arr[] = Yii::$service->page->translate->__($s);
+				}
+				$error_arr[]= implode(',',$arr);
+			}
+			if(!empty($error_arr)){
+				$this->_errors[] = implode(',',$error_arr);
+			}
+		}
+	}
 	/**
 	 * @property $separator 如果是false，则返回数组，
 	 *						如果是true则返回用| 分隔的字符串

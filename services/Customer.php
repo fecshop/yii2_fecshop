@@ -91,7 +91,7 @@ class Customer extends Service
 			return $model->save();
 		}else{
 			$errors = $model->errors;
-			Yii::$service->helper->errors->add($errors);
+			Yii::$service->helper->errors->addByModelErrors($errors);
 			return false;;
 		}
 	}

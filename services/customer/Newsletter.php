@@ -42,11 +42,13 @@ class Newsletter extends Service
 	 */
 	protected function actionSubscribe($emailAddress){
 		if(!$emailAddress){
-			Yii::$service->helper->errors->add('email address is empty');
+			Yii::$service->helper->errors->add('newsletter email address is empty');
 			return;
-		}
-		if($this->emailIsExist($emailAddress)){
-			Yii::$service->helper->errors->add('Your email address has subscribe');
+		}else if(!Yii::$service->email->validateFormat($emailAddress)){
+			Yii::$service->helper->errors->add('The email address format is incorrect!');
+			return;
+		}else if($this->emailIsExist($emailAddress)){
+			Yii::$service->helper->errors->add('ERROR,Your email address has subscribe , Please do not repeat the subscription');
 			return;
 		}
 		$newsletterModel = new NewsletterModel;

@@ -369,4 +369,12 @@ class Url extends Service
 		}
 	}
 	
+	protected function actionRedirectHome(){
+		$homeUrl = $this->HomeUrl();
+		if($homeUrl){
+			//session_commit();
+			header("Location: $homeUrl");
+		}
+	}
+	
 }

@@ -20,6 +20,9 @@ class Index {
 	
 	public function getLastData(){
 		$increment_id 		= Yii::$service->order->getSessionIncrementId();
+		if(!$increment_id){
+			Yii::$service->url->redirectHome();
+		}
 		$order 				= Yii::$service->order->getInfoByIncrementId($increment_id);
 		# 清空购物车。这里针对的是未登录用户进行购物车清空。
 		if(Yii::$app->user->isGuest){

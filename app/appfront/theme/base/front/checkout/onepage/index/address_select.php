@@ -69,6 +69,13 @@
 							</div>
 					</li>
 					<li class="clearfix">
+						<div class="input-box input-state"><label for="billing:state" class="required"><?= Yii::$service->page->translate->__('State');?> <span class="required">*</span></label>
+							<div class="state_html">
+							<?=  $state_html ?>
+							</div>
+						</div>
+					</li>
+					<li class="clearfix">
 						<div class="input-box input-city">
 							<label for="billing:city"><?= Yii::$service->page->translate->__('City');?> <span class="required">*</span></label>
 							<input value="<?= $cart_address['city'] ?>" id="billing:city" class="required-entry input-text" title="City" name="billing[city]" type="text">
@@ -79,11 +86,7 @@
 							<label for="billing:zip"><?= Yii::$service->page->translate->__('Zip Code');?> <span class="required">*</span></label>
 							<input value="<?= $cart_address['zip'] ?>" class="validate-zip-international required-entry input-text" id="billing:zip" name="billing[zip]" title="Zip Code" type="text">
 						</div>
-						<div class="input-box input-state"><label for="billing:state" class="required"><?= Yii::$service->page->translate->__('State');?> <span class="required">*</span></label>
-							<div class="state_html">
-							<?=  $state_html ?>
-							</div>
-						</div>
+						
 					</li>
 					<!--
 					<li class="control">

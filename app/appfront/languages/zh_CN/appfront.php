@@ -78,6 +78,17 @@ return [
  'Sign In'						=> '登录',
  'Forgot Your Password?'		=> '忘记密码？',
  
+ # newsletter
+ 'ERROR,Your email address has subscribe , Please do not repeat the subscription'
+								=> '您的电子邮件地址已订阅，请不要重复订阅',
+ 'newsletter email address is empty'
+								=> '邮件订阅邮箱地址为空',
+ 'The email address format is incorrect!' 
+								=> '电子邮件地址格式不正确！',
+ 'Your subscribed email was successful, You can {urlB} click Here to Home Page {urlE}, Thank You.'
+								=> '您的订阅电子邮件已成功，您可以{urlB}点击此处访问主页{urlE}，谢谢。',
+ 
+ 
  # 用户注册页面
  'Create an Account'			=> '创建新账户',
  'Personal Information'			=> '个人账户信息',
@@ -203,10 +214,10 @@ return [
  'Favorite Date:'				=> '收藏时间：',
 
  # contacts页面
- 'Name'					=> '名字',
+ 'Name'							=> '名字',
  'Telephone'					=> '电话',
- 'Comment'					=> '留言内容',
- 'Contacts'					=> '联系我们',
+ 'Comment'						=> '留言内容',
+ 'Contacts'						=> '联系我们',
  
  # 产品详细页面 - 颜色尺码
  'My Color:'					=> '我的颜色：',
@@ -291,7 +302,8 @@ return [
  'View  All Review'				=> '查看所有评论',
  'Wholesale Prices :'			=> '批发价格：',
  'Price:'						=> '价格：', 
- 
+ # 产品搜索页面
+ 'Show Per Page:'				=> '每页个数',
  
  # 购物车
  'Your Cart is empty, You Can {urlB} Click Here to Home Page {urlE}'	
@@ -306,6 +318,12 @@ return [
  'Dashboard'					=> '我的信息中心',
  'OR'							=> '或',
  'Proceed to Pay'				=> '继续支付',
+ 
+ # 购物车优惠券
+ 'Coupon is not available or has expired'	=> '优惠券不可用或已过期',
+ 'add coupon fail'				=> '添加优惠券失败',
+ 'The coupon can not be used if the product amount in the shopping cart is less than {conditions} dollars'
+								=> '如果您的购物车金额小于{conditions}美元，该优惠券是不可用的',
  # 下单页面
  'Checkout'						=> '支付',
  'Welcome to the checkout,Fill in the fields below to complete your purchase'						
@@ -313,17 +331,17 @@ return [
  'Already registered? Click here to login'						
 								=> '已经注册？ 点击此处登录',
  'Coupon codes (optional)'		=> '优惠券代码（可选）',
- 'Place order now'						=> '支付订单',
+ 'Place order now'				=> '支付订单',
  'Please wait, processing your order...'						
 								=> '正在处理您的订单，请稍候...',
  'Create an account for later use'						
 								=> '创建帐户以供以后使用',
- 'Billing address'						=> '帐单地址',
+ 'Billing address'				=> '帐单地址',
  'Street'						=> '街道',
- 'New Address'						=> '新地址',
- 'Check / Money Order'						=> '现金支付',
+ 'New Address'					=> '新地址',
+ 'Check / Money Order'			=> '现金支付',
   															
- 'Off-line Money Payments'						=> '线下现金支付',
+ 'Off-line Money Payments'		=> '线下现金支付',
  'PayPal Website Payments Standard'	
 								=> '贝宝标准支付',
  'You will be redirected to the PayPal website when you place an order. '
@@ -333,6 +351,21 @@ return [
  'Fast Shipping( 5-10 work days)'						
 								=> '快速邮寄( 5-10 工作日)',
  'Review your order'						=> '订单详细',
+ 
+ 'you must login your account before you use coupon'	
+								=> '您必须在使用优惠券之前登录您',
+ 'email address is empty, you must Fill in email'	
+								=> '电子邮件地址为空，您必须填写电子邮件',
+ 'email address format is incorrect'						
+								=> '电子邮件地址格式不正确',
+ 'This email is registered , you must fill in another email'	
+								=> '此电子邮件已注册，您必须填写另一封电子邮件',
+ 'Password length must be greater than or equal to {passwdMinLength}'
+								=> '密码长度必须大于或等于{passwdMinLength}',
+ 'Password length must be less than or equal to {passwdMaxLength}'	
+								=> '密码长度必须小于或等于{passwdMaxLength}',
+ 'The passwords are inconsistent'	
+								=> '密码不一致',
  'Follow'						=> '关注我们',
  'Follow'						=> '关注我们',
  'Follow'						=> '关注我们',
@@ -405,20 +438,21 @@ return [
  'Follow'						=> '关注我们',
  'Follow'						=> '关注我们',
  'Follow'						=> '关注我们',
- 'Follow'						=> '关注我们',
- 'Follow'						=> '关注我们',
- 'Follow'						=> '关注我们',
- 'Follow'						=> '关注我们',
- 'Follow'						=> '关注我们',
- 'Follow'						=> '关注我们',
- 'Follow'						=> '关注我们',
- 'Follow'						=> '关注我们',
- 'Follow'						=> '关注我们',
- 'Follow'						=> '关注我们',
- 'Follow'						=> '关注我们',
- 'Follow'						=> '关注我们',
- 'Follow'						=> '关注我们',
- 'Follow'						=> '关注我们',
- 'Follow'						=> '关注我们',
-
+ 'this email is exist!'						=> '该邮箱地址已经被注册',
+ 
+ 
+ # 订单支付成功页面
+ 'Continue Shopping'						=> '继续购物',
+ 'Your order has been received,Thank you for your purchase!'	
+								=> '您的订单已收到，感谢您的购买！',
+ 'Your order # is:'						=> '您的订单＃是：',
+ 'You will receive an order confirmation email with details of your order and a link to track its progress.'				
+								=> '您将收到一封订单确认电子邮件，其中包含您订单的详细信息以及用于跟踪其进度的链接。',
+ 
+ # 404 页面
+ 'We Couldn’t Find this Page'						=> '我们无法找到这个页面',
+ 'Please contact us if you think this is a server error, Thank you.'
+								=> '如果您认为这是服务器错误，请与我们联系，谢谢。',
+ 'Bring me back Home'						=> '带我去首页',
+ 
 ];

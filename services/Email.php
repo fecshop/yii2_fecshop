@@ -23,6 +23,19 @@ class Email extends Service
 	protected $_mailer;  # Array
 	protected $_mailer_from; #Array
 	protected $_from;
+	
+	/**
+	 * @property $email_address | String  邮箱地址字符串
+	 * @return boolean 如果格式正确，返回true
+	 */
+	protected function actionValidateFormat($email_address){
+		if(preg_match("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$^",$email_address)){ 
+			return true;
+		}else{
+			return false;
+		}
+
+	}
 	/**
 	 * 得到MailConfig
 	 */

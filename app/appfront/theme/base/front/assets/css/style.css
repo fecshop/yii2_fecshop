@@ -2715,4 +2715,6 @@ color:#cc0000;
 .sectionBox_h.featured{margin-top:20px 0 0 }
 
 
-
+#billing_address_list  li > div.input-box{float:none;}
+#billing_address_list  li > div.input-firstname{float:left;}
+#billing_address_list  li > div.input-lastname{float:left;}

@@ -369,6 +369,7 @@ class Coupon extends Service
 	
 	protected function actionAddCoupon($coupon_code){
 		$this->useCouponInit($coupon_code);
+		
 		if($this->couponIsActive()){
 			$couponModel= $this->getCouponModel();
 			$type 		= $couponModel['type'];
@@ -376,12 +377,10 @@ class Coupon extends Service
 			$discount 	= $couponModel['discount'];
 			# 判断购物车金额是否满足条件
 			$cartProduct =  Yii::$service->cart->quoteItem->getCartProductInfo();
-			
 			$product_total = isset($cartProduct['product_total']) ? $cartProduct['product_total'] : 0;
 			if($product_total){
 				//var_dump($product_total);
 				$dc_price = Yii::$service->page->currency->getBaseCurrencyPrice($product_total);
-				
 				if($dc_price > $conditions){
 					# 事务更新购物侧的coupon 和优惠券的使用情况。
 					$innerTransaction = Yii::$app->db->beginTransaction();
@@ -392,15 +391,18 @@ class Coupon extends Service
 							$innerTransaction->commit();
 							return true;
 						}
+						Yii::$service->helper->errors->add('add coupon fail');
 						$innerTransaction->rollBack();
 					} catch (Exception $e) {
+						Yii::$service->helper->errors->add('add coupon fail');
 						$innerTransaction->rollBack();
 					}
 				}else{
-					Yii::$service->helper->errors->add('The coupon can be used if the product amount in the shopping cart is more than '.$conditions.' dollars');
-				
+					Yii::$service->helper->errors->add('The coupon can not be used if the product amount in the shopping cart is less than {conditions} dollars',['conditions' => $conditions]);
 				}
 			}
+		}else{
+			Yii::$service->helper->errors->add('Coupon is not available or has expired');
 		}
 	}
 	

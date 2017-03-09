@@ -23,9 +23,8 @@ class Index {
 		$status = Yii::$service->customer->newsletter->subscribe($email);
 		$message = Yii::$service->helper->errors->get();
 		if(!$message){
-			$message = 'Your subscribed email was successful, You can click Here to 
-				<a href="'.Yii::$service->url->homeUrl() .'">Home Page</a>
-				, Thank You.';
+			$arr = ['urlB' => '<a href="'.Yii::$service->url->homeUrl() .'">',  'urlE' => '</a>' ];
+			$message = Yii::$service->page->translate->__('Your subscribed email was successful, You can {urlB} click Here to Home Page {urlE}, Thank You.',$arr);
 			$param['email'] = $email;	
 			Email::sendNewsletterSubscribeEmail($param);
 		}

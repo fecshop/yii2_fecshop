@@ -66,7 +66,7 @@
 							<input type="hidden" class="couponType"  value="<?= $cart_info['coupon_code'] ? 1 : 2 ; ?>"  />
 							<input style="color:#777;" class="input-text" id="id_couponcode" name="coupon_code" value="<?= $cart_info['coupon_code']; ?>">
 							<br>
-							<button style="" type="button" class="submitbutton add_coupon_submit" id="onestepcheckout-coupon-add"><?= $cart_info['coupon_code'] ? 'Cancel Coupon' : 'Add Coupon' ; ?></button>
+							<button style="" type="button" class="submitbutton add_coupon_submit" id="onestepcheckout-coupon-add"><?= Yii::$service->page->translate->__($cart_info['coupon_code'] ? 'Cancel Coupon' : 'Add Coupon') ; ?></button>
 							<div class="clear"></div>
 							<div class="coupon_add_log"></div>
 						</div>
@@ -181,14 +181,14 @@
 						$(".couponType").val($succ_coupon_type);
 						hml = $('.add_coupon_submit').html();
 						if(hml == 'Add Coupon'){
-							$('.add_coupon_submit').html('Cancel Coupon');
+							$('.add_coupon_submit').html('<?= Yii::$service->page->translate->__('Cancel Coupon');?>');
 						}else{
-							$('.add_coupon_submit').html('Add Coupon');
+							$('.add_coupon_submit').html('<?= Yii::$service->page->translate->__('Add Coupon');?>');
 						}
 						$(".coupon_add_log").html("");
 						ajaxreflush();
 					}else if(data.content == 'nologin'){
-						$(".coupon_add_log").html("you must login your account before you use coupon");
+						$(".coupon_add_log").html("<?= Yii::$service->page->translate->__('you must login your account before you use coupon');?>");
 					}else{
 						$(".coupon_add_log").html(data.content);
 					}
@@ -205,12 +205,12 @@
 				email = $("input[name='billing[email]']").val();
 				if(!email){
 					$(this).prop('checked', false);
-					$(".label_create_account").html(" email address is empty, you must Fill in email ");
+					$(".label_create_account").html(" <?= Yii::$service->page->translate->__('email address is empty, you must Fill in email');?>");
 				}else{
 					thischeckbox = this;
 					if(!validateEmail(email)){
 						$(this).prop('checked', false);
-						$(".label_create_account").html(" email address format is error ");
+						$(".label_create_account").html(" <?= Yii::$service->page->translate->__('email address format is incorrect');?>");
 						
 					}else{
 						// ajax  get if  email is register
@@ -229,7 +229,7 @@
 					
 								}else{
 									$(thischeckbox).prop('checked', false);
-									$(".label_create_account").html(" email is registered , you must fill in another email ");
+									$(".label_create_account").html(" <?= Yii::$service->page->translate->__('This email is registered , you must fill in another email');?>");
 								}
 							},
 							error:function (XMLHttpRequest, textStatus, errorThrown){}
@@ -253,7 +253,7 @@
 			shipment_method = $(".onestepcheckout-shipping-method-block input[name='shipping_method']:checked").val();
 			//alert(shipment_method);
 			if(!shipment_method){
-				$(".shipment-methods").after('<div style=""  class="validation-advice">This is a required field.</div>');
+				$(".shipment-methods").after('<div style=""  class="validation-advice"><?= Yii::$service->page->translate->__('This is a required field.');?></div>');
 				j = 1;
 			}
 			//alert(j);
@@ -261,7 +261,7 @@
 			payment_method = $("#checkout-payment-method-load input[name='payment_method']:checked").val();
 			//alert(shipment_method);
 			if(!payment_method){
-				$(".checkout-payment-method-load").after('<div style=""  class="validation-advice">This is a required field.</div>');
+				$(".checkout-payment-method-load").after('<div style=""  class="validation-advice"><?= Yii::$service->page->translate->__('This is a required field.');?></div>');
 				j = 1;
 			}
 			
@@ -282,13 +282,13 @@
 						//alert(this);
 						//alert($(this).attr('name'));
 						i++;
-						$(this).after('<div style=""  class="validation-advice">This is a required field.</div>');
+						$(this).after('<div style=""  class="validation-advice"><?= Yii::$service->page->translate->__('This is a required field.');?></div>');
 					}
 				});
 				//email  format validate
 				user_email = $("#billing_address .validate-email").val();
 				if(user_email && !validateEmail(user_email)){
-					$("#billing_address .validate-email").after('<div style=""  class="validation-advice">E-mail format is incorrect.</div>');
+					$("#billing_address .validate-email").after('<div style=""  class="validation-advice"><?= Yii::$service->page->translate->__('email address format is incorrect');?></div>');
 					i++;
 				}
 				// password 是否长度大于6，并且两个密码一致
@@ -299,14 +299,20 @@
 					//alert(new_user_pass);
 					//alert(new_user_pass.length);
 					//alert(new_user_pass_cm);
-					if(new_user_pass.length < 6){
-						$(".customer_password").after('<div style=""  class="validation-advice">Password length must be greater than or equal to 6</div>');
+					<?php 
+						$passwdMinLength = Yii::$service->customer->getRegisterPassMinLength();
+						$passwdMaxLength = Yii::$service->customer->getRegisterPassMaxLength();
+					?>
+					passwdMinLength = "<?= $passwdMinLength ?>";
+					passwdMaxLength = "<?= $passwdMaxLength ?>";
+					if(new_user_pass.length < passwdMinLength){
+						$(".customer_password").after('<div style=""  class="validation-advice"><?= Yii::$service->page->translate->__('Password length must be greater than or equal to {passwdMinLength}',['passwdMinLength' => $passwdMinLength]);?></div>');
 						i++;
-					}else if(new_user_pass_cm.length < 6){
-						$(".customer_confirm_password").after('<div style=""  class="validation-advice">Password length must be greater than or equal to 6</div>');
+					}else if(new_user_pass.length > passwdMaxLength){
+						$(".customer_password").after('<div style=""  class="validation-advice"><?= Yii::$service->page->translate->__('Password length must be less than or equal to {passwdMaxLength}',['passwdMaxLength' => $passwdMaxLength]);?></div>');
 						i++;
 					}else if(new_user_pass != new_user_pass_cm){
-						$(".customer_confirm_password").after('<div style=""  class="validation-advice">The passwords are inconsistent</div>');
+						$(".customer_confirm_password").after('<div style=""  class="validation-advice"><?= Yii::$service->page->translate->__('The passwords are inconsistent');?></div>');
 						i++; 
 					}  
 				}
