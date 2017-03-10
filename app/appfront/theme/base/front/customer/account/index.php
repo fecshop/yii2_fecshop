@@ -1,7 +1,7 @@
 <div class="main container two-columns-left">
 	<div class="col-main account_center">
 		<div class="std">
-			<div style="margin:19px 0 0">
+			<div style="margin:4px 0 0">
 				<div class="page-title">
 					<h2><?= Yii::$service->page->translate->__('My Dashboard'); ?></h2>
 				</div>

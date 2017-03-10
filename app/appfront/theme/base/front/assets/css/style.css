@@ -1097,9 +1097,12 @@ button.redBtn:hover span{
 .block .block-title strong { font-size:14px; font-weight:bold; }
 .block .block-title strong span { color: #4c6b99;
     font-family: Georgia;
-    font-size: 19px;
+    font-size: 14px; 
     line-height: 40px;
-    text-decoration: none;}
+    text-decoration: none;
+	 
+}
+.account_center .block-account  .block-title{padding-left:10px;}
 .block .block-title a { text-decoration:none !important; }
 .block .block-subtitle { font-size:13px; font-weight:bold; }
 .block .block-content { padding:5px 0; }

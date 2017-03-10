@@ -3,15 +3,15 @@
 	<div class="col-main account_center">
 		
 		<div class="account_review_product">
-			<div style="margin:19px 0 0">
-				
+			<div style="margin:4px 0 0">
+				<div class="page-title">
+					<h2><?= Yii::$service->page->translate->__('Product Review');?></h2>
+				</div>
 				<div style="width:100%;min-height:500px;">
 					<div style="width:100%;">
 						<div class="product-Reviews"> 
 							<div class="clear"></div>
-							<div class="scroll_left">
-								<a href=""><?= Yii::$service->page->translate->__('Product Review');?></a>
-							</div>
+							
 							<div class="product-Reviews_top">
 								<?php  if(is_array($coll) && !empty($coll)){  ?>
 								<ul id="review_description">

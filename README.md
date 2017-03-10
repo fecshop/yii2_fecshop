@@ -5,31 +5,14 @@
 </p>
 <br/>
 
-演示地址：http://fecshop.appfront.fancyecommerce.com/
+FecShop 演示地址：http://fecshop.appfront.fancyecommerce.com/
 
-Fecshop 全称为Fancy ECommerce Shop，是基于php Yii2框架之上开发的一款优秀的开源电商系统，遵循[OSL3.0协议](http://www.oschina.net/question/28_8527)，
-截止到2016-12-19号，除了支付部分，其他的基本都已经完成，关注fecshop的
-在等2-3个月，也就是明年2,3月份，版本就可以出来，2017年4,5月份在把手机web
-做一下，预计到明年5月份，后台，pc前台，手机web前台 ，命令控制台  这几个入口
-基本可以完善，多谢大家关注和你们的Star，我会坚持把他写好。
-目前由于项目还没有完成，因此，下载安装只能安装部分代码，
-而且数据库部分没有提供migrate，也就是说，目前fecshop还不可用，
-等代码开发完成，我在整体核对一遍代码，
-然后把文档落实，该项目是开源项目，从事外贸电商6年来，
-用了不少开源电商系统，譬如magento，发现开源框架都有一定
-的诟病，在并发方面差，后期扩展，业务发展后期重构难，
-尤其是现在的移动端的发展，多入口的电商模式占据主流，
-性能方面的要求越来越高，Fecshop采用了nosql和mysql结合的方式，
-关系型表放到mysql中，譬如优惠券，购物车，订单等，
-非关系型数据表（非关系型代表不会出现多表强事务类型操作）
-放到mongodb中，缓存用redis，搜索目前用的是mongodb的FullTextSearch功能，
-支持一些主流语言的分词与搜索，不过目前不支持中文 切词 搜索，
-后期扩展一下用ElasticSearch来进行搜索（ElasticSearch有中文插件，安装后支持中文分词）。
+FecShop 作者QQ：2358269014
+
+FecShop Github地址: https://github.com/fancyecommerce/yii2_fecshop
 
 
-作者QQ：2358269014
-
-github: https://github.com/fancyecommerce/yii2_fecshop
+FecShop 二开文档地址：http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-README.html
 
 [![Latest Stable Version](https://poser.pugx.org/fancyecommerce/fecshop/v/stable)](https://packagist.org/packages/fancyecommerce/fecshop) [![Total Downloads](https://poser.pugx.org/fancyecommerce/fecshop/downloads)](https://packagist.org/packages/fancyecommerce/fecshop) [![Latest Unstable Version](https://poser.pugx.org/fancyecommerce/fecshop/v/unstable)](https://packagist.org/packages/fancyecommerce/fecshop)
 
@@ -42,25 +25,45 @@ github: https://github.com/fancyecommerce/yii2_fecshop
 > 项目已经开始,本项目由Terry筹划，预计到2017-05-01出来第一个正式版本。
 
 
-
-
-
-1、安装Fecsop
+1、Fecsop介绍
 ------------
 
-本部分为fecshop的核心代码部分，
-是以yii2扩展的方式制作，因此，您安装入口库包`fecshop app advanced`
-，通过`composer update`, 本部分代码会以依赖包的方式被加载安装。
+详细参看地址：[Fecsop介绍](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-description.html)
 
-点击这里，进入[安装 fecshop app advanced](https://github.com/fancyecommerce/yii2_fecshop_app_advanced)
-页面。
+2、Fecsop文档
+------------
 
-2、架构特色
+二开以及安装文档：[Fecshop 安装开发文档](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-README.html)
+
+使用说明文档：制作中...
+
+
+3、安装Fecsop
+------------
+
+
+3.1、vagrant安装：
+
+通过vagrant加载box的方式直接安装，环境和fecshop的配置都已经弄好，详细可以参看文档地址：[Fecshop vagrant安装](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-vagrantinstall.html)
+
+
+3.2、全手动安装：
+
+从基础linux一步一步的配置的方式，详细参看文档： [Fecshop 全手动安装](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-hand-install.html)
+
+推荐使用第一种方式快速部署。
+
+4、fecshop 配置：
+
+配置详细参看：[fecshop 配置](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-config.html)
+
+
+5、架构特色
 -----------
 
-架构特色：参看详细介绍：[Fecshop 架构特色](http://www.fecshop.com/doc/fecshop-guide/cn-1.0/guide-fecshop-about-fecshop.html)
+架构特色：参看详细介绍：[Fecshop 架构特色](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-framework.html)
 
-中文博客：[yii2 教程](http://www.fancyecommerce.com).
+下面是简叙：
 
 Fecshop 全称为Fancy ECommerce Shop，是一款优秀的开源电商系统，遵循[OSL3.0协议](http://www.oschina.net/question/28_8527)，
 目的是为了方便yii2用户快速的

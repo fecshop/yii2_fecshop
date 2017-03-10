@@ -22,6 +22,7 @@
 							<label for="billing:lastname"><?= Yii::$service->page->translate->__('Last Name');?> <span class="required">*</span></label>
 							<input value="<?= $cart_address['last_name'] ?>" id="billing:lastname" name="billing[last_name]" class="required-entry input-text" type="text">
 						</div>
+						<div class="clear"></div>
 					</li>
 					<li class="clearfix">
 						<div style="width:100%;" class="  input-box input-email">
