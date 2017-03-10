@@ -26,13 +26,13 @@ Fecshop支持多语言，多货币，架构上支持pc，手机web，手机app�
 
 详细参看地址：[Fecsop介绍](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-description.html)
 
-FecShop 演示地址：http://fecshop.appfront.fancyecommerce.com/
+FecShop 英文演示地址：http://fecshop.appfront.fancyecommerce.com/
+
+FecShop 中文演示地址：http://fecshop.appfront.fancyecommerce.com/cn
 
 FecShop 作者QQ：2358269014
 
 FecShop Github地址: https://github.com/fancyecommerce/yii2_fecshop
-
-FecShop 二开文档地址：http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-README.html
 
 2、Fecsop文档
 ------------
