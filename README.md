@@ -61,6 +61,7 @@ FecShop Github地址: https://github.com/fancyecommerce/yii2_fecshop
 
 配置详细参看：[fecshop 配置](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-config.html)
 
+如果您使用vagrant box的安装方式，上面的这些步骤，在box都配置好了。
 
 5、架构特色
 -----------
