@@ -9,7 +9,7 @@
 
 [![Latest Stable Version](https://poser.pugx.org/fancyecommerce/fecshop/v/stable)](https://packagist.org/packages/fancyecommerce/fecshop) [![Total Downloads](https://poser.pugx.org/fancyecommerce/fecshop/downloads)](https://packagist.org/packages/fancyecommerce/fecshop) [![Latest Unstable Version](https://poser.pugx.org/fancyecommerce/fecshop/v/unstable)](https://packagist.org/packages/fancyecommerce/fecshop)
 
-**Fecshop文档(撰写中)**：[Fecshop Doc Guide](http://www.fecshop.com/doc/fecshop-guide/cn-1.0/guide-index.html#)
+**Fecshop文档(撰写中)**：[Fecshop Doc Guide](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-README.html#)
 
 
 
