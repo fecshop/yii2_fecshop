@@ -17,12 +17,7 @@ use yii\base\Component;
  */
 class Store extends Component implements BootstrapInterface
 {
-	
 	public function bootstrap($app){
 		Yii::$service->store->bootstrap($app);
-		
     }
-	
-	
-	
 }
