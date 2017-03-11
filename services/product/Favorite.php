@@ -150,7 +150,7 @@ class Favorite extends Service
 		$user_id  = $identity['id'];
 		
 		$one = FavoriteModel::findOne([
-			'_id' 		=> new \MongoId($favorite_id),
+			'_id' 		=> new \MongoDB\BSON\ObjectId($favorite_id),
 			'user_id'	=> $user_id,
 		]);
 		if($one['_id']){

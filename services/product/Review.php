@@ -239,7 +239,7 @@ class Review extends Service
 		}else{
 			$model = new ReviewModel;
 			$model->created_admin_user_id = \fec\helpers\CUser::getCurrentUserId();
-			$primaryVal = new \MongoId;
+			$primaryVal = new \MongoDB\BSON\ObjectId();
 			$model->{$this->getPrimaryKey()} = $primaryVal;
 		}
 		//$review_data['status'] = ReviewModel::ACTIVE_STATUS;

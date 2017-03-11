@@ -149,7 +149,7 @@ class XunSearch extends Service implements SearchInterface
 		$limit  =  $numPerPage;
 		$productIds = [];
 		foreach($data as $d){
-			$productIds[] = new \MongoId($d['_id']);
+			$productIds[] = new \MongoDB\BSON\ObjectId($d['_id']);
 		}
 		
 		$productIds = array_slice($productIds, $offset, $limit);

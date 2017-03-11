@@ -81,7 +81,7 @@ class StaticBlockMongodb implements StaticBlockInterface
 			$model = new StaticBlock;
 			$model->created_at = time();
 			$model->created_user_id = \fec\helpers\CUser::getCurrentUserId();
-			$primaryVal = new \MongoId;
+			$primaryVal = new \MongoDB\BSON\ObjectId();
 			$model->{$this->getPrimaryKey()} = $primaryVal;
 		}
 		
@@ -99,7 +99,7 @@ class StaticBlockMongodb implements StaticBlockInterface
 		$query = StaticBlock::find()->asArray();
 		$query->where(['identify' => $identify]);
 		if($primaryVal){
-			$query->andWhere([$id => ['$ne'=> new \MongoId($primaryVal)]]);
+			$query->andWhere([$id => ['$ne'=> new \MongoDB\BSON\ObjectId($primaryVal)]]);
 		}
 		$one = $query->one();
 		

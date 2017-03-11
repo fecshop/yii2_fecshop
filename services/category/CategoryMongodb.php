@@ -85,7 +85,7 @@ class CategoryMongodb implements CategoryInterface
 			$model = new Category;
 			$model->created_at = time();
 			$model->created_user_id = \fec\helpers\CUser::getCurrentUserId();
-			$primaryVal = new \MongoId;
+			$primaryVal = new \MongoDB\BSON\ObjectId();
 			$model->{$this->getPrimaryKey()} = $primaryVal;
 			$parent_id = $one['parent_id'];
 		}
@@ -224,7 +224,7 @@ class CategoryMongodb implements CategoryInterface
 		if($parent_id === '0'){
 			return [];
 		}
-		$category = Category::find()->asArray()->where(['_id' => new \MongoId($parent_id)])->one();
+		$category = Category::find()->asArray()->where(['_id' => new \MongoDB\BSON\ObjectId($parent_id)])->one();
 		if(isset($category['_id']) && !empty($category['_id']) ){
 			$currentUrlKey 		= $category['url_key'];
 			$currentName 		= $category['name'];

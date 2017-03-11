@@ -119,7 +119,7 @@ class ProductMongodb implements ProductInterface
 			$query = Product::find()->asArray();
 			$mongoIds = [];
 			foreach($product_id_arr as $id){
-				$mongoIds[] = new \MongoId($id);
+				$mongoIds[] = new \MongoDB\BSON\ObjectId($id);
 			}
 			//var_dump($mongoIds);
 			$query->where(['in',$this->getPrimaryKey(),$mongoIds]);
@@ -158,7 +158,7 @@ class ProductMongodb implements ProductInterface
 			}	
 			#验证sku 是否重复
 			$product_one = Product::find()->asArray()->where([
-				'<>',$this->getPrimaryKey(),(new \MongoId($primaryVal))
+				'<>',$this->getPrimaryKey(),(new \MongoDB\BSON\ObjectId($primaryVal))
 			])->andWhere([
 				'sku' => $one['sku'],
 			])->one();
@@ -170,7 +170,7 @@ class ProductMongodb implements ProductInterface
 			$model = new Product;
 			$model->created_at = time();
 			$model->created_user_id = \fec\helpers\CUser::getCurrentUserId();
-			$primaryVal = new \MongoId;
+			$primaryVal = new \MongoDB\BSON\ObjectId();
 			$model->{$this->getPrimaryKey()} = $primaryVal;
 			#验证sku 是否重复
 			$product_one = Product::find()->asArray()->where([

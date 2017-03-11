@@ -56,7 +56,7 @@ class Index {
 		foreach($coll as $one){
 			
 			$p_id = $one['product_id'];
-			$product_ids[] = new \MongoId($p_id) ;
+			$product_ids[] = new \MongoDB\BSON\ObjectId($p_id) ;
 			$favorites[$p_id] = [
 				'updated_at' => $one['updated_at'],
 				'favorite_id' => (string)$one['_id'],

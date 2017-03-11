@@ -70,7 +70,7 @@ class ArticleMongodb implements ArticleInterface
 			$model = new Article;
 			$model->created_at = time();
 			$model->created_user_id = \fec\helpers\CUser::getCurrentUserId();
-			$primaryVal = new \MongoId;
+			$primaryVal = new \MongoDB\BSON\ObjectId();
 			$model->{$this->getPrimaryKey()} = $primaryVal;
 		}
 		$model->updated_at = time();

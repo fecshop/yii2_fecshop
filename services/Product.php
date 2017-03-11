@@ -284,7 +284,7 @@ class Product extends Service
 		if(!empty($ids) && is_array($ids)){
 			$ids_ob_arr = [];
 			foreach($ids as $id){
-				$ids_ob_arr[] = new \MongoId($id);
+				$ids_ob_arr[] = new \MongoDB\BSON\ObjectId($id);
 			}
 			$filter =  [
 				'where'			=> [
