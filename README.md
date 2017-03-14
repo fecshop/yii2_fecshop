@@ -37,9 +37,9 @@ FecShop Github地址: https://github.com/fancyecommerce/yii2_fecshop
 2、Fecsop文档
 ------------
 
-二开以及安装文档：[Fecshop 安装开发文档](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-README.html)
+二开以及安装文档：[Fecshop 安装开发文档](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-README.html)【撰写中】
 
-使用说明文档：制作中...
+使用帮助说明文档：[Fecshop 使用帮助文档](http://www.fecshop.com/doc/fecshop-guide/instructions/cn-1.0/guide-README.html)【撰写中】
 
 
 3、安装Fecsop
