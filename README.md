@@ -9,7 +9,6 @@
 
 [![Latest Stable Version](https://poser.pugx.org/fancyecommerce/fecshop/v/stable)](https://packagist.org/packages/fancyecommerce/fecshop) [![Total Downloads](https://poser.pugx.org/fancyecommerce/fecshop/downloads)](https://packagist.org/packages/fancyecommerce/fecshop) [![Latest Unstable Version](https://poser.pugx.org/fancyecommerce/fecshop/v/unstable)](https://packagist.org/packages/fancyecommerce/fecshop)
 
-**Fecshop文档(撰写中)**：[Fecshop Doc Guide](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-README.html#)
 
 
 
@@ -37,9 +36,9 @@ FecShop Github地址: https://github.com/fancyecommerce/yii2_fecshop
 2、Fecsop文档
 ------------
 
-二开以及安装文档：[Fecshop 安装开发文档](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-README.html)【撰写中】
+**二开以及安装文档：** [Fecshop 安装开发文档](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-README.html)【撰写中】
 
-使用帮助说明文档：[Fecshop 使用帮助文档](http://www.fecshop.com/doc/fecshop-guide/instructions/cn-1.0/guide-README.html)【撰写中】
+**使用帮助说明文档：** [Fecshop 使用帮助文档](http://www.fecshop.com/doc/fecshop-guide/instructions/cn-1.0/guide-README.html)【撰写中】
 
 
 3、安装Fecsop
