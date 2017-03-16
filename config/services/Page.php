@@ -72,37 +72,73 @@ return [
 			'theme' => [
 				'class' 		=> 'fecshop\services\page\Theme',
 				/**  
-				 ** if you set value in config , it can not active ,it will be set value in store bootstrap. 
-				* it will be set in store service bootstrop
+				 * 
+				# 这里是设置本地二开模板路径，如果您在每一个store中
+				# 进行了配置，这里将被覆盖。
 				'localThemeDir' 	=> '@appfront/theme/terry/theme01',
-				# it will be set in store service bootstrop
+				# 这里设置的是第三方的模板路径
 				'thirdThemeDir'		=> [],
-				# init in @fecshop/app/appName/modules/AppfrontController.php
-				# it will be set value in appfront  controller  init, it can not effect if you set value to it.
+				# 在文件 @fecshop/app/appName/modules/AppfrontController.php 初始化
+				# 这里是fecshop的模板路径。
 				#'fecshopThemeDir'	=> '',
 				*/
 			],
 			'widget' => [
 				'class' 		=> 'fecshop\services\page\Widget',
-				/* config example:
-					'widgetConfig' => [
-					
-						'head' => [
-							#'class' => 'fecshop\app\appfront\modules\Cms\block\widgets\Head',
-							# 根据多模板的优先级，依次去模板找查找该文件，直到找到这个文件。
-							'view'  => 'widgets/head.php',
-						],
-						'header' => [
-							'class' => 'fecshop\app\appfront\modules\Cms\block\widgets\Headers',
-							# 根据多模板的优先级，依次去模板找查找该文件，直到找到这个文件。
-							'view'  => 'widgets/header.php',
-							'cache' => [
-								'enable'	=> false,
-								//'timeout' 	=> 4500,
-							],
+				'widgetConfig' => [
+					'head' => [
+						# 动态数据提供部分
+						'class' => 'fecshop\app\appfront\widgets\Head',
+						# 根据多模板的优先级，依次去模板找查找该文件，直到找到这个文件。
+						'view'  => 'widgets/head.php',
+						# 缓存
+						'cache' => [
+							'enable'	=> false, # 是否开启
+							'timeout' 	=> 4500,  # 缓存过期时间
 						],
 					],
-				*/
+					'header' => [
+						'class' => 'fecshop\app\appfront\widgets\Headers',
+						# 根据多模板的优先级，依次去模板找查找该文件，直到找到这个文件。
+						'view'  => 'widgets/header.php',
+						'cache' => [
+							'enable'	=> false,
+							'timeout' 	=> 4500,
+						],
+					],
+					'topsearch' => [
+					    'view'  => 'widgets/topsearch.php',
+					],
+					'menu' => [
+						'class' => 'fecshop\app\appfront\widgets\Menu',
+						# 根据多模板的优先级，依次去模板找查找该文件，直到找到这个文件。
+						'view'  => 'widgets/menu.php',
+						'cache' => [
+							'enable'	=> false,
+							//'timeout' 	=> 4500,
+						],
+					],
+					'footer' => [
+						'class' => 'fecshop\app\appfront\widgets\Footer',
+						# 根据多模板的优先级，依次去模板找查找该文件，直到找到这个文件。
+						'view'  => 'widgets/footer.php',
+						'cache' => [
+							'enable'	=> false,
+							//'timeout' 	=> 4500,
+						],
+					],
+					'scroll' => [
+						#'class' => 'fecshop\app\appfront\modules\Cms\block\widgets\Scroll',
+						# 根据多模板的优先级，依次去模板找查找该文件，直到找到这个文件。
+						'view'  => 'widgets/scroll.php',
+					],
+					'breadcrumbs' => [
+						'view'  => 'widgets/breadcrumbs.php',
+					],
+					'flashmessage' => [
+						'view'  => 'widgets/flashmessage.php',
+					],
+				]
 			],
 			'currency' => [
 				'class' => 'fecshop\services\page\Currency',
