@@ -57,6 +57,7 @@ class SearchController extends Controller
 		foreach($products['coll'] as $p){
 			$product_ids[] = $p['_id'];
 		}
+		
 		//echo count($product_ids);
 		Yii::$service->search->syncProductInfo($product_ids,$this->_numPerPage);
 		

@@ -64,7 +64,7 @@ class MongoSearch extends Service implements SearchInterface
 					$searchModel 	= new Search;
 					$colltionM 		= $searchModel::getCollection();
 					$config2['default_language'] = $mongoSearchLangName;
-					$colltionM->mongoCollection->ensureIndex($config1,$config2);
+					$colltionM->createIndex($config1,$config2);
 				}
 			}
 		}
@@ -225,10 +225,14 @@ class MongoSearch extends Service implements SearchInterface
 		//$mongodb = Yii::$app->mongodb;
 		//$search_data = $mongodb->getCollection('full_search_product_en')
 			
-		$search_data = Search::getCollection()->find($where,['search_score'=>['$meta'=>"textScore" ],'id' => 1 ,'spu'=> 1,'score' => 1,])
-			->sort( ['search_score'=> [ '$meta'=> 'textScore' ],'score' => -1] )
-			->limit($product_search_max_count)
-			;
+		$search_data = Search::getCollection()->find(
+			$where,
+			['search_score'=>['$meta'=>"textScore" ],'id' => 1 ,'spu'=> 1,'score' => 1,],
+			[
+				'sort' => ['search_score'=> [ '$meta'=> 'textScore' ],'score' => -1],
+				'limit'=> $product_search_max_count
+			]
+		);
 		/**
 		 * 通过下面的数组，在spu相同的多个sku产品，只显示一个，因为上面已经排序，
 		 * 因此，spu相同的sku产品，显示的是score最高的一个。

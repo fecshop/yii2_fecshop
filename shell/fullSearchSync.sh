@@ -23,13 +23,13 @@ done
 $Cur_Dir/../../../../yii  product/search/deletenotactiveproduct $nowtime
 
 ###### delete xunsearch 
-echo "There are $pagenum pages to check if is delete in xunSearch"
-echo "##############ALL BEGINING###############";
-for (( i=1; i<=$pagenum; i++ ))
-do
-   $Cur_Dir/../../../../yii product/search/xundeletenotactiveproduct $nowtime $i
-   echo "Page $i done"
-done
+#echo "There are $pagenum pages to check if is delete in xunSearch"
+#echo "##############ALL BEGINING###############";
+#for (( i=1; i<=$pagenum; i++ ))
+#do
+#   $Cur_Dir/../../../../yii product/search/xundeletenotactiveproduct $nowtime $i
+#   echo "Page $i done"
+#done
 
 
 
