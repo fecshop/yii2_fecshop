@@ -427,12 +427,23 @@ class Order extends Service
 		
 		$minute = $this->minuteBeforeThatReturnPendingStock;
 		$begin_time =strtotime(date('Y-m-d H:i:s'). ' -'.$minute.' minutes ');
+		
+		# 不需要释放库存的支付方式。譬如货到付款，在系统中
+		# pending订单，如果一段时间未付款，会释放产品库存，但是货到付款类型的订单不会释放，
+		# 如果需要释放产品库存，客服在后台取消订单即可释放产品库存。 
+		$noRelasePaymentMethod = Yii::$service->payment->noRelasePaymentMethod;
+		$where = [
+			['<','updated_at',$begin_time],
+			['order_status' => $this->payment_status_pending],
+			['if_is_return_stock' => 2]
+			
+		];
+		if($noRelasePaymentMethod){
+			$where[] = ['<>','payment_method',$noRelasePaymentMethod];
+		}
+		
 		$filter = [
-	  		'where'			=> [
-				['<','updated_at',$begin_time],
-				['order_status' => $this->payment_status_pending],
-				['if_is_return_stock' => 2],
-	  		],
+	  		'where'			=> $where,
 			'numPerPage' 	=> $this->orderCountThatReturnPendingStock,  	
 	  		'pageNum'		=> 1,
 			'asArray'		=> false,

@@ -8,39 +8,43 @@
 return [
 	'payment' => [
 		'class' => 'fecshop\services\Payment',
+		/*
+		'noRelasePaymentMethod' => 'check_money',  	# ä¸éœ€è¦é‡Šæ”¾åº“å­˜çš„æ”¯ä»˜æ–¹å¼ã€‚è­¬å¦‚è´§åˆ°ä»˜æ¬¾ï¼Œåœ¨ç³»ç»Ÿä¸­
+													# pendingè®¢å•ï¼Œå¦‚æžœä¸€æ®µæ—¶é—´æœªä»˜æ¬¾ï¼Œä¼šé‡Šæ”¾äº§å“åº“å­˜ï¼Œä½†æ˜¯è´§åˆ°ä»˜æ¬¾ç±»åž‹çš„è®¢å•ä¸ä¼šé‡Šæ”¾ï¼Œ
+													# å¦‚æžœéœ€è¦é‡Šæ”¾äº§å“åº“å­˜ï¼Œå®¢æœåœ¨åŽå°å–æ¶ˆè®¢å•å³å¯é‡Šæ”¾äº§å“åº“å­˜ã€‚
 		'paymentConfig' => [
 			'standard' => [
 				'check_money' => [
 					'label' 				=> 'Check / Money Order',
-					//'image' => ['images/mastercard.png','common'] ,# Ö§¸¶Ò³ÃæÏÔÊ¾µÄÍ¼Æ¬¡£
-					'supplement' 			=> 'Off-line Money Payments', # ²¹³ä
-					'style'					=> '<style></style>',  # ²¹³äcss
+					//'image' => ['images/mastercard.png','common'] ,# æ”¯ä»˜é¡µé¢æ˜¾ç¤ºçš„å›¾ç‰‡ã€‚
+					'supplement' 			=> 'Off-line Money Payments', # è¡¥å……
+					'style'					=> '<style></style>',  # è¡¥å……css
 					'start_url' 			=> '@homeUrl/payment/checkmoney/start',
 					'success_redirect_url' 	=> '@homeUrl/payment/success',
 				],
 				'paypal_standard' => [
 					'label' 				=> 'PayPal Website Payments Standard',
-					'image' 				=> ['images/paypal_standard.png','common'], # Ö§¸¶Ò³ÃæÏÔÊ¾µÄÍ¼Æ¬¡£
-					'supplement' 			=> 'You will be redirected to the PayPal website when you place an order. ', # ²¹³ä
-					# Ñ¡ÔñÖ§¸¶ºó£¬½øÈëµ½ÏàÓ¦Ö§¸¶Ò³ÃæµÄstartÒ³Ãæ¡£
+					'image' 				=> ['images/paypal_standard.png','common'], # æ”¯ä»˜é¡µé¢æ˜¾ç¤ºçš„å›¾ç‰‡ã€‚
+					'supplement' 			=> 'You will be redirected to the PayPal website when you place an order. ', # è¡¥å……
+					# é€‰æ‹©æ”¯ä»˜åŽï¼Œè¿›å…¥åˆ°ç›¸åº”æ”¯ä»˜é¡µé¢çš„starté¡µé¢ã€‚
 					'start_url' 			=> '@homeUrl/payment/paypal/standard/start',
-					# ½ÓÊÕIPNÏûÏ¢µÄÒ³Ãæ¡£
+					# æŽ¥æ”¶IPNæ¶ˆæ¯çš„é¡µé¢ã€‚
 					'IPN_url' 				=> '@homeUrl/payment/paypal/standard/ipn',
-					# ÔÚµÚÈý·½Ö§¸¶³É¹¦ºó£¬Ìø×ªµ½ÍøÕ¾µÄÒ³Ãæ
+					# åœ¨ç¬¬ä¸‰æ–¹æ”¯ä»˜æˆåŠŸåŽï¼Œè·³è½¬åˆ°ç½‘ç«™çš„é¡µé¢
 					'success_redirect_url' 	=> '@homeUrl/payment/success',
-					# ½øÈëpaypalÖ§¸¶Ò³Ãæ£¬µã»÷È¡Ïû½øÈëÍøÕ¾µÄÒ³Ãæ¡£
+					# è¿›å…¥paypalæ”¯ä»˜é¡µé¢ï¼Œç‚¹å‡»å–æ¶ˆè¿›å…¥ç½‘ç«™çš„é¡µé¢ã€‚
 					'cancel_url'			=> '@homeUrl/payment/paypal/standard/cancel',
 					
-					# µÚÈý·½Ö§¸¶ÍøÕ¾µÄurl
+					# ç¬¬ä¸‰æ–¹æ”¯ä»˜ç½‘ç«™çš„url
 					'payment_url'=>'https://www.sandbox.paypal.com/cgi-bin/webscr',
 					//'ipn_url'	 => 'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr'
-					# ÓÃ»§Ãû
+					# ç”¨æˆ·å
 					'user' => 'zqy234api1-facilitator@126.com',
-					# ÕËºÅ
+					# è´¦å·
 					'account'=> 'zqy234api1-facilitator@126.com',
-					# ÃÜÂë
+					# å¯†ç 
 					'password'=>'HF4TNTTXUD6YQREH',
-					# Ç©Ãû
+					# ç­¾å
 					'signature'=>'An5ns1Kso7MWUdW4ErQKJJJ4qi4-ANB-xrkMmTHpTszFaUx2v4EHqknV',
 					
 						
@@ -72,6 +76,7 @@ return [
 			],
 			
 		],
+		*/
 		'childService' => [
 			'paypal' => [
 				'class' 		=> 'fecshop\services\payment\Paypal',
@@ -80,36 +85,3 @@ return [
 		],
 	]
 ];
-
-
-/*
- 'payment_method'=>[
-		'merchant_country' => 'US',
-		'paypal'=>[
-			'payments_standard'=>[
-				'title'=>'PayPal Website Payments Standard',
-				'enable'=> 1,
-				'user' => 'zqy234api1-facilitator@126.com',
-				'redirect_url'=>'https://www.sandbox.paypal.com/cgi-bin/webscr',
-				'account'=> 'zqy234api1-facilitator@126.com',
-				'password'=>'HF4TNTTXUD6YQREH',
-				'signature'=>'An5ns1Kso7MWUdW4ErQKJJJ4qi4-ANB-xrkMmTHpTszFaUx2v4EHqknV',
-				
-				'label'=>'PayPal Website Payments Standard',
-				'description'=>'You will be redirected to the PayPal website when you place an order.',
-				'image'=> 'images/hm.png',
-			],
-			'express_checkout' =>[
-				
-				'nvp_url' => 'https://api-3t.sandbox.paypal.com/nvp',
-				'api_url' => 'https://www.sandbox.paypal.com/cgi-bin/webscr',
-				'account'=> 'zqy234api1-facilitator_api1.126.com',
-				'password'=>'HF4TNTTXUD6YQREH',
-				'signature'=>'An5ns1Kso7MWUdW4ErQKJJJ4qi4-ANB-xrkMmTHpTszFaUx2v4EHqknV',
-				
-				'enable'=> 1,
-				'label'=>'PayPal Express Payments',
-			],
-		],
-	],
-*/

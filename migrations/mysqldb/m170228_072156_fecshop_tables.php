@@ -422,8 +422,13 @@ class m170228_072156_fecshop_tables extends Migration
 			  KEY `increment_id` (`increment_id`)
 			  
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-			","
+			",
+			
+			
+			"ALTER TABLE `sales_flat_order` CHANGE `order_status` `order_status` VARCHAR( 80 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '订单状态'",
+			"ALTER TABLE `sales_flat_order` ADD INDEX oupload_at_order_status ( `updated_at`, `order_status`, `if_is_return_stock` )",
 
+			"
 			CREATE TABLE IF NOT EXISTS `sales_flat_order_item` (
 			  `item_id` int(15) unsigned NOT NULL AUTO_INCREMENT,
 			  `store` varchar(100) DEFAULT NULL COMMENT 'store name',
