@@ -25,10 +25,7 @@ class Customer
 	 * 邮件模板部分配置
 	 */
 	public $emailTheme;
-	/**
-	 * 邮件模板部分动态数据提供类的返回数据的函数名字，使用默认值即可。
-	 */
-	public $defaultObMethod = 'getLastData';
+	
 	/**
 	 * 得到联系我们的邮箱地址
 	 */
@@ -95,7 +92,7 @@ class Customer
 	 * @property $emailInfo | Array
 	 * 客户登录账号发送邮件
 	 */
-	public static function sendLoginEmail($emailInfo){
+	public  function sendLoginEmail($emailInfo){
 		$toEmail 		= $emailInfo['email'];
 		$loginInfo 		= $this->emailTheme['login'];
 		if(isset($loginInfo['enable']) && $loginInfo['enable']){
@@ -128,7 +125,7 @@ class Customer
 	 * @property $emailInfo | Array
 	 * 客户忘记秒发送的邮件
 	 */
-	public static function sendForgotPasswordEmail($emailInfo){
+	public function sendForgotPasswordEmail($emailInfo){
 		$toEmail 		= $emailInfo['email'];
 		$forgotPasswordInfo 		= $this->emailTheme['forgotPassword'];
 		if(isset($forgotPasswordInfo['enable']) && $forgotPasswordInfo['enable']){
@@ -160,8 +157,7 @@ class Customer
 	 * @property $emailInfo | Array ， 数组
 	 * 客户联系我们邮件。
 	 */
-	public static function sendContactsEmail($emailInfo){
-		
+	public function sendContactsEmail($emailInfo){
 		
 		$contactsInfo = $this->emailTheme['contacts'];
 		$toEmail 			= $contactsInfo['address'];
@@ -199,7 +195,7 @@ class Customer
 	 * @property $emailInfo | Array ， 数组。
 	 * 订阅邮件成功邮件
 	 */
-	public static function sendNewsletterSubscribeEmail($emailInfo){
+	public function sendNewsletterSubscribeEmail($emailInfo){
 		$toEmail 			= $emailInfo['email'];
 		$newsletterInfo = $this->emailTheme['newsletter'];
 		if(isset($newsletterInfo['enable']) && $newsletterInfo['enable']){

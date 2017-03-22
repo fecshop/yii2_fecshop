@@ -109,7 +109,7 @@ return [
 					],
 					
 					'login' => [
-						'enable' => false,
+						'enable' => true,
 						# 邮件内容的动态数据提供部分
 						'widget'		=> 'fecshop\services\email\widgets\customer\account\login\Body',
 						# 邮件内容的view部分

@@ -92,14 +92,13 @@ class Index {
 			Yii::$service->page->message->addError(['Captcha is not right']);
 			return;
 		}
-		
 		$paramData  	= [
 			'name' 		=> $name,
 			'telephone' => $telephone,
 			'comment' 	=> $comment,
 			'email'		=> $email,
 		];
-		if(Email::sendContactsEmail($paramData)){
+		if(Yii::$service->email->customer->sendContactsEmail($paramData)){
 			Yii::$service->page->message->addCorrect(['Contact us Send Success']);
 		}
 		

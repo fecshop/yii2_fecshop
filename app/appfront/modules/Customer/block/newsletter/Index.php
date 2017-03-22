@@ -26,7 +26,7 @@ class Index {
 			$arr = ['urlB' => '<a href="'.Yii::$service->url->homeUrl() .'">',  'urlE' => '</a>' ];
 			$message = Yii::$service->page->translate->__('Your subscribed email was successful, You can {urlB} click Here to Home Page {urlE}, Thank You.',$arr);
 			$param['email'] = $email;	
-			Email::sendNewsletterSubscribeEmail($param);
+			Yii::$service->email->customer->sendNewsletterSubscribeEmail($param);
 		}
 		return [
 			'message' => $message,

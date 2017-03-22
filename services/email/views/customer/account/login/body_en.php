@@ -8,5 +8,5 @@ use yii\helpers\Html;
 Get <?= Html::encode($name) ?>, message<br/>
 Store:"en"<br/>
 Email:<?= Html::encode($email) ?><br/>
-Mobile:<?= Html::encode($telephone)?><br/>
+Mobile:<?= Html::encode($contactsPhone)?><br/>
 Content:<?= Html::encode($comment) ?>

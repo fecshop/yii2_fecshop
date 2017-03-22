@@ -17,7 +17,7 @@ use fecshop\services\email\widgets\BodyBase;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class EmailBody extends BodyBase
+class Body extends BodyBase
 {
 	public function getLastData(){
 		$identity = $this->params;

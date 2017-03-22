@@ -19,10 +19,16 @@ class Email extends Service
 {
 	public $mailerConfig;
 	public $defaultForm;
+	/**
+	 * 邮件模板部分动态数据提供类的返回数据的函数名字，使用默认值即可。
+	 */
+	public $defaultObMethod = 'getLastData';
 	
 	protected $_mailer;  # Array
 	protected $_mailer_from; #Array
 	protected $_from;
+	
+	
 	
 	/**
 	 * @property $email_address | String  邮箱地址字符串
@@ -78,7 +84,7 @@ class Email extends Service
 				],
 				'messageConfig'=>[  
 				   'charset'=>'UTF-8',  
-				],  
+				],
 			],
 		]
 	 * @return yii的mail组件、

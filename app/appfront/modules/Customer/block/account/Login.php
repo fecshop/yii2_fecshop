@@ -74,7 +74,7 @@ class Login {
 	 */
 	public function sendLoginEmail($param){
 		if($param){
-			Yii::$service->email->customer->sendRegisterEmail($param);
+			Yii::$service->email->customer->sendLoginEmail($param);
 		}
 	}
 	

@@ -65,7 +65,7 @@ class Forgotpassword {
 	 */
 	public function sendForgotPasswordEmail($identity){
 		if($identity){
-			Email::sendForgotPasswordEmail($identity);
+			Yii::$service->email->customer->sendForgotPasswordEmail($identity);
 		}
 	}
 	
