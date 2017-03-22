@@ -85,7 +85,6 @@ class Email extends Service
 	 *
 	 */
 	protected function actionMailer($mailerConfigParam = ''){
-		
 		if(!$mailerConfigParam){
 			$key = 'default';
 		}else if(is_array($mailerConfigParam)){
@@ -99,7 +98,6 @@ class Email extends Service
 		if(!$key){
 			return;
 		}
-		
 		//exit; 
 		if(!$this->_mailer[$key]){
 			$component_name = 'mailer_'.$key;
@@ -133,12 +131,15 @@ class Email extends Service
 	}
 	
 	/**
+	 * @property $sendInfo | Array ， example：
 	 * [
-		'to' => $to,
-		'subject' => $subject,
-		'htmlBody' => $htmlBody,
-		'senderName'=> $senderName,
-	 ]
+	 *	'to' => $to,
+	 *	'subject' => $subject,
+	 *	'htmlBody' => $htmlBody,
+	 *	'senderName'=> $senderName,
+	 * ]
+	 * @property $mailerConfigParam | array or String， 具体为@fecshop/config/services/Email.php
+	 * 中的mailerConfig的配置对应的值。
 	 */
 	protected function actionSend($sendInfo,$mailerConfigParam=''){
 		$to 		= isset($sendInfo['to']) ? $sendInfo['to'] : '';
@@ -176,14 +177,6 @@ class Email extends Service
 		}else{
 			$from = $this->_from;
 		}
-		/*
-		echo $from;
-		echo '<br/><br/>';
-		echo $to;echo '<br/><br/>';
-		echo $subject;echo '<br/><br/>';
-		echo $htmlBody;echo '<br/><br/>';
-		var_dump($mailer);
-		*/
 		if($senderName){
 			$setFrom = [$from => $senderName];
 		}else{
@@ -195,8 +188,86 @@ class Email extends Service
 			->setSubject($subject)
 			->setHtmlBody($htmlBody)
 			->send();
-			
 	}
 	
+	
+	/**
+	 * @property  $widget | String，邮件模板中的动态数据的提供部分的class
+	 * @property  $viewPath | String，邮件模板中的显示数据的html部分。
+	 * @property  $langCode 当前的语言
+	 * @proeprty  $params 传递给 $widget 对应的class，用于将数据传递过去。
+	 * 根据提供的动态数据提供者$widget 和 view路径$viewPath，语言$langCode，以及其他参数$params（这个数组会设置到$widget对应的class的params变量中）
+	 * 最终得到邮件标题和邮件内容
+	 * 如果当前语言的邮件模板不存在，则使用默认语言的模板。
+	 * 关于函数参数的例子值，可以参看配置文件 @fecshop/config/services/Email.php
+	 */
+	public  function getSubjectAndBody($widget,$viewPath,$langCode='',$params=[]){
+		if(!$langCode){
+			$langCode = Yii::$service->store->currentLangCode;
+		}
+		if(!$langCode){
+			Yii::$service->helper->errors->add('langCode is empty');
+			return ;
+		}
+		$defaultLangCode = Yii::$service->fecshoplang->defaultLangCode;		
+		# 得到body部分的配置数组
+		$bodyViewFile	= $viewPath.'/body_'.$langCode.'.php';
+		$bodyViewFilePath = Yii::getAlias($bodyViewFile);
+		if(!file_exists($bodyViewFilePath)){ #如果当前语言的模板不存在，则使用默认语言的模板。
+			$bodyViewFile	= $viewPath.'/body_'.$defaultLangCode.'.php';
+			$bodyViewFilePath = Yii::getAlias($bodyViewFile);
+		}
+		$bodyConfig = [
+			'class' => $widget,
+			'view'  => $bodyViewFilePath,
+		];
+		if(!empty($params)){
+			$bodyConfig['params'] = $params;
+		}
+		# 得到subject部分的配置数组
+		$subjectViewFile	= $viewPath.'/subject_'.$langCode.'.php';
+		$subjectViewFilePath = Yii::getAlias($subjectViewFile);
+		if(!file_exists($subjectViewFilePath)){
+			$subjectViewFile	= $viewPath.'/subject_'.$defaultLangCode.'.php';
+			$subjectViewFilePath = Yii::getAlias($subjectViewFile);
+		}
+		
+		$subjectConfig = [
+			'class' => $widget,
+			'view'  => $subjectViewFilePath,
+		];
+		if(!empty($params)){
+			$subjectConfig['params'] = $params;
+		}
+		$emailSubject 	= $this->getHtmlContent($subjectConfig);
+		$emailBody 		= $this->getHtmlContent($bodyConfig);
+		return [$emailSubject,$emailBody];
+		//$emailSubject = Yii::$service->page->widget->render($subjectConfigKey,$parentThis);
+		//$emailBody = Yii::$service->page->widget->render($bodyConfigKey,$parentThis);
+	}
+	
+	
+	/**
+	 * @property $config | Array,example:
+	 *	[
+	 *		'class' => $widget,
+	 *		'view'  => $subjectViewFile,
+	 *		'params'=> $params	
+	 *	];
+	 * @return String(text)
+	 * 通过配置得到邮件内容。
+	 */
+	public function getHtmlContent($config){
+		if(isset($config['view']) && !empty($config['view'])){
+			$viewFile = $config['view'];
+			unset($config['view']);
+			$method = $this->defaultObMethod;
+			$ob = Yii::createObject($config);
+			$params = $ob->$method();
+			return Yii::$app->view->renderFile($viewFile, $params);
+		}else{
+			//errors
+		}
+	}
 	
 }

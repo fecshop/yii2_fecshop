@@ -46,10 +46,9 @@ class Login {
 		}
 		if(is_array($param) && !empty($param)){
 			Yii::$service->customer->login($param);
-			
 			# 发送邮件
 			if($param['email']){
-				$this->sendLoginEmail($param['email']);
+				$this->sendLoginEmail($param);
 			}
 		}
 		if(!Yii::$app->user->isGuest){
@@ -73,9 +72,9 @@ class Login {
 	/**
 	 * 发送登录邮件
 	 */
-	public function sendLoginEmail($emailAddress){
-		if($emailAddress){
-			Email::sendLoginEmail($emailAddress);
+	public function sendLoginEmail($param){
+		if($param){
+			Yii::$service->email->customer->sendRegisterEmail($param);
 		}
 	}
 	
