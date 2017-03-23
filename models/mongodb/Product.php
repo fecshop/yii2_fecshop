@@ -107,7 +107,7 @@ class Product extends ActiveRecord
 			['category' => -1],
 		];
       
-		$options = ['background' => true, 'socketTimeoutMS' => 300000];
+		$options = ['background' => true];
 		foreach($indexs as $columns){
 			self::getCollection()->createIndex($columns,$options);
 		}

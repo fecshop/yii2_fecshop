@@ -43,7 +43,7 @@ class StaticBlock extends ActiveRecord
 			
 		];
       
-		$options = ['background' => true, 'socketTimeoutMS' => 300000];
+		$options = ['background' => true];
 		foreach($indexs as $columns){
 			self::getCollection()->createIndex($columns,$options);
 		}
