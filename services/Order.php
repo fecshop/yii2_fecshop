@@ -36,6 +36,7 @@ class Order extends Service
 	public $orderCountThatReturnPendingStock = 30;
 	
 	protected $checkout_type;
+	protected $_currentOrderInfo;
 	const CHECKOUT_TYPE_STANDARD 	= 'standard';
 	const CHECKOUT_TYPE_EXPRESS 	= 'express';
 	const CURRENT_ORDER_CREAMENT_ID = 'current_order_creament_id';
@@ -87,7 +88,49 @@ class Order extends Service
 			return new MyOrder;
 		}
 	}
+	/**
+	 * 通过从session中取出来订单的increment_id
+	 * 在通过increment_id(订单编号)取出来订单信息。
+	 */
+	protected function actionGetCurrentOrderInfo(){
+		if(!$this->_currentOrderInfo){
+			$increment_id 	= Yii::$service->order->getSessionIncrementId();
+			$this->_currentOrderInfo 		= Yii::$service->order->getOrderInfoByIncrementId($increment_id);
+		}	
+		return $this->_currentOrderInfo;	
+	}
 	
+	/**
+	 * @property $increment_id | String 订单编号
+	 * @return Array
+	 * 通过order_id 从数据库中取出来订单数据，然后在进行了二次处理后的订单数据。
+	 */
+	protected function actionGetOrderInfoByIncrementId($increment_id){
+		$one = $this->getByIncrementId($increment_id);
+		if(!$one){
+			return ;
+		}
+		
+		$primaryKey = $this->getPrimaryKey();
+		if(!isset($one[$primaryKey]) || empty($one[$primaryKey])){
+			return ;
+		}
+		$order_info = [];
+		foreach($one as $k=>$v){
+			$order_info[$k] = $v;
+		}
+		$order_info['customer_address_state_name'] =Yii::$service->helper->country->getStateByContryCode($order_info['customer_address_country'],$order_info['customer_address_state']);
+		$order_info['customer_address_country_name'] = Yii::$service->helper->country->getCountryNameByKey($order_info['customer_address_country']);
+		$order_info['currency_symbol'] = Yii::$service->page->currency->getSymbol($order_info['order_currency_code']);
+		$order_info['products'] = Yii::$service->order->item->getByOrderId($one[$primaryKey]);
+		return $order_info;
+	}
+	
+	/**
+	 * @property $order_id | Int
+	 * @return Array
+	 * 通过order_id 从数据库中取出来订单数据，然后在进行了二次处理后的订单数据。
+	 */
 	protected function actionGetOrderInfoById($order_id){
 		if(!$order_id){
 			return ;
@@ -272,6 +315,11 @@ class Order extends Service
 		$state		= $address['state'];
 		//echo "$shipping_method,$country,$state";exit;
 		$cartInfo = Yii::$service->cart->getCartInfo($shipping_method,$country,$state);
+		# 检查cartInfo中是否存在产品
+		if(!is_array($cartInfo) && empty($cartInfo)){
+			Yii::$service->helper->errors->add('current cart product is empty');
+			return false;
+		}
 		# 检查产品是否有库存，如果没有库存则返回false
 		$deductStatus = Yii::$service->product->stock->checkItemsStock($cartInfo['products']);
 		if(!$deductStatus){

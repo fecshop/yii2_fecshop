@@ -17,43 +17,13 @@ use yii\base\InvalidValueException;
  */
 class Customer
 {
-	/**
-	 * 公用配置部分配置
-	 */
-	public $mailer;
+	
 	/**
 	 * 邮件模板部分配置
 	 */
 	public $emailTheme;
 	
-	/**
-	 * 得到联系我们的邮箱地址
-	 */
-	public  function contactsEmailAddress(){
-		$mailerConfig =  $this->mailer;
-		if(isset($mailerConfig['contacts']['emailAddress'])){
-			return $mailerConfig['contacts']['emailAddress'];
-		}
-	}
-	/**
-	 * 得到Store Name
-	 */
-	public  function storeName(){
-		$mailerConfig =  $this->mailer;
-		if(isset($mailerConfig['storeName'])){
-			return $mailerConfig['storeName'];
-		}
-	}
-	/**
-	 * 得到联系的手机
-	 * Yii::$service->email->customer->contactsPhone();
-	 */
-	public  function contactsPhone(){
-		$mailerConfig =  $this->mailer;
-		if(isset($mailerConfig['phone'])){
-			return $mailerConfig['phone'];
-		}
-	}
+	
 	
 	/**
 	 * @property $toEmail | String   send to email address.
@@ -151,6 +121,15 @@ class Customer
 				return true;
 			}
 		}
+	}
+	/**
+	 * 超时时间:忘记密码发送邮件，内容中的修改密码链接的超时时间。
+	 */
+	public function getPasswordResetTokenExpire(){
+		$forgotPasswordInfo 		= $this->emailTheme['forgotPassword'];
+		if(isset($forgotPasswordInfo['passwordResetTokenExpire']) && $forgotPasswordInfo['passwordResetTokenExpire']){
+			return $forgotPasswordInfo['passwordResetTokenExpire'];
+		}		
 	}
 	
 	/**

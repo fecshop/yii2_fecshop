@@ -6,7 +6,7 @@
  * @copyright Copyright (c) 2016 FecShop Software LLC
  * @license http://www.fecshop.com/license/
  */
-namespace fecshop\services\email\widgets\customer\account\forgotpassword;
+namespace fecshop\services\email\widgets\order\create;
 use Yii;
 use fec\helpers\CModule;
 use fec\helpers\CRequest;
@@ -20,25 +20,24 @@ use fecshop\services\email\widgets\BodyBase;
 class Body extends BodyBase
 {
 	public function getLastData(){
-		$identity = $this->params;
-		$resetUrl = Yii::$service->url->getUrl('customer/account/resetpassword',['resetToken'=>$identity['password_reset_token']]);
-		//echo $resetUrl;
-		//exit;
+		$order = $this->params;
 		//echo Yii::$service->image->getImgUrl('mail/logo.png','appfront');exit;
+		$countryCode 	= $order['customer_address_country'];
+		$stateCode		= $order['customer_address_state'];
+		$countryName  = Yii::$service->helper->country->getCountryNameByKey($countryCode);
+		$stateName    = Yii::$service->helper->country->getStateByContryCode($countryCode,$stateCode);
 		return [
-			'name'		=> $identity['firstname'].' '. $identity['lastname'],
-			'email'		=> $identity['email'],
-			'resetUrl'	=> $resetUrl,
+			'name'		=> $order['customer_firstname'].' '. $order['customer_lastname'],
+			'customer_email'		=> $order['customer_email'],
+			'increment_id'			=> $order['increment_id'],
 			'storeName' 			=> Yii::$service->email->storeName(),
 			'contactsEmailAddress'	=> Yii::$service->email->contactsEmailAddress(),
 			'contactsPhone'			=> Yii::$service->email->contactsPhone(),
-			'homeUrl'	=> Yii::$service->url->homeUrl(),
-			'logoImg'	=> Yii::$service->image->getImgUrl('mail/logo.png','appfront'),
-			
-			//'loginUrl'	=> Yii::$service->url->getUrl("customer/account/index"),
-			//'accountUrl'=> Yii::$service->url->getUrl("customer/account/index"),
-			
-			'identity'  => $identity,
+			'homeUrl'				=> Yii::$service->url->homeUrl(),
+			'logoImg'				=> Yii::$service->image->getImgUrl('mail/logo.png','appfront'),
+			'countryName'			=> $countryName,
+			'stateName'				=> $stateName,
+			'order'				 	=> $order,
 		];
 	}
 	

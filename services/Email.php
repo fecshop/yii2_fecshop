@@ -19,6 +19,7 @@ class Email extends Service
 {
 	public $mailerConfig;
 	public $defaultForm;
+	public $mailerInfo;
 	/**
 	 * 邮件模板部分动态数据提供类的返回数据的函数名字，使用默认值即可。
 	 */
@@ -29,19 +30,37 @@ class Email extends Service
 	protected $_from;
 	
 	
-	
 	/**
-	 * @property $email_address | String  邮箱地址字符串
-	 * @return boolean 如果格式正确，返回true
+	 * 在邮箱中显示的 邮箱地址
 	 */
-	protected function actionValidateFormat($email_address){
-		if(preg_match("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$^",$email_address)){ 
-			return true;
-		}else{
-			return false;
+	public  function contactsEmailAddress(){
+		$mailerInfo =  $this->mailerInfo;
+		if(isset($mailerInfo['contacts']['emailAddress'])){
+			return $mailerInfo['contacts']['emailAddress'];
 		}
-
 	}
+	/**
+	 * 在邮箱中显示的 商城名字(Store Name)
+	 */
+	public  function storeName(){
+		$mailerInfo =  $this->mailerInfo;
+		if(isset($mailerInfo['storeName'])){
+			return $mailerInfo['storeName'];
+		}
+	}
+	/**
+	 * 在邮件中显示的 联系手机号
+	 * Yii::$service->email->customer->contactsPhone();
+	 */
+	public  function contactsPhone(){
+		$mailerInfo =  $this->mailerInfo;
+		if(isset($mailerInfo['phone'])){
+			return $mailerInfo['phone'];
+		}
+	}
+	
+	
+	
 	/**
 	 * 得到MailConfig
 	 */
@@ -63,7 +82,6 @@ class Email extends Service
 			if(!empty($mailerConfig['transport']['username'])){
 				return $mailerConfig['transport']['username'];
 			}
-			
 		}
 		return ;
 	}
@@ -276,4 +294,17 @@ class Email extends Service
 		}
 	}
 	
+	
+	/**
+	 * @property $email_address | String  邮箱地址字符串
+	 * @return boolean 如果格式正确，返回true
+	 */
+	protected function actionValidateFormat($email_address){
+		if(preg_match("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$^",$email_address)){ 
+			return true;
+		}else{
+			return false;
+		}
+
+	}
 }

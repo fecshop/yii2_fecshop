@@ -54,11 +54,11 @@ return [
 			 */
 			//'authTimeout' 		=> 56666,
 		],
-		
+		# 404页面对应的链接。
 		'errorHandler' => [
 			'errorAction' => 'site/helper/error',
 		],
-		
+		# 首页对应的url
 		'urlManager' => [
 			'rules' => [
 				'' => 'cms/home/index',

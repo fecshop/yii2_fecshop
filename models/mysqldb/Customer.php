@@ -50,7 +50,7 @@ class Customer extends ActiveRecord implements IdentityInterface
 	/**
      * @inheritdoc
      */
-	# Í¨¹ýid ÕÒµ½identity
+	# é€šè¿‡id æ‰¾åˆ°identity
     public static function findIdentity($id)
     {
         return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
@@ -59,12 +59,12 @@ class Customer extends ActiveRecord implements IdentityInterface
     /**
      * @inheritdoc
      */
-	# Í¨¹ýaccess_token ÕÒµ½identity
+	# é€šè¿‡access_token æ‰¾åˆ°identity
     public static function findIdentityByAccessToken($token, $type = null)
     {
         return static::findOne(['access_token' => $token, 'status' => self::STATUS_ACTIVE]);
     }
-	# Éú³Éaccess_token
+	# ç”Ÿæˆaccess_token
 	public function generateAccessToken()
     {
         $this->access_token = Yii::$app->security->generateRandomString();
@@ -87,7 +87,7 @@ class Customer extends ActiveRecord implements IdentityInterface
      * @param string $token password reset token
      * @return static|null
      */
-	# ´Ë´¦ÊÇÍü¼ÇÃÜÂëËùÊ¹ÓÃµÄ
+	# æ­¤å¤„æ˜¯å¿˜è®°å¯†ç æ‰€ä½¿ç”¨çš„
     public static function findByPasswordResetToken($token)
     {
         if (!static::isPasswordResetTokenValid($token)) {
@@ -111,10 +111,10 @@ class Customer extends ActiveRecord implements IdentityInterface
         if (empty($token)) {
             return false;
         }
-
         $timestamp = (int) substr($token, strrpos($token, '_') + 1);
-        $expire = Yii::$app->params['user.passwordResetTokenExpire'];
-        return $timestamp + $expire >= time();
+        //$expire = Yii::$app->params['user.passwordResetTokenExpire'];
+        $expire = Yii::$service->email->customer->getPasswordResetTokenExpire();
+		return $timestamp + $expire >= time();
     }
 
     /**

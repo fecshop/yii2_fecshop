@@ -26,9 +26,9 @@ class Body extends BodyBase
 			'name'		=> $identity['firstname'].' '. $identity['lastname'],
 			'email'		=> $identity['email'],
 			'password'	=> $identity['password'],
-			'storeName' 			=> Yii::$service->email->customer->storeName(),
-			'contactsEmailAddress'	=> Yii::$service->email->customer->contactsEmailAddress(),
-			'contactsPhone'			=> Yii::$service->email->customer->contactsPhone(),
+			'storeName' 			=> Yii::$service->email->storeName(),
+			'contactsEmailAddress'	=> Yii::$service->email->contactsEmailAddress(),
+			'contactsPhone'			=> Yii::$service->email->contactsPhone(),
 			'homeUrl'	=> Yii::$service->url->homeUrl(),
 			'logoImg'	=> Yii::$service->image->getImgUrl('mail/logo.png','appfront'),
 			
