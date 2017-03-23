@@ -17,32 +17,7 @@ return [
 				'loginSuccessRedirectUrlKey' => 'customer/account', 
 				# 注册页面的验证码是否开启
 				'registerPageCaptcha' => true, 
-				# 注册账号后发送的邮件信息。
-				'email' => [
-					'enable' => true,
-					# 邮件内容的动态数据提供部分
-					'block'		=> 'fecshop\app\appfront\modules\Customer\block\mailer\account\register\EmailBody',
-					# 邮件内容的view部分
-					'viewPath' 	=> 'mailer/customer/account/register',
-					/*
-					'mailerConfig' => [
-						'appfront_register' => [
-							'class' => 'yii\swiftmailer\Mailer',
-							'transport' => [
-								'class' => 'Swift_SmtpTransport',
-								'host' => 'smtp.qq.com',
-								'username' => '2358269014@qq.com',
-								'password' => 'bjxpkyzfwkxnebai',
-								'port' => '587',
-								'encryption' => 'tls',
-							],
-							'messageConfig'=>[  
-							   'charset'=>'UTF-8',  
-							], 
-						],
-					],
-					*/
-				]
+				
 			],
 			'login' => [
 				# 在登录页面 customer/account/login 页面登录成功后跳转的urlkey，
@@ -52,25 +27,12 @@ return [
 				# 登录页面的验证码是否开启
 				'loginPageCaptcha' => false,  
 				# 邮件信息，登录账号后是否发送邮件
-				'email' => [
-					'enable' => false,
-					# 邮件内容的动态数据提供部分
-					'block'		=> 'fecshop\app\appfront\modules\Customer\block\mailer\account\login\EmailBody',
-					# 邮件内容的view部分
-					'viewPath' 	=> 'mailer/customer/account/login',
-					# 如果不定义 mailerConfig，则会使用email service里面的默认配置
-				]
+				
 			],
 			'forgotPassword' => [
+				# 忘记密码页面的验证码是否开启
 				'forgotCaptcha' => true, 
-				'email' => [
-					'block'		=> 'fecshop\app\appfront\modules\Customer\block\mailer\account\forgotpassword\EmailBody',
-					# 邮件内容的view部分
-					'viewPath' 	=> 'mailer/customer/account/forgotpassword',
-					# 如果不定义 mailerConfig，则会使用email service里面的默认配置
-					
-					//'mailerConfig' => []
-				],
+				
 			],
 			
 			'leftMenu'  => [
@@ -86,28 +48,10 @@ return [
 			'contacts'	=> [
 				# 联系我们页面的验证码是否开启
 				'contactsCaptcha' => true, 
-				'email' => [
-					# 联系我们的邮箱地址
-					'address'	=> '2358269014@qq.com',
-					# block  邮件动态数据提供部分。
-					'block'		=> 'fecshop\app\appfront\modules\Customer\block\mailer\contacts\EmailBody',
-					# 邮件内容的view部分
-					'viewPath' 	=> 'mailer/customer/contacts',
-					# 如果不定义 mailerConfig，则会使用email service里面的默认配置
-					//'mailerConfig' => []
-				],
+				
 			],
 			'newsletterSubscribe' => [
-				'email' => [
-					# 订阅邮件成功后，是否发送邮件给用户
-					'enable'	=> true,
-					# block  邮件动态数据提供部分。
-					'block'		=> 'fecshop\app\appfront\modules\Customer\block\mailer\newsletter\EmailBody',
-					# 邮件内容的view部分
-					'viewPath' 	=> 'mailer/customer/newsletter',
-					# 如果不定义 mailerConfig，则会使用email service里面的默认配置
-					//'mailerConfig' => []
-				],
+				
 			],
 		],
 	],
