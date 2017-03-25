@@ -1,7 +1,7 @@
 <?php
 /**
  * FecShop file.
- *
+ * 
  * @link http://www.fecshop.com/
  * @copyright Copyright (c) 2016 FecShop Software LLC
  * @license http://www.fecshop.com/license/
@@ -38,7 +38,7 @@ return [
 				],
 				'fecshop.appfront.fancyecommerce.com/cn' => [
 					'https'			=> false,  # false代表使用http，true代表使用https			
-					'sitemapDir' 	=> '@appfront/web/sitemap_cn.xml',
+					'sitemapDir' 	=> '@appfront/web/cn/sitemap.xml',
 					'showScriptName'=> true,
 				],
 			]

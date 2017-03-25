@@ -54,18 +54,17 @@ class Sitemap extends Service
 	}
 	
 	protected function actionEndSiteMap(){
-		echo '111'."\n";
 		$this->initSiteMap();
 		if(is_array($this->sitemapConfig) && !empty($this->sitemapConfig)){
 			foreach($this->sitemapConfig as $appIn => $store){
 				if(is_array($store) && !empty($store)){
 					foreach($store as $domain => $info){
+						$sitemapDir = (isset($info['sitemapDir']) && $info['sitemapDir']) ? $info['sitemapDir'] : '';
 						if($sitemapDir){
 							$sitemapAbsoluteDir = Yii::getAlias($sitemapDir);
 							$xmlFile = fopen($sitemapAbsoluteDir, 'a') or die("Unable to open file!");
 							if(file_exists($sitemapAbsoluteDir)){
 								$str = '</urlset>';
-								//echo '111'."\n";
 								fwrite($xmlFile, $str);
 							}
 							fclose($xmlFile);
@@ -103,7 +102,7 @@ class Sitemap extends Service
 	
 	protected function actionCategorypagecount(){
 		$this->initSiteMap();
-		$coll = Yii::$service->category->coll($filter);
+		$coll = Yii::$service->category->coll();
 		$count = $coll['count'];
 		echo ceil($count/$this->numPerPage);
 		
@@ -149,12 +148,95 @@ class Sitemap extends Service
 		}
 	}
 	
-	protected function actionProduct(){
+	protected function actionProductpagecount(){
+		$this->initSiteMap();
+		$coll = Yii::$service->product->coll();
+		$count = $coll['count'];
+		echo ceil($count/$this->numPerPage);
 		
 	}
+	
+	protected function actionProduct(){
+		$this->initSiteMap();
+		if(is_array($this->sitemapConfig) && !empty($this->sitemapConfig)){
+			foreach($this->sitemapConfig as $appIn => $store){
+				if(is_array($store) && !empty($store)){
+					foreach($store as $domain => $info){
+						$https = $info['https'];
+						$showScriptName = $info['showScriptName'];
+						$sitemapDir = (isset($info['sitemapDir']) && $info['sitemapDir']) ? $info['sitemapDir'] : '';
+						if($sitemapDir){
+							$sitemapAbsoluteDir = Yii::getAlias($sitemapDir);
+							$xmlFile = fopen($sitemapAbsoluteDir, 'a') or die("Unable to open file!");
+							if(file_exists($sitemapAbsoluteDir)){
+								$filter = [
+									'numPerPage' 	=> $this->numPerPage,  	
+									'pageNum'		=> $pageNum,
+									'asArray' 		=> true,
+								];
+								$coll = Yii::$service->product->coll($filter);
+								$data = $coll['coll'];
+								if(is_array($data) && !empty($data)){
+									foreach($data as $one){
+										$product_url_key = $one['url_key'];
+										$product_url = Yii::$service->url->getUrlByDomain($product_url_key,[],false,$domain,$showScriptName);
+										$str = '<url><loc>'.$product_url.'</loc><lastmod>'.$this->currentDate.'</lastmod></url>';
+										fwrite($xmlFile, $str);
+									
+									}
+								}
+								
+							}
+							fclose($xmlFile);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	protected function actionCmspagepagecount(){
+		$this->initSiteMap();
+		$coll = Yii::$service->cms->article->coll();
+		$count = $coll['count'];
+		echo ceil($count/$this->numPerPage);
+	}
+	
 	
 	protected function actionCmspage(){
-		
+		$this->initSiteMap();
+		if(is_array($this->sitemapConfig) && !empty($this->sitemapConfig)){
+			foreach($this->sitemapConfig as $appIn => $store){
+				if(is_array($store) && !empty($store)){
+					foreach($store as $domain => $info){
+						$https = $info['https'];
+						$showScriptName = $info['showScriptName'];
+						$sitemapDir = (isset($info['sitemapDir']) && $info['sitemapDir']) ? $info['sitemapDir'] : '';
+						if($sitemapDir){
+							$sitemapAbsoluteDir = Yii::getAlias($sitemapDir);
+							$xmlFile = fopen($sitemapAbsoluteDir, 'a') or die("Unable to open file!");
+							if(file_exists($sitemapAbsoluteDir)){
+								$filter = [
+									'numPerPage' 	=> $this->numPerPage,  	
+									'pageNum'		=> $pageNum,
+									'asArray' 		=> true,
+								];
+								$coll = Yii::$service->cms->article->coll($filter);
+								$data = $coll['coll'];
+								if(is_array($data) && !empty($data)){
+									foreach($data as $one){
+										$cms_page_url_key = $one['url_key'];
+										$cms_page_url = Yii::$service->url->getUrlByDomain($cms_page_url_key,[],false,$domain,$showScriptName);
+										$str = '<url><loc>'.$cms_page_url.'</loc><lastmod>'.$this->currentDate.'</lastmod></url>';
+										fwrite($xmlFile, $str);
+									}
+								}
+							}
+							fclose($xmlFile);
+						}
+					}
+				}
+			}
+		}
 	}
-	
 }
