@@ -144,6 +144,42 @@ class Url extends Service
 		return Yii::$service->url->rewrite->getOriginUrl($urlKey);
 	}
 	
+	
+	/**
+	 * @property $url_key | String  urlKey的值
+	 * @property $params | Array 。url里面个各个参数
+	 * @property https | boolean 是否使用https的方式
+	 * @property $domain | String ， 相应的域名，譬如www.fecshop.com
+	 * 通过传入domain的方式得到相应的url
+	 * 该功能一般是在脚本中通过各个域名的传入得到相应的url，譬如sitemap的生成就是应用了这个方法得到
+	 * 产品和分类的url。
+	 */
+	protected function actionGetUrlByDomain($url_key,$params=[],$https=false,$domain,$showScriptName = false){
+		$first_str = substr($url_key,0,1);
+		if($first_str == '/'){
+			$jg = '';
+		}else{
+			$jg = '/';
+		}
+		$baseUrl = '';
+		if($https){
+			$baseUrl 	= 'https://'.$domain;
+		}else{
+			$baseUrl 	= 'http://'.$domain;
+		}
+		if($showScriptName){
+			$baseUrl .=  '/index.php';
+		}
+		
+		if(is_array($params) && !empty($params)){
+			$arr = [];
+			foreach($params as $k => $v){
+				$arr[] = $k.'='.$v;
+			}
+			return $baseUrl.$jg.$url_key.'?'.implode('&',$arr);
+		}
+		return $url_key ? $baseUrl.$jg.$url_key : $baseUrl;
+	}
 	/**
 	 * @property $path|String, for example about-us.html,  fashion-handbag/women.html
 	 * genarate current store url by path.
