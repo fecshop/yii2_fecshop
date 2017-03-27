@@ -2721,3 +2721,66 @@ color:#cc0000;
 #billing_address_list  li > div.input-box{float:none;}
 #billing_address_list  li > div.input-firstname{float:left;}
 #billing_address_list  li > div.input-lastname{float:left;}
+
+
+.footer-top .container a.sbtnf{
+	background-image: url("../images/icon_like.png");
+    background-repeat: no-repeat;
+    display: block;
+    height: 32px;
+    width: 32px;
+	float:left;
+	margin:2px 10px 0 0 ;
+}
+
+
+a.icon-facebook{
+ background-position: 0 0; 
+}
+a.icon-facebook:hover{
+ background-position: 0 -32px; 
+}
+
+
+a.icon-twitter{
+ background-position: -32px 0; 
+}
+a.icon-twitter:hover{
+ background-position: -32px -32px; 
+}
+
+
+a.icon-pinterest{
+ background-position: -64px 0; 
+}
+a.icon-pinterest:hover{
+ background-position: -64px -32px; 
+}
+
+
+a.icon-google{
+ background-position: -160px 0; 
+}
+a.icon-google:hover{
+ background-position: -160px -32px; 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
