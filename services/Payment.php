@@ -60,6 +60,8 @@ class Payment extends Service
 			}
 		}
 	} 
+	
+	
 	/**
 	 * @property $payment_method | String 支付方式。
 	 * @return 第三方支付成功后，返回到网站的url
@@ -245,6 +247,118 @@ class Payment extends Service
 			return false;
 		}
 	}
+	
+	####################
+	## Express 部分   ##
+	####################
+	/**
+	 * @property $payment_method | String 支付方式。
+	 * @return 返回获取token的url地址。
+	 */
+	public function getExpressNvpUrl($payment_method = ''){
+		if(!$payment_method){
+			$payment_method = $this->getPaymentMethod();
+		}
+		if($payment_method){
+			$paymentConfig = $this->paymentConfig;
+			if(isset($paymentConfig['express'][$payment_method]['nvp_url'])){
+				if(!empty($paymentConfig['express'][$payment_method]['nvp_url'])){
+					return $paymentConfig['express'][$payment_method]['nvp_url'];
+				}
+			}
+		}
+	}
+	/**
+	 * @property $payment_method | String 支付方式。
+	 * @return 返回进行数据交互的express的api地址。
+	 */
+	public function getExpressApiUrl($payment_method = ''){
+		if(!$payment_method){
+			$payment_method = $this->getPaymentMethod();
+		}
+		if($payment_method){
+			$paymentConfig = $this->paymentConfig;
+			if(isset($paymentConfig['express'][$payment_method]['api_url'])){
+				if(!empty($paymentConfig['express'][$payment_method]['api_url'])){
+					return $paymentConfig['express'][$payment_method]['api_url'];
+				}
+			}
+		}
+	}
+	
+	/**
+	 * @property $payment_method | String 支付方式。
+	 * @return 返回进行数据交互的express的account。
+	 */
+	public function getExpressAccount($payment_method = ''){
+		if(!$payment_method){
+			$payment_method = $this->getPaymentMethod();
+		}
+		if($payment_method){
+			$paymentConfig = $this->paymentConfig;
+			if(isset($paymentConfig['express'][$payment_method]['account'])){
+				if(!empty($paymentConfig['express'][$payment_method]['account'])){
+					return $paymentConfig['express'][$payment_method]['account'];
+				}
+			}
+		}
+	}
+	
+	/**
+	 * @property $payment_method | String 支付方式。
+	 * @return 返回进行数据交互的express的password。
+	 */
+	public function getExpressPassword($payment_method = ''){
+		if(!$payment_method){
+			$payment_method = $this->getPaymentMethod();
+		}
+		if($payment_method){
+			$paymentConfig = $this->paymentConfig;
+			if(isset($paymentConfig['express'][$payment_method]['password'])){
+				if(!empty($paymentConfig['express'][$payment_method]['password'])){
+					return $paymentConfig['express'][$payment_method]['password'];
+				}
+			}
+		}
+	}
+	
+	/**
+	 * @property $payment_method | String 支付方式。
+	 * @return 返回进行数据交互的express的signature。
+	 */
+	public function getExpressSignature($payment_method = ''){
+		if(!$payment_method){
+			$payment_method = $this->getPaymentMethod();
+		}
+		if($payment_method){
+			$paymentConfig = $this->paymentConfig;
+			if(isset($paymentConfig['express'][$payment_method]['signature'])){
+				if(!empty($paymentConfig['express'][$payment_method]['signature'])){
+					return $paymentConfig['express'][$payment_method]['signature'];
+				}
+			}
+		}
+	}
+	
+	/**
+	 * @property $payment_method | String 支付方式。
+	 * @return 返回进行数据交互的express的label。
+	 */
+	public function getExpressLabel($payment_method = ''){
+		if(!$payment_method){
+			$payment_method = $this->getPaymentMethod();
+		}
+		if($payment_method){
+			$paymentConfig = $this->paymentConfig;
+			if(isset($paymentConfig['express'][$payment_method]['label'])){
+				if(!empty($paymentConfig['express'][$payment_method]['label'])){
+					return $paymentConfig['express'][$payment_method]['label'];
+				}
+			}
+		}
+	}
+	
+	
 	
 	
 	

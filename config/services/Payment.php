@@ -64,13 +64,13 @@ return [
 			
 			'express' => [
 				'paypal_express' =>[
+					# 用来获取token
 					'nvp_url' => 'https://api-3t.sandbox.paypal.com/nvp',
 					'api_url' => 'https://www.sandbox.paypal.com/cgi-bin/webscr',
 					'account'=> 'zqy234api1-facilitator_api1.126.com',
 					'password'=>'HF4TNTTXUD6YQREH',
 					'signature'=>'An5ns1Kso7MWUdW4ErQKJJJ4qi4-ANB-xrkMmTHpTszFaUx2v4EHqknV',
 					
-					'enable'=> 1,
 					'label'=>'PayPal Express Payments',
 				],
 			],

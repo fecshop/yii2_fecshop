@@ -19,7 +19,7 @@ use fecshop\services\Service;
  */
 class Paypal extends Service
 {
-	# paypal֧��״̬
+	# paypal支付状态
 	public $payment_status_none         	= 'none';
     public $payment_status_completed    	= 'completed';
     public $payment_status_denied       	= 'denied';
@@ -35,6 +35,8 @@ class Paypal extends Service
     public $payment_status_voided     		= 'voided';
 	
 	public $use_local_certs = true;
+	# 在payment中 express paypal 的配置值
+	public $express_payment_method	= 'paypal_express';
 	
 	protected $_postData;
 	protected $_order;
@@ -43,21 +45,14 @@ class Paypal extends Service
 		
 		
 		if($this->verifySecurity()){
-			# ��֤�����Ƿ��Ѿ�����
+			# 验证数据是否已经发送
 			if($this->isNotDuplicate()){
-				# ��֤�����Ƿ񱻴۸ġ�
-				
-				
-		
-		
-		
-		
+				# 验证数据是否被篡改。
 				if($this->isNotDistort()){
-					
 					$this->updateOrderAndCoupon();
 				}else{
-					# ������ݺͶ������ݲ�һ�£����ң�֧��״̬Ϊ�ɹ�����˶���
-					# ���Ϊ���ɵġ�
+					# 如果数据和订单数据不一致，而且，支付状态为成功，则此订单
+					# 标记为可疑的。
 					$suspected_fraud = Yii::$service->order->payment_status_suspected_fraud;
 					$this->updateOrderAndCoupon($suspected_fraud);
 				}
@@ -119,7 +114,7 @@ class Paypal extends Service
 	}
 	
 	
-	# �ж��Ƿ��ظ���������ظ����ѵ�ǰ�Ĳ��롣
+	# 判断是否重复，如果不重复，把当前的插入。
 	protected function isNotDuplicate(){
 		$ipn = IpnMessage::find()
 				->asArray()
@@ -142,9 +137,9 @@ class Paypal extends Service
 	
 	
 	/**
-	 * ��֤���������Ƿ񱻴۸ġ�
-	 * ͨ���������ҵ��������鿴�Ƿ����
-	 * ��֤�ʼ���ַ����������Ƿ�׼ȷ��
+	 * 验证订单数据是否被篡改。
+	 * 通过订单号找到订单，查看是否存在
+	 * 验证邮件地址，订单金额是否准确。
 	 */
 	protected function isNotDistort(){
 		//Yii::$app->mylog->log("begin isNotDistort..");
@@ -157,7 +152,7 @@ class Paypal extends Service
 			if($this->_order){
 				$order_currency_code = $this->_order['order_currency_code'];
 				if($order_currency_code == $mc_currency){
-					# �˶Զ����ܶ�
+					# 核对订单总额
 					$currentCurrencyGrandTotal = $this->_order['grand_total'];
 					if((float)$currentCurrencyGrandTotal == (float)$mc_gross ){
 						return true;
@@ -172,8 +167,8 @@ class Paypal extends Service
 		return false;
 	}
 	/**
-	 * @property $orderstatus | String �˿�״̬
-	 * ���¶���״̬��
+	 * @property $orderstatus | String 退款状态
+	 * 更新订单状态。
 	 */
 	public function updateOrderAndCoupon($orderstatus = ''){
 		
@@ -218,7 +213,7 @@ class Paypal extends Service
 		$innerTransaction = Yii::$app->db->beginTransaction();
 		try {
 			if($orderstatus){
-				# ָ���˶���״̬
+				# 指定了订单状态
 				$this->_order->order_status = $orderstatus;
 				$this->_order->save();
 				$payment_status = strtolower($this->_postData['payment_status']);
@@ -227,12 +222,12 @@ class Paypal extends Service
 				$payment_status = strtolower($this->_postData['payment_status']);
 				if($payment_status == $this->payment_status_completed) {
 					$this->_order->order_status = Yii::$service->order->payment_status_processing;
-					# ���¶�����Ϣ
+					# 更新订单信息
 					$this->_order->save();
-					# ���¿��
+					# 更新库存
 					//$orderitem = Salesorderitem::find()->asArray()->where(['order_id'=>$this->_order->order_id])->all();
 					//Order::updateProductStockQty($orderitem);
-					# ����couponʹ����
+					# 更新coupon使用量
 					//$customer_id = $this->_order['customer_id'];
 					//$coupon_code = $this->_order['coupon_code'];
 					//if($customer_id && $coupon_code){
@@ -257,6 +252,152 @@ class Paypal extends Service
 		}
 		return false;
 	}
+	
+	
+	# express 部分
+	
+	/**
+	 * @property $token | String , 通过 下面的 PPHttpPost5 方法返回的paypal express的token
+	 * @return String，通过token得到跳转的 paypal url，
+	 * 得到上面的url后，进行跳转到paypal，然后确认，然后返回到fecshop，paypal会传递货运地址等信息
+	 * 到fecshop，这样用户不需要手动填写货运地址等信息。因此，这种方式为快捷支付。
+	 */
+	public function getSetExpressCheckoutUrl($token){
+		if($token){
+			$ApiUrl 	= Yii::$service->payment->getExpressApiUrl($this->express_payment_method);
+			return $ApiUrl."?cmd=_express-checkout&token=".urlencode($token);
+		}
+	}
+	
+	
+	/**
+	 * @property $methodName_ | String，请求的方法，譬如： $methodName_ = "SetExpressCheckout";
+	 * @property $nvpStr_ | String ，请求传递的购物车中的产品和总额部分的数据，组合成字符串的格式。
+	 * @property $i | Int ， 限制递归次数的变量，当api获取失败的时候，可以通过递归的方式多次尝试，直至超过最大失败次数，才会返回失败
+	 * 此方法为获取token。返回的数据为数组，里面含有 ACK  TOKEN 等值。
+	 * 也就是和paypal进行初次的api账号密码验证，成功后返回token等信息。
+	 */
+	public function PPHttpPost5($methodName_, $nvpStr_, $i = 1) 
+	{
+		
+		$API_NvpUrl 	= Yii::$service->payment->getExpressNvpUrl($this->express_payment_method);
+		$API_Signature 	= Yii::$service->payment->getExpressSignature($this->express_payment_method);
+		$API_UserName 	= Yii::$service->payment->getExpressAccount($this->express_payment_method);
+		$API_Password 	= Yii::$service->payment->getExpressPassword($this->express_payment_method);
+		
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $API_NvpUrl);
+		curl_setopt($ch, CURLOPT_VERBOSE, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT,10000);
+		# Turn off the server and peer verification (TrustManager Concept).
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		# Set the API operation, version, and API signature in the request.
+		$nvpreq = "METHOD=$methodName_&PWD=$API_Password&USER=$API_UserName&SIGNATURE=$API_Signature$nvpStr_";
+		//echo $nvpreq;exit;
+		# Set the request as a POST FIELD for curl.
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $nvpreq);
+		# Get response from the server.
+		$httpResponse = curl_exec($ch);
+		if(!$httpResponse) {
+			$i++;
+			if($i>5){
+				//获取三次失败后，则推出。
+				exit("$methodName_ failed: ".curl_error($ch).'('.curl_errno($ch).')');
+			}else{
+				$httpResponse = $this->PPHttpPost5($methodName_, $nvpStr_,$i);
+			}
+		}else{
+			//第一次获取数据失败，则再次获取。并返回、
+			if($i>0){
+				//return $httpResponse;
+			}
+		}
+		//paypal返回的是一系列的字符串，譬如：L_TIMESTAMP0=2014-11-08T01:51:13Z&L_TIMESTAMP1=2014-11-08T01:40:41Z&L_TIMESTAMP2=2014-11-08T01:40:40Z&
+		//下面要做的是先把字符串通过&字符打碎成数组
+		//
+		//echo "***************<br>";
+		//echo urldecode($httpResponse);
+		//echo "<br>***************<br>";
+		$httpResponseAr = explode("&", urldecode($httpResponse));
+		$httpParsedResponseAr = array();
+		foreach ($httpResponseAr as $i => $value) {
+			$tmpAr = explode("=", $value);
+			if(sizeof($tmpAr) > 1) {
+				$httpParsedResponseAr[$tmpAr[0]] = $tmpAr[1];
+			}
+		}
+		if((0 == sizeof($httpParsedResponseAr)) || !array_key_exists('ACK', $httpParsedResponseAr)) {
+			exit("Invalid HTTP Response for POST request($nvpreq) to $API_NvpUrl.");
+		}
+		return $httpParsedResponseAr;
+	}
+	
+	
+	/**
+	 * @property $nvp_array | Array, 各个配置参数
+	 * 将数组里面的key和value，组合成url的字符串，生成nvp url
+	 */
+	public function getRequestUrlStrByArray($nvp_array){
+		$str = '';
+		if(is_array($nvp_array) && !empty($nvp_array)){
+			foreach($nvp_array as $k=>$v){
+				$str .= '&'.urlencode($k).'='.urlencode($v);
+			}
+		}
+		//echo $str;exit;
+		return $str;
+	}
+	
+	/**
+	 * @property $landingPage | String ，访问api的类型，譬如login
+	 * 通过购物车中的数据，组合成访问paypal express api的url
+	 */
+	public function getNvpStr($landingPage){
+		$nvp_array = [];
+		$nvp_array['LANDINGPAGE'] = $landingPage;
+		$nvp_array['RETURNURL'] = Url::getUrl("paypal/express/review");
+		$nvp_array['CANCELURL'] = Url::getUrl("paypal/express/cancel");
+		$nvp_array['PAYMENTREQUEST_0_PAYMENTACTION'] = 'Sale';
+		$nvp_array['VERSION'] = 109.0;
+		
+		$currency = $this->_quote['quote_currency_code'];
+		$grand_total 		= number_format($this->_quote['grand_total'],2);
+		$subtotal			= number_format($this->_quote['subtotal'],2);
+		$shipping_total		= number_format($this->_quote['shipping_total'],2);
+		$discount_amount	= number_format($this->_quote['subtotal_with_discount'],2);
+		$subtotal = $subtotal - $discount_amount;
+		
+		$nvp_array['PAYMENTREQUEST_0_CURRENCYCODE'] = $currency;
+		$nvp_array['PAYMENTREQUEST_0_AMT'] = $grand_total;
+		$nvp_array['PAYMENTREQUEST_0_ITEMAMT'] = $subtotal;
+		$nvp_array['PAYMENTREQUEST_0_SHIPPINGAMT'] = $shipping_total;
+		$i = 0;
+		
+		foreach($this->_quote_items as $item){
+			$base_price = $item['base_price'];
+			$itme_amt = Currency::getCurrentPertyPriceNoSymbols($base_price);
+			$nvp_array['L_PAYMENTREQUEST_0_QTY'.$i] = $item['qty'];
+			$nvp_array['L_PAYMENTREQUEST_0_NUMBER'.$i] = $item['sku'];
+			$nvp_array['L_PAYMENTREQUEST_0_AMT'.$i] = $itme_amt;
+			//L_PAYMENTREQUEST_0_DESC0
+			$nvp_array['L_PAYMENTREQUEST_0_NAME'.$i] = Store::getCartProductName($item['name']);
+			$nvp_array['L_PAYMENTREQUEST_0_CURRENCYCODE'.$i]= $currency;
+			//echo $itme_amt."<br/>";
+			$i++;
+		}
+		$nvp_array['L_PAYMENTREQUEST_0_NAME'.$i] = 'Discount';
+		$nvp_array['L_PAYMENTREQUEST_0_AMT'.$i] = "-".$discount_amount;
+		return $this->getRequestUrlStrByArray($nvp_array);
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 	
