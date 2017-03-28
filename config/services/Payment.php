@@ -83,7 +83,7 @@ return [
 		'childService' => [
 			'paypal' => [
 				'class' 	=> 'fecshop\services\payment\Paypal',
-				
+				/*
 				'use_local_certs' => true,
 				'express_payment_method' => 'paypal_express',
 				'version' => '109.0',
@@ -92,6 +92,7 @@ return [
 					'api-3t.sandbox.paypal.com' =>'@fecshop/services/payment/cert/api-3tsandboxpaypalcom.crt',
 				
 				],
+				*/
 			],
 		],
 	]

@@ -34,10 +34,10 @@ class Paypal extends Service
     public $payment_status_processed  		= 'processed';
     public $payment_status_voided     		= 'voided';
 	
-	public $use_local_certs;
+	public $use_local_certs = true;
 	# 在payment中 express paypal 的配置值
 	public $express_payment_method;
-	public $version;
+	public $version = '109.0'；
 	public $crt_file;
 	
 	protected $_postData;
