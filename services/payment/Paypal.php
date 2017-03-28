@@ -34,16 +34,23 @@ class Paypal extends Service
     public $payment_status_processed  		= 'processed';
     public $payment_status_voided     		= 'voided';
 	
-	public $use_local_certs = true;
+	public $use_local_certs;
 	# 在payment中 express paypal 的配置值
-	public $express_payment_method	= 'paypal_express';
-	public $version = 109.0;
+	public $express_payment_method;
+	public $version;
+	public $crt_file;
 	
 	protected $_postData;
 	protected $_order;
 	
 	const EXPRESS_TOKEN 	= 'paypal_express_token';
 	const EXPRESS_PAYER_ID	= 'paypal_express_payer_id';
+	
+	public function getCrtFile($domain){
+		if(isset($this->crt_file[$domain]) && !empty($this->crt_file[$domain])){
+			return Yii::getAlias($this->crt_file[$domain]);
+		}
+	}
 	
 	public function receiveIpn(){
 		if($this->verifySecurity()){
@@ -98,7 +105,8 @@ class Paypal extends Service
 		curl_setopt($ch, CURLOPT_TIMEOUT,30);
         // This is often required if the server is missing a global cert bundle, or is using an outdated one.
         if ($this->use_local_certs) {
-            curl_setopt($ch, CURLOPT_CAINFO, __DIR__ . "/cert/paypal.crt");
+			$crtFile = $this->getCrtFile('www.sandbox.paypal.com');
+            curl_setopt($ch, CURLOPT_CAINFO, $crtFile);
         }
         curl_setopt($ch, CURLOPT_FORBID_REUSE, 1);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
@@ -293,8 +301,9 @@ class Paypal extends Service
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_POST, 1);
-		 if ($this->use_local_certs) {
-            curl_setopt($ch, CURLOPT_CAINFO, __DIR__ . "/cert/api-3tsandboxpaypalcom.crt");
+		if ($this->use_local_certs) {
+			$crtFile = $this->getCrtFile('api-3t.sandbox.paypal.com');
+            curl_setopt($ch, CURLOPT_CAINFO, $crtFile);
         }
 		# Set the request as a POST FIELD for curl.
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $nvpreq);

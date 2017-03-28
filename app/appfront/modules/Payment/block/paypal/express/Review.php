@@ -60,7 +60,7 @@ class Review {
 		}
 		$currency_info = Yii::$service->page->currency->getCurrencyInfo();
 		$this->initAddress();
-		//$this->expressReview(); # 通过接口得到paypal的地址，覆盖到网站的地址。
+		$this->expressReview(); # 通过接口得到paypal的地址，覆盖到网站的地址。
 		$this->initCountry();
 		$this->initState();
 		$shippings =  $this->getShippings();

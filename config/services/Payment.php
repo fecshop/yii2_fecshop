@@ -82,8 +82,16 @@ return [
 		*/
 		'childService' => [
 			'paypal' => [
-				'class' 		=> 'fecshop\services\payment\Paypal',
+				'class' 	=> 'fecshop\services\payment\Paypal',
 				
+				'use_local_certs' => true,
+				'express_payment_method' => 'paypal_express',
+				'version' => '109.0',
+				'crt_file' 	=> [
+					'www.sandbox.paypal.com' 	=>'@fecshop/services/payment/cert/paypal.crt',
+					'api-3t.sandbox.paypal.com' =>'@fecshop/services/payment/cert/api-3tsandboxpaypalcom.crt',
+				
+				],
 			],
 		],
 	]
