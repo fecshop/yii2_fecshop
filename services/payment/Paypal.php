@@ -37,13 +37,15 @@ class Paypal extends Service
 	public $use_local_certs = true;
 	# 在payment中 express paypal 的配置值
 	public $express_payment_method	= 'paypal_express';
+	public $version = 109.0;
 	
 	protected $_postData;
 	protected $_order;
 	
+	const EXPRESS_TOKEN 	= 'paypal_express_token';
+	const EXPRESS_PAYER_ID	= 'paypal_express_payer_id';
+	
 	public function receiveIpn(){
-		
-		
 		if($this->verifySecurity()){
 			# 验证数据是否已经发送
 			if($this->isNotDuplicate()){
@@ -134,8 +136,6 @@ class Paypal extends Service
 			return true;
 		}
 	}
-	
-	
 	/**
 	 * 验证订单数据是否被篡改。
 	 * 通过订单号找到订单，查看是否存在
@@ -171,9 +171,6 @@ class Paypal extends Service
 	 * 更新订单状态。
 	 */
 	public function updateOrderAndCoupon($orderstatus = ''){
-		
-		
-		
 		if($this->_postData['txn_type']){
 			$this->_order->txn_type = $this->_postData['txn_type'];	
 		}	
@@ -284,21 +281,26 @@ class Paypal extends Service
 		$API_Signature 	= Yii::$service->payment->getExpressSignature($this->express_payment_method);
 		$API_UserName 	= Yii::$service->payment->getExpressAccount($this->express_payment_method);
 		$API_Password 	= Yii::$service->payment->getExpressPassword($this->express_payment_method);
-		
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $API_NvpUrl);
-		curl_setopt($ch, CURLOPT_VERBOSE, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT,10000);
-		# Turn off the server and peer verification (TrustManager Concept).
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POST, 1);
 		# Set the API operation, version, and API signature in the request.
 		$nvpreq = "METHOD=$methodName_&PWD=$API_Password&USER=$API_UserName&SIGNATURE=$API_Signature$nvpStr_";
-		//echo $nvpreq;exit;
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+		curl_setopt($ch, CURLOPT_URL, $API_NvpUrl);
+		curl_setopt($ch, CURLOPT_VERBOSE, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT,30);
+		curl_setopt($ch, CURLOPT_SSLVERSION, 6);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		 if ($this->use_local_certs) {
+            curl_setopt($ch, CURLOPT_CAINFO, __DIR__ . "/cert/api-3tsandboxpaypalcom.crt");
+        }
 		# Set the request as a POST FIELD for curl.
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $nvpreq);
+		curl_setopt($ch, CURLOPT_FORBID_REUSE, 1);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Connection: Close'));
 		# Get response from the server.
 		$httpResponse = curl_exec($ch);
 		if(!$httpResponse) {
@@ -357,17 +359,19 @@ class Paypal extends Service
 	 */
 	public function getNvpStr($landingPage){
 		$nvp_array = [];
-		$nvp_array['LANDINGPAGE'] = $landingPage;
-		$nvp_array['RETURNURL'] = Url::getUrl("paypal/express/review");
-		$nvp_array['CANCELURL'] = Url::getUrl("paypal/express/cancel");
+		$nvp_array['LANDINGPAGE'] 	= $landingPage;
+		$nvp_array['RETURNURL'] 	= Yii::$service->payment->getExpressReturnUrl($this->express_payment_method);
+		$nvp_array['CANCELURL'] 	= Yii::$service->payment->getExpressCancelUrl($this->express_payment_method);
 		$nvp_array['PAYMENTREQUEST_0_PAYMENTACTION'] = 'Sale';
-		$nvp_array['VERSION'] = 109.0;
+		$nvp_array['VERSION'] = $this->version;
+		# 得到购物车的信息，通过购物车信息填写。
+		$cartInfo = Yii::$service->cart->getCartInfo();
+		$currency = Yii::$service->page->currency->getCurrentCurrency();
 		
-		$currency = $this->_quote['quote_currency_code'];
-		$grand_total 		= number_format($this->_quote['grand_total'],2);
-		$subtotal			= number_format($this->_quote['subtotal'],2);
-		$shipping_total		= number_format($this->_quote['shipping_total'],2);
-		$discount_amount	= number_format($this->_quote['subtotal_with_discount'],2);
+		$grand_total 		= $cartInfo['grand_total'];
+		$subtotal			= $cartInfo['product_total'];
+		$shipping_total		= $cartInfo['shipping_cost'];
+		$discount_amount	= $cartInfo['coupon_cost'];
 		$subtotal = $subtotal - $discount_amount;
 		
 		$nvp_array['PAYMENTREQUEST_0_CURRENCYCODE'] = $currency;
@@ -376,29 +380,52 @@ class Paypal extends Service
 		$nvp_array['PAYMENTREQUEST_0_SHIPPINGAMT'] = $shipping_total;
 		$i = 0;
 		
-		foreach($this->_quote_items as $item){
-			$base_price = $item['base_price'];
-			$itme_amt = Currency::getCurrentPertyPriceNoSymbols($base_price);
-			$nvp_array['L_PAYMENTREQUEST_0_QTY'.$i] = $item['qty'];
-			$nvp_array['L_PAYMENTREQUEST_0_NUMBER'.$i] = $item['sku'];
-			$nvp_array['L_PAYMENTREQUEST_0_AMT'.$i] = $itme_amt;
-			//L_PAYMENTREQUEST_0_DESC0
-			$nvp_array['L_PAYMENTREQUEST_0_NAME'.$i] = Store::getCartProductName($item['name']);
+		foreach($cartInfo['products'] as $item){
+			$nvp_array['L_PAYMENTREQUEST_0_QTY'.$i] 		= $item['qty'];
+			$nvp_array['L_PAYMENTREQUEST_0_NUMBER'.$i] 		= $item['sku'];
+			$nvp_array['L_PAYMENTREQUEST_0_AMT'.$i] 		= $item['product_price'];
+			$nvp_array['L_PAYMENTREQUEST_0_NAME'.$i] 		= Yii::$service->store->getStoreAttrVal($item['name'],'name');
 			$nvp_array['L_PAYMENTREQUEST_0_CURRENCYCODE'.$i]= $currency;
-			//echo $itme_amt."<br/>";
 			$i++;
 		}
 		$nvp_array['L_PAYMENTREQUEST_0_NAME'.$i] = 'Discount';
 		$nvp_array['L_PAYMENTREQUEST_0_AMT'.$i] = "-".$discount_amount;
 		return $this->getRequestUrlStrByArray($nvp_array);
 	}
-	
-	
-	
-	
-	
-	
-	
+	/**
+	 * 从request get 中取出来token，然后保存到session中
+	 */
+	public function setExpressToken(){
+		$token = Yii::$app->request->get('token');
+		if($token){
+			Yii::$app->session->set(self::EXPRESS_TOKEN,$token);
+			return true;
+		}
+		return false;
+	}
+	/**
+	 * 从request get 中取出来PayerID，然后保存到session中
+	 */
+	public function setExpressPayerID(){
+		$PayerID = Yii::$app->request->get('PayerID');
+		if($PayerID){
+			Yii::$app->session->set(self::EXPRESS_PAYER_ID,$PayerID);
+			return true;
+		}
+		return false;
+	}
+	/**
+	 * 从session 中取出来token
+	 */
+	public function getExpressToken(){
+		return Yii::$app->session->get(self::EXPRESS_TOKEN);
+	}
+	/**
+	 * 从session 中取出来PayerID
+	 */
+	public function getExpressPayerID(){
+		return Yii::$app->session->get(self::EXPRESS_PAYER_ID);
+	}
 	
 	
 }

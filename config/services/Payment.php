@@ -72,6 +72,9 @@ return [
 					'signature'=>'An5ns1Kso7MWUdW4ErQKJJJ4qi4-ANB-xrkMmTHpTszFaUx2v4EHqknV',
 					
 					'label'=>'PayPal Express Payments',
+					
+					'return_url' => '@homeUrl/payment/paypal/express/review',
+					'cancel_url' => '@homeUrl/payment/paypal/express/cancel',
 				],
 			],
 			

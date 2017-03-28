@@ -20,10 +20,16 @@ class ExpressController extends AppfrontController
     public $enableCsrfValidation = true;
 	
 	public function actionStart(){
+		$data = $this->getBlock()->startExpress();
+		
+	}
+	# 2.Review  从paypal确认后返回
+	public function actionReview(){
+		//PayerID
+		//$data = $this->getBlock()->expressReview();
 		$data = $this->getBlock()->getLastData();
 		return $this->render($this->action->id,$data);
 	}
-	
 	
 	public function actionSuccess(){
 		

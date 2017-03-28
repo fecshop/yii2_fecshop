@@ -17,9 +17,9 @@ use yii\base\InvalidValueException;
  */
 class Start {
 	
-	public function getLastData(){
-		# 首先验证购物车中是否存在产品
-		$this->validateCart();
+	public function startExpress(){
+		# 棣栧厛楠岃瘉璐墿杞︿腑鏄惁瀛樺湪浜у搧
+		//$this->validateCart();
 		//if($LANDINGPAGE == 'Login' ){
 		//	$clickButton = 'paypal button';
 		//}else{
@@ -33,7 +33,8 @@ class Start {
 		if(strtolower($SetExpressCheckoutReturn['ACK']) == 'success'){
 			$token = $SetExpressCheckoutReturn['TOKEN'];
 			$redirectUrl = Yii::$service->payment->paypal->getSetExpressCheckoutUrl($token);
-			Url::redirect($redirectUrl);
+			Yii::$service->url->redirect($redirectUrl);
+			exit;
 		}
 	
 		
@@ -42,7 +43,7 @@ class Start {
 	
 	
 	
-	# 首先验证购物车中是否存在产品
+	# 棣栧厛楠岃瘉璐墿杞︿腑鏄惁瀛樺湪浜у搧
 	//public function validateCart(){
 		
 		

@@ -1,19 +1,18 @@
 <div class="main container one-column">
 	<div class="col-main">
 		<?= Yii::$service->page->widget->render('flashmessage'); ?>
+
 		<form action="<?= Yii::$service->url->getUrl('checkout/onepage'); ?>" method="post" id="onestepcheckout-form">
 			<?= \fec\helpers\CRequest::getCsrfInputHtml(); ?>
 			<fieldset style="margin: 0;" class="group-select">
 				<p class="onestepcheckout-description"><?= Yii::$service->page->translate->__('Welcome to the checkout,Fill in the fields below to complete your purchase');?> !</p>
-				<p class="onestepcheckout-login-link">
-					<a href="<?= Yii::$service->url->getUrl('customer/account/login'); ?>" id="onestepcheckout-login-link"><?= Yii::$service->page->translate->__('Already registered? Click here to login');?>.</a>
-				</p>
+				
 				<div class="onestepcheckout-threecolumns checkoutcontainer onestepcheckout-skin-generic onestepcheckout-enterprise">
 					<div class="onestepcheckout-column-left">
 						<?php # address 部门
 							//echo $address_view_file;
 							$addressView = [
-								'view'	=> $address_view_file,
+								'view'	=> 'payment/paypal/express/review/address.php',
 							];
 							//var_dump($address_list);
 							$addressParam = [
@@ -35,7 +34,7 @@
 						<div class="shipping_method_html">
 							<?php # shipping部分
 								$shippingView = [
-									'view'	=> 'checkout/onepage/index/shipping.php'
+									'view'	=> 'payment/paypal/express/review/shipping.php'
 								];
 								$shippingParam = [
 									'shippings' => $shippings,
@@ -45,17 +44,7 @@
 						</div>
 				
 				
-						<?php # payment部分
-							$paymentView = [
-								'view'	=> 'checkout/onepage/index/payment.php'
-							];
-							$paymentParam = [
-								'payments' => $payments,
-								'current_payment_mothod' => $current_payment_mothod,
-							];
-						?>
-						<?= Yii::$service->page->widget->render($paymentView,$paymentParam); ?>
-					
+						
 							
 						<div class="onestepcheckout-coupons">
 							<div style="display: none;" id="coupon-notice"></div>
@@ -77,7 +66,7 @@
 						<div class="review_order_view">
 							<?php # review order部分
 								$reviewOrderView = [
-									'view'	=> 'checkout/onepage/index/review_order.php'
+									'view'	=> 'payment/paypal/express/review/review_order.php'
 								];
 								$reviewOrderParam = [
 									'cart_info' => $cart_info,

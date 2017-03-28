@@ -19,6 +19,11 @@ class OnepageController extends AppfrontController
 {
     public $enableCsrfValidation = true;
 	
+	//public function init(){
+	//	Yii::$service->page->theme->layoutFile = 'one_step_checkout.php';
+		
+	//}
+	
 	public function actionIndex(){
 		//var_dump(Yii::$app->request->post());
 		

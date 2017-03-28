@@ -358,7 +358,41 @@ class Payment extends Service
 		}
 	}
 	
+	/**
+	 * @property $payment_method | String 支付方式。
+	 * @return 返回进行数据交互的express的signature。
+	 */
+	public function getExpressReturnUrl($payment_method = ''){
+		if(!$payment_method){
+			$payment_method = $this->getPaymentMethod();
+		}
+		if($payment_method){
+			$paymentConfig = $this->paymentConfig;
+			if(isset($paymentConfig['express'][$payment_method]['return_url'])){
+				if(!empty($paymentConfig['express'][$payment_method]['return_url'])){
+					return $this->getUrl($paymentConfig['express'][$payment_method]['return_url']);
+				}
+			}
+		}
+	}
 	
+	/**
+	 * @property $payment_method | String 支付方式。
+	 * @return 返回进行数据交互的express的signature。
+	 */
+	public function getExpressCancelUrl($payment_method = ''){
+		if(!$payment_method){
+			$payment_method = $this->getPaymentMethod();
+		}
+		if($payment_method){
+			$paymentConfig = $this->paymentConfig;
+			if(isset($paymentConfig['express'][$payment_method]['cancel_url'])){
+				if(!empty($paymentConfig['express'][$payment_method]['cancel_url'])){
+					return $this->getUrl($paymentConfig['express'][$payment_method]['cancel_url']);
+				}
+			}
+		}
+	}
 	
 	
 	
