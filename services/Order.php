@@ -89,11 +89,12 @@ class Order extends Service
 		}
 	}
 	/**
+	 * @property $reflush | boolean 是否从数据库中重新获取，如果是，则不会使用类变量中计算的值
 	 * 通过从session中取出来订单的increment_id
 	 * 在通过increment_id(订单编号)取出来订单信息。
 	 */
-	protected function actionGetCurrentOrderInfo(){
-		if(!$this->_currentOrderInfo){
+	protected function actionGetCurrentOrderInfo($reflush = false){
+		if(!$this->_currentOrderInfo || $reflush){
 			$increment_id 	= Yii::$service->order->getSessionIncrementId();
 			$this->_currentOrderInfo 		= Yii::$service->order->getOrderInfoByIncrementId($increment_id);
 		}	
@@ -389,7 +390,7 @@ class Order extends Service
 		
 			# 如果是登录用户，那么，在生成订单后，需要清空购物车。
 			if(!Yii::$app->user->isGuest){
-				Yii::$service->cart->clearCartProduct();
+				//Yii::$service->cart->clearCartProduct();
 			}
 			return true;
 		}else{

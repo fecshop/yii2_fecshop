@@ -84,12 +84,16 @@ return [
 			'paypal' => [
 				'class' 	=> 'fecshop\services\payment\Paypal',
 				/*
-				'use_local_certs' => true,
 				'express_payment_method' => 'paypal_express',
 				'version' => '109.0',
+				
+				# 是否使用证书的方式进行paypal api对接（https ssl）
+				# 如果配置为true，那么必须在crt_file中配置证书地址。
+				# 默认不使用证书验证
+				'use_local_certs' => false,	
 				'crt_file' 	=> [
-					'www.sandbox.paypal.com' 	=>'@fecshop/services/payment/cert/paypal.crt',
-					'api-3t.sandbox.paypal.com' =>'@fecshop/services/payment/cert/api-3tsandboxpaypalcom.crt',
+					'www.paypal.com' 	=>'@fecshop/services/payment/cert/paypal.crt',
+					'api-3t.paypal.com' =>'@fecshop/services/payment/cert/api-3tsandboxpaypalcom.crt',
 				
 				],
 				*/

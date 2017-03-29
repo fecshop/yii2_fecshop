@@ -2,7 +2,7 @@
 	<div class="col-main">
 		<?= Yii::$service->page->widget->render('flashmessage'); ?>
 
-		<form action="<?= Yii::$service->url->getUrl('payment/paypal/express/placeorder'); ?>" method="post" id="onestepcheckout-form">
+		<form action="<?= Yii::$service->url->getCurrentUrl(); ?>" method="post" id="onestepcheckout-form">
 			<?= \fec\helpers\CRequest::getCsrfInputHtml(); ?>
 			<fieldset style="margin: 0;" class="group-select">
 				<p class="onestepcheckout-description"><?= Yii::$service->page->translate->__('Welcome to the checkout,Fill in the fields below to complete your purchase');?> !</p>
@@ -244,96 +244,33 @@
 				$(".shipment-methods").after('<div style=""  class="validation-advice"><?= Yii::$service->page->translate->__('This is a required field.');?></div>');
 				j = 1;
 			}
-			//alert(j);
-			//payment  
-			payment_method = $("#checkout-payment-method-load input[name='payment_method']:checked").val();
-			//alert(shipment_method);
-			if(!payment_method){
-				$(".checkout-payment-method-load").after('<div style=""  class="validation-advice"><?= Yii::$service->page->translate->__('This is a required field.');?></div>');
-				j = 1;
-			}
 			
 			
 			
-			if(address_list){
-				if(!j){
-					$(".onestepcheckout-place-order").addClass('visit');
-				
-					$("#onestepcheckout-form").submit();
-				}
-			}else{
-				//alert(11);
-				//alert(j);
-				$("#onestepcheckout-form .required-entry").each(function(){
-					value = $(this).val();
-					if(!value){
-						//alert(this);
-						//alert($(this).attr('name'));
-						i++;
-						$(this).after('<div style=""  class="validation-advice"><?= Yii::$service->page->translate->__('This is a required field.');?></div>');
-					}
-				});
-				//email  format validate
-				user_email = $("#billing_address .validate-email").val();
-				if(user_email && !validateEmail(user_email)){
-					$("#billing_address .validate-email").after('<div style=""  class="validation-advice"><?= Yii::$service->page->translate->__('email address format is incorrect');?></div>');
+			
+			$("#onestepcheckout-form .required-entry").each(function(){
+				value = $(this).val();
+				if(!value){
 					i++;
+					$(this).after('<div style=""  class="validation-advice"><?= Yii::$service->page->translate->__('This is a required field.');?></div>');
 				}
-				// password 是否长度大于6，并且两个密码一致
-				if($("#id_create_account").is(':checked')){
-					
-					new_user_pass = $(".customer_password").val();
-					new_user_pass_cm = $(".customer_confirm_password").val();
-					//alert(new_user_pass);
-					//alert(new_user_pass.length);
-					//alert(new_user_pass_cm);
-					<?php 
-						$passwdMinLength = Yii::$service->customer->getRegisterPassMinLength();
-						$passwdMaxLength = Yii::$service->customer->getRegisterPassMaxLength();
-					?>
-					passwdMinLength = "<?= $passwdMinLength ?>";
-					passwdMaxLength = "<?= $passwdMaxLength ?>";
-					if(new_user_pass.length < passwdMinLength){
-						$(".customer_password").after('<div style=""  class="validation-advice"><?= Yii::$service->page->translate->__('Password length must be greater than or equal to {passwdMinLength}',['passwdMinLength' => $passwdMinLength]);?></div>');
-						i++;
-					}else if(new_user_pass.length > passwdMaxLength){
-						$(".customer_password").after('<div style=""  class="validation-advice"><?= Yii::$service->page->translate->__('Password length must be less than or equal to {passwdMaxLength}',['passwdMaxLength' => $passwdMaxLength]);?></div>');
-						i++;
-					}else if(new_user_pass != new_user_pass_cm){
-						$(".customer_confirm_password").after('<div style=""  class="validation-advice"><?= Yii::$service->page->translate->__('The passwords are inconsistent');?></div>');
-						i++; 
-					}  
-				}
-				
-				//alert(222);
-				if(!i && !j){
-					//alert(333);
-					$(".onestepcheckout-place-order").addClass('visit');
-					$("#onestepcheckout-form").submit();
-				}
+			});
+			user_email = $("#billing_address .validate-email").val();
+			if(user_email && !validateEmail(user_email)){
+				$("#billing_address .validate-email").after('<div style=""  class="validation-advice"><?= Yii::$service->page->translate->__('email address format is incorrect');?></div>');
+				i++;
 			}
+			
+			if(!i && !j){
+				//alert(333);
+				$(".onestepcheckout-place-order").addClass('visit');
+				$("#onestepcheckout-form").submit();
+			}
+			
 			
 		});
 		
-		//登录用户切换地址列表
-		$(".address_list").change(function(){
-			val = $(this).val();
-			if(!val){
-				$(".billing_address_list_new").show();
-				 
-				$(".save_in_address_book").attr("checked","checked");
-				ajaxreflush();
-				
-			}else{
-				$(".billing_address_list_new").hide();
-				$(".save_in_address_book").attr("checked",false);
-				addressid = $(this).val();
-				
-				if(addressid){
-					ajaxreflush();
-				}
-			}
-		});
+		
 		
 		// 国家选择后，state需要清空，重新选择或者填写
 		$(".billing_country").change(function(){

@@ -40,8 +40,8 @@ class Placeorder {
 			# 检查前台传递的数据的完整性
 			if($this->checkOrderInfoAndInit($post)){
 				# 如果游客用户勾选了注册账号，则注册，登录，并把地址写入到用户的address中
-				
 				$save_address_status = $this->updateAddress($post);
+				//echo 1;
 				if($save_address_status){
 					# 更新Cart信息  
 					//$this->updateCart();
@@ -51,14 +51,18 @@ class Placeorder {
 					$serviceOrder->setCheckoutType($checkout_type);
 					# 将购物车数据，生成订单。
 					$genarateStatus = Yii::$service->order->generateOrderByCart($this->_billing,$this->_shipping_method,$this->_payment_method);
+					//echo 22;
 					if($genarateStatus){
 						# 得到当前的订单信息
 						$orderInfo = Yii::$service->order->getCurrentOrderInfo();
 						$doExpressCheckoutReturn = $this->doExpressCheckoutPayment();
+						//echo 333;
 						if($doExpressCheckoutReturn){
 							$ExpressOrderPayment = Yii::$service->payment->paypal->updateExpressOrderPayment($doExpressCheckoutReturn);
 							# 如果支付成功，并把信息更新到了订单数据中，则进行下面的操作。
+							//echo 444;
 							if($ExpressOrderPayment){
+								//echo 555;
 								# 发送新订单邮件
 								Yii::$service->email->order->sendCreateEmail($orderInfo);
 								# 得到支付跳转前的准备页面。
@@ -75,7 +79,7 @@ class Placeorder {
 				
 			}
 		}
-		//echo 333;exit;
+		//echo 'eeeeeeee';exit;
 		Yii::$service->page->message->addByHelperErrors();
 		return false;
 	}
@@ -85,7 +89,8 @@ class Placeorder {
 		$nvpStr_ 		= Yii::$service->payment->paypal->getExpressCheckoutPaymentNvpStr();
 		//echo $nvpStr_;exit;
 		$DoExpressCheckoutReturn = Yii::$service->payment->paypal->PPHttpPost5($methodName_, $nvpStr_);
-		
+		//var_dump($DoExpressCheckoutReturn);
+		//exit;
 		if(strstr(strtolower($DoExpressCheckoutReturn['ACK']),'success')){
 			return $DoExpressCheckoutReturn;
 		}else{
@@ -93,6 +98,9 @@ class Placeorder {
 				$message = $DoExpressCheckoutReturn['L_LONGMESSAGE0'];
 				# 添加报错信息。
 				//Message::error($message);
+				Yii::$service->helper->errors->add($message);
+			}else{
+				Yii::$service->helper->errors->add('paypal express payment error.');
 			}
 			return false;
 		}
@@ -147,16 +155,7 @@ class Placeorder {
 				return false;
 			}
 		}
-		# 验证支付方式
-		if(!$payment_method){
-			Yii::$service->helper->errors->add('payment method can not empty');
-			return false;
-		}else{
-			if(!Yii::$service->payment->ifIsCorrectStandard($payment_method)){
-				Yii::$service->helper->errors->add('payment method is not correct');
-				return false;
-			}
-		}
+		
 		$this->_shipping_method = $shipping_method;
 		$this->_payment_method = $payment_method;
 		Yii::$service->payment->setPaymentMethod($this->_payment_method);

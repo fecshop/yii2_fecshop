@@ -79,33 +79,7 @@
 						</div>
 						
 					</li>
-					<?php if(!Yii::$app->user->isGuest){  ?>
-					<!--
-					<li class="control">
-						<input class="save_in_address_book checkbox" id="billing:save_in_address_book" title="Save in address book" value="1" name="billing[save_in_address_book]" checked="checked" type="checkbox"><label for="billing:save_in_address_book">Save in address book</label>
-					</li>  
-					-->
-					<?php }else{ ?>
-					<li class="clearfix">
-						<div class="input-box">
-							<input value="1" name="create_account" id="id_create_account" type="checkbox">
-							<label style="display:inline" for="id_create_account"><?= Yii::$service->page->translate->__('Create an account for later use');?></label>
-						</div>
-						<div class="label_create_account">
-						
-						</div>
-					</li>
-					<li style="display: none;" id="onestepcheckout-li-password">
-						<div class="input-box input-password">
-							<label for="billing:customer_password"><?= Yii::$service->page->translate->__('Password');?></label><br>
-							<input name="billing[customer_password]" id="billing:customer_password" title="Password" value="" class="validate-password input-text customer_password" type="password">
-						</div>
-						<div class="input-box input-password">
-							<label for="billing:confirm_password"><?= Yii::$service->page->translate->__('Confirm Password');?></label><br>
-							<input name="billing[confirm_password]" title="Confirm Password" id="billing:confirm_password" value="" class="validate-password input-text customer_confirm_password" type="password">
-						</div>
-					</li>
-					<?php }  ?>
+					
 				</ul>							
 			</div>
 		</li>

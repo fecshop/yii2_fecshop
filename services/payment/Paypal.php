@@ -34,7 +34,8 @@ class Paypal extends Service
     public $payment_status_processed  		= 'processed';
     public $payment_status_voided     		= 'voided';
 	
-	public $use_local_certs = true;
+	# 是否使用证书的方式（https）
+	public $use_local_certs = false;
 	# 在payment中 express paypal 的配置值
 	public $express_payment_method;
 	public $version = '109.0';
@@ -97,17 +98,23 @@ class Paypal extends Service
 		$ch = curl_init($url);
         curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
         curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_VERBOSE, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $req);
-        curl_setopt($ch, CURLOPT_SSLVERSION, 6);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+        
 		curl_setopt($ch, CURLOPT_TIMEOUT,30);
-        // This is often required if the server is missing a global cert bundle, or is using an outdated one.
-        if ($this->use_local_certs) {
-			$crtFile = $this->getCrtFile('www.sandbox.paypal.com');
+        
+		curl_setopt($ch, CURLOPT_SSLVERSION, 6);
+		if ($this->use_local_certs) {
+			$crtFile = $this->getCrtFile('www.paypal.com');
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
             curl_setopt($ch, CURLOPT_CAINFO, $crtFile);
-        }
+        }else{
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); 
+		}
+
         curl_setopt($ch, CURLOPT_FORBID_REUSE, 1);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Connection: Close'));
@@ -291,20 +298,43 @@ class Paypal extends Service
 		$API_Password 	= Yii::$service->payment->getExpressPassword($this->express_payment_method);
 		# Set the API operation, version, and API signature in the request.
 		$nvpreq = "METHOD=$methodName_&PWD=$API_Password&USER=$API_UserName&SIGNATURE=$API_Signature$nvpStr_";
+		
+		/*
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $API_NvpUrl);
+		curl_setopt($ch, CURLOPT_VERBOSE, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT,10000);
+		// Turn off the server and peer verification (TrustManager Concept).
+		//curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+		//curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+		//curl_setopt($ch, CURLOPT_SSLVERSION , 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); 
+		curl_setopt($ch, CURLOPT_SSLVERSION, 6);
+
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $nvpreq);
+		$httpResponse = curl_exec($ch);
+		*/
+		
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
 		curl_setopt($ch, CURLOPT_URL, $API_NvpUrl);
 		curl_setopt($ch, CURLOPT_VERBOSE, 1);
 		curl_setopt($ch, CURLOPT_TIMEOUT,30);
-		curl_setopt($ch, CURLOPT_SSLVERSION, 6);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_SSLVERSION, 6);
 		if ($this->use_local_certs) {
-			$crtFile = $this->getCrtFile('api-3t.sandbox.paypal.com');
+			$crtFile = $this->getCrtFile('api-3t.paypal.com');
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
             curl_setopt($ch, CURLOPT_CAINFO, $crtFile);
-        }
+        }else{
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); 
+		}
 		# Set the request as a POST FIELD for curl.
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $nvpreq);
 		curl_setopt($ch, CURLOPT_FORBID_REUSE, 1);
@@ -312,6 +342,7 @@ class Paypal extends Service
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Connection: Close'));
 		# Get response from the server.
 		$httpResponse = curl_exec($ch);
+		
 		if(!$httpResponse) {
 			$i++;
 			if($i>5){
@@ -371,27 +402,30 @@ class Paypal extends Service
 		 
 		$nvp_array['PAYERID'] 		= $this->getExpressPayerID();
 		$nvp_array['TOKEN'] 		= $this->getExpressToken();
-		$nvp_array['PAYMENTREQUEST_0_PAYMENTACTION'] = 'Sale';
+		$nvp_array['PAYMENTREQUEST_0_PAYMENTACTION'] = 'Sale'; 
 		$nvp_array['VERSION'] 		= $this->version;
-		
+		# https://developer.paypal.com/docs/classic/api/merchant/SetExpressCheckout_API_Operation_NVP/
+		# 检查地址
+		$nvp_array['ADDROVERRIDE'] 	= 0;
+		//ADDROVERRIDE
 		# 得到购物车的信息，通过购物车信息填写。
 		$orderInfo = Yii::$service->order->getCurrentOrderInfo();
 		//$cartInfo = Yii::$service->cart->getCartInfo();
 		$currency = Yii::$service->page->currency->getCurrentCurrency();
 		
-		$grand_total 		= $orderInfo['grand_total'];
-		$subtotal			= $orderInfo['subtotal'];
-		$shipping_total		= $orderInfo['shipping_total'];
-		$discount_amount	= $orderInfo['subtotal_with_discount'];
+		$grand_total 		= Yii::$service->helper->format->number_format($orderInfo['grand_total']);
+		$subtotal			= Yii::$service->helper->format->number_format($orderInfo['subtotal']);
+		$shipping_total		= Yii::$service->helper->format->number_format($orderInfo['shipping_total']);
+		$discount_amount	= Yii::$service->helper->format->number_format($orderInfo['subtotal_with_discount']);
 		$subtotal = $subtotal - $discount_amount;
 		
-		$nvp_array['PAYMENTREQUEST_0_SHIPTOSTREET'] 		= $orderInfo['customer_address_street1'].' '.$this->_quote['customer_address_street2'];
+		$nvp_array['PAYMENTREQUEST_0_SHIPTOSTREET'] 		= $orderInfo['customer_address_street1'].' '.$orderInfo['customer_address_street2'];
 		$nvp_array['PAYMENTREQUEST_0_SHIPTOCITY'] 			= $orderInfo['customer_address_city'];
 		$nvp_array['PAYMENTREQUEST_0_SHIPTOSTATE'] 			= $orderInfo['customer_address_state_name'];
 		$nvp_array['PAYMENTREQUEST_0_SHIPTOCOUNTRYCODE'] 	= $orderInfo['customer_address_country'];
 		$nvp_array['PAYMENTREQUEST_0_SHIPTOZIP']			= $orderInfo['customer_address_zip'];
-		$nvp_array['PAYMENTREQUEST_0_SHIPTONAME'] 			= $orderInfo['customer_firstname'].' '.$this->_quote['customer_lastname'];
-		$nvp_array['PAYMENTREQUEST_0_INVNUM'] = $this->_invoice_id;
+		$nvp_array['PAYMENTREQUEST_0_SHIPTONAME'] 			= $orderInfo['customer_firstname'].' '.$orderInfo['customer_lastname'];
+		$nvp_array['PAYMENTREQUEST_0_INVNUM'] 				= $orderInfo['increment_id'];
 		
 		
 		$nvp_array['PAYMENTREQUEST_0_CURRENCYCODE'] = $currency;
@@ -403,15 +437,17 @@ class Paypal extends Service
 		foreach($orderInfo['products'] as $item){
 			$nvp_array['L_PAYMENTREQUEST_0_QTY'.$i] 		= $item['qty'];
 			$nvp_array['L_PAYMENTREQUEST_0_NUMBER'.$i] 		= $item['sku'];
-			$nvp_array['L_PAYMENTREQUEST_0_AMT'.$i] 		= $item['product_price'];
+			$nvp_array['L_PAYMENTREQUEST_0_AMT'.$i] 		= Yii::$service->helper->format->number_format($item['price']);
 			$nvp_array['L_PAYMENTREQUEST_0_NAME'.$i] 		= Yii::$service->store->getStoreAttrVal($item['name'],'name');
 			$nvp_array['L_PAYMENTREQUEST_0_CURRENCYCODE'.$i]= $currency;
 			$i++;
 		}
 		$nvp_array['L_PAYMENTREQUEST_0_NAME'.$i] = 'Discount';
 		$nvp_array['L_PAYMENTREQUEST_0_AMT'.$i] = "-".$discount_amount;
-		return $this->getRequestUrlStrByArray($nvp_array);
-		
+		//var_dump($nvp_array);
+		$nvpStr = $this->getRequestUrlStrByArray($nvp_array);
+		//var_dump($nvpStr);
+		return $nvpStr;
 	}
 	
 	/**
@@ -506,9 +542,12 @@ class Paypal extends Service
 	 */
 	public function updateExpressOrderPayment($DoExpressCheckoutReturn){
 		if($DoExpressCheckoutReturn){
+			//echo 'aaa';
 			$increment_id = Yii::$service->order->getSessionIncrementId();
+			//echo "\n $increment_id \n\n";
 			$order = Yii::$service->order->getByIncrementId($increment_id);
 			if($order['increment_id']){
+				//echo 'bbb';
 				$order['txn_id'] 		= $DoExpressCheckoutReturn['PAYMENTINFO_0_TRANSACTIONID'];
 				$order['txn_type'] 		= $DoExpressCheckoutReturn['PAYMENTINFO_0_TRANSACTIONTYPE'];
 				$PAYMENTINFO_0_AMT 		= $DoExpressCheckoutReturn['PAYMENTINFO_0_AMT'];
@@ -527,19 +566,41 @@ class Paypal extends Service
 				$order['paypal_order_datetime'] 		= date("Y-m-d H:i:s",$DoExpressCheckoutReturn['PAYMENTINFO_0_ORDERTIME']);
 				$PAYMENTINFO_0_PAYMENTSTATUS 			= $DoExpressCheckoutReturn['PAYMENTINFO_0_PAYMENTSTATUS'];
 				# 判断支付状态是否是成功
+				/*
+				echo "\n";
+				var_dump($DoExpressCheckoutReturn);
+				echo 'ccc';
+				echo "\n";
+				echo $PAYMENTINFO_0_PAYMENTSTATUS;
+				echo "\n";
+				echo $currency.'####'.$order['order_currency_code'];
+				echo "\n";
+				echo $PAYMENTINFO_0_AMT.'####'.$order['grand_total'];
+				echo "\n";
+				*/
 				if(strtolower($PAYMENTINFO_0_PAYMENTSTATUS) == $this->payment_status_completed){
+					//echo 222;
 					# 判断金额是否相符
 					if($currency == $order['order_currency_code'] && $PAYMENTINFO_0_AMT == $order['grand_total']){
+						//echo 222;
 						$order->order_status = Yii::$service->order->payment_status_processing;
 						$order->save();
 						return true;
 					}else{
+						Yii::$service->helper->errors->add('The amount of payment is inconsistent with the amount of the order');
 						$order->order_status = Yii::$service->order->payment_status_suspected_fraud;
 						$order->save();
 					}
+				}else{
+					Yii::$service->helper->errors->add('paypal express payment is not complete , current payment status is '.$PAYMENTINFO_0_PAYMENTSTATUS);
 				}
 			
+			}else{
+				Yii::$service->helper->errors->add('current order is not exist');
 			}
+		}else{
+			Yii::$service->helper->errors->add('ExpressCheckoutReturn is empty');
+			
 		}
 		return false;
 	}

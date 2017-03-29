@@ -382,11 +382,20 @@ class Index {
 					$pArr[$k] = $v;
 				}
 			}else{
+				$checked_payment = 0;
 				foreach($paymentArr as $k => $v){
 					if($this->_payment_method == $k){
 						$v['checked'] = true;
+						$checked_payment = 1;
 					}
 					$pArr[$k] = $v;
+				}
+				if(!$checked_payment){
+					foreach($paymentArr as $k => $v){
+						$this->_payment_method = $k;
+						$pArr[$k]['checked'] = true;
+						break;
+					}
 				}
 				//var_dump($paymentArr);
 			}

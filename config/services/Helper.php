@@ -54,7 +54,10 @@ return [
 				'class' => 'fecshop\services\helper\Country',
 				//'default_country' => 'US',
 			],
-			
+			'format' => [
+				'class' => 'fecshop\services\helper\Format',
+				//'default_country' => 'US',
+			],
 		],
 	],
 ];
