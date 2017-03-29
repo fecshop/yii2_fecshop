@@ -2,7 +2,7 @@
 	<div class="col-main">
 		<?= Yii::$service->page->widget->render('flashmessage'); ?>
 
-		<form action="<?= Yii::$service->url->getUrl('checkout/onepage'); ?>" method="post" id="onestepcheckout-form">
+		<form action="<?= Yii::$service->url->getUrl('payment/paypal/express/placeorder'); ?>" method="post" id="onestepcheckout-form">
 			<?= \fec\helpers\CRequest::getCsrfInputHtml(); ?>
 			<fieldset style="margin: 0;" class="group-select">
 				<p class="onestepcheckout-description"><?= Yii::$service->page->translate->__('Welcome to the checkout,Fill in the fields below to complete your purchase');?> !</p>

@@ -428,8 +428,8 @@ class Review {
 		}
 		
 		
-		$methodName_ = "GetExpressCheckoutDetails";
-		$nvpStr_ = $this->getNvpStr();
+		$methodName_ 	= "GetExpressCheckoutDetails";
+		$nvpStr_ 		= Yii::$service->payment->paypal->getExpressAddressNvpStr();
 		$expressCheckoutReturn = Yii::$service->payment->paypal->PPHttpPost5($methodName_, $nvpStr_);
 		
 		if(strtolower($expressCheckoutReturn["ACK"]) == "success"){
@@ -440,19 +440,6 @@ class Review {
 	}
 	
 	
-	
-	public function getNvpStr(){ //109.0
-		$nvp_array = [];
-		$nvp_array['VERSION'] 	= Yii::$service->payment->paypal->version;
-		$nvp_array['token'] 	= Yii::$service->payment->paypal->getExpressToken();
-		$str = '';
-		foreach($nvp_array as $k=>$v){
-			if($k && $v){
-				$str .= '&'.urlencode($k).'='.urlencode($v);
-			}
-		}
-		return $str;
-	}
 	
 	
 	/**

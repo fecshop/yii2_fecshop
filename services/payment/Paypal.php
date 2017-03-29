@@ -37,7 +37,7 @@ class Paypal extends Service
 	public $use_local_certs = true;
 	# 在payment中 express paypal 的配置值
 	public $express_payment_method;
-	public $version = '109.0'；
+	public $version = '109.0';
 	public $crt_file;
 	
 	protected $_postData;
@@ -363,10 +363,75 @@ class Paypal extends Service
 	}
 	
 	/**
-	 * @property $landingPage | String ，访问api的类型，譬如login
-	 * 通过购物车中的数据，组合成访问paypal express api的url
+	 * 【paypal快捷支付部分】api发送付款
+	 *  通过该函数，将参数组合成字符串，通过api发送给paypal进行付款。
 	 */
-	public function getNvpStr($landingPage){
+	public function getExpressCheckoutPaymentNvpStr(){ 
+		$nvp_array = [];
+		 
+		$nvp_array['PAYERID'] 		= $this->getExpressPayerID();
+		$nvp_array['TOKEN'] 		= $this->getExpressToken();
+		$nvp_array['PAYMENTREQUEST_0_PAYMENTACTION'] = 'Sale';
+		$nvp_array['VERSION'] 		= $this->version;
+		
+		# 得到购物车的信息，通过购物车信息填写。
+		$orderInfo = Yii::$service->order->getCurrentOrderInfo();
+		//$cartInfo = Yii::$service->cart->getCartInfo();
+		$currency = Yii::$service->page->currency->getCurrentCurrency();
+		
+		$grand_total 		= $orderInfo['grand_total'];
+		$subtotal			= $orderInfo['subtotal'];
+		$shipping_total		= $orderInfo['shipping_total'];
+		$discount_amount	= $orderInfo['subtotal_with_discount'];
+		$subtotal = $subtotal - $discount_amount;
+		
+		$nvp_array['PAYMENTREQUEST_0_SHIPTOSTREET'] 		= $orderInfo['customer_address_street1'].' '.$this->_quote['customer_address_street2'];
+		$nvp_array['PAYMENTREQUEST_0_SHIPTOCITY'] 			= $orderInfo['customer_address_city'];
+		$nvp_array['PAYMENTREQUEST_0_SHIPTOSTATE'] 			= $orderInfo['customer_address_state_name'];
+		$nvp_array['PAYMENTREQUEST_0_SHIPTOCOUNTRYCODE'] 	= $orderInfo['customer_address_country'];
+		$nvp_array['PAYMENTREQUEST_0_SHIPTOZIP']			= $orderInfo['customer_address_zip'];
+		$nvp_array['PAYMENTREQUEST_0_SHIPTONAME'] 			= $orderInfo['customer_firstname'].' '.$this->_quote['customer_lastname'];
+		$nvp_array['PAYMENTREQUEST_0_INVNUM'] = $this->_invoice_id;
+		
+		
+		$nvp_array['PAYMENTREQUEST_0_CURRENCYCODE'] = $currency;
+		$nvp_array['PAYMENTREQUEST_0_AMT'] = $grand_total;
+		$nvp_array['PAYMENTREQUEST_0_ITEMAMT'] = $subtotal;
+		$nvp_array['PAYMENTREQUEST_0_SHIPPINGAMT'] = $shipping_total;
+		$i = 0;
+		
+		foreach($orderInfo['products'] as $item){
+			$nvp_array['L_PAYMENTREQUEST_0_QTY'.$i] 		= $item['qty'];
+			$nvp_array['L_PAYMENTREQUEST_0_NUMBER'.$i] 		= $item['sku'];
+			$nvp_array['L_PAYMENTREQUEST_0_AMT'.$i] 		= $item['product_price'];
+			$nvp_array['L_PAYMENTREQUEST_0_NAME'.$i] 		= Yii::$service->store->getStoreAttrVal($item['name'],'name');
+			$nvp_array['L_PAYMENTREQUEST_0_CURRENCYCODE'.$i]= $currency;
+			$i++;
+		}
+		$nvp_array['L_PAYMENTREQUEST_0_NAME'.$i] = 'Discount';
+		$nvp_array['L_PAYMENTREQUEST_0_AMT'.$i] = "-".$discount_amount;
+		return $this->getRequestUrlStrByArray($nvp_array);
+		
+	}
+	
+	/**
+	 * 【paypal快捷支付部分】将参数组合成字符串。
+	 *  通过api token，从paypal获取用户在paypal保存的货运地址。
+	 */
+	public function getExpressAddressNvpStr(){ 
+		$nvp_array = [];
+		$nvp_array['VERSION'] 	= Yii::$service->payment->paypal->version;
+		$nvp_array['token'] 	= Yii::$service->payment->paypal->getExpressToken();
+		return $this->getRequestUrlStrByArray($nvp_array);
+	}
+	
+	/**
+	 * @property $landingPage | String ，访问api的类型，譬如login
+	 * 【paypal快捷支付部分】通过购物车中的数据，组合成访问paypal express api的url
+	 * 这里返回的的字符串，是快捷支付部分获取token和payerId的参数。
+	 * 通过这些参数最终得到paypal express的token和payerId
+	 */
+	public function getExpressTokenNvpStr($landingPage = 'Login'){
 		$nvp_array = [];
 		$nvp_array['LANDINGPAGE'] 	= $landingPage;
 		$nvp_array['RETURNURL'] 	= Yii::$service->payment->getExpressReturnUrl($this->express_payment_method);
@@ -422,7 +487,7 @@ class Paypal extends Service
 			return true;
 		}
 		return false;
-	}
+	} 
 	/**
 	 * 从session 中取出来token
 	 */
@@ -435,6 +500,48 @@ class Paypal extends Service
 	public function getExpressPayerID(){
 		return Yii::$app->session->get(self::EXPRESS_PAYER_ID);
 	}
-	
+	/**
+	 * @property $doExpressCheckoutReturn | Array ， 上面的 函数 doExpressCheckoutPayment 返回的数据
+	 * 快捷支付付款状态提交后，更新订单的支付部分的信息。
+	 */
+	public function updateExpressOrderPayment($DoExpressCheckoutReturn){
+		if($DoExpressCheckoutReturn){
+			$increment_id = Yii::$service->order->getSessionIncrementId();
+			$order = Yii::$service->order->getByIncrementId($increment_id);
+			if($order['increment_id']){
+				$order['txn_id'] 		= $DoExpressCheckoutReturn['PAYMENTINFO_0_TRANSACTIONID'];
+				$order['txn_type'] 		= $DoExpressCheckoutReturn['PAYMENTINFO_0_TRANSACTIONTYPE'];
+				$PAYMENTINFO_0_AMT 		= $DoExpressCheckoutReturn['PAYMENTINFO_0_AMT'];
+				$order['payment_fee'] 	= $DoExpressCheckoutReturn['PAYMENTINFO_0_FEEAMT'];
+				
+				$currency 					= $DoExpressCheckoutReturn['PAYMENTINFO_0_CURRENCYCODE'];
+				$order['base_payment_fee'] 	= Yii::$service->page->currency->getBaseCurrencyPrice($order['payment_fee'],$currency);
+				$order['payer_id'] 			= $this->getExpressPayerID();
+			
+				$order['correlation_id'] 				= $DoExpressCheckoutReturn['CORRELATIONID'];
+				$order['protection_eligibility'] 		= $DoExpressCheckoutReturn['PAYMENTINFO_0_PROTECTIONELIGIBILITY'];
+				$order['protection_eligibility_type']	= $DoExpressCheckoutReturn['PAYMENTINFO_0_PROTECTIONELIGIBILITYTYPE'];
+				$order['secure_merchant_account_id'] 	= $DoExpressCheckoutReturn['PAYMENTINFO_0_SECUREMERCHANTACCOUNTID'];
+				$order['build'] 						= $DoExpressCheckoutReturn['BUILD'];
+				$order['payment_type'] 					= $DoExpressCheckoutReturn['PAYMENTINFO_0_PAYMENTTYPE'];
+				$order['paypal_order_datetime'] 		= date("Y-m-d H:i:s",$DoExpressCheckoutReturn['PAYMENTINFO_0_ORDERTIME']);
+				$PAYMENTINFO_0_PAYMENTSTATUS 			= $DoExpressCheckoutReturn['PAYMENTINFO_0_PAYMENTSTATUS'];
+				# 判断支付状态是否是成功
+				if(strtolower($PAYMENTINFO_0_PAYMENTSTATUS) == $this->payment_status_completed){
+					# 判断金额是否相符
+					if($currency == $order['order_currency_code'] && $PAYMENTINFO_0_AMT == $order['grand_total']){
+						$order->order_status = Yii::$service->order->payment_status_processing;
+						$order->save();
+						return true;
+					}else{
+						$order->order_status = Yii::$service->order->payment_status_suspected_fraud;
+						$order->save();
+					}
+				}
+			
+			}
+		}
+		return false;
+	}
 	
 }

@@ -80,6 +80,10 @@ class Payment extends Service
 			}
 		}
 	}
+	
+	
+	
+	
 	/**
 	 * @property $payment_method | String 支付方式。
 	 * @return 第三方网站发送ipn消息，告诉网站支付成功的url。
@@ -395,5 +399,23 @@ class Payment extends Service
 	}
 	
 	
+	/**
+	 * @property $payment_method | String 支付方式。
+	 * @return 第三方支付成功后，返回到网站的url
+	 * #从配置信息中获取
+	 */
+	public function getExpressSuccessRedirectUrl($payment_method = ''){
+		if(!$payment_method){
+			$payment_method = $this->getPaymentMethod();
+		}
+		if($payment_method){
+			$paymentConfig = $this->paymentConfig;
+			if(isset($paymentConfig['express'][$payment_method]['success_redirect_url'])){
+				if(!empty($paymentConfig['express'][$payment_method]['success_redirect_url'])){
+					return $this->getUrl($paymentConfig['express'][$payment_method]['success_redirect_url']);
+				}
+			}
+		}
+	}
 	
 }

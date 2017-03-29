@@ -18,16 +18,8 @@ use yii\base\InvalidValueException;
 class Start {
 	
 	public function startExpress(){
-		# 首先验证购物车中是否存在产品
-		//$this->validateCart();
-		//if($LANDINGPAGE == 'Login' ){
-		//	$clickButton = 'paypal button';
-		//}else{
-		//	$clickButton = 'Credit Card button';
-		//}
-		
 		$methodName_ = "SetExpressCheckout";
-		$nvpStr_ = Yii::$service->payment->paypal->getNvpStr($LANDINGPAGE);
+		$nvpStr_ = Yii::$service->payment->paypal->getExpressTokenNvpStr();
 		//echo $nvpStr_;exit;
 		$SetExpressCheckoutReturn = Yii::$service->payment->paypal->PPHttpPost5($methodName_, $nvpStr_);
 		if(strtolower($SetExpressCheckoutReturn['ACK']) == 'success'){
@@ -36,8 +28,6 @@ class Start {
 			Yii::$service->url->redirect($redirectUrl);
 			exit;
 		}
-	
-		
 	}
 	
 	

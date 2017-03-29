@@ -25,19 +25,19 @@ class ExpressController extends AppfrontController
 	}
 	# 2.Review  从paypal确认后返回
 	public function actionReview(){
-		//PayerID
-		//$data = $this->getBlock()->expressReview();
+		$_csrf = Yii::$app->request->post('_csrf');
+		if($_csrf){
+			$status = $this->getBlock('placeorder')->getLastData();
+			if(!$status){
+				//var_dump(Yii::$service->helper->errors->get());
+				//exit;
+			}
+		}
 		$data = $this->getBlock()->getLastData();
 		return $this->render($this->action->id,$data);
 	}
 	
-	public function actionSuccess(){
-		
-	}
 	
-	public function actionIpn(){
-		
-	}
 	
 }
 
