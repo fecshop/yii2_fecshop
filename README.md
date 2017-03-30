@@ -17,7 +17,7 @@
 > 项目已经开始,本项目由Terry筹划，预计到2017-05-01出来第一个正式版本。
 
 
-1、Fecsop介绍
+1、Fecshop介绍
 ------------
 
 Fecshop 全称为Fancy ECommerce Shop，是基于php Yii2框架之上开发的一款优秀的开源电商系统，遵循[OSL3.0协议](http://www.oschina.net/question/28_8527)，
