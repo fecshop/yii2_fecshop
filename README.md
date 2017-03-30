@@ -23,7 +23,7 @@
 Fecshop 全称为Fancy ECommerce Shop，是基于php Yii2框架之上开发的一款优秀的开源电商系统，遵循[OSL3.0协议](http://www.oschina.net/question/28_8527)，
 Fecshop支持多语言，多货币，架构上支持pc，手机web，手机app，和erp对接等入口，您可以免费快速的定制和部署属于您的电商系统。
 
-详细参看地址：[Fecsop介绍](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-description.html)
+详细参看地址：[Fecshop介绍](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-description.html)
 
 FecShop 英文演示地址：http://fecshop.appfront.fancyecommerce.com/
 
@@ -35,7 +35,7 @@ FecShop QQ群：186604851 ，入群验证：fecshop
 
 FecShop Github地址: https://github.com/fancyecommerce/yii2_fecshop
 
-2、Fecsop文档
+2、Fecshop文档
 ------------
 
 **二开以及安装文档：** [Fecshop 安装开发文档](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-README.html)【撰写中】
@@ -43,7 +43,7 @@ FecShop Github地址: https://github.com/fancyecommerce/yii2_fecshop
 **使用帮助说明文档：** [Fecshop 使用帮助文档](http://www.fecshop.com/doc/fecshop-guide/instructions/cn-1.0/guide-README.html)【撰写中】
 
 
-3、安装Fecsop
+3、安装Fecshop
 ------------
 
 
