@@ -46,6 +46,7 @@ class Index {
 		$this->_productCount= $productCollInfo['count'];
 		//echo $this->_productCount;
 		return [
+			'searchText'		=> $this->_searchText,
 			'title' 		=> $this->_title,
 			'name'			=> Yii::$service->store->getStoreAttrVal($this->_category['name'],'name'),
 			'image'			=> $this->_category['image'] ? Yii::$service->category->image->getUrl($this->_category['image']) : '',

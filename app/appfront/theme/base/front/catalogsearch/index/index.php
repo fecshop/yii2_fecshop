@@ -14,8 +14,10 @@
 		<?= Yii::$service->page->widget->render('breadcrumbs',$this); ?>
 		<div class="menu_category">
 			
-			<div class="panelBar">
-				<?php  if(is_array($products) && !empty($products)){ ?>
+				
+			<?php  if(is_array($products) && !empty($products)){ ?>
+				<div class="panelBar">
+					
 					<?php
 						$parentThis = [
 							'query_item' => $query_item,
@@ -27,10 +29,9 @@
 						$toolbar = Yii::$service->page->widget->renderContent('category_toolbar',$config,$parentThis);
 						echo $toolbar;
 					?>
-				<?php } ?>
-			</div>
-			<div class="category_product">
-				<?php  if(is_array($products) && !empty($products)){ ?>
+					
+				</div>
+				<div class="category_product">
 					<?php $i = 0;  foreach($products as $product){ ?>
 						<?php  if($i%$count == 0){ ?>
 						<ul>
@@ -64,14 +65,16 @@
 					<?php  if($i%$count != $end){ ?>
 						</ul>
 						<?php  } ?>
-				<?php  }  ?>
-			</div>
-			<div class="clear"></div>
-			<div class="panelBar">
-				<?php  if(is_array($products) && !empty($products)){ ?>
+					
+				</div>
+				<div class="clear"></div>
+				<div class="panelBar">
 					<?php echo $toolbar; ?>
-				<?php  }  ?>
-			</div>
+				</div>
+			<?php }else{ ?>
+				<?= Yii::$service->page->translate->__('Search results for \'{searchText}\' returns no results',['searchText' => $searchText]); ?>
+				
+			<?php } ?>
 		</div>
 	</div>
 	<div class="col-left ">

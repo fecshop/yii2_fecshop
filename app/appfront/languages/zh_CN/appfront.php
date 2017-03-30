@@ -306,7 +306,7 @@ return [
  'Price:'						=> '价格：', 
  # 产品搜索页面
  'Show Per Page:'				=> '每页个数',
- 
+ 'Search results for \'{searchText}\' returns no results'		=> '搜索词 \'{searchText}\',找不到搜索结果',
  # 购物车
  'Your Cart is empty, You Can {urlB} Click Here to Home Page {urlE}'	
 								=> '您的购物车为空，您可以{urlB}点击这里进入首页{urlE}',
