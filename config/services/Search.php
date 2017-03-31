@@ -4,7 +4,7 @@
  * @link http://www.fecshop.com/
  * @copyright Copyright (c) 2016 FecShop Software LLC
  * @license http://www.fecshop.com/license/
- */
+ */ 
 return [
 	'search' => [
 		'class' => 'fecshop\services\Search',
@@ -34,13 +34,14 @@ return [
 			],
 			'xunSearch'  => [
 				'class' 		=> 'fecshop\services\search\XunSearch',
-				'searchIndexConfig'  => [
-					'name' => 10,  
-					'description' => 5,  
-				], 
+				/*
+				
 				'fuzzy' => true,  # 是否开启模糊查询
 				'synonyms' => true, #是否开启同义词翻译
-				'searchLang'    => ['zh'],
+				'searchLang'    => [
+					'zh' => 'chinese',
+				],
+				*/
 			],
 		],
 	]
