@@ -21,7 +21,7 @@ class CategoryController extends AppfrontController
 		parent::init();
 		Yii::$service->page->theme->layoutFile = 'category_view.php';
 	}
-	# ÍøÕ¾ĞÅÏ¢¹ÜÀí
+	# ç½‘ç«™ä¿¡æ¯ç®¡ç†
     public function actionIndex()
     {
 		
@@ -34,13 +34,13 @@ class CategoryController extends AppfrontController
 		$primaryKey 	= Yii::$service->category->getPrimaryKey();
 		$category_id 	= Yii::$app->request->get($primaryKey);
 		$cacheName = 'category';
-		if(Yii::$service->cache->isEnable()){
+		if(Yii::$service->cache->isEnable($cacheName)){
 			$timeout 			= Yii::$service->cache->timeout($cacheName);
 			$disableUrlParam 	= Yii::$service->cache->timeout($cacheName);
 			$cacheUrlParam 		= Yii::$service->cache->cacheUrlParam($cacheName);
 			$get_str = '';
 			$get = Yii::$app->request->get();
-			# ´æÔÚÎŞ»º´æ²ÎÊı£¬Ôò¹Ø±Õ»º´æ
+			# å­˜åœ¨æ— ç¼“å­˜å‚æ•°ï¼Œåˆ™å…³é—­ç¼“å­˜
 			if(isset($get[$disableUrlParam])){
 				return [
 					[
@@ -78,11 +78,8 @@ class CategoryController extends AppfrontController
 					//],
 				],
 			];
-			
-		
 		}
-		
-		
+		return [];
 	}
 	
 	

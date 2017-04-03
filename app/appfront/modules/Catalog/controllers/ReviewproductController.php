@@ -21,7 +21,7 @@ class ReviewproductController extends AppfrontController
 		parent::init();
 		Yii::$service->page->theme->layoutFile = 'product_view.php';
 	}
-	# Ôö¼ÓÆÀÂÛ
+	# å¢žåŠ è¯„è®º
     public function actionAdd()
     {
 		$reviewParam = Yii::$app->getModule('catalog')->params['review'];
@@ -30,7 +30,7 @@ class ReviewproductController extends AppfrontController
 			$currentUrl = Yii::$service->url->getCurrentUrl();
 			Yii::$service->customer->setLoginSuccessRedirectUrl($currentUrl);
 			
-			# Èç¹ûÆÀÂÛ²úÆ·±ØÐëµÇÂ¼ÓÃ»§£¬ÔòÌø×ªµ½ÓÃ»§µÇÂ¼Ò³Ãæ
+			# å¦‚æžœè¯„è®ºäº§å“å¿…é¡»ç™»å½•ç”¨æˆ·ï¼Œåˆ™è·³è½¬åˆ°ç”¨æˆ·ç™»å½•é¡µé¢
 			Yii::$service->url->redirectByUrlKey('customer/account/login');
 			
 		}
