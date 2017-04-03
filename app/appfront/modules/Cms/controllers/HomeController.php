@@ -12,39 +12,45 @@ class HomeController extends AppfrontController
 	# 网站信息管理
     public function actionIndex()
     {
-		//$dd = new \fecshop\services\cms\Article;
-		//echo $dd->gtest22(['22'=>333]);
-		//echo 44;
-		//exit;
-		//echo Yii::$service->cms->article->gtest();
-		//exit;
-		//echo 22;
-		//$dd = new \fecshop\services\Service;
-		//echo $dd->ee();
-		//exit;
-		//return 111;
-		//exit;
-		//echo Yii::$service->cmstest->article->storage;exit;
-		//$one = Yii::$service->cms->article->getById(1);
-		//var_dump($one);
-		//$this->attributes
-		//$one = ['title' => '444'];
-		//echo Yii::$service->cms->article->save($one);
-		//exit;
-		
-		//$r = Yii::$service->cms->article->remove([4,555]);
-		//if(!$r)
-		//	var_dump(Yii::$service->helper->errors->get());
-		//exit;
-		//$coll = Yii::$service->cms->article->coll();
-		//var_dump($coll);
-		# change current layout File.
-		//Yii::$service->page->theme->layoutFile = 'home.php';
 		$data = $this->getBlock()->getLastData();
 		return $this->render($this->action->id,$data);
 	}
 	
 	
+	public function behaviors()
+	{
+		$cacheName = 'home';
+		if(Yii::$service->cache->isEnable($cacheName)){
+			$timeout 			= Yii::$service->cache->timeout($cacheName);
+			$disableUrlParam 	= Yii::$service->cache->timeout($cacheName);
+			$get = Yii::$app->request->get();
+			# 存在无缓存参数，则关闭缓存
+			if(isset($get[$disableUrlParam])){
+				return [
+					[
+						'enabled' => false,
+						'class' => 'yii\filters\PageCache',
+						'only' => ['index'],
+						
+					],
+				];
+			}
+			$store 		= Yii::$service->store->currentStore;
+			$currency	= Yii::$service->page->currency->getCurrentCurrency();
+			return [
+				[
+					'enabled' => true,
+					'class' => 'yii\filters\PageCache',
+					'only' => ['index'],
+					'duration' => $timeout,
+					'variations' => [
+						$store,$currency
+					],
+				],
+			];
+		}
+		return [];
+	}
 	
 	public function actionChangecurrency(){
 		$currency = \fec\helpers\CRequest::param('currency');
