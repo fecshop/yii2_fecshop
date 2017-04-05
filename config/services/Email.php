@@ -107,7 +107,7 @@ return [
 					],
 					# 登录用户发送邮件的模板的设置。
 					'login' => [
-						'enable' => true,
+						'enable' => false,
 						# 邮件内容的动态数据提供部分
 						'widget'		=> 'fecshop\services\email\widgets\customer\account\login\Body',
 						# 邮件内容的view部分

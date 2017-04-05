@@ -45,29 +45,19 @@ class Login {
 			return;
 		}
 		if(is_array($param) && !empty($param)){
-			Yii::$service->customer->login($param);
-			# 发送邮件
-			if($param['email']){
-				$this->sendLoginEmail($param);
+			if(Yii::$service->customer->login($param)){
+				# 发送邮件
+				if($param['email']){
+					$this->sendLoginEmail($param);
+				}
 			}
 		}
+		Yii::$service->page->message->addByHelperErrors();
 		if(!Yii::$app->user->isGuest){
 			//Yii::$service->url->redirectByUrlKey('customer/account');
 			Yii::$service->customer->loginSuccessRedirect('customer/account');
 		}
-		$errors = Yii::$service->helper->errors->get(true);
-		if($errors){
-			if(is_array($errors) && !empty($errors)){
-				foreach($errors as $error){
-					if(is_array($error) && !empty($error)){
-						foreach($error as $er){
-							
-							Yii::$service->page->message->addError($er);
-						}
-					}
-				}
-			} 
-		}
+		
 	}
 	/**
 	 * 发送登录邮件

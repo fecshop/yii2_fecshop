@@ -77,6 +77,7 @@ return [
  'click refresh'				=> '点击刷新',
  'Sign In'						=> '登录',
  'Forgot Your Password?'		=> '忘记密码？',
+ 'user password is not correct' => '用户的账号密码不正确',
  
  # newsletter
  'ERROR,Your email address has subscribe , Please do not repeat the subscription'
