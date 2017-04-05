@@ -309,8 +309,10 @@ return [
  'Show Per Page:'				=> '每页个数',
  'Search results for \'{searchText}\' returns no results'		=> '搜索词 \'{searchText}\',找不到搜索结果',
  # 购物车
- 'Your Cart is empty, You Can {urlB} Click Here to Home Page {urlE}'	
-								=> '您的购物车为空，您可以{urlB}点击这里进入首页{urlE}',
+ 'Your Shopping Cart is empty'	=> '您的购物车为空',
+ 'Start shopping now!'			=> '现在开始购物',
+ 'Please {urlB}log in{urlE} to view the products you have previously added to your Shopping Cart.'
+								=> '请{urlB}登录{urlE}您的账户来查看你之前加入购物车的产品',
  'Unit Price'					=> '单价',
  'Discount Codes'				=> '优惠券',
  'Enter your coupon code if you have one.'					

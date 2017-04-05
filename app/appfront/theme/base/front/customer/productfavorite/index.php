@@ -54,7 +54,10 @@
 							</li>
 							<?php  }  ?>
 						</ul>
-						<?php  }  ?>
+						<?php  }else{  ?>
+						
+							<?= Yii::$service->page->translate->__('You have submitted no reviews.');?>
+						<?php  } ?>
 						<?php if($pageToolBar){ ?>
 						<div class="pageToolbar">
 							<label class="title">Page:</label><?= $pageToolBar ?>

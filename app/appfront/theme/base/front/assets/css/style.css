@@ -1170,7 +1170,7 @@ button.redBtn:hover span{
     width: 49%;
 }
 
-.account_center{font-size:11px;}
+.account_center{font-size:12px;}
 
 .block-account .block-content li.current a{
 	font-weight:bold;
@@ -2765,7 +2765,14 @@ a.icon-google:hover{
  background-position: -160px -32px; 
 }
 
-
+.empty_cart{
+	background: transparent url("../images/cart.gif") no-repeat scroll 0 15px;
+    font-size: 16px;
+    height: 101px;
+    margin: 24px auto 36px;
+    padding: 35px 0 0 116px;
+    width: 530px;
+}
 
 
 
