@@ -85,6 +85,7 @@ return [
 			],
 			'widget' => [
 				'class' 		=> 'fecshop\services\page\Widget',
+				/*
 				'widgetConfig' => [
 					'head' => [
 						# 动态数据提供部分
@@ -139,6 +140,7 @@ return [
 						'view'  => 'widgets/flashmessage.php',
 					],
 				]
+				*/
 			],
 			'currency' => [
 				'class' => 'fecshop\services\page\Currency',

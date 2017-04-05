@@ -4,7 +4,6 @@ use Yii;
 use fecshop\interfaces\block\BlockCache;
 class Head implements BlockCache
 {
-	
     public function getLastData()
     {
 		return [
