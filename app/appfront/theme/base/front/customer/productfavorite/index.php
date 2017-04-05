@@ -55,8 +55,7 @@
 							<?php  }  ?>
 						</ul>
 						<?php  }else{  ?>
-						
-							<?= Yii::$service->page->translate->__('You have submitted no reviews.');?>
+							<?= Yii::$service->page->translate->__('You have no items in your favorite.');?>
 						<?php  } ?>
 						<?php if($pageToolBar){ ?>
 						<div class="pageToolbar">

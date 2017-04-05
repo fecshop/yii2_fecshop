@@ -313,6 +313,9 @@ return [
  'Start shopping now!'			=> '现在开始购物',
  'Please {urlB}log in{urlE} to view the products you have previously added to your Shopping Cart.'
 								=> '请{urlB}登录{urlE}您的账户来查看你之前加入购物车的产品',
+ 'You have no items in your favorite.'
+								=> '您没有收藏过产品',
+ 'You have submitted no reviews'=> '您没有提交过评论',
  'Unit Price'					=> '单价',
  'Discount Codes'				=> '优惠券',
  'Enter your coupon code if you have one.'					
