@@ -134,6 +134,8 @@ return [
  
 # 账户中心密码找回
  'Forgot Password'				=> '密码找回',
+ 'Confirm your identity to reset password'
+								=> '确认您的身份',
  'Confirm your identity to reset password ,If you still can\'t find it, click {logUrlB} support center {logUrlE} for help'				
 								=> '确认您的身份以重置密码，如果您仍旧没有发现邮件，点击{logUrlB}帮助中心{logUrlE}寻求帮助',
  'email is not exist'			=> '该邮箱不存在',
@@ -219,6 +221,7 @@ return [
  'Telephone'					=> '电话',
  'Comment'						=> '留言内容',
  'Contacts'						=> '联系我们',
+ 'Contact us Send Success'		=> '联系我们发送成功',
  
  # 产品详细页面 - 颜色尺码
  'My Color:'					=> '我的颜色：',

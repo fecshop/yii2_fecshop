@@ -29,6 +29,11 @@ class Index {
 		if(isset($contacts['email']['address'])){
 			$contactsEmail = $contacts['email']['address'];
 		}
+		if(!$contactsEmail){
+			$contactsEmail = Yii::$service->email->contactsEmailAddress();
+		}
+		
+		
 		$editForm 	= Yii::$app->request->post('editForm');
 		$name 		= isset($editForm['name']) ? $editForm['name'] : '';
 		$email		= isset($editForm['email']) ? $editForm['email'] : '';

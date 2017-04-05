@@ -46,13 +46,20 @@ class Paypal extends Service
 	
 	const EXPRESS_TOKEN 	= 'paypal_express_token';
 	const EXPRESS_PAYER_ID	= 'paypal_express_payer_id';
-	
+	/**
+	 * @property $domain | string 
+	 * @return 得到证书crt文件的绝对路径
+	 */
 	public function getCrtFile($domain){
 		if(isset($this->crt_file[$domain]) && !empty($this->crt_file[$domain])){
 			return Yii::getAlias($this->crt_file[$domain]);
 		}
 	}
-	
+	/**
+	 * 在paypal 标准支付中，paypal会向网站发送IPN消息，告知fecshop订单支付状态，
+	 * 进而fecshop更改订单状态。
+	 * fecshop一方面验证消息是否由paypal发出，另一方面要验证订单是否和后台的一致。
+	 */
 	public function receiveIpn(){
 		if($this->verifySecurity()){
 			# 验证数据是否已经发送
@@ -69,7 +76,12 @@ class Paypal extends Service
 			}
 		}
 	}
-	
+	/**
+	 * 该函数是为了验证IPN是否是由paypal发出，
+	 * 当paypal发送IPN消息给fecshop，fecshop不知道是否是伪造的支付消息，
+	 * 因此，fecshop将接收到的参数传递给paypal，询问paypal是否是paypal
+	 * 发送的IPN消息，如果是，则返回VERIFIED。
+	 */
 	protected function verifySecurity(){
 		$this->_postData = Yii::$app->request->post();
 		Yii::$service->payment->setPaymentMethod('paypal_standard');
@@ -79,7 +91,10 @@ class Paypal extends Service
 			return true;
 		}
 	}
-	
+	/**
+	 * paypal发送的IPN，需要进行验证是否IPN是由paypal发出
+	 * 因此需要请求paypal确认，此函数返回请求paypal的url。
+	 */
 	protected function getVerifyUrl(){
 		$urlParamStr = '';
 		if($this->_postData){
@@ -93,7 +108,12 @@ class Paypal extends Service
 		$verifyUrl = $verifyUrl."?".$urlParamStr;
 		return $verifyUrl;
 	}
-	
+	/**
+	 * @property $url | string, 请求的url
+	 * @property $i | 请求的次数，因为curl可能存在失败的可能，当
+	 * 失败后，就会通过递归的方式进行多次请求，这里设置的最大请求5次。
+	 * @return 返回请求url的return信息。
+	 */
 	protected function curlGet($url,$i=0){
 		$ch = curl_init($url);
         curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
@@ -101,9 +121,7 @@ class Paypal extends Service
 		curl_setopt($ch, CURLOPT_VERBOSE, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $req);
-        
 		curl_setopt($ch, CURLOPT_TIMEOUT,30);
-        
 		curl_setopt($ch, CURLOPT_SSLVERSION, 6);
 		if ($this->use_local_certs) {
 			$crtFile = $this->getCrtFile('www.paypal.com');
@@ -114,7 +132,6 @@ class Paypal extends Service
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
 			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); 
 		}
-
         curl_setopt($ch, CURLOPT_FORBID_REUSE, 1);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Connection: Close'));
@@ -130,16 +147,18 @@ class Paypal extends Service
 		return $httpResponse;
 	}
 	
-	
-	# 判断是否重复，如果不重复，把当前的插入。
+	/**
+	 * paypal 可能发送多次IPN消息，
+	 * 判断是否重复，如果不重复，把当前的插入。
+	 */
 	protected function isNotDuplicate(){
 		$ipn = IpnMessage::find()
-				->asArray()
-				->where([
-				'txn_id'=>$this->_postData['txn_id'],
-				'payment_status'=>$this->_postData['payment_status'],
-				])
-				->one();
+			->asArray()
+			->where([
+			'txn_id'=>$this->_postData['txn_id'],
+			'payment_status'=>$this->_postData['payment_status'],
+			])
+			->one();
 		if(is_array($ipn) && !empty($ipn)){
 			return false;
 		}else{
@@ -299,25 +318,6 @@ class Paypal extends Service
 		# Set the API operation, version, and API signature in the request.
 		$nvpreq = "METHOD=$methodName_&PWD=$API_Password&USER=$API_UserName&SIGNATURE=$API_Signature$nvpStr_";
 		
-		/*
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $API_NvpUrl);
-		curl_setopt($ch, CURLOPT_VERBOSE, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT,10000);
-		// Turn off the server and peer verification (TrustManager Concept).
-		//curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-		//curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-		//curl_setopt($ch, CURLOPT_SSLVERSION , 1);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); 
-		curl_setopt($ch, CURLOPT_SSLVERSION, 6);
-
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $nvpreq);
-		$httpResponse = curl_exec($ch);
-		*/
-		
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
 		curl_setopt($ch, CURLOPT_URL, $API_NvpUrl);
@@ -342,7 +342,6 @@ class Paypal extends Service
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Connection: Close'));
 		# Get response from the server.
 		$httpResponse = curl_exec($ch);
-		
 		if(!$httpResponse) {
 			$i++;
 			if($i>5){

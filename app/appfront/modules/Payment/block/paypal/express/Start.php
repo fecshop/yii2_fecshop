@@ -22,11 +22,16 @@ class Start {
 		$nvpStr_ = Yii::$service->payment->paypal->getExpressTokenNvpStr();
 		//echo $nvpStr_;exit;
 		$SetExpressCheckoutReturn = Yii::$service->payment->paypal->PPHttpPost5($methodName_, $nvpStr_);
+		//var_dump($SetExpressCheckoutReturn);
 		if(strtolower($SetExpressCheckoutReturn['ACK']) == 'success'){
 			$token = $SetExpressCheckoutReturn['TOKEN'];
 			$redirectUrl = Yii::$service->payment->paypal->getSetExpressCheckoutUrl($token);
 			Yii::$service->url->redirect($redirectUrl);
 			exit;
+		}else if(strtolower($SetExpressCheckoutReturn['ACK']) == 'failure'){
+			echo $SetExpressCheckoutReturn['L_LONGMESSAGE0'];
+		}else{
+			var_dump($SetExpressCheckoutReturn);
 		}
 	}
 	
