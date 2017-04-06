@@ -382,21 +382,24 @@ class Coupon extends Service
 				//var_dump($product_total);
 				$dc_price = Yii::$service->page->currency->getBaseCurrencyPrice($product_total);
 				if($dc_price > $conditions){
-					# 事务更新购物侧的coupon 和优惠券的使用情况。
-					$innerTransaction = Yii::$app->db->beginTransaction();
-					try {
+					# 更新购物侧的coupon 和优惠券的使用情况。
+					# 在service中不要出现事务等操作。在调用层使用。
+					//$innerTransaction = Yii::$app->db->beginTransaction();
+					//try {
 						$set_status = Yii::$service->cart->quote->setCartCoupon($coupon_code);
 						$up_status  = $this->updateCouponUse('add');
 						if($set_status && $up_status){
-							$innerTransaction->commit();
+							//$innerTransaction->commit();
 							return true;
+						}else{
+							Yii::$service->helper->errors->add('add coupon fail');
 						}
-						Yii::$service->helper->errors->add('add coupon fail');
-						$innerTransaction->rollBack();
-					} catch (Exception $e) {
-						Yii::$service->helper->errors->add('add coupon fail');
-						$innerTransaction->rollBack();
-					}
+						//Yii::$service->helper->errors->add('add coupon fail');
+						//$innerTransaction->rollBack();
+					//} catch (Exception $e) {
+						//Yii::$service->helper->errors->add('add coupon fail');
+						//$innerTransaction->rollBack();
+					//}
 				}else{
 					Yii::$service->helper->errors->add('The coupon can not be used if the product amount in the shopping cart is less than {conditions} dollars',['conditions' => $conditions]);
 				}
@@ -418,21 +421,21 @@ class Coupon extends Service
 			if($couponModel){
 				//$couponModel = $this->getCouponModel($coupon_code);
 				//$couponUsageModel = $this->getCouponUsageModel($customer_id,$coupon_id);
-				$innerTransaction = Yii::$app->db->beginTransaction();
-				try {
+				//$innerTransaction = Yii::$app->db->beginTransaction();
+				//try {
 					
 					$up_status = $this->updateCouponUse('cancel');
 					$cancel_status = Yii::$service->cart->quote->cancelCartCoupon($coupon_code);
 					//echo $up_status.'##'.$set_status;
 					//echo 555;
 					if($up_status && $cancel_status){
-						$innerTransaction->commit();
+						//$innerTransaction->commit();
 						return true;
 					}	
-					$innerTransaction->rollBack();
-				} catch (Exception $e) {
-					$innerTransaction->rollBack();
-				}
+					//$innerTransaction->rollBack();
+				//} catch (Exception $e) {
+				//	$innerTransaction->rollBack();
+				//}
 			}
 		}	
 	}

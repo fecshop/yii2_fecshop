@@ -54,13 +54,14 @@ class Cart extends Service
 			return false;
 		}
 		# 开始加入购物车
-		$innerTransaction = Yii::$app->db->beginTransaction();
-		try {
+		# service 里面不允许有事务，请在调用层使用事务。
+		//$innerTransaction = Yii::$app->db->beginTransaction();
+		//try {
 			Yii::$service->cart->quoteItem->addItem($item);
-			$innerTransaction->commit();
-		} catch (Exception $e) {
-			$innerTransaction->rollBack();
-		}
+			//$innerTransaction->commit();
+		//} catch (Exception $e) {
+		//	$innerTransaction->rollBack();
+		//}
 		return true;
 		
 	}
@@ -176,14 +177,30 @@ class Cart extends Service
 	
 	
 	/**
-	 * 清空购物车中的产品
+	 * 清空购物车中的产品和优惠券
+	 * 在生成订单的时候被调用
 	 */
-	protected function actionClearCartProduct(){
+	protected function actionClearCartProductAndCoupon(){
 		Yii::$service->cart->quoteItem->removeItemByCartId();
+		
+		# 清空cart中的优惠券
+		$cart = Yii::$service->cart->quote->getCurrentCart();
+		if(!$cart['cart_id']){
+			Yii::$service->helper->errors->add('current cart is empty');
+			return false;
+		}
+		# 如果购物车中存在优惠券，则清空优惠券。
+		if($cart->coupon_code){
+			$cart->coupon_code = NULL;
+			$cart->save();
+		}
+		return true;
 	}
 	
 	/**
 	 * 完全与当前购物车脱节，如果产品添加购物车，会创建新的cart_id
+	 * 目前仅仅在登录用户退出账号的时候使用。
+	 * 该操作仅仅remove掉session保存的cart_id。
 	 */
 	protected function actionClearCart(){
 		Yii::$service->cart->quote->clearCart();

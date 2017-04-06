@@ -389,10 +389,14 @@ class Order extends Service
 			#     （备注）需要另起一个脚本，用来处理半个小时后，还没有支付的订单，将订单取消，然后将订单里面的产品库存返还。
 			# 			如果是无限库存（没有库存就去采购的方式），那么不需要跑这个脚本，将库存设置的非常大即可。
 			Yii::$service->product->stock->deduct($cartInfo['products']);
-		
-			# 如果是登录用户，那么，在生成订单后，需要清空购物车。
+			# 优惠券
+			// 优惠券是在购物车页面添加的，添加后，优惠券的使用次数会被+1，
+			// 因此在生成订单部分，是没有优惠券使用次数操作的（在购物车添加优惠券已经被执行该操作）
+			// 生成订单后，购物车的数据会被清空，其中包括优惠券信息的清空。
+			
+			# 如果是登录用户，那么，在生成订单后，需要清空购物车中的产品和coupon。
 			if(!Yii::$app->user->isGuest){
-				//Yii::$service->cart->clearCartProduct();
+				Yii::$service->cart->clearCartProductAndCoupon();
 			}
 			return true;
 		}else{
