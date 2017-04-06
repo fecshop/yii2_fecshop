@@ -104,7 +104,8 @@ class Order extends Service
 	/**
 	 * @property $increment_id | String 订单编号
 	 * @return Array
-	 * 通过order_id 从数据库中取出来订单数据，然后在进行了二次处理后的订单数据。
+	 * 通过order_id 从数据库中取出来订单数据，
+	 * 然后在进行了二次处理后的订单数据。
 	 */
 	protected function actionGetOrderInfoByIncrementId($increment_id){
 		$one = $this->getByIncrementId($increment_id);
@@ -130,7 +131,8 @@ class Order extends Service
 	/**
 	 * @property $order_id | Int
 	 * @return Array
-	 * 通过order_id 从数据库中取出来订单数据，然后在进行了二次处理后的订单数据。
+	 * 通过order_id 从数据库中取出来订单数据，
+	 * 然后在进行了二次处理后的订单数据。
 	 */
 	protected function actionGetOrderInfoById($order_id){
 		if(!$order_id){
@@ -186,7 +188,7 @@ class Order extends Service
 	}
 	/**
 	 * @property $one|Array , save one data .
-	 * @return  Int  保存coupon成功后，返回保存的id。    
+	 * @return  Int  保存order成功后，返回保存的id。    
 	 */
 	protected function actionSave($one){
 		$time = time();
@@ -509,10 +511,13 @@ class Order extends Service
 				$product_items = Yii::$service->order->item->getByOrderId($order_id,true);
 				Yii::$service->product->stock->returnQty($product_items);
 				$one->if_is_return_stock = 1;
+				# 将订单取消掉。取消后的订单不能再次支付。
+				$one->order_status = $this->payment_status_canceled;
 				$one->save();
 			}
 		}
 		
 	}
+	
 	
 }

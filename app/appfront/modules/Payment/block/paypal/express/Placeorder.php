@@ -65,6 +65,9 @@ class Placeorder {
 								//echo 555;
 								# 发送新订单邮件
 								Yii::$service->email->order->sendCreateEmail($orderInfo);
+								# 扣除库存和优惠券
+								// 在生成订单的时候已经扣除了。参看order service GenerateOrderByCart() function
+								
 								# 得到支付跳转前的准备页面。
 								$paypal_express = Yii::$service->payment->paypal->express_payment_method;
 								$successRedirectUrl = Yii::$service->payment->getExpressSuccessRedirectUrl($paypal_express);

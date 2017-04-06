@@ -66,12 +66,13 @@ class Paypal extends Service
 			if($this->isNotDuplicate()){
 				# 验证数据是否被篡改。
 				if($this->isNotDistort()){
-					$this->updateOrderAndCoupon();
+					$this->updateStandardOrderPayment();
 				}else{
 					# 如果数据和订单数据不一致，而且，支付状态为成功，则此订单
 					# 标记为可疑的。
 					$suspected_fraud = Yii::$service->order->payment_status_suspected_fraud;
-					$this->updateOrderAndCoupon($suspected_fraud);
+					$this->updateStandardOrderPayment($suspected_fraud);
+					
 				}
 			}
 		}
@@ -202,9 +203,15 @@ class Paypal extends Service
 	}
 	/**
 	 * @property $orderstatus | String 退款状态
-	 * 更新订单状态。
+	 * 更新订单状态。这是express 支付方式使用的。
 	 */
-	public function updateOrderAndCoupon($orderstatus = ''){
+	protected function updateStandardOrderPayment($orderstatus = ''){
+		$order_cancel_status = Yii::$service->order->payment_status_canceled;
+		# 如果订单状态被取消，那么不能进行支付。
+		if($this->_order->order_status == $order_cancel_status){
+			Yii::$service->helper->error->add('The order status has been canceled and you can not pay for item ,you can create a new order to pay');
+			return;
+		}
 		if($this->_postData['txn_type']){
 			$this->_order->txn_type = $this->_postData['txn_type'];	
 		}	
@@ -241,8 +248,9 @@ class Paypal extends Service
 			$this->_order->protection_eligibility = $this->_postData['protection_eligibility'];
 		}
 		$this->_order->updated_at = time();
-		$innerTransaction = Yii::$app->db->beginTransaction();
-		try {
+		# 在service中不要出现事务代码，如果添加事务，请在调用层使用。
+		//$innerTransaction = Yii::$app->db->beginTransaction();
+		//try {
 			if($orderstatus){
 				# 指定了订单状态
 				$this->_order->order_status = $orderstatus;
@@ -255,18 +263,7 @@ class Paypal extends Service
 					$this->_order->order_status = Yii::$service->order->payment_status_processing;
 					# 更新订单信息
 					$this->_order->save();
-					# 更新库存
-					//$orderitem = Salesorderitem::find()->asArray()->where(['order_id'=>$this->_order->order_id])->all();
-					//Order::updateProductStockQty($orderitem);
-					# 更新coupon使用量
-					//$customer_id = $this->_order['customer_id'];
-					//$coupon_code = $this->_order['coupon_code'];
-					//if($customer_id && $coupon_code){
-					//	Coupon::CouponTakeEffect($customer_id,$coupon_code);
-					//}
-					#LOG
-					//Yii::$app->mylog->log('save_'.Order::ORDER_PROCESSING);
-			}else if($payment_status == $this->payment_status_failed){
+				}else if($payment_status == $this->payment_status_failed){
 					$this->_order->order_status = Yii::$service->order->payment_status_canceled;
 					$this->_order->save();
 				}else if($payment_status == $this->payment_status_refunded){		
@@ -276,12 +273,12 @@ class Paypal extends Service
 					
 				}
 			}	
-			$innerTransaction->commit();
+			//$innerTransaction->commit();
 			return true;
-		} catch (Exception $e) {
-			$innerTransaction->rollBack();
-		}
-		return false;
+		//} catch (Exception $e) {
+		//	$innerTransaction->rollBack();
+		//}
+		//return false;
 	}
 	
 	
@@ -545,6 +542,12 @@ class Paypal extends Service
 			$increment_id = Yii::$service->order->getSessionIncrementId();
 			//echo "\n $increment_id \n\n";
 			$order = Yii::$service->order->getByIncrementId($increment_id);
+			$order_cancel_status = Yii::$service->order->payment_status_canceled;
+			# 如果订单状态被取消，那么不能进行支付。
+			if($order['order_status'] == $order_cancel_status){
+				Yii::$service->helper->error->add('The order status has been canceled and you can not pay for item ,you can create a new order to pay');
+				return false;
+			}
 			if($order['increment_id']){
 				//echo 'bbb';
 				$order['txn_id'] 		= $DoExpressCheckoutReturn['PAYMENTINFO_0_TRANSACTIONID'];
@@ -564,19 +567,7 @@ class Paypal extends Service
 				$order['payment_type'] 					= $DoExpressCheckoutReturn['PAYMENTINFO_0_PAYMENTTYPE'];
 				$order['paypal_order_datetime'] 		= date("Y-m-d H:i:s",$DoExpressCheckoutReturn['PAYMENTINFO_0_ORDERTIME']);
 				$PAYMENTINFO_0_PAYMENTSTATUS 			= $DoExpressCheckoutReturn['PAYMENTINFO_0_PAYMENTSTATUS'];
-				# 判断支付状态是否是成功
-				/*
-				echo "\n";
-				var_dump($DoExpressCheckoutReturn);
-				echo 'ccc';
-				echo "\n";
-				echo $PAYMENTINFO_0_PAYMENTSTATUS;
-				echo "\n";
-				echo $currency.'####'.$order['order_currency_code'];
-				echo "\n";
-				echo $PAYMENTINFO_0_AMT.'####'.$order['grand_total'];
-				echo "\n";
-				*/
+				
 				if(strtolower($PAYMENTINFO_0_PAYMENTSTATUS) == $this->payment_status_completed){
 					//echo 222;
 					# 判断金额是否相符
