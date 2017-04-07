@@ -26,6 +26,7 @@ class Add {
 			$url = Yii::$service->url->getCurrentUrl();
 			Yii::$service->customer->setLoginSuccessRedirectUrl($url);
 			Yii::$service->url->redirectByUrlKey('customer/account/login');
+			exit;
 		}
 		
 		$identity = Yii::$app->user->identity;
