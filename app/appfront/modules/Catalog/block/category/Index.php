@@ -116,10 +116,6 @@ class Index {
 		return Yii::$service->page->widget->renderContent('category_product_page',$config);
 	}
 	
-	
-	
-	
-	
 	protected function getQueryItem(){
 		$category_query 	= Yii::$app->controller->module->params['category_query'];
 		$numPerPage			= $category_query['numPerPage'];	

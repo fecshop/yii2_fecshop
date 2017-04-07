@@ -112,15 +112,11 @@ class Url extends Service
 	protected function actionGetCurrentUrl(){
 		if(!$this->_currentUrl){
 			$pageURL = 'http';
-			if ($_SERVER["HTTPS"] == "on"){
+			if ($this->secure()){
 				$pageURL .= "s";
 			}
 			$pageURL .= "://";
-			if ($_SERVER["SERVER_PORT"] != "80"){
-				$pageURL .= $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"] . $_SERVER["REQUEST_URI"];
-			}else{
-				$pageURL .= $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
-			}
+			$pageURL .= $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
 			$this->_currentUrl = $pageURL;
 		}
 		return $this->_currentUrl;
@@ -195,7 +191,7 @@ class Url extends Service
 		}else{
 			$jg = '/';
 		}
-		if($https){
+		if($this->secure()){
 			$baseUrl 	= $this->getHttpsBaseUrl();
 		}else{
 			$baseUrl 	= $this->getHttpBaseUrl();
@@ -219,9 +215,9 @@ class Url extends Service
 			if($this->showScriptName){
 				$homeUrl .=  '/index.php';
 			}
-			if(!$this->_httpType)
-				$this->_httpType = $this->secure() ? 'https' : 'http';
-			$this->_currentBaseUrl = str_replace("http",$this->_httpType,$homeUrl);
+			//if(!$this->_httpType)
+			//	$this->_httpType = $this->secure() ? 'https' : 'http';
+			//$this->_currentBaseUrl = str_replace("http",$this->_httpType,$homeUrl);
 		}
 		return $this->_currentBaseUrl;
 	}
@@ -289,12 +285,19 @@ class Url extends Service
 	/**
 	 * check current url type is http or https. https is secure url type.
 	 */ 
+	
 	protected function secure(){
 		if($this->_secure === null){
-			$this->_secure = isset($_SERVER['HTTPS']) && (strcasecmp($_SERVER['HTTPS'], 'on') === 0 || $_SERVER['HTTPS'] == 1) || isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strcasecmp($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') === 0;
+			
+			if($_SERVER['SERVER_PORT'] == 443){
+				$this->_secure = true;
+			}else{
+				$this->_secure = false;
+			}
 		}
 		return $this->_secure;
 	}
+	
 	
 	/**
 	 * get rewrite url key.
