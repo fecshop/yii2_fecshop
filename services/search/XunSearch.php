@@ -50,14 +50,15 @@ class XunSearch extends Service implements SearchInterface
 					$one_description 		= $one['description'];
 					$one_short_description 	= $one['short_description'];
 					if(!empty($this->searchLang) && is_array($this->searchLang)){
-						foreach($this->searchLang as $langCode){
+						foreach($this->searchLang as $langCode => $langName){
+							//echo $langCode;   
 							$XunSearchModel = new XunSearchModel();
 							$XunSearchModel->_id = (string)$one['_id'];
 							$one['name'] 		= Yii::$service->fecshoplang->getLangAttrVal($one_name,'name',$langCode);
 							$one['description'] = Yii::$service->fecshoplang->getLangAttrVal($one_description,'description',$langCode);
 							$one['short_description'] = Yii::$service->fecshoplang->getLangAttrVal($one_short_description,'short_description',$langCode);
 							$one['sync_updated_at'] = time();
-							//echo $one['sync_updated_at']."\n";
+							//echo $one['name']."\n";
 							$serialize = true;
 							Yii::$service->helper->ar->save($XunSearchModel,$one,$serialize);
 							if($errors = Yii::$service->helper->errors->get()){

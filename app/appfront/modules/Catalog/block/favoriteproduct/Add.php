@@ -21,7 +21,7 @@ class Add {
 	
 	public function getLastData(){
 		$product_id = Yii::$app->request->get('product_id');
-		#Ã»ÓÐµÇÂ¼µÄÓÃ»§Ìø×ªµ½µÇÂ¼Ò³Ãæ
+		#æ²¡æœ‰ç™»å½•çš„ç”¨æˆ·è·³è½¬åˆ°ç™»å½•é¡µé¢
 		if(Yii::$app->user->isGuest){
 			$url = Yii::$service->url->getCurrentUrl();
 			Yii::$service->customer->setLoginSuccessRedirectUrl($url);
@@ -37,7 +37,7 @@ class Add {
 			Yii::$service->page->message->addByHelperErrors();
 		}
 		$favoriteParam = Yii::$app->getModule('catalog')->params['favorite'];
-		# Ìø×ª¡£
+		# è·³è½¬ã€‚
 		if(isset($favoriteParam['addSuccessRedirectFavoriteList']) && $favoriteParam['addSuccessRedirectFavoriteList']){
 			Yii::$service->url->redirectByUrlKey('customer/productfavorite');
 		}else{
