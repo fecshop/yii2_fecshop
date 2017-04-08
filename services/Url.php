@@ -24,8 +24,7 @@ class Url extends Service
 	protected $_currentBaseUrl;
 	protected $_origin_url;
 	protected $_httpType;
-	protected $_httpBaseUrl;
-	protected $_httpsBaseUrl;
+	protected $_baseUrl;
 	protected $_currentUrl;
 	/**
 	 * About: 对于 \yii\helpers\CUrl 已经 封装了一些对url的操作，也就是基于yii2的url机制进行的
@@ -111,11 +110,7 @@ class Url extends Service
 	 */
 	protected function actionGetCurrentUrl(){
 		if(!$this->_currentUrl){
-			$pageURL = 'http';
-			if ($this->secure()){
-				$pageURL .= "s";
-			}
-			$pageURL .= "://";
+			$pageURL = "//";
 			$pageURL .= $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
 			$this->_currentUrl = $pageURL;
 		}
@@ -157,16 +152,12 @@ class Url extends Service
 		}else{
 			$jg = '/';
 		}
-		$baseUrl = '';
-		if($https){
-			$baseUrl 	= 'https://'.$domain;
-		}else{
-			$baseUrl 	= 'http://'.$domain;
-		}
+		
+		$baseUrl 	= '//'.$domain;
+		
 		if($showScriptName){
 			$baseUrl .=  '/index.php';
 		}
-		
 		if(is_array($params) && !empty($params)){
 			$arr = [];
 			foreach($params as $k => $v){
@@ -191,11 +182,8 @@ class Url extends Service
 		}else{
 			$jg = '/';
 		}
-		if($this->secure()){
-			$baseUrl 	= $this->getHttpsBaseUrl();
-		}else{
-			$baseUrl 	= $this->getHttpBaseUrl();
-		}
+		$baseUrl 	= $this->getBaseUrl();
+		
 		if(is_array($params) && !empty($params)){
 			$arr = [];
 			foreach($params as $k => $v){
@@ -215,6 +203,7 @@ class Url extends Service
 			if($this->showScriptName){
 				$homeUrl .=  '/index.php';
 			}
+			$this->_currentBaseUrl = $homeUrl;
 			//if(!$this->_httpType)
 			//	$this->_httpType = $this->secure() ? 'https' : 'http';
 			//$this->_currentBaseUrl = str_replace("http",$this->_httpType,$homeUrl);
@@ -231,41 +220,17 @@ class Url extends Service
 	}
 	
 	
-	
 	/**
-	 * get http format base url.
+	 * get  base url.
 	 */
-	protected function getHttpBaseUrl(){
-		if(!$this->_httpBaseUrl){
-			$homeUrl = $this->homeUrl();
-			if(strstr($homeUrl,'https://')){
-				$this->_httpBaseUrl = str_replace('https://','http://',$homeUrl);
-			}else{
-				$this->_httpBaseUrl = $homeUrl;
-			}
+	protected function getBaseUrl(){
+		if(!$this->_baseUrl){
+			$this->_baseUrl = $this->homeUrl();
 			if($this->showScriptName){
-				$this->_httpBaseUrl .=  '/index.php';
+				$this->_baseUrl  .= '/index.php';
 			}
 		}
-		
-		return $this->_httpBaseUrl;
-	}
-	/**
-	 * get https format base url.
-	 */
-	protected function getHttpsBaseUrl(){
-		if(!$this->_httpsBaseUrl){
-			$homeUrl = $this->homeUrl();
-			if(strstr($homeUrl,'http://')){
-				$this->_httpsBaseUrl = str_replace('http://','https://',$homeUrl);
-			}else{
-				$this->_httpsBaseUrl = $homeUrl;
-			}
-			if($this->showScriptName){
-				$this->_httpsBaseUrl .=  '/index.php';
-			}
-		}
-		return $this->_httpsBaseUrl;
+		return $this->_baseUrl;
 	}
 	
 	protected function newModel(){
@@ -285,7 +250,7 @@ class Url extends Service
 	/**
 	 * check current url type is http or https. https is secure url type.
 	 */ 
-	
+	/*
 	protected function secure(){
 		if($this->_secure === null){
 			
@@ -297,7 +262,7 @@ class Url extends Service
 		}
 		return $this->_secure;
 	}
-	
+	*/
 	
 	/**
 	 * get rewrite url key.

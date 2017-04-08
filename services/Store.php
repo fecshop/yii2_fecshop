@@ -58,7 +58,7 @@ class Store extends Service
 	 *	class property $currentStore will be set value $store_code.
 	 */
 	protected function actionBootstrap($app){
-		$host = explode('://' ,$app->getHomeUrl());
+		$host = explode('//' ,$app->getHomeUrl());
 		$stores = $this->stores;
 		$init_compelte = 0;
 		if(is_array($stores) && !empty($stores)){
