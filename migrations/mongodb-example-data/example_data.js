@@ -183,7 +183,7 @@ db.getCollection("article").insert({
   "updated_at": NumberLong(1469279489),
   "url_key": "/72527",
   "title": {
-    "title_en": "ÎÒÃÇµÄ´óÖĞ¹ú",
+    "title_en": "æˆ‘ä»¬çš„å¤§ä¸­å›½",
     "title_fr": "",
     "title_de": "",
     "title_es": "",
@@ -192,7 +192,7 @@ db.getCollection("article").insert({
     "title_zh": ""
   },
   "meta_keywords": {
-    "meta_keywords_en": "ÎÒÃÇµÄ´óÖĞ¹ú",
+    "meta_keywords_en": "æˆ‘ä»¬çš„å¤§ä¸­å›½",
     "meta_keywords_fr": "",
     "meta_keywords_de": "",
     "meta_keywords_es": "",
@@ -201,7 +201,7 @@ db.getCollection("article").insert({
     "meta_keywords_zh": ""
   },
   "meta_description": {
-    "meta_description_en": "ÎÒÃÇµÄ´óÖĞ¹ú",
+    "meta_description_en": "æˆ‘ä»¬çš„å¤§ä¸­å›½",
     "meta_description_fr": "",
     "meta_description_de": "",
     "meta_description_es": "",
@@ -227,7 +227,7 @@ db.getCollection("article").insert({
   "updated_at": NumberLong(1469280354),
   "url_key": "/67535963",
   "title": {
-    "title_en": "´óÖÚ»¯",
+    "title_en": "å¤§ä¼—åŒ–",
     "title_fr": "",
     "title_de": "",
     "title_es": "",
@@ -236,7 +236,7 @@ db.getCollection("article").insert({
     "title_zh": ""
   },
   "meta_keywords": {
-    "meta_keywords_en": "´óÖÚ»¯",
+    "meta_keywords_en": "å¤§ä¼—åŒ–",
     "meta_keywords_fr": "",
     "meta_keywords_de": "",
     "meta_keywords_es": "",
@@ -245,7 +245,7 @@ db.getCollection("article").insert({
     "meta_keywords_zh": ""
   },
   "meta_description": {
-    "meta_description_en": "´óÖÚ»¯",
+    "meta_description_en": "å¤§ä¼—åŒ–",
     "meta_description_fr": "",
     "meta_description_de": "",
     "meta_description_es": "",
@@ -271,7 +271,7 @@ db.getCollection("article").insert({
   "updated_at": NumberLong(1469280556),
   "url_key": "/11571166",
   "title": {
-    "title_en": "·¢Éú·¶µÂÈø·¢ÉúµÄ",
+    "title_en": "å‘ç”ŸèŒƒå¾·è¨å‘ç”Ÿçš„",
     "title_fr": "",
     "title_de": "",
     "title_es": "",
@@ -18134,8 +18134,8 @@ db.getCollection("full_search_product_de").insert({
       "sort_order": ""
     }
   },
-  "short_description": "Notes de Couleur et Style:<br /><p>La couleur et le style (ou motif) de produit sont limit¨¦s par des stocks disponibles, nous nous r¨¦servons le droit de substituer ¨¤ une autre couleur.</p><p>fdsafdsa</p><p>fdasfdas</p><p>fdasfadsfdsafdas</p><p>fadsfsadfads</p><p>fdasfdsafsdafsd<br /></p>",
-  "description": "Notes de Couleur et Style:<br />La couleur et le style (ou motif) de produit sont limit¨¦s par des stocks disponibles, nous nous r¨¦servons le droit de substituer ¨¤ une autre couleur.",
+  "short_description": "Notes de Couleur et Style:<br /><p>La couleur et le style (ou motif) de produit sont limitÃ©s par des stocks disponibles, nous nous rÃ©servons le droit de substituer Ã  une autre couleur.</p><p>fdsafdsa</p><p>fdasfdas</p><p>fdasfadsfdsafdas</p><p>fadsfsadfads</p><p>fdasfdsafsdafsd<br /></p>",
+  "description": "Notes de Couleur et Style:<br />La couleur et le style (ou motif) de produit sont limitÃ©s par des stocks disponibles, nous nous rÃ©servons le droit de substituer Ã  une autre couleur.",
   "created_at": NumberLong(1472441001),
   "sync_updated_at": NumberLong(1474886034),
   "color": "white",
@@ -18977,8 +18977,8 @@ db.getCollection("full_search_product_en").insert({
       "sort_order": ""
     }
   },
-  "short_description": "Notes de Couleur et Style:<br /><p>La couleur et le style (ou motif) de produit sont limit¨¦s par des stocks disponibles, nous nous r¨¦servons le droit de substituer ¨¤ une autre couleur.</p><p>fdsafdsa</p><p>fdasfdas</p><p>fdasfadsfdsafdas</p><p>fadsfsadfads</p><p>fdasfdsafsdafsd<br /></p>",
-  "description": "Notes de Couleur et Style:<br />La couleur et le style (ou motif) de produit sont limit¨¦s par des stocks disponibles, nous nous r¨¦servons le droit de substituer ¨¤ une autre couleur.",
+  "short_description": "Notes de Couleur et Style:<br /><p>La couleur et le style (ou motif) de produit sont limitÃ©s par des stocks disponibles, nous nous rÃ©servons le droit de substituer Ã  une autre couleur.</p><p>fdsafdsa</p><p>fdasfdas</p><p>fdasfadsfdsafdas</p><p>fadsfsadfads</p><p>fdasfdsafsdafsd<br /></p>",
+  "description": "Notes de Couleur et Style:<br />La couleur et le style (ou motif) de produit sont limitÃ©s par des stocks disponibles, nous nous rÃ©servons le droit de substituer Ã  une autre couleur.",
   "created_at": NumberLong(1472441001),
   "sync_updated_at": NumberLong(1474886034),
   "color": "white",
@@ -19820,8 +19820,8 @@ db.getCollection("full_search_product_es").insert({
       "sort_order": ""
     }
   },
-  "short_description": "Notes de Couleur et Style:<br /><p>La couleur et le style (ou motif) de produit sont limit¨¦s par des stocks disponibles, nous nous r¨¦servons le droit de substituer ¨¤ une autre couleur.</p><p>fdsafdsa</p><p>fdasfdas</p><p>fdasfadsfdsafdas</p><p>fadsfsadfads</p><p>fdasfdsafsdafsd<br /></p>",
-  "description": "Notes de Couleur et Style:<br />La couleur et le style (ou motif) de produit sont limit¨¦s par des stocks disponibles, nous nous r¨¦servons le droit de substituer ¨¤ une autre couleur.",
+  "short_description": "Notes de Couleur et Style:<br /><p>La couleur et le style (ou motif) de produit sont limitÃ©s par des stocks disponibles, nous nous rÃ©servons le droit de substituer Ã  une autre couleur.</p><p>fdsafdsa</p><p>fdasfdas</p><p>fdasfadsfdsafdas</p><p>fadsfsadfads</p><p>fdasfdsafsdafsd<br /></p>",
+  "description": "Notes de Couleur et Style:<br />La couleur et le style (ou motif) de produit sont limitÃ©s par des stocks disponibles, nous nous rÃ©servons le droit de substituer Ã  une autre couleur.",
   "created_at": NumberLong(1472441001),
   "sync_updated_at": NumberLong(1474886034),
   "color": "white",
@@ -20636,7 +20636,7 @@ db.getCollection("full_search_product_fr").insert({
 });
 db.getCollection("full_search_product_fr").insert({
   "_id": ObjectId("57c3aaa9f656f24f353bf56e"),
-  "name": "Paire de Bouton ¨¦l¨¦gant Agr¨¦ment¨¦e ¨¦vider Mesh Shape tricot¨¦ Boot poignets pour les femmes",
+  "name": "Paire de Bouton Ã©lÃ©gant AgrÃ©mentÃ©e Ã©vider Mesh Shape tricotÃ© Boot poignets pour les femmes",
   "spu": "sk2001",
   "sku": "sk2001-blue-zo",
   "score": NumberLong(0),
@@ -20664,7 +20664,7 @@ db.getCollection("full_search_product_fr").insert({
     }
   },
   "short_description": "<p>fdsafsdafsd</p><p>fds</p><p>afsda</p><p>f</p><p>adsf</p><p>sd</p><p>fsd</p><p>af</p><p>das</p><p>fdsafsadfdsfsdafsda<br /></p>",
-  "description": "Notes de Couleur et Style:<br />La couleur et le style (ou motif) de produit sont limit¨¦s par des stocks disponibles, nous nous r¨¦servons le droit de substituer ¨¤ une autre couleur.",
+  "description": "Notes de Couleur et Style:<br />La couleur et le style (ou motif) de produit sont limitÃ©s par des stocks disponibles, nous nous rÃ©servons le droit de substituer Ã  une autre couleur.",
   "created_at": NumberLong(1472441001),
   "sync_updated_at": NumberLong(1474886034),
   "color": "white",
@@ -21506,8 +21506,8 @@ db.getCollection("full_search_product_pt").insert({
       "sort_order": ""
     }
   },
-  "short_description": "Notes de Couleur et Style:<br /><p>La couleur et le style (ou motif) de produit sont limit¨¦s par des stocks disponibles, nous nous r¨¦servons le droit de substituer ¨¤ une autre couleur.</p><p>fdsafdsa</p><p>fdasfdas</p><p>fdasfadsfdsafdas</p><p>fadsfsadfads</p><p>fdasfdsafsdafsd<br /></p>",
-  "description": "Notes de Couleur et Style:<br />La couleur et le style (ou motif) de produit sont limit¨¦s par des stocks disponibles, nous nous r¨¦servons le droit de substituer ¨¤ une autre couleur.",
+  "short_description": "Notes de Couleur et Style:<br /><p>La couleur et le style (ou motif) de produit sont limitÃ©s par des stocks disponibles, nous nous rÃ©servons le droit de substituer Ã  une autre couleur.</p><p>fdsafdsa</p><p>fdasfdas</p><p>fdasfadsfdsafdas</p><p>fadsfsadfads</p><p>fdasfdsafsdafsd<br /></p>",
+  "description": "Notes de Couleur et Style:<br />La couleur et le style (ou motif) de produit sont limitÃ©s par des stocks disponibles, nous nous rÃ©servons le droit de substituer Ã  une autre couleur.",
   "created_at": NumberLong(1472441001),
   "sync_updated_at": NumberLong(1474886034),
   "color": "white",
@@ -22349,8 +22349,8 @@ db.getCollection("full_search_product_ru").insert({
       "sort_order": ""
     }
   },
-  "short_description": "Notes de Couleur et Style:<br /><p>La couleur et le style (ou motif) de produit sont limit¨¦s par des stocks disponibles, nous nous r¨¦servons le droit de substituer ¨¤ une autre couleur.</p><p>fdsafdsa</p><p>fdasfdas</p><p>fdasfadsfdsafdas</p><p>fadsfsadfads</p><p>fdasfdsafsdafsd<br /></p>",
-  "description": "Notes de Couleur et Style:<br />La couleur et le style (ou motif) de produit sont limit¨¦s par des stocks disponibles, nous nous r¨¦servons le droit de substituer ¨¤ une autre couleur.",
+  "short_description": "Notes de Couleur et Style:<br /><p>La couleur et le style (ou motif) de produit sont limitÃ©s par des stocks disponibles, nous nous rÃ©servons le droit de substituer Ã  une autre couleur.</p><p>fdsafdsa</p><p>fdasfdas</p><p>fdasfadsfdsafdas</p><p>fadsfsadfads</p><p>fdasfdsafsdafsd<br /></p>",
+  "description": "Notes de Couleur et Style:<br />La couleur et le style (ou motif) de produit sont limitÃ©s par des stocks disponibles, nous nous rÃ©servons le droit de substituer Ã  une autre couleur.",
   "created_at": NumberLong(1472441001),
   "sync_updated_at": NumberLong(1474886034),
   "color": "white",
@@ -23310,7 +23310,7 @@ db.getCollection("product_flat").insert({
     "name_es": "",
     "name_ru": "",
     "name_pt": "",
-    "name_zh": "²»´íµÄÒÂ·ş°¡"
+    "name_zh": "ä¸é”™çš„è¡£æœå•Š"
   },
   "spu": "kilw",
   "sku": "kilw-green",
@@ -23787,7 +23787,7 @@ db.getCollection("product_flat").insert({
   "updated_at": NumberLong(1473648995),
   "name": {
     "name_en": "Pair of Stylish Button Embellished Hollow Out Mesh Shape Knitted Boot Cuffs For Women",
-    "name_fr": "Paire de Bouton ¨¦l¨¦gant Agr¨¦ment¨¦e ¨¦vider Mesh Shape tricot¨¦ Boot poignets pour les femmes",
+    "name_fr": "Paire de Bouton Ã©lÃ©gant AgrÃ©mentÃ©e Ã©vider Mesh Shape tricotÃ© Boot poignets pour les femmes",
     "name_de": "",
     "name_es": "",
     "name_ru": "",
@@ -23858,7 +23858,7 @@ db.getCollection("product_flat").insert({
     }
   },
   "description": {
-    "description_en": "Notes de Couleur et Style:<br />La couleur et le style (ou motif) de produit sont limit¨¦s par des stocks disponibles, nous nous r¨¦servons le droit de substituer ¨¤ une autre couleur.",
+    "description_en": "Notes de Couleur et Style:<br />La couleur et le style (ou motif) de produit sont limitÃ©s par des stocks disponibles, nous nous rÃ©servons le droit de substituer Ã  une autre couleur.",
     "description_fr": "",
     "description_de": "",
     "description_es": "",
@@ -23867,7 +23867,7 @@ db.getCollection("product_flat").insert({
     "description_zh": ""
   },
   "short_description": {
-    "short_description_en": "Notes de Couleur et Style:<br /><p>La couleur et le style (ou motif) de produit sont limit¨¦s par des stocks disponibles, nous nous r¨¦servons le droit de substituer ¨¤ une autre couleur.</p><p>fdsafdsa</p><p>fdasfdas</p><p>fdasfadsfdsafdas</p><p>fadsfsadfads</p><p>fdasfdsafsdafsd<br /></p>",
+    "short_description_en": "Notes de Couleur et Style:<br /><p>La couleur et le style (ou motif) de produit sont limitÃ©s par des stocks disponibles, nous nous rÃ©servons le droit de substituer Ã  une autre couleur.</p><p>fdsafdsa</p><p>fdasfdas</p><p>fdasfadsfdsafdas</p><p>fadsfsadfads</p><p>fdasfdsafsdafsd<br /></p>",
     "short_description_fr": "<p>fdsafsdafsd</p><p>fds</p><p>afsda</p><p>f</p><p>adsf</p><p>sd</p><p>fsd</p><p>af</p><p>das</p><p>fdsafsadfdsfsdafsda<br /></p>",
     "short_description_de": "",
     "short_description_es": "",
@@ -24603,7 +24603,7 @@ db.getCollection("product_flat").insert({
     "name_es": "Alluring Long Sleeve Open Back Draped Maxi Dress es",
     "name_ru": "Alluring Long Sleeve Open Back Draped Maxi Dress ru",
     "name_pt": "Alluring Long Sleeve Open Back Draped Maxi Dress pt",
-    "name_zh": "ÃÔÄã³¤Ğä¿ªñÃ"
+    "name_zh": "è¿·ä½ é•¿è¢–å¼€è¡©"
   },
   "spu": "sk1000",
   "sku": "sk1000-khak",
@@ -25513,7 +25513,7 @@ db.getCollection("product_flat").insert({
     "name_es": "",
     "name_ru": "",
     "name_pt": "",
-    "name_zh": "ºÃ¿´µÄTĞô"
+    "name_zh": "å¥½çœ‹çš„Tæ¤"
   },
   "spu": "men0003",
   "sku": "men0003",
@@ -25645,7 +25645,7 @@ db.getCollection("product_flat").insert({
     "name_es": "",
     "name_ru": "",
     "name_pt": "",
-    "name_zh": "ÃÀÀöµÄºÃ¿´»éÉ´"
+    "name_zh": "ç¾ä¸½çš„å¥½çœ‹å©šçº±"
   },
   "spu": "po0001",
   "sku": "po0001",
@@ -25759,7 +25759,7 @@ db.getCollection("product_flat").insert({
     "name_es": "",
     "name_ru": "",
     "name_pt": "",
-    "name_zh": "ºÃ¿´µÄ³ÄÒÂ"
+    "name_zh": "å¥½çœ‹çš„è¡¬è¡£"
   },
   "spu": "op0002",
   "sku": "op0002",
@@ -25890,7 +25890,7 @@ db.getCollection("product_flat").insert({
     "name_es": "",
     "name_ru": "",
     "name_pt": "",
-    "name_zh": "ºÃ¿´µÄ³ÄÒÂ"
+    "name_zh": "å¥½çœ‹çš„è¡¬è¡£"
   },
   "spu": "op0002",
   "sku": "op0002-33",
@@ -28337,8 +28337,8 @@ db.getCollection("review").insert({
   "name": "terr fdf",
   "user_id": NumberLong(17),
   "ip": "119.123.79.254",
-  "summary": "ÎÒÃÇµÄ×æ¹úÊÇ»¨Ô°",
-  "review_content": "ÎÒÃÇµÄ×æ¹úÊÇ»¨Ô°£¬»¨Ô°µÄ»¨¶ä¶àÏÔÑÛ\r\nÎÒÃÇµÄ×æ¹úÊÇ»¨Ô°£¬»¨Ô°µÄ»¨¶ä¶àÏÔÑÛ\r\nÎÒÃÇµÄ×æ¹úÊÇ»¨Ô°£¬»¨Ô°µÄ»¨¶ä¶àÏÔÑÛ\r\nÎÒÃÇµÄ×æ¹úÊÇ»¨Ô°£¬»¨Ô°µÄ»¨¶ä¶àÏÔÑÛ\r\nÎÒÃÇµÄ×æ¹úÊÇ»¨Ô°£¬»¨Ô°µÄ»¨¶ä¶àÏÔÑÛ",
+  "summary": "æˆ‘ä»¬çš„ç¥–å›½æ˜¯èŠ±å›­",
+  "review_content": "æˆ‘ä»¬çš„ç¥–å›½æ˜¯èŠ±å›­ï¼ŒèŠ±å›­çš„èŠ±æœµå¤šæ˜¾çœ¼\r\næˆ‘ä»¬çš„ç¥–å›½æ˜¯èŠ±å›­ï¼ŒèŠ±å›­çš„èŠ±æœµå¤šæ˜¾çœ¼\r\næˆ‘ä»¬çš„ç¥–å›½æ˜¯èŠ±å›­ï¼ŒèŠ±å›­çš„èŠ±æœµå¤šæ˜¾çœ¼\r\næˆ‘ä»¬çš„ç¥–å›½æ˜¯èŠ±å›­ï¼ŒèŠ±å›­çš„èŠ±æœµå¤šæ˜¾çœ¼\r\næˆ‘ä»¬çš„ç¥–å›½æ˜¯èŠ±å›­ï¼ŒèŠ±å›­çš„èŠ±æœµå¤šæ˜¾çœ¼",
   "review_date": NumberLong(1477647037),
   "store": "fecshop.appfront.fancyecommerce.com/cn",
   "lang_code": "zh",
@@ -28490,8 +28490,8 @@ db.getCollection("review").insert({
   "name": "wew ewew",
   "user_id": NumberLong(16),
   "ip": "119.123.78.8",
-  "summary": "Âù²»´íÑ½",
-  "review_content": "²»´íÑ½£¬Âù²»´í°¡",
+  "summary": "è›®ä¸é”™å‘€",
+  "review_content": "ä¸é”™å‘€ï¼Œè›®ä¸é”™å•Š",
   "review_date": NumberLong(1482481847),
   "store": "fecshop.appfront.fancyecommerce.com",
   "lang_code": "en",
@@ -28531,7 +28531,7 @@ db.getCollection("static_block").insert({
   "identify": "home-big-img",
   "status": "1",
   "content": {
-    "content_en": "<div id=\"fecshop-home-big-img\">        <div class=\"container\">          <div class=\"row\">            <div class=\"span12\">              <div id=\"owl-fecshop\" class=\"owl-carousel\">                <div class=\"item\"><a href=\"#\"><img class=\"lazyOwl\" data-src=\"{{imgBaseUrl}}/images/en_1.jpg\" alt=\"\" /></a></div>                <div class=\"item\"><a href=\"#\"><img class=\"lazyOwl\" data-src=\"{{imgBaseUrl}}/images/en_2.jpg\" alt=\"\" /></a></div>                <div class=\"item\"><a href=\"#\"><img class=\"lazyOwl\" data-src=\"{{imgBaseUrl}}/images/en_3.jpg\" alt=\"\" /></a></div>              </div>            </div>          </div>        </div>    </div><ul class=\"clearfix bottomAdList\"><!-- ÈıÕÅĞ¡banner --><li><p><a target=\"_blank\" href=\"\"><img class=\"js_lazy\" data-original=\"{{imgBaseUrl}}/images/free_en.jpg\" src=\"{{imgBaseUrl}}/images/lazyload1.gif\" alt=\"\" width=\"100%\" /></a></p></li><li><p><a target=\"_blank\" href=\"\"><img class=\"js_lazy\" data-original=\"{{imgBaseUrl}}/images/new.jpg\" src=\"{{imgBaseUrl}}/images/lazyload1.gif\" alt=\"\" width=\"100%\" /></a></p></li><li><p><a target=\"_blank\" href=\"\"><img class=\"js_lazy\" data-original=\"{{imgBaseUrl}}/images/vip.jpg\" src=\"{{imgBaseUrl}}/images/lazyload1.gif\" alt=\"\" width=\"100%\" /></a></p></li></ul><div class=\"banner_right\"><!-- Á½ÕÅÖĞµÈbanner --><div class=\"banner_l_top\"><a class=\"link_ad\" href=\"\"><img class=\"js_lazy\" data-original=\"{{imgBaseUrl}}/images/en_a.jpg\" src=\"{{imgBaseUrl}}/images/lazyload1.gif\" alt=\"\" width=\"100%\" /></a></div><div class=\"banner_r_top\"><a href=\"\"><img class=\"js_lazy\" data-original=\"{{imgBaseUrl}}/images/sammy.jpg\" src=\"{{imgBaseUrl}}/images/lazyload1.gif\" alt=\"\" width=\"100%\" /></a></div><div style=\"clear:both\"></div></div>",
+    "content_en": "<div id=\"fecshop-home-big-img\">        <div class=\"container\">          <div class=\"row\">            <div class=\"span12\">              <div id=\"owl-fecshop\" class=\"owl-carousel\">                <div class=\"item\"><a href=\"#\"><img class=\"lazyOwl\" data-src=\"{{imgBaseUrl}}/images/en_1.jpg\" alt=\"\" /></a></div>                <div class=\"item\"><a href=\"#\"><img class=\"lazyOwl\" data-src=\"{{imgBaseUrl}}/images/en_2.jpg\" alt=\"\" /></a></div>                <div class=\"item\"><a href=\"#\"><img class=\"lazyOwl\" data-src=\"{{imgBaseUrl}}/images/en_3.jpg\" alt=\"\" /></a></div>              </div>            </div>          </div>        </div>    </div><ul class=\"clearfix bottomAdList\"><!-- ä¸‰å¼ å°banner --><li><p><a target=\"_blank\" href=\"\"><img class=\"js_lazy\" data-original=\"{{imgBaseUrl}}/images/free_en.jpg\" src=\"{{imgBaseUrl}}/images/lazyload1.gif\" alt=\"\" width=\"100%\" /></a></p></li><li><p><a target=\"_blank\" href=\"\"><img class=\"js_lazy\" data-original=\"{{imgBaseUrl}}/images/new.jpg\" src=\"{{imgBaseUrl}}/images/lazyload1.gif\" alt=\"\" width=\"100%\" /></a></p></li><li><p><a target=\"_blank\" href=\"\"><img class=\"js_lazy\" data-original=\"{{imgBaseUrl}}/images/vip.jpg\" src=\"{{imgBaseUrl}}/images/lazyload1.gif\" alt=\"\" width=\"100%\" /></a></p></li></ul><div class=\"banner_right\"><!-- ä¸¤å¼ ä¸­ç­‰banner --><div class=\"banner_l_top\"><a class=\"link_ad\" href=\"\"><img class=\"js_lazy\" data-original=\"{{imgBaseUrl}}/images/en_a.jpg\" src=\"{{imgBaseUrl}}/images/lazyload1.gif\" alt=\"\" width=\"100%\" /></a></div><div class=\"banner_r_top\"><a href=\"\"><img class=\"js_lazy\" data-original=\"{{imgBaseUrl}}/images/sammy.jpg\" src=\"{{imgBaseUrl}}/images/lazyload1.gif\" alt=\"\" width=\"100%\" /></a></div><div style=\"clear:both\"></div></div>",
     "content_fr": "",
     "content_de": "",
     "content_es": "",
