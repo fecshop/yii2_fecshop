@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":1,"key":{"_id":1},"name":"_id_","ns":"fecshop_test.article"},{"v":1,"key":{"url_key":{"$numberLong":"-1"}},"name":"url_key_-1","ns":"fecshop_test.article","w":{"$numberLong":"1"},"background":true,"socketTimeoutMS":{"$numberLong":"300000"}}]}

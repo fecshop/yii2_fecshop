@@ -156,6 +156,8 @@ class ProductMongodb implements ProductInterface
 				Yii::$service->helper->errors->add('Product '.$this->getPrimaryKey().' is not exist');
 				return;
 			}	
+			echo new \MongoDB\BSON\ObjectId($primaryVal);
+			exit;
 			#验证sku 是否重复
 			$product_one = Product::find()->asArray()->where([
 				'<>',$this->getPrimaryKey(),(new \MongoDB\BSON\ObjectId($primaryVal))
