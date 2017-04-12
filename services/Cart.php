@@ -57,7 +57,12 @@ class Cart extends Service
 		# service 里面不允许有事务，请在调用层使用事务。
 		//$innerTransaction = Yii::$app->db->beginTransaction();
 		//try {
-			Yii::$service->cart->quoteItem->addItem($item);
+			
+		$beforeEventName 	= 'event_add_to_cart_before';
+		$afterEventName  	= 'event_add_to_cart_after';
+		Yii::$service->event->trigger($beforeEventName,$item); # 触发事件 - 加购物车前事件
+		Yii::$service->cart->quoteItem->addItem($item);
+		Yii::$service->event->trigger($afterEventName,$item);  # 触发事件 - 加购物车前事件
 			//$innerTransaction->commit();
 		//} catch (Exception $e) {
 		//	$innerTransaction->rollBack();

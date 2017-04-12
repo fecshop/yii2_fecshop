@@ -329,7 +329,9 @@ class Order extends Service
 		if(!$deductStatus){
 			return false;
 		}	
-		
+		$beforeEventName 	= 'event_generate_order_before';
+		$afterEventName  	= 'event_generate_order_after';
+		Yii::$service->event->trigger($beforeEventName,$cartInfo);
 		$myOrder = new MyOrder;
 		$myOrder['order_status'] 	= $this->payment_status_pending;
 		$myOrder['store'] 			= $cartInfo['store'];
@@ -380,6 +382,7 @@ class Order extends Service
 		$order_id = Yii::$app->db->getLastInsertId();
 		$increment_id = $this->generateIncrementIdByOrderId($order_id);
 		$orderModel = $this->getByPrimaryKey($order_id);
+		Yii::$service->event->trigger($afterEventName,$orderModel);
 		if($orderModel[$this->getPrimaryKey()]){
 			$orderModel['increment_id'] = $increment_id ;
 			$orderModel->save();
