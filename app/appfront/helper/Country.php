@@ -17,7 +17,7 @@ use yii\base\InvalidValueException;
 class Country
 {
 	
-	# 快捷支付，得到省的html
+	# 蹇嵎鏀粯锛屽緱鍒扮渷鐨刪tml
 	public static function getExpressPaymentStateHtml($countryCode,$stateCode='',$ischangestate=''){
 		$state = Yii::$service->helper->country->getStateOptionsByContryCode($countryCode,$stateCode);
 		
@@ -46,7 +46,7 @@ class Country
 		return $stateHtml;
 	
 	}
-	# 标准支付，得到省的html
+	# 鏍囧噯鏀粯锛屽緱鍒扮渷鐨刪tml
 	public static function getStandPaymentStateHtml($countryCode,$stateCode='',$isajaxchange=''){
 		$state = Yii::$service->helper->country->getStateOptionsByContryCode($countryCode,$stateCode);
 		

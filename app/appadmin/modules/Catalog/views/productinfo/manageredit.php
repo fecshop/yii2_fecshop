@@ -63,7 +63,7 @@ use fecadmin\models\AdminRole;
 .custom_option{padding:10px 5px;}
 .custom_option span{margin:0 2px 0 10px;}
 
-.custom_option .nps{float:left;}
+.custom_option .nps{float:left;margin:0 0 10px 0}
 .custom_option_img_list img {cursor:pointer;}
 </style>
 
