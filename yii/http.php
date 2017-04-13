@@ -150,6 +150,10 @@ class Mage_Core_Controller_Request_Http extends Zend_Controller_Request_Http
             if ($this->_canBeStoreCodeInUrl()) {
                 $pathParts = explode('/', ltrim($pathInfo, '/'), 2);
                 $storeCode = $pathParts[0];
+                if($storeCode !== 'fr' && $storeCode !== 'de' && $storeCode !== 'it'&& $storeCode !== 'jp'&& $storeCode !== 'pt'&& $storeCode !== 'es'&& $storeCode !== 'admin'){
+		        	$storeCode = 'en';
+			        $pathParts[1] = ltrim($pathInfo,'/');
+		        }
 
                 if (!$this->isDirectAccessFrontendName($storeCode)) {
                     $stores = Mage::app()->getStores(true, true);
