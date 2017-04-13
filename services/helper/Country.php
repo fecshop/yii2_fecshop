@@ -923,7 +923,6 @@ class Country extends Service
 				'LT-VL' => 'Vilniaus Apskritis',
 			],
 			
-
 			'CN' => [
 				'BJ' => '北京市',
 				'SH' => '上海市',

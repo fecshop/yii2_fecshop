@@ -263,6 +263,11 @@ class Paypal extends Service
 					$this->_order->order_status = Yii::$service->order->payment_status_processing;
 					# 更新订单信息
 					$this->_order->save();
+					# 得到当前的订单信息
+					$orderInfo = Yii::$service->order->getOrderInfoByIncrementId($this->_order['increment_id']);
+					# 发送新订单邮件
+					Yii::$service->email->order->sendCreateEmail($orderInfo);
+					
 				}else if($payment_status == $this->payment_status_failed){
 					$this->_order->order_status = Yii::$service->order->payment_status_canceled;
 					$this->_order->save();
@@ -575,6 +580,9 @@ class Paypal extends Service
 						//echo 222;
 						$order->order_status = Yii::$service->order->payment_status_processing;
 						$order->save();
+						# 支付成功，发送新订单邮件
+						$orderInfo = Yii::$service->order->getCurrentOrderInfo();
+						Yii::$service->email->order->sendCreateEmail($orderInfo);
 						return true;
 					}else{
 						Yii::$service->helper->errors->add('The amount of payment is inconsistent with the amount of the order');

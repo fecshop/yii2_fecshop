@@ -49,9 +49,9 @@ class Placeorder{
 					$genarateStatus = Yii::$service->order->generateOrderByCart($this->_billing,$this->_shipping_method,$this->_payment_method);
 					if($genarateStatus){
 						# 得到当前的订单信息
-						$orderInfo = Yii::$service->order->getCurrentOrderInfo();
+						//$orderInfo = Yii::$service->order->getCurrentOrderInfo();
 						# 发送新订单邮件
-						Yii::$service->email->order->sendCreateEmail($orderInfo);
+						//Yii::$service->email->order->sendCreateEmail($orderInfo);
 						# 得到支付跳转前的准备页面。
 						$startUrl = Yii::$service->payment->getStandardStartUrl();
 						Yii::$service->url->redirect($startUrl);

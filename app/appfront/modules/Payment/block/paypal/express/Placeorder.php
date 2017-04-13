@@ -54,7 +54,6 @@ class Placeorder {
 					//echo 22;
 					if($genarateStatus){
 						# 得到当前的订单信息
-						$orderInfo = Yii::$service->order->getCurrentOrderInfo();
 						$doExpressCheckoutReturn = $this->doExpressCheckoutPayment();
 						//echo 333;
 						if($doExpressCheckoutReturn){
@@ -64,7 +63,7 @@ class Placeorder {
 							if($ExpressOrderPayment){
 								//echo 555;
 								# 发送新订单邮件
-								Yii::$service->email->order->sendCreateEmail($orderInfo);
+								
 								# 扣除库存和优惠券
 								// 在生成订单的时候已经扣除了。参看order service GenerateOrderByCart() function
 								
