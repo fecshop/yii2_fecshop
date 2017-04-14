@@ -226,6 +226,7 @@ class Review {
 	 */
 	public function ajaxChangecountry(){
 		$country = Yii::$app->request->get('country');
+		$country = \yii\helpers\Html::encode($country);
 		$state = $this->initState($country);
 		echo json_encode([
 			'state' => $this->_stateHtml,

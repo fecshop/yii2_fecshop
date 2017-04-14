@@ -364,6 +364,7 @@ class Index {
 		//$category 	= Yii::$service->category->getByPrimaryKey($primaryVal);
 		//$this->_category = $category ;
 		$searchText = Yii::$app->request->get('q');
+		$searchText = \yii\helpers\Html::encode($searchText);
 		$this->_searchText = $searchText;
 		$search_page_title_format 			= Yii::$app->controller->module->params['search_page_title_format'];
 		$search_page_meta_keywords_format 	= Yii::$app->controller->module->params['search_page_meta_keywords_format'];

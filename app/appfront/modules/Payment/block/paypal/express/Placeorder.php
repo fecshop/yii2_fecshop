@@ -35,6 +35,9 @@ class Placeorder {
 	public function getLastData(){
 		$post = Yii::$app->request->post();
 		if(is_array($post) && !empty($post)){
+			foreach($post as $k=>$v){
+				$post[$k] = \yii\helpers\Html::encode($v);
+			}
 			# 设置paypal快捷支付
 			$post['payment_method'] = Yii::$service->payment->paypal->express_payment_method;
 			# 检查前台传递的数据的完整性

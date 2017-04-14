@@ -31,6 +31,9 @@ class CartController extends AppfrontController
 		$custom_option 	= Yii::$app->request->post('custom_option');
 		$product_id 	= Yii::$app->request->post('product_id');
 		$qty 			= Yii::$app->request->post('qty');
+		$custom_option  = \yii\helpers\Html::encode($custom_option);
+		$product_id  	= \yii\helpers\Html::encode($product_id);
+		$qty  			= \yii\helpers\Html::encode($qty);
 		$qty  = abs(ceil((int)$qty));
 		if($qty  && $product_id){
 			if($custom_option){
@@ -79,7 +82,7 @@ class CartController extends AppfrontController
 			exit;
 		}
 		$coupon_code = trim(Yii::$app->request->post('coupon_code'));
-		
+		$coupon_code = \yii\helpers\Html::encode($coupon_code);
 		if($coupon_code){
 			Yii::$service->cart->coupon->addCoupon($coupon_code);
 			$error_arr = Yii::$service->helper->errors->get(true);

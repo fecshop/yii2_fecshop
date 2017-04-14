@@ -33,6 +33,9 @@ class Placeorder{
 	public function getLastData(){
 		$post = Yii::$app->request->post();
 		if(is_array($post) && !empty($post)){
+			foreach($post as $k=>$v){
+				$post[$k] = \yii\helpers\Html::encode($v);;
+			}
 			# 检查前台传递的数据的完整性
 			if($this->checkOrderInfoAndInit($post)){
 				# 如果游客用户勾选了注册账号，则注册，登录，并把地址写入到用户的address中

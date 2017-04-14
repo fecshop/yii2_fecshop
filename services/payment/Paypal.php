@@ -60,8 +60,8 @@ class Paypal extends Service
 	 * 进而fecshop更改订单状态。
 	 * fecshop一方面验证消息是否由paypal发出，另一方面要验证订单是否和后台的一致。
 	 */
-	public function receiveIpn(){
-		if($this->verifySecurity()){
+	public function receiveIpn($post){
+		if($this->verifySecurity($post)){
 			# 验证数据是否已经发送
 			if($this->isNotDuplicate()){
 				# 验证数据是否被篡改。
@@ -83,8 +83,9 @@ class Paypal extends Service
 	 * 因此，fecshop将接收到的参数传递给paypal，询问paypal是否是paypal
 	 * 发送的IPN消息，如果是，则返回VERIFIED。
 	 */
-	protected function verifySecurity(){
-		$this->_postData = Yii::$app->request->post();
+	protected function verifySecurity($post){
+		
+		$this->_postData = $post;
 		Yii::$service->payment->setPaymentMethod('paypal_standard');
 		$verifyUrl = $this->getVerifyUrl();
 		$verifyReturn = $this->curlGet($verifyUrl);
@@ -508,6 +509,7 @@ class Paypal extends Service
 	 */
 	public function setExpressToken(){
 		$token = Yii::$app->request->get('token');
+		$token = \yii\helpers\Html::encode($token);
 		if($token){
 			Yii::$app->session->set(self::EXPRESS_TOKEN,$token);
 			return true;
@@ -519,6 +521,7 @@ class Paypal extends Service
 	 */
 	public function setExpressPayerID(){
 		$PayerID = Yii::$app->request->get('PayerID');
+		$PayerID = \yii\helpers\Html::encode($PayerID);
 		if($PayerID){
 			Yii::$app->session->set(self::EXPRESS_PAYER_ID,$PayerID);
 			return true;

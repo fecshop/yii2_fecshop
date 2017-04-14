@@ -34,7 +34,13 @@ class StandardController extends AppfrontController
 	
 	
 	public function actionIpn(){
-		Yii::$service->payment->paypal->receiveIpn();
+		$post = Yii::$app->request->post();
+		if(is_array($post) && !empty($post)){
+			foreach($post as $k=>$v){
+				$post[$k] = \yii\helpers\Html::encode($v);
+			}
+			Yii::$service->payment->paypal->receiveIpn($post);
+		}
 	}
 	
 	public function actionCancel(){

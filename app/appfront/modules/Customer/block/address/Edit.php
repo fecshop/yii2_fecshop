@@ -27,6 +27,9 @@ class Edit {
 		$address = Yii::$app->request->post('address');
 		$isSave = 0;
 		if(is_array($address) && !empty($address)){
+			foreach($address as $k => $v){
+				$address[$k] = \yii\helpers\Html::encode($v);
+			}
 			$this->save($address);
 			$isSave = 1;
 		}
