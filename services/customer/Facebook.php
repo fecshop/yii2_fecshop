@@ -43,7 +43,7 @@ class Facebook extends Service
 			$this->facebook_app_id = $store['thirdLogin']['facebook']['facebook_app_id'];
 		}
 	}
-	# µÃµ½facebookµÇÂ¼µÄurl¡£
+	# å¾—åˆ°facebookç™»å½•çš„urlã€‚
 	public function getLoginUrl($urlKey){
 		$this->initParam();
 		session_start();

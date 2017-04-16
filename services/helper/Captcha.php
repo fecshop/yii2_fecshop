@@ -20,55 +20,55 @@ use fecshop\services\Service;
  */
 class Captcha extends Service
 {
-	public $charset = 'abcdefghkmnprstuvwxyzABCDEFGHKMNPRSTUVWXYZ0123456789';//Ëæ»úÒò×Ó
-	public $codelen 	= 4;//ÑéÖ¤Âë³¤¶È
-	public $width 		= 130;//¿í¶È
-	public $height 		= 50;//¸ß¶È
-	public $fontsize 	= 20;//Ö¸¶¨×ÖÌå´óĞ¡
+	public $charset = 'abcdefghkmnprstuvwxyzABCDEFGHKMNPRSTUVWXYZ0123456789';//éšæœºå› å­
+	public $codelen 	= 4;//éªŒè¯ç é•¿åº¦
+	public $width 		= 130;//å®½åº¦
+	public $height 		= 50;//é«˜åº¦
+	public $fontsize 	= 20;//æŒ‡å®šå­—ä½“å¤§å°
 	public $case_sensitive = false;
-	private $fontcolor		;//Ö¸¶¨×ÖÌåÑÕÉ«
-	private $code;//ÑéÖ¤Âë
-	private $img;//Í¼ĞÎ×ÊÔ´¾ä±ú
-	private $font;//Ö¸¶¨µÄ×ÖÌå
+	private $fontcolor		;//æŒ‡å®šå­—ä½“é¢œè‰²
+	private $code;//éªŒè¯ç 
+	private $img;//å›¾å½¢èµ„æºå¥æŸ„
+	private $font;//æŒ‡å®šçš„å­—ä½“
 	private $_sessionKey = 'captcha_session_key';
 	
 	/**
-	 *  1. Éú³ÉÍ¼Æ¬£¬
+	 *  1. ç”Ÿæˆå›¾ç‰‡ï¼Œ
 		public function actionCaptcha(){
 			Yii::$service->helper->captcha->doimg();
 			exit;
 		}
-		2. ·ÃÎÊÍ¼Æ¬£º
+		2. è®¿é—®å›¾ç‰‡ï¼š
 			<p>
-				<span>ÑéÖ¤Âë£º</span>
+				<span>éªŒè¯ç ï¼š</span>
 				<input type="text" name="validate" value="" size=10> 
-				<img  title="µã»÷Ë¢ĞÂ" src="http://fecshop.appfront.fancyecommerce.com/site/helper/captcha" align="absbottom" onclick="this.src='captcha.php?'+Math.random();"></img>
+				<img  title="ç‚¹å‡»åˆ·æ–°" src="http://fecshop.appfront.fancyecommerce.com/site/helper/captcha" align="absbottom" onclick="this.src='captcha.php?'+Math.random();"></img>
 			</p>
-		3. ÑéÖ¤£ºÑéÖ¤³É¹¦·µ»Øtrue Ê§°Ü·µ»Øfalse
-		$code = ''  // codeÊÇÓÃ»§´«µİ¹ıÀ´µÄÖµ¡£
+		3. éªŒè¯ï¼šéªŒè¯æˆåŠŸè¿”å›true å¤±è´¥è¿”å›false
+		$code = ''  // codeæ˜¯ç”¨æˆ·ä¼ é€’è¿‡æ¥çš„å€¼ã€‚
 		Yii::$service->helper->captcha->validateCaptcha($code)
 	    
 	 *
 	 */
-	//¹¹Ôì·½·¨³õÊ¼»¯
+	//æ„é€ æ–¹æ³•åˆå§‹åŒ–
 	public function __construct() {
-		$this->font = dirname(__FILE__).'/captcha/Elephant.ttf';//×¢Òâ×ÖÌåÂ·¾¶ÒªĞ´¶Ô£¬·ñÔòÏÔÊ¾²»ÁËÍ¼Æ¬
+		$this->font = dirname(__FILE__).'/captcha/Elephant.ttf';//æ³¨æ„å­—ä½“è·¯å¾„è¦å†™å¯¹ï¼Œå¦åˆ™æ˜¾ç¤ºä¸äº†å›¾ç‰‡
 		//echo $this->font;exit;
 	}
-	//Éú³ÉËæ»úÂë
+	//ç”Ÿæˆéšæœºç 
 	private function createCode() {
 		$_len = strlen($this->charset)-1;
 		for ($i=0;$i<$this->codelen;$i++) {
 			$this->code .= $this->charset[mt_rand(0,$_len)];
 		}
 	}
-	//Éú³É±³¾°
+	//ç”ŸæˆèƒŒæ™¯
 	private function createBg() {
 		$this->img = imagecreatetruecolor($this->width, $this->height);
 		$color = imagecolorallocate($this->img, mt_rand(157,255), mt_rand(157,255), mt_rand(157,255));
 		imagefilledrectangle($this->img,0,$this->height,$this->width,0,$color);
 	}
-	//Éú³ÉÎÄ×Ö
+	//ç”Ÿæˆæ–‡å­—
 	private function createFont() {
 		$_x = $this->width / $this->codelen;
 		
@@ -81,26 +81,26 @@ class Captcha extends Service
 			imagettftext($this->img,$this->fontsize,mt_rand(-30,30),$_x*$i+mt_rand(1,5),$this->height / 1.4,$fontcolor,$this->font,$this->code[$i]);
 		}
 	}
-	//Éú³ÉÏßÌõ¡¢Ñ©»¨
+	//ç”Ÿæˆçº¿æ¡ã€é›ªèŠ±
 	private function createLine() {
-		//ÏßÌõ
+		//çº¿æ¡
 		for ($i=0;$i<6;$i++) {
 			$color = imagecolorallocate($this->img,mt_rand(0,156),mt_rand(0,156),mt_rand(0,156));
 			imageline($this->img,mt_rand(0,$this->width),mt_rand(0,$this->height),mt_rand(0,$this->width),mt_rand(0,$this->height),$color);
 		}
-		//Ñ©»¨
+		//é›ªèŠ±
 		for ($i=0;$i<100;$i++) {
 			$color = imagecolorallocate($this->img,mt_rand(200,255),mt_rand(200,255),mt_rand(200,255));
 			imagestring($this->img,mt_rand(1,5),mt_rand(0,$this->width),mt_rand(0,$this->height),'*',$color);
 		}
 	}
-	//Êä³ö
+	//è¾“å‡º
 	private function outPut() {
 		header('Content-type:image/jpg');
 		imagepng($this->img);
 		imagedestroy($this->img);
 	}
-	//¶ÔÍâÉú³É
+	//å¯¹å¤–ç”Ÿæˆ
 	public function doimg() {
 		$this->createBg();
 		$this->createCode();
@@ -114,7 +114,7 @@ class Captcha extends Service
 		$code = $this->getCode($this->code);
 		\Yii::$app->session->set($this->_sessionKey,$code);
 	}
-	//»ñÈ¡ÑéÖ¤Âë
+	//è·å–éªŒè¯ç 
 	public function getCode($code) {
 		if(!$this->case_sensitive){
 			return strtolower($code);

@@ -37,25 +37,25 @@ class Image extends Service
 	];
 	
 	/**
-	 * 得到保存分类图片所在相对根目录的url路径
+	 * 寰楀埌淇濆瓨鍒嗙被鍥剧墖鎵�鍦ㄧ浉瀵规牴鐩綍鐨剈rl璺緞
 	 */
 	protected function actionGetBaseUrl(){
 		return Yii::$service->image->GetImgUrl($this->imageFloder,'common');
 	}
 	/**
-	 * 得到保存分类图片所在相对根目录的文件夹路径
+	 * 寰楀埌淇濆瓨鍒嗙被鍥剧墖鎵�鍦ㄧ浉瀵规牴鐩綍鐨勬枃浠跺す璺緞
 	 */
 	protected function actionGetBaseDir(){
 		return Yii::$service->image->GetImgDir($this->imageFloder,'common');
 	}
 	/**
-	 * 通过分类图片的相对路径得到产品图片的url
+	 * 閫氳繃鍒嗙被鍥剧墖鐨勭浉瀵硅矾寰勫緱鍒颁骇鍝佸浘鐗囩殑url
 	 */
 	protected function actionGetUrl($str){
 		return Yii::$service->image->GetImgUrl($this->imageFloder.$str,'common');
 	}
 	/**
-	 * 通过产品图片的相对路径得到产品图片的绝对路径
+	 * 閫氳繃浜у搧鍥剧墖鐨勭浉瀵硅矾寰勫緱鍒颁骇鍝佸浘鐗囩殑缁濆璺緞
 	 */
 	protected function actionGetDir(){
 		return Yii::$service->image->GetImgDir($this->imageFloder.$str,'common');

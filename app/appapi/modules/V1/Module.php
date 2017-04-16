@@ -7,12 +7,12 @@ class Module extends AppapiModule
 	public $blockNamespace;
     public function init()
     {
-		# 以下代码必须指定
+		# 浠ヤ笅浠ｇ爜蹇呴』鎸囧畾
 		$nameSpace = __NAMESPACE__;
 		# web controller
 		$this->controllerNamespace 	= 	$nameSpace . '\\controllers';
 		$this->blockNamespace 		= 	$nameSpace . '\\block';
-		# 指定默认的man文件
+		# 鎸囧畾榛樿鐨刴an鏂囦欢
 		//$this->layout = "home.php";
 		//Yii::$service->page->theme->layoutFile = 'home.php';
 		parent::init();  

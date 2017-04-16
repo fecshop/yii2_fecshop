@@ -18,7 +18,7 @@ class BestSell extends Service
 {
 	
 	/**
-	 *	µÃµ½È«²¿²úÆ·ÖĞÈÈÏúµÄ²úÆ·
+	 *	å¾—åˆ°å…¨éƒ¨äº§å“ä¸­çƒ­é”€çš„äº§å“
 	 */
 	 
 	protected function actionGetCategoryProduct()
@@ -27,7 +27,7 @@ class BestSell extends Service
 	}
 	
 	/**
-	 *	µÃµ½È«²¿²úÆ·ÖĞÈÈÏúµÄ²úÆ·
+	 *	å¾—åˆ°å…¨éƒ¨äº§å“ä¸­çƒ­é”€çš„äº§å“
 	 */
 	protected function actionGetProduct(){
 		

@@ -9,7 +9,7 @@ class HomeController extends AppfrontController
 		//echo 1222;exit;
 		parent::init();
 	}
-	# ÍøÕ¾ĞÅÏ¢¹ÜÀí
+	# ç½‘ç«™ä¿¡æ¯ç®¡ç†
     public function actionIndex()
     {
 		$data = $this->getBlock()->getLastData();
@@ -24,7 +24,7 @@ class HomeController extends AppfrontController
 			$timeout 			= Yii::$service->cache->timeout($cacheName);
 			$disableUrlParam 	= Yii::$service->cache->timeout($cacheName);
 			$get = Yii::$app->request->get();
-			# ´æÔÚÎŞ»º´æ²ÎÊı£¬Ôò¹Ø±Õ»º´æ
+			# å­˜åœ¨æ— ç¼“å­˜å‚æ•°ï¼Œåˆ™å…³é—­ç¼“å­˜
 			if(isset($get[$disableUrlParam])){
 				return [
 					[

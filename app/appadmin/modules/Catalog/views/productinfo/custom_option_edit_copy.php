@@ -59,7 +59,7 @@
 								add += '			<tfoot style="text-align:right;">';
 								add += '				<tr>';
 								add += '					<td  colspan="100"  style="text-align:right;">';
-								add += '						<a rel="'+i+'"  style="text-align:right;" href="javascript:void(0)"  class="addchildoption11 button"><span>Ôö¼Ó×ÓÊôĞÔ</span></a>';
+								add += '						<a rel="'+i+'"  style="text-align:right;" href="javascript:void(0)"  class="addchildoption11 button"><span>å¢åŠ å­å±æ€§</span></a>';
 								add += '					</td>';
 								add += '				</tr>';
 								add += '			</tfoot>';
@@ -96,7 +96,7 @@
 						});
 					</script>
 					<div class="custom_option">
-						<a href="javascript:void(0)"  class=" add_custom_option button"><span>Ôö¼Ó×Ô¶¨ÒåÊôĞÔ</span></a>
+						<a href="javascript:void(0)"  class=" add_custom_option button"><span>å¢åŠ è‡ªå®šä¹‰å±æ€§</span></a>
 						<div style="clear:both;"></div>
 						<div class="add_custom_option_div">
 							<input type="hidden"  class="custom_option_value" name="custom_option" value='' />
@@ -168,7 +168,7 @@
 												<tfoot style="text-align:right;">				
 													<tr>					
 														<td style="text-align:right;" colspan="100">
-															<a class="addchildoption11 button" href="javascript:void(0)" style="text-align:right;" rel="'.$i.'"><span>Ôö¼Ó×ÓÊôĞÔ</span></a>
+															<a class="addchildoption11 button" href="javascript:void(0)" style="text-align:right;" rel="'.$i.'"><span>å¢åŠ å­å±æ€§</span></a>
 														</td>	
 													</tr>
 												</tfoot>	

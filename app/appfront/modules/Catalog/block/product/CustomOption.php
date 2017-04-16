@@ -21,7 +21,7 @@ class CustomOption {
 	public $custom_option;
 	public $attr_group;
 	public $product_id;
-	public $middle_img_width; # Í¼Æ¬µÄ¿í¶È¡£
+	public $middle_img_width; # å›¾ç‰‡çš„å®½åº¦ã€‚
 	protected $_custom_option_arr;
 	
 	public function getLastData(){
@@ -42,7 +42,7 @@ class CustomOption {
 		##########
 		$my_arr = [];
 		$arr = [];
-		##ÔÚcustom_optionÀïÃæµÚÒ»¸öÊôÐÔ
+		##åœ¨custom_optioné‡Œé¢ç¬¬ä¸€ä¸ªå±žæ€§
 		$img_attr = '';
 		if(is_array($custom_option_attr_info) && !empty($custom_option_attr_info)){
 			foreach($custom_option_attr_info as $attr => $info){

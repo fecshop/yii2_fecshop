@@ -31,7 +31,7 @@ class Forgotpassword {
 		$captcha = $editForm['captcha'];
 		$forgotPasswordParam = \Yii::$app->getModule('customer')->params['forgotPassword'];
 		$forgotCaptcha = isset($forgotPasswordParam['forgotCaptcha']) ? $forgotPasswordParam['forgotCaptcha'] : false;
-		# Èç¹û¿ªÆôÁËÑéÖ¤Âë£¬µ«ÊÇÑéÖ¤ÂëÑéÖ¤²»ÕıÈ·¾Í±¨´í·µ»Ø¡£
+		# å¦‚æœå¼€å¯äº†éªŒè¯ç ï¼Œä½†æ˜¯éªŒè¯ç éªŒè¯ä¸æ­£ç¡®å°±æŠ¥é”™è¿”å›ã€‚
 		if($forgotCaptcha && !$captcha){
 			Yii::$service->page->message->addError(['Captcha can not empty']);
 			return;
@@ -39,9 +39,9 @@ class Forgotpassword {
 			Yii::$service->page->message->addError(['Captcha is not right']);
 			return;
 		}
-		#ÅĞ¶Ï¸ÃÓÊÏäÊÇ·ñ´æÔÚ
+		#åˆ¤æ–­è¯¥é‚®ç®±æ˜¯å¦å­˜åœ¨
 		if($identity = $this->getUserIdentity($editForm)){
-			# Éú³ÉÖØÖÃÃÜÂëµÄ passwordResetToken
+			# ç”Ÿæˆé‡ç½®å¯†ç çš„ passwordResetToken
 			
 			$passwordResetToken = Yii::$service->customer->generatePasswordResetToken($identity);
 			
@@ -61,7 +61,7 @@ class Forgotpassword {
 	
 	
 	/**
-	 * ·¢ËÍÍü¼ÇÃÜÂëÓÊ¼ş
+	 * å‘é€å¿˜è®°å¯†ç é‚®ä»¶
 	 */
 	public function sendForgotPasswordEmail($identity){
 		if($identity){

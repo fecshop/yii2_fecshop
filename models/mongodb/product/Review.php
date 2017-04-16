@@ -16,18 +16,18 @@ use yii\mongodb\ActiveRecord;
 class Review extends ActiveRecord
 {
     public static $_customAttrs;
-	# ÆÀÂÛÄ¬ÈÏ×´Ì¬£¬Ò²¾ÍÊÇÓÃ»§Ìí¼ÓÁËÆÀÂÛºóµÄ×´Ì¬£¨Ç°ÃæÊÇ¿Í»§µÄÆÀÂÛĞÅÏ¢ĞèÒªÉóºËµÄÇ°ÌáÏÂ£¬Èç¹û¿Í»§ĞÅÏ¢²»ĞèÒªÉóºËµÄ»°£¬Ôò¾ÍÊÇACTIVE_STATUS£©
+	# è¯„è®ºé»˜è®¤çŠ¶æ€ï¼Œä¹Ÿå°±æ˜¯ç”¨æˆ·æ·»åŠ äº†è¯„è®ºåçš„çŠ¶æ€ï¼ˆå‰é¢æ˜¯å®¢æˆ·çš„è¯„è®ºä¿¡æ¯éœ€è¦å®¡æ ¸çš„å‰æä¸‹ï¼Œå¦‚æœå®¢æˆ·ä¿¡æ¯ä¸éœ€è¦å®¡æ ¸çš„è¯ï¼Œåˆ™å°±æ˜¯ACTIVE_STATUSï¼‰
 	const NOACTIVE_STATUS 	= 10;
-	# ÉóºËÍ¨¹ıµÄ×´Ì¬
+	# å®¡æ ¸é€šè¿‡çš„çŠ¶æ€
 	const ACTIVE_STATUS 	= 1;
-	# ÉóºË¾Ü¾øµÄ×´Ì¬
+	# å®¡æ ¸æ‹’ç»çš„çŠ¶æ€
 	const REFUSE_STATUS 	= 2;
 	
 	public static function collectionName()
     {
 	   return 'review';
     }
-	# ¶¯Ì¬Ôö¼Ó×Ö¶Î¡£
+	# åŠ¨æ€å¢åŠ å­—æ®µã€‚
 	public static function addCustomAttrs($attrs){
 		self::$_customAttrs = $attrs;
 	}
@@ -44,15 +44,15 @@ class Review extends ActiveRecord
 			'user_id',
 			'ip',
 	        'summary', 
-	        'review_content', 		# ÆÀÂÛµÄÄÚÈİ
-			'review_date',			# ÆÀÂÛµÄ×îºó¸üĞÂÊ±¼ä
+	        'review_content', 		# è¯„è®ºçš„å†…å®¹
+			'review_date',			# è¯„è®ºçš„æœ€åæ›´æ–°æ—¶é—´
 			'store',			# store
-			'lang_code',		# ÓïÑÔ
-			'status',			# ÉóºË×´Ì¬ 10´ú±íÎ´ÉóºË£¬1´ú±íÒÑÉóºË¡£
-			'audit_user',		# ÉóºËÕËºÅ
-			'audit_date',		# ÉóºËÊ±¼ä
+			'lang_code',		# è¯­è¨€
+			'status',			# å®¡æ ¸çŠ¶æ€ 10ä»£è¡¨æœªå®¡æ ¸ï¼Œ1ä»£è¡¨å·²å®¡æ ¸ã€‚
+			'audit_user',		# å®¡æ ¸è´¦å·
+			'audit_date',		# å®¡æ ¸æ—¶é—´
 		];
-		if($origin){ # È¡Ô­Ê¼µÄÊı¾İ
+		if($origin){ # å–åŸå§‹çš„æ•°æ®
 			return $origin;
 		}
 	    if(is_array(self::$_customAttrs) && !empty(self::$_customAttrs)){

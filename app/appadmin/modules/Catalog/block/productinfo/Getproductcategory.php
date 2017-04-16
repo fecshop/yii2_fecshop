@@ -64,7 +64,7 @@ class Getproductcategory
 		return $str;
 	}
 	
-	# µÃµ½®aÆ·µÄ·Öîid
+	# å¾—åˆ°ç”¢å“çš„åˆ†é¡žid
 	public function getCategoryByProductId($product_id){
 		$product = Yii::$service->product->getByPrimaryKey($product_id);
 		if(isset($product['category']) && !empty($product['category']) && is_array($product['category'])){
@@ -74,7 +74,7 @@ class Getproductcategory
 	}
 	
 	public function getMenu($product_id){
-		#ÉèÖÃÔÚconfigÉèÖÃµÄÖµ
+		#è®¾ç½®åœ¨configè®¾ç½®çš„å€¼
 		
 		//echo $this->_modelName;exit;
 		$query = $this->getModelQuery("catalog_category");

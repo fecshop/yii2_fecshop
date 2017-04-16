@@ -27,11 +27,11 @@ class Favorite extends ActiveRecord
     {
 		$origin = [
 			'_id', 
-			'product_id', 	# ²úÆ·id ×Ö·û´®
-			'user_id',		# ÓÃ»§id intÀàĞÍ
-			'created_at',	# ´´½¨Ê±¼ä int
-			'updated_at',	# ¸üĞÂÊ±¼ä int
-			'store'			# Store µ±Ç°store
+			'product_id', 	# äº§å“id å­—ç¬¦ä¸²
+			'user_id',		# ç”¨æˆ·id intç±»å‹
+			'created_at',	# åˆ›å»ºæ—¶é—´ int
+			'updated_at',	# æ›´æ–°æ—¶é—´ int
+			'store'			# Store å½“å‰store
 		];
 		
 		return $origin;

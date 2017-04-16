@@ -17,14 +17,14 @@ use yii\base\InvalidConfigException;
  */
 class Cache extends Service
 {
-	# ¸÷¸öÒ³ÃæcacheµÄÅäÖÃ
+	# å„ä¸ªé¡µé¢cacheçš„é…ç½®
 	public $cacheConfig;
-	# cache ×Ü¿ª¹Ø
+	# cache æ€»å¼€å…³
 	public $enable;
 	
 	/**
-	 * @property $cacheKey | String , ¾ßÌåµÄ»º´æÃû×Ö£¬Æ©Èç product  category 
-	 * @return boolean, Èç¹ûenableÎªtrue£¬Ôò·µ»ØÎªtrue
+	 * @property $cacheKey | String , å…·ä½“çš„ç¼“å­˜åå­—ï¼Œè­¬å¦‚ product  category 
+	 * @return boolean, å¦‚æœenableä¸ºtrueï¼Œåˆ™è¿”å›ä¸ºtrue
 	 */
 	public function isEnable($cacheKey){
 		if($this->enable && isset($this->cacheConfig[$cacheKey]['enable'])){
@@ -36,8 +36,8 @@ class Cache extends Service
 	
 	
 	/**
-	 * @property $cacheKey | String , ¾ßÌåµÄ»º´æÃû×Ö£¬Æ©Èç product  category 
-	 * @return int, Èç¹ûenableÎªtrue£¬Ôò·µ»ØÎªtrue
+	 * @property $cacheKey | String , å…·ä½“çš„ç¼“å­˜åå­—ï¼Œè­¬å¦‚ product  category 
+	 * @return int, å¦‚æœenableä¸ºtrueï¼Œåˆ™è¿”å›ä¸ºtrue
 	 */
 	public function timeout($cacheKey){
 		if(isset($this->cacheConfig[$cacheKey]['timeout'])){
@@ -49,8 +49,8 @@ class Cache extends Service
 	
 	
 	/**
-	 * @property $cacheKey | String , ¾ßÌåµÄ»º´æÃû×Ö£¬Æ©Èç product  category 
-	 * @return string, Èç¹ûenableÎªtrue£¬Ôò·µ»ØÎªtrue
+	 * @property $cacheKey | String , å…·ä½“çš„ç¼“å­˜åå­—ï¼Œè­¬å¦‚ product  category 
+	 * @return string, å¦‚æœenableä¸ºtrueï¼Œåˆ™è¿”å›ä¸ºtrue
 	 */
 	public function disableUrlParam($cacheKey){
 		if(isset($this->cacheConfig[$cacheKey]['disableUrlParam'])){
@@ -61,9 +61,9 @@ class Cache extends Service
 	}
 	
 	/**
-	 * @property $cacheKey | String , ¾ßÌåµÄ»º´æÃû×Ö£¬Æ©Èç product  category 
-	 * @return string, Èç¹ûenableÎªtrue£¬Ôò·µ»ØÎªtrue
-	 * urlµÄ²ÎÊı£¬ÄÄÒ»Ğ©²ÎÊı×÷Îª»º´æÎ¨Ò»µÄÒÀ¾İ£¬Æ©Èçp£¨·ÖÒ³µÄÖµ£©
+	 * @property $cacheKey | String , å…·ä½“çš„ç¼“å­˜åå­—ï¼Œè­¬å¦‚ product  category 
+	 * @return string, å¦‚æœenableä¸ºtrueï¼Œåˆ™è¿”å›ä¸ºtrue
+	 * urlçš„å‚æ•°ï¼Œå“ªä¸€äº›å‚æ•°ä½œä¸ºç¼“å­˜å”¯ä¸€çš„ä¾æ®ï¼Œè­¬å¦‚pï¼ˆåˆ†é¡µçš„å€¼ï¼‰
 	 * 
 	 */
 	public function cacheUrlParam($cacheKey){

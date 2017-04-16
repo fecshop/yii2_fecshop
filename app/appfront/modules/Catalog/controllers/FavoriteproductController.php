@@ -18,7 +18,7 @@ use fecshop\app\appfront\modules\AppfrontController;
 class FavoriteproductController extends AppfrontController
 {
    
-	# Ôö¼ÓÊÕ²Ø
+	# å¢žåŠ æ”¶è—
     public function actionAdd()
     {
 		$data = $this->getBlock()->getLastData();

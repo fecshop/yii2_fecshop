@@ -9,7 +9,7 @@ class ArticleController extends AppfrontController
     public function init(){
 		parent::init();
 	}
-	# ÍøÕ¾ĞÅÏ¢¹ÜÀí
+	# ç½‘ç«™ä¿¡æ¯ç®¡ç†
     public function actionIndex()
     {
 		$data = $this->getBlock()->getLastData();
@@ -32,7 +32,7 @@ class ArticleController extends AppfrontController
 			$cacheUrlParam 		= Yii::$service->cache->cacheUrlParam($cacheName);
 			$get_str = '';
 			$get = Yii::$app->request->get();
-			# ´æÔÚÎŞ»º´æ²ÎÊı£¬Ôò¹Ø±Õ»º´æ
+			# å­˜åœ¨æ— ç¼“å­˜å‚æ•°ï¼Œåˆ™å…³é—­ç¼“å­˜
 			if(isset($get[$disableUrlParam])){
 				return [
 					[

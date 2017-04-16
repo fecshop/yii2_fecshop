@@ -52,6 +52,6 @@ $(document).ready(function(){
 });
 <?php $this->endBlock(); ?>  
 </script>  
-<?php $this->registerJs($this->blocks['owl_fecshop_slider'],\yii\web\View::POS_END);//½«±àÐ´µÄjs´úÂë×¢²áµ½Ò³Ãæµ×²¿ ?>
+<?php $this->registerJs($this->blocks['owl_fecshop_slider'],\yii\web\View::POS_END);//å°†ç¼–å†™çš„jsä»£ç æ³¨å†Œåˆ°é¡µé¢åº•éƒ¨ ?>
 <?php  }  ?>
 

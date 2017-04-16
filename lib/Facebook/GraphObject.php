@@ -121,7 +121,7 @@ class GraphObject
    *   if provided.
    *
    * Calling this for a property that is not an array, the behavior
-   *   is undefined, so don’t do this.
+   *   is undefined, so don鈥檛 do this.
    *
    * @param string $name The property to retrieve
    * @param string $type The subclass of GraphObject, optionally

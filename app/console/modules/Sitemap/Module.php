@@ -18,7 +18,7 @@ class Module extends ConsoleModule
     public $blockNamespace;
     public function init()
     {
-		# 以下代码必须指定
+		# 浠ヤ笅浠ｇ爜蹇呴』鎸囧畾
 		$nameSpace = __NAMESPACE__;
 		$this->controllerNamespace 	= 	$nameSpace . '\\controllers';
 		$this->blockNamespace 	= 	$nameSpace . '\\block';

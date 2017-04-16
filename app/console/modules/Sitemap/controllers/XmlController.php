@@ -19,31 +19,31 @@ class XmlController extends Controller
 	public function actionBegin(){
 		Yii::$service->sitemap->beginSiteMap();
 	}
-	# ��ҳ
+	# 首页
 	public function actionHome(){
 		Yii::$service->sitemap->home();
 	}
-	# ����ҳ���ҳ������
+	# 分类页面的页面总数
 	public function actionCategorypagecount(){
 		echo Yii::$service->sitemap->categorypagecount();
 	}
-	# ���ɷ���ҳ��
+	# 生成分类页面
 	public function actionCategory($pageNum){
 		Yii::$service->sitemap->category($pageNum);
 	}
-	# ��Ʒҳ���ҳ������
+	# 产品页面的页面总数
 	public function actionProductpagecount(){
 		echo Yii::$service->sitemap->productpagecount();
 	}
-	# ���ɲ�Ʒҳ��
+	# 生成产品页面
 	public function actionProduct($pageNum){
 		Yii::$service->sitemap->product($pageNum);
 	}
-	# cms pageҳ���ҳ������
+	# cms page页面的页面总数
 	public function actionCmspagepagecount(){
 		echo Yii::$service->sitemap->cmspagepagecount();
 	}
-	# ����cms pageҳ���sitemap
+	# 生成cms page页面的sitemap
 	public function actionCmspage($pageNum){
 		Yii::$service->sitemap->cmspage($pageNum);
 	}

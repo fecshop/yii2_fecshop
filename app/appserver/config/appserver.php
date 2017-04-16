@@ -6,13 +6,13 @@
  * @copyright Copyright (c) 2016 FecShop Software LLC
  * @license http://www.fecshop.com/license/
  */
-# ���ļ���app/web/index.php �����롣
-# fecshop - appfront �ĺ���ģ��
+# 本文件在app/web/index.php 处引入。
+# fecshop - appfront 的核心模块
 $modules = [];
 foreach (glob(__DIR__ . '/modules/*.php') as $filename){
 	$modules = array_merge($modules,require($filename));
 }
-# �˴�Ҳ������дfecshop������������á�
+# 此处也可以重写fecshop的组件。供调用。
 return [
 	'modules'=>$modules,
 	/* only config in front web */
@@ -34,7 +34,7 @@ return [
 						'@fecshop/app/appserver/languages',
 						'@appserver/languages',
 					],
-					'sourceLanguage' => 'en_US', # ��� en_US Ҳ�뷭�룬��ô���Ըĳ�en_XX��
+					'sourceLanguage' => 'en_US', # 如果 en_US 也想翻译，那么可以改成en_XX。
 				],
 			],
 		],

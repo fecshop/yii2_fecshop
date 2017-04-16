@@ -56,7 +56,7 @@ class Social{
 				  //header('Location: '.$authUrl);
 					return $authUrl;
 				}
-			# 获取 login url
+			# 鑾峰彇 login url
 			}else{
 				$authUrl = $client->createAuthUrl();
 				  //header('Location: '.$authUrl);

@@ -22,7 +22,7 @@ use fecshop\services\url\rewrite\RewriteMongodb;
 class Category extends Service
 {
 	/**
-	 * °ÑÊôĞÔÖµ×ª»»³Éurl¸ñÊ½µÄ×Ö·û´®£¬ÓÃÓÚÉú³Éurl
+	 * æŠŠå±æ€§å€¼è½¬æ¢æˆurlæ ¼å¼çš„å­—ç¬¦ä¸²ï¼Œç”¨äºç”Ÿæˆurl
 	 */
 	protected function actionAttrValConvertUrlStr($strVal){
 		if($strVal){
@@ -37,7 +37,7 @@ class Category extends Service
 		}
 	}
 	/**
-	 * °Ñurl¸ñÊ½µÄ×Ö·û´®×ª»»³ÉÊôĞÔÖµ£¬ÓÃÓÚ½âÎöurl£¬µÃµ½ÏàÓ¦µÄÊôĞÔÖµ
+	 * æŠŠurlæ ¼å¼çš„å­—ç¬¦ä¸²è½¬æ¢æˆå±æ€§å€¼ï¼Œç”¨äºè§£æurlï¼Œå¾—åˆ°ç›¸åº”çš„å±æ€§å€¼
 	 */
 	protected function actionUrlStrConvertAttrVal($urlStr){
 		$convert = $this->strUrlRelation();
@@ -57,11 +57,11 @@ class Category extends Service
 	 * 
 	 */
 	/**
-	 * ÔÚ·ÖÀà²àÀ¸µã»÷¹ıÂËÊôĞÔ£¬µÃµ½Ñ¡ÔñÕâ¸öÊôĞÔµÄurl
-	 * @property $attrUrlStr|String ÊôĞÔµÄurl´¦ÀíºóµÄ×Ö·û´®
-	 * @property $val|String ÊôĞÔ¶ÔÓ¦µÄÖµ¡£Î´url´¦ÀíµÄÖµ
-	 * @property $p|String  ÔÚurlÖĞÓÃÀ´±íÊ¾·ÖÒ³µÄ²ÎÊı£¬Ò»°ãÓÃpÀ´±êÊ¾¡£
-	 * @property $pageBackToOne|boolean ÊÇ·ñÈÃpµÄÒ³Êı»Ø¹éµÚÒ»Ò³
+	 * åœ¨åˆ†ç±»ä¾§æ ç‚¹å‡»è¿‡æ»¤å±æ€§ï¼Œå¾—åˆ°é€‰æ‹©è¿™ä¸ªå±æ€§çš„url
+	 * @property $attrUrlStr|String å±æ€§çš„urlå¤„ç†åçš„å­—ç¬¦ä¸²
+	 * @property $val|String å±æ€§å¯¹åº”çš„å€¼ã€‚æœªurlå¤„ç†çš„å€¼
+	 * @property $p|String  åœ¨urlä¸­ç”¨æ¥è¡¨ç¤ºåˆ†é¡µçš„å‚æ•°ï¼Œä¸€èˆ¬ç”¨pæ¥æ ‡ç¤ºã€‚
+	 * @property $pageBackToOne|boolean æ˜¯å¦è®©pçš„é¡µæ•°å›å½’ç¬¬ä¸€é¡µ
 	 */
 	protected function actionGetFilterChooseAttrUrl($attrUrlStr,$val,$p='p',$pageBackToOne=true){
 		
@@ -131,10 +131,10 @@ class Category extends Service
 	}
 	
 	/**
-	 * µÃµ½ÅÅĞòµÄurl
-	 * @property $arr|Array sortµÄ×Ö¶ÎºÍÖµ  dirµÄ×Ö¶ÎºÍÖµ
-	 * @property $p|String  ÔÚurlÖĞÓÃÀ´±íÊ¾·ÖÒ³µÄ²ÎÊı£¬Ò»°ãÓÃpÀ´±êÊ¾¡£
-	 * @property $pageBackToOne|boolean ÊÇ·ñÈÃpµÄÒ³Êı»Ø¹éµÚÒ»Ò³
+	 * å¾—åˆ°æ’åºçš„url
+	 * @property $arr|Array sortçš„å­—æ®µå’Œå€¼  dirçš„å­—æ®µå’Œå€¼
+	 * @property $p|String  åœ¨urlä¸­ç”¨æ¥è¡¨ç¤ºåˆ†é¡µçš„å‚æ•°ï¼Œä¸€èˆ¬ç”¨pæ¥æ ‡ç¤ºã€‚
+	 * @property $pageBackToOne|boolean æ˜¯å¦è®©pçš„é¡µæ•°å›å½’ç¬¬ä¸€é¡µ
 	 */
 	protected function actionGetFilterSortAttrUrl($arr,$p='',$pageBackToOne=true){
 		$sort 		= $arr['sort']['key'];
@@ -215,7 +215,7 @@ class Category extends Service
 	}
 	
 	/**
-	 * µÃµ½²»Ñ¡ÔñÕâ¸öÊôĞÔµÄurl
+	 * å¾—åˆ°ä¸é€‰æ‹©è¿™ä¸ªå±æ€§çš„url
 	 */
 	/*
 	protected function actionGetFilterUnChooseAttrUrl($attrUrlStr,$val){

@@ -11,33 +11,33 @@ return [
 		'class' => 'fecshop\services\Sitemap',
 		'sitemapConfig' => [
 			/**
-			 * ¶ÔÓÚÏÂÃæµÄÉèÖÃ£¬Äú¿ÉÄÜ¸Ğ¾õºÜ†ªàÂ£¬ÓòÃû×÷ÎªstoreµÄkey£¬ÔÚstore serviceÖĞÒÑ¾­ÉèÖÃ£¬
-			 * ÎªÊ²Ã´ĞèÒªÔÚÕâÀïÖØĞÂ¸ãÒ»Ì×ÄØ£¿  ÕâÑù×öÊÇÎªÁË¸ü¼ÓµÄÁé»î
+			 * å¯¹äºä¸‹é¢çš„è®¾ç½®ï¼Œæ‚¨å¯èƒ½æ„Ÿè§‰å¾ˆå•°å—¦ï¼ŒåŸŸåä½œä¸ºstoreçš„keyï¼Œåœ¨store serviceä¸­å·²ç»è®¾ç½®ï¼Œ
+			 * ä¸ºä»€ä¹ˆéœ€è¦åœ¨è¿™é‡Œé‡æ–°æä¸€å¥—å‘¢ï¼Ÿ  è¿™æ ·åšæ˜¯ä¸ºäº†æ›´åŠ çš„çµæ´»
 			 *
 			 */
-			# appfrontÈë¿Ú
+			# appfrontå…¥å£
 			'appfront' => [
-				# storeµÄkey(ÓòÃû)£¬
+				# storeçš„key(åŸŸå)ï¼Œ
 				'fecshop.appfront.fancyecommerce.com' => [
-					'https'			=> false,  # false´ú±íÊ¹ÓÃhttp£¬true´ú±íÊ¹ÓÃhttps			
-					'sitemapDir' 	=> '@appfront/web/sitemap.xml', # sitemap´æ·ÅµÄµØÖ·
-					'showScriptName'=> true,	# ÊÇ·ñÏÔÊ¾index.php £¬Æ©Èçhttp://www.fecshop.com/index.php/xxxxxx,µ±nginxÃ»ÓĞÉèÖÃÖØĞ´£¬ÕâÀïĞèÒªÉèÖÃÎªtrue,ÕâÑùurlÖĞ»á´æÔÚindex.php£¬·ñÔò»á404
-												# Õâ¸öÉèÖÃ¶ÔseoÀ´Ëµ£¬ÉèÖÃÎªfalse×îºÏÊÊ£¬Ò²¾ÍÊÇÒş²Ø urlÖĞindex.php £¬ÕâÖÖÉèÖÃĞèÒª¿ªÆônginxµÄurlÖØĞ´
+					'https'			=> false,  # falseä»£è¡¨ä½¿ç”¨httpï¼Œtrueä»£è¡¨ä½¿ç”¨https			
+					'sitemapDir' 	=> '@appfront/web/sitemap.xml', # sitemapå­˜æ”¾çš„åœ°å€
+					'showScriptName'=> true,	# æ˜¯å¦æ˜¾ç¤ºindex.php ï¼Œè­¬å¦‚http://www.fecshop.com/index.php/xxxxxx,å½“nginxæ²¡æœ‰è®¾ç½®é‡å†™ï¼Œè¿™é‡Œéœ€è¦è®¾ç½®ä¸ºtrue,è¿™æ ·urlä¸­ä¼šå­˜åœ¨index.phpï¼Œå¦åˆ™ä¼š404
+												# è¿™ä¸ªè®¾ç½®å¯¹seoæ¥è¯´ï¼Œè®¾ç½®ä¸ºfalseæœ€åˆé€‚ï¼Œä¹Ÿå°±æ˜¯éšè— urlä¸­index.php ï¼Œè¿™ç§è®¾ç½®éœ€è¦å¼€å¯nginxçš„urlé‡å†™
 				],
-				# storeµÄkey(ÓòÃû)
+				# storeçš„key(åŸŸå)
 				'fecshop.appfront.fancyecommerce.com/fr' => [
-					'https'			=> false,  # false´ú±íÊ¹ÓÃhttp£¬true´ú±íÊ¹ÓÃhttps			
-					'sitemapDir' 	=> '@appfront/web/fr/sitemap.xml', # sitemap´æ·ÅµÄµØÖ·
+					'https'			=> false,  # falseä»£è¡¨ä½¿ç”¨httpï¼Œtrueä»£è¡¨ä½¿ç”¨https			
+					'sitemapDir' 	=> '@appfront/web/fr/sitemap.xml', # sitemapå­˜æ”¾çš„åœ°å€
 					'showScriptName'=> true,
 				],
 				
 				'fecshop.appfront.es.fancyecommerce.com' => [
-					'https'			=> false,  # false´ú±íÊ¹ÓÃhttp£¬true´ú±íÊ¹ÓÃhttps			
+					'https'			=> false,  # falseä»£è¡¨ä½¿ç”¨httpï¼Œtrueä»£è¡¨ä½¿ç”¨https			
 					'sitemapDir' 	=> '@appfront/web/sitemap_es.xml',
 					'showScriptName'=> true,
 				],
 				'fecshop.appfront.fancyecommerce.com/cn' => [
-					'https'			=> false,  # false´ú±íÊ¹ÓÃhttp£¬true´ú±íÊ¹ÓÃhttps			
+					'https'			=> false,  # falseä»£è¡¨ä½¿ç”¨httpï¼Œtrueä»£è¡¨ä½¿ç”¨https			
 					'sitemapDir' 	=> '@appfront/web/cn/sitemap.xml',
 					'showScriptName'=> true,
 				],

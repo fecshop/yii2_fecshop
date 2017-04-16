@@ -23,7 +23,7 @@ class Google extends Service
 	protected  $currentState;
 	
 	
-	# µÃµ½¹È¸èµÇÂ¼µÄurl
+	# å¾—åˆ°è°·æ­Œç™»å½•çš„url
 	public function getLoginUrl($urlKey){
 		Global $googleapiinfo;
 		$thirdLogin = Yii::$service->store->thirdLogin;

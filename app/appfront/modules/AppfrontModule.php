@@ -17,12 +17,12 @@ class AppfrontModule extends \yii\base\Module
    /*
     public function init()
     {
-		# 以下代码必须指定
+		# 浠ヤ笅浠ｇ爜蹇呴』鎸囧畾
         
 		//$this->_currentDir			= 	__DIR__ ;
 		//$this->_currentNameSpace	=   __NAMESPACE__;
 		
-		# 指定默认的man文件
+		# 鎸囧畾榛樿鐨刴an鏂囦欢
 		//$this->layout = "main_ajax.php";
 		parent::init();  
 		

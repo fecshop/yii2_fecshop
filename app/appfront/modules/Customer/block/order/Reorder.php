@@ -51,7 +51,7 @@ class Reorder {
 	
 	/**
 	 * @property $message | String
-	 * 添加报错信息
+	 * 娣诲姞鎶ラ敊淇℃伅
 	 */
 	public function errorMessage($message){
 		Yii::$service->page->message->addError($message);
