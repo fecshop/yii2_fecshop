@@ -28,6 +28,11 @@ class Asset extends Service
 {
 	public $cssOptions;
 	public $jsOptions; 
+	
+	public $jsVersion 	= 1;   //?v=115
+	public $cssVersion	= 1;   //?v=115
+	# js 和 css 如果想用独立的域名，可以在这里设置相应的域名。
+	public $jsCssDomain;
 	/**
 	 * 在模板路径下的相对文件夹。
 	 * 譬如模板路径为@fecshop/app/theme/base/front
@@ -83,18 +88,20 @@ class Asset extends Service
 			}
 		}
 		if(!empty($assetArr)){
+			$jsV 	= '?v='.$this->jsVersion;
+			$cssV 	= '?v='.$this->cssVersion;
 			foreach($assetArr as $fileDir=>$as){
 				$cssConfig = $as['cssOptions'];
 				$jsConfig = $as['jsOptions'];
 				$publishDir = $view->assetManager->publish($fileDir);
 				if(!empty($jsConfig) && is_array($jsConfig)){
 					foreach($jsConfig as $c){
-						$view->registerJsFile($publishDir[1].'/'.$c['js'],$c['options']);
+						$view->registerJsFile($this->jsCssDomain.$publishDir[1].'/'.$c['js'].$jsV,$c['options']);
 					}
 				}
 				if(!empty($cssConfig) && is_array($cssConfig)){
 					foreach($cssConfig as $c){
-						$view->registerCssFile($publishDir[1].'/'.$c['css'],$c['options']);
+						$view->registerCssFile($this->jsCssDomain.$publishDir[1].'/'.$c['css'].$cssV,$c['options']);
 					}
 				}
 			}

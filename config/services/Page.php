@@ -23,6 +23,13 @@ return [
 			
 			'asset' => [
 				'class' =>  'fecshop\services\page\Asset',
+				# 在js后面加一个v参数，修改js后，更改v参数，否则，浏览器会使用缓存。
+				# /assets/dbdba3fa/js/js.js?v=2
+				'jsVersion'		=> 1,
+				# /assets/dbdba3fa/css/owl.carousel.css?v=2
+				'cssVersion'	=> 1,
+				# js和css的域名，如果不设置，则使用网站的域名。
+				# 'jsCssDomain'   => '',
 				/* js and css config example:
 				'jsOptions'	=> [
 					# js config 1
