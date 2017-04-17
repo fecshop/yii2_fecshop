@@ -88,7 +88,7 @@ class Sitemap extends Service
 							$sitemapAbsoluteDir = Yii::getAlias($sitemapDir);
 							$xmlFile = fopen($sitemapAbsoluteDir, 'a') or die("Unable to open file!");
 							if(file_exists($sitemapAbsoluteDir)){
-								$home_url = Yii::$service->url->getUrlByDomain('',[],$https,$domain,$showScriptName);
+								$home_url = Yii::$service->url->getUrlByDomain('',[],$https,$domain,$showScriptName,true);
 								$str = '<url><loc>'.$home_url.'</loc><lastmod>'.$this->currentDate.'</lastmod></url>';
 								fwrite($xmlFile, $str);
 							}
@@ -132,7 +132,7 @@ class Sitemap extends Service
 								if(is_array($data) && !empty($data)){
 									foreach($data as $one){
 										$category_url_key = $one['url_key'];
-										$category_url = Yii::$service->url->getUrlByDomain($category_url_key,[],false,$domain,$showScriptName);
+										$category_url = Yii::$service->url->getUrlByDomain($category_url_key,[],$https,$domain,$showScriptName,true);
 										$str = '<url><loc>'.$category_url.'</loc><lastmod>'.$this->currentDate.'</lastmod></url>';
 										fwrite($xmlFile, $str);
 									
@@ -179,7 +179,7 @@ class Sitemap extends Service
 								if(is_array($data) && !empty($data)){
 									foreach($data as $one){
 										$product_url_key = $one['url_key'];
-										$product_url = Yii::$service->url->getUrlByDomain($product_url_key,[],false,$domain,$showScriptName);
+										$product_url = Yii::$service->url->getUrlByDomain($product_url_key,[],$https,$domain,$showScriptName,true);
 										$str = '<url><loc>'.$product_url.'</loc><lastmod>'.$this->currentDate.'</lastmod></url>';
 										fwrite($xmlFile, $str);
 									
@@ -226,7 +226,7 @@ class Sitemap extends Service
 								if(is_array($data) && !empty($data)){
 									foreach($data as $one){
 										$cms_page_url_key = $one['url_key'];
-										$cms_page_url = Yii::$service->url->getUrlByDomain($cms_page_url_key,[],false,$domain,$showScriptName);
+										$cms_page_url = Yii::$service->url->getUrlByDomain($cms_page_url_key,[],$https,$domain,$showScriptName,true);
 										$str = '<url><loc>'.$cms_page_url.'</loc><lastmod>'.$this->currentDate.'</lastmod></url>';
 										fwrite($xmlFile, $str);
 									}

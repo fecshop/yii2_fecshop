@@ -9,12 +9,11 @@
 return [
 	'sitemap' => [
 		'class' => 'fecshop\services\Sitemap',
+		/*
 		'sitemapConfig' => [
-			/**
-			 * 对于下面的设置，您可能感觉很啰嗦，域名作为store的key，在store service中已经设置，
-			 * 为什么需要在这里重新搞一套呢？  这样做是为了更加的灵活
-			 *
-			 */
+			#对于下面的设置，您可能感觉很啰嗦，域名作为store的key，在store service中已经设置，
+			#为什么需要在这里重新搞一套呢？  这样做是为了更加的灵活
+			#
 			# appfront入口
 			'appfront' => [
 				# store的key(域名)，
@@ -43,5 +42,6 @@ return [
 				],
 			]
 		],
+		*/
 	],
 ];

@@ -141,19 +141,28 @@ class Url extends Service
 	 * @property $params | Array 。url里面个各个参数
 	 * @property https | boolean 是否使用https的方式
 	 * @property $domain | String ， 相应的域名，譬如www.fecshop.com
+	 * @proeprty $showScriptName | boolean，是否在url中包含index.php/部分
+	 * @property $useHttpForUrl | boolean ，是否在url中加入http部分、
 	 * 通过传入domain的方式得到相应的url
 	 * 该功能一般是在脚本中通过各个域名的传入得到相应的url，譬如sitemap的生成就是应用了这个方法得到
 	 * 产品和分类的url。
 	 */
-	protected function actionGetUrlByDomain($url_key,$params=[],$https=false,$domain,$showScriptName = false){
+	protected function actionGetUrlByDomain($url_key,$params=[],$https=false,$domain,$showScriptName = false,$useHttpForUrl = false){
 		$first_str = substr($url_key,0,1);
 		if($first_str == '/'){
 			$jg = '';
 		}else{
 			$jg = '/';
 		}
-		
-		$baseUrl 	= '//'.$domain;
+		if($useHttpForUrl){
+			if($https){
+				$baseUrl 	= 'https://'.$domain;
+			}else{
+				$baseUrl 	= 'http://'.$domain;
+			}
+		}else{
+			$baseUrl 	= '//'.$domain;
+		}
 		
 		if($showScriptName){
 			$baseUrl .=  '/index.php';
