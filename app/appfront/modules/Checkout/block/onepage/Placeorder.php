@@ -33,8 +33,23 @@ class Placeorder{
 	public function getLastData(){
 		$post = Yii::$app->request->post();
 		if(is_array($post) && !empty($post)){
+			/**
+			 * 对传递的数据，去除掉非法xss攻击部分内容（通过\yii\helpers\Html::encode()）
+			 */
 			foreach($post as $k=>$v){
-				$post[$k] = \yii\helpers\Html::encode($v);;
+				if(is_array($v)){
+					foreach($v as $vk => $vv){
+						if(is_array($vv)){
+							foreach($vv as $vvk => $vvv){
+								$post[$k][$vk][$vvk] = \yii\helpers\Html::encode($vvv);
+							}
+						}else{
+							$post[$k][$vk] = \yii\helpers\Html::encode($vv);
+						}
+					}
+				}else{
+					$post[$k] = \yii\helpers\Html::encode($v);
+				}
 			}
 			# 检查前台传递的数据的完整性
 			if($this->checkOrderInfoAndInit($post)){
