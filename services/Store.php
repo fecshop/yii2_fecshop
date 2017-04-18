@@ -50,7 +50,7 @@ class Store extends Service
 	public $currentLangCode;
 	
 	public $thirdLogin;
-	public $https;
+	//public $https;
 	
 	/**
 	 *	Bootstrap:init website,  class property $currentLang ,$currentTheme and $currentStore.

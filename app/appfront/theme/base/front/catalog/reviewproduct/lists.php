@@ -17,7 +17,7 @@
 						</a> </div>
 						<div class="product_info review_add_price">
 							<div class="price_info">
-								<?php # 价格部分
+								<?php # 浠锋牸閮ㄥ垎
 									$priceView = [
 										'view'	=> 'catalog/product/index/price.php'
 									];
