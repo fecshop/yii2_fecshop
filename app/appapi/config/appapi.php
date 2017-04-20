@@ -25,13 +25,20 @@ return [
 			'enableStrictParsing' 	=> true,
 			'showScriptName' 		=> false,
 			'rules' => [
-				'GET v1/article/index/test' => 'v1/article/index/test',
+				//'GET v1/article/index/test' => 'v1/article/index/test',
+				
 				[
 					# http://fecshop.appapi.fancyecommerce.com/v1/article/index
 					'class' => 'yii\rest\UrlRule', 
-					'controller' => 'v1/article/index',  
-					'pluralize' => false,  
+					'controller' => 'v1/article',
+					# 默认开启复数，需要在url后面加一个s，譬如v1/article，默认访问为v1/articles
+					# 如果为false，则url后面不需要加s，譬如v1/article，默认访问为v1/article	，
+					//'pluralize' => false,  
                 ],  
+				# 这个设置是和复数没有任何关系的
+				'GET v1/articles/test' => 'v1/article/test',
+				
+				
 			],
 		],
 		'request' => [  
