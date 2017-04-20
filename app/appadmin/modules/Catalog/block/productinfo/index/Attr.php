@@ -32,14 +32,20 @@ class Attr
 		}else{
 			$this->_currentAttrGroup = Yii::$service->product->getDefaultAttrGroup();
 		}
-		$this->_attrInfo = Yii::$service->product->getGroupAttrInfo($this->_currentAttrGroup);
-		if(is_array($this->_attrInfo) && !empty($this->_attrInfo)){
-			$attrs = array_keys($this->_attrInfo);
-			\fecshop\models\mongodb\Product::addCustomProductAttrs($attrs);
-		}
+		
+		Yii::$service->product->addGroupAttrs($this->_currentAttrGroup);
+		
+		//$this->_attrInfo = Yii::$service->product->getGroupAttrInfo($this->_currentAttrGroup);
+		//if(is_array($this->_attrInfo) && !empty($this->_attrInfo)){
+		//	$attrs = array_keys($this->_attrInfo);
+		//	\fecshop\models\mongodb\Product::addCustomProductAttrs($attrs);
+		//}
 	}
 	
 	public function getGroupAttr(){
+		if(!$this->_attrInfo){
+			$this->_attrInfo = Yii::$service->product->getGroupAttrInfo($this->_currentAttrGroup);
+		}
 		return $this->_attrInfo;
 	}
 	

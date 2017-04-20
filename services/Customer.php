@@ -160,6 +160,13 @@ class Customer extends Service
 		$customerModel->setPassword($password);
 		$customerModel->save();
 	}
+	/**
+	 * 得到category model的全名
+	 */
+	protected function actionGetModelName(){
+		$model = new CustomerModel;
+		return get_class($model);
+	}
 	
 	protected function actionGetByPrimaryKey($val){
 		if($val){

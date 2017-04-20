@@ -46,6 +46,12 @@ class Category extends Service
 		return $this->_category->getPrimaryKey();
 	}
 	/**
+	 * 得到category model的全名
+	 */
+	protected function actionGetModelName(){
+		return get_class($this->_category->getByPrimaryKey());
+	}
+	/**
 	 * @property $primaryKey | String or Int , 主键
 	 * 通过主键，得到category info
 	 */

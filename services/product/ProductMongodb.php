@@ -136,6 +136,19 @@ class ProductMongodb implements ProductInterface
 		//echo '####';
 		return $id_arr;
 	}
+	/**
+	 * @property $attr_group | String
+	 * 根据产品的属性组名，得到属性数组，然后将属性数组附加到Product(model)的属性中。
+	 */
+	public function addGroupAttrs($attr_group){
+		$attrInfo = Yii::$service->product->getGroupAttrInfo($attr_group);
+		if(is_array($attrInfo) && !empty($attrInfo)){
+			$attrs = array_keys($attrInfo);
+			\fecshop\models\mongodb\Product::addCustomProductAttrs($attrs);
+		}
+		
+	}
+	
 	
 	/**
 	 * @property $one|Array , 产品数据数组

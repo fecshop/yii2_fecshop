@@ -51,7 +51,12 @@ class Article extends Service
 	protected function actionGetByPrimaryKey($primaryKey){
 		return $this->_article->getByPrimaryKey($primaryKey);
 	}
-	
+	/**
+	 * 得到category model的全名
+	 */
+	protected function actionGetModelName(){
+		return get_class($this->_article->getByPrimaryKey());
+	}
 	
 	
 	/**

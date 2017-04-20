@@ -9,6 +9,7 @@
 namespace fecshop\app\appapi\modules;
 use Yii;
 use fec\helpers\CConfig;
+use yii\web\Response;
 use yii\rest\ActiveController;
 use yii\base\InvalidValueException;
 /**
@@ -19,6 +20,28 @@ class AppapiController extends ActiveController
 {
 	public $blockNamespace;
 	
+	public function behaviors()
+	{
+		$behaviors = parent::behaviors();
+		/*
+		$behaviors['authenticator'] = [
+				'class' => CompositeAuth::className(),
+				'authMethods' => [
+						# 下面是三种验证access_token方式
+						//HttpBasicAuth::className(),
+						//HttpBearerAuth::className(),
+						# 这是GET参数验证的方式
+						# http://10.10.10.252:600/user/index/index?access-token=xxxxxxxxxxxxxxxxxxxx
+						QueryParamAuth::className(),
+				],
+		
+		];
+		*/
+
+		#定义返回格式是：JSON
+		$behaviors['contentNegotiator']['formats']['text/html'] = Response::FORMAT_JSON;
+		return $behaviors;
+	}
 	 
 	/**
 	 * get current block 

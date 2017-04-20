@@ -136,6 +136,18 @@ class Product extends Service
 	protected function actionGetByPrimaryKey($primaryKey){
 		return $this->_product->getByPrimaryKey($primaryKey);
 	}
+	protected function actionAddGroupAttrs($attr_group){
+		return $this->_product->addGroupAttrs($attr_group);
+		
+	}
+	
+	
+	/**
+	 * 得到category model的全名
+	 */
+	protected function actionGetModelName(){
+		return get_class($this->_product->getByPrimaryKey());
+	}
 	
 	/**
 	 * 通过sku查询产品

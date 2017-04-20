@@ -25,10 +25,11 @@ return [
 			'enableStrictParsing' 	=> true,
 			'showScriptName' 		=> false,
 			'rules' => [
-				//'GET v1/article/index/test' => 'v1/article/index/test',
-				
+				#################
+				## Article Api ##
+				#################
+				# http://fecshop.appapi.fancyecommerce.com/v1/articles
 				[
-					# http://fecshop.appapi.fancyecommerce.com/v1/article/index
 					'class' => 'yii\rest\UrlRule', 
 					'controller' => 'v1/article',
 					# 默认开启复数，需要在url后面加一个s，譬如v1/article，默认访问为v1/articles
@@ -38,13 +39,52 @@ return [
 				# 这个设置是和复数没有任何关系的
 				'GET v1/articles/test' => 'v1/article/test',
 				
+				##################
+				## Customer Api ##
+				##################
+				[
+					'class' => 'yii\rest\UrlRule', 
+					'controller' => 'v1/customer',
+					# 默认开启复数，需要在url后面加一个s，譬如v1/article，默认访问为v1/articles
+					# 如果为false，则url后面不需要加s，譬如v1/article，默认访问为v1/article	，
+					//'pluralize' => false,  
+                ],  
+				
+				
+				##################
+				## Category Api ##
+				##################
+				[
+					'class' => 'yii\rest\UrlRule', 
+					'controller' => 'v1/pcate',
+					//'pluralize' => true,
+                ], 
+				
+				##################
+				##Product Api ##
+				##################
+				/*
+				[
+					'class' => 'yii\rest\UrlRule', 
+					'controller' => 'v1/product',
+					# 默认开启复数，需要在url后面加一个s，譬如v1/article，默认访问为v1/articles
+					# 如果为false，则url后面不需要加s，譬如v1/article，默认访问为v1/article	，
+					//'pluralize' => false,  
+                ],
+				*/
+				'GET v1/products' 					=> 'v1/product/customindex',
+				'POST v1/products' 					=> 'v1/product/customcreate',
+				'GET v1/products/<product_id>' 		=> 'v1/product/customview',
+				'PATCH v1/products/<product_id>'	=> 'v1/product/customupdate',
+				'PUT v1/products/<product_id>' 		=> 'v1/product/customupdate',
+				'DELETE v1/products/<product_id>' 	=> 'v1/product/customdelete',
 				
 			],
 		],
 		'request' => [  
             'class' => '\yii\web\Request',  
             'enableCookieValidation' => false,  
-            'parsers' => [  
+            'parsers' => [
                 'application/json' => 'yii\web\JsonParser',  
             ],  
         ],

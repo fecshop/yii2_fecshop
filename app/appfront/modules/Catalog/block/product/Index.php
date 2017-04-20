@@ -249,11 +249,9 @@ class Index {
 		# 通过上面查询的属性组，得到属性组对应的属性列表
 		# 然后重新查询产品
 		$attr_group = $this->_product['attr_group'];
-		$attrInfo = Yii::$service->product->getGroupAttrInfo($attr_group);
-		if(is_array($attrInfo) && !empty($attrInfo)){
-			$attrs = array_keys($attrInfo);
-			\fecshop\models\mongodb\Product::addCustomProductAttrs($attrs);
-		}
+		
+		Yii::$service->product->addGroupAttrs($attr_group);
+		
 		# 重新查询产品信息。
 		$product 	= Yii::$service->product->getByPrimaryKey($primaryVal);
 		$this->_product = $product ;
