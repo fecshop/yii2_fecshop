@@ -91,7 +91,7 @@ return [
 		
 		'user' => [
 			'identityClass' => 'fecadmin\models\AdminUser',
-			'enableAutoLogin' => true,
+			//'enableAutoLogin' => true,
 		],
 		
 		'errorHandler' => [

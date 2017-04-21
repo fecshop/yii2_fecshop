@@ -12,16 +12,15 @@ class ProductController extends AppapiController
 	
 	public $numPerPage = 20;
 	
-	//public function init(){
-		# 得到当前service相应的model 
-		//$this->modelClass = Yii::$service->product->getByPrimaryKey();
-	//	parent::init();
-	//}
+	
 	/**
-	 * 得到整体列表
+	 * 得到产品的数据list
 	 */
+	# http://fecshop.appapi.fancyecommerce.com/v1/products?page=2&access-token=1Gk6ZNn-QaBaKFI4uE2bSw0w3N7ej72q
+	# http://fecshop.appapi.fancyecommerce.com/v1/products?page=2
 	public function actionCustomindex(){
 		$page = Yii::$app->request->get('page');
+		$page = $page ? $page : 1;
 		$filter = [
 	  		'numPerPage' 	=> $this->numPerPage,  	
 	  		'pageNum'		=> $page,
@@ -31,10 +30,7 @@ class ProductController extends AppapiController
 		$coll 	= $data['coll'];
 		$count 	= $data['count'];
 		
-		
-		$page = $page ? $page : 1;
 		$pageCount = ceil($count/$this->numPerPage);
-		
 		$serializer = new \yii\rest\Serializer;
 		Yii::$app->response->getHeaders()
             ->set($serializer->totalCountHeader, $count)
@@ -54,17 +50,24 @@ class ProductController extends AppapiController
 		return $product;
 		//product_id
 	}
-	
+	/**
+	 * 创建产品
+	 */
 	public function actionCustomcreate(){
 		return 'custom_create';
 	}
-	
+	/**
+	 * 更新产品
+	 */
 	public function actionCustomupdate($product_id){
 		return 'custom_update:'.$product_id;
 	}
-	
+	/**
+	 * 删除产品
+	 */
 	public function actionCustomdelete($product_id){
-		return 'custom_delete:'.$product_id;
+		//$product = Yii::$service->product->getByPrimaryKey($product_id);
+		//$product->delete();
 	}
 	
 	

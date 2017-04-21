@@ -12,6 +12,11 @@ use fec\helpers\CConfig;
 use yii\web\Response;
 use yii\rest\ActiveController;
 use yii\base\InvalidValueException;
+use yii\filters\auth\CompositeAuth;  
+use yii\filters\auth\HttpBasicAuth;  
+use yii\filters\auth\HttpBearerAuth;  
+use yii\filters\auth\QueryParamAuth; 
+
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
@@ -19,6 +24,12 @@ use yii\base\InvalidValueException;
 class AppapiController extends ActiveController
 {
 	public $blockNamespace;
+	
+	public function init()
+	{
+		parent::init();
+		\Yii::$app->user->enableSession = false;
+	}
 	
 	public function behaviors()
 	{
@@ -37,7 +48,11 @@ class AppapiController extends ActiveController
 		
 		];
 		*/
-
+		$behaviors = parent::behaviors();
+		$behaviors['authenticator'] = [
+			'class' => HttpBasicAuth::className(),
+		];
+    
 		#定义返回格式是：JSON
 		$behaviors['contentNegotiator']['formats']['text/html'] = Response::FORMAT_JSON;
 		return $behaviors;
