@@ -140,6 +140,21 @@ class Product extends Service
 		return $this->_product->addGroupAttrs($attr_group);
 		
 	}
+	/**
+	 * 和coll()的不同在于，该方式不走active record，因此可以获取产品的所有数据的。
+	 */
+	protected function actionApicoll(){
+		return $this->_product->apicoll();
+	}
+	protected function actionApiGetByPrimaryKey($primaryKey){
+		return $this->_product->apiGetByPrimaryKey($primaryKey);
+	}
+	protected function actionApiSave($product_one){
+		return $this->_product->apiSave($product_one);
+	}
+	protected function actionApiDelete($primaryKey){
+		return $this->_product->apiDelete($primaryKey);
+	}
 	
 	
 	/**

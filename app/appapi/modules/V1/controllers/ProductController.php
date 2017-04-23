@@ -38,36 +38,46 @@ class ProductController extends AppapiController
             ->set($serializer->currentPageHeader, $page)
             ->set($serializer->perPageHeader, $this->numPerPage)
             ;
-		return $coll;
+		return [
+			'status' 	=> 'success',
+			'count'	 	=> $count,
+			'pageCount' => $pageCount,
+			'page'		=> $page,
+			'numPerPage'=> $this->numPerPage,
+			'coll'	 => $coll,
+			
+		];
 		
-		#{"_id":{"$oid":"57bab0d5f656f2940a3bf56e"}," 需要处理
 	}
 	/**
 	 * 得到单个产品
 	 */
 	public function actionCustomview($product_id){
-		$product = Yii::$service->product->getByPrimaryKey($product_id);
-		return $product;
-		//product_id
+		$product = Yii::$service->product->apiGetByPrimaryKey($primaryKey);
+		return [
+			'status' => 'success',
+			'data'	 => $product
+		];
 	}
 	/**
 	 * 创建产品
 	 */
-	public function actionCustomcreate(){
-		return 'custom_create';
+	public function actionCustomsave(){
+		$product = Yii::$app->request->post('product');
+		Yii::$service->product->apiSave($product);
+		return [
+			'status' => 'success',
+		];
 	}
-	/**
-	 * 更新产品
-	 */
-	public function actionCustomupdate($product_id){
-		return 'custom_update:'.$product_id;
-	}
+	
 	/**
 	 * 删除产品
 	 */
 	public function actionCustomdelete($product_id){
-		//$product = Yii::$service->product->getByPrimaryKey($product_id);
-		//$product->delete();
+		Yii::$service->product->ApiDelete($product_id);
+		return [
+			'status' => 'success',
+		];
 	}
 	
 	

@@ -24,6 +24,8 @@ class ProductController extends AppfrontController
 	# 网站信息管理
     public function actionIndex()
     {
+		//$data = Yii::$service->product->apicoll();
+		//var_dump($data);
 		//echo 1;exit;
 		$data = $this->getBlock()->getLastData();
 		return $this->render($this->action->id,$data);

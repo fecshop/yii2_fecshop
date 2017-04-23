@@ -98,6 +98,58 @@ class ProductMongodb implements ProductInterface
 		];
 	}
 	/**
+	 * 和coll()的不同在于，该方式不走active record，因此可以获取产品的所有数据的。
+	 * 走这种方式，可以绕过产品属性组，因为产品属性组需要根据不同的
+	 * 属性组，在active record 上面附加相应的属性，对api这种不适合。
+	 */
+	public function apicoll(){
+		$collection = Product::find()->getCollection();
+		$cursor = $collection->find();
+		$count = $collection->count();
+		$arr = [];
+		foreach($cursor as $k =>$v){
+			$v['_id'] = (string) $v['_id'] ;
+			$arr[$k] = $v;
+		}
+		return [
+			'coll' => $arr,
+			'count'=> $count
+		];
+		
+	}
+	
+	/**
+	 * 和getByPrimaryKey()的不同在于，该方式不走active record，因此可以获取产品的所有数据的。
+	 */
+	public function apiGetByPrimaryKey($primaryKey){
+		$collection = Product::find()->getCollection();
+		$cursor = $collection->findOne(['_id' => $primaryKey]);
+		$arr = [];
+		foreach($cursor as $k => $v){
+			$arr[$k] = $v;
+		}
+		return $arr;
+	}
+	
+	/**
+	 * 通过api保存产品
+	 */
+	public function apiSave($product_one){
+		$collection = Product::find()->getCollection();
+		$collection->save($product_one);
+		return true;
+	}
+	/**
+	 * 通过api保存产品
+	 */
+	public function apiDelete($primaryKey){
+		$collection = Product::find()->getCollection();
+		$collection->remove(['_id' => $primaryKey]);
+		return true;
+	}
+	
+	
+	/**
 	 *  得到总数
 	 */
 	public function collCount($filter=''){
