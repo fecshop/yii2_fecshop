@@ -7,24 +7,22 @@
  * @license http://www.fecshop.com/license/
  */
 # 本文件在app/web/index.php 处引入。
-# fecshop - appfront 的核心模块
+# fecshop - apphtml5 的核心模块
 $modules = [];
 foreach (glob(__DIR__ . '/modules/*.php') as $filename){
 	$modules = array_merge($modules,require($filename));
 }
+$params = require(__DIR__ .'/params.php');
 # 此处也可以重写fecshop的组件。供调用。
 return [
 	'modules'=>$modules,
 	/* only config in front web */
 	'bootstrap' => ['store'],
-	'params'	=> [
-		/* appfront base theme dir   */
-		'appfrontBaseTheme' 	=> '@fecshop/app/apphtml5/theme/base/front',
-		'appfrontBaseLayoutName'=> 'main.php',
-		'appName' => 'apphtml5',
-	],
-	# language config.
+	'params'	=> $params,
+	
+	# Yii组件配置
 	'components' => [
+		# language config.
 		'i18n' => [
 			'translations' => [
 				'apphtml5' => [
@@ -32,28 +30,40 @@ return [
 					'class' => 'fecshop\yii\i18n\PhpMessageSource',
 					'basePaths' => [
 						'@fecshop/app/apphtml5/languages',
-						'@apphtml5/languages',
 					],
-					'sourceLanguage' => 'en_US', # 如果 en_US 也想翻译，那么可以改成en_XX。
 				],
 			],
 		],
 		
 		'user' => [
-			'identityClass' => 'fecadmin\models\AdminUser',
-			'enableAutoLogin' => true,
+			'class' 			=> 'fecshop\yii\web\User',
+			'identityClass' 	=> 'fecshop\models\mysqldb\Customer',
+			# 是否cookie 登录。
+			/**
+			 * @var boolean whether to enable cookie-based login. Defaults to false.
+			 * Note that this property will be ignored if [[enableSession]] is false.
+			 * 设置为true的好处为，当浏览器关掉在打开，可以自动登录。
+			 */
+			'enableAutoLogin' 	=> true,
+			
+			/** 
+			 * authTimeout => 56666, 
+			 * 这里请不要设置authTimeout，为了让customer账户session
+			 * 和cart的session保持一致，设置超时时间请统一在session组件
+			 * 中设置超时时间。
+			 */
+			//'authTimeout' 		=> 56666,
 		],
-		
+		# 404页面对应的链接。
 		'errorHandler' => [
-			'errorAction' => 'site/error',
+			'errorAction' => 'site/helper/error',
 		],
-		
+		# 首页对应的url
 		'urlManager' => [
 			'rules' => [
 				'' => 'cms/home/index',
 			],
 		],
-		
 		
 		'request' => [
 			'class' => 'fecshop\yii\web\Request',
