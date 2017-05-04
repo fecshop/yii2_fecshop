@@ -7,6 +7,7 @@
  * @license http://www.fecshop.com/license/
  */
 ?>
+
 <div class="content">
 	<div class="content-block">
 		<?= Yii::$service->page->widget->render('breadcrumbs',$this); ?>
@@ -20,11 +21,12 @@
 				<h1><?=  $name ?></h1>
 				<?=  $description ?>
 			</div>
+			
 			<a href="#" class="open-sort">Sort</a>
 			<a href="#" class="open-filter">Filter</a>
-			<div style="padding:10px;">      
+			<div style="padding:10px;" > 
 				<!-- 添加 class infinite-scroll 和 data-distance  向下无限滚动可不加infinite-scroll-bottom类，这里加上是为了和下面的向上无限滚动区分-->
-				<div class=" infinite-scroll infinite-scroll-bottom" data-distance="100">
+				<div class=" infinite-scroll infinite-scroll-bottom" data-distance="10">
 					<div class="list-block">
 						<div class="list-container">
 							<?php
@@ -129,6 +131,56 @@ $(document).on('click','.open-filter', function () {
 $(document).on('click','.open-services', function () {
   $.popup('.popup-services');
 });
+
+
+
+$(document).on("pageInit", "#page-infinite-scroll-bottom", function(e, id, page) {
+	var loading = false;
+	var pageNum = 1;
+	var maxPage = <?= $page_count ? $page_count : 1 ?>;
+	function addItems() {
+		//alert(pageNum);
+		pageNum++;
+		var html = '';
+		url =  window.location.href;
+		$.ajax({
+			async:true,
+			timeout: 60000,
+			dataType: 'json', 
+			type:'get',
+			data: {
+				'p':pageNum
+			},
+			url: url,
+			success:function(data, textStatus){ 
+				//alert(data);
+				html = data.html;
+				//alert(html);
+				$('.infinite-scroll .list-container').append(html);
+			},
+			error:function (XMLHttpRequest, textStatus, errorThrown){}
+		});
+	}
+	
+	$(page).on('infinite', function() {
+		//alert(222);
+		if (loading) return;
+		loading = true;	
+		if (pageNum >= maxPage) {
+			$.detachInfiniteScroll($('.infinite-scroll'));
+ 
+			$('.infinite-scroll-preloader').remove();
+			return;
+		}
+		addItems();
+		//alert(pageNum);
+		loading = false;
+		$.refreshScroller();
+		
+	});
+});
+$.init();
+
 <?php $this->endBlock(); ?>  
 </script>  
 <?php $this->registerJs($this->blocks['category_product_filter'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>

@@ -50,7 +50,7 @@ $cssOptions = [
 <body>
 <?php $this->beginBody() ?>
 	<div class="page-group">
-		<div class="page">
+		<div class="page" id="page-infinite-scroll-bottom">
 			<?= Yii::$service->page->widget->render('header',$this); ?>
 			<?= $content; ?>
 		</div>

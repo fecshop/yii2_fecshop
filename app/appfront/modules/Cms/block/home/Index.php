@@ -16,6 +16,7 @@ class Index {
 		//Yii::$service->page->theme->layoutFile = 'home.php';
 		return [
 			'bestFeaturedProducts'	 => $this->getFeaturedProduct(),
+			'bestSellerProducts'	=> $this->getBestSellerProducts(),
 		];
 		
 	}
@@ -23,6 +24,12 @@ class Index {
 		$featured_skus = Yii::$app->controller->module->params['homeFeaturedSku'];
 		return $this->getProductBySkus($featured_skus);
 	}
+	
+	public function getBestSellerProducts(){
+		$bestSellSkus = Yii::$app->controller->module->params['homeBestSellerSku'];
+		return $this->getProductBySkus($bestSellSkus);
+	}
+	
 	
 	public function getProductBySkus($skus){
 		
