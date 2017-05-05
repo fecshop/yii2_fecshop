@@ -11,20 +11,22 @@
 <div class="content">
 	<div class="content-block">
 		<?= Yii::$service->page->widget->render('breadcrumbs',$this); ?>
-		<div class="menu_category">
+		<div class="category_page">
 			<div class="category_img">
 				<a href="#">
 					<?=  $image ? '<img  style="width:100%;" src="'.$image.'"/>' : '';?>
 				<a>
 			</div>
-			<div class="category_description">
+			<div class="category_description" >
 				<h1><?=  $name ?></h1>
 				<?=  $description ?>
 			</div>
-			
-			<a href="#" class="open-sort">Sort</a>
-			<a href="#" class="open-filter">Filter</a>
-			<div style="padding:10px;" > 
+			<div class="sort_filter">
+				<a href="#" class="category-open open-sort">Sort &nbsp;<span class="icon icon-caret"></span></a>
+				<a href="#" class="category-open open-filter">Filter &nbsp;<span class="icon icon-caret"></span></a>
+				<div class="clear"></div>
+			</div>
+			<div > 
 				<!-- 添加 class infinite-scroll 和 data-distance  向下无限滚动可不加infinite-scroll-bottom类，这里加上是为了和下面的向上无限滚动区分-->
 				<div class=" infinite-scroll infinite-scroll-bottom" data-distance="10">
 					<div class="list-block">
@@ -50,14 +52,11 @@
 	</div>
 </div>
 
-
-
-
-
-
 <div class="popup popup-filter">
 	<div class="content-block">
-	
+	<div class="close_popup">
+		<a href="#" class="close-popup">×</a></p>
+	</div>
 	<?php
 		# Refind By
 		$parentThis = [
@@ -102,15 +101,36 @@
 	</div>
 </div>
 
+<div class="popup popup-sort">
+	<div class="content-block">
+		<div class="close_popup">
+			<a href="#" class="close-popup">×</a></p>
+		</div>
+		<div>
+			<?php
+				$parentThis = [
+					'query_item' => $query_item,
+					'product_page'=>$product_page,
+				];
+				$config = [
+					'view'  		=> 'catalog/category/index/toolbar.php',
+				];
+				$toolbar = Yii::$service->page->widget->renderContent('category_toolbar',$config,$parentThis);
+				echo $toolbar;
+			?>
+		</div>
+	</div>
+</div>
 <script>
 <?php $this->beginBlock('category_product_filter') ?>  
 $(document).ready(function(){
 	$(".product_sort").change(function(){	
-		url = $(this).find("option:selected").attr('url');
+		url = $(this).find('option').not(function() {return !this.selected}).attr('url');
 		window.location.href = url;
 	});
 	$(".product_num_per_page").change(function(){
-		url = $(this).find("option:selected").attr('url');
+		//url = $(this).find("option:selected").attr('url');
+		url = $(this).find('option').not(function() {return !this.selected}).attr('url');
 		window.location.href = url;
 	});
 	
@@ -128,8 +148,8 @@ $(document).on('click','.open-filter', function () {
   $.popup('.popup-filter');
 });
  
-$(document).on('click','.open-services', function () {
-  $.popup('.popup-services');
+$(document).on('click','.open-sort', function () {
+  $.popup('.popup-sort');
 });
 
 
@@ -138,6 +158,9 @@ $(document).on("pageInit", "#page-infinite-scroll-bottom", function(e, id, page)
 	var loading = false;
 	var pageNum = 1;
 	var maxPage = <?= $page_count ? $page_count : 1 ?>;
+	if(maxPage <= pageNum){
+		$('.infinite-scroll-preloader').remove();
+	}
 	function addItems() {
 		//alert(pageNum);
 		pageNum++;

@@ -25,7 +25,7 @@ if(isset($parentThis['filter_price']) && !empty($parentThis['filter_price']) && 
 				$url = $item['url'];
 				$selected = $item['selected'] ? 'class="checked"' : '';
 				if($val && $url){
-					echo '<a '.$selected.'  href="'.$url.'">'.$val.'</a><br/>';
+					echo '<a external '.$selected.'  href="'.$url.'">'.$val.'</a><br/>';
 				}
 			}
 			echo '</div>';

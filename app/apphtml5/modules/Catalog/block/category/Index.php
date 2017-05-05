@@ -105,7 +105,7 @@ class Index {
 				if(isset($cate['current']) && $cate['current']){
 					$current = 'class="current"';
 				}
-				$str .= '<li '.$current.'><a href="'.$url.'">'.$name.'</a>';
+				$str .= '<li '.$current.'><a external href="'.$url.'">'.$name.'</a>';
 				if(isset($cate['child']) && is_array($cate['child'] ) && !empty($cate['child'])){
 					$str .= $this->getFilterCategoryHtml($cate['child']);
 					

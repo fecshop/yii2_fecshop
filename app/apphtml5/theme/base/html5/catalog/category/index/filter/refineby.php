@@ -5,7 +5,7 @@
 		<?php foreach($parentThis['refine_by_info'] as $one){  ?>
 			<?php $name = \yii\helpers\Html::encode($one['name']);  ?>
 			<?php $url 	= \yii\helpers\Html::encode($one['url']); ?>
-			<div><a href="<?= $url ?>"><i class="closeBtn c_tagbg"></i><span><?= Yii::$service->page->translate->__($name); ?></span></a></div>
+			<div><a external href="<?= $url ?>"><i class="closeBtn c_tagbg"></i><span><?= Yii::$service->page->translate->__($name); ?></span></a></div>
 		<?php } ?>
 		</div>
 	</div>

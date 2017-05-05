@@ -4,29 +4,24 @@
 ?>
 <div class="toolbar">
 	<div class="tb_le">
-		
 		<?php  $frontSort = $query_item['frontSort']; ?>
 		<?php if(is_array($frontSort) && !empty($frontSort)){ ?>
-			<b><?=  Yii::$service->page->translate->__('Sort By'); ?>:</b>
-			<select class="product_sort">	
-				<?php foreach($frontSort as $np){   ?>
-					<?php $selected = $np['selected'] ? 'selected="selected"' : ''; ?>
-					<?php $url 		= $np['url'];  ?>
-					<option <?= $selected; ?> url="<?= $url; ?>" value="<?= $np['value']; ?>"><?= Yii::$service->page->translate->__($np['label']); ?></option>
-				<?php } ?>
-			</select>
-		<?php } ?>
-		<?php  $frontNumPerPage = $query_item['frontNumPerPage']; ?>
-		<?php if(is_array($frontNumPerPage) && !empty($frontNumPerPage)){ ?>
-			<select class="product_num_per_page">	
-				<?php foreach($frontNumPerPage as $np){   ?>
-					<?php $selected = $np['selected'] ? 'selected="selected"' : ''; ?>
-					<?php $url 		= $np['url'];  ?>
-					<option <?= $selected; ?> url="<?= $url; ?>" value="<?= $np['value']; ?>"><?= $np['value']; ?></option>
-				<?php } ?>
-			</select>
+			<div class="category_left_filter">
+				<div class="filter_attr">
+					<div class="filter_attr_title">
+						<b><?=  Yii::$service->page->translate->__('Sort By'); ?>:</b>
+					</div>
+					<div class="filter_attr_info">
+						<?php foreach($frontSort as $np){   ?>
+							<?php $selected = $np['selected'] ? 'class="checked"' : ''; ?>
+							<a <?= $selected ?> href="<?= $np['url']  ?>" external>
+								<?= Yii::$service->page->translate->__($np['label']); ?>
+							</a><br>
+						<?php } ?>
+					</div>
+				</div>
+			</div>
 		<?php } ?>
 	</div>
-	<?= $product_page ?>
 	<div class="clear"></div>
 </div>

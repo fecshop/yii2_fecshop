@@ -42,8 +42,112 @@ ul {list-style: outside none none;}
 .list-block {
     margin: 0.75rem 0;
 }
-h1{font-size:0.9em;color:#333;}
-.category_description{padding:0.4rem 0.6rem}
+h1{font-size:1em;color:#333;}
+.category_description{padding:0.4rem 0.6rem; display:none}
  .popup-overlay.modal-overlay-visible{display:none}
+
+.filter_attr_info a {
+    background: rgba(0, 0, 0, 0) url("../img/checkbox.png") no-repeat scroll -69px 3px;
+    font-size: 0.8em;
+    padding: 0 0 0 16px;
+}
+.filter_attr_info a.checked {
+    background-position: -50px -17px;
+}
+
+.closeBtn {
+    background-image: url("../img/tag.png");
+    background-position: -164px 7px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    font-size: 0;
+    height: 20px;
+    vertical-align: -5px;
+    width: 20px;
+}
+
+.repository-lang-stats-graph {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    -moz-user-select: none;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-color: currentcolor #ddd #ddd;
+    border-image: none;
+    border-style: none solid solid;
+    border-width: 0 1px 1px;
+    cursor: pointer;
+    display: table;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%;
+}
+* {
+    box-sizing: border-box;
+}
+*::placeholder {
+    color: #6a737d;
+}
+*::-moz-placeholder {
+    color: #6a737d;
+}
+body {
+    overflow-wrap: break-word;
+}
+body {
+    color: #24292e;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    font-size: 0.8em;
+    line-height: 1.5;
+}
+html {
+    font-family: sans-serif;
+}
+.content-block .filter_attr_title {
+    border-bottom: 1px solid #ddd;
+    color: #333;
+    font-family: Arial;
+    font-size: 0.9em;
+    margin: 5px 0;
+    padding: 5px 0;
+    text-transform: uppercase;
+}
+
+.close_popup{ 
+    font-size: 1.2em;
+    position: absolute;
+    right: 1rem;
+    top: 0.2rem;
+}
+
+a{font-size:0.8em;}
+#panel-left-menu .category_menu a{font-size:0.9em;}
+#panel-left-account a{font-size:0.9em;;}
+
+.clear{clear:both}
+
+.category_page .open-sort{float:left;}
+
+.category_page .open-filter{float:right;}
+
+.category-open{
+	border: 1px solid #e5e5e5;
+    border-radius: .17rem;
+    font-size:0.6rem;
+    text-align: center;
+    color: #666;
+	padding:0.1rem 1rem;
+}
+
+.category_description h1{text-align:center;font-weight:100;font-size:0.9em}
+.category-open .icon{font-size:0.4rem;}
+.sort_filter{margin-top:0.4rem;margin-bottom:-0.2rem;}
+
+
+
+
+
 
 
