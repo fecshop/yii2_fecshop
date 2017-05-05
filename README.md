@@ -14,7 +14,7 @@
 
 项目状态：
 
-> 项目已经开始,本项目由Terry筹划，预计到2017-05-01出来第一个正式版本。
+> 正式版本已经出来，后台和pc端已经完成，下一步做手机web端，目前正在开发中，[手机web端地址](http://fecshop.apphtml5.fancyecommerce.com/)
 
 
 1、Fecshop介绍
@@ -33,7 +33,6 @@ FecShop 中文演示地址：http://fecshop.appfront.fancyecommerce.com/cn
 
 FecShop 作者QQ：2358269014
 
-
 FecShop QQ群：186604851 ，入群验证：fecshop
 
 FecShop Github地址: https://github.com/fancyecommerce/yii2_fecshop
@@ -49,6 +48,8 @@ FecShop Github地址: https://github.com/fancyecommerce/yii2_fecshop
 3、安装Fecshop
 ------------
 
+> 请务必按照说明安装，vagrant安装为新手通过box加载过来，不需要配置环境，
+> 懂Yii2，还是自己来配置环境安装吧，也就是通过 3.2、全手动安装
 
 3.1、vagrant安装：
 
