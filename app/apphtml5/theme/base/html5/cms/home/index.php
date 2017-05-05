@@ -9,7 +9,7 @@
 ?>
 <div class="swiper-container" data-space-between='10'>
 	<div class="swiper-wrapper">
-	<div class="swiper-slide"><img src="<?= Yii::$service->image->getImgUrl('custom/home_img_1.jpg','apphtml5'); ?>" alt="" style='width: 100%'></div>
+		<div class="swiper-slide"><img src="<?= Yii::$service->image->getImgUrl('custom/home_img_1.jpg','apphtml5'); ?>" alt="" style='width: 100%'></div>
 		<div class="swiper-slide"><img src="<?= Yii::$service->image->getImgUrl('custom/home_img_2.jpg','apphtml5'); ?>" alt="" style='width: 100%'></div>
 		<div class="swiper-slide"><img src="<?= Yii::$service->image->getImgUrl('custom/home_img_3.jpg','apphtml5'); ?>" alt="" style='width: 100%'></div>
 	</div>
@@ -58,7 +58,7 @@
 
 <script>
 <?php $this->beginBlock('owl_fecshop_slider') ?>  
-  
+$.init();  
 <?php $this->endBlock(); ?>  
 </script>  
 <?php $this->registerJs($this->blocks['owl_fecshop_slider'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>

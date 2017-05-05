@@ -5,6 +5,23 @@
 				<input type="hidden" class="product_view_id" value="<?=  $_id ?>">
 				<input type="hidden" class="sku" value="<?= $sku; ?>" />
 				<input type="hidden" class="product_csrf" name="" value="" />
+				
+				<div class="media_img">
+					<div class="media_img_content">
+						<?php # 图片部分。
+							$imageView = [
+								'view'	=> 'catalog/product/index/image.php'
+							];
+							$imageParam = [
+								'media_size' => $media_size,
+								'image' => $image,
+								'productImgMagnifier' => $productImgMagnifier,
+							];
+						?>
+						<?= Yii::$service->page->widget->render($imageView,$imageParam); ?>
+					</div>
+				</div>
+				
 				<div class="product_info">
 					<h1><?= $name; ?></h1>
 					<div>
@@ -18,9 +35,12 @@
 								</a>
 							</span>
 						</div>
+						<div class="item_code">
+							<?= Yii::$service->page->translate->__('Item Code:'); ?>
+							<?= $sku; ?>
+						</div>
+						<div class="clear"></div>
 					</div>
-					<div class="item_code"><?= Yii::$service->page->translate->__('Item Code:'); ?> <?= $sku; ?></div>
-					
 					<div class="price_info">
 						<?php # 价格部分
 							$priceView = [
@@ -100,22 +120,8 @@
 					
 					</div>
 				</div>
-				<div class="media_img">
-					<div class="col-left ">
-						<?php # 图片部分。
-							$imageView = [
-								'view'	=> 'catalog/product/index/image.php'
-							];
-							$imageParam = [
-								'media_size' => $media_size,
-								'image' => $image,
-								'productImgMagnifier' => $productImgMagnifier,
-							];
-						?>
-						<?= Yii::$service->page->widget->render($imageView,$imageParam); ?>
-					</div>
-				</div>
-				<div class="clear"></div>
+				
+				
 			</div>
 			
 			
@@ -379,6 +385,7 @@
 			},40);  
 		};  
 	}  
+	$.init(); 
 	<?php $this->endBlock(); ?>  
 	<?php $this->registerJs($this->blocks['product_info_tab'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
 </script> 

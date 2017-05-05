@@ -42,7 +42,7 @@ ul {list-style: outside none none;}
 .list-block {
     margin: 0.75rem 0;
 }
-h1{font-size:1em;color:#333;}
+h1{font-size:1em;color:#333;font-weight:100;}
 .category_description{padding:0.4rem 0.6rem; display:none}
  .popup-overlay.modal-overlay-visible{display:none}
 
@@ -144,10 +144,11 @@ a{font-size:0.8em;}
 .category_description h1{text-align:center;font-weight:100;font-size:0.9em}
 .category-open .icon{font-size:0.4rem;}
 .sort_filter{margin-top:0.4rem;margin-bottom:-0.2rem;}
-
-
-
-
+.media_img_content{max-width:400px;margin:auto;}
+.product_view{padding:0 1rem;}
+.rbc_cold , .item_code{font-size:0.55rem;color:#777;float:left;margin-right:25px;}
+.item_code{margin-right:0;}
+.product_info h1{font-size:0.7rem;margin-bottom:0}
 
 
 
