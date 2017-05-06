@@ -1,13 +1,13 @@
 body{font-family:Verdana,Arial,Tahoma;font-size:0.7rem;}
 .button{padding:0}
-
+ul {list-style: outside none none;margin:0;}
 .theme-dark .searchbar::after{
 background-color:transparent
 }
 .theme-dark .searchbar{
 	background:transparent none repeat scroll 0 0
 }
-ul {list-style: outside none none;}
+
 .category_menu ul{padding:0;font-size:0.75rem;}
 .category_menu ul  li {
     padding-left: 0;
@@ -149,6 +149,201 @@ a{font-size:0.8em;}
 .rbc_cold , .item_code{font-size:0.55rem;color:#777;float:left;margin-right:25px;}
 .item_code{margin-right:0;}
 .product_info h1{font-size:0.7rem;margin-bottom:0}
+
+
+.price_info {
+    margin: 20px 0;
+}
+
+
+.product_info .price_info .special_active {
+    float: left;
+    line-height: 30px;
+    margin-right: 10px;
+}
+
+.product_info .special_price {
+    color: #cc0000;
+    font-size: 25px;
+}
+
+
+.product_info .price_info .price.special_active {
+    margin: 3px 0 0 3px;
+    text-decoration: line-through;
+}
+
+.product_info_section {
+    margin: 5px 0 15px;
+}
+
+
+.product_options {
+    margin: 40px 0 0;
+}
+.product_options .label {
+    line-height: 49px;
+}
+.pg .label {
+   float: left;
+    font-size: 0.5rem;
+    width: 2.4rem;
+}
+
+
+.product_options .pg .rg {
+    width: auto;
+}
+
+
+
+.product_options .rg li {
+    color: #333;
+    cursor: pointer;
+    float: left;
+    margin: 5px;
+    position: relative;
+    text-align: center;
+}
+
+
+
+.product_options a.active, .product_options a.active_v {
+    border: 1px solid #777;
+}
+
+.product_options a {
+    display: block;
+    float: left;
+    height: 49px;
+    padding: 1px;
+    width: 44px;
+}
+
+.product_options a.current {
+    border: 1px solid #cc0000;
+}
+
+
+
+.product_options li.current b {
+    background: rgba(0, 0, 0, 0) url("../img/cur.png") no-repeat scroll 0 0;
+    bottom: 0;
+    display: block;
+    height: 6px;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    width: 8px;
+}
+
+.addtocart a{
+	margin-top: 0.5rem;
+}
+.button-success.button-fill{background-color:#fe585e;color:#fff}
+
+.addtocart .addProductToFavo{
+	 background: #fff none repeat scroll 0 0;
+    border: 1px solid #ccc;
+    color: #777;
+    
+	
+}
+.product_description_info{width:100%;overflow:hidden;}
+
+.chose_size a {
+    border: 1px solid #ccc;
+    font-size: 11px;
+    height: 35px;
+    line-height: 35px;
+    width: 35px;
+}
+
+.product_options a.noimgshow {
+     font-size: 11px;
+    height: 44px;
+    line-height: 44px;
+    min-width: 15px;
+    padding: 0 10px;
+}
+
+
+.product_options a.no_active {
+    border: 1px dashed #ccc;
+    cursor: not-allowed;
+}
+
+.product_qty .label{line-height:1.3rem;}
+
+.button.button-fill.addProductToCart{height:1.55rem;line-height:1.55rem;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

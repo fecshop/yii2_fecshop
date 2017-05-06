@@ -16,7 +16,7 @@
 			<?php   	if($image){  ?>
 				<li id="gal1">
 					<a data-image="<?= Yii::$service->product->image->getResize($image,$middle_img_width,false) ?>"  data-zoom-image="<?= Yii::$service->product->image->getUrl($image);  ?>"  attr="<?= $attr ?>"  class="imgshow active_v"  value="<?= $key ?>">
-						<img  src="<?= Yii::$service->product->image->getResize($image,[50,55],false) ?>" /></a>
+						<img  src="<?= Yii::$service->product->image->getResize($image,[40,45],false) ?>" /></a>
 					<b></b>
 				</li>
 			<?php   	}else{ ?>
@@ -204,7 +204,7 @@ $(document).ready(function(){
 							qty:qty,
 							product_id:product_id
 						};
-						jQuery.ajax({
+					$.ajax({
 						async:true,
 						timeout: 6000,
 						dataType: 'json', 

@@ -34,9 +34,13 @@ FecShop English Demo：http://fecshop.appfront.fancyecommerce.com/
 
 FecShop 中文演示地址：http://fecshop.appfront.fancyecommerce.com/cn
 
-FecShop 作者QQ：2358269014
+FecShop 后台演示地址：加QQ群，在群公告里面有后台演示地址，账号密码等信息
 
 FecShop QQ群：186604851 ，入群验证：fecshop
+
+FecShop 作者QQ：2358269014
+
+
 
 FecShop Github地址: https://github.com/fancyecommerce/yii2_fecshop
 

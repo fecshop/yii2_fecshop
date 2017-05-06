@@ -1,195 +1,214 @@
-<div class="main container one-column">
-	<div class="col-main">
-		<div class="product_page">
-			<div class="product_view">
-				<input type="hidden" class="product_view_id" value="<?=  $_id ?>">
-				<input type="hidden" class="sku" value="<?= $sku; ?>" />
-				<input type="hidden" class="product_csrf" name="" value="" />
-				
-				<div class="media_img">
-					<div class="media_img_content">
-						<?php # 图片部分。
-							$imageView = [
-								'view'	=> 'catalog/product/index/image.php'
-							];
-							$imageParam = [
-								'media_size' => $media_size,
-								'image' => $image,
-								'productImgMagnifier' => $productImgMagnifier,
-							];
-						?>
-						<?= Yii::$service->page->widget->render($imageView,$imageParam); ?>
-					</div>
-				</div>
-				
-				<div class="product_info">
-					<h1><?= $name; ?></h1>
-					<div>
-						<div class="rbc_cold">
-							<span>
-								<span class="average_rating"><?= Yii::$service->page->translate->__('Average rating'); ?> :</span>
-								<span class="review_star review_star_<?= $reviw_rate_star_average ?>" style="font-weight:bold;" itemprop="average"></span>  
-								
-								<a rel="nofollow" href="#text-reviews">
-									(<span itemprop="count"><?= $review_count ?> <?= Yii::$service->page->translate->__('reviews'); ?></span>)
-								</a>
-							</span>
-						</div>
-						<div class="item_code">
-							<?= Yii::$service->page->translate->__('Item Code:'); ?>
-							<?= $sku; ?>
-						</div>
-						<div class="clear"></div>
-					</div>
-					<div class="price_info">
-						<?php # 价格部分
-							$priceView = [
-								'view'	=> 'catalog/product/index/price.php'
-							];
-							$priceParam = [
-								'price_info' => $price_info,
-							];
-						?>
-						<?= Yii::$service->page->widget->render($priceView,$priceParam); ?>
-					
-					</div>
-					<div class="product_info_section">
-						<div class="product_options">
-							<?php # options部分
-								$optionsView = [
-									'view'	=> 'catalog/product/index/options.php'
-								];
-								$optionsParam = [
-									'options' => $options,
-								];
-							?>
-							<?= Yii::$service->page->widget->render($optionsView,$optionsParam); ?>
-						
-						</div>
-						
-						<div class="product_custom_options">
-							<?php # custom options部分
-								$optionsView = [
-									'class' =>  'fecshop\app\apphtml5\modules\Catalog\block\product\CustomOption',
-									'view'	=> 'catalog/product/index/custom_option.php',
-									'custom_option' 	=> $custom_option,
-									'attr_group'		=> $attr_group,
-									'product_id'		=> $_id ,
-									'middle_img_width' 	=> $media_size['middle_img_width'],
-								];
-								$optionsParam = [
-									
-								];
-								
-								
-							?>
-							<?= Yii::$service->page->widget->render($optionsView,$optionsParam); ?>
-						
-						</div>
-						
-						<div class="product_qty pg">
-							<div class="label"><?= Yii::$service->page->translate->__('Qty:'); ?></div>
-							<div class="rg">
-								<input type="text" name="qty" class="qty" value="1" />
-							</div>
-							<div class="clear"></div>
-						</div>
-						
-						<div class="addtocart">
-							<button  type="button" id="js_registBtn" class="redBtn addProductToCart"><em><span><i></i><?= Yii::$service->page->translate->__('Add To Cart'); ?></span></em></button>
-							
-							<div class="myFavorite_nohove" id="myFavorite">
-								<i></i>
-								<a href="javascript:void(0)" url="<?= Yii::$service->url->getUrl('catalog/favoriteproduct/add',['product_id'=>$_id]); ?>" class="addheart" id="divMyFavorite" rel="nofollow" >
-									<?= Yii::$service->page->translate->__('Add to Favorites'); ?>
-								</a>				
-							</div>
-							<div class="clear"></div>
-						</div>
-					</div>
-					<div class="tier_price_info">
-						<?php # tier price 部分。
-							$priceView = [
-								'view'	=> 'catalog/product/index/tier_price.php'
-							];
-							$priceParam = [
-								'tier_price' => $tier_price,
-							];
-						?>
-						<?= Yii::$service->page->widget->render($priceView,$priceParam); ?>
-					
-					</div>
-				</div>
-				
-				
-			</div>
-			
-			
-			<div>
-				<?php # tier price 部分。
-					$buyAlsoBuyView = [
-						'view'	=> 'catalog/product/index/buy_also_buy.php'
+
+<div class="product_page">
+	<div class="product_view">
+		<input type="hidden" class="product_view_id" value="<?=  $_id ?>">
+		<input type="hidden" class="sku" value="<?= $sku; ?>" />
+		<input type="hidden" class="product_csrf" name="" value="" />
+		
+		<div class="media_img">
+			<div class="media_img_content">
+				<?php # 图片部分。
+					$imageView = [
+						'view'	=> 'catalog/product/index/image.php'
 					];
-					$buyAlsoBuyParam = [
-						'products' => $buy_also_buy,
+					$imageParam = [
+						'media_size' => $media_size,
+						'image' => $image,
+						'productImgMagnifier' => $productImgMagnifier,
 					];
 				?>
-				<?= Yii::$service->page->widget->render($buyAlsoBuyView,$buyAlsoBuyParam); ?>
-			
-			</div>
-			
-			<div class="clear"></div>
-			<div class="product_description_info">
-				
-				
-				
-				
-				<div class="nav" id="nav-container">  
-					<ul id="nav-box">
-						<li  class="nav_tab cur" rel="description"><?= Yii::$service->page->translate->__('Description'); ?></li>  
-						<li  class="nav_tab" rel="reviews"><?= Yii::$service->page->translate->__('Reviews'); ?></li>  
-						<li  class="nav_tab" rel="questions"><?= Yii::$service->page->translate->__('Shipping & Payment'); ?></li>  
-						<!-- <li   class="nav_tab" rel="wholesale">WHOLESALE</li>   -->
-					</ul>    
-				</div>  
-				<div id="text">  
-					<div class="text-description" style="">
-						<?= $description; ?>
-					</div>  
-					<div class="text-reviews" id="text-reviews" style="">
-						<?php # review部分。
-							$reviewView = [
-								'class' 		=> 'fecshop\app\apphtml5\modules\Catalog\block\product\Review',
-								'view'			=> 'catalog/product/index/review.php',
-								'product_id' 	=> $_id,
-								'spu'			=> $spu,
-							];
-							
-						?>
-						<?= Yii::$service->page->widget->render($reviewView,$reviewParam); ?>
-					</div>  
-					<div class="text-questions" style="">
-						<?php # payment部分。
-							$paymentView = [
-								'view'			=> 'catalog/product/index/payment.php',
-							];
-							
-						?>
-						<?= Yii::$service->page->widget->render($paymentView); ?>
-					
-					
-						
-					</div>  
-					<!--					
-					<div class="text-wholesale" style="width:100%;height:500px;background:yellow;text-align:center;">
-						
-					</div>  
-					-->
-				</div> 
+				<?= Yii::$service->page->widget->render($imageView,$imageParam); ?>
 			</div>
 		</div>
-		<div class="proList">
+		
+		<div class="product_info">
+			<h1><?= $name; ?></h1>
+			<div>
+				<div class="rbc_cold">
+					<span>
+						<span class="average_rating"><?= Yii::$service->page->translate->__('Average rating'); ?> :</span>
+						<span class="review_star review_star_<?= $reviw_rate_star_average ?>" style="font-weight:bold;" itemprop="average"></span>  
+						
+						<a rel="nofollow" href="#text-reviews">
+							(<span itemprop="count"><?= $review_count ?> <?= Yii::$service->page->translate->__('reviews'); ?></span>)
+						</a>
+					</span>
+				</div>
+				<div class="item_code">
+					<?= Yii::$service->page->translate->__('Item Code:'); ?>
+					<?= $sku; ?>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="price_info">
+				<?php # 价格部分
+					$priceView = [
+						'view'	=> 'catalog/product/index/price.php'
+					];
+					$priceParam = [
+						'price_info' => $price_info,
+					];
+				?>
+				<?= Yii::$service->page->widget->render($priceView,$priceParam); ?>
+			
+			</div>
+			<div class="product_info_section">
+				<div class="product_options">
+					<?php # options部分
+						$optionsView = [
+							'view'	=> 'catalog/product/index/options.php'
+						];
+						$optionsParam = [
+							'options' => $options,
+						];
+					?>
+					<?= Yii::$service->page->widget->render($optionsView,$optionsParam); ?>
+				
+				</div>
+				
+				<div class="product_custom_options">
+					<?php # custom options部分
+						$optionsView = [
+							'class' =>  'fecshop\app\apphtml5\modules\Catalog\block\product\CustomOption',
+							'view'	=> 'catalog/product/index/custom_option.php',
+							'custom_option' 	=> $custom_option,
+							'attr_group'		=> $attr_group,
+							'product_id'		=> $_id ,
+							'middle_img_width' 	=> $media_size['middle_img_width'],
+						];
+						$optionsParam = [
+							
+						];
+						
+						
+					?>
+					<?= Yii::$service->page->widget->render($optionsView,$optionsParam); ?>
+				
+				</div>
+				
+				<div class="product_qty pg">
+					<div class="label"><?= Yii::$service->page->translate->__('Qty:'); ?></div>
+					<div class="rg">
+						<select name="qty" class="qty">
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+							<option value="8">8</option>
+							<option value="9">9</option>
+							<option value="10">10</option>
+							<option value="11">11</option>
+							<option value="12">12</option>
+							<option value="13">13</option>
+							<option value="14">14</option>
+							<option value="15">15</option>
+							<option value="16">16</option>
+							<option value="17">17</option>
+							<option value="18">18</option>
+							<option value="19">19</option>
+							<option value="20">20</option>
+							
+						  </select>
+					</div>
+					<div class="clear"></div>
+				</div>
+				
+				
+				
+				<div class="addtocart">
+					<a href="javascript:void(0)" id="js_registBtn" class="button button-fill button-success redBtn addProductToCart">
+						<em><span><i></i><?= Yii::$service->page->translate->__('Add To Cart'); ?></span></em>
+					</a>
+					
+					<a href="<?= Yii::$service->url->getUrl('catalog/favoriteproduct/add',['product_id'=>$_id]); ?>" id="js_registBtn" class="button button-fill button-success redBtn addProductToFavo">
+						<em><span><i></i><?= Yii::$service->page->translate->__('Add to Favorites'); ?></span></em>
+					</a>
+					
+					<div class="clear"></div>
+				</div>
+			</div>
+			<div class="tier_price_info">
+				<?php # tier price 部分。
+					$priceView = [
+						'view'	=> 'catalog/product/index/tier_price.php'
+					];
+					$priceParam = [
+						'tier_price' => $tier_price,
+					];
+				?>
+				<?= Yii::$service->page->widget->render($priceView,$priceParam); ?>
+			
+			</div>
 		</div>
+		
+		
+	</div>
+	
+	
+	<div>
+		<?php # tier price 部分。
+			$buyAlsoBuyView = [
+				'view'	=> 'catalog/product/index/buy_also_buy.php'
+			];
+			$buyAlsoBuyParam = [
+				'products' => $buy_also_buy,
+			];
+		?>
+		<?= Yii::$service->page->widget->render($buyAlsoBuyView,$buyAlsoBuyParam); ?>
+	
+	</div>
+	
+	<div class="clear"></div>
+	<div class="product_description_info">
+		
+		
+		
+		
+		<div class="nav" id="nav-container">  
+			<ul id="nav-box">
+				<li  class="nav_tab cur" rel="description"><?= Yii::$service->page->translate->__('Description'); ?></li>  
+				<li  class="nav_tab" rel="reviews"><?= Yii::$service->page->translate->__('Reviews'); ?></li>  
+				<li  class="nav_tab" rel="questions"><?= Yii::$service->page->translate->__('Shipping & Payment'); ?></li>  
+				<!-- <li   class="nav_tab" rel="wholesale">WHOLESALE</li>   -->
+			</ul>    
+		</div>  
+		<div id="text">  
+			<div class="text-description" style="">
+				<?= $description; ?>
+			</div>  
+			<div class="text-reviews" id="text-reviews" style="">
+				<?php # review部分。
+					$reviewView = [
+						'class' 		=> 'fecshop\app\apphtml5\modules\Catalog\block\product\Review',
+						'view'			=> 'catalog/product/index/review.php',
+						'product_id' 	=> $_id,
+						'spu'			=> $spu,
+					];
+					
+				?>
+				<?= Yii::$service->page->widget->render($reviewView,$reviewParam); ?>
+			</div>  
+			<div class="text-questions" style="">
+				<?php # payment部分。
+					$paymentView = [
+						'view'			=> 'catalog/product/index/payment.php',
+					];
+					
+				?>
+				<?= Yii::$service->page->widget->render($paymentView); ?>
+			
+			
+				
+			</div>  
+			<!--					
+			<div class="text-wholesale" style="width:100%;height:500px;background:yellow;text-align:center;">
+				
+			</div>  
+			-->
+		</div> 
 	</div>
 </div>
 
@@ -235,7 +254,7 @@
 				$data['product_id'] 	= "<?= $_id ?>";
 				$data['qty'] 			= qty;
 				$data[csrfName] 		= csrfVal;
-				jQuery.ajax({
+				$.ajax({
 					async:true,
 					timeout: 6000,
 					dataType: 'json', 
@@ -307,7 +326,7 @@
 					qty:qty,
 					product_id:product_id
 				};
-				jQuery.ajax({
+				$.ajax({
 					async:true,
 					timeout: 6000,
 					dataType: 'json', 

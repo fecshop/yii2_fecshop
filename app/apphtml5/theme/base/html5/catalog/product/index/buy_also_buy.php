@@ -38,18 +38,7 @@
  
 <script>
 <?php $this->beginBlock('owl_fecshop_slider') ?>  
-$(document).ready(function(){
-	$("#owl-buy-also-buy").owlCarousel({
-		items : 6,
-		lazyLoad : true,
-		navigation : true,
-		scrollPerPage : true,
-		pagination:false,
-		itemsCustom : false,
-        slideSpeed : 900
-	});
-	
-});
+
 <?php $this->endBlock(); ?>  
 </script>  
 <?php $this->registerJs($this->blocks['owl_fecshop_slider'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>

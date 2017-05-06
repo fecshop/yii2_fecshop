@@ -53,7 +53,7 @@ $cssOptions = [
 		<div class="page">
 			<?= Yii::$service->page->widget->render('header',$this); ?>
 			
-			<div class="content" id=''>
+			<div class="content" >
 				<?= $content; ?>
 			</div>
 		</div>
