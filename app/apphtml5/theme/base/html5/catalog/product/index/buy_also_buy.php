@@ -6,31 +6,14 @@
 	<div class="scrollBox">	
 		<div class="viewport" style="overflow: hidden; position: relative;">
 			<div id="owl-buy-also-buy" class="owl-carousel">	
-				<?php foreach($parentThis['products'] as $product){ ?>
-					<div class="item">
-						<p class="tc pro_img">
-							<a style="" class="i_proImg" href="<?= $product['url'] ?>">
-								<img style="width:100%;" class="lazyOwl" data-src="<?= Yii::$service->product->image->getResize($product['image'],[180,200],false) ?>"  src="<?= Yii::$service->image->getImgUrl('images/lazyload1.gif','apphtml5') ; ?>">
-							</a>
-						</p>
-						<!--
-						<p class="proName">
-							<a href="<?= $product['url'] ?>">
-								<?= $product['name'] ?>
-							</a>
-						</p>
-						-->
-						<?php
-							$config = [
-								'class' 		=> 'fecshop\app\apphtml5\modules\Catalog\block\category\Price',
-								'view'  		=> 'cms/home/index/price.php',
-								'price' 		=> $product['price'],
-								'special_price' => $product['special_price'],
-							];
-							echo Yii::$service->page->widget->renderContent('category_product_price',$config);
-						?>
-					</div>
-				<?php  }  ?>
+				<?php
+					//$parentThis['products'] = $parentThis['products'];
+					$parentThis['name'] = 'featured';
+					$config = [
+						'view'  		=> 'cms/home/index/product.php',
+					];
+					echo Yii::$service->page->widget->renderContent('category_product_price',$config,$parentThis);
+				?>
 			</div>
 		</div>
 	</div>

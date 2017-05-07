@@ -34,9 +34,10 @@
 						</a>
 					</span>
 				</div>
+				<div class="clear"></div>
 				<div class="item_code">
 					<?= Yii::$service->page->translate->__('Item Code:'); ?>
-					<?= $sku; ?>
+					<span class="item_sku"><?= $sku; ?></span>
 				</div>
 				<div class="clear"></div>
 			</div>
@@ -117,39 +118,100 @@
 				</div>
 				
 				
+				<div class="tier_price_info">
+					<?php # tier price 部分。
+						$priceView = [
+							'view'	=> 'catalog/product/index/tier_price.php'
+						];
+						$priceParam = [
+							'tier_price' => $tier_price,
+						];
+					?>
+					<?= Yii::$service->page->widget->render($priceView,$priceParam); ?>
+				
+				</div>
 				
 				<div class="addtocart">
-					<a href="javascript:void(0)" id="js_registBtn" class="button button-fill button-success redBtn addProductToCart">
+					<a external href="javascript:void(0)" id="js_registBtn" class="button button-fill button-success redBtn addProductToCart">
 						<em><span><i></i><?= Yii::$service->page->translate->__('Add To Cart'); ?></span></em>
 					</a>
 					
-					<a href="<?= Yii::$service->url->getUrl('catalog/favoriteproduct/add',['product_id'=>$_id]); ?>" id="js_registBtn" class="button button-fill button-success redBtn addProductToFavo">
+					<a external href="<?= Yii::$service->url->getUrl('catalog/favoriteproduct/add',['product_id'=>$_id]); ?>" id="js_registBtn" class="button button-fill button-success redBtn addProductToFavo">
 						<em><span><i></i><?= Yii::$service->page->translate->__('Add to Favorites'); ?></span></em>
 					</a>
 					
 					<div class="clear"></div>
 				</div>
 			</div>
-			<div class="tier_price_info">
-				<?php # tier price 部分。
-					$priceView = [
-						'view'	=> 'catalog/product/index/tier_price.php'
-					];
-					$priceParam = [
-						'tier_price' => $tier_price,
-					];
-				?>
-				<?= Yii::$service->page->widget->render($priceView,$priceParam); ?>
 			
-			</div>
 		</div>
 		
 		
 	</div>
 	
 	
-	<div>
-		<?php # tier price 部分。
+	
+	
+	<div class="clear"></div>
+	<div class="product_description_info">
+		
+		
+		 <div class="buttons-tab">
+			<a href="#tab1" class="tab-link active button"><?= Yii::$service->page->translate->__('Description'); ?></a>
+			<a href="#tab2" class="tab-link button"><?= Yii::$service->page->translate->__('Reviews'); ?></a>
+			<a href="#tab3" class="tab-link button"><?= Yii::$service->page->translate->__('Shipping & Payment'); ?></a>
+		  </div>
+		
+		<div class="content-block">
+			<div class="tabs">
+			  <div id="tab1" class="tab active">
+				<div class="content-block">
+					<div class="text-description" style="">
+						<?= $description; ?>
+					</div>  
+				</div>
+			  </div>
+			  <div id="tab2" class="tab">
+				<div class="content-block">
+					<div class="text-reviews" id="text-reviews" style="">
+						<?php # review部分。
+							$reviewView = [
+								'class' 		=> 'fecshop\app\apphtml5\modules\Catalog\block\product\Review',
+								'view'			=> 'catalog/product/index/review.php',
+								'product_id' 	=> $_id,
+								'spu'			=> $spu,
+							];
+							
+						?>
+						<?= Yii::$service->page->widget->render($reviewView,$reviewParam); ?>
+					</div> 
+				</div>
+			  </div>
+			  <div id="tab3" class="tab">
+				<div class="content-block">
+					<div class="text-questions" style="">
+						<?php # payment部分。
+							$paymentView = [
+								'view'			=> 'catalog/product/index/payment.php',
+							];
+							
+						?>
+						<?= Yii::$service->page->widget->render($paymentView); ?>
+					
+					
+						
+					</div>  
+				</div>
+			  </div>
+			</div>
+		</div>
+		
+		
+		
+	</div>
+	
+	<div class="buy_also_buy_cer">
+		<?php # buy also buy 部分。
 			$buyAlsoBuyView = [
 				'view'	=> 'catalog/product/index/buy_also_buy.php'
 			];
@@ -159,56 +221,6 @@
 		?>
 		<?= Yii::$service->page->widget->render($buyAlsoBuyView,$buyAlsoBuyParam); ?>
 	
-	</div>
-	
-	<div class="clear"></div>
-	<div class="product_description_info">
-		
-		
-		
-		
-		<div class="nav" id="nav-container">  
-			<ul id="nav-box">
-				<li  class="nav_tab cur" rel="description"><?= Yii::$service->page->translate->__('Description'); ?></li>  
-				<li  class="nav_tab" rel="reviews"><?= Yii::$service->page->translate->__('Reviews'); ?></li>  
-				<li  class="nav_tab" rel="questions"><?= Yii::$service->page->translate->__('Shipping & Payment'); ?></li>  
-				<!-- <li   class="nav_tab" rel="wholesale">WHOLESALE</li>   -->
-			</ul>    
-		</div>  
-		<div id="text">  
-			<div class="text-description" style="">
-				<?= $description; ?>
-			</div>  
-			<div class="text-reviews" id="text-reviews" style="">
-				<?php # review部分。
-					$reviewView = [
-						'class' 		=> 'fecshop\app\apphtml5\modules\Catalog\block\product\Review',
-						'view'			=> 'catalog/product/index/review.php',
-						'product_id' 	=> $_id,
-						'spu'			=> $spu,
-					];
-					
-				?>
-				<?= Yii::$service->page->widget->render($reviewView,$reviewParam); ?>
-			</div>  
-			<div class="text-questions" style="">
-				<?php # payment部分。
-					$paymentView = [
-						'view'			=> 'catalog/product/index/payment.php',
-					];
-					
-				?>
-				<?= Yii::$service->page->widget->render($paymentView); ?>
-			
-			
-				
-			</div>  
-			<!--					
-			<div class="text-wholesale" style="width:100%;height:500px;background:yellow;text-align:center;">
-				
-			</div>  
-			-->
-		</div> 
 	</div>
 </div>
 

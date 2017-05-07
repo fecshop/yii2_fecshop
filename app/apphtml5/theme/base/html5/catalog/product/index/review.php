@@ -1,9 +1,7 @@
 
 <div class="product-Reviews">
 	<div id="pic_list_2" class="scroll_horizontal">
-		<div class="scroll_left">
-			<a href=""><?= Yii::$service->page->translate->__('Product Review'); ?></a>
-		</div>
+		
 		<div class="clear"></div>
 		<div class="box">
 			<div class="product-Reviews_top">
@@ -16,6 +14,7 @@
 							<a href="#" class="review_star review_star_<?= $one['rate_star'] ?>" onclick="javascript:return false;"></a>
 							<p><?= Yii::$service->page->translate->__('By'); ?> <?= $one['name'] ?></p>
 							<span><?= $one['review_date'] ? date('Y-m-d H:i:s',$one['review_date']) : '' ?></span>
+							<div class="clear"></div>
 						</div>
 						<div class="review_description_right">
 							<input id="review_url_407" value="" type="hidden">
@@ -40,16 +39,15 @@
 				<?php } ?>
 			</div>
 			<div class="clear"></div>
-			<a class="submitbutton" href="<?= Yii::$service->url->getUrl('catalog/reviewproduct/add',['spu'=>$spu,'_id'=>$_id]); ?>" >
-				<?= Yii::$service->page->translate->__('Add Review'); ?>
-			</a>
-			<div class="clear"></div>
 			
-			<div class="view_all_review">
-				<a href="<?= Yii::$service->url->getUrl('catalog/reviewproduct/lists',['spu'=>$spu,'_id'=>$_id]); ?>" >
+			<p class="buttons-row">
+				<a external href="<?= Yii::$service->url->getUrl('catalog/reviewproduct/add',['spu'=>$spu,'_id'=>$_id]); ?>" class="button button-round">
+					<?= Yii::$service->page->translate->__('Add Review'); ?>
+				</a>
+				<a external href="<?= Yii::$service->url->getUrl('catalog/reviewproduct/lists',['spu'=>$spu,'_id'=>$_id]); ?>" class="button button-round">
 					<?= Yii::$service->page->translate->__('View  All Review'); ?>(<?= $review_count; ?>) 
 				</a>
-			</div>
+			</p>
 		</div>
 	</div>
 </div>

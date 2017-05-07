@@ -1,4 +1,12 @@
-body{font-family:Verdana,Arial,Tahoma;font-size:0.7rem;}
+
+html {
+    font-family: sans-serif;
+}
+body{
+	font-family:Verdana,Arial,Tahoma;font-size:0.6rem;
+overflow-wrap: break-word;
+color: #24292e;
+}
 .button{padding:0}
 ul {list-style: outside none none;margin:0;}
 .theme-dark .searchbar::after{
@@ -47,12 +55,12 @@ h1{font-size:1em;color:#333;font-weight:100;}
  .popup-overlay.modal-overlay-visible{display:none}
 
 .filter_attr_info a {
-    background: rgba(0, 0, 0, 0) url("../img/checkbox.png") no-repeat scroll -69px 3px;
+    background: rgba(0, 0, 0, 0) url("../img/checkbox.png") no-repeat scroll -69px 1px;
     font-size: 0.8em;
     padding: 0 0 0 16px;
 }
 .filter_attr_info a.checked {
-    background-position: -50px -17px;
+    background-position: -50px -19px;
 }
 
 .closeBtn {
@@ -93,18 +101,7 @@ h1{font-size:1em;color:#333;font-weight:100;}
 *::-moz-placeholder {
     color: #6a737d;
 }
-body {
-    overflow-wrap: break-word;
-}
-body {
-    color: #24292e;
-    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-    font-size: 0.8em;
-    line-height: 1.5;
-}
-html {
-    font-family: sans-serif;
-}
+
 .content-block .filter_attr_title {
     border-bottom: 1px solid #ddd;
     color: #333;
@@ -146,13 +143,15 @@ a{font-size:0.8em;}
 .sort_filter{margin-top:0.4rem;margin-bottom:-0.2rem;}
 .media_img_content{max-width:400px;margin:auto;}
 .product_view{padding:0 1rem;}
-.rbc_cold , .item_code{font-size:0.55rem;color:#777;float:left;margin-right:25px;}
+
 .item_code{margin-right:0;}
-.product_info h1{font-size:0.7rem;margin-bottom:0}
+.product_info h1{ font-size: 0.6rem;
+    font-weight: 100;
+    margin-bottom: 0;}
 
-
+.swiper-container{padding-bottom: 5px;}
 .price_info {
-    margin: 20px 0;
+    margin: 10px 0 0;
 }
 
 
@@ -179,7 +178,7 @@ a{font-size:0.8em;}
 
 
 .product_options {
-    margin: 40px 0 0;
+    margin: 0.4rem 0 0;
 }
 .product_options .label {
     line-height: 49px;
@@ -218,12 +217,13 @@ a{font-size:0.8em;}
     height: 49px;
     padding: 1px;
     width: 44px;
+	line-height:49px;
 }
 
 .product_options a.current {
     border: 1px solid #cc0000;
 }
-
+.rg .qty{margin-left:4px;}
 
 
 .product_options li.current b {
@@ -249,8 +249,8 @@ a{font-size:0.8em;}
     
 	
 }
-.product_description_info{width:100%;overflow:hidden;}
-
+.product_description_info{min-height:300px;width:100%;overflow:hidden;margin-top:0.55rem;}
+.product_description_info .content-block{padding-top:0.24rem;}
 .chose_size a {
     border: 1px solid #ccc;
     font-size: 11px;
@@ -277,39 +277,83 @@ a{font-size:0.8em;}
 
 .button.button-fill.addProductToCart{height:1.55rem;line-height:1.55rem;}
 
+.product_description_info .buttons-tab a{font-size:0.55rem;}
+
+.text-description , .text-reviews , .text-questions{font-size:0.6rem;}
+.tier_price_info{margin:0.5rem 0 1rem;color:#333;}
+.tier_price_info table{width:100%;color:#777;}
+.buy_also_buy_cer{padding: 0 1rem;}
+
+.tier_price_info table{font-size: 0.56rem;}
+.buy_also_buy	.scroll_left{
+	border-bottom: 1px solid #ddd;
+   
+    margin: 15px 0 5px;
+    padding: 5px 0;
+    text-transform: uppercase;
+}
+.buy_also_buy	.scroll_left a{color: #333;font-size: 0.9em; font-family: Arial;}
+
+.buttons-tab .button{height: 1.6rem;
+    line-height: 1.6rem;}
+
+
+.review_star_5 {
+    background: rgba(0, 0, 0, 0) url("../img/Star_5.png") no-repeat scroll 0 0;
+}
+.review_star_4 {
+    background: rgba(0, 0, 0, 0) url("../img/Star_4.png") no-repeat scroll 0 0;
+}
+.review_star_3 {
+    background: rgba(0, 0, 0, 0) url("../img/Star_3.png") no-repeat scroll 0 0;
+}
+.review_star_2 {
+    background: rgba(0, 0, 0, 0) url("../img/Star_2.png") no-repeat scroll 0 0;
+}
+.review_star_1 {
+    background: rgba(0, 0, 0, 0) url("../img/Star_1.png") no-repeat scroll 0 0;
+}
+.review_star_0 {
+    background: rgba(0, 0, 0, 0) url("../img/Star_0.png") no-repeat scroll 0 0;
+}
+.review_star {
+    display: block;
+    height: 15px;
+    width: 69px;
+}
+.product-Reviews_top ul{padding-left:0}
+.review_description_left a{display:block;}
+.review_description_left p{ display:block;float:left;margin: 0.3rem 1rem 0.3rem 0}
+.review_description_left span{display:block;float:right;margin: 0.3rem 0 0.3rem  0}
+.review_description_right_span b{font-weight:100;}
 
 
 
 
 
+.buttons-row .button{
+	
+	border-color:#ccc;
+	font-size:0.55rem;
+}
 
 
 
+.average_rating {
+    float: left;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.rbc_cold .review_star {
+    display: block;
+    float: left;
+    height: 15px;
+    margin: 0.19rem 10px 0 5px;
+    text-align: right;
+    width: 95px;
+}
+.rbc_cold{margin-top:0.22rem;}
+.rbc_cold , .item_code{color:#777;}
+.item_sku{color:#555;}
 
 
 
