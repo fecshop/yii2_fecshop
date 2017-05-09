@@ -11,7 +11,7 @@
   ],  
   "homepage": "https://github.com/fancyecommerce/yii2_fecshop",  
   "type": "yii2-extension",  
-  "license": "OSL-3",  
+  "license": "BSD-3-Clause",  
   "support": {  
 	"source": "https://github.com/fancyecommerce/yii2_fecshop"  
   },  
