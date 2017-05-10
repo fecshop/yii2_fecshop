@@ -355,17 +355,165 @@ a{font-size:0.8em;}
 .rbc_cold , .item_code{color:#777;}
 .item_sku{color:#555;}
 
+.product-image{
+	 display: block;
+    margin-top: 0.5rem;
+	
+}
+.product-image img{width:100%;height:auto;}
+
+.cart_info {}
+.cart_info a{color:#555;}
+.cart_info  h2.product-name{
+	font-size:0.7rem;
+	margin:1px 0 4px;
+	font-weight: 100;
+}
+.cart_info ul {padding-left:1px;}
+.cart_info ul li{font-size:0.5rem;color:#777;}
+
+.cart-price{
+ color: #cc0000;
+    font-size: 0.6rem;
+}
+
+.cartqtydown {
+    border-bottom: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-radius: 4px 0 0 4px;
+    border-top: 1px solid #ccc;
+    float: left;
+    font-size: 0.7rem;
+    height: 20px;
+    line-height: 18px;
+    text-align: center;
+    width: 22px;
+}
+
+.cart_info .qty {
+    border: 1px solid #ccc;
+    border-radius: 0;
+    box-shadow: none;
+    float: left;
+    height: 20px;
+    padding-bottom: 0;
+    padding-top: 0;
+    text-align: center;
+    width: 20px;
+}
+
+.cartqtyup {
+    border-bottom: 1px solid #ccc;
+    border-radius: 0 4px 4px 0;
+    border-right: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    float: left;
+    font-size: 0.7rem;
+    height: 20px;
+    line-height: 18px;
+    text-align: center;
+    width: 20px;
+}
+.cart_qty{width:80px;}
+.cart_qty a{
+	background:#fff;
+}
+
+.btn-remove span{
+	font-size: 1.1rem;
+   
+}
+
+a.btn-remove {
+	bottom: 1rem;
+    position: absolute;
+    right: 2rem;
+}
+.cart_info .row{
+	position:relative;
+	border-bottom:1px solid #e5e5e5;
+	padding:0.5rem 0 1rem;
+}
+.cart{background:#fff;}
+.row .col-80{margin-left:2%}
+.cart_info .row .col-25{padding:1rem 0 1rem 0.1em}
+
+.cart_info .row .col-75{padding:1rem 0;}
+
+.col-70 .product-name{width:60%;}
+
+.shopping-cart-img{
+		text-align:center;font-size:0.7rem;padding:0.4rem 0;
+	background:#fff;
+	border-bottom:1px solid #e5e5e5;
+	margin-bottom:0.6rem;
+}
+
+.cart_info .options  li{float:left;margin-right:1rem;}
+
+.cart_info .product-name a {
+    color: #555;
+    display: block;
+    height: 0.7rem;
+    overflow: hidden;
+}
 
 
+#coupon_code {
+    border-color: #ccc currentcolor #ccc #ccc;
+    border-radius: 0;
+    border-style: solid none solid solid;
+    border-width: 1px medium 1px 1px;
+    font-size: 0.8rem;
+    height: 1.24rem;
+    width: 100%;
+}
+.discount-form .input-box .ui-input-text {
+    border-radius: 2px 0 0 2px;
+    border-right: medium none;
+}
+.discount-form .buttons-coupon {
+    float: right;
+    width: 40%;
+}
+
+.discount-form .input-box {
+    float: left;
+    width: 60%;
+}
+
+.discount-form .buttons-coupon .ui-shadow {
+    box-shadow: none;
+}
+.discount-form .buttons-coupon a {
+    background-color: #f6f6f6;
+    border: 1px solid #ccc;
+    border-radius: 0 2px 2px 0;
+    color: #333;
+    text-shadow: 0 1px 0 #f3f3f3;
+}
+.ui-btn {
+     -moz-user-select: none;
+    cursor: pointer;
+    display: block;
+    font-size: 0.6rem;
+    
+    overflow: hidden;
+    padding: 0.2em 1em;
+    position: relative;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 
 
-
-
-
-
-
-
-
+#discount-coupon-form h2{font-size:0.6rem;}
+.cart-collaterals{padding:0.2rem 0.4rem;}
+.cart_cost{margin-top:1rem;}
+.cart_cost .row.no-gutter .col-80{text-align:right;padding-right:1rem;}
+.cart_cost .row.no-gutter{
+padding-top: 0.2rem;
+}
 
 
 

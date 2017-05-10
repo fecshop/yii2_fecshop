@@ -10,97 +10,48 @@ use fecshop\app\apphtml5\helper\Format;
 			<div class="cart">
 				<div class="page-title title-buttons">
 					<div class="shopping-cart-img">
-					
+						Shopping Cart
 					</div>
 				</div>
-				<div>
+				<div class="cart_info">
 					<?php if(is_array($cart_info['products']) && (!empty($cart_info['products']))){ ?>
-								
-					<div class="shopping-cart-div">
-						<div class="shopping-cart-ab">
-						</div>
-						<table id="shopping-cart-table" class="data-table cart-table">
-							<colgroup>
-								<col width="1">
-								<col width="">
-								<col width="1">
-								<col width="10">
-								<col width="1">
-								<col width="1">
-								<col width="1">
-
-							</colgroup>
-							<thead>
-								<tr class="first last">
-									<th rowspan="1">&nbsp;</th>
-									<th rowspan="1"><span class="nobr"><?= Yii::$service->page->translate->__('Product Name');?></span></th>
-									<th class="a-center" colspan="1"><span class="nobr"><?= Yii::$service->page->translate->__('Unit Price');?></span></th>
-									<th rowspan="1" class="a-center"><?= Yii::$service->page->translate->__('Qty');?></th>
-									<th class="a-center" colspan="1"><?= Yii::$service->page->translate->__('Subtotal');?></th>
-									<th rowspan="1" class="a-center">&nbsp;</th>
-								</tr>
-												</thead>
-							<tfoot>
-								
-							</tfoot>
-							<tbody>
-								<?php foreach($cart_info['products'] as $product_one){ ?>
-								
-								<tr class="first last odd">
-									<td>
-										<a href="<?= $product_one['url'] ?>" title="<?= $product_one['name'] ?>" class="product-image">
-										<img src="<?= Yii::$service->product->image->getResize($product_one['image'],[100,100],false) ?>" alt="<?= $product_one['name'] ?>" width="75" height="75">
-										</a>
-									</td>
-									
-									<td>
-										<h2 class="product-name">
-											<a href="<?= $product_one['url'] ?>"><?= $product_one['name'] ?></a>
-										</h2>
-										<?php  if(is_array($product_one['custom_option_info'])){  ?>
-										<ul>
-											<?php foreach($product_one['custom_option_info'] as $label => $val){  ?>
-												
-												<li><?= Yii::$service->page->translate->__(ucwords($label).':') ?><?= Yii::$service->page->translate->__($val) ?> </li>
-												
-											<?php }  ?>
-										</ul>
+						<?php foreach($cart_info['products'] as $product_one){ ?>
+							<div class="row">
+								<div class="col-20">
+									<a href="<?= $product_one['url'] ?>" title="<?= $product_one['name'] ?>" class="product-image">
+										<img src="<?= Yii::$service->product->image->getResize($product_one['image'],[150,150],false) ?>" alt="<?= $product_one['name'] ?>" width="75" height="75">
+									</a>
+								</div>
+								<div class="col-80">
+									<h2 class="product-name">
+										<a href="<?= $product_one['url'] ?>"><?= $product_one['name'] ?></a>
+									</h2>
+									<?php  if(is_array($product_one['custom_option_info'])){  ?>
+									<ul class="options">
+										<?php foreach($product_one['custom_option_info'] as $label => $val){  ?>
+											
+											<li><?= Yii::$service->page->translate->__(ucwords($label).':') ?><?= Yii::$service->page->translate->__($val) ?> </li>
+											
 										<?php }  ?>
-									</td>
+									</ul>
+									<div class="clear"></div>
+									<?php }  ?>
+									<span class="cart-price">
+										<span class="price"><?=  $currency_info['symbol'];  ?><?= Format::price($product_one['product_price']); ?></span>                
+									</span>
+									<div class="cart_qty">
+										<a href="javascript:void(0)" class="cartqtydown changeitemqty" rel="<?= $product_one['item_id']; ?>" num="<?= $product_one['qty']; ?>">-</a>
+										<input name="cart[qty]" size="4" title="Qty" class="input-text qty" rel="<?= $product_one['item_id']; ?>" maxlength="12" value="<?= $product_one['qty']; ?>">
+										<a href="javascript:void(0)" class="cartqtyup changeitemqty" rel="<?= $product_one['item_id']; ?>" num="<?= $product_one['qty']; ?>">+</a>
+										<div class="clear"></div>
+									</div>
+									<a href="javascript:void(0)"  rel="<?= $product_one['item_id']; ?>" title="Remove item" class="btn-remove btn-remove2"><span class="icon icon-remove"></span></a>
 									
-									
-									<td class="a-right">
-										<span class="cart-price">
-											<span class="price"><?=  $currency_info['symbol'];  ?><?= Format::price($product_one['product_price']); ?></span>                
-										</span>
+								</div>
+							</div>
+						<?php } ?>
+					<?php } ?>
 
-									</td>
-				   
-									<td class="a-center">
-										<div style="width:80px;">
-											<a href="javascript:void(0)" class="cartqtydown changeitemqty" rel="<?= $product_one['item_id']; ?>" num="<?= $product_one['qty']; ?>"></a>
-											<input name="cart[qty]" size="4" title="Qty" class="input-text qty" rel="<?= $product_one['item_id']; ?>" maxlength="12" value="<?= $product_one['qty']; ?>">
-											<a href="javascript:void(0)" class="cartqtyup changeitemqty" rel="<?= $product_one['item_id']; ?>" num="<?= $product_one['qty']; ?>"></a>
-											<div class="clear"></div>
-										</div>
-									</td>
-
-				
-									<td class="a-right">
-										<span class="cart-price">
-											<span class="price"><?=  $currency_info['symbol'];  ?><?= Format::price($product_one['product_row_price']); ?></span>                            
-										</span>
-									</td>
-									<td class="a-center last">
-										<a href="javascript:void(0)"  rel="<?= $product_one['item_id']; ?>" title="Remove item" class="btn-remove btn-remove2"><?= Yii::$service->page->translate->__('Remove item');?></a>
-									</td>
-								</tr>
-								<?php  }  ?>
-								
-							</tbody>
-						</table>
-					</div>
-					<?php  }  ?>
 				</div>
 				
 				<div class="cart-collaterals">
@@ -112,68 +63,46 @@ use fecshop\app\apphtml5\helper\Format;
 								<div class="discount">
 									<h2><?= Yii::$service->page->translate->__('Discount Codes');?></h2>
 									<div class="discount-form">
-										<label for="coupon_code"><?= Yii::$service->page->translate->__('Enter your coupon code if you have one.');?></label>
 										<div class="input-box">
-											<input type="hidden" class="couponType"  value="<?= $cart_info['coupon_code'] ? 1 : 2 ; ?>"  />
-											<input style="color:#777;" class="input-text" id="coupon_code" name="coupon_code" value="<?= $cart_info['coupon_code']; ?>">
+											<div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset"><input style="color:#777;" class="input-text" id="coupon_code" name="coupon_code" value=""></div>
 										</div>
-										<div class="buttons-cou">
-											<a href="javascript:void(0)" class="add_coupon_submit submitbutton"><span><span><?= Yii::$service->page->translate->__($cart_info['coupon_code'] ? 'Cancel Coupon' : 'Add Coupon') ; ?></span></span> </a>
+										<div class="buttons-coupon">
+											<a data-role="button" href="javascript:void(0)" onclick="cartcouponsubmit()" class="submitbutton ui-link ui-btn ui-shadow ui-corner-all" role="button"><span><span>Add Coupon</span></span> </a>
 											
 										</div>
-										<div class="clear"></div>
-										<div class="coupon_add_log"></div>
 									</div>
 								</div>
 							</form>
+							<div class="clear"></div>
+							
 							
 							
 						</div>
 					</div>
-					<div class="totals cart-totals">
-						<div class="process_total">
-							<table id="shopping-cart-totals-table">
-								<colgroup>
-									<col>
-									<col width="1">
-								</colgroup>
-								
-								<tbody>
-									<tr>
-										<td style="" class="a-left" colspan="1">
-											<?= Yii::$service->page->translate->__('Subtotal');?> :   </td>
-										<td style="" class="a-right">
-											<span class="price"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['product_total']); ?></span>    </td>
-									</tr><tr>
-										<td style="" class="a-left" colspan="1">
-											<?= Yii::$service->page->translate->__('Shipping Cost');?>    </td>
-										<td style="" class="a-right">
-											<span class="price"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['shipping_cost']); ?></span>    </td>
-									</tr><tr>
-										<td style="" class="a-left" colspan="1">
-											<?= Yii::$service->page->translate->__('Discount');?> :    </td>
-										<td style="" class="a-right">
-											<span class="price">-<?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['coupon_cost']); ?></span>    </td>
-									</tr>
-								</tbody>
-							</table>
-							<table id="shopping-cart-totals-table2">
-								<colgroup>
-									<col>
-									<col width="90">
-								</colgroup>
-								<tbody>
-									<tr>
-										<td style="" class="a-left" colspan="1">
-											<strong><?= Yii::$service->page->translate->__('Grand Total');?></strong>
-										</td>
-										<td style="" class="a-right">
-											<strong><span class="price"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['grand_total']) ?></span></strong>
-										</td>
-									</tr>
-								</tbody>
-							</table>
+					<div class="cart_cost">
+						<div class="row no-gutter">
+							<div class="col-80"><?= Yii::$service->page->translate->__('Subtotal');?> :  </div>
+							<div class="col-20"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['product_total']); ?></div>
 						</div>
+						
+						<div class="row no-gutter">
+							<div class="col-80"><?= Yii::$service->page->translate->__('Shipping Cost');?>  :   </td></div>
+							<div class="col-20"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['shipping_cost']); ?></div>
+						</div>
+						
+						
+						<div class="row no-gutter">
+							<div class="col-80"><?= Yii::$service->page->translate->__('Discount');?>  :</div>
+							<div class="col-20">-<?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['coupon_cost']); ?>%</div>
+						</div>
+						
+						<div class="row no-gutter">
+							<div class="col-80"><?= Yii::$service->page->translate->__('Grand Total');?>  :</div>
+							<div class="col-20"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['grand_total']) ?></div>
+						</div>
+					</div>
+					<div class="totals cart-totals">
+						
 						<div class="proceed_to_checkout">
 							
 							<button onclick="location.href='<?= Yii::$service->url->getUrl('checkout/onepage');  ?>'" type="button" title="Proceed to Checkout" class="button btn-proceed-checkout btn-checkout"><span><span><?= Yii::$service->page->translate->__('Proceed to Pay');?></span></span></button>

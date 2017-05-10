@@ -32,5 +32,11 @@ $middle_img_width = $media_size['middle_img_width'];
 	</div>
 	<div class="swiper-pagination"></div>
 </div>
+<script>
+<?php $this->beginBlock('owl_fecshop_slider') ?>  
+$.init();  
+<?php $this->endBlock(); ?>  
+</script>  
+<?php $this->registerJs($this->blocks['owl_fecshop_slider'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
 
 
