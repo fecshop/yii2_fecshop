@@ -18,13 +18,13 @@ use fecshop\app\apphtml5\helper\Format;
 						<?php foreach($cart_info['products'] as $product_one){ ?>
 							<div class="row">
 								<div class="col-20">
-									<a href="<?= $product_one['url'] ?>" title="<?= $product_one['name'] ?>" class="product-image">
+									<a external href="<?= $product_one['url'] ?>" title="<?= $product_one['name'] ?>" class="product-image">
 										<img src="<?= Yii::$service->product->image->getResize($product_one['image'],[150,150],false) ?>" alt="<?= $product_one['name'] ?>" width="75" height="75">
 									</a>
 								</div>
 								<div class="col-80">
 									<h2 class="product-name">
-										<a href="<?= $product_one['url'] ?>"><?= $product_one['name'] ?></a>
+										<a external href="<?= $product_one['url'] ?>"><?= $product_one['name'] ?></a>
 									</h2>
 									<?php  if(is_array($product_one['custom_option_info'])){  ?>
 									<ul class="options">
@@ -40,12 +40,12 @@ use fecshop\app\apphtml5\helper\Format;
 										<span class="price"><?=  $currency_info['symbol'];  ?><?= Format::price($product_one['product_price']); ?></span>                
 									</span>
 									<div class="cart_qty">
-										<a href="javascript:void(0)" class="cartqtydown changeitemqty" rel="<?= $product_one['item_id']; ?>" num="<?= $product_one['qty']; ?>">-</a>
+										<a  externalhref="javascript:void(0)" class="cartqtydown changeitemqty" rel="<?= $product_one['item_id']; ?>" num="<?= $product_one['qty']; ?>">-</a>
 										<input name="cart[qty]" size="4" title="Qty" class="input-text qty" rel="<?= $product_one['item_id']; ?>" maxlength="12" value="<?= $product_one['qty']; ?>">
-										<a href="javascript:void(0)" class="cartqtyup changeitemqty" rel="<?= $product_one['item_id']; ?>" num="<?= $product_one['qty']; ?>">+</a>
+										<a externalhref="javascript:void(0)" class="cartqtyup changeitemqty" rel="<?= $product_one['item_id']; ?>" num="<?= $product_one['qty']; ?>">+</a>
 										<div class="clear"></div>
 									</div>
-									<a href="javascript:void(0)"  rel="<?= $product_one['item_id']; ?>" title="Remove item" class="btn-remove btn-remove2"><span class="icon icon-remove"></span></a>
+									<a  externalhref="javascript:void(0)"  rel="<?= $product_one['item_id']; ?>" title="Remove item" class="btn-remove btn-remove2"><span class="icon icon-remove"></span></a>
 									
 								</div>
 							</div>
@@ -67,7 +67,7 @@ use fecshop\app\apphtml5\helper\Format;
 											<div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset"><input style="color:#777;" class="input-text" id="coupon_code" name="coupon_code" value=""></div>
 										</div>
 										<div class="buttons-coupon">
-											<a data-role="button" href="javascript:void(0)" onclick="cartcouponsubmit()" class="submitbutton ui-link ui-btn ui-shadow ui-corner-all" role="button"><span><span>Add Coupon</span></span> </a>
+											<a external data-role="button" href="javascript:void(0)" onclick="cartcouponsubmit()" class="submitbutton ui-link ui-btn ui-shadow ui-corner-all" role="button"><span><span>Add Coupon</span></span> </a>
 											
 										</div>
 									</div>
@@ -86,7 +86,7 @@ use fecshop\app\apphtml5\helper\Format;
 						</div>
 						
 						<div class="row no-gutter">
-							<div class="col-80"><?= Yii::$service->page->translate->__('Shipping Cost');?>  :   </td></div>
+							<div class="col-80"><?= Yii::$service->page->translate->__('Shipping Cost');?>  : </div>
 							<div class="col-20"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['shipping_cost']); ?></div>
 						</div>
 						
@@ -105,12 +105,18 @@ use fecshop\app\apphtml5\helper\Format;
 						
 						<div class="proceed_to_checkout">
 							
-							<button onclick="location.href='<?= Yii::$service->url->getUrl('checkout/onepage');  ?>'" type="button" title="Proceed to Checkout" class="button btn-proceed-checkout btn-checkout"><span><span><?= Yii::$service->page->translate->__('Proceed to Pay');?></span></span></button>
+							<div class="row no-gutter">
+								<div class="col-50">
+									<button onclick="location.href='<?= Yii::$service->url->getUrl('checkout/onepage');  ?>'" type="button" title="Proceed to Checkout" class="button btn-proceed-checkout btn-checkout"><span><span><?= Yii::$service->page->translate->__('Proceed to Pay');?></span></span></button>
 							
-							<span class="or">- <?= Yii::$service->page->translate->__('OR');?> - </span>
-							<a class="express_paypal" href="<?= Yii::$service->url->getUrl('payment/paypal/express/start');    ?>">
-							
-							</a>
+								</div>
+								<div class="col-50">
+									<a  external class="express_paypal" href="<?= Yii::$service->url->getUrl('payment/paypal/express/start');    ?>">
+										<img src="<?= Yii::$service->image->getImgUrl('/images/pay.png') ?>"  />
+									</a>
+									
+								</div>
+							</div>
 						</div>
 					</div>
 					<div class="clear"></div>
@@ -121,12 +127,12 @@ use fecshop\app\apphtml5\helper\Format;
 	<?php }else{ ?>
 		<div class="empty_cart">
 		<?php
-			$param = ['urlB' => '<a rel="nofollow" href="'.Yii::$service->url->getUrl('customer/account/login').'">','urlE' =>'</a>'];
+			$param = ['urlB' => '<a  external rel="nofollow" href="'.Yii::$service->url->getUrl('customer/account/login').'">','urlE' =>'</a>'];
 		?>	
 		
 		<div id="empty_cart_info">
 			<?= Yii::$service->page->translate->__('Your Shopping Cart is empty');?>
-			<a href="<?= Yii::$service->url->homeUrl(); ?>"><?= Yii::$service->page->translate->__('Start shopping now!');?></a>
+			<a external href="<?= Yii::$service->url->homeUrl(); ?>"><?= Yii::$service->page->translate->__('Start shopping now!');?></a>
 			<br>
 			<?= Yii::$service->page->translate->__('Please {urlB}log in{urlE} to view the products you have previously added to your Shopping Cart.',$param);?>
 		</div>
