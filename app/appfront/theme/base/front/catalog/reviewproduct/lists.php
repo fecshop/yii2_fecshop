@@ -34,7 +34,7 @@
 									<span class="average_rating"><?= Yii::$service->page->translate->__('Average rating :');?></span>
 									<span class="review_star review_star_<?= $reviw_rate_star_average ?>" style="font-weight:bold;" itemprop="average"></span>  
 									
-									<a rel="nofollow" href="http://www.intosmile.com/fashion-long-sleeve-round-neck-striped-knitted-sweater-1.html">
+									<a rel="nofollow" href="<?= Yii::$service->url->getUrl('catalog/reviewproduct/lists',['spu'=>$spu,'_id'=>$_id]); ?>">
 										(<span itemprop="count"><?= $review_count ?> <?= Yii::$service->page->translate->__('reviews');?></span>)
 									</a>
 								</span>

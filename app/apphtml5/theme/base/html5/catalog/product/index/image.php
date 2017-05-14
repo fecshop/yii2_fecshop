@@ -1,12 +1,9 @@
 <?php 
 
-$media_size = $parentThis['media_size'];
+$media_size = isset($parentThis['media_size']) ? $parentThis['media_size'] : null;
 $image = $parentThis['image'];
-$productImgMagnifier = $parentThis['productImgMagnifier'];
 
-$small_img_width = $media_size['small_img_width'];
-$small_img_height = $media_size['small_img_height'];
-$middle_img_width = $media_size['middle_img_width'];
+$middle_img_width = isset($media_size['middle_img_width']) ? $media_size['middle_img_width'] : 400;
 ?>
 <div class="swiper-container" data-space-between='10'>
 	<div class="swiper-wrapper">

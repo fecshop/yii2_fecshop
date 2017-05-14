@@ -6,36 +6,37 @@
 		<div class="box">
 			<div class="product-Reviews_top">
 				<?php  if(is_array($coll) && !empty($coll)){  ?>
-				<ul id="review_description">
+						
 					<?php foreach($coll as $one){  ?>
-					
-					<li>
-						<div class="review_description_left">
-							<a href="#" class="review_star review_star_<?= $one['rate_star'] ?>" onclick="javascript:return false;"></a>
-							<p><?= Yii::$service->page->translate->__('By'); ?> <?= $one['name'] ?></p>
-							<span><?= $one['review_date'] ? date('Y-m-d H:i:s',$one['review_date']) : '' ?></span>
-							<div class="clear"></div>
-						</div>
-						<div class="review_description_right">
-							<input id="review_url_407" value="" type="hidden">
-							<span class="review_description_right_span"><b><?= $one['summary'] ?></b></span>
-							<div class="review_description_centen">
-								<div class="addsize"></div>
-								<div class="review-content">
-									<?= $one['review_content'] ?>
+						<div class="card">
+							<div class="fec-card-header">
+								<?= $one['summary'] ?>
+							</div>
+							<div class="fec-card-content">
+								<div class="fec-card-content-inner">
+									<div class="review-content">
+										<?= $one['review_content'] ?>
+									</div>
+										
+									<div class="moderation">
+									<?php if($one['status'] == $noActiveStatus){ ?>  
+										<?= Yii::$service->page->translate->__('Your Review is awaiting moderation...');?>
+									<?php }else if($one['status'] == $refuseStatus){ ?>
+										<?= Yii::$service->page->translate->__('Your Review is refused.');?>
+									<?php } ?>
+									</div>
+									<div class="review_list_remark">
+										<p><?= Yii::$service->page->translate->__('By');?> <?= $one['name'] ?></p>
+										<span><?= $one['review_date'] ? date('Y-m-d H:i:s',$one['review_date']) : '' ?></span>
+									</div>
 								</div>
-								<?php if($one['status'] == $noActiveStatus){ ?>  
-								<div class="moderation">
-									<?= Yii::$service->page->translate->__('Your comment is awaiting moderation'); ?>...
-								</div>
-								<?php } ?>
-								
+							</div>
+							<div class="fec-card-footer">
+								<a href="#" class="review_star review_star_<?= $one['rate_star'] ?>" onclick="javascript:return false;"></a>
 							</div>
 						</div>
-						<div class="clear"></div>
-					</li>
-					<?php } ?>
-				</ul>
+					<?php  } ?>
+				
 				<?php } ?>
 			</div>
 			<div class="clear"></div>

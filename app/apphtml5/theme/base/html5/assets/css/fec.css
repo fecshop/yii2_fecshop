@@ -2,11 +2,13 @@
 html {
     font-family: sans-serif;
 }
+.content{background:#fff;}
 body{
 	font-family:Verdana,Arial,Tahoma;font-size:0.6rem;
 overflow-wrap: break-word;
 color: #24292e;
 }
+a{color:#777;}
 .button{padding:0}
 ul {list-style: outside none none;margin:0;}
 .theme-dark .searchbar::after{
@@ -348,9 +350,9 @@ a{font-size:0.8em;}
     display: block;
     float: left;
     height: 15px;
-    margin: 0.19rem 10px 0 5px;
+    margin: 0rem 0rem 0 0.4rem;
     text-align: right;
-    width: 95px;
+    width: 85px;
 }
 .rbc_cold{margin-top:0.22rem;}
 .rbc_cold , .item_code{color:#777;}
@@ -559,6 +561,45 @@ a.express_paypal img{max-height:70px;height:100%;width:100%;max-width:260px;}
 .proceed_to_checkout .row.no-gutter .col-50{padding:0.2rem}
 
 .header_logo img{width:5rem; margin-top: 0.68rem;}
+
+.col-20 a img{width:100%}
+.review_lists{background:#fff;min-height:700px;padding:0.5rem;}
+
+.review_lists .product_info .price_info .special_active{
+	font-size:0.6rem;
+	margin:0  0.5rem 0 0;
+}
+
+
+
+.review_lists .price_info{margin:0;}
+
+.review_lists  .review_cart{padding:0 0.2rem;font-size:0.55rem;}
+
+.product-reviews{
+	padding:0 0.2rem;font-size:0.7rem;
+}
+
+.review_lists   .button-danger.button-fill {
+    background-color: #4cd964;
+}
+
+.review_lists   .row .col-50{margin-left:0;}
+
+.review_lists  .review_cart .content-block{margin:1rem 0}
+
+.fec-card-header , .fec-card-content , .fec-card-footer{
+	border-bottom: 1px solid #eaeaea;
+    padding: 0.4rem 0.6rem;
+	color:#333;
+	
+}
+.fec-card-header{font-weight:bold}
+.fec-card-content{color:#333;}
+.review_title{margin-left:0.5rem;}
+.review_list_remark{font-size:0.5rem;color:#777}
+
+.review_list_product{margin-left:0.5rem;}
 
 
 
