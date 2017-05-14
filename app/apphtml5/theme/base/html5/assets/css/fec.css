@@ -602,6 +602,133 @@ a.express_paypal img{max-height:70px;height:100%;width:100%;max-width:260px;}
 .review_list_product{margin-left:0.5rem;}
 
 
+.review_add{}
+
+
+.review_add .product_info  .price_info .special_active {
+    font-size: 0.6rem;
+    margin: 0 0.5rem 0 0;
+}
+
+
+.review_add .price_info {
+    margin: 0;
+}
+
+
+.h-30 {
+    height: 30px;
+}
+
+
+.lh30_f {
+    float: left;
+    line-height: 30px;
+}
+
+
+.product-description_em {
+    color: #cc0000;
+    font: 17px/12px Segoeui,Arial,Verdana,serif;
+    margin: 0 3px;
+}
+
+.star_ul {
+    display: inline;
+    height: 30px;
+}
+
+
+.star_ul li {
+    float: left;
+}
+
+
+.star_1, .star_2, .star_3, .star_4, .star_5 {
+    background: rgba(0, 0, 0, 0) url("../img/product_rating_big_blank_star.png") repeat scroll 0 0;
+    display: block;
+    height: 30px;
+    width: 30px;
+}
+.full_star {
+    background: rgba(0, 0, 0, 0) url("../img/product_rating_big_full_star.png") repeat scroll 0 0;
+}
+
+
+.product-Reviews_bottom .list-block .item-content{background:#fff;}
+
+.login-captcha{
+	
+	
+}
+.login-captcha img {
+    float: left;
+    height: 25px;
+}
+
+
+.product-Reviews_bottom .item-content .login-captcha input {
+    border: 1px solid #ccc;
+    display: block;
+    float: left;
+    height: 25px;
+    margin-right: 5px;
+    width: 80px;
+}
+
+.login-captcha{width:100%}
+
+.icon-refresh{
+    border: 1px solid #ddd;
+    color: #777;
+    cursor: pointer;
+    display: block;
+    float: left;
+    font-size: 0.7rem;
+    height: 25px;
+    line-height: 24px;
+    margin-left: 1px;
+    text-align: center;
+    width: 25px;
+}
+.product-Reviews_bottom  .lh30_f{width:100%}
+
+.product-Reviews_bottom  .list-block .item-title.label{width:25%;}
+
+.list-block .item-inner {
+    padding-left: 0.1rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
