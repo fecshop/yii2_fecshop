@@ -38,8 +38,7 @@
 					<input name="editForm[product_id]" value="<?= $product_id ?>" id="product_id" type="hidden">
 						
 					<div class="list-block" >
-						<ul>
-										
+						<ul>			
 							<li>
 								<div class="item-content">
 									<div class="item-media">
@@ -135,13 +134,10 @@
 							</li>
 							<?php }  ?>
 						</ul>
-						<button type="submit" title="Submit Review" class="button" id="m_top_10" onclick="return check_review()"><span><span><?= Yii::$service->page->translate->__('Submit');?></span></span></button>
-					
+						<div class="review_submit">
+							<button type="submit" title="Submit Review" class="button" id="m_top_10" onclick="return check_review()"><span><span><?= Yii::$service->page->translate->__('Submit');?></span></span></button>
+						</div>
 					</div>
-	  
-							
-				
-					
 				</form>
 			</div>
 		</div>

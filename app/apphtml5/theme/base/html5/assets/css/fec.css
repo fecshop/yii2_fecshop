@@ -602,7 +602,7 @@ a.express_paypal img{max-height:70px;height:100%;width:100%;max-width:260px;}
 .review_list_product{margin-left:0.5rem;}
 
 
-.review_add{}
+.review_add{padding:1rem 0 1rem 0.4rem;}
 
 
 .review_add .product_info  .price_info .special_active {
@@ -699,15 +699,39 @@ a.express_paypal img{max-height:70px;height:100%;width:100%;max-width:260px;}
     padding-left: 0.1rem;
 }
 
+.product-Reviews_bottom .list-block  ul li  input
+,.product-Reviews_bottom .list-block  ul li  textarea{
+	font-size:0.6rem;
+}
+
+.review_submit{padding-left:0.9rem;margin-top:1rem;}
+.review_submit button{font-size: 0.6rem;
+    line-height: 0.9rem;
+    padding: 0.2rem 1rem 0.4rem;
+	}
 
 
+.product-Reviews_bottom  .list-block{margin-top:0}
+.product-Reviews_bottom{min-height:500px;}
 
-
-
-
-
-
-
+.error-msg {
+    margin:3px 0;
+	background: #faebe7 url("../img/i_msg-error.gif") no-repeat scroll 8px 4px;
+    border: 1px solid #f16048;
+    color: #df280a;
+    font-size: 0.8em;
+    padding: 5px 30px;
+	margin:0.4rem 1rem;
+}
+.correct-msg {
+    margin:3px 0;
+	background: #eff5ea url("../img/i_msg-success.gif") no-repeat scroll 8px 4px;
+    border: 1px solid #95a486;
+    color: #3d6611 ;
+    font-size: 0.8em;
+    padding: 5px 30px;
+	margin:0.4rem 1rem;
+}
 
 
 
