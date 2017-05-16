@@ -2,6 +2,12 @@
 html {
     font-family: sans-serif;
 }
+.page-group {
+    display: block;
+    margin: auto;
+    max-width: 640px;
+    position: relative;
+}
 .content{background:#fff;}
 body{
 	font-family:Verdana,Arial,Tahoma;font-size:0.6rem;
@@ -47,7 +53,7 @@ background-color:transparent
 }
 .category_menu > ul{margin-top:0.1rem}
 
-.list-block .item-content{padding-left:0; background: #222426;}
+
 .list-block .item-inner{padding-left:0.9rem;}
 .list-block {
     margin: 0.75rem 0;
@@ -733,14 +739,18 @@ a.express_paypal img{max-height:70px;height:100%;width:100%;max-width:260px;}
 	margin:0.4rem 1rem;
 }
 
+.list-block .item-link .item-inner{margin-left:0rem;padding-left:1rem;}
+.list-block .item-content{padding-left:0}
 
+.account-top-m{background:#fff;}
 
+.account-top-m .icon-left{font-size:0.7rem;}
 
-
-
-
-
-
+.account-ds .account_footer{ text-align: center;margin: 30px 0 200px;}
+.account-ds .account_footer a {
+    font-size: 0.9rem;
+}
+.account-ds a{font-size:0.7rem;}
 
 
 

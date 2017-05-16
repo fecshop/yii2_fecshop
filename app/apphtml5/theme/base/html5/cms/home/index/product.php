@@ -8,7 +8,7 @@
 		<?php } ?>
 			<div class="col-50 product_list">
 				<a href="<?= $product['url'] ?>" external>
-					<img width="100%"  src="<?= Yii::$service->product->image->getResize($product['image'],285,false) ?>"  />
+					<img width="100%"  src="<?= Yii::$service->product->image->getResize($product['image'],296,false) ?>"  />
 				</a>
 				<p class="product_name" style="">
 					<a href="<?= $product['url'] ?>" external>

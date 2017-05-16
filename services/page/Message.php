@@ -75,8 +75,9 @@ class Message extends Service
 					//}
 				}
 			} 
+			return true;
 		}
-		return true;
+		
 	}
 	/**
 	 * 获取 correct message

@@ -39,7 +39,6 @@ class Register {
 	}
 	
 	public function register($param){
-		
 		$captcha = $param['captcha'];
 		$registerParam = \Yii::$app->getModule('customer')->params['register'];
 		$registerPageCaptcha = isset($registerParam['registerPageCaptcha']) ? $registerParam['registerPageCaptcha'] : false;
@@ -51,21 +50,9 @@ class Register {
 			Yii::$service->page->message->addError(['Captcha is not right']);
 			return;
 		}
-		
 		Yii::$service->customer->register($param);
-		
-		$errors = Yii::$service->helper->errors->get(true);
-		if($errors){
-			if(is_array($errors) && !empty($errors)){
-				foreach($errors as $error){
-					if(is_array($error) && !empty($error)){
-						foreach($error as $er){
-							Yii::$service->page->message->addError($er);
-						}
-					}
-				}
-			} 
-		}else{
+		$errors = Yii::$service->page->message->addByHelperErrors();
+		if(!$errors){
 			# 发送注册邮件
 			$this->sendRegisterEmail($param);
 			return true;

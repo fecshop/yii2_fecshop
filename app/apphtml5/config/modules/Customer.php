@@ -36,7 +36,6 @@ return [
 			],
 			
 			'leftMenu'  => [
-				'Account Dashboard' => 'customer/account',
 				'Account Information' => 'customer/editaccount',
 				'Address Book' => 'customer/address',
 				'My Orders' => 'customer/order',
