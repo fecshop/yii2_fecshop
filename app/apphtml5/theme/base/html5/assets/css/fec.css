@@ -752,18 +752,33 @@ a.express_paypal img{max-height:70px;height:100%;width:100%;max-width:260px;}
 }
 .account-ds a{font-size:0.7rem;}
 
+.js_registBtn{}
+.list-block .item-title.label{width:25%;}
 
+.list-block input[type="text"], .list-block input[type="password"], .list-block input[type="email"], .list-block input[type="tel"], .list-block input[type="url"], .list-block input[type="date"], .list-block input[type="datetime-local"], .list-block input[type="time"], .list-block input[type="number"], .list-block input[type="search"], .list-block select, .list-block textarea{
+	font-size:0.6rem;
+}
+.customer-login .buttons-set , .customer-login .third_login{
+	margin:0.8rem;
+}
 
+#login-form .item-input .login-captcha-input{width:30%;float:left;}
+#login-form .item-input .login-captcha-img{width:130px;float:left; margin-top: 0.4rem;}
 
-
-
-
-
-
-
-
-
-
+#login-form .icon-refresh{
+	 font-size: 0.9rem;
+    height: 1.2rem;
+    line-height: 1.2rem;
+    margin: 0.4rem 0 0 0.2rem;
+    padding: 0;
+    width: 1.2rem;
+}
+.shopping-cart-img a.f-right{float:right; 
+    color: #0894ec;
+    line-height: 1.2rem;
+    position: absolute;
+    right: 1rem;
+}
 
 
 
