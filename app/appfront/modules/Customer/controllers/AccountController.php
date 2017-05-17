@@ -29,11 +29,9 @@ class AccountController extends AppfrontController
 	 */
 	public function actionIndex(){
 		if(Yii::$app->user->isGuest){
-			Yii::$service->url->redirectByUrlKey('customer/account/login');
+			return Yii::$service->url->redirectByUrlKey('customer/account/login');
 		}
-		
 		$data = $this->getBlock()->getLastData();
-		
 		return $this->render($this->action->id,$data);
 	}
 	/**
@@ -41,14 +39,15 @@ class AccountController extends AppfrontController
 	 */
     public function actionLogin()
     {
-		
 		/**
 		$toEmail = 'zqy234@126.com';
 		// \fecshop\app\appfront\modules\Mailer\Email::sendLoginEmail($toEmail);
 		\fecshop\app\appfront\modules\Mailer\Email::sendRegisterEmail($toEmail);
-		
 		exit;
 		*/
+		if(!Yii::$app->user->isGuest){
+			return Yii::$service->url->redirectByUrlKey('customer/account');
+		}
 		$param = Yii::$app->request->post('editForm');
 		if(!empty($param) && is_array($param)){
 			$this->getBlock()->login($param);
@@ -61,8 +60,10 @@ class AccountController extends AppfrontController
 	 */
 	public function actionRegister()
     {
+		if(!Yii::$app->user->isGuest){
+			return Yii::$service->url->redirectByUrlKey('customer/account');
+		}
 		$param = Yii::$app->request->post('editForm');
-		
 		if(!empty($param) && is_array($param)){
 			foreach($param as $k => $v){
 				$param[$k] = \yii\helpers\Html::encode($v);
@@ -122,6 +123,9 @@ class AccountController extends AppfrontController
 	 * 忘记密码？
 	 */
 	public function actionForgotpassword(){
+		if(!Yii::$app->user->isGuest){
+			return Yii::$service->url->redirectByUrlKey('customer/account');
+		}
 		$data = $this->getBlock()->getLastData();
 		return $this->render($this->action->id,$data);
 	
