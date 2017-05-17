@@ -29,6 +29,10 @@ class Index {
 		$this->initFavoriteParam();
 		$identity = Yii::$app->user->identity;
 		$user_id  = $identity->id;
+		if(!$user_id){
+			Yii::$service->helper->errors->add('current user id is empty');
+			return;
+		}
 		$filter = [
 			'pageNum'	=> $this->pageNum,
 			'numPerPage'=> $this->numPerPage,
