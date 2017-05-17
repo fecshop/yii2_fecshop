@@ -748,7 +748,7 @@ a.express_paypal img{max-height:70px;height:100%;width:100%;max-width:260px;}
 
 .account-ds .account_footer{ text-align: center;margin: 30px 0 200px;}
 .account-ds .account_footer a {
-    font-size: 0.9rem;
+    font-size: 0.7rem;
 }
 .account-ds a{font-size:0.7rem;}
 
@@ -781,9 +781,16 @@ a.express_paypal img{max-height:70px;height:100%;width:100%;max-width:260px;}
 }
 
 
+.button.button-fill.button-bbb{
+	background: #bbb none repeat scroll 0 0;
+   
+}
 
 
-
+.account-ds .button-bbb {
+    margin: 1rem 1rem 10rem;
+    text-align: center;
+}
 
 
 
