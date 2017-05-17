@@ -25,8 +25,8 @@ class Add {
 		if(Yii::$app->user->isGuest){
 			$url = Yii::$service->url->getCurrentUrl();
 			Yii::$service->customer->setLoginSuccessRedirectUrl($url);
-			Yii::$service->url->redirectByUrlKey('customer/account/login');
-			exit;
+			return Yii::$service->url->redirectByUrlKey('customer/account/login');
+		
 		}
 		
 		$identity = Yii::$app->user->identity;
@@ -39,11 +39,11 @@ class Add {
 		$favoriteParam = Yii::$app->getModule('catalog')->params['favorite'];
 		# 跳转。
 		if(isset($favoriteParam['addSuccessRedirectFavoriteList']) && $favoriteParam['addSuccessRedirectFavoriteList']){
-			Yii::$service->url->redirectByUrlKey('customer/productfavorite');
+			return Yii::$service->url->redirectByUrlKey('customer/productfavorite');
 		}else{
 			$product 	= Yii::$service->product->getByPrimaryKey($product_id);
 			$urlKey 	= $product['url_key'];
-			Yii::$service->url->redirectByUrlKey($urlKey);
+			return Yii::$service->url->redirectByUrlKey($urlKey);
 		}
 		
 	}

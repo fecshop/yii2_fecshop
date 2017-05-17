@@ -221,7 +221,7 @@ class Edit {
 		$identity = Yii::$app->user->identity;
 		$arr['customer_id'] = $identity['id'];
 		Yii::$service->customer->address->save($arr);
-		Yii::$service->url->redirectByUrlKey('customer/address');
+		return Yii::$service->url->redirectByUrlKey('customer/address');
 	}
 	
 	

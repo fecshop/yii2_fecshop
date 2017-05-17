@@ -21,7 +21,7 @@ class ProductreviewController extends AppfrontController
 	
 	public function init(){
 		if(Yii::$app->user->isGuest){
-			Yii::$service->url->redirectByUrlKey('customer/account/login');
+			return Yii::$service->url->redirectByUrlKey('customer/account/login');
 		}
 		parent::init();
 	}

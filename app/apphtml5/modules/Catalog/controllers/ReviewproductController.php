@@ -31,7 +31,7 @@ class ReviewproductController extends AppfrontController
 			Yii::$service->customer->setLoginSuccessRedirectUrl($currentUrl);
 			
 			# 如果评论产品必须登录用户，则跳转到用户登录页面
-			Yii::$service->url->redirectByUrlKey('customer/account/login');
+			return Yii::$service->url->redirectByUrlKey('customer/account/login');
 			
 		}
 		$editForm = Yii::$app->request->post('editForm');

@@ -53,11 +53,7 @@ class Login {
 			}
 		}
 		Yii::$service->page->message->addByHelperErrors();
-		if(!Yii::$app->user->isGuest){
-			//Yii::$service->url->redirectByUrlKey('customer/account');
-			Yii::$service->customer->loginSuccessRedirect('customer/account');
-		}
-		
+		return;
 	}
 	/**
 	 * 发送登录邮件

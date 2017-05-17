@@ -34,7 +34,12 @@ class ExpressController extends AppfrontController
 			}
 		}
 		$data = $this->getBlock()->getLastData();
-		return $this->render($this->action->id,$data);
+		if(is_array($data) && !empty($data) ){	
+			return $this->render($this->action->id,$data);
+		}else{
+			return $data;
+		}		
+	
 	}
 	
 	

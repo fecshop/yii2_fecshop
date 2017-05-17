@@ -20,18 +20,18 @@ class Reorder {
 	public function getLastData(){
 		$order_id = Yii::$app->request->get('order_id');
 		if(!$order_id){
-			$this->errorMessage('The order id is empty');
+			return $this->errorMessage('The order id is empty');
 		}
 		$order = Yii::$service->order->getByPrimaryKey($order_id);
 		if(!$order['increment_id']){
-			$this->errorMessage('The order is not exist');
+			return $this->errorMessage('The order is not exist');
 		}
 		$customer_id = Yii::$app->user->identity->id;
 		if(!$order['customer_id'] || ($order['customer_id'] != $customer_id)){
-			$this->errorMessage('The order does not belong to you');
+			return $this->errorMessage('The order does not belong to you');
 		}
 		$this->addOrderProductToCart($order_id);
-		Yii::$service->url->redirectByUrlKey('checkout/cart');
+		return Yii::$service->url->redirectByUrlKey('checkout/cart');
 	}
 	public function addOrderProductToCart($order_id){
 		$items = Yii::$service->order->item->getByOrderId($order_id);
@@ -55,8 +55,7 @@ class Reorder {
 	 */
 	public function errorMessage($message){
 		Yii::$service->page->message->addError($message);
-		Yii::$service->url->redirectByUrlKey('customer/order');
-		exit;
+		return Yii::$service->url->redirectByUrlKey('customer/order');
 	}
 	
 	

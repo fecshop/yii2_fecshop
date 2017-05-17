@@ -21,7 +21,7 @@ class OrderController extends AppfrontController
 	
 	public function init(){
 		if(Yii::$app->user->isGuest){
-			Yii::$service->url->redirectByUrlKey('customer/account/login');
+			return Yii::$service->url->redirectByUrlKey('customer/account/login');
 		}
 		parent::init();
 	}
@@ -39,7 +39,7 @@ class OrderController extends AppfrontController
 	}
 	
 	public function actionReorder(){
-		$this->getBlock()->getLastData();
+		return $this->getBlock()->getLastData();
 		//return $this->render($this->action->id,$data);
 	}
 	

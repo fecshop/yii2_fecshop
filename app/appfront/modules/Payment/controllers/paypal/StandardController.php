@@ -26,7 +26,7 @@ class StandardController extends AppfrontController
 		if(is_array($data) && !empty($data)){
 			return $this->render($this->action->id,$data);
 		}else{
-			Yii::$service->url->redirectByUrlKey('checkout/onepage');
+			return Yii::$service->url->redirectByUrlKey('checkout/onepage');
 		}
 	}
 	
@@ -45,8 +45,7 @@ class StandardController extends AppfrontController
 	
 	public function actionCancel(){
 		Yii::$service->order->cancel();
-		Yii::$service->url->redirectByUrlKey('checkout/onepage');
-		exit;
+		return Yii::$service->url->redirectByUrlKey('checkout/onepage');
 	}
 	
 	public function actionTest(){

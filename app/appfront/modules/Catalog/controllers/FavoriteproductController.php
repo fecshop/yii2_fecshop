@@ -21,7 +21,7 @@ class FavoriteproductController extends AppfrontController
 	# 增加收藏
     public function actionAdd()
     {
-		$data = $this->getBlock()->getLastData();
+		return $this->getBlock()->getLastData();
 		//return $this->render($this->action->id,$data);
 	}
 	

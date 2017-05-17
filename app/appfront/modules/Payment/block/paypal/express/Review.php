@@ -56,7 +56,7 @@ class Review {
 		$cartInfo = Yii::$service->cart->getCartInfo();
 		
 		if(!isset($cartInfo['products']) || !is_array($cartInfo['products']) || empty($cartInfo['products'])){
-			Yii::$service->url->redirectByUrlKey('checkout/cart');
+			return Yii::$service->url->redirectByUrlKey('checkout/cart');
 		}
 		$currency_info = Yii::$service->page->currency->getCurrencyInfo();
 		$this->initAddress();

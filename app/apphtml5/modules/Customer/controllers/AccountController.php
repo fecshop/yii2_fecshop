@@ -37,7 +37,7 @@ class AccountController extends AppfrontController
 	/**
 	 * 登录
 	 */
-    public function actionLogin()
+   public function actionLogin()
     {
 		/**
 		$toEmail = 'zqy234@126.com';
@@ -51,6 +51,9 @@ class AccountController extends AppfrontController
 		$param = Yii::$app->request->post('editForm');
 		if(!empty($param) && is_array($param)){
 			$this->getBlock()->login($param);
+			if(!Yii::$app->user->isGuest){
+				return Yii::$service->customer->loginSuccessRedirect('customer/account');
+			}
 		}
 		$data = $this->getBlock()->getLastData($param);
 		return $this->render($this->action->id,$data);
@@ -82,7 +85,7 @@ class AccountController extends AppfrontController
 					if(isset($params_register['loginSuccessRedirectUrlKey']) && $params_register['loginSuccessRedirectUrlKey']  ){
 						$urlKey = $params_register['loginSuccessRedirectUrlKey'];
 					}
-					Yii::$service->customer->loginSuccessRedirect($urlKey);
+					return Yii::$service->customer->loginSuccessRedirect($urlKey);
 				}
 			}
 		}
