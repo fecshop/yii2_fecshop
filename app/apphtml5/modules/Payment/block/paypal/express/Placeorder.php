@@ -35,8 +35,15 @@ class Placeorder {
 	public function getLastData(){
 		$post = Yii::$app->request->post();
 		if(is_array($post) && !empty($post)){
+			# post 是二维数组，需要多层处理
 			foreach($post as $k=>$v){
-				$post[$k] = \yii\helpers\Html::encode($v);
+				if(is_array($v)){
+					foreach($v as $k2=>$v2){
+						$post[$k][$k2] = \yii\helpers\Html::encode($v2);
+					}
+				}else{
+					$post[$k] = \yii\helpers\Html::encode($v);
+				}
 			}
 			# 设置paypal快捷支付
 			$post['payment_method'] = Yii::$service->payment->paypal->express_payment_method;
@@ -52,8 +59,8 @@ class Placeorder {
 					$serviceOrder = Yii::$service->order;
 					$checkout_type = $serviceOrder::CHECKOUT_TYPE_EXPRESS;
 					$serviceOrder->setCheckoutType($checkout_type);
-					# 将购物车数据，生成订单。
-					$genarateStatus = Yii::$service->order->generateOrderByCart($this->_billing,$this->_shipping_method,$this->_payment_method);
+					# 将购物车数据，生成订单,生成订单后，不清空购物车，不扣除库存，在支付成功后在清空购物车。
+					$genarateStatus = Yii::$service->order->generateOrderByCart($this->_billing,$this->_shipping_method,$this->_payment_method,false);
 					//echo 22;
 					if($genarateStatus){
 						# 得到当前的订单信息
@@ -64,24 +71,24 @@ class Placeorder {
 							# 如果支付成功，并把信息更新到了订单数据中，则进行下面的操作。
 							//echo 444;
 							if($ExpressOrderPayment){
+								# 支付成功后，在清空购物车数据。而不是在生成订单的时候。
+								Yii::$service->cart->clearCartProductAndCoupon();
+								# 支付成功后，扣除库存。
+								Yii::$service->product->stock->deduct();
 								//echo 555;
 								# 发送新订单邮件
-								
 								# 扣除库存和优惠券
 								// 在生成订单的时候已经扣除了。参看order service GenerateOrderByCart() function
-								
 								# 得到支付跳转前的准备页面。
 								$paypal_express = Yii::$service->payment->paypal->express_payment_method;
 								$successRedirectUrl = Yii::$service->payment->getExpressSuccessRedirectUrl($paypal_express);
 								Yii::$service->url->redirect($successRedirectUrl);
-								exit;
+								return true;
 							}
 						}
-						//return true;
 					}
 				}
 			}else{
-				
 			}
 		}
 		//echo 'eeeeeeee';exit;

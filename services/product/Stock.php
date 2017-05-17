@@ -44,7 +44,11 @@ class Stock extends Service
 	 * @return boolean 
 	 * 扣除产品库存。如果扣除成功，则返回true，如果返回失败，则返回false
 	 */
-	protected  function actionDeduct($items){
+	protected  function actionDeduct($items=""){
+		if(!$items){ #如果$items为空，则去购物车取数据。
+			$cartInfo = Yii::$service->cart->getCartInfo();
+			$items = isset($cartInfo['products']) ? $cartInfo['products'] : '';
+		}
 		if(!$this->_checkItemsStockStatus){
 			if(!$this->checkItemsStock($items)){
 				return false;

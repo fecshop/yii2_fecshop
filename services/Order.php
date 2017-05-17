@@ -304,10 +304,11 @@ class Order extends Service
 	 * @property $address | Array 货运地址
 	 * @property $shipping_method | String 货运快递方式
 	 * @property $payment_method | Array 支付方式、
+	 * @property $clearCartAndDeductStock | boolean 是否清空购物车，并扣除库存，这种情况是先 生成订单，在支付的情况下失败的处理方式。
 	 * @return boolean 通过购物车的数据生成订单是否成功
 	 * 通过购物车中的产品信息，以及传递的货运地址，货运快递方式，支付方式生成订单。
 	 */
-	protected function actionGenerateOrderByCart($address,$shipping_method,$payment_method){
+	protected function actionGenerateOrderByCart($address,$shipping_method,$payment_method,$clearCartAndDeductStock=true){
 		$cart = Yii::$service->cart->quote->getCurrentCart();
 		if(!$cart){
 			Yii::$service->helper->errors->add('current cart is empty');
@@ -391,14 +392,16 @@ class Order extends Service
 			# 扣除库存。（订单生成后，库存产品库存。）
 			#     （备注）需要另起一个脚本，用来处理半个小时后，还没有支付的订单，将订单取消，然后将订单里面的产品库存返还。
 			# 			如果是无限库存（没有库存就去采购的方式），那么不需要跑这个脚本，将库存设置的非常大即可。
-			Yii::$service->product->stock->deduct($cartInfo['products']);
+			if($clearCartAndDeductStock){
+				Yii::$service->product->stock->deduct($cartInfo['products']);
+			}
 			# 优惠券
 			// 优惠券是在购物车页面添加的，添加后，优惠券的使用次数会被+1，
 			// 因此在生成订单部分，是没有优惠券使用次数操作的（在购物车添加优惠券已经被执行该操作）
 			// 生成订单后，购物车的数据会被清空，其中包括优惠券信息的清空。
 			
 			# 如果是登录用户，那么，在生成订单后，需要清空购物车中的产品和coupon。
-			if(!Yii::$app->user->isGuest){
+			if(!Yii::$app->user->isGuest && $clearCartAndDeductStock){
 				Yii::$service->cart->clearCartProductAndCoupon();
 			}
 			return true;

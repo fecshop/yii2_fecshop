@@ -343,8 +343,6 @@ class Url extends Service
 	 * @property $backToPage1|boolean  删除后，页数由原来的页数变成第一页？
 	 */
 	protected function actionRemoveUrlParamVal($url,$removeUrlParamStr,$backToPage1=true){
-		
-	
 		$return_url = $url;
 		if(strstr($url,'?'.$removeUrlParamStr.'&')){
 			$return_url = str_replace('?'.$removeUrlParamStr.'&','?',$url);

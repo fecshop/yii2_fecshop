@@ -28,9 +28,8 @@ class ExpressController extends AppfrontController
 		$_csrf = Yii::$app->request->post('_csrf');
 		if($_csrf){
 			$status = $this->getBlock('placeorder')->getLastData();
-			if(!$status){
-				//var_dump(Yii::$service->helper->errors->get());
-				//exit;
+			if($status){
+				return;
 			}
 		}
 		$data = $this->getBlock()->getLastData();

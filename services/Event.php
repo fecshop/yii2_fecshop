@@ -29,7 +29,8 @@ class Event extends Service
 	 */
 	public function trigger($eventName,$data){
 		if(!is_array($data)){
-			Yii::$service->helper->errors->add('event data must array');
+			//Yii::$service->helper->errors->add('event data must array');
+			return;
 		}
 		if(isset($this->eventList[$eventName]) && !empty($this->eventList[$eventName]) && is_array($this->eventList[$eventName])){
 			foreach($this->eventList[$eventName] as $one){
