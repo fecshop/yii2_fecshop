@@ -369,22 +369,25 @@ class Url extends Service
 	protected function actionRedirect($url){
 		if($url){
 			//session_commit();
-			header("Location: $url");
+			Yii::$app->getResponse()->redirect($url)->send();
+			//header("Location: $url");
 		}
 	}
 	protected function actionRedirectByUrlKey($urlKey,$params=[]){
 		if($urlKey){
 			$url = $this->getUrl($urlKey,$params);
 			//session_commit();
-			header("Location: $url");
+			Yii::$app->getResponse()->redirect($url)->send();
+			//header("Location: $url");
 		}
 	}
 	
 	protected function actionRedirectHome(){
 		$homeUrl = $this->HomeUrl();
 		if($homeUrl){
+			Yii::$app->getResponse()->redirect($homeUrl)->send();
 			//session_commit();
-			header("Location: $homeUrl");
+			//header("Location: $homeUrl");
 		}
 	}
 	
