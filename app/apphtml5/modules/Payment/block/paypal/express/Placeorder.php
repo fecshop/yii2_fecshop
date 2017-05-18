@@ -87,6 +87,10 @@ class Placeorder {
 							}
 						}
 					}
+					# 如果订单支付过程中失败，将订单取消掉
+					if(!$doExpressCheckoutReturn || !$ExpressOrderPayment){
+						Yii::$service->order->cancel();
+					}
 				}
 			}else{
 			}
