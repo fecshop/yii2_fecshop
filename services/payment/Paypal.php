@@ -509,7 +509,7 @@ class Paypal extends Service
 	 */
 	public function setExpressToken(){
 		$token = Yii::$app->request->get('token');
-		$token = \yii\helpers\Html::encode($token);
+		$token = \Yii::$service->helper->htmlEncode($token);
 		if($token){
 			Yii::$app->session->set(self::EXPRESS_TOKEN,$token);
 			return true;
@@ -521,7 +521,7 @@ class Paypal extends Service
 	 */
 	public function setExpressPayerID(){
 		$PayerID = Yii::$app->request->get('PayerID');
-		$PayerID = \yii\helpers\Html::encode($PayerID);
+		$PayerID = \Yii::$service->helper->htmlEncode($PayerID);
 		if($PayerID){
 			Yii::$app->session->set(self::EXPRESS_PAYER_ID,$PayerID);
 			return true;

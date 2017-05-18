@@ -32,14 +32,12 @@ class Index {
 	 */
 	public function saveAccount($editForm){
 		if(is_array($editForm) && !empty($editForm)){
-			foreach($editForm as $k=>$v){
-				$editForm[$k] = \yii\helpers\Html::encode($v);
-			}
+			$editForm = \Yii::$service->helper->htmlEncode($editForm);
 			$identity = Yii::$app->user->identity;
-			$firstname 			= $editForm['firstname'] ? $editForm['firstname'] : '';
-			$lastname 			= $editForm['lastname'] ? $editForm['lastname'] : '';
+			$firstname 		= $editForm['firstname'] ? $editForm['firstname'] : '';
+			$lastname 		= $editForm['lastname'] ? $editForm['lastname'] : '';
 			$current_password 	= $editForm['current_password'] ? $editForm['current_password'] : '';
-			$password 			= $editForm['password'] ? $editForm['password'] : '';
+			$password 		= $editForm['password'] ? $editForm['password'] : '';
 			$confirmation 		= $editForm['confirmation'] ? $editForm['confirmation'] : '';
 			$change_password 	= $editForm['change_password'] ? $editForm['change_password'] : '';
 			

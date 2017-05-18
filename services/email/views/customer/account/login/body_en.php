@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $user common\models\User */
 
 ?>
-Get <?= Html::encode($name) ?>, message<br/>
+Get <?= \Yii::$service->helper->htmlEncode($name) ?>, message<br/>
 Store:"en"<br/>
-Email:<?= Html::encode($email) ?><br/>
-Mobile:<?= Html::encode($contactsPhone)?><br/>
-Content:<?= Html::encode($comment) ?>
+Email:<?= \Yii::$service->helper->htmlEncode($email) ?><br/>
+Mobile:<?= \Yii::$service->helper->htmlEncode($contactsPhone) ?><br/>
+Content:<?= \Yii::$service->helper->htmlEncode($comment) ?>

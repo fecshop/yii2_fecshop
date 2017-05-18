@@ -36,9 +36,7 @@ class Index {
 		
 		$editForm 	= Yii::$app->request->post('editForm');
 		if(is_array($editForm) && !empty($editForm)){
-			foreach($editForm as $k=>$v){
-				$editForm[$k] = \yii\helpers\Html::encode($v);
-			}
+			$editForm = \Yii::$service->helper->htmlEncode($editForm);
 		}
 		$name 		= isset($editForm['name']) ? $editForm['name'] : '';
 		$email		= isset($editForm['email']) ? $editForm['email'] : '';
@@ -92,7 +90,7 @@ class Index {
 		}
 		
 		$captcha = Yii::$app->request->post('sercrity_code');
-		$captcha = \yii\helpers\Html::encode($captcha);
+		$captcha = \Yii::$service->helper->htmlEncode($captcha);
 		$contacts = Yii::$app->getModule("customer")->params['contacts'];
 		$contactsCaptcha = isset($contacts['contactsCaptcha']) ? $contacts['contactsCaptcha'] : false;
 		

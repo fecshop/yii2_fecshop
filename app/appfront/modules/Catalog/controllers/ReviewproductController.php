@@ -35,18 +35,14 @@ class ReviewproductController extends AppfrontController
 			
 		}
 		$editForm = Yii::$app->request->post('editForm');
-		if(!empty($editForm) && is_array($editForm) ){
-			foreach($editForm as $k=>$v){
-				$editForm[$k] = \yii\helpers\Html::encode($v);
-			}
-		}
+		$editForm = \Yii::$service->helper->htmlEncode($editForm);
 		if(!empty($editForm) && is_array($editForm) ){
 			$saveStatus = $this->getBlock()->saveReview($editForm);
 			if($saveStatus){
 				$spu = Yii::$app->request->get('spu');
 				$_id = Yii::$app->request->get('_id');
-				$spu = \yii\helpers\Html::encode($spu);
-				$_id = \yii\helpers\Html::encode($_id);
+				$spu = \Yii::$service->helper->htmlEncode($spu);
+				$_id = \Yii::$service->helper->htmlEncode($_id);
 				if($spu && $_id){
 					$url = Yii::$service->url->getUrl('catalog/reviewproduct/lists',['spu' => $spu,'_id'=>$_id]);
 					$this->redirect($url);

@@ -68,9 +68,7 @@ class AccountController extends AppfrontController
 		}
 		$param = Yii::$app->request->post('editForm');
 		if(!empty($param) && is_array($param)){
-			foreach($param as $k => $v){
-				$param[$k] = \yii\helpers\Html::encode($v);
-			}
+			$param = \Yii::$service->helper->htmlEncode($param);
 			$registerStatus = $this->getBlock()->register($param);
 			//echo $registerStatus;exit;
 			if($registerStatus){
@@ -104,8 +102,6 @@ class AccountController extends AppfrontController
 		}
 		if($rt){
 			$redirectUrl = base64_decode($rt);
-			$redirectUrl = \yii\helpers\Html::encode($redirectUrl);
-			//exit;
 			Yii::$service->url->redirect($redirectUrl);
 		}else{
 			Yii::$service->url->redirect(Yii::$service->url->HomeUrl());

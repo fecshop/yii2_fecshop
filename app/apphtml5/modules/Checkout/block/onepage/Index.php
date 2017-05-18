@@ -251,7 +251,7 @@ class Index {
 	 */
 	public function ajaxChangecountry(){
 		$country = Yii::$app->request->get('country');
-		$country = \yii\helpers\Html::encode($country);
+		$country = \Yii::$service->helper->htmlEncode($country);
 		$state = $this->initState($country);
 		echo json_encode([
 			'state' => $this->_stateHtml,
@@ -473,10 +473,10 @@ class Index {
 		$shipping_method 	= Yii::$app->request->get('shipping_method');
 		$address_id 		= Yii::$app->request->get('address_id');
 		$state 				= Yii::$app->request->get('state');
-		$country			= \yii\helpers\Html::encode($country);
-		$shipping_method	= \yii\helpers\Html::encode($shipping_method);
-		$address_id			= \yii\helpers\Html::encode($address_id);
-		$state				= \yii\helpers\Html::encode($state);
+		$country			= \Yii::$service->helper->htmlEncode($country);
+		$shipping_method		= \Yii::$service->helper->htmlEncode($shipping_method);
+		$address_id			= \Yii::$service->helper->htmlEncode($address_id);
+		$state				= \Yii::$service->helper->htmlEncode($state);
 		if($address_id){
 			$this->_address_id = $address_id;
 			$addressModel = Yii::$service->customer->address->getByPrimaryKey($this->_address_id);

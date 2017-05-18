@@ -36,15 +36,7 @@ class Placeorder {
 		$post = Yii::$app->request->post();
 		if(is_array($post) && !empty($post)){
 			# post 是二维数组，需要多层处理
-			foreach($post as $k=>$v){
-				if(is_array($v)){
-					foreach($v as $k2=>$v2){
-						$post[$k][$k2] = \yii\helpers\Html::encode($v2);
-					}
-				}else{
-					$post[$k] = \yii\helpers\Html::encode($v);
-				}
-			}
+			$post = \Yii::$service->helper->htmlEncode($post);
 			# 设置paypal快捷支付
 			$post['payment_method'] = Yii::$service->payment->paypal->express_payment_method;
 			# 检查前台传递的数据的完整性
