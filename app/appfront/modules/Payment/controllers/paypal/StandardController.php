@@ -34,11 +34,19 @@ class StandardController extends AppfrontController
 	
 	
 	public function actionIpn(){
+		
+		\Yii::info('paypal ipn begin','fecshop_debug');
+		
 		$post = Yii::$app->request->post();
 		if(is_array($post) && !empty($post)){
-			foreach($post as $k=>$v){
-				$post[$k] = \yii\helpers\Html::encode($v);
-			}
+			$post = \Yii::$service->helper->htmlEncode($post);
+			
+			ob_start();    
+			ob_implicit_flush(false);        
+			var_dump($post);    
+			$post_log = ob_get_clean(); 
+			\Yii::info($post_log,'fecshop_debug');
+			
 			Yii::$service->payment->paypal->receiveIpn($post);
 		}
 	}
