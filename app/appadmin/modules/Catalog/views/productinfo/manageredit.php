@@ -83,8 +83,7 @@ $(document).ready(function(){
 });
 
 
-function getCategoryData(product_id,i){
-														
+function getCategoryData(product_id,i){												
 	$.ajax({
 		url:'<?= CUrl::getUrl("catalog/productinfo/getproductcategory",['product_id'=>$product_id]); ?>',
 		async:false,
@@ -101,11 +100,10 @@ function getCategoryData(product_id,i){
 				if(i){
 					$("ul.tree", ".dialog").jTree();
 				}
-				
 			}
 		},
 		error:function(){
-			alert('上传出错');
+			alert('加载分类信息出错');
 		}
 	});
 }
