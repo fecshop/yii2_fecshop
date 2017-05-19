@@ -23,7 +23,7 @@ class Newsletter extends Service
 {
 	
 	/**
-	 * newsletter subscription 
+	 * newsletter subscription
 	 */
 	protected function actionSubscription($email){
 		$mongoNewsletter = new MongoNewsletter();
@@ -31,8 +31,7 @@ class Newsletter extends Service
 			'email' => $email,
 		];
 		if($mongoNewsletter->validate()){
-			$one = MongoNewsletter::find()->where('email' => $email)
-				->one();
+			$one = MongoNewsletter::find()->where(['email' => $email])->one();
 			if($one['id']){
 				return [
 					'code' => 300,
@@ -59,8 +58,8 @@ class Newsletter extends Service
 	 * get subscription email collection
 	 */
 	protected function actionGetSubscriptionList($filter){
-		
-		
+	
+	
 	}
 	
 	
