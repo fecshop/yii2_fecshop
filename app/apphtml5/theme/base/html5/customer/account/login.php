@@ -29,6 +29,7 @@
 					</div>
 				</div>
 			</li>
+			<?php if($loginPageCaptcha){  ?>
 			<li>
 				<div class="item-content">
 					<div class="item-media"><i class="icon icon-form-password"></i></div>
@@ -50,7 +51,7 @@
 				</script>  
 				<?php $this->registerJs($this->blocks['login_captcha_onclick_refulsh'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
 			</li>
-			
+			<?php } ?>
 		</ul>
 		
 		<div class="clear"></div>
