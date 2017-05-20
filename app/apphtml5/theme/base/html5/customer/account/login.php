@@ -5,7 +5,7 @@
 </div>
 <?= Yii::$service->page->widget->render('flashmessage'); ?>	
 <div class="list-block customer-login">
-	<form action="<?= Yii::$service->url->getUrl("customer/account/login");  ?>" method="post" id="login-form">
+	<form action="<?= Yii::$service->url->getUrl("customer/account/login");  ?>" method="post" id="login-form" class="account-form">
 			
 		<ul>
 			

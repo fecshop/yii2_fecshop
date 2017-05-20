@@ -762,10 +762,10 @@ a.express_paypal img{max-height:70px;height:100%;width:100%;max-width:260px;}
 	margin:0.8rem;
 }
 
-#login-form .item-input .login-captcha-input{width:30%;float:left;}
-#login-form .item-input .login-captcha-img{width:130px;float:left; margin-top: 0.4rem;}
+.account-form .item-input .login-captcha-input{width:30%;float:left;}
+.account-form .item-input .login-captcha-img{width:130px;float:left; margin-top: 0.4rem;}
 
-#login-form .icon-refresh{
+.account-form .icon-refresh{
 	 font-size: 0.9rem;
     height: 1.2rem;
     line-height: 1.2rem;
@@ -773,6 +773,9 @@ a.express_paypal img{max-height:70px;height:100%;width:100%;max-width:260px;}
     padding: 0;
     width: 1.2rem;
 }
+
+
+
 .shopping-cart-img a.f-right{float:right; 
     color: #0894ec;
     line-height: 1.2rem;
@@ -792,6 +795,19 @@ a.express_paypal img{max-height:70px;height:100%;width:100%;max-width:260px;}
     text-align: center;
 }
 
+.account-form .newsletter{
+	
+	
+	color:#bbb;
+	 margin: 1rem 0 1rem  1.1rem  ;
+}
+
+.account-form .newsletter label{
+	line-height:1rem;
+	font-size:0.5rem;
+}
+.validation-advice{color:#cc0000;font-size:0.5rem;}
+.image404{width:80%;margin:auto;}
 
 
 

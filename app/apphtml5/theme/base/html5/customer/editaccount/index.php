@@ -1,3 +1,16 @@
+<div class="account-ds">
+	<div class="bar bar-nav account-top-m">
+		<a external class="button button-link button-nav pull-left" href="<?= Yii::$service->url->getUrl('customer/account/index'); ?>">
+			<span class="icon icon-left"></span>
+		</a>
+		<h1 class='title'><?= Yii::$service->page->translate->__('Edit Account'); ?></h1>
+	</div>
+
+
+
+
+
+
 <div class="main container two-columns-left">
 <?= Yii::$service->page->widget->render('flashmessage'); ?>
 

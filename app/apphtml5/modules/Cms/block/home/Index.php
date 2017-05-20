@@ -15,8 +15,13 @@ class Index {
 		# change current layout File.
 		//Yii::$service->page->theme->layoutFile = 'home.php';
 		return [
-			'bestSellerProducts' => $this->getBestSellerProduct(),
+			//'bestSellerProducts' => $this->getBestSellerProduct(),
 			'bestFeaturedProducts'	 => $this->getFeaturedProduct(),
+			'currency'			=> Yii::$service->page->currency->getCurrencyInfo(),
+			'currencys'			=> Yii::$service->page->currency->getCurrencys(),
+			'currentStore'		=> Yii::$service->store->currentStore,
+			'stores'			=> Yii::$service->store->getStoresLang(),
+			'currentBaseUrl'	=> Yii::$service->url->getCurrentBaseUrl(),
 		];
 		
 	}
@@ -25,10 +30,10 @@ class Index {
 		return $this->getProductBySkus($featured_skus);
 	}
 	
-	public function getBestSellerProduct(){
-		$best_skus = Yii::$app->controller->module->params['homeBestSellerSku'];
-		return $this->getProductBySkus($best_skus);
-	}
+	//public function getBestSellerProduct(){
+	//	$best_skus = Yii::$app->controller->module->params['homeBestSellerSku'];
+	//	return $this->getProductBySkus($best_skus);
+	//}
 	
 	public function getProductBySkus($skus){
 		

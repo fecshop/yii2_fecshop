@@ -66,7 +66,7 @@
 								<i class="refresh-icon"></i>
                             </div>
 							<script>
-							<?php $this->beginBlock('login_captcha_onclick_refulsh') ?>  
+							<?php $this->beginBlock('register_captcha_onclick_refulsh') ?>  
 							$(document).ready(function(){
 								$(".refresh-icon").click(function(){
 									$(this).parent().find("img").click();
@@ -74,7 +74,7 @@
 							});
 							<?php $this->endBlock(); ?>  
 							</script>  
-							<?php $this->registerJs($this->blocks['login_captcha_onclick_refulsh'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
+							<?php $this->registerJs($this->blocks['register_captcha_onclick_refulsh'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
 
                         </div>
 						<?php }  ?>
@@ -119,7 +119,7 @@ $(document).ready(function(){
 		
 		var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
 		// empty check
-		$(".account-create .required-entry").each(function(){
+		$(".account-register .required-entry").each(function(){
 			val = $(this).val();
 			if(!val){
 				$(this).addClass("validation-failed");
@@ -129,7 +129,7 @@ $(document).ready(function(){
 		});
 		
 		// email check
-		$(".account-create .validate-email").each(function(){
+		$(".account-register .validate-email").each(function(){
 			email = $(this).val();
 			if(email){
 				if(!$(this).hasClass("validation-failed")){
