@@ -59,7 +59,7 @@ class Placeorder{
 						# 得到支付跳转前的准备页面。
 						$startUrl = Yii::$service->payment->getStandardStartUrl();
 						Yii::$service->url->redirect($startUrl);
-						exit;
+						return true;
 						//return true;
 					}
 				}

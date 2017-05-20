@@ -37,7 +37,8 @@ class Placeorder{
 			 * 对传递的数据，去除掉非法xss攻击部分内容（通过\Yii::$service->helper->htmlEncode()）
 			 */
 			$post = \Yii::$service->helper->htmlEncode($post);
-			# 检查前台传递的数据的完整($this->checkOrderInfoAndInit($post)){
+			# 检查前台传递的数据的完整
+			if($this->checkOrderInfoAndInit($post)){
 				# 如果游客用户勾选了注册账号，则注册，登录，并把地址写入到用户的address中
 				$gus_status = $this->guestCreateAndLoginAccount($post);
 				$save_address_status = $this->updateAddress($post);
@@ -58,7 +59,7 @@ class Placeorder{
 						# 得到支付跳转前的准备页面。
 						$startUrl = Yii::$service->payment->getStandardStartUrl();
 						Yii::$service->url->redirect($startUrl);
-						exit;
+						return true;
 						//return true;
 					}
 				}
