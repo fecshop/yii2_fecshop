@@ -751,7 +751,7 @@ a.express_paypal img{max-height:70px;height:100%;width:100%;max-width:260px;}
     font-size: 0.7rem;
 }
 .account-ds a{font-size:0.7rem;}
-
+.account-ds{height:2.2rem;}
 .js_registBtn{}
 .list-block .item-title.label{width:25%;}
 
@@ -826,7 +826,21 @@ border: 1px solid #ccc;
 	 background: #f3f3f3;
   }
 
+.list-block .item-content.change_password_label{
+	 color: #777;
+    font-size: 0.55rem;
+    margin-left: 1.2rem;
+}
+.list-block .item-content.change_password_label input{
+	position:absolute;
+	top:0.7rem;
+}
 
+.list-block .item-content.change_password_label label{
+	float:left;
+	display:block;
+	margin-left:0.8rem;
+}
 
 
 
