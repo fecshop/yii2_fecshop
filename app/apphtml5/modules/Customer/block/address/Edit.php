@@ -102,7 +102,7 @@ class Edit {
 	
 	public function getCountrySelect(){
 		
-		$countrySelect = Yii::$service->helper->country->getAllCountryOptions('','',$this->_country);
+		$countrySelect = Yii::$service->helper->country->getAllCountryOptions('','',$this->_country,'--Select Country--');
 		$this->_address['countrySelect'] = $countrySelect;
 		
 	}

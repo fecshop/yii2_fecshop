@@ -59,12 +59,12 @@ class Country extends Service
 	
 	
 	//得到所有国家的option
-	public  function getAllCountryOptions($name="country",$class="country",$current = ''){
+	public  function getAllCountryOptions($name="country",$class="country",$current = '',$nullShow=''){
 		$all_country_array = $this->getAllCountryArray();
 		if($name && $class){
 			$str = '<select name="'.$name.'" class="'.$class.'">';
 		}
-		$str .= '<option value=""></option>';
+		$str .= '<option value="">'.$nullShow.'</option>';
 		foreach($all_country_array as $k=>$v){
 			if($current){
 				if($k == $current){
