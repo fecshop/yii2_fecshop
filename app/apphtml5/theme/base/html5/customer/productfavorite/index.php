@@ -1,27 +1,36 @@
-<div class="main container two-columns-left">
-	
+<?php
+use fecshop\app\apphtml5\helper\Format;
+?>
+<div class="account-ds">
+	<div class="bar bar-nav account-top-m">
+		<a external class="button button-link button-nav pull-left" href="<?= Yii::$service->url->getUrl('customer/account/index'); ?>">
+			<span class="icon icon-left"></span>
+		</a>
+		<h1 class='title'><?= Yii::$service->page->translate->__('Product Review'); ?></h1>
+	</div>
+</div>
+<?= Yii::$service->page->widget->render('flashmessage'); ?>
+
+<div class="account-container">
 	<div class="col-main account_center">
-		
 		<div class="std">
 			<div style="margin:4px 0 0">
-				<div class="page-title">
-					<h2><?= Yii::$service->page->translate->__('My Favorite');?></h2>
-				</div>
 				<div style="width:100%;min-height:500px;">
 					<div style="width:100%;">
 						<?php if(is_array($coll) && !empty($coll)){  ?>
-						<ul id="review_description" style="padding:0px;">
+						<table class="product-Reviews"> 
 							<?php  foreach($coll as $one){  ?>
 							<?php  $main_img = $one['image']['main']['image'];  ?>
-							<li style="width:100%;min-height:160px;">
-								<div class="review_description_left">
-									<a target="_blank" href="<?= Yii::$service->url->getUrl($one['url_key'])  ?>">
-									<p style="text-align:center;"><img src="<?= Yii::$service->product->image->getResize($main_img,[120,120],false) ?>"></p>
+							
+							<tr>
+								<td>
+									<a external href="<?= Yii::$service->url->getUrl($one['url_key'])  ?>">
+										<p style="text-align:center;"><img src="<?= Yii::$service->product->image->getResize($main_img,[80,80],false) ?>"></p>
 									</a>
-								</div>
-								<div class="review_description_right" style="width:600px;">
+								</td>
+								<td>
 									<span class="review_description_right_span"><b>
-										<a target="_blank" href="<?= Yii::$service->url->getUrl($one['url_key'])  ?>">
+										<a external  href="<?= Yii::$service->url->getUrl($one['url_key'])  ?>">
 											<?= Yii::$service->store->getStoreAttrVal($one['name'],'name')  ?>
 										</a>
 									</span>
@@ -39,21 +48,25 @@
 												echo Yii::$service->page->widget->renderContent('category_product_price',$config);
 											?>
 										</div>
-										<div class="favorite-Operation" style="display:inline-block;float:right; margin-top: 0px;">
-											<a href="<?= Yii::$service->url->getUrl('customer/productfavorite',['type'=>'remove','favorite_id' => $one['favorite_id']]); ?>">
-												<?= Yii::$service->page->translate->__('Delete');?>
-											</a>
-										</div>
+										
 										<div class="clear"></div>
 										<div style="font-weight:100">
 											<?= Yii::$service->page->translate->__('Favorite Date:');?><?= date('Y-m-d H:i:s',$one['updated_at']) ?>
 										</div>
 									</div>	
+								</td>
+								<td>
+									<div class="favorite-Operation addressbook " style="display:inline-block;float:right; margin-top: 0px;">
+										<a external href="<?= Yii::$service->url->getUrl('customer/productfavorite',['type'=>'remove','favorite_id' => $one['favorite_id']]); ?>">
+											<span class="icon icon-remove"></span>
+										</a>
+									</div>
+								</td>
+							</tr>
 									
-								</div>
-							</li>
+							
 							<?php  }  ?>
-						</ul>
+						</table>
 						<?php  }else{  ?>
 							<?= Yii::$service->page->translate->__('You have no items in your favorite.');?>
 						<?php  } ?>
