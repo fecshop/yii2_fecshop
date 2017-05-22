@@ -86,7 +86,7 @@
 						<i class="icon icon-form-name"></i>
 					</div>
 					<div class="item-inner">
-						<div class="item-input">
+						<div class="item-input state_html">
 							<?= $stateHtml;  ?>
 							
 						</div>

@@ -9,10 +9,6 @@
 <?= Yii::$service->page->widget->render('flashmessage'); ?>
 
 
-<div class="list-block customer-login  customer-register">
-
-
-
 <div class="main container two-columns-left">
 	<div class="col-main account_center">
 		<div class="std">
@@ -56,7 +52,7 @@
 					</tbody>
 				</table>
 				<div class="add_new_address">
-					<a href="<?= Yii::$service->url->getUrl('customer/address/edit') ?>" class="button  button-light"><?= Yii::$service->page->translate->__('Add New Address');?></a>
+					<a external href="<?= Yii::$service->url->getUrl('customer/address/edit') ?>" class="button  button-light"><?= Yii::$service->page->translate->__('Add New Address');?></a>
 				</div>
 			</div>
 		</div>

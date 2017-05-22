@@ -880,21 +880,21 @@ td {
     border-bottom: 1px solid #e0e0e0;
     border-collapse: collapse;
     height: 49px;
-    padding: 0 10px;
+    padding:10px;
     vertical-align: middle;
 }
 
 .addressbook .icon{font-size:0.8rem; margin-left:0.4rem;}
 .add_new_address{margin:1rem 2rem;}
 
+.account_center tbody tr td{color:#777;}
 
+.account_center .order-status.pending{color:#cc0000;}
+.account_center .order-status.processing{color:green;}
+.order_list, .account-container{margin-bottom:3rem;}
+.account-container{padding:0 0.5rem 1rem;}
 
-
-
-
-
-
-
+.my_account_order h5{margin:0.7rem 0.4rem 0.6rem}
 
 
 

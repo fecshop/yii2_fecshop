@@ -1,21 +1,27 @@
-<div class="main container two-columns-left">
+<div class="account-ds">
+	<div class="bar bar-nav account-top-m">
+		<a external class="button button-link button-nav pull-left" href="<?= Yii::$service->url->getUrl('customer/account/index'); ?>">
+			<span class="icon icon-left"></span>
+		</a>
+		<h1 class='title'><?= Yii::$service->page->translate->__('Customer Order'); ?></h1>
+	</div>
+</div>
+<?= Yii::$service->page->widget->render('flashmessage'); ?>
+
+
+<div class="order_list">
 <?= Yii::$service->page->widget->render('flashmessage'); ?>
 
 	<div class="col-main account_center">
 		<div class="std">
 			<div style="margin:4px 0 0">
-				<div class="page-title">
-					<h2><?= Yii::$service->page->translate->__('Customer Order');?></h2>
-				</div>
+				
 				<table id="my-orders-table" class="edit_order">
 					<thead>
 						<tr class="first last">
 							<th><?= Yii::$service->page->translate->__('Order #');?> </th>
 							<th><?= Yii::$service->page->translate->__('Date');?></th>
-							<th><?= Yii::$service->page->translate->__('Ship To');?></th>
-							<th><span class="nobr"><?= Yii::$service->page->translate->__('Order Total');?></span></th>
-							<th><span class="nobr"><?= Yii::$service->page->translate->__('Order Status');?></span></th>
-							<th>&nbsp;</th>
+							<th>operate</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -26,14 +32,14 @@
 							
 						?>
 							<tr class="first odd">
-								<td><?= $order['increment_id'] ?></td>
+								<td>
+									<b><?= $order['increment_id'] ?></b><br/>
+									<span class="order-status <?= Yii::$service->page->translate->__($order['order_status']); ?>"><?= Yii::$service->page->translate->__($order['order_status']); ?></span>
+								</td>
 								<td><span class="nobr"><?= date('Y-m-d H:i:s',$order['created_at']) ?></span></td>
-								<td><?= $order['customer_firstname'] ?> <?= $order['customer_lastname'] ?></td>
-								<td><span class="price"><?= $symbol ?><?= $order['grand_total'] ?></span></td>
-								<td><em><?= Yii::$service->page->translate->__($order['order_status']); ?></em></td>
 								<td class="a-center last">
-									<span class="nobr"><a href="<?=  Yii::$service->url->getUrl('customer/order/view',['order_id' => $order['order_id']]);?>"><?= Yii::$service->page->translate->__('View Order');?></a>
-									<span class="separator">|</span> <a class="link-reorder" href="<?=  Yii::$service->url->getUrl('customer/order/reorder',['order_id' => $order['order_id']]);?>"><?= Yii::$service->page->translate->__('Reorder');?></a>
+									<span class="nobr"><a external href="<?=  Yii::$service->url->getUrl('customer/order/view',['order_id' => $order['order_id']]);?>"><?= Yii::$service->page->translate->__('View Order');?></a>
+									<span class="separator">|</span> <a external class="link-reorder" href="<?=  Yii::$service->url->getUrl('customer/order/reorder',['order_id' => $order['order_id']]);?>"><?= Yii::$service->page->translate->__('Reorder');?></a>
 									</span>
 								</td>
 							</tr>
@@ -52,15 +58,7 @@
 		</div>
 	</div>
 	
-	<div class="col-left ">
-		<?php
-			$leftMenu = [
-				'class' => 'fecshop\app\apphtml5\modules\Customer\block\LeftMenu',
-				'view'	=> 'customer/leftmenu.php'
-			];
-		?>
-		<?= Yii::$service->page->widget->render($leftMenu,$this); ?>
-	</div>
+	
 	<div class="clear"></div>
 </div>
 	
