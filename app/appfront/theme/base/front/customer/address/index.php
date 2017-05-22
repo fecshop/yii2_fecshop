@@ -3,7 +3,7 @@
 		<div class="std">
 			<div style="margin:4px 0 0">
 				<div class="page-title">
-					<h2><?= Yii::$service->page->translate->__('Edit Account Information');?>Customer Address</h2>
+					<h2><?= Yii::$service->page->translate->__('Customer Address');?></h2>
 				</div>
 				<table class="addressbook" width="100%" cellspacing="0" cellpadding="0" border="0">
 					<thead>

@@ -844,12 +844,45 @@ border: 1px solid #ccc;
 
 
 
+table {
+    border: 0 none;
+    border-collapse: collapse;
+    border-spacing: 0;
+    empty-cells: show;
+    font: 12px Segoeui,Arial,Verdana,serif;
+    text-align: center;
+    width: 100%;
+}
+
+.addressbook thead tr {
+    background: #f7f7f7 none repeat scroll 0 0;
+}
+
+caption, th, td {
+    font-weight: normal;
+    text-align: left;
+    vertical-align: top;
+}
+
+th {
+    border-bottom: 1px solid #4c6b99;
+    font: 13px Bitter,Myriad Pro,Verdana,serif;
+    height: 37px;
+    padding: 0 10px;
+    vertical-align: middle;
+}
 
 
-
-
-
-
+.addressbook tbody tr td {
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+}
+td {
+    border-bottom: 1px solid #e0e0e0;
+    border-collapse: collapse;
+    height: 49px;
+    padding: 0 10px;
+    vertical-align: middle;
+}
 
 
 

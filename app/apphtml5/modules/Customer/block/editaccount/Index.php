@@ -67,7 +67,7 @@ class Index {
 					Yii::$service->page->message->addError('Current password is not right,If you forget your password, you can retrieve your password by forgetting your password in login page');
 					return;
 				}
-				$identity->password =  $password;
+				$identity->setPassword($password);
 			}
 			$identity->firstname =  $firstname;
 			$identity->lastname  =  $lastname;

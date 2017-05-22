@@ -1,21 +1,30 @@
+<div class="account-ds">
+	<div class="bar bar-nav account-top-m">
+		<a external class="button button-link button-nav pull-left" href="<?= Yii::$service->url->getUrl('customer/account/index'); ?>">
+			<span class="icon icon-left"></span>
+		</a>
+		<h1 class='title'><?= Yii::$service->page->translate->__('Customer Address'); ?></h1>
+	</div>
+</div>
+<?= Yii::$service->page->widget->render('flashmessage'); ?>
+
+
+<div class="list-block customer-login  customer-register">
+
+
+
 <div class="main container two-columns-left">
 	<div class="col-main account_center">
 		<div class="std">
 			<div style="margin:4px 0 0">
 				<div class="page-title">
-					<h2><?= Yii::$service->page->translate->__('Edit Account Information');?>Customer Address</h2>
+					<h2><?= Yii::$service->page->translate->__('Edit Account Information');?></h2>
 				</div>
 				<table class="addressbook" width="100%" cellspacing="0" cellpadding="0" border="0">
 					<thead>
 						<tr class="ress_tit">
-							<th width="76" valign="middle" align="center" height="31"><?= Yii::$service->page->translate->__('First Name');?></th>  
-							<th width="72" valign="middle" align="center" height="31"><?= Yii::$service->page->translate->__('Last Name');?></th>                                                                                       
-							<th width="167" valign="middle" align="center"><?= Yii::$service->page->translate->__('Email Address');?></th>
-							<th width="67" valign="middle" align="center"><?= Yii::$service->page->translate->__('Country');?></th>
-							<th width="79" valign="middle" align="center"><?= Yii::$service->page->translate->__('State');?></th>
-							
-							<th width="81" valign="middle" align="center"> <?= Yii::$service->page->translate->__('Zip Code');?> </th>
-							<th width="101" valign="middle" align="center"><?= Yii::$service->page->translate->__('Telephone');?> </th>
+							<th width="76" valign="middle" align="center" height="31"><?= Yii::$service->page->translate->__('Name');?></th>                                                                                        
+							<th width="67" valign="middle" align="center"><?= Yii::$service->page->translate->__('Address');?></th>
 							<th class="th3" width="71" valign="middle" align="center"><?= Yii::$service->page->translate->__('Operation');?></th>
 						</tr>
 					</thead>
@@ -23,13 +32,14 @@
 					<?php   if(is_array($coll) && !empty($coll)){   ?>
 					<?php 		foreach($coll as $one){ ?>
 						<tr class="">
-							<td valign="top" align="center"><?= $one['first_name'] ?></td>
-							<td valign="top" align="center"><?= $one['last_name'] ?></td>
-							<td valign="top" align="center"><?= $one['email'] ?></td>
-							<td valign="top" align="center"><?= $one['country'] ?></td>
-							<td valign="top" align="center"><?= $one['state'] ?></td>
-							<td valign="top" align="center"><?= $one['zip'] ?></td>
-							<td valign="top" align="center"><?= $one['telephone'] ?></td>
+							<td valign="top" align="center"><?= $one['first_name'].' '.$one['last_name'] ?></td>
+							
+							<td valign="top" align="center">
+								<?= $one['street1'].' '.$one['street2'] ?><br>
+								<?= $one['city'] ?> 
+								<?= Yii::$service->helper->country->getStateByContryCode($one['country'],$one['state']); ?>
+								<?= Yii::$service->helper->country->getCountryNameByKey($one['country']); ?>
+							</td>
 							<td class="ltp" valign="top ltp" align="center">
 								<input onclick="javascript:window.location.href='<?= Yii::$service->url->getUrl('customer/address/edit',['address_id' => $one['address_id']]); ?>'" class="cpointer" value="<?= Yii::$service->page->translate->__('Modify');?>" name="" type="button">
 								<a href="javascript:deleteAddress(<?= $one['address_id'] ?>)"><?= Yii::$service->page->translate->__('Delete');?></a>
