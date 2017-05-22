@@ -55,7 +55,7 @@
 
 <div class="footer_bar">
 	<div class="change-bar">
-		<div class="c_left">Language</div>
+		<div class="c_left">Language:</div>
 		<div class="c_right">
 			<select class="lang" rel="">
 				<?php foreach($stores as $store=> $langName){   ?>
@@ -65,10 +65,11 @@
 				<?php } ?>	
 			</select>
 		</div>
+		<div class="clear"></div>
 	</div>
 	
 	<div class="change-bar">
-		<div class="c_left">Currency</div>
+		<div class="c_left">Currency:</div>
 		<div class="c_right">
 			<select class="currency">
 				<?php foreach($currencys as $c){    ?>
@@ -78,9 +79,15 @@
 				<?php } ?>	
 			</select>
 		</div>
+		<div class="clear"></div>
 	</div>
+	
 </div>
 
+
+<div class="footer-bottom">
+	<?=  Yii::$service->cms->staticblock->getStoreContentByIdentify('copy_right','appfront') ?>
+</div>				
  
 
 <script>
