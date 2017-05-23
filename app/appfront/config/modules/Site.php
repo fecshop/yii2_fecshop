@@ -7,8 +7,8 @@
  * @license http://www.fecshop.com/license/
  */
 return [
-	'site' => [
-		'class' => '\fecshop\app\appfront\modules\Site\Module',
-		
-	],
+    'site' => [
+        'class' => '\fecshop\app\appfront\modules\Site\Module',
+
+    ],
 ];

@@ -9,7 +9,7 @@
 ?>
 <?php
 return [
-	'order' => [
-		'class' => '\fecshop\app\console\modules\Order\Module',
-	],
+    'order' => [
+        'class' => '\fecshop\app\console\modules\Order\Module',
+    ],
 ];

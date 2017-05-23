@@ -6,7 +6,7 @@
  * @license http://www.fecshop.com/license/
  */
 return [
-	'shipping' => [
-		'class' => 'fecshop\services\Shipping',
-	]
+    'shipping' => [
+        'class' => 'fecshop\services\Shipping',
+    ],
 ];

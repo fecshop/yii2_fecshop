@@ -6,19 +6,19 @@
  * @license http://www.fecshop.com/license/
  */
 return [
-	'image' => [
-		'class' => 'fecshop\services\Image',
-		/*
-		'imageFloder' => 'media/upload',
-		'maxUploadMSize' => 2,  // MB
-		'allowImgType' => [
-			'image/jpeg',
-			'image/gif',
-			'image/png',
-			'image/jpg',
-			'image/pjpeg',
-		],
-		*/
-		
-	],
+    'image' => [
+        'class' => 'fecshop\services\Image',
+        /*
+        'imageFloder' => 'media/upload',
+        'maxUploadMSize' => 2,  // MB
+        'allowImgType' => [
+            'image/jpeg',
+            'image/gif',
+            'image/png',
+            'image/jpg',
+            'image/pjpeg',
+        ],
+        */
+
+    ],
 ];
