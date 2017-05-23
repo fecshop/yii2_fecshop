@@ -19,7 +19,7 @@ use Yii;
  */
 class Event extends Service
 {
-    public $eventList; // Array
+    public $eventList; //Array
 
     /**
      * @property $eventName | String , 时间的名字
