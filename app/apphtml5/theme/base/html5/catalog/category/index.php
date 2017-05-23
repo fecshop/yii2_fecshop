@@ -142,6 +142,7 @@ $(document).ready(function(){
 			$(this).addClass("checked");
 		}
 	});
+    $("img.lazy").Lazy();
 });
 
 $(document).on('click','.open-filter', function () {
@@ -160,7 +161,7 @@ $(document).on("pageInit", "#page-infinite-scroll-bottom", function(e, id, page)
 	var maxPage = <?= $page_count ? $page_count : 1 ?>;
 	if(maxPage <= pageNum){
 		$('.infinite-scroll-preloader').remove();
-	}
+	} 
 	function addItems() {
 		//alert(pageNum);
 		pageNum++;
@@ -180,7 +181,8 @@ $(document).on("pageInit", "#page-infinite-scroll-bottom", function(e, id, page)
 				html = data.html;
 				//alert(html);
 				$('.infinite-scroll .list-container').append(html);
-			},
+                
+            },
 			error:function (XMLHttpRequest, textStatus, errorThrown){}
 		});
 	}

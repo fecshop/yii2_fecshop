@@ -12,7 +12,6 @@
  * Version:  1.9.7
  *
  */
-
 (function($, window, document, undefined) {
     var $window = $(window);
 

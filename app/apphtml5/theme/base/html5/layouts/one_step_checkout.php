@@ -14,7 +14,7 @@ $jsOptions = [
 		'options' => [
 			'position' =>  'POS_END',
 		//	'condition'=> 'lt IE 9',
-		],
+		], 
 		'js'	=>[
 			'js/zepto.min.js',
 			'js/sm.min.js',
