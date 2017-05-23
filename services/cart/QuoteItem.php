@@ -39,11 +39,18 @@ class QuoteItem extends Service
 			$cart_id = Yii::$service->cart->quote->getCartId();
 		}
 		# 查看是否存在此产品，如果存在，则相加个数
-		$item_one = MyCartItem::find()->where([
+		if(!isset($item['product_id']) || empty($item['product_id'])){
+			Yii::$service->helper->errors->add('add to cart error,product id is empty');
+			return false;
+		}
+		$where = [
 			'cart_id' 	=> $cart_id,
 			'product_id'=> $item['product_id'],
-			'custom_option_sku'	=> $item['custom_option_sku'],
-		])->one();
+		];
+		if(isset($item['custom_option_sku']) && !empty($item['custom_option_sku'])){
+			$where['custom_option_sku']	= $item['custom_option_sku'];
+		}
+		$item_one = MyCartItem::find()->where($where)->one();
 		if($item_one['cart_id']){
 			$item_one->qty = $item['qty'] + $item_one['qty'];
 			$item_one->save();
@@ -57,7 +64,7 @@ class QuoteItem extends Service
 			$item_one->updated_at  		= time();
 			$item_one->product_id  		= $item['product_id'];
 			$item_one->qty				= $item['qty'];
-			$item_one->custom_option_sku= $item['custom_option_sku'];
+			$item_one->custom_option_sku= ($item['custom_option_sku'] ? $item['custom_option_sku'] : '');
 			$item_one->save();
 			# 重新计算购物车的数量
 			Yii::$service->cart->quote->computeCartInfo();
