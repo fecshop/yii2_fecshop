@@ -8,7 +8,6 @@
 </div>
 <?= Yii::$service->page->widget->render('flashmessage'); ?>
 
-
 <div class="list-block customer-login  customer-register">
 	<form method="post" id="form-validate" autocomplete="off" action="<?=  $actionUrl ?>">
 		<?= \fec\helpers\CRequest::getCsrfInputHtml();  ?>

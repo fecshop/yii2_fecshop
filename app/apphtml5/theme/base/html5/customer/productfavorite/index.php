@@ -6,7 +6,7 @@ use fecshop\app\apphtml5\helper\Format;
 		<a external class="button button-link button-nav pull-left" href="<?= Yii::$service->url->getUrl('customer/account/index'); ?>">
 			<span class="icon icon-left"></span>
 		</a>
-		<h1 class='title'><?= Yii::$service->page->translate->__('Product Review'); ?></h1>
+		<h1 class='title'><?= Yii::$service->page->translate->__('Product Favorite'); ?></h1>
 	</div>
 </div>
 <?= Yii::$service->page->widget->render('flashmessage'); ?>

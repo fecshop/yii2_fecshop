@@ -69,11 +69,7 @@
 					</ul>
 				</div>
 			<div class="buttons-set">
-			   
-				<!--
-				<p class="back-link"><a href="http://10.10.10.252:3800/index.php/customer/account/"><small>? </small>Back</a></p>
-				-->
-				<button type="submit" title="Save" class="button" onclick="return check_contacts()"><span><span><?= Yii::$service->page->translate->__('Submit'); ?></span></span></button>
+			   <button type="submit" title="Save" class="button" ><span><span><?= Yii::$service->page->translate->__('Contact Us'); ?></span></span></button>
 			</div>
 		</form>
 		</div>
@@ -86,7 +82,7 @@
 			</div>
 			<div class="block-content">
 				<strong><?= Yii::$service->page->translate->__('Email Address'); ?>:</strong> 
-				<a href="mailto:<?= $contactsEmail ?>"><?= $contactsEmail ?></a>
+					<a href="mailto:<?= $contactsEmail ?>"><?= $contactsEmail ?></a>
 				<br>
 			</div>
 		</address>

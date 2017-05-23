@@ -896,9 +896,13 @@ td {
 
 .my_account_order h5{margin:0.7rem 0.4rem 0.6rem}
 
+.customer-forgot-success {
+	padding:1rem;
+}
+.mailtous{font-size:0.6rem;padding:0.2rem 1rem 5rem 1rem;}
 
-
-
-
-
+.mobile-container{
+	padding:0 1rem 1rem;width:100%;
+}
+.mobile-container img{width:100%;}
 

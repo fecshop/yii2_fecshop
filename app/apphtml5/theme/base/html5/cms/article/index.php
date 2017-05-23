@@ -7,9 +7,12 @@
  * @license http://www.fecshop.com/license/
  */
 ?>
-<div class="main container one-column">
+<div class="shopping-cart-img">
+	<?= $title ?>
+</div>
+<?= Yii::$service->page->widget->render('flashmessage'); ?>	
+<div class="mobile-container">
 	<div class="col-main">
-		<h1><?= $title ?></h1>
 		<div>
 			<?= $content ?>
 		</div>

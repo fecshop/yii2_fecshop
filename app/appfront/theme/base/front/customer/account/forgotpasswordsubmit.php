@@ -18,7 +18,7 @@
 		<?php
 			$param = ['logUrlB' => '<a href="'. $forgotPasswordUrl.' ">','logUrlE' => '</a> '];
 		?>
-		<?= Yii::$service->page->translate->__('Email address do not exist, please {logUrlB} click here {logUrlE} to re-enter!'); ?> 
+		<?= Yii::$service->page->translate->__('Email address do not exist, please {logUrlB} click here {logUrlE} to re-enter!',$param); ?> 
 	</div>
 	<div>
 		
