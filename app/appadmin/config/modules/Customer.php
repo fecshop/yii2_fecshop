@@ -7,10 +7,10 @@
  * @license http://www.fecshop.com/license/
  */
 return [
-	'customer' => [
-		'class' => '\fecshop\app\appadmin\modules\Customer\Module',   
-		'params'=> [
-			
-		],
-	],
+    'customer' => [
+        'class' => '\fecshop\app\appadmin\modules\Customer\Module',
+        'params'=> [
+
+        ],
+    ],
 ];

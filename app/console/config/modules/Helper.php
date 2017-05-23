@@ -9,7 +9,7 @@
 ?>
 <?php
 return [
-	'helper' => [
-		'class' => '\fecshop\app\console\modules\Helper\Module',
-	],
+    'helper' => [
+        'class' => '\fecshop\app\console\modules\Helper\Module',
+    ],
 ];

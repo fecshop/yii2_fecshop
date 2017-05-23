@@ -9,8 +9,8 @@
 ?>
 <?php
 return [
-	'sitemap' => [
-		'class' => '\fecshop\app\console\modules\Sitemap\Module',
-		
-	],
+    'sitemap' => [
+        'class' => '\fecshop\app\console\modules\Sitemap\Module',
+
+    ],
 ];

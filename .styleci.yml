@@ -1,0 +1,22 @@
+preset: recommended
+
+risky: false
+
+enabled:
+
+disabled:
+  - align_double_arrow
+  - phpdoc_separation
+  - concat_without_spaces
+
+finder:
+  exclude:
+    - "lib"
+    - "shell"
+    - "views"
+    - "app/appfront/theme"
+    - "app/apphtml5/theme"
+  name:
+    - "*.php"
+  not-name:
+    - "views/**.php"

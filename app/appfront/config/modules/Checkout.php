@@ -7,14 +7,10 @@
  * @license http://www.fecshop.com/license/
  */
 return [
-	'checkout' => [
-		'class' => '\fecshop\app\appfront\modules\Checkout\Module',
-		'params'=> [
-		
-		],
-	],
+    'checkout' => [
+        'class' => '\fecshop\app\appfront\modules\Checkout\Module',
+        'params'=> [
+
+        ],
+    ],
 ];
-
-
-
-

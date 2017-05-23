@@ -7,7 +7,7 @@
  * @license http://www.fecshop.com/license/
  */
 return [
-	'systemhelper' => [
-		'class' => 'fecshop\services\Systemhelper',
-	],
+    'systemhelper' => [
+        'class' => 'fecshop\services\Systemhelper',
+    ],
 ];

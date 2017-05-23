@@ -6,19 +6,14 @@
  * @copyright Copyright (c) 2016 FecShop Software LLC
  * @license http://www.fecshop.com/license/
  */
+
 namespace fecshop\services;
-use Yii;
-use yii\base\InvalidValueException;
-use yii\base\InvalidConfigException;
-use fec\helpers\CSession;
+
 /**
- * Coupon
+ * Coupon.
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
 class Coupon extends Service
 {
-	
-	
-	
 }
