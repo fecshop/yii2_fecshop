@@ -46,7 +46,7 @@ class Index
         $productCollInfo = $this->getSearchProductColl();
         $products = $productCollInfo['coll'];
         $this->_productCount = $productCollInfo['count'];
-         if (Yii::$app->request->isAjax) {
+        if (Yii::$app->request->isAjax) {
             $this->getAjaxProductHtml($products);
         }
         //echo $this->_productCount;
@@ -68,7 +68,7 @@ class Index
             //'created_at' => $this->_category['created_at'],
         ];
     }
-    
+
     protected function getAjaxProductHtml($products)
     {
         $parentThis['products'] = $products;
@@ -82,7 +82,6 @@ class Index
         exit;
     }
 
-    
     /**
      * 得到子分类，如果子分类不存在，则返回同级分类。
      */
