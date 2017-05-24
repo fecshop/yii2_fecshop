@@ -11,23 +11,18 @@
 	
 ?>
 
-
-
-		
-		
-
-
 <div class="panel-overlay">
 </div>
 <!-- Left Panel with Reveal effect -->
 <div class="panel panel-left panel-reveal theme-dark" id='panel-left-menu'>
 	<div class="content-block">
 		<div class="searchbar row">
-			
-			<div class="search-input">
-			  <label class="icon icon-search" for="search"></label>
-			  <input type="search" id='search' placeholder='输入关键字...'/>
-			</div>
+			<form method="get" name="searchFrom" class="js_topSeachForm" action="<?= Yii::$service->url->getUrl('catalogsearch/index');   ?>">
+                <div class="search-input">
+                  <label class="icon icon-search" for="search"></label>
+                  <input name="q" type="search" id="search" placeholder="<?= Yii::$service->page->translate->__('Products keyword'); ?>" value="<?=  \Yii::$service->helper->htmlEncode(Yii::$app->request->get('q'));  ?>" />
+                </div>
+            </form>
 		</div>
 		<div class="category_menu">
 			<?php if(is_array($categoryArr) && !empty($categoryArr)){ ?>

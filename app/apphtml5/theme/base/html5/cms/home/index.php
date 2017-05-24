@@ -84,12 +84,10 @@
 	
 </div>
 
-
 <div class="footer-bottom">
-	<?=  Yii::$service->cms->staticblock->getStoreContentByIdentify('copy_right','appfront') ?>
+	<?=  Yii::$service->cms->staticblock->getStoreContentByIdentify('copy_right_apphtml5','appfront') ?>
 </div>				
  
-
 <script>
 <?php $this->beginBlock('owl_fecshop_slider') ?>  
 $.init();  
@@ -108,7 +106,11 @@ $(document).ready(function(){
 		//alert(htmlobj.responseText);
 		location.reload() ;
 	});
-    $("img.lazy").Lazy(); 
+   // $("img.lazy").Lazy(); 
+    $("img.lazy").each(function(){
+        src = $(this).attr("data-src");
+        $(this).attr("src",src);
+    });
 });
 <?php $this->endBlock(); ?>  
 </script>  

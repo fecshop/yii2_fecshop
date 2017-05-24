@@ -9,6 +9,7 @@
 
 namespace fecshop\app\apphtml5\modules\Catalogsearch\controllers;
 
+use Yii;
 use fecshop\app\apphtml5\modules\AppfrontController;
 
 /**
@@ -17,9 +18,10 @@ use fecshop\app\apphtml5\modules\AppfrontController;
  */
 class IndexController extends AppfrontController
 {
-    public function init()
+     public function init()
     {
         parent::init();
+        Yii::$service->page->theme->layoutFile = 'category_view.php';
     }
 
     //

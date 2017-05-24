@@ -9,6 +9,7 @@
 return [
     'catalogsearch' => [
         'class' => '\fecshop\app\apphtml5\modules\Catalogsearch\Module',
+        /*
         'params'=> [
             //'categorysearch_filter_attr' =>[
             //	'color','size',
@@ -45,5 +46,6 @@ return [
                 ],
             ],
         ],
+        */
     ],
 ];

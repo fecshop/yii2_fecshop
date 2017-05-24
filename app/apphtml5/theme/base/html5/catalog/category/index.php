@@ -142,7 +142,10 @@ $(document).ready(function(){
 			$(this).addClass("checked");
 		}
 	});
-    $("img.lazy").Lazy();
+    $("img.lazy").each(function(){
+        src = $(this).attr("data-src");
+        $(this).attr("src",src);
+    });
 });
 
 $(document).on('click','.open-filter', function () {
@@ -181,7 +184,10 @@ $(document).on("pageInit", "#page-infinite-scroll-bottom", function(e, id, page)
 				html = data.html;
 				//alert(html);
 				$('.infinite-scroll .list-container').append(html);
-                
+                $("img.lazy").each(function(){
+                    src = $(this).attr("data-src");
+                    $(this).attr("src",src);
+                });
             },
 			error:function (XMLHttpRequest, textStatus, errorThrown){}
 		});

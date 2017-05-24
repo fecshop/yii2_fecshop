@@ -23,7 +23,7 @@ $middle_img_width = isset($media_size['middle_img_width']) ? $media_size['middle
 	<?php if(is_array($gallerys) && !empty($gallerys)){ ?>
 		<?php foreach($gallerys as $gallery){ ?>
 			<?php $image = $gallery['image']; ?>
-			<div class="swiper-slide"><img src="<?= Yii::$service->product->image->getResize($image,$middle_img_width,false)  ?>" alt="" style='width: 100%'></div>	
+			<div class="swiper-slide"><img class="lazy" data-src="<?= Yii::$service->product->image->getResize($image,$middle_img_width,false)  ?>" src="<?= Yii::$service->image->getImgUrl('images/lazyload.gif'); ?>" alt="" style='width: 100%'></div>	
 		<?php } ?>
 	<?php } ?>
 	</div>

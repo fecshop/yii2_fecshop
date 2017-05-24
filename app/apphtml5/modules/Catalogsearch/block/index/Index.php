@@ -33,6 +33,7 @@ class Index
     protected $_productCount;
     protected $_filter_attr;
     protected $_numPerPageVal;
+    protected $_page_count;
 
     public function getLastData()
     {
@@ -45,6 +46,9 @@ class Index
         $productCollInfo = $this->getSearchProductColl();
         $products = $productCollInfo['coll'];
         $this->_productCount = $productCollInfo['count'];
+         if (Yii::$app->request->isAjax) {
+            $this->getAjaxProductHtml($products);
+        }
         //echo $this->_productCount;
         return [
             'searchText'        => $this->_searchText,
@@ -58,12 +62,27 @@ class Index
             'refine_by_info'=> $this->getRefineByInfo(),
             'filter_info'    => $this->getFilterInfo(),
             'filter_price'    => $this->getFilterPrice(),
+            'page_count'                => $this->_page_count,
             //'filter_category'=> $this->getFilterCategoryHtml(),
             //'content' => Yii::$service->store->getStoreAttrVal($this->_category['content'],'content'),
             //'created_at' => $this->_category['created_at'],
         ];
     }
+    
+    protected function getAjaxProductHtml($products)
+    {
+        $parentThis['products'] = $products;
+        $config = [
+            'view'        => 'cms/home/index/product.php',
+        ];
+        $html = Yii::$service->page->widget->renderContent('category_product_price', $config, $parentThis);
+        echo json_encode([
+            'html' => $html,
+        ]);
+        exit;
+    }
 
+    
     /**
      * 得到子分类，如果子分类不存在，则返回同级分类。
      */
@@ -108,7 +127,7 @@ class Index
         $productNumPerPage = $this->getNumPerPage();
         $productCount = $this->_productCount;
         $pageNum = $this->getPageNum();
-        //echo $productCount;
+        $this->_page_count = ceil($productCount / $productNumPerPage);
         $config = [
             'class'        => 'fecshop\app\apphtml5\widgets\Page',
             'view'        => 'widgets/page.php',

@@ -16,7 +16,7 @@
 			<?php   	if($image){  ?>
 				<li id="gal1">
 					<a data-image="<?= Yii::$service->product->image->getResize($image,$middle_img_width,false) ?>"  data-zoom-image="<?= Yii::$service->product->image->getUrl($image);  ?>"  attr="<?= $attr ?>"  class="imgshow active_v"  value="<?= $key ?>">
-						<img  src="<?= Yii::$service->product->image->getResize($image,[40,45],false) ?>" /></a>
+						<img  class="lazy" data-src="<?= Yii::$service->product->image->getResize($image,[40,45],false) ?>" /></a>
 					<b></b>
 				</li>
 			<?php   	}else{ ?>

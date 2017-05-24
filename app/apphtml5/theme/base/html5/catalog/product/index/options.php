@@ -19,7 +19,7 @@
 <?php				$active = 'class="current"'; ?>
 <?php			} ?>
 			<li <?= $active ?>>
-				<a title="<?= $attr1Val ?>" <?= $active ?> href="javascript:void(0)" rel="<?= $url ?>"><img src="<?= Yii::$service->product->image->getResize($main_img,[40,45],false) ?>"/></a>
+				<a title="<?= $attr1Val ?>" <?= $active ?> href="javascript:void(0)" rel="<?= $url ?>"><img class="lazy" data-src="<?= Yii::$service->product->image->getResize($main_img,[40,45],false) ?>"/></a>
 				<b></b>
 			</li>
 <?php		} ?>
