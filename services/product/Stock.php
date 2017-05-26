@@ -19,6 +19,10 @@ use Yii;
  */
 class Stock extends Service
 {
+    // 零库存：也就是说库存忽略掉，产品的库存   
+        
+    public $zeroInventory = 0;
+    
     // product model arr
     protected $_product_arr;
     // product items（譬如购物车信息）
@@ -45,6 +49,7 @@ class Stock extends Service
      */
     protected function actionDeduct($items = '')
     {
+        
         if (!$items) { //如果$items为空，则去购物车取数据。
             $cartInfo = Yii::$service->cart->getCartInfo();
             $items = isset($cartInfo['products']) ? $cartInfo['products'] : '';
@@ -53,6 +58,13 @@ class Stock extends Service
             if (!$this->checkItemsStock($items)) {
                 return false;
             }
+        }
+        /**
+         * $this->checkItemsStock 函数检查产品是否都是上架状态
+         * 如果满足上架状态 && 零库存为1，则直接返回。
+         */
+        if($this->zeroInventory){
+            return true; # 零库存模式 不会更新产品库存。
         }
 
         $product_arr = $this->_product_arr;
@@ -118,9 +130,7 @@ class Stock extends Service
                 if ($sku && $sale_qty) {
                     $product = Yii::$service->product->getBySku($sku, false);
                     if ($product) {
-                        $is_in_stock = $product['is_in_stock'];
-                        $product_qty = $product['qty'];
-                        if ($this->productIsInStock($product, $sale_qty, $custom_option_sku)) {
+                       if ($this->productIsInStock($product, $sale_qty, $custom_option_sku)) {
                             $product_items[$i] = $item;
                             $product_arr[$i] = $product;
                             $i++;
@@ -166,6 +176,9 @@ class Stock extends Service
      */
     protected function actionReturnQty($product_items)
     {
+        if($this->zeroInventory){
+            return true; # 零库存模式不扣产品库存，也不需要返还库存。
+        }
         // 开始扣除库存。
         if (is_array($product_items) && !empty($product_items)) {
             foreach ($product_items as $k=>$item) {
@@ -210,6 +223,12 @@ class Stock extends Service
     protected function actionProductIsInStock($product, $sale_qty, $custom_option_sku)
     {
         $is_in_stock = $product['is_in_stock'];
+        /**
+         * 零库存模式 && 产品是上架状态 直接返回true
+         */
+        if($this->zeroInventory && $this->checkOnShelfStatus($is_in_stock)){
+            return true; # 零库存模式不扣产品库存，也不需要返还库存。
+        }
         $product_qty = $product['qty'];
         if ($this->checkOnShelfStatus($is_in_stock)) {
             if ($custom_option_sku) {
@@ -235,7 +254,7 @@ class Stock extends Service
      */
     protected function actionCheckOnShelfStatus($is_in_stock)
     {
-        if ($is_in_stock == 1) {
+        if ($is_in_stock === 1) {
             return true;
         }
 
