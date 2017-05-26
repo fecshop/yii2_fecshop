@@ -52,7 +52,17 @@ class Placeorder
                     $checkout_type = $serviceOrder::CHECKOUT_TYPE_EXPRESS;
                     $serviceOrder->setCheckoutType($checkout_type);
                     // 将购物车数据，生成订单,生成订单后，不清空购物车，不扣除库存，在支付成功后在清空购物车。
-                    $genarateStatus = Yii::$service->order->generateOrderByCart($this->_billing, $this->_shipping_method, $this->_payment_method, false);
+                    $innerTransaction = Yii::$app->db->beginTransaction();
+                    try {
+                        $genarateStatus = Yii::$service->order->generateOrderByCart($this->_billing, $this->_shipping_method, $this->_payment_method, false);
+                        if ($genarateStatus) {
+                            $innerTransaction->commit();
+                        }else{
+                            $innerTransaction->rollBack();
+                        }
+                    } catch (Exception $e) {
+                        $innerTransaction->rollBack();
+                    }
                     //echo 22;
                     if ($genarateStatus) {
                         // 得到当前的订单信息
@@ -170,7 +180,7 @@ class Placeorder
         } else {
             if (!Yii::$service->shipping->ifIsCorrect($shipping_method)) {
                 Yii::$service->helper->errors->add('shipping method is not correct');
-
+ 
                 return false;
             }
         }

@@ -13,7 +13,7 @@ use Yii;
 
 /**
  * @author Terry Zhao <2358269014@qq.com>
- * @since 1.0
+ * @since 1.0 
  */
 class Placeorder
 {
@@ -53,18 +53,24 @@ class Placeorder
                     $checkout_type = $serviceOrder::CHECKOUT_TYPE_STANDARD;
                     $serviceOrder->setCheckoutType($checkout_type);
                     // 将购物车数据，生成订单。
-                    $genarateStatus = Yii::$service->order->generateOrderByCart($this->_billing, $this->_shipping_method, $this->_payment_method);
-                    if ($genarateStatus) {
-                        // 得到当前的订单信息
-                        //$orderInfo = Yii::$service->order->getCurrentOrderInfo();
-                        // 发送新订单邮件
-                        //Yii::$service->email->order->sendCreateEmail($orderInfo);
-                        // 得到支付跳转前的准备页面。
-                        $startUrl = Yii::$service->payment->getStandardStartUrl();
-                        Yii::$service->url->redirect($startUrl);
-
-                        return true;
-                        //return true;
+                    $innerTransaction = Yii::$app->db->beginTransaction();
+                    try {
+                        $genarateStatus = Yii::$service->order->generateOrderByCart($this->_billing, $this->_shipping_method, $this->_payment_method);
+                        if ($genarateStatus) {
+                            // 得到当前的订单信息
+                            //$orderInfo = Yii::$service->order->getCurrentOrderInfo();
+                            // 发送新订单邮件
+                            //Yii::$service->email->order->sendCreateEmail($orderInfo);
+                            // 得到支付跳转前的准备页面。
+                            $startUrl = Yii::$service->payment->getStandardStartUrl();
+                            $innerTransaction->commit();
+                            Yii::$service->url->redirect($startUrl);
+                            return true;
+                        } else {
+                           $innerTransaction->rollBack();
+                        }
+                    } catch (Exception $e) {
+                        $innerTransaction->rollBack();
                     }
                 }
             } else {

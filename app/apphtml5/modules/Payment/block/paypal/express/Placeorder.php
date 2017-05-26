@@ -36,7 +36,6 @@ class Placeorder
     {
         $post = Yii::$app->request->post();
         if (is_array($post) && !empty($post)) {
-            // post 是二维数组，需要多层处理
             $post = \Yii::$service->helper->htmlEncode($post);
             // 设置paypal快捷支付
             $post['payment_method'] = Yii::$service->payment->paypal->express_payment_method;
@@ -53,7 +52,17 @@ class Placeorder
                     $checkout_type = $serviceOrder::CHECKOUT_TYPE_EXPRESS;
                     $serviceOrder->setCheckoutType($checkout_type);
                     // 将购物车数据，生成订单,生成订单后，不清空购物车，不扣除库存，在支付成功后在清空购物车。
-                    $genarateStatus = Yii::$service->order->generateOrderByCart($this->_billing, $this->_shipping_method, $this->_payment_method, false);
+                    $innerTransaction = Yii::$app->db->beginTransaction();
+                    try {
+                        $genarateStatus = Yii::$service->order->generateOrderByCart($this->_billing, $this->_shipping_method, $this->_payment_method, false);
+                        if ($genarateStatus) {
+                            $innerTransaction->commit();
+                        }else{
+                            $innerTransaction->rollBack();
+                        }
+                    } catch (Exception $e) {
+                        $innerTransaction->rollBack();
+                    }
                     //echo 22;
                     if ($genarateStatus) {
                         // 得到当前的订单信息
@@ -70,8 +79,10 @@ class Placeorder
                                 Yii::$service->product->stock->deduct();
                                 //echo 555;
                                 // 发送新订单邮件
+
                                 // 扣除库存和优惠券
                                 // 在生成订单的时候已经扣除了。参看order service GenerateOrderByCart() function
+
                                 // 得到支付跳转前的准备页面。
                                 $paypal_express = Yii::$service->payment->paypal->express_payment_method;
                                 $successRedirectUrl = Yii::$service->payment->getExpressSuccessRedirectUrl($paypal_express);
@@ -80,10 +91,11 @@ class Placeorder
                                 return true;
                             }
                         }
-                    }
-                    // 如果订单支付过程中失败，将订单取消掉
-                    if (!$doExpressCheckoutReturn || !$ExpressOrderPayment) {
-                        Yii::$service->order->cancel();
+                        // 如果订单支付过程中失败，将订单取消掉
+                        if (!$doExpressCheckoutReturn || !$ExpressOrderPayment) {
+                            Yii::$service->order->cancel();
+                        }
+                        //return true;
                     }
                 }
             } else {
@@ -154,7 +166,7 @@ class Placeorder
         $address_one = '';
         $billing = isset($post['billing']) ? $post['billing'] : '';
         if (!Yii::$service->order->checkRequiredAddressAttr($billing)) {
-            return false;
+            return false; 
         }
         $this->_billing = $billing;
 
