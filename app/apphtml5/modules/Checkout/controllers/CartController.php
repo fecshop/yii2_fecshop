@@ -26,8 +26,9 @@ class CartController extends AppfrontController
 
         return $this->render($this->action->id, $data);
     }
+
     /**
-     * 把产品加入到购物车
+     * 把产品加入到购物车.
      */
     public function actionAdd()
     {
@@ -61,7 +62,7 @@ class CartController extends AppfrontController
                     ]);
                     $innerTransaction->commit();
                     exit;
-                }else {
+                } else {
                     $errors = Yii::$service->helper->errors->get(',');
                     echo json_encode([
                         'status' => 'fail',
@@ -72,7 +73,7 @@ class CartController extends AppfrontController
                     exit;
                 }
             } catch (Exception $e) {
-            	$innerTransaction->rollBack();
+                $innerTransaction->rollBack();
             }
         }
     }
@@ -96,10 +97,10 @@ class CartController extends AppfrontController
         $coupon_code = \Yii::$service->helper->htmlEncode($coupon_code);
         if ($coupon_code) {
             $innerTransaction = Yii::$app->db->beginTransaction();
-            try { 
-                if(Yii::$service->cart->coupon->addCoupon($coupon_code)){
+            try {
+                if (Yii::$service->cart->coupon->addCoupon($coupon_code)) {
                     $innerTransaction->commit();
-                }else{
+                } else {
                     $innerTransaction->rollBack();
                 }
             } catch (Exception $e) {

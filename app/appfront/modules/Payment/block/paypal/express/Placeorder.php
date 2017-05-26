@@ -57,7 +57,7 @@ class Placeorder
                         $genarateStatus = Yii::$service->order->generateOrderByCart($this->_billing, $this->_shipping_method, $this->_payment_method, false);
                         if ($genarateStatus) {
                             $innerTransaction->commit();
-                        }else{
+                        } else {
                             $innerTransaction->rollBack();
                         }
                     } catch (Exception $e) {
@@ -180,7 +180,7 @@ class Placeorder
         } else {
             if (!Yii::$service->shipping->ifIsCorrect($shipping_method)) {
                 Yii::$service->helper->errors->add('shipping method is not correct');
- 
+
                 return false;
             }
         }
