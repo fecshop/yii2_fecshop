@@ -65,9 +65,10 @@ class Placeorder
                             $startUrl = Yii::$service->payment->getStandardStartUrl();
                             $innerTransaction->commit();
                             Yii::$service->url->redirect($startUrl);
+
                             return true;
                         } else {
-                           $innerTransaction->rollBack();
+                            $innerTransaction->rollBack();
                         }
                     } catch (Exception $e) {
                         $innerTransaction->rollBack();
@@ -263,7 +264,7 @@ class Placeorder
             Yii::$service->helper->errors->add('payment method can not empty');
 
             return false;
-        } else { 
+        } else {
             if (!Yii::$service->payment->ifIsCorrectStandard($payment_method)) {
                 Yii::$service->helper->errors->add('payment method is not correct');
 

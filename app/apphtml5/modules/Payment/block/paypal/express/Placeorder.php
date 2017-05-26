@@ -57,7 +57,7 @@ class Placeorder
                         $genarateStatus = Yii::$service->order->generateOrderByCart($this->_billing, $this->_shipping_method, $this->_payment_method, false);
                         if ($genarateStatus) {
                             $innerTransaction->commit();
-                        }else{
+                        } else {
                             $innerTransaction->rollBack();
                         }
                     } catch (Exception $e) {
@@ -166,7 +166,7 @@ class Placeorder
         $address_one = '';
         $billing = isset($post['billing']) ? $post['billing'] : '';
         if (!Yii::$service->order->checkRequiredAddressAttr($billing)) {
-            return false; 
+            return false;
         }
         $this->_billing = $billing;
 

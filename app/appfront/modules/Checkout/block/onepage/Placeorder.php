@@ -13,7 +13,7 @@ use Yii;
 
 /**
  * @author Terry Zhao <2358269014@qq.com>
- * @since 1.0 
+ * @since 1.0
  */
 class Placeorder
 {
@@ -65,9 +65,10 @@ class Placeorder
                             $startUrl = Yii::$service->payment->getStandardStartUrl();
                             $innerTransaction->commit();
                             Yii::$service->url->redirect($startUrl);
+
                             return true;
                         } else {
-                           $innerTransaction->rollBack();
+                            $innerTransaction->rollBack();
                         }
                     } catch (Exception $e) {
                         $innerTransaction->rollBack();
