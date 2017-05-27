@@ -908,9 +908,16 @@ td {
 
 .lazy{width:100%;}
  
+.chose_size .show_as_img a{
+    height: 58px;
+    width: 53px;
+}
  
  
- 
+.product_options a.noactive {
+    border: 1px dashed #ccc;
+    cursor: not-allowed;
+}
  
  
  

@@ -1,27 +1,39 @@
-<?php list($current_attr1,$current_attr2,$all_attr1,$all_attr2,$attr1_2_attr2,$attr2_2_attr1,$attr1,$attr2) = $parentThis['options']; ?>
+<?php $options_attr_arr = $parentThis['options']; ?>
 
 <?php # 这里是 一种类似京东的处理方式。  ?>
-<?php if(is_array($all_attr1) && !empty($all_attr1)){  ?>
-	<div class="pg">
-		<div class="label"><?= Yii::$service->page->translate->__(ucfirst($attr1).':'); ?></div>
-		<div class="chose_color rg">
+<?php if(is_array($options_attr_arr) && !empty($options_attr_arr)){  ?>
+	<?php foreach($options_attr_arr as $one){   ?>
+   	<div class="pg">
+		<div class="label size-label"><?= Yii::$service->page->translate->__(ucfirst($one['label']).':'); ?></div>
+		<div class="chose_size rg">
 			<ul>
-<?php		foreach($all_attr1 as $attr1Val => $info){ ?>
-<?php			$main_img = isset($info['image']['main']['image']) ? $info['image']['main']['image'] : ''; ?>
-<?php			$url = ''; ?>
-<?php			$active = 'class="active"'; ?>
-<?php			if(isset($attr1_2_attr2[$attr1Val])){ ?>
-<?php				$url = Yii::$service->url->getUrl($attr1_2_attr2[$attr1Val]['url_key']); ?>
-<?php			}else{ ?>
-<?php				$url = Yii::$service->url->getUrl($info['url_key']); ?>
-<?php			} ?>
-<?php			if($attr1Val == $current_attr1){ ?>
-<?php				$active = 'class="current"'; ?>
-<?php			} ?>
-			<li <?= $active ?>>
-				<a title="<?= $attr1Val ?>" <?= $active ?> href="javascript:void(0)" rel="<?= $url ?>"><img class="lazy" data-src="<?= Yii::$service->product->image->getResize($main_img,[40,45],false) ?>"/></a>
-				<b></b>
-			</li>
+<?php       if(is_array($one['value']) && !empty($one['value'])){  ?>
+<?php		    foreach($one['value'] as $info){ ?>
+<?php		        $attr_val = $info['attr_val']; ?>
+<?php		        $active   = $info['active']; ?>
+<?php		        $url   = $info['url']; ?>
+<?php			//$main_img = isset($info['image']['main']['image']) ? $info['image']['main']['image'] : ''; ?>
+<?php			//$url = ''; ?>
+<?php			//$active = 'class="active"'; ?>
+<?php			//if(isset($attr1_2_attr2[$attr1Val])){ ?>
+<?php			//	$url = Yii::$service->url->getUrl($attr1_2_attr2[$attr1Val]['url_key']); ?>
+<?php			//}else{ ?>
+<?php			//	$url = Yii::$service->url->getUrl($info['url_key']); ?>
+<?php			//} ?>
+<?php			//if($attr1Val == $current_attr1){ ?>
+<?php			//	$active = 'class="current"'; ?>
+<?php			    if(isset($info['show_as_img']) && $info['show_as_img']){ ?>
+                        <li  class="<?=$active ?> show_as_img">
+                            <a class="<?=$active ?>" href="javascript:void(0)" rel="<?= $url ?>"><span><img src="<?= Yii::$service->product->image->getResize($info['show_as_img'],[50,55],false); ?>" /></span></a>
+                            <b></b>
+                        </li>
+<?php			    }else{ ?>
+                        <li class="<?=$active ?>">
+                            <a class="<?=$active ?>" href="javascript:void(0)" rel="<?= $url ?>"><span><?= Yii::$service->page->translate->__($attr_val); ?></span></a>
+                            <b></b>
+                        </li>
+<?php			   } ?>
+<?php		    } ?>
 <?php		} ?>
 			</ul>
 			<div class="clear"></div>
@@ -30,34 +42,9 @@
 	</div>
 <?php	
 	}
+}
 ?>
 
-<?php	if(is_array($all_attr2) && !empty($all_attr2)){ ?>
-	<div class="pg">
-		<div class="label size-label"><?= Yii::$service->page->translate->__(ucfirst($attr2).':'); ?></div>
-		<div class="chose_size rg">
-			<ul>
-<?php		foreach($all_attr2 as $attr2Val => $info){ ?>
-<?php			$url = ''; ?>
-<?php			$active = 'class="noactive"'; ?>
-<?php			if(isset($attr2_2_attr1[$attr2Val])){ ?>
-<?php				$url = Yii::$service->url->getUrl($attr2_2_attr1[$attr2Val]['url_key']); ?>
-<?php				$active = 'class="active"'; ?>
-<?php			} ?>
-<?php			if($attr2Val == $current_attr2){ ?>
-<?php				$active = 'class="current"'; ?>
-<?php			} ?>
-				<li <?= $active ?>>
-					<a <?=$active ?> href="javascript:void(0)" rel="<?= $url ?>"><span><?= Yii::$service->page->translate->__($attr2Val); ?></span></a>
-					<b></b>
-				</li>
-<?php		}	?>
-			</ul>
-			<div class="clear"></div>
-		</div>
-		<div class="clear"></div>
-	</div>
-<?php	}	?>
 <script>
 <?php $this->beginBlock('product_options') ?>  
 $(document).ready(function(){

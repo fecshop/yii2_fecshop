@@ -20,7 +20,7 @@ return [
                     'class' => 'Swift_SmtpTransport',
                     'host' => 'smtp.qq.com',
                     'username' => '372716335@qq.com',
-                    'password' => 'wffmbummgnhhcbbj',
+                    'password' => '',
 
                     'port' => '587',
                     'encryption' => 'tls',

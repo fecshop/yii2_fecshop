@@ -2774,7 +2774,10 @@ a.icon-google:hover{
     width: 530px;
 }
 
-
+.chose_size .show_as_img a{
+    height:55px;
+    width:50px;
+}
 
 
 
