@@ -97,6 +97,7 @@ class Product extends Service
 
         return array_keys($arr);
     }
+
     /**
      * @property $productAttrGroup | String
      * @return String, 显示图片的spu属性。
@@ -112,15 +113,15 @@ class Product extends Service
         if (isset($this->customAttrGroup[$productAttrGroup]['spu_attr'])
                 && is_array($this->customAttrGroup[$productAttrGroup]['spu_attr'])
         ) {
-            foreach($this->customAttrGroup[$productAttrGroup]['spu_attr'] as $attr => $one){
-                if(isset($one['showAsImg']) && $one['showAsImg']){
+            foreach ($this->customAttrGroup[$productAttrGroup]['spu_attr'] as $attr => $one) {
+                if (isset($one['showAsImg']) && $one['showAsImg']) {
                     return $attr;
                 }
             }
         }
+
         return '';
     }
-    
 
     protected function actionIsActive($status)
     {
