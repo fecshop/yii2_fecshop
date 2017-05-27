@@ -57,8 +57,6 @@ class Index
         ];
     }
 
-   
-
     /**
      * @property $data | Array 和当前产品的spu相同，但sku不同的产品  数组。
      * @property $current_size | String 当前产品的size值
@@ -121,15 +119,15 @@ class Index
 
         return [$all_attr1, $all_attr2, $attr1_2_attr2, $attr2_2_attr1];
     }
+
     /**
      * 得到当前spu下面的所有的sku的数组、
-     *
      */
     protected function getSpuData($select)
     {
         $spu = $this->_product['spu'];
-        $select = array_merge( $select,$this->_productSpuAttrArr);
-       
+        $select = array_merge($select, $this->_productSpuAttrArr);
+
         $filter = [
             'select'    => $select,
             'where'            => [
@@ -138,8 +136,10 @@ class Index
             'asArray' => true,
         ];
         $coll = Yii::$service->product->coll($filter);
+
         return $coll['coll'];
     }
+
     /**
      * 显示这个的前提是，该产品所在属性组对应的spu_attr 只有color 和size 两种
      * 也就是说，这个只针对服装做的一种方式，其他的会按照大众化的那种方式显示出来过滤。（下拉条）
@@ -149,66 +149,64 @@ class Index
      */
     protected function getSameSpuInfo()
     {
-        # 当前的产品对应的spu属性组的属性，譬如 ['color','size','myyy']
+        // 当前的产品对应的spu属性组的属性，譬如 ['color','size','myyy']
         $this->_productSpuAttrArr = Yii::$service->product->getSpuAttr($this->_product['attr_group']);
-        
+
         $this->_spuAttrShowAsImg = Yii::$service->product->getSpuImgAttr($this->_product['attr_group']);
-        if(!is_array($this->_productSpuAttrArr) || empty($this->_productSpuAttrArr)){
+        if (!is_array($this->_productSpuAttrArr) || empty($this->_productSpuAttrArr)) {
             return;
         }
-        # 当前的spu属性对应值数组 $['color'] = 'red'
-        
+        // 当前的spu属性对应值数组 $['color'] = 'red'
+
         $this->_currentSpuAttrValArr = [];
-        foreach($this->_productSpuAttrArr as $spuAttr){
+        foreach ($this->_productSpuAttrArr as $spuAttr) {
             $spuAttrVal = $this->_product[$spuAttr];
-            if($spuAttrVal){
+            if ($spuAttrVal) {
                 $this->_currentSpuAttrValArr[$spuAttr] = $spuAttrVal;
-            }else{
+            } else {
                 // 如果某个spuAttr的值为空，则退出，这个说明产品数据有问题。
-                return;  
+                return;
             }
         }
-        # 得到当前的spu下面的所有的值
+        // 得到当前的spu下面的所有的值
         $select = ['name', 'image', 'url_key'];
         $data = $this->getSpuData($select);
         $spuValColl = [];
-        # 通过值，找到spu。
+        // 通过值，找到spu。
         $reverse_val_spu = [];
-        if(is_array($data) && !empty($data)){
-            foreach($data as $one){
+        if (is_array($data) && !empty($data)) {
+            foreach ($data as $one) {
                 $reverse_key = '';
-                foreach($this->_productSpuAttrArr as $spuAttr){
+                foreach ($this->_productSpuAttrArr as $spuAttr) {
                     $spuValColl[$spuAttr][$one[$spuAttr]] = $one[$spuAttr];
                     $reverse_key .= $one[$spuAttr];
                 }
-               
-                
+
                 //$active = 'class="active"';
                 $one['main_img'] = isset($one['image']['main']['image']) ? $one['image']['main']['image'] : '';
                 $one['url'] = Yii::$service->url->getUrl($one['url_key']);
                 $reverse_val_spu[$reverse_key] = $one;
                 $showAsImgVal = $one[$this->_spuAttrShowAsImg];
-                if($showAsImgVal){
-                    if(!isset($this->_spuAttrShowAsImgArr[$this->_spuAttrShowAsImg])){
+                if ($showAsImgVal) {
+                    if (!isset($this->_spuAttrShowAsImgArr[$this->_spuAttrShowAsImg])) {
                         $this->_spuAttrShowAsImgArr[$showAsImgVal] = $one;
                     }
                 }
             }
         }
-        # 得到各个spu属性对应的值的集合。
-        foreach($spuValColl as $spuAttr => $attrValArr){
+        // 得到各个spu属性对应的值的集合。
+        foreach ($spuValColl as $spuAttr => $attrValArr) {
             $spuValColl[$spuAttr] = array_unique($attrValArr);
-            $spuValColl[$spuAttr] = $this->sortSpuAttr($spuAttr,$spuValColl[$spuAttr]);
-            
+            $spuValColl[$spuAttr] = $this->sortSpuAttr($spuAttr, $spuValColl[$spuAttr]);
         }
-        
+
         $spuShowArr = [];
-        foreach($spuValColl as $spuAttr => $attrValArr){
+        foreach ($spuValColl as $spuAttr => $attrValArr) {
             $attr_coll = [];
-            foreach($attrValArr as $attrVal){
-                $attr_info = $this->getSpuAttrInfo($spuAttr,$attrVal,$reverse_val_spu);
+            foreach ($attrValArr as $attrVal) {
+                $attr_info = $this->getSpuAttrInfo($spuAttr, $attrVal, $reverse_val_spu);
                 $attr_coll[] = $attr_info;
-                
+
                 //[
                 //    'attr_val' => $attr,
                 //];
@@ -217,21 +215,19 @@ class Index
                 'label' => $spuAttr,
                 'value' => $attr_coll,
             ];
-            
         }
-        
+
         return $spuShowArr;
-        
-        
     }
-    
-    protected function getSpuAttrInfo($spuAttr,$attrVal,$reverse_val_spu){
+
+    protected function getSpuAttrInfo($spuAttr, $attrVal, $reverse_val_spu)
+    {
         $current = $this->_currentSpuAttrValArr;
         $active = false;
-        if(isset($this->_currentSpuAttrValArr[$spuAttr])){
-            if($attrVal != $this->_currentSpuAttrValArr[$spuAttr]){
+        if (isset($this->_currentSpuAttrValArr[$spuAttr])) {
+            if ($attrVal != $this->_currentSpuAttrValArr[$spuAttr]) {
                 $current[$spuAttr] = $attrVal;
-            }else{
+            } else {
                 $active = true;
             }
         }
@@ -239,43 +235,45 @@ class Index
         $return = [];
         $return['attr_val'] = $attrVal;
         $return['active'] = 'noactive';
-        
-        
+
         //echo $reverse_key."<br/>";
-        if(isset($reverse_val_spu[$reverse_key]) && is_array($reverse_val_spu[$reverse_key])){
+        if (isset($reverse_val_spu[$reverse_key]) && is_array($reverse_val_spu[$reverse_key])) {
             $return['active'] = 'active';
             $arr = $reverse_val_spu[$reverse_key];
-            foreach($arr as $k=>$v){
-               $return[$k] = $v; 
+            foreach ($arr as $k=>$v) {
+                $return[$k] = $v;
             }
-            if($spuAttr == $this->_spuAttrShowAsImg){
+            if ($spuAttr == $this->_spuAttrShowAsImg) {
                 $return['show_as_img'] = $arr['main_img'];
             }
-        }else{
-            # 如果是图片，不存在，则使用备用的。
-            if($spuAttr == $this->_spuAttrShowAsImg){
+        } else {
+            // 如果是图片，不存在，则使用备用的。
+            if ($spuAttr == $this->_spuAttrShowAsImg) {
                 $return['active'] = 'active';
                 $arr = $this->_spuAttrShowAsImgArr[$attrVal];
-                if(is_array($arr) && !empty($arr)){
-                    foreach($arr as $k=>$v){
-                       $return[$k] = $v; 
+                if (is_array($arr) && !empty($arr)) {
+                    foreach ($arr as $k=>$v) {
+                        $return[$k] = $v;
                     }
                 }
                 $return['show_as_img'] = $arr['main_img'];
             }
         }
-        if( $active){
+        if ($active) {
             $return['active'] = 'current';
         }
+
         return $return;
     }
-    
-    protected function generateSpuReverseKey($one){
+
+    protected function generateSpuReverseKey($one)
+    {
         $reverse_key = '';
-        foreach($this->_productSpuAttrArr as $spuAttr){
+        foreach ($this->_productSpuAttrArr as $spuAttr) {
             $spuValColl[$spuAttr][] = $one[$spuAttr];
             $reverse_key .= $one[$spuAttr];
         }
+
         return  $reverse_key;
     }
 
@@ -285,7 +283,7 @@ class Index
      *		该函数，按照在配置中的size的顺序，将$data中的数据进行排序，让其按照尺码的由小到大的顺序
      * 		排列，譬如 ：s,m,l,xl,xxl,xxxl等
      */
-    protected function sortSpuAttr($spuAttr,$data)
+    protected function sortSpuAttr($spuAttr, $data)
     {
         // 对size排序一下
         $size = [];
