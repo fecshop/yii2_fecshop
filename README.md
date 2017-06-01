@@ -28,7 +28,7 @@ Fecshop支持多语言，多货币，架构上支持pc，手机web，手机app�
 
 详细参看地址：[Fecshop介绍](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-description.html)
 
-FecShop Email：2358269014@qq.com
+Fecshop 官网：http://www.fecshop.com ，您可以在这里提交bug，问题咨询等等。
 
 FecShop English Demo：http://fecshop.appfront.fancyecommerce.com/
 
@@ -40,8 +40,7 @@ FecShop QQ群：186604851 ，入群验证：fecshop
 
 FecShop 作者QQ：2358269014
 
-Fecshop主页：http://www.fecshop.com
-
+FecShop Email：2358269014@qq.com
 
 FecShop Github地址: https://github.com/fancyecommerce/yii2_fecshop
 
