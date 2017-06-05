@@ -3,10 +3,10 @@
 		<?= Yii::$service->page->widget->render('flashmessage'); ?>
 		<form action="<?= Yii::$service->url->getUrl('checkout/onepage'); ?>" method="post" id="onestepcheckout-form">
 			<?= \fec\helpers\CRequest::getCsrfInputHtml(); ?>
-			<fieldset style="margin: 0;" class="group-select">
+			<div style="margin: 0;" class="group-select">
 				<p class="onestepcheckout-description"><?= Yii::$service->page->translate->__('Welcome to the checkout,Fill in the fields below to complete your purchase');?> !</p>
 				<p class="onestepcheckout-login-link">
-					<a href="<?= Yii::$service->url->getUrl('customer/account/login'); ?>" id="onestepcheckout-login-link"><?= Yii::$service->page->translate->__('Already registered? Click here to login');?>.</a>
+					<a external  href="<?= Yii::$service->url->getUrl('customer/account/login'); ?>" id="onestepcheckout-login-link"><?= Yii::$service->page->translate->__('Already registered? Click here to login');?>.</a>
 				</p>
 				<div class="onestepcheckout-threecolumns checkoutcontainer onestepcheckout-skin-generic onestepcheckout-enterprise">
 					<div class="onestepcheckout-column-left">
@@ -94,7 +94,7 @@
 					</div>
 					<div style="clear: both;">&nbsp;</div>
 				</div>
-			</fieldset>
+			</div>
 		</form>
 	</div>
 </div>

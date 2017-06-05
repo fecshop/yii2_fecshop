@@ -106,11 +106,7 @@ $(document).ready(function(){
 		//alert(htmlobj.responseText);
 		location.reload() ;
 	});
-   // $("img.lazy").Lazy(); 
-    $("img.lazy").each(function(){
-        src = $(this).attr("data-src");
-        $(this).attr("src",src);
-    });
+   
 });
 <?php $this->endBlock(); ?>  
 </script>  

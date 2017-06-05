@@ -28,7 +28,6 @@
 							
 							<?php } ?>
 							</li>
-							<li class="form-alt"><?= Yii::$service->page->translate->__($info['supplement']) ?></li>
 						</ul>
 					</dd>
 					<?php } ?>

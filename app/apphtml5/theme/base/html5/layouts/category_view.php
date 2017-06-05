@@ -19,7 +19,7 @@ $jsOptions = [
 			'js/zepto.min.js',
 			'js/sm.min.js',
 			'js/sm-extend.min.js',
-            
+            'js/fec.js',
 		],
 	],
 ];

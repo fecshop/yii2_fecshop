@@ -21,7 +21,7 @@ use fecshop\app\apphtml5\helper\Format;
 			<tr>
 				<td class='image'>
 					<a href="<?= $product['url'] ?>" title="<?= $product['name'] ?>" class="product-image">
-						<img src="<?= Yii::$service->product->image->getResize($product['image'],[100,100],false) ?>" alt="2121" width="75" height="75">
+						<img src="<?= Yii::$service->product->image->getResize($product['image'],[100,100],false) ?>" alt="2121" >
 					</a>
 					
 				</td>
@@ -52,25 +52,25 @@ use fecshop\app\apphtml5\helper\Format;
 	<table class="onestepcheckout-totals">
 		<tbody>
 			<tr>
-				<td class="title"><?= Yii::$service->page->translate->__('Subtotal') ?></td>
+				<td ><?= Yii::$service->page->translate->__('Subtotal') ?></td>
 				<td class="value">
 					<span class="price"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['product_total']); ?></span>       
 				</td>
 			</tr>
 			<tr>
-				<td class="title"><?= Yii::$service->page->translate->__('Shipping Cost') ?></td>
+				<td ><?= Yii::$service->page->translate->__('Shipping Cost') ?></td>
 				<td class="value">
 					<span class="price"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['shipping_cost']); ?></span> 
 				</td>
 			</tr>
 			<tr>
-				<td class="title"><?= Yii::$service->page->translate->__('Discount') ?></td>
+				<td ><?= Yii::$service->page->translate->__('Discount') ?></td>
 				<td class="value">
 					<span class="price">-<?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['coupon_cost']); ?></span> 
 				</td>
 			</tr>
 			<tr class="grand-total">
-				<td class="title"><?= Yii::$service->page->translate->__('Grand Total') ?></td>
+				<td ><?= Yii::$service->page->translate->__('Grand Total') ?></td>
 				<td class="value">
 					<span class="price"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['grand_total']) ?></span>   
 				</td>

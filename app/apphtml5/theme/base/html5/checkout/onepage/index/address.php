@@ -25,25 +25,25 @@
 						<div class="clear"></div>
 					</li>
 					<li class="clearfix">
-						<div style="width:100%;" class="  input-box input-email">
+						<div  class="  input-box input-email">
 							<label for="billing:email"><?= Yii::$service->page->translate->__('Email Address');?> <span class="required">*</span></label>
-							<input style="width:83%;" value="<?= $cart_address['email'] ?>" class="validate-email required-entry input-text" title="Email Address" id="billing:email" name="billing[email]" type="text">
+							<input  value="<?= $cart_address['email'] ?>" class="validate-email required-entry input-text" title="Email Address" id="billing:email" name="billing[email]" type="text">
 							<div class="customer_email_validation">
 							
 							</div>
 						</div>
 					</li>
 					<li>
-						<div style="width:100%;" class="input-box input-telephone">
+						<div  class="input-box input-telephone">
 							<label for="billing:telephone"><?= Yii::$service->page->translate->__('Telephone');?> <span class="required">*</span></label>
-							<input style="width:83%;" value="<?= $cart_address['telephone'] ?>" id="billing:telephone" class="required-entry input-text" title="Telephone" name="billing[telephone]" type="text">
+							<input value="<?= $cart_address['telephone'] ?>" id="billing:telephone" class="required-entry input-text" title="Telephone" name="billing[telephone]" type="text">
 						</div>
 					</li>
 					<li class="clearfix">
 						<div class="input-box input-address">
 							<label for="billing:street1"><?= Yii::$service->page->translate->__('Street');?><span class="required">*</span></label>
 							<input value="<?= $cart_address['street1'] ?>" class="required-entry input-text onestepcheckout-address-line" id="billing:street1" name="billing[street1]" title="Street Address 1" type="text">
-							<br>
+							
 							<input value="<?= $cart_address['street2'] ?>" class="input-text onestepcheckout-address-line" id="billing:street2" name="billing[street2]" title="Street Address 2" type="text">
 						</div>
 					</li>
@@ -97,11 +97,11 @@
 					</li>
 					<li style="display: none;" id="onestepcheckout-li-password">
 						<div class="input-box input-password">
-							<label for="billing:customer_password"><?= Yii::$service->page->translate->__('Password');?></label><br>
+							<label for="billing:customer_password"><?= Yii::$service->page->translate->__('Password');?></label>
 							<input name="billing[customer_password]" id="billing:customer_password" title="Password" value="" class="validate-password input-text customer_password" type="password">
 						</div>
 						<div class="input-box input-password">
-							<label for="billing:confirm_password"><?= Yii::$service->page->translate->__('Confirm Password');?></label><br>
+							<label for="billing:confirm_password"><?= Yii::$service->page->translate->__('Confirm Password');?></label>
 							<input name="billing[confirm_password]" title="Confirm Password" id="billing:confirm_password" value="" class="validate-password input-text customer_confirm_password" type="password">
 						</div>
 					</li>

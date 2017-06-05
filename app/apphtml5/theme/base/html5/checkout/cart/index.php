@@ -125,20 +125,21 @@ use fecshop\app\apphtml5\helper\Format;
 			</div>
 		</div>
 	<?php }else{ ?>
-		<div class="empty_cart">
-		<?php
-			$param = ['urlB' => '<a  external rel="nofollow" href="'.Yii::$service->url->getUrl('customer/account/login').'">','urlE' =>'</a>'];
-		?>	
-		
-		<div id="empty_cart_info">
-			<?= Yii::$service->page->translate->__('Your Shopping Cart is empty');?>
-			<a external href="<?= Yii::$service->url->homeUrl(); ?>"><?= Yii::$service->page->translate->__('Start shopping now!');?></a>
-			<br>
-			<?= Yii::$service->page->translate->__('Please {urlB}log in{urlE} to view the products you have previously added to your Shopping Cart.',$param);?>
+		<div class="empty_cart ">
+            <?php
+                $param = ['urlB' => '<a  external rel="nofollow" href="'.Yii::$service->url->getUrl('customer/account/login').'">','urlE' =>'</a>'];
+            ?>	
+            
+            <div id="empty_cart_info">
+                <?= Yii::$service->page->translate->__('Your Shopping Cart is empty');?>
+                <a external href="<?= Yii::$service->url->homeUrl(); ?>"><?= Yii::$service->page->translate->__('Start shopping now!');?></a>
+                <br>
+                <?= Yii::$service->page->translate->__('Please {urlB}log in{urlE} to view the products you have previously added to your Shopping Cart.',$param);?>
+            </div>
 		</div>
-  
-  
-		</div>
+        <div class="empty_cart_img">
+            
+        </div>
 	<?php  } ?>
 	</div>
 </div>

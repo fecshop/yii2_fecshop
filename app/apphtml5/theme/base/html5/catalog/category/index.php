@@ -142,10 +142,7 @@ $(document).ready(function(){
 			$(this).addClass("checked");
 		}
 	});
-    $("img.lazy").each(function(){
-        src = $(this).attr("data-src");
-        $(this).attr("src",src);
-    });
+    
 });
 
 $(document).on('click','.open-filter', function () {

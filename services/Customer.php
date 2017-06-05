@@ -101,7 +101,8 @@ class Customer extends Service
             $model->created_at = time();
             $model->updated_at = time();
 
-            return $model->save();
+            $model->save();
+            return true;
         } else {
             $errors = $model->errors;
             Yii::$service->helper->errors->addByModelErrors($errors);

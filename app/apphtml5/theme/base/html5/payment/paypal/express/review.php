@@ -4,7 +4,7 @@
 
 		<form action="<?= Yii::$service->url->getCurrentUrl(); ?>" method="post" id="onestepcheckout-form">
 			<?= \fec\helpers\CRequest::getCsrfInputHtml(); ?>
-			<fieldset style="margin: 0;" class="group-select">
+			<div style="margin: 0;" class="group-select">
 				<p class="onestepcheckout-description"><?= Yii::$service->page->translate->__('Welcome to the checkout,Fill in the fields below to complete your purchase');?> !</p>
 				
 				<div class="onestepcheckout-threecolumns checkoutcontainer onestepcheckout-skin-generic onestepcheckout-enterprise">
@@ -83,7 +83,7 @@
 					</div>
 					<div style="clear: both;">&nbsp;</div>
 				</div>
-			</fieldset>
+			</div>
 		</form>
 	</div>
 </div>

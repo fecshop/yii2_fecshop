@@ -919,17 +919,158 @@ td {
     cursor: not-allowed;
 }
  
+#onestepcheckout-form{padding:1rem;}
+.checkoutcontainer ul {padding-left:0;}
+ 
+ 
+.checkoutcontainer .address_list{width:100%;}
+ 
+ul#billing_address_list  li label{ display: block;
+    font-size: 0.55rem;
+    margin: 0.2rem 0;}
+ 
+ul#billing_address_list  li input , ul#billing_address_list  li select{
+    display:block;
+    margin: 0.2rem 0;
+    width: 100%; 
+ }
+ 
+.flatrate{  font-size: 0.5rem;
+    margin: 0.3rem 0 0.1rem;}
+
+#checkout-payment-method-load  , .shippingmethods{
+    
+     font-size: 0.5rem;
+    margin-top: 0.3rem;
+}
+ 
+.payment-methods dl dd{margin: 0 0 0.4rem 0;}
+.checkoutcontainer  p{margin:0.5rem 0  0;}
+ 
+.onestepcheckout-coupons label{
+     display: block;
+    font-size: 0.5rem;
+    margin: 0.2rem 0;
+}
+ 
+#id_couponcode{width:100%;}
+ 
+#onestepcheckout-coupon-add{display:block;margin:0.3rem 0;}
+ 
+.onestepcheckout-summary .product-name a{font-size:0.45rem;font-weight:100;}
+ 
+.onestepcheckout-summary .product-image img {
+    height: auto;
+    width: auto;
+}
  
  
  
+ .onestepcheckout-button, .onestepcheckout-button:visited {
+    background: #222 url("images/button-background.png") repeat-x scroll 0 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    padding: 5px 10px 6px;
+    position: relative;
+    text-decoration: none;
+    text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.25);
+}
+ 
+.onestepcheckout-button, .onestepcheckout-button:visited, .medium.onestepcheckout-button, .medium.onestepcheckout-button:visited {
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 1;
+    text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.25);
+} 
  
  
+.orange.onestepcheckout-button, .orange.onestepcheckout-button:visited        { background-color: #ff5c00; }
+.orange.onestepcheckout-button:hover                           { background-color: #d45500; }
+.large.onestepcheckout-button, .large.onestepcheckout-button:visited {
+    font-size: 16px;
+    padding: 8px 30px 9px;
+}
+
+.onestepcheckout-place-order.visit .orange.onestepcheckout-button{
+    background-color:#ccc;
+}
+ 
+.onestepcheckout-place-order{margin:0.5rem 0 4rem}
+ 
+.onestepcheckout-place-order-loading{margin:0.5rem 0 0;color:#aaa;display:none;}
+ 
+.onestepcheckout-place-order.visit .onestepcheckout-place-order-loading{display:block;}
+ 
+.coupon_add_log , .label_create_account{color:#cc0000;font-size:0.5rem;}
+ 
+.empty_cart{padding:1rem 1rem 0;}
+ 
+.empty_cart_img {
+    background: transparent url(../img/cart.gif) no-repeat scroll 0 15px;
+    font-size: 16px;
+    height: 120px;
+    margin: 4px auto 36px;
+    padding: 35px 0 0 116px;
+    width: 120px;
+    display:block;
+    
+} 
+ 
+ ul#billing_address_list li input#id_create_account{
+      display: inline;
+    margin: 0.2rem 0;
+    width: auto;
+ }
  
  
- 
- 
- 
- 
- 
- 
- 
+.paypal_success{padding:1rem;}
+
+.paypal_success  h2{
+    font-size:0.7rem;
+    
+}
+
+.paypal_success .button {
+    padding: 0 0.5rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

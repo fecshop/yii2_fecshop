@@ -25,18 +25,18 @@
 						<div class="clear"></div>
 					</li>
 					<li class="clearfix">
-						<div style="width:100%;" class="  input-box input-email">
+						<div  class="  input-box input-email">
 							<label for="billing:email"><?= Yii::$service->page->translate->__('Email Address');?> <span class="required">*</span></label>
-							<input style="width:83%;" value="<?= $cart_address['email'] ?>" class="validate-email required-entry input-text" title="Email Address" id="billing:email" name="billing[email]" type="text">
+							<input  value="<?= $cart_address['email'] ?>" class="validate-email required-entry input-text" title="Email Address" id="billing:email" name="billing[email]" type="text">
 							<div class="customer_email_validation">
 							
 							</div>
 						</div>
 					</li>
 					<li>
-						<div style="width:100%;" class="input-box input-telephone">
+						<div  class="input-box input-telephone">
 							<label for="billing:telephone"><?= Yii::$service->page->translate->__('Telephone');?> <span class="required">*</span></label>
-							<input style="width:83%;" value="<?= $cart_address['telephone'] ?>" id="billing:telephone" class="required-entry input-text" title="Telephone" name="billing[telephone]" type="text">
+							<input  value="<?= $cart_address['telephone'] ?>" id="billing:telephone" class="required-entry input-text" title="Telephone" name="billing[telephone]" type="text">
 						</div>
 					</li>
 					<li class="clearfix">
