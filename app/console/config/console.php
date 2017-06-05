@@ -20,6 +20,7 @@ return [
     ],
     
     //配置RabbitMq 部分
+    /*
     'bootstrap' => [
         'queue', // The component registers own console commands
     ],
@@ -36,4 +37,5 @@ return [
             'queueName' => 'queue',
         ],
     ],
+    */
 ];
