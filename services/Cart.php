@@ -87,23 +87,12 @@ class Cart extends Service
      */
     protected function actionAddOneItem($item_id)
     {
-        $innerTransaction = Yii::$app->db->beginTransaction();
-        try {
-            $status = Yii::$service->cart->quoteItem->addOneItem($item_id);
-            if (!$status) {
-                $innerTransaction->rollBack();
-
-                return false;
-            }
-            Yii::$service->cart->quote->computeCartInfo();
-            $innerTransaction->commit();
-
-            return true;
-        } catch (Exception $e) {
-            $innerTransaction->rollBack();
+        $status = Yii::$service->cart->quoteItem->addOneItem($item_id);
+        if (!$status) {
+            return false;
         }
-
-        return false;
+        Yii::$service->cart->quote->computeCartInfo();
+        return true;
     }
 
     /**
@@ -112,24 +101,13 @@ class Cart extends Service
      */
     protected function actionLessOneItem($item_id)
     {
-        $innerTransaction = Yii::$app->db->beginTransaction();
-        try {
-            $status = Yii::$service->cart->quoteItem->lessOneItem($item_id);
-            if (!$status) {
-                $innerTransaction->rollBack();
-
-                return false;
-            }
-            Yii::$service->cart->quote->computeCartInfo();
-
-            $innerTransaction->commit();
-
-            return true;
-        } catch (Exception $e) {
-            $innerTransaction->rollBack();
+        $status = Yii::$service->cart->quoteItem->lessOneItem($item_id);
+        if (!$status) {
+            return false;
         }
-
-        return false;
+        Yii::$service->cart->quote->computeCartInfo();
+        return true;
+        
     }
 
     /**
@@ -138,23 +116,13 @@ class Cart extends Service
      */
     protected function actionRemoveItem($item_id)
     {
-        $innerTransaction = Yii::$app->db->beginTransaction();
-        try {
-            $status = Yii::$service->cart->quoteItem->removeItem($item_id);
-            if (!$status) {
-                $innerTransaction->rollBack();
-
-                return false;
-            }
-            Yii::$service->cart->quote->computeCartInfo();
-            $innerTransaction->commit();
-
-            return true;
-        } catch (Exception $e) {
-            $innerTransaction->rollBack();
+        $status = Yii::$service->cart->quoteItem->removeItem($item_id);
+        if (!$status) {
+            return false;
         }
-
-        return false;
+        Yii::$service->cart->quote->computeCartInfo();
+        return true;
+        
     }
 
     /**

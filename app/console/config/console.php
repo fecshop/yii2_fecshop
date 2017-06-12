@@ -28,14 +28,19 @@ return [
     'components' => [
         'queue' => [
             //'class' => \zhuravljov\yii\queue\amqp\Queue::class,
-            'class' => 'zhuravljov\yii\queue\amqp\Queue',
-            //'class' => 'fecshop\app\console\modules\Amqp\block\Queue',
+            //'class' => 'zhuravljov\yii\queue\amqp\Queue',
+            'class' => 'fecshop\app\console\modules\Amqp\block\Queue',
             'host'  => 'localhost',
             'port'  => 5672,
             'user'  => 'mqadmin',
             'password' => 'mqadmin20177',
-            'queueName' => 'queue',
+            //'queueName' => 'queue',
+            'queueName' => 'productDropshipQN',
+            'exchangeName' => 'productDropshipEX',
+            'routingKey' => 'productDropshipRT',
+            
         ],
     ],
     */
+    
 ];

@@ -54,19 +54,10 @@ FecShop Email：2358269014@qq.com
 3、安装Fecshop
 ------------
 
-> 请务必按照说明安装，vagrant安装为新手通过box加载过来，不需要配置环境，
-> 懂Yii2，还是自己来配置环境安装吧，也就是通过 3.2、全手动安装
+> 请务必按照说明安装，自己来配置环境安装吧.
 
-3.1、vagrant安装：
+从基础linux一步一步的配置的方式，详细参看文档： [Fecshop 安装](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-hand-install.html)
 
-通过vagrant加载box的方式直接安装，环境和fecshop的配置都已经弄好，详细可以参看文档地址：[Fecshop vagrant安装](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-vagrantinstall.html)
-
-
-3.2、全手动安装：
-
-从基础linux一步一步的配置的方式，详细参看文档： [Fecshop 全手动安装](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-hand-install.html)
-
-推荐使用第一种方式快速部署。
 
 4、fecshop 配置：
 ----------------

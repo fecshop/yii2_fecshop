@@ -29,17 +29,17 @@ class TestController extends Controller
     public function actionTest()
     {
         // 这个是对象的方式，消息的传递和接收都是fecshop的时候使用
-         Yii::$app->queue->push(new PushTest([
-            'name'  => 'terry',
-            'age'   => 31,
-         ]));
+        // Yii::$app->queue->push(new PushTest([
+         //   'name'  => 'terry',
+         //   'age'   => 31,
+        // ]));
         
         // 这是一种比较随便的方式，发送的数组会以序列化的方式发送过去
         // 传递的给MQ的个数格式为序列化数组。
-        //Yii::$app->queue->push([
-        //    'name'  => 'water',
-        //    'age'   => 331,
-        //]);
+         Yii::$app->queue->push([
+            'name'  => 'terry',
+            'age'   => 31,
+         ]);
     }
     
     

@@ -3,17 +3,19 @@ namespace fecshop\app\console\modules\Amqp\block;
 
 class Queue extends \zhuravljov\yii\queue\amqp\Queue
 {
-    
+    public $routingKey;
     /**
      * 重写该函数
      */
     protected function handleMessage($id, $message)
     {
-        $d = unserialize($message);
+       // $message = unserialize($message);
+        var_dump($message);
         //  do some thing ...
-        \Yii::info($message,'fecshop_debug');
+        // \Yii::info($message,'fecshop_debug');
         return true;
     }
+    
     
     /* 这是原来的函数
      * protected function handleMessage($id, $message)
