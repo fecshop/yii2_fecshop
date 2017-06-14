@@ -22,14 +22,14 @@ class EditaccountController extends AppfrontController
 
     public function init()
     {
-        if (Yii::$app->user->isGuest) {
-            return Yii::$service->url->redirectByUrlKey('customer/account/login');
-        }
         parent::init();
     }
 
     public function actionIndex()
     {
+        if (Yii::$app->user->isGuest) {
+            return Yii::$service->url->redirectByUrlKey('customer/account/login');
+        }
         $editForm = Yii::$app->request->post('editForm');
         if (!empty($editForm)) {
             $this->getBlock()->saveAccount($editForm);
