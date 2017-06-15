@@ -5,7 +5,7 @@
 				<input type="hidden" class="product_view_id" value="<?=  $_id ?>">
 				<input type="hidden" class="sku" value="<?= $sku; ?>" />
 				<input type="hidden" class="product_csrf" name="" value="" />
-				<div class="product_info">
+				<div class="product_info" id="product_page_info">
 					<h1><?= $name; ?></h1>
 					<div>
 						<div class="rbc_cold">

@@ -24,12 +24,12 @@
 <?php			//	$active = 'class="current"'; ?>
 <?php			    if(isset($info['show_as_img']) && $info['show_as_img']){ ?>
                         <li  class="<?=$active ?> show_as_img">
-                            <a class="<?=$active ?>" href="javascript:void(0)" rel="<?= $url ?>"><span><img src="<?= Yii::$service->product->image->getResize($info['show_as_img'],[50,55],false); ?>" /></span></a>
+                            <a class="<?=$active ?>" href="javascript:void(0)" rel="<?= $url ?>#product_page_info"><span><img src="<?= Yii::$service->product->image->getResize($info['show_as_img'],[50,55],false); ?>" /></span></a>
                             <b></b>
                         </li>
 <?php			    }else{ ?>
                         <li class="<?=$active ?>">
-                            <a class="<?=$active ?>" href="javascript:void(0)" rel="<?= $url ?>"><span><?= Yii::$service->page->translate->__($attr_val); ?></span></a>
+                            <a class="<?=$active ?>" href="javascript:void(0)" rel="<?= $url ?>#product_page_info"><span><?= Yii::$service->page->translate->__($attr_val); ?></span></a>
                             <b></b>
                         </li>
 <?php			   } ?>
