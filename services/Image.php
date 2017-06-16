@@ -146,7 +146,25 @@ class Image extends Service
     {
         return $this->GetImgDir($this->imageFloder.$str, 'common');
     }
-
+    
+    protected function generateImgName( $name,$length = 15 ) { 
+        $arr = explode('.',$name);
+        $fileType = '.'.$arr[count($arr)-1];
+        // 密码字符集，可任意添加你需要的字符 
+        $chars = 'abcdefghijklmnopqrstuvwxyz0123456789'; 
+        $str =''; 
+        for ( $i = 0; $i < $length; $i++ ) 
+        { 
+            // 这里提供两种字符获取方式 
+            // 第一种是使用 substr 截取$chars中的任意一位字符； 
+            // 第二种是取字符数组 $chars 的任意元素 
+            // $str .= substr($chars, mt_rand(0, strlen($chars) – 1), 1); 
+            $str .= $chars[ mt_rand(0, strlen($chars) - 1) ]; 
+        } 
+        $str .= time();
+        return $str.$fileType; 
+    } 
+    
     /**
      * @property $param_img_file | Array .
      * upload image from web page , you can get image from $_FILE['XXX'] ,
@@ -159,6 +177,8 @@ class Image extends Service
         $size = $FILE['size'];
         $file = $FILE['tmp_name'];
         $name = $FILE['name'];
+        $name = $this->generateImgName($name);
+        
         if ($size > $this->getMaxUploadSize()) {
             throw new InvalidValueException('upload image is to max than'. $this->getMaxUploadSize().' MB');
         } elseif (!($img = getimagesize($file))) {
