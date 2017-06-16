@@ -236,7 +236,9 @@ class XunSearch extends Service implements SearchInterface
         if (is_object($product_id)) {
             $product_id = (string) $product_id;
             $model = XunSearchModel::findOne($product_id);
-            $model->delete();
+            if($model){
+                $model->delete();
+            }
         }
     }
 }
