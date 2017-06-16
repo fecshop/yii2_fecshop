@@ -229,28 +229,60 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
 						<td>图片</td>
 						<td>label</td>
 						<td>sort_order</td>
-						<td>主图</td>
-						<td>删除</td>
+						
+                        <td>主图</td>
+                        <td>橱窗图</td>
+						<td>描述图</td>
+                        <td>删除</td>
 					</tr>
 				</thead>
 				<tbody>';
         if (!empty($main_image) && is_array($main_image)) {
+            $is_thumbnails = $main_image['is_thumbnails'] ? $main_image['is_thumbnails'] : 1;
+            $is_detail = $main_image['is_detail'] ? $main_image['is_detail'] : 1;
+            
             $str .= '<tr class="p_img" rel="1" style="border-bottom:1px solid #ccc;">
 						<td style="width:120px;text-align:center;"><img  rel="'.$main_image['image'].'" style="width:100px;height:100px;" src="'.Yii::$service->product->image->getUrl($main_image['image']).'"></td>
 						<td style="width:220px;text-align:center;"><input style="height:18px;width:200px;" type="text" class="image_label" name="image_label"  value="'.$main_image['label'].'" /></td>
 						<td style="width:220px;text-align:center;"><input style="height:18px;width:200px;" type="text" class="sort_order"  name="sort_order" value="'.$main_image['sort_order'].'"  /></td>
 						<td style="width:30px;text-align:center;"><input type="radio" name="image" checked  value="'.$main_image['image'].'" /></td>
-						<td style="padding:0 0 0 20px;"><a class="delete_img btnDel" href="javascript:void(0)">删除</a></td>
+						
+                        <td style="width:220px;text-align:center;">
+                            <select name="is_thumbnails" class="is_thumbnails">
+                                '.$this->getYesNoOptions($is_thumbnails).'
+                            </select>
+                        </td>
+                        <td style="width:220px;text-align:center;">
+                            <select name="is_detail" class="is_detail">
+                                '.$this->getYesNoOptions($is_detail).'
+                            </select>
+                        </td>
+                        
+                        <td style="padding:0 0 0 20px;"><a class="delete_img btnDel" href="javascript:void(0)">删除</a></td>
 					</tr>';
         }
         if (!empty($gallery_image) && is_array($gallery_image)) {
             $i = 2;
+            
             foreach ($gallery_image as $gallery) {
+                $is_thumbnails = $gallery['is_thumbnails'] ? $gallery['is_thumbnails'] : 1;
+                $is_detail = $gallery['is_detail'] ? $gallery['is_detail'] : 1;
+            
                 $str .= '<tr class="p_img" rel="'.$i.'" style="border-bottom:1px solid #ccc;">
 									<td style="width:120px;text-align:center;"><img  rel="'.$gallery['image'].'" style="width:100px;height:100px;" src="'.Yii::$service->product->image->getUrl($gallery['image']).'"></td>
 									<td style="width:220px;text-align:center;"><input style="height:18px;width:200px;" type="text" class="image_label" name="image_label"  value="'.$gallery['label'].'" /></td>
 									<td style="width:220px;text-align:center;"><input style="height:18px;width:200px;" type="text" class="sort_order"  name="sort_order" value="'.$gallery['sort_order'].'"  /></td>
 									<td style="width:30px;text-align:center;"><input type="radio" name="image"   value="'.$gallery['image'].'" /></td>
+                                   <td style="width:220px;text-align:center;">
+                                        <select name="is_thumbnails" class="is_thumbnails">
+                                            '.$this->getYesNoOptions($is_thumbnails).'
+                                        </select>
+                                    </td>
+                                    <td style="width:220px;text-align:center;">
+                                        <select name="is_detail" class="is_detail">
+                                            '.$this->getYesNoOptions($is_detail).'
+                                        </select>
+                                    </td>
 									<td style="padding:0 0 0 20px;"><a class="delete_img btnDel" href="javascript:void(0)">删除</a></td>
 								</tr>';
                 $i++;
@@ -262,6 +294,20 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
 		</div>';
 
         return $str;
+    }
+    
+    public function getYesNoOptions($val){
+        if($val == 1){
+            return '
+                <option  value="1" selected="selected" >Yes</option>
+                <option  value="2">No</option>
+            ';
+        }else{
+            return '
+                <option  value="1">Yes</option>
+                <option  value="2" selected="selected">No</option>
+            ';
+        }
     }
 
     public function getCustomOpImgHtml()
@@ -374,11 +420,13 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
             if (!empty($image_gallery_arr)) {
                 foreach ($image_gallery_arr as $one) {
                     if (!empty($one)) {
-                        list($gallery_image, $gallery_label, $gallery_sort_order) = explode('#####', $one);
+                        list($gallery_image, $gallery_label, $gallery_sort_order,$gallery_is_thumbnails,$gallery_is_detail) = explode('#####', $one);
                         $save_gallery[] = [
-                            'image'        => $gallery_image,
-                            'label'        => $gallery_label,
+                            'image'         => $gallery_image,
+                            'label'         => $gallery_label,
                             'sort_order'    => $gallery_sort_order,
+                            'is_thumbnails' => $gallery_is_thumbnails,
+                            'is_detail'     => $gallery_is_detail,
                         ];
                     }
                 }
@@ -387,11 +435,13 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         }
         // init image main
         if ($image_main) {
-            list($main_image, $main_label, $main_sort_order) = explode('#####', $image_main);
+            list($main_image, $main_label, $main_sort_order,$main_is_thumbnails,$main_is_detail) = explode('#####', $image_main);
             $save_main = [
                 'image'        => $main_image,
                 'label'        => $main_label,
                 'sort_order'    => $main_sort_order,
+                'is_thumbnails'    => $main_is_thumbnails,
+                'is_detail'    => $main_is_detail,
             ];
             $this->_param['image']['main'] = $save_main;
         }

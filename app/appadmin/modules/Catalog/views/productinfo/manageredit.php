@@ -113,9 +113,11 @@ function thissubmit(thiss){
 	main_image_image 		=  $('.productimg input[type=radio]:checked').val();
 	main_image_label 		=  $('.productimg input[type=radio]:checked').parent().parent().find(".image_label").val();
 	main_image_sort_order 	=  $('.productimg input[type=radio]:checked').parent().parent().find(".sort_order").val();
-	//alert(main_image_image+main_image_label+main_image_sort_order);
+	main_image_is_thumbnails=  $('.productimg input[type=radio]:checked').parent().parent().find(".is_thumbnails").val();
+    main_image_is_detail 	=  $('.productimg input[type=radio]:checked').parent().parent().find(".is_detail").val();
+    //alert(main_image_image+main_image_label+main_image_sort_order);
 	if(main_image_image){
-		image_main = main_image_image+'#####'+main_image_label+'#####'+main_image_sort_order;
+		image_main = main_image_image+'#####'+main_image_label+'#####'+main_image_sort_order  +'#####'+main_image_is_thumbnails  +'#####'+main_image_is_detail;
 		$(".tabsContent .image_main").val(image_main);
 	}else{
 		alert('您至少上传并选择一张主图');
@@ -128,8 +130,10 @@ function thissubmit(thiss){
 			gallery_image_image 		= $(this).val();
 			gallery_image_label 		= $(this).parent().parent().find(".image_label").val();
 			gallery_image_sort_order 	= $(this).parent().parent().find(".sort_order").val();
+            gallery_image_is_thumbnails = $(this).parent().parent().find(".is_thumbnails").val();
+            gallery_image_is_detail 	= $(this).parent().parent().find(".is_detail").val();
 			//alert(gallery_image_image+gallery_image_label+gallery_image_sort_order);
-			image_gallery += gallery_image_image+'#####'+gallery_image_label+'#####'+gallery_image_sort_order+'|||||';
+			image_gallery += gallery_image_image+'#####'+gallery_image_label+'#####'+gallery_image_sort_order +'#####'+gallery_image_is_thumbnails  +'#####'+gallery_image_is_detail+'|||||';
 		}
 	});
 	$(".tabsContent .image_gallery").val(image_gallery);

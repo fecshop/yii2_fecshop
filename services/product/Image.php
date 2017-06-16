@@ -108,19 +108,7 @@ class Image extends Service
      */
     protected function actionGetResize($imageVal, $imgResize, $isWatered = false)
     {
-        /*
-        list($width,$height) = $imgResize;
-        if(!$width && !$height){
-            throw new InvalidValueException('resize img width and height can not empty');
-        }
-        if($width && !$height){
-            $height = $width;
-        }
-        if(!$width && $height){
-            $width = $height;
-        }
-        $imgResize = [$width , $height];
-        */
+        
         $originImgPath = $this->getDir($imageVal);
         if (!file_exists($originImgPath)) {
             $originImgPath = $this->getDir($this->defaultImg);

@@ -42,7 +42,19 @@ class Imageupload
 								<td style="width:220px;text-align:center;"><input style="height:10px;width:200px;" type="text" class="image_label" name="image_label"  /></td>
 								<td style="width:220px;text-align:center;"><input style="height:10px;width:200px;" type="text" class="sort_order"  name="sort_order"  /></td>
 								<td style="width:30px;text-align:center;"><input type="radio" name="image"  value="'.$imgSavedRelativePath.'" /></td>
-								<td style="padding:0 0 0 20px;"><a class="delete_img btnDel" href="javascript:void(0)">删除</a></td>
+                                <td style="width:220px;text-align:center;">
+                                    <select name="is_thumbnails" class="is_thumbnails">
+                                        <option value="1">Yes</option>
+                                        <option value="2">No</option>
+                                    </select>
+                                </td>
+                                <td style="width:220px;text-align:center;">
+                                    <select name="is_detail" class="is_detail">
+                                        <option value="1">Yes</option>
+                                        <option value="2">No</option>
+                                    </select>
+                                </td>
+                                <td style="padding:0 0 0 20px;"><a class="delete_img btnDel" href="javascript:void(0)">删除</a></td>
 							</tr>';
             }
             $index++;

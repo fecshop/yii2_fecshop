@@ -23,6 +23,8 @@ class Index
     protected $_primaryVal;
     protected $_productSpuAttrArr;
     protected $_spuAttrShowAsImg;
+    protected $_image_thumbnails;
+    protected $_image_detail;
 
     public function getLastData()
     {
@@ -32,31 +34,60 @@ class Index
         ReviewHelper::initReviewConfig();
         $ReviewAndStarCount = ReviewHelper::getReviewAndStarCount($this->_product);
         list($review_count, $reviw_rate_star_average) = $ReviewAndStarCount;
-
+        $this->filterProductImg($this->_product['image']);
         return [
-            'name'                    => Yii::$service->store->getStoreAttrVal($this->_product['name'], 'name'),
-            'image'                    => $this->_product['image'],
-            'sku'                    => $this->_product['sku'],
-            'spu'                    => $this->_product['spu'],
-            'attr_group'            => $this->_product['attr_group'],
-            'review_count'            => $review_count,
-            'reviw_rate_star_average'=> $reviw_rate_star_average,
-            'price_info'            => $this->getProductPriceInfo(),
-            'tier_price'            => $this->_product['tier_price'],
+            'name'                      => Yii::$service->store->getStoreAttrVal($this->_product['name'], 'name'),
+            'image_thumbnails'          => $this->_image_thumbnails,
+            'image_detail'              => $this->_image_detail,
+            'sku'                       => $this->_product['sku'],
+            'spu'                       => $this->_product['spu'],
+            'attr_group'                => $this->_product['attr_group'],
+            'review_count'              => $review_count,
+            'reviw_rate_star_average'   => $reviw_rate_star_average,
+            'price_info'                => $this->getProductPriceInfo(),
+            'tier_price'                => $this->_product['tier_price'],
             'media_size' => [
-                'small_img_width'    => $productImgSize['small_img_width'],
-                'small_img_height'    => $productImgSize['small_img_height'],
-                'middle_img_width'    => $productImgSize['middle_img_width'],
+                'small_img_width'       => $productImgSize['small_img_width'],
+                'small_img_height'      => $productImgSize['small_img_height'],
+                'middle_img_width'      => $productImgSize['middle_img_width'],
             ],
-            'productImgMagnifier'    => $productImgMagnifier,
-            'options'                => $this->getSameSpuInfo(),
-            'custom_option'            => $this->_product['custom_option'],
-            'description'            => Yii::$service->store->getStoreAttrVal($this->_product['description'], 'description'),
-            '_id'                    => $this->_product['_id'],
-            'buy_also_buy'            => $this->getProductBySkus($skus),
+            'productImgMagnifier'       => $productImgMagnifier,
+            'options'                   => $this->getSameSpuInfo(),
+            'custom_option'             => $this->_product['custom_option'],
+            'description'               => Yii::$service->store->getStoreAttrVal($this->_product['description'], 'description'),
+            '_id'                       => $this->_product['_id'],
+            'buy_also_buy'              => $this->getProductBySkus($skus),
         ];
     }
-
+    /**
+     * 
+     * 对gallery 中的图片进行处理，只要 is_thumbnails=1 的图片，其他的过滤掉 
+     */
+    public function filterProductImg($product_images){
+        $this->_image_thumbnails        = $product_images;
+        //$this->_image_detail['gallery'] = $product_images['gallery'];
+        if(isset($product_images['gallery']) && is_array($product_images['gallery'])){
+            $thumbnails_arr = [];
+            $detail_arr     = [];
+            foreach($product_images['gallery'] as $one){
+                $is_thumbnails  = $one['is_thumbnails'];
+                $is_detail      = $one['is_detail'];
+                if($is_thumbnails == 1){
+                    $thumbnails_arr[]   = $one;
+                }
+                if($is_detail == 1){
+                    $detail_arr[]       = $one;
+                }
+            }
+            $this->_image_thumbnails['gallery'] = $thumbnails_arr;
+            $this->_image_detail     = $detail_arr;
+        }
+        if(isset($product_images['main']['is_detail']) && $product_images['main']['is_detail'] == 1 ){
+            $this->_image_detail[] = $product_images['main'];
+        }
+        
+    }
+    
     /**
      * @property $data | Array 和当前产品的spu相同，但sku不同的产品  数组。
      * @property $current_size | String 当前产品的size值

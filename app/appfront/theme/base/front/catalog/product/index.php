@@ -108,7 +108,7 @@
 							];
 							$imageParam = [
 								'media_size' => $media_size,
-								'image' => $image,
+								'image' => $image_thumbnails,
 								'productImgMagnifier' => $productImgMagnifier,
 							];
 						?>
@@ -149,6 +149,16 @@
 				<div id="text">  
 					<div class="text-description" style="">
 						<?= $description; ?>
+                        
+                        <div class="img-section">
+                            <?php   if(is_array($image_detail)){  ?>
+                                <?php foreach($image_detail as $image_detail_one){ ?>
+                                    <br/>
+                                    <img class="js_lazy" src="<?= Yii::$service->image->getImgUrl('images/lazyload.gif');   ?>" data-original="<?= Yii::$service->product->image->getUrl($image_detail_one['image']);  ?>"  />
+                                    
+                                <?php  }  ?>
+                            <?php  }  ?>
+                        </div>
 					</div>  
 					<div class="text-reviews" id="text-reviews" style="">
 						<?php # review部分。

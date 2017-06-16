@@ -71,11 +71,17 @@ return [
         // 子服务
         'childService' => [
             'image' => [
-                'class'        => 'fecshop\services\product\Image',
-                'imageFloder'    => 'media/catalog/product',
-                //'allowImgType' 	=> ['image/jpeg','image/gif','image/png'],
-                'maxUploadMSize'=> 5, //MB
-
+                'class'             => 'fecshop\services\product\Image',
+                'imageFloder'       => 'media/catalog/product', # 产品图片存放路径。
+                //'allowImgType' 	=> [ # 允许的图片类型
+                //    'image/jpeg',
+                //    'image/gif',
+                //    'image/png',
+                //    'image/jpg',
+                //    'image/pjpeg',
+                //], 
+                'maxUploadMSize'=> 5, //MB  # 图片最大尺寸
+                //'waterImg'        => 'product_water.jpg',  # 水印图片
             ],
             'price' => [
                 'class' => 'fecshop\services\product\Price',
