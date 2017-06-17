@@ -18,7 +18,10 @@ use Yii;
  */
 class AdminUser extends Service
 {
-    //Yii::$service->adminUser->getIdAndNameArrByIds($ids)
+    /**
+     * @property $ids | Int Array
+     * @return 得到相应用户的数组。
+     */
     protected function actionGetIdAndNameArrByIds($ids)
     {
         $user_coll = \fecadmin\models\AdminUser::find()->asArray()->select(['id', 'username'])->where([

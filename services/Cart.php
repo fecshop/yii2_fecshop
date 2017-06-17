@@ -36,7 +36,6 @@ class Cart extends Service
         if (isset($item['custom_option_sku']) && !empty($item['custom_option_sku'])) {
             if (is_array($item['custom_option_sku'])) {
                 $custom_option_sku = Yii::$service->cart->info->getCustomOptionSku($item, $product);
-
                 if (!$custom_option_sku) {
                     Yii::$service->helper->errors->add('product custom_option_sku is not exist');
 
@@ -52,18 +51,11 @@ class Cart extends Service
         }
         // 开始加入购物车
         // service 里面不允许有事务，请在调用层使用事务。
-        //$innerTransaction = Yii::$app->db->beginTransaction();
-        //try {
-
-        $beforeEventName = 'event_add_to_cart_before';
-        $afterEventName = 'event_add_to_cart_after';
+        $beforeEventName    = 'event_add_to_cart_before';
+        $afterEventName     = 'event_add_to_cart_after';
         Yii::$service->event->trigger($beforeEventName, $item); // 触发事件 - 加购物车前事件
         Yii::$service->cart->quoteItem->addItem($item);
         Yii::$service->event->trigger($afterEventName, $item);  // 触发事件 - 加购物车前事件
-            //$innerTransaction->commit();
-        //} catch (Exception $e) {
-        //	$innerTransaction->rollBack();
-        //}
         return true;
     }
 
@@ -74,6 +66,9 @@ class Cart extends Service
     }
 
     /**
+     * @property $shipping_method | String 货运方式code
+     * @property $country | String 国家code
+     * @property $region | String 省市code
      * 得到购物车中的信息。
      */
     protected function actionGetCartInfo($shipping_method = '', $country = '', $region = '*')
@@ -126,15 +121,9 @@ class Cart extends Service
     }
 
     /**
-     * @property $coupon_code 优惠卷码
-     * @return bool 优惠券使用成功则返回true，失败则返回false
-     */
-    //protected function actionAddCoupon($coupon_code){
-
-    //}
-
-    /**
-     *  merge cart , if current cart currency is not equals to user cart currency when user login account.
+     * 购物车合并：用户未登录账号，把一部分产品加入购物车，当用户
+     * 登录账号的时候，账号对应的购物车信息和用户未登录前的购物车产品信息进行合并的操作
+     * 在用户登录账户的时候，会执行该方法。
      */
     protected function actionMergeCartAfterUserLogin()
     {
@@ -143,13 +132,20 @@ class Cart extends Service
 
     /**
      * @property $address|array
+     * @property $shipping_method | String 发货方式
+     * @property $payment_method | String 支付方式
      * save cart address.like,,  customer name,tel,email,address ,,etc,,.
      */
     protected function actionUpdateGuestCart($address, $shipping_method, $payment_method)
     {
         return Yii::$service->cart->quote->updateGuestCart($address, $shipping_method, $payment_method);
     }
-
+    /**
+     * @property $address_id | Int
+     * @property $shipping_method | String 货运方式
+     * @property $payment_method | String 支付方式
+     * 更新登录用户的购物车。
+     */
     protected function actionUpdateLoginCart($address_id, $shipping_method, $payment_method)
     {
         return Yii::$service->cart->quote->updateLoginCart($address_id, $shipping_method, $payment_method);

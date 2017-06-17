@@ -16,7 +16,7 @@ class Head implements BlockCache
 
     public function getCacheKey()
     {
-        $store = Yii::$service->store->currentStore;
+        $store = Yii::$service->store->currentLangCode;
         $moduleId = Yii::$app->controller->module->id;
         $controllerId = Yii::$app->controller->id;
         $actionId = Yii::$app->controller->action->id;

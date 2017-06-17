@@ -25,6 +25,7 @@ class Category extends Service
 
     /**
      * init function , 初始化category，使用哪一个category service.
+     * 目前只支持mongodb，不支持mysql
      */
     public function init()
     {
@@ -34,14 +35,6 @@ class Category extends Service
             //$this->_category = new CategoryMysqldb;
         }
     }
-
-    /**
-     * Get Url by article's url key.
-     */
-    //public function getUrlByPath($urlPath){
-        //return Yii::$service->url->getHttpBaseUrl().'/'.$urlKey;
-        //return Yii::$service->url->getUrlByPath($urlPath);
-    //}
 
     /**
      * 得到当前的category service 对应的主键名称，譬如如果是mongo，返回的是 _id.
