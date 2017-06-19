@@ -332,7 +332,7 @@ class Order extends Service
      * @return bool 通过购物车的数据生成订单是否成功
      *              通过购物车中的产品信息，以及传递的货运地址，货运快递方式，支付方式生成订单。
      */
-    protected function actionGenerateOrderByCart($address, $shipping_method, $payment_method, $clearCartAndDeductStock = true)
+    protected function actionGenerateOrderByCart($address, $shipping_method, $payment_method, $clearCart = true)
     {
         $cart = Yii::$service->cart->quote->getCurrentCart();
         if (!$cart) {
@@ -352,10 +352,19 @@ class Order extends Service
             return false;
         }
         // 检查产品是否有库存，如果没有库存则返回false
-        $deductStatus = Yii::$service->product->stock->checkItemsStock($cartInfo['products']);
-        if (!$deductStatus) {
+        //$deductStatus = Yii::$service->product->stock->checkItemsStock($cartInfo['products']);
+        //if (!$deductStatus) {
+        //    return false;
+        //}
+        // 扣除库存。（订单生成后，库存产品库存。）
+        //     （备注）需要另起一个脚本，用来处理半个小时后，还没有支付的订单，将订单取消，然后将订单里面的产品库存返还。
+        // 			如果是无限库存（没有库存就去采购的方式），那么不需要跑这个脚本，将库存设置的非常大即可。
+        $deductStatus = Yii::$service->product->stock->deduct($cartInfo['products']);
+        if(!$deductStatus){
+            // 库存不足则返回
             return false;
         }
+        
         $beforeEventName = 'event_generate_order_before';
         $afterEventName = 'event_generate_order_after';
         Yii::$service->event->trigger($beforeEventName, $cartInfo);
@@ -414,20 +423,15 @@ class Order extends Service
             $orderModel['increment_id'] = $increment_id;
             $orderModel->save();
             Yii::$service->order->item->saveOrderItems($cartInfo['products'], $order_id, $cartInfo['store']);
+            
             $this->setSessionIncrementId($increment_id);
-            // 扣除库存。（订单生成后，库存产品库存。）
-            //     （备注）需要另起一个脚本，用来处理半个小时后，还没有支付的订单，将订单取消，然后将订单里面的产品库存返还。
-            // 			如果是无限库存（没有库存就去采购的方式），那么不需要跑这个脚本，将库存设置的非常大即可。
-            if ($clearCartAndDeductStock) {
-                Yii::$service->product->stock->deduct($cartInfo['products']);
-            }
             // 优惠券
             // 优惠券是在购物车页面添加的，添加后，优惠券的使用次数会被+1，
             // 因此在生成订单部分，是没有优惠券使用次数操作的（在购物车添加优惠券已经被执行该操作）
             // 生成订单后，购物车的数据会被清空，其中包括优惠券信息的清空。
 
             // 如果是登录用户，那么，在生成订单后，需要清空购物车中的产品和coupon。
-            if (!Yii::$app->user->isGuest && $clearCartAndDeductStock) {
+            if (!Yii::$app->user->isGuest && $clearCart) {
                 Yii::$service->cart->clearCartProductAndCoupon();
             }
 

@@ -75,9 +75,9 @@ class Placeorder
                             if ($ExpressOrderPayment) {
                                 // 支付成功后，在清空购物车数据。而不是在生成订单的时候。
                                 Yii::$service->cart->clearCartProductAndCoupon();
-                                // 支付成功后，扣除库存。
-                                Yii::$service->product->stock->deduct();
-                                //echo 555;
+                                // (删除)支付成功后，扣除库存。
+                                // (删除)Yii::$service->product->stock->deduct();
+                                // echo 555;
                                 // 发送新订单邮件
 
                                 // 扣除库存和优惠券

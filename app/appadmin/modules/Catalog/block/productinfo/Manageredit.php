@@ -31,6 +31,13 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
     {
         $this->_saveUrl = CUrl::getUrl('catalog/productinfo/managereditsave');
         parent::init();
+        $product_id = $this->_param[$this->_primaryKey];
+        if($product_id){
+            // 从mysql中取出来qty。
+            $qty = Yii::$service->product->stock->getProductFlatQty($product_id);
+            $this->_one['qty'] = $qty ;
+        }
+        
         $this->_attr = new Attr($this->_one);
         //$this->_param		= $request_param[$this->_editFormData];
     }
@@ -85,6 +92,7 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         if ($currentAttrGroup) {
             $attr_group = $currentAttrGroup;
         }
+        
         $str = '';
         $this->_custom_option_list_str = '';
         if ($attr_group) {
@@ -120,6 +128,8 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
                 //$this->_custom_option_list_str .= '<tbody></tbody>';
                 //$this->_custom_option_list_str .= '</table>';
                 $this->_custom_option_list_str .= '<tbody>';
+                //echo '<br><br>';
+                
                 $custom_option = $this->_one['custom_option'];
                 if (is_array($custom_option) && !empty($custom_option)) {
                     foreach ($custom_option  as $one) {
@@ -202,8 +212,27 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         //var_dump($editArr);
         //var_dump($this->_one);
         $this->_primaryKey = $this->_service->getPrimaryKey();
-        $id = $this->_param[$this->_primaryKey];
-        $this->_one = $this->_service->getByPrimaryKey($id);
+        $product_id = $this->_param[$this->_primaryKey];
+        $this->_one = $this->_service->getByPrimaryKey($product_id);
+        if($product_id){
+            // 从mysql中取出来qty。
+            $qty = Yii::$service->product->stock->getProductFlatQty($product_id);
+            $this->_one['qty'] = $qty ;
+            // 从mysql中取出来custom option qty
+            $co_qty_arr     = Yii::$service->product->stock->getProductCustomOptionQty($product_id);
+            //var_dump($co_qty_arr);
+            $custom_option  = $this->_one['custom_option'];
+            if(is_array($co_qty_arr) && is_array($custom_option)){
+                $arr = [];
+                foreach($custom_option as $custom_option_sku => $one){
+                    $custom_option[$custom_option_sku]['qty'] = isset($co_qty_arr[$custom_option_sku]) ? $co_qty_arr[$custom_option_sku] : 0;
+                }
+                //###########g
+                $this->_one['custom_option'] = $custom_option;
+                //var_dump($custom_option);
+            }
+        }
+        
         if (!empty($editArr)) {
             $editBar = $this->getEditBar($editArr);
 
@@ -359,6 +388,7 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
             }
         }
         $this->_service->save($this->_param, 'catalog/product/index');
+        
         $errors = Yii::$service->helper->errors->get();
         if (!$errors) {
             echo  json_encode([

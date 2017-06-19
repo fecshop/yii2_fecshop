@@ -27,7 +27,7 @@ class Info extends Service
     // 上架状态产品加入购物车时，
     // 如果addToCartCheckSkuQty设置为true，则需要检查产品qty是否>购买qty，
     // 如果设置为false，则不需要，也就是说产品库存qty小于购买qty，也是可以加入购物车的。
-    public $addToCartCheckSkuQty = true;
+    public $addToCartCheckSkuQty = false;
 
     /**
      * @property $item | Array  , example

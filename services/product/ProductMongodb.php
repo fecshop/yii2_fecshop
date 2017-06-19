@@ -231,6 +231,7 @@ class ProductMongodb implements ProductInterface
         if (!$this->initSave($one)) {
             return;
         }
+        
         $currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
         $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
         if ($primaryVal) {
@@ -279,6 +280,7 @@ class ProductMongodb implements ProductInterface
          * 保存产品
          */
         $saveStatus = Yii::$service->helper->ar->save($model, $one);
+        
         /*
          * 自定义url部分
          */
@@ -290,11 +292,16 @@ class ProductMongodb implements ProductInterface
             $model->url_key = $urlKey;
             $model->save();
         }
+        $product_id = $model->{$this->getPrimaryKey()};
+        /**
+         * 更新产品库存。
+         */
+        
+        Yii::$service->product->stock->saveProductStock($product_id,$one);
         /**
          * 更新产品信息到搜索表。
          */
-        $product_ids = [$model->{$this->getPrimaryKey()}];
-        Yii::$service->search->syncProductInfo($product_ids);
+        Yii::$service->search->syncProductInfo([$product_id]);
 
         return true;
     }
@@ -352,8 +359,10 @@ class ProductMongodb implements ProductInterface
                     // 删除在重写url里面的数据。
                     Yii::$service->url->removeRewriteUrlKey($url_key);
                     // 删除在搜索表（各个语言）里面的数据
-                    Yii::$service->search->removeByProductId($model[$this->getPrimaryKey()]);
+                    Yii::$service->search->removeByProductId($id);
+                    Yii::$service->product->stock->removeProductStock($id);
                     $model->delete();
+                    
                     //$this->removeChildCate($id);
                 } else {
                     Yii::$service->helper->errors->add("Product Remove Errors:ID:$id is not exist.");
@@ -370,6 +379,7 @@ class ProductMongodb implements ProductInterface
                 Yii::$service->url->removeRewriteUrlKey($url_key);
                 // 删除在搜索里面的数据
                 Yii::$service->search->removeByProductId($model[$this->getPrimaryKey()]);
+                Yii::$service->product->stock->removeProductStock($id);
                 $model->delete();
                 //$this->removeChildCate($id);
             } else {
