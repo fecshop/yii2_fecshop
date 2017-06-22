@@ -250,13 +250,19 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
         $str .= '';
         $csrfString = \fec\helpers\CRequest::getCsrfString();
         $user_ids = [];
+        $product_ids = [];
         foreach ($data as $one) {
             $user_ids[] = $one['created_user_id'];
+            $product_ids[] = (string)$one['_id'];
         }
+        //var_dump($product_ids);
         $users = Yii::$service->adminUser->getIdAndNameArrByIds($user_ids);
+        $qtys  = Yii::$service->product->stock->getQtyByProductIds($product_ids);
+        //var_dump($qtys );
         foreach ($data as $one) {
             $str .= '<tr target="sid_user" rel="'.$one[$this->_primaryKey].'">';
             $str .= '<td><input name="'.$this->_primaryKey.'s" value="'.$one[$this->_primaryKey].'" type="checkbox"></td>';
+            $p_id = (string)$one[$this->_primaryKey];
             foreach ($fileds as $field) {
                 $orderField = $field['orderField'];
                 $display = $field['display'];
@@ -264,6 +270,11 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
                 $display_title = '';
                 if ($orderField == 'created_user_id') {
                     $val = isset($users[$val]) ? $users[$val] : $val;
+                    $display_title = $val;
+                    $str .= '<td><span title="'.$display_title.'">'.$val.'</span></td>';
+                    continue;
+                }else if($orderField == 'qty'){
+                    $val = $qtys[$p_id];
                     $display_title = $val;
                     $str .= '<td><span title="'.$display_title.'">'.$val.'</span></td>';
                     continue;

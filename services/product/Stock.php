@@ -33,6 +33,27 @@ class Stock extends Service
     protected $_checkItemsStockStatus;
     //protected $CheckItemsStock
     
+    /**
+     * @property $productIds | Array ,  字符串数组
+     * @return  Array ，example 
+     * [
+     *      'product_id'  => 'qty',
+     * ]
+     */
+    public function getQtyByProductIds($productIds){
+        if(!is_array($productIds)){
+            Yii::$service->helper->errors->add('ProductIds must be Array');
+            return false;
+        }
+        $data = ProductFlatQty::find()->asArray()->where([
+            'in','product_id',$productIds
+        ])->all();
+        $arr = [];
+        foreach($data as $one){
+           $arr[$one['product_id']] = $one['qty'];
+        }
+        return $arr;
+    }
     
     /**
      *  @property $product_id | String , mongodb中的产品id字符串
