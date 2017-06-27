@@ -55,7 +55,8 @@ class Placeorder
                     // 将购物车数据，生成订单。
                     $innerTransaction = Yii::$app->db->beginTransaction();
                     try {
-                        $genarateStatus = Yii::$service->order->generateOrderByCart($this->_billing, $this->_shipping_method, $this->_payment_method);
+                        # 生成订单，扣除库存，但是，不清空购物车。
+                        $genarateStatus = Yii::$service->order->generateOrderByCart($this->_billing, $this->_shipping_method, $this->_payment_method,false);
                         if ($genarateStatus) {
                             // 得到当前的订单信息
                             //$orderInfo = Yii::$service->order->getCurrentOrderInfo();

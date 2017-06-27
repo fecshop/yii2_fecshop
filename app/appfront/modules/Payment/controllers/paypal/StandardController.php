@@ -50,7 +50,12 @@ class StandardController extends AppfrontController
     }
     
     
-    
+    public function actionCancel()
+    {
+        Yii::$service->order->cancel();
+
+        return Yii::$service->url->redirectByUrlKey('checkout/onepage');
+    }
     
     
     
@@ -91,12 +96,7 @@ class StandardController extends AppfrontController
         }
     }
 
-    public function actionCancel()
-    {
-        Yii::$service->order->cancel();
-
-        return Yii::$service->url->redirectByUrlKey('checkout/onepage');
-    }
+    
 
     public function actionTest()
     {

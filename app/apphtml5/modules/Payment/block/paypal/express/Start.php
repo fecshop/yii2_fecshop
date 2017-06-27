@@ -19,6 +19,10 @@ class Start
 {
     public function startExpress()
     {
+        $checkStatus = $this->checkStockQty();
+        if(!$checkStatus){
+            return;
+        }
         $methodName_ = 'SetExpressCheckout';
         $nvpStr_ = Yii::$service->payment->paypal->getExpressTokenNvpStr();
         //echo $nvpStr_;exit;
@@ -26,9 +30,14 @@ class Start
         //var_dump($SetExpressCheckoutReturn);
         if (strtolower($SetExpressCheckoutReturn['ACK']) == 'success') {
             $token = $SetExpressCheckoutReturn['TOKEN'];
-            $redirectUrl = Yii::$service->payment->paypal->getSetExpressCheckoutUrl($token);
-            Yii::$service->url->redirect($redirectUrl);
-            exit;
+            # 生成订单，订单中只有id,increment_id,token 三个字段有值。
+            if($token){
+                if(!Yii::$service->order->generatePPExpressOrder($token)){
+                    return false;
+                }
+                $redirectUrl = Yii::$service->payment->paypal->getSetExpressCheckoutUrl($token);
+                return Yii::$service->url->redirect($redirectUrl);
+            }
         } elseif (strtolower($SetExpressCheckoutReturn['ACK']) == 'failure') {
             echo $SetExpressCheckoutReturn['L_LONGMESSAGE0'];
         } else {
@@ -36,8 +45,31 @@ class Start
         }
     }
 
-    // 首先验证购物车中是否存在产品
-    //public function validateCart(){
-
-    //}
+    // 检查购物车中产品的库存。此步只是初步检查，在快捷支付完成返回网站的时候，生成订单的时候，还要进一步检查产品库存，
+    // 因为在支付的过程中，产品可能被买走。
+    public function checkStockQty(){
+        $stockCheck = Yii::$service->product->stock->checkItemsQty();
+        //var_dump($stockCheck);exit;
+        if(!$stockCheck){
+            Yii::$service->url->redirectByUrlKey('checkout/cart');
+            return false;
+        }else{
+            if(isset($stockCheck['stockStatus'])){
+                if($stockCheck['stockStatus'] == 2){
+                    $outStockProducts = $stockCheck['outStockProducts'];
+                    if(is_array($outStockProducts) && !empty($outStockProducts)){
+                        foreach($outStockProducts as $outStockProduct){
+                            $product_name = Yii::$service->store->getStoreAttrVal($outStockProduct['product_name'], 'name');
+                            Yii::$service->helper->errors->add('product: ['.$product_name.'] is stock out.');
+                        }
+                        Yii::$service->page->message->addByHelperErrors();
+                        Yii::$service->url->redirectByUrlKey('checkout/cart');
+                        return false;
+                    }
+                }
+            }
+        }
+        
+        return true;
+    }
 }
