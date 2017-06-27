@@ -203,7 +203,26 @@ class Payment extends Service
             }
         }
     }
-
+    
+    /**
+     * @property $payment_method | String 支付方式。
+     * @return 返回进行数据交互的express的api地址。
+     */
+    public function getStandardApiUrl($payment_method = '')
+    {
+        if (!$payment_method) {
+            $payment_method = $this->getPaymentMethod();
+        }
+        if ($payment_method) {
+            $paymentConfig = $this->paymentConfig;
+            if (isset($paymentConfig['standard'][$payment_method]['api_url'])) {
+                if (!empty($paymentConfig['standard'][$payment_method]['api_url'])) {
+                    return $paymentConfig['standard'][$payment_method]['api_url'];
+                }
+            }
+        }
+    }
+    
     /**
      * @property $url | String url的字符串
      * @return string 根据传递的字符串格式，得到相应的url
@@ -284,6 +303,10 @@ class Payment extends Service
             }
         }
     }
+    
+    
+    
+    
 
     /**
      * @property $payment_method | String 支付方式。
@@ -398,6 +421,26 @@ class Payment extends Service
             }
         }
     }
+    
+    
+    /**
+     * @property $payment_method | String 支付方式。
+     * @return 返回进行数据交互的express的signature。
+     */
+    public function getStandardReturnUrl($payment_method = '')
+    {
+        if (!$payment_method) {
+            $payment_method = $this->getPaymentMethod();
+        }
+        if ($payment_method) {
+            $paymentConfig = $this->paymentConfig;
+            if (isset($paymentConfig['standard'][$payment_method]['return_url'])) {
+                if (!empty($paymentConfig['standard'][$payment_method]['return_url'])) {
+                    return $this->getUrl($paymentConfig['standard'][$payment_method]['return_url']);
+                }
+            }
+        }
+    }
 
     /**
      * @property $payment_method | String 支付方式。
@@ -433,6 +476,28 @@ class Payment extends Service
             if (isset($paymentConfig['express'][$payment_method]['success_redirect_url'])) {
                 if (!empty($paymentConfig['express'][$payment_method]['success_redirect_url'])) {
                     return $this->getUrl($paymentConfig['express'][$payment_method]['success_redirect_url']);
+                }
+            }
+        }
+    }
+    
+    
+    
+    
+     /**
+     * @property $payment_method | String 支付方式。
+     * @return 返回进行数据交互的express的signature。
+     */
+    public function getExpressIpnUrl($payment_method = '')
+    {
+        if (!$payment_method) {
+            $payment_method = $this->getPaymentMethod();
+        }
+        if ($payment_method) {
+            $paymentConfig = $this->paymentConfig;
+            if (isset($paymentConfig['express'][$payment_method]['ipn_url'])) {
+                if (!empty($paymentConfig['express'][$payment_method]['ipn_url'])) {
+                    return $this->getUrl($paymentConfig['express'][$payment_method]['ipn_url']);
                 }
             }
         }

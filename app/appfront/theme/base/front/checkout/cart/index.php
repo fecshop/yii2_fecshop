@@ -3,6 +3,7 @@ use fecshop\app\appfront\helper\Format;
 ?>
 <div class="main container one-column">
 	<div class="col-main">
+    <?= Yii::$service->page->widget->render('flashmessage'); ?>
 	<?php if(is_array($cart_info) && !empty($cart_info)){   ?>
 			    
 		<div class="product_page">

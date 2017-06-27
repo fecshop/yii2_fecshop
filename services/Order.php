@@ -98,6 +98,22 @@ class Order extends Service
             return new MyOrder();
         }
     }
+    
+    /**
+     * @property $increment_id | String , 订单号
+     * @return object （MyOrder），返回 MyOrder model
+     *                通过订单号，得到订单信息。
+     */
+    protected function actionGetByIncrementId($increment_id)
+    {
+        $one = MyOrder::findOne(['increment_id' => $increment_id]);
+        $primaryKey = $this->getPrimaryKey();
+        if ($one[$primaryKey]) {
+            return $one;
+        } else {
+            return false;
+        }
+    }
 
     /**
      * @property $reflush | boolean 是否从数据库中重新获取，如果是，则不会使用类变量中计算的值
@@ -283,21 +299,7 @@ class Order extends Service
         return true;
     }
 
-    /**
-     * @property $increment_id | String , 订单号
-     * @return object （MyOrder），返回 MyOrder model
-     *                通过订单号，得到订单信息。
-     */
-    protected function actionGetByIncrementId($increment_id)
-    {
-        $one = MyOrder::findOne(['increment_id' => $increment_id]);
-        $primaryKey = $this->getPrimaryKey();
-        if ($one[$primaryKey]) {
-            return $one;
-        } else {
-            return false;
-        }
-    }
+    
 
     /**
      * @property $increment_id | String , 订单号
@@ -323,16 +325,61 @@ class Order extends Service
             return;
         }
     }
+    
+    protected function actionGeneratePPExpressOrder($token){
+        $myOrder = new MyOrder();
+        $myOrder->payment_token = $token;
+        $myOrder->save();
+        $order_id = $myOrder['order_id'];
+        if($order_id){
+            $increment_id = $this->generateIncrementIdByOrderId($order_id);
+            $myOrder['increment_id'] = $increment_id;
+            $myOrder->save();
+            $this->setSessionIncrementId($increment_id);
+            return true;
+        }else{
+            Yii::$service->helper->errors->add('generate order fail');
+            return false;
+        }
+    }
+    
+    protected function actionGetByPaymentToken($token){
+        $one = MyOrder::find()->where(['payment_token' => $token])
+            ->one();
+        if(isset($one['order_id']) && $one['order_id']){
+            return $one;
+        }else{
+            return '';
+        }
+    }
+    
+    
+    /**
+     * @property $reflush | boolean 是否从数据库中重新获取，如果是，则不会使用类变量中计算的值
+     * 通过从session中取出来订单的increment_id
+     * 在通过increment_id(订单编号)取出来订单信息。
+     */
+    protected function actionGetInfoByPaymentToken($token)
+    {
+        $orderModel = $this->getByPaymentToken($token);
+        $increment_id = isset($orderModel['increment_id']) ? $orderModel['increment_id'] : '';
+        return Yii::$service->order->getOrderInfoByIncrementId($increment_id);
+        
+    }
+    
+    
 
     /**
      * @property $address | Array 货运地址
      * @property $shipping_method | String 货运快递方式
      * @property $payment_method | Array 支付方式、
      * @property $clearCartAndDeductStock | boolean 是否清空购物车，并扣除库存，这种情况是先 生成订单，在支付的情况下失败的处理方式。
+     
+     * @property $token | string 代表 通过payment_token得到order，然后更新order信息的方式生成order，这个是paypal购物车express支付对应的功能
      * @return bool 通过购物车的数据生成订单是否成功
      *              通过购物车中的产品信息，以及传递的货运地址，货运快递方式，支付方式生成订单。
      */
-    protected function actionGenerateOrderByCart($address, $shipping_method, $payment_method, $clearCart = true)
+    protected function actionGenerateOrderByCart($address, $shipping_method, $payment_method, $clearCart = true , $token = '')
     {
         $cart = Yii::$service->cart->quote->getCurrentCart();
         if (!$cart) {
@@ -368,7 +415,19 @@ class Order extends Service
         $beforeEventName = 'event_generate_order_before';
         $afterEventName = 'event_generate_order_after';
         Yii::$service->event->trigger($beforeEventName, $cartInfo);
-        $myOrder = new MyOrder();
+        if($token){
+            // 有token 代表前面已经生成了order，直接通过token查询出来即可。
+            $myOrder = $this->getByPaymentToken($token);
+            if(!$myOrder){
+                Yii::$service->helper->errors->add('order increment id is not exist.');
+                return false;
+            }else{
+                $increment_id = $myOrder['increment_id'];
+            }
+        }else{
+            $myOrder = new MyOrder();
+        }
+        
         $myOrder['order_status'] = $this->payment_status_pending;
         $myOrder['store'] = $cartInfo['store'];
         $myOrder['created_at'] = time();
@@ -415,16 +474,17 @@ class Order extends Service
         $myOrder['payment_method'] = $payment_method;
         $myOrder['shipping_method'] = $shipping_method;
         $myOrder->save();
-        $order_id = Yii::$app->db->getLastInsertId();
-        $increment_id = $this->generateIncrementIdByOrderId($order_id);
-        $orderModel = $this->getByPrimaryKey($order_id);
-        Yii::$service->event->trigger($afterEventName, $orderModel);
-        if ($orderModel[$this->getPrimaryKey()]) {
-            $orderModel['increment_id'] = $increment_id;
-            $orderModel->save();
+        $order_id = $myOrder['order_id'];
+        if(!$increment_id){
+            $increment_id = $this->generateIncrementIdByOrderId($order_id);
+            $myOrder['increment_id'] = $increment_id;
+            $myOrder->save();
+        }
+        $this->setSessionIncrementId($increment_id);
+        Yii::$service->event->trigger($afterEventName, $myOrder);
+        if ($myOrder[$this->getPrimaryKey()]) {
             Yii::$service->order->item->saveOrderItems($cartInfo['products'], $order_id, $cartInfo['store']);
             
-            $this->setSessionIncrementId($increment_id);
             // 优惠券
             // 优惠券是在购物车页面添加的，添加后，优惠券的使用次数会被+1，
             // 因此在生成订单部分，是没有优惠券使用次数操作的（在购物车添加优惠券已经被执行该操作）
@@ -458,6 +518,18 @@ class Order extends Service
     protected function actionGetSessionIncrementId()
     {
         return Yii::$app->session->get(self::CURRENT_ORDER_CREAMENT_ID);
+    }
+    /**
+     * @property $increment_id | String 订单号
+     * @property $token | String ，通过api支付的token
+     * 通过订单号，更新订单的支付token
+     */
+    protected function actionUpdateTokenByIncrementId($increment_id,$token){
+        $myOrder = Yii::$service->order->getByIncrementId($increment_id);
+        if($myOrder){
+            $myOrder->payment_token = $token;
+            $myOrder->save();
+        }
     }
 
     /**

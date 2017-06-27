@@ -39,6 +39,7 @@ class Paypal extends Service
     public $use_local_certs = false;
     // 在payment中 express paypal 的配置值
     public $express_payment_method;
+    public $standard_payment_method;
     public $version = '109.0';
     public $crt_file;
 
@@ -47,7 +48,9 @@ class Paypal extends Service
 
     const EXPRESS_TOKEN = 'paypal_express_token';
     const EXPRESS_PAYER_ID = 'paypal_express_payer_id';
-
+    
+    protected $expressPayerID;
+    protected $expressToken;
     /**
      * @property $domain | string
      * @return 得到证书crt文件的绝对路径
@@ -286,12 +289,15 @@ class Paypal extends Service
                     // 发送新订单邮件
                     Yii::$service->email->order->sendCreateEmail($orderInfo);
                 } elseif ($payment_status == $this->payment_status_failed) {
-                    $this->_order->order_status = Yii::$service->order->payment_status_canceled;
-                    $this->_order->save();
+                    # 因为涉及到扣库存，因此，先不更改订单状态。
+                    //$this->_order->order_status = Yii::$service->order->payment_status_canceled;
+                    //$this->_order->save();
                 } elseif ($payment_status == $this->payment_status_refunded) {
-                    $this->_order->order_status = Yii::$service->order->payment_status_canceled;
-                    $this->_order->save();
+                    # 因为涉及到扣库存，因此，先不更改订单状态。
+                    //$this->_order->order_status = Yii::$service->order->payment_status_canceled;
+                    //$this->_order->save();
                 } else {
+                    
                 }
             }
             //$innerTransaction->commit();
@@ -318,6 +324,23 @@ class Paypal extends Service
             return $ApiUrl.'?cmd=_express-checkout&token='.urlencode($token);
         }
     }
+    
+    
+    /**
+     * @property $token | String , 通过 下面的 PPHttpPost5 方法返回的paypal express的token
+     * @return String，通过token得到跳转的 paypal url，
+     *                                             得到上面的url后，进行跳转到paypal，然后确认，然后返回到fecshop，paypal会传递货运地址等信息
+     *                                             到fecshop，这样用户不需要手动填写货运地址等信息。因此，这种方式为快捷支付。
+     */
+    public function getSetStandardCheckoutUrl($token)
+    {
+        if ($token) {
+            $ApiUrl = Yii::$service->payment->getStandardApiUrl($this->standard_payment_method);
+
+            return $ApiUrl.'?useraction=commit&cmd=_express-checkout&token='.urlencode($token);
+        }
+    }
+
 
     /**
      * @property $methodName_ | String，请求的方法，譬如： $methodName_ = "SetExpressCheckout";
@@ -329,12 +352,18 @@ class Paypal extends Service
     public function PPHttpPost5($methodName_, $nvpStr_, $i = 1)
     {
         $API_NvpUrl = Yii::$service->payment->getExpressNvpUrl($this->express_payment_method);
-        $API_Signature = Yii::$service->payment->getExpressSignature($this->express_payment_method);
-        $API_UserName = Yii::$service->payment->getExpressAccount($this->express_payment_method);
-        $API_Password = Yii::$service->payment->getExpressPassword($this->express_payment_method);
+        $API_Signature  = Yii::$service->payment->getExpressSignature($this->express_payment_method);
+        $API_UserName   = Yii::$service->payment->getExpressAccount($this->express_payment_method);
+        $API_Password   = Yii::$service->payment->getExpressPassword($this->express_payment_method);
+        $ipn_url        = Yii::$service->payment->getExpressIpnUrl($this->express_payment_method);
+        
         // Set the API operation, version, and API signature in the request.
-        $nvpreq = "METHOD=$methodName_&PWD=$API_Password&USER=$API_UserName&SIGNATURE=$API_Signature$nvpStr_";
-
+        $nvpreq  =  "METHOD=$methodName_&PWD=$API_Password&USER=$API_UserName&SIGNATURE=$API_Signature$nvpStr_";
+        $nvpreq .=  "&PAYMENTREQUEST_0_NOTIFYURL=".urlencode($ipn_url);
+        //echo $nvpreq;
+        //\Yii::info($nvpreq, 'fecshop_debug');
+       
+        //exit;
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
         curl_setopt($ch, CURLOPT_URL, $API_NvpUrl);
@@ -359,6 +388,7 @@ class Paypal extends Service
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['Connection: Close']);
         // Get response from the server.
         $httpResponse = curl_exec($ch);
+        //echo "<br><br>%%%%%".$httpResponse."%%%%%<br><br>";
         if (!$httpResponse) {
             $i++;
             if ($i > 5) {
@@ -414,12 +444,12 @@ class Paypal extends Service
      * 【paypal快捷支付部分】api发送付款
      *  通过该函数，将参数组合成字符串，通过api发送给paypal进行付款。
      */
-    public function getExpressCheckoutPaymentNvpStr()
+    public function getExpressCheckoutPaymentNvpStr($token)
     {
         $nvp_array = [];
 
         $nvp_array['PAYERID'] = $this->getExpressPayerID();
-        $nvp_array['TOKEN'] = $this->getExpressToken();
+        $nvp_array['TOKEN']   = $this->getExpressToken();
         $nvp_array['PAYMENTREQUEST_0_PAYMENTACTION'] = 'Sale';
         $nvp_array['VERSION'] = $this->version;
         // https://developer.paypal.com/docs/classic/api/merchant/SetExpressCheckout_API_Operation_NVP/
@@ -427,7 +457,7 @@ class Paypal extends Service
         $nvp_array['ADDROVERRIDE'] = 0;
         //ADDROVERRIDE
         // 得到购物车的信息，通过购物车信息填写。
-        $orderInfo = Yii::$service->order->getCurrentOrderInfo();
+        $orderInfo = Yii::$service->order->getInfoByPaymentToken($token);
         //$cartInfo = Yii::$service->cart->getCartInfo();
         $currency = Yii::$service->page->currency->getCurrentCurrency();
 
@@ -437,25 +467,25 @@ class Paypal extends Service
         $discount_amount = Yii::$service->helper->format->number_format($orderInfo['subtotal_with_discount']);
         $subtotal = $subtotal - $discount_amount;
 
-        $nvp_array['PAYMENTREQUEST_0_SHIPTOSTREET'] = $orderInfo['customer_address_street1'].' '.$orderInfo['customer_address_street2'];
-        $nvp_array['PAYMENTREQUEST_0_SHIPTOCITY'] = $orderInfo['customer_address_city'];
-        $nvp_array['PAYMENTREQUEST_0_SHIPTOSTATE'] = $orderInfo['customer_address_state_name'];
-        $nvp_array['PAYMENTREQUEST_0_SHIPTOCOUNTRYCODE'] = $orderInfo['customer_address_country'];
-        $nvp_array['PAYMENTREQUEST_0_SHIPTOZIP'] = $orderInfo['customer_address_zip'];
-        $nvp_array['PAYMENTREQUEST_0_SHIPTONAME'] = $orderInfo['customer_firstname'].' '.$orderInfo['customer_lastname'];
-        $nvp_array['PAYMENTREQUEST_0_INVNUM'] = $orderInfo['increment_id'];
+        $nvp_array['PAYMENTREQUEST_0_SHIPTOSTREET']         = $orderInfo['customer_address_street1'].' '.$orderInfo['customer_address_street2'];
+        $nvp_array['PAYMENTREQUEST_0_SHIPTOCITY']           = $orderInfo['customer_address_city'];
+        $nvp_array['PAYMENTREQUEST_0_SHIPTOSTATE']          = $orderInfo['customer_address_state_name'];
+        $nvp_array['PAYMENTREQUEST_0_SHIPTOCOUNTRYCODE']    = $orderInfo['customer_address_country'];
+        $nvp_array['PAYMENTREQUEST_0_SHIPTOZIP']            = $orderInfo['customer_address_zip'];
+        $nvp_array['PAYMENTREQUEST_0_SHIPTONAME']           = $orderInfo['customer_firstname'].' '.$orderInfo['customer_lastname'];
+        $nvp_array['PAYMENTREQUEST_0_INVNUM']               = $orderInfo['increment_id'];
 
-        $nvp_array['PAYMENTREQUEST_0_CURRENCYCODE'] = $currency;
-        $nvp_array['PAYMENTREQUEST_0_AMT'] = $grand_total;
-        $nvp_array['PAYMENTREQUEST_0_ITEMAMT'] = $subtotal;
-        $nvp_array['PAYMENTREQUEST_0_SHIPPINGAMT'] = $shipping_total;
+        $nvp_array['PAYMENTREQUEST_0_CURRENCYCODE']         = $currency;
+        $nvp_array['PAYMENTREQUEST_0_AMT']                  = $grand_total;
+        $nvp_array['PAYMENTREQUEST_0_ITEMAMT']              = $subtotal;
+        $nvp_array['PAYMENTREQUEST_0_SHIPPINGAMT']          = $shipping_total;
         $i = 0;
 
         foreach ($orderInfo['products'] as $item) {
             $nvp_array['L_PAYMENTREQUEST_0_QTY'.$i] = $item['qty'];
             $nvp_array['L_PAYMENTREQUEST_0_NUMBER'.$i] = $item['sku'];
             $nvp_array['L_PAYMENTREQUEST_0_AMT'.$i] = Yii::$service->helper->format->number_format($item['price']);
-            $nvp_array['L_PAYMENTREQUEST_0_NAME'.$i] = Yii::$service->store->getStoreAttrVal($item['name'], 'name');
+            $nvp_array['L_PAYMENTREQUEST_0_NAME'.$i] = $item['name'];
             $nvp_array['L_PAYMENTREQUEST_0_CURRENCYCODE'.$i] = $currency;
             $i++;
         }
@@ -523,70 +553,101 @@ class Paypal extends Service
 
         return $this->getRequestUrlStrByArray($nvp_array);
     }
-
+    
+    
     /**
-     * 从request get 中取出来token，然后保存到session中.
+     * @property $landingPage | String ，访问api的类型，譬如login
+     * 【paypal快捷支付部分】通过购物车中的数据，组合成访问paypal express api的url
+     * 这里返回的的字符串，是快捷支付部分获取token和payerId的参数。
+     * 通过这些参数最终得到paypal express的token和payerId
      */
-    public function setExpressToken()
+    public function getStandardTokenNvpStr($landingPage = 'Login')
     {
-        $token = Yii::$app->request->get('token');
-        $token = \Yii::$service->helper->htmlEncode($token);
-        if ($token) {
-            Yii::$app->session->set(self::EXPRESS_TOKEN, $token);
+        $nvp_array = [];
+        $nvp_array['LANDINGPAGE'] = $landingPage;
+        $nvp_array['RETURNURL'] = Yii::$service->payment->getStandardReturnUrl('paypal_standard');
+        $nvp_array['CANCELURL'] = Yii::$service->payment->getStandardCancelUrl('paypal_standard');
+        $nvp_array['PAYMENTREQUEST_0_PAYMENTACTION'] = 'Sale';
+        $nvp_array['VERSION'] = $this->version;
+        // 得到购物车的信息，通过购物车信息填写。
+        $orderInfo      = Yii::$service->order->getCurrentOrderInfo();
+        //var_dump($orderInfo);
+        $currency       = $orderInfo['order_currency_code'];
 
-            return true;
+        $grand_total    = Yii::$service->helper->format->number_format($orderInfo['grand_total']);
+        $subtotal       = Yii::$service->helper->format->number_format($orderInfo['subtotal']);
+        $shipping_total = Yii::$service->helper->format->number_format($orderInfo['shipping_total']);
+        $discount_amount= $orderInfo['subtotal_with_discount'] ? $orderInfo['subtotal_with_discount'] : 0;
+        //$subtotal = $subtotal - $discount_amount;
+
+        $nvp_array['PAYMENTREQUEST_0_CURRENCYCODE'] = $currency;
+        $nvp_array['PAYMENTREQUEST_0_AMT']          = $grand_total;
+        $nvp_array['PAYMENTREQUEST_0_ITEMAMT']      = $subtotal;
+        $nvp_array['PAYMENTREQUEST_0_SHIPPINGAMT']  = $shipping_total;
+        $i = 0;
+
+        foreach ($orderInfo['products'] as $item) {
+            $nvp_array['L_PAYMENTREQUEST_0_QTY'.$i] = $item['qty'];
+            $nvp_array['L_PAYMENTREQUEST_0_NUMBER'.$i] = $item['sku'];
+            $nvp_array['L_PAYMENTREQUEST_0_AMT'.$i] = Yii::$service->helper->format->number_format($item['price']);
+            $nvp_array['L_PAYMENTREQUEST_0_NAME'.$i] = $item['name'];;
+            $nvp_array['L_PAYMENTREQUEST_0_CURRENCYCODE'.$i] = $currency;
+            $i++;
         }
-
-        return false;
+        $nvp_array['L_PAYMENTREQUEST_0_NAME'.$i] = 'Discount';
+        $nvp_array['L_PAYMENTREQUEST_0_AMT'.$i] = '-'.$discount_amount;
+        
+        //var_dump($nvp_array);
+        return $this->getRequestUrlStrByArray($nvp_array);
     }
 
     /**
-     * 从request get 中取出来PayerID，然后保存到session中.
-     */
-    public function setExpressPayerID()
-    {
-        $PayerID = Yii::$app->request->get('PayerID');
-        $PayerID = \Yii::$service->helper->htmlEncode($PayerID);
-        if ($PayerID) {
-            Yii::$app->session->set(self::EXPRESS_PAYER_ID, $PayerID);
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * 从session 中取出来token.
+     * 从get参数里得到express支付的token
      */
     public function getExpressToken()
     {
-        return Yii::$app->session->get(self::EXPRESS_TOKEN);
+        if(!$this->expressToken){
+            $token = Yii::$app->request->get('token');
+            $token = \Yii::$service->helper->htmlEncode($token);
+            if ($token) {
+                $this->expressToken = $token;
+            }
+        }
+        return $this->expressToken;
     }
 
     /**
-     * 从session 中取出来PayerID.
+     * 从get参数里得到express支付的PayerID
      */
     public function getExpressPayerID()
     {
-        return Yii::$app->session->get(self::EXPRESS_PAYER_ID);
+        if(!$this->expressPayerID){
+            $PayerID = Yii::$app->request->get('PayerID');
+            $PayerID = \Yii::$service->helper->htmlEncode($PayerID);
+            if ($PayerID) {
+                $this->expressPayerID = $PayerID;
+            }
+        }
+        return $this->expressPayerID;
     }
 
     /**
      * @property $doExpressCheckoutReturn | Array ， 上面的 函数 doExpressCheckoutPayment 返回的数据
      * 快捷支付付款状态提交后，更新订单的支付部分的信息。
      */
-    public function updateExpressOrderPayment($DoExpressCheckoutReturn)
+    public function updateExpressOrderPayment($DoExpressCheckoutReturn,$token)
     {
         if ($DoExpressCheckoutReturn) {
             //echo 'aaa';
-            $increment_id = Yii::$service->order->getSessionIncrementId();
+            //$increment_id = Yii::$service->order->getSessionIncrementId();
             //echo "\n $increment_id \n\n";
-            $order = Yii::$service->order->getByIncrementId($increment_id);
+            //$order = Yii::$service->order->getByIncrementId($increment_id);
+            echo '########'.$token.'#####';
+            $order = Yii::$service->order->getByPaymentToken($token);
             $order_cancel_status = Yii::$service->order->payment_status_canceled;
             // 如果订单状态被取消，那么不能进行支付。
             if ($order['order_status'] == $order_cancel_status) {
-                Yii::$service->helper->error->add('The order status has been canceled and you can not pay for item ,you can create a new order to pay');
+                Yii::$service->helper->errors->add('The order status has been canceled and you can not pay for item ,you can create a new order to pay');
 
                 return false;
             }
@@ -609,10 +670,15 @@ class Paypal extends Service
                 $order['payment_type'] = $DoExpressCheckoutReturn['PAYMENTINFO_0_PAYMENTTYPE'];
                 $order['paypal_order_datetime'] = date('Y-m-d H:i:s', $DoExpressCheckoutReturn['PAYMENTINFO_0_ORDERTIME']);
                 $PAYMENTINFO_0_PAYMENTSTATUS = $DoExpressCheckoutReturn['PAYMENTINFO_0_PAYMENTSTATUS'];
-
+                
+                echo $this->payment_status_completed.'##'.$PAYMENTINFO_0_PAYMENTSTATUS."<br>";
                 if (strtolower($PAYMENTINFO_0_PAYMENTSTATUS) == $this->payment_status_completed) {
                     //echo 222;
                     // 判断金额是否相符
+                    echo $currency."<br/>";
+                    echo $order['order_currency_code']."<br/>";
+                    echo $PAYMENTINFO_0_AMT."<br/>";
+                    echo $order['grand_total']."<br/>";
                     if ($currency == $order['order_currency_code'] && $PAYMENTINFO_0_AMT == $order['grand_total']) {
                         //echo 222;
                         $order->order_status = Yii::$service->order->payment_status_processing;

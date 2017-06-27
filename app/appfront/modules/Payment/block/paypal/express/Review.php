@@ -424,14 +424,14 @@ class Review
 
     public function expressReview()
     {
-        $setTokenStatus = Yii::$service->payment->paypal->setExpressToken();
-        $setPayerIDStatus = Yii::$service->payment->paypal->setExpressPayerID();
-        if (!$setTokenStatus) {
+        $getToken = Yii::$service->payment->paypal->getExpressToken();
+        $getPayerID = Yii::$service->payment->paypal->getExpressPayerID();
+        if (!$getToken) {
             Yii::$service->page->message->AddError('paypal express token is empty');
 
             return [];
         }
-        if (!$setPayerIDStatus) {
+        if (!$getPayerID) {
             Yii::$service->page->message->AddError('paypal express PayerID is empty');
 
             return [];

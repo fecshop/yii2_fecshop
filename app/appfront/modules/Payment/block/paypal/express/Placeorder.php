@@ -35,6 +35,11 @@ class Placeorder
     public function getLastData()
     {
         $post = Yii::$app->request->post();
+        $token = Yii::$app->request->get('token');
+        if(!$token){
+            Yii::$service->helper->errors->add('token can not empty');
+            return false;
+        }
         if (is_array($post) && !empty($post)) {
             $post = \Yii::$service->helper->htmlEncode($post);
             // 设置paypal快捷支付
@@ -54,7 +59,7 @@ class Placeorder
                     // 将购物车数据，生成订单,生成订单后，不清空购物车，不扣除库存，在支付成功后在清空购物车。
                     $innerTransaction = Yii::$app->db->beginTransaction();
                     try {
-                        $genarateStatus = Yii::$service->order->generateOrderByCart($this->_billing, $this->_shipping_method, $this->_payment_method, false);
+                        $genarateStatus = Yii::$service->order->generateOrderByCart($this->_billing, $this->_shipping_method, $this->_payment_method, false,$token);
                         if ($genarateStatus) {
                             $innerTransaction->commit();
                         } else {
@@ -66,10 +71,10 @@ class Placeorder
                     //echo 22;
                     if ($genarateStatus) {
                         // 得到当前的订单信息
-                        $doExpressCheckoutReturn = $this->doExpressCheckoutPayment();
+                        $doExpressCheckoutReturn = $this->doExpressCheckoutPayment($token);
                         //echo 333;
                         if ($doExpressCheckoutReturn) {
-                            $ExpressOrderPayment = Yii::$service->payment->paypal->updateExpressOrderPayment($doExpressCheckoutReturn);
+                            $ExpressOrderPayment = Yii::$service->payment->paypal->updateExpressOrderPayment($doExpressCheckoutReturn,$token);
                             // 如果支付成功，并把信息更新到了订单数据中，则进行下面的操作。
                             //echo 444;
                             if ($ExpressOrderPayment) {
@@ -107,10 +112,10 @@ class Placeorder
         return false;
     }
 
-    public function doExpressCheckoutPayment()
+    public function doExpressCheckoutPayment($token)
     {
         $methodName_ = 'DoExpressCheckoutPayment';
-        $nvpStr_ = Yii::$service->payment->paypal->getExpressCheckoutPaymentNvpStr();
+        $nvpStr_ = Yii::$service->payment->paypal->getExpressCheckoutPaymentNvpStr($token);
         //echo $nvpStr_;exit;
         $DoExpressCheckoutReturn = Yii::$service->payment->paypal->PPHttpPost5($methodName_, $nvpStr_);
         //var_dump($DoExpressCheckoutReturn);

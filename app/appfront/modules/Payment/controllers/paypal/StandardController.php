@@ -18,6 +18,47 @@ use Yii;
  */
 class StandardController extends AppfrontController
 {
+    
+    public $enableCsrfValidation = true;
+
+    public function actionStart()
+    {
+        return $this->getBlock()->startExpress();
+    }
+
+    // 2.Review  从paypal确认后返回
+    public function actionReview()
+    {
+        $this->getBlock('placeorder')->getLastData();
+    }
+    
+    
+    public function actionIpn()
+    {
+        \Yii::info('paypal ipn begin', 'fecshop_debug');
+       
+        $post = Yii::$app->request->post();
+        if (is_array($post) && !empty($post)) {
+            $post = \Yii::$service->helper->htmlEncode($post);
+            ob_start();
+            ob_implicit_flush(false);
+            var_dump($post);
+            $post_log = ob_get_clean();
+            \Yii::info($post_log, 'fecshop_debug');
+            //Yii::$service->payment->paypal->receiveIpn($post);
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /*
     public $enableCsrfValidation = false;
     private $use_local_certs = true;
 
@@ -46,7 +87,7 @@ class StandardController extends AppfrontController
             $post_log = ob_get_clean();
             \Yii::info($post_log, 'fecshop_debug');
 
-            Yii::$service->payment->paypal->receiveIpn($post);
+            //Yii::$service->payment->paypal->receiveIpn($post);
         }
     }
 
@@ -79,4 +120,5 @@ class StandardController extends AppfrontController
         $res = curl_exec($ch);
         echo $res;
     }
+    */
 }
