@@ -598,6 +598,7 @@ class Paypal extends Service
         $nvp_array['L_PAYMENTREQUEST_0_AMT'.$i] = '-'.$discount_amount;
         
         //var_dump($nvp_array);
+	//exit;
         return $this->getRequestUrlStrByArray($nvp_array);
     }
 
