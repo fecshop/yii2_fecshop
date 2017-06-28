@@ -578,7 +578,7 @@ class Paypal extends Service
         $subtotal       = Yii::$service->helper->format->number_format($orderInfo['subtotal']);
         $shipping_total = Yii::$service->helper->format->number_format($orderInfo['shipping_total']);
         $discount_amount= $orderInfo['subtotal_with_discount'] ? $orderInfo['subtotal_with_discount'] : 0;
-        //$subtotal = $subtotal - $discount_amount;
+        $subtotal = $subtotal - $discount_amount;
 
         $nvp_array['PAYMENTREQUEST_0_CURRENCYCODE'] = $currency;
         $nvp_array['PAYMENTREQUEST_0_AMT']          = $grand_total;
