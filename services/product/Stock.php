@@ -191,7 +191,7 @@ class Stock extends Service
                         $productFlatQty = ProductFlatQty::find()->where([
                             'product_id' => $product_id
                         ])->one();
-                        if(!$productFlatQty['qty'] || $productFlatQty['qty'] < 0){
+                        if($productFlatQty['qty'] < 0){
                             Yii::$service->helper->errors->add('product: [ '.$product_name.' ] is stock out ');
                             return false;
                         }
