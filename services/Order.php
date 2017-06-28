@@ -209,15 +209,10 @@ class Order extends Service
         $query = MyOrder::find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
         $coll = $query->all();
-        if (!empty($coll)) {
-            foreach ($coll as $k => $one) {
-                $coll[$k] = $one;
-            }
-        }
-
+        
         return [
             'coll' => $coll,
-            'count'=> $query->count(),
+            'count'=> $query->limit(null)->offset(null)->count(),
         ];
     }
 

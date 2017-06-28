@@ -177,7 +177,7 @@ class Review extends Service
 
         return [
             'coll' => $query->all(),
-            'count'=> $query->count(),
+            'count'=> $query->limit(null)->offset(null)->count(),
         ];
     }
 

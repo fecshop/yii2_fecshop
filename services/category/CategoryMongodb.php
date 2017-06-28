@@ -61,7 +61,7 @@ class CategoryMongodb implements CategoryInterface
 
         return [
             'coll' => $query->all(),
-            'count'=> $query->count(),
+            'count'=> $query->limit(null)->offset(null)->count(),
         ];
     }
 

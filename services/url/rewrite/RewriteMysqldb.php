@@ -92,7 +92,7 @@ class RewriteMysqldb implements RewriteInterface
         //var_dump($one);
         return [
             'coll' => $coll,
-            'count'=> $query->count(),
+            'count'=> $query->limit(null)->offset(null)->count(),
         ];
     }
 

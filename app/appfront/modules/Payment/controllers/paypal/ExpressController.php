@@ -59,4 +59,9 @@ class ExpressController extends AppfrontController
             //Yii::$service->payment->paypal->receiveIpn($post);
         }
     }
+    
+    public function actionCancel()
+    {
+        return Yii::$service->url->redirectByUrlKey('checkout/onepage');
+    }
 }
