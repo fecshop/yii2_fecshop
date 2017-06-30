@@ -29,7 +29,11 @@ class m170628_052812_fecshop_tables extends Migration
             CHANGE `row_total` `row_total` DECIMAL( 12, 2 ) NULL DEFAULT NULL COMMENT '一个产品价格*个数',
             CHANGE `base_row_total` `base_row_total` DECIMAL( 12, 2 ) NULL DEFAULT NULL COMMENT '一个产品默认货币价格*个数'
             "
-
+            ,
+            "
+            ALTER TABLE `sales_flat_order`  ADD `version` INT(5) NOT NULL DEFAULT '0' COMMENT '订单支付成功后，需要更改订单状态和扣除库存，为了防止多次执行扣除库存，进而使用版本号，默认为0，执行一次更改订单状态为processing，则累加1，执行完查询version是否为1，如果不为1，则说明执行过了，事务则回滚。'
+            "
+            ,
         ];
     
         foreach ($arr as $sql) {

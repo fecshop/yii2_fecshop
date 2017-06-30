@@ -320,7 +320,11 @@ class Order extends Service
             return;
         }
     }
-    
+    /**
+     * @property $token | String  , paypal 支付获取的token，订单生成后只有三个字段
+     *       order_id, increment_id , payment_token ，目的就是将token对应到一个increment_id
+     *       在paypal 点击continue的时候，可以通过token找到对应的订单。
+     */
     protected function actionGeneratePPExpressOrder($token){
         $myOrder = new MyOrder();
         $myOrder->payment_token = $token;
@@ -337,7 +341,10 @@ class Order extends Service
             return false;
         }
     }
-    
+    /**
+     * @property $token | String  , paypal 支付获取的token，
+     *   通过token 得到订单 Object
+     */
     protected function actionGetByPaymentToken($token){
         $one = MyOrder::find()->where(['payment_token' => $token])
             ->one();
@@ -475,11 +482,19 @@ class Order extends Service
             $myOrder['increment_id'] = $increment_id;
             $myOrder->save();
         }
-        $this->setSessionIncrementId($increment_id);
+        
+        
         Yii::$service->event->trigger($afterEventName, $myOrder);
         if ($myOrder[$this->getPrimaryKey()]) {
             Yii::$service->order->item->saveOrderItems($cartInfo['products'], $order_id, $cartInfo['store']);
             
+            // 有token的，代表是更新类型，譬如购物车点击paypal express支付的方式
+            // 这种类型要进行检查，不能多次执行。该函数必须在订单操作完成的情况下执行。
+            if($token){
+                if(!$this->checkOrderVersion($increment_id)){
+                    return false;
+                }
+            }
             // 优惠券
             // 优惠券是在购物车页面添加的，添加后，优惠券的使用次数会被+1，
             // 因此在生成订单部分，是没有优惠券使用次数操作的（在购物车添加优惠券已经被执行该操作）
@@ -489,12 +504,39 @@ class Order extends Service
             if (!Yii::$app->user->isGuest && $clearCart) {
                 Yii::$service->cart->clearCartProductAndCoupon();
             }
-
+            // 执行成功，则在session中设置increment_id
+            $this->setSessionIncrementId($increment_id);
             return true;
         } else {
             Yii::$service->helper->errors->add('generate order fail');
 
             return false;
+        }
+    }
+    
+    /**
+     * @property $increment_id | String 每执行一次，version都会+1 （version默认为0）
+     * 执行完，查看version是否为1，如果不为1，则说明已经执行过了，返回false
+     */
+    protected  function  checkOrderVersion($increment_id){
+        # 更新订单版本号，防止被多次执行。
+        $sql    = 'update '.MyOrder::tableName().' set version = version + 1  where increment_id = :increment_id';
+        $data   = [
+            'increment_id'  => $increment_id,
+        ];
+        $result     = MyOrder::getDb()->createCommand($sql,$data)->execute();
+        $MyOrder    = MyOrder::find()->where([
+            'increment_id'  => $increment_id,
+        ])->one();
+        # 如果版本号不等于1，则回滚
+        if($MyOrder['version'] > 1){
+            Yii::$service->helper->errors->add('Your order has been paid');
+            return false;
+        }else if($MyOrder['version'] < 1){
+            Yii::$service->helper->errors->add('Your order is error');
+            return false;
+        }else{
+            return true;
         }
     }
 
