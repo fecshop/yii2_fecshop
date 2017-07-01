@@ -12,7 +12,7 @@ namespace fecshop\services\customer;
 use fecshop\services\Service;
 
 /**
- * Order  child services.
+ * Order  child services. 废弃， 用户订单的调用，直接使用 order services里面的方法
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */

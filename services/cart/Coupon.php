@@ -15,7 +15,7 @@ use fecshop\services\Service;
 use Yii;
 
 /**
- * Cart services.
+ * Coupon services.
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -47,7 +47,11 @@ class Coupon extends Service
             return new MyCoupon();
         }
     }
-
+    /** 
+     * @property $customer_id | Int
+     * @property $coupon_id | Int
+     * 通过customer_id 和 coupon_id得到 Coupon Usage Model.
+     */
     protected function actionGetCouponUsageModel($customer_id = '', $coupon_id = '')
     {
         if (!$this->_coupon_usage_model) {
@@ -72,7 +76,10 @@ class Coupon extends Service
             return $this->_coupon_usage_model;
         }
     }
-
+    /**
+     * @property $coupon_code | String
+     * 根据 coupon_code 得到 coupon model
+     */
     protected function actionGetCouponModel($coupon_code = '')
     {
         if (!$this->_coupon_model) {
@@ -81,7 +88,6 @@ class Coupon extends Service
             }
             if ($coupon_code) {
                 $one = MyCoupon::findOne(['coupon_code' => $coupon_code]);
-
                 if ($one['coupon_code']) {
                     $this->_coupon_model = $one;
                 }
@@ -95,17 +101,17 @@ class Coupon extends Service
     /**
      * @property $filter|array
      * @return Array;
-     *                通过过滤条件，得到coupon的集合。
-     *                example filter:
-     *                [
-     *                'numPerPage' 	=> 20,
-     *                'pageNum'		=> 1,
-     *                'orderBy'	=> ['_id' => SORT_DESC, 'sku' => SORT_ASC ],
-     'where'			=> [
-     ['>','price',1],
-     ['<=','price',10]
-     * 			['sku' => 'uk10001'],
-     * 		],
+     * 通过过滤条件，得到coupon的集合。
+     * example filter:
+     * [
+     *  'numPerPage' 	=> 20,
+     *  'pageNum'		=> 1,
+     *  'orderBy'	=> ['_id' => SORT_DESC, 'sku' => SORT_ASC ],
+     *  'where'			=> [
+     *      ['>','price',1],
+     *      ['<=','price',10]
+     * 	    ['sku' => 'uk10001'],
+     * 	],
      * 	'asArray' => true,
      * ]
      */
@@ -114,14 +120,11 @@ class Coupon extends Service
         $query = MyCoupon::find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
         $coll = $query->all();
-        
-        //var_dump($one);
         return [
             'coll' => $coll,
             'count'=> $query->limit(null)->offset(null)->count(),
         ];
     }
-
     /**
      * @property $one|array , save one data .
      * @return int 保存coupon成功后，返回保存的id。
@@ -162,8 +165,8 @@ class Coupon extends Service
             if (isset(Yii::$app->user)) {
                 $user = Yii::$app->user;
                 if (isset($user->identity)) {
-                    $identity = $user->identity;
-                    $person_id = $identity['id'];
+                    $identity   = $user->identity;
+                    $person_id  = $identity['id'];
                     $model->created_person = $person_id;
                 }
             }
@@ -225,7 +228,7 @@ class Coupon extends Service
      * $_coupon_code   # 优惠卷码
      * $_coupon_model  # 优惠券model
      * $_coupon_usage_model # 优惠券使用次数记录model
-     * $
+     * 这是一个内部函数，不对外开放。
      */
     protected function useCouponInit($coupon_code)
     {
@@ -248,8 +251,9 @@ class Coupon extends Service
         }
     }
 
-    // $this->getCouponUsageModel();
-    // $this->getCouponModel();
+    /**
+     * 查看coupon是否是可用的，如果可用，返回true，如果不可用，返回false
+     */
     protected function couponIsActive()
     {
         if ($this->_customer_id) {
@@ -276,8 +280,13 @@ class Coupon extends Service
                 //Yii::$service->helper->errors->add("coupon is not exist");
             }
         }
+        return false;
     }
-
+    /**
+     * @property $coupon_code | String , coupon_code字符串
+     * @property $dc_price | Float 总价格
+     * 根据优惠券和总价格，计算出来打折后的价格。譬如原来10元，打八折后，是8元。
+     */
     protected function actionGetDiscount($coupon_code, $dc_price)
     {
         $discount_cost = 0;
@@ -320,32 +329,41 @@ class Coupon extends Service
                         $cu_model = new MyCouponUsage();
                         $cu_model->times_used = 1;
                         $cu_model->customer_id = $this->_customer_id;
-                        $cu_model->coupon_id = $c_model['coupon_id'];
+                        $cu_model->coupon_id = $c_model['id'];
+                        $cu_model->save();
                     } else {
-                        $cu_model->times_used += 1;
+                        // 通过update函数 将times_used +1
+                        $sql = 'update '.MyCouponUsage::tableName().' set times_used = times_used + 1 where id = :id';
+                        $data = [
+                            'id'  => $cu_model['id'],
+                        ];
+                        $result = MyCouponUsage::getDb()->createCommand($sql,$data)->execute();
                     }
-                    $cu_model->save();
-                    $times_used = $c_model->times_used ? $c_model->times_used : 0;
-                    $c_model->times_used = $times_used + 1;
-                    $c_model->save();
-
+                    // coupon的总使用次数+1
+                    $sql = 'update '.MyCoupon::tableName().' set times_used = times_used + 1 where coupon_id  = :coupon_id ';
+                    $data = [
+                        'coupon_id' => $c_model['coupon_id'],
+                    ];
+                    $result = MyCoupon::getDb()->createCommand($sql,$data)->execute();
                     return true;
                 } elseif ($type == 'cancel') {
                     $couponModel = $this->getCouponModel();
-
                     $cu_model = $this->getCouponUsageModel();
-
                     if ($cu_model) {
-                        $cu_model->times_used -= 1;
-                        $times_used = $c_model->times_used ? $c_model->times_used : 0;
-                        $times_used = $times_used - 1;
-                        if ($cu_model->times_used >= 0 && $times_used >= 0) {
-                            $cu_model->save();
-                            $c_model->times_used = $times_used;
-                            $c_model->save();
-
-                            return true;
-                        }
+                        // MyCouponUsage 使用次数-1
+                        $sql = 'update '.MyCouponUsage::tableName().' set times_used = times_used - 1 where id = :id';
+                        $data = [
+                            'id'  => $cu_model['id'],
+                        ];
+                        $result = MyCouponUsage::getDb()->createCommand($sql,$data)->execute();
+                        // MyCoupon 使用次数-1
+                        $sql = 'update '.MyCoupon::tableName().' set times_used = times_used - 1 where coupon_id  = :coupon_id ';
+                        $data = [
+                            'coupon_id' => $c_model['coupon_id'],
+                        ];
+                        $result = MyCoupon::getDb()->createCommand($sql,$data)->execute();
+                        
+                        return true;
                     }
                 }
             }
@@ -400,34 +418,21 @@ class Coupon extends Service
             Yii::$service->helper->errors->add('Coupon is not available or has expired');
         }
     }
-
-    // 取消优惠券
-    // $this->getCouponUsageModel();
-    // $this->getCouponModel();
-    // $this->useCouponInit($coupon_code);
+    /**
+     * @property $coupon_code | String
+     * 取消优惠券
+     */
     protected function actionCancelCoupon($coupon_code)
     {
         $this->useCouponInit($coupon_code);
         if ($this->_customer_id) {
             $couponModel = $this->getCouponModel($coupon_code);
             if ($couponModel) {
-                //$couponModel = $this->getCouponModel($coupon_code);
-                //$couponUsageModel = $this->getCouponUsageModel($customer_id,$coupon_id);
-                //$innerTransaction = Yii::$app->db->beginTransaction();
-                //try {
-
-                    $up_status = $this->updateCouponUse('cancel');
+                $up_status = $this->updateCouponUse('cancel');
                 $cancel_status = Yii::$service->cart->quote->cancelCartCoupon($coupon_code);
-                    //echo $up_status.'##'.$set_status;
-                    //echo 555;
-                    if ($up_status && $cancel_status) {
-                        //$innerTransaction->commit();
-                        return true;
-                    }
-                    //$innerTransaction->rollBack();
-                //} catch (Exception $e) {
-                //	$innerTransaction->rollBack();
-                //}
+                if ($up_status && $cancel_status) {
+                    return true;
+                }  
             }
         }
     }

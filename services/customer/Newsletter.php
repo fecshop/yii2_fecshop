@@ -14,7 +14,7 @@ use fecshop\services\Service;
 use Yii;
 
 /**
- * Address  child services.
+ * Newsletter child services.
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */

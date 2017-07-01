@@ -12,7 +12,7 @@ namespace fecshop\services\customer;
 use fecshop\services\Service;
 
 /**
- * Coupon  child services.
+ * Coupon  child services. 废弃，coupon现在在cart services中
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */

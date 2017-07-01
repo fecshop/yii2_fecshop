@@ -15,7 +15,7 @@ use fecshop\services\Service;
 use Yii;
 
 /**
- * Address  child services.
+ * Facebook  child services.
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -26,9 +26,7 @@ class Facebook extends Service
 
     public function initParam()
     {
-        //$currentStore = Yii::$service->store->currentStore;
         $store = Yii::$service->store->store;
-        //$stores
         if (isset($store['thirdLogin']['facebook']['facebook_app_secret'])) {
             $this->facebook_app_secret = $store['thirdLogin']['facebook']['facebook_app_secret'];
         }
