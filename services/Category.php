@@ -81,7 +81,7 @@ class Category extends Service
      * 		],
      * 	'asArray' => true,
      * ]
-     * 通过上面个数的filter数组，得到过滤后的分类数据列表集合。
+     * 通过上面的filter数组，得到过滤后的分类数据列表集合。
      */
     protected function actionColl($filter = '')
     {

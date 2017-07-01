@@ -15,7 +15,7 @@ use fecshop\services\Service;
 use Yii;
 
 /**
- * Cms Article services.
+ * Cms Article services. 文字条款类的page单页。
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */

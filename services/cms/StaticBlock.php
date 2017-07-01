@@ -15,7 +15,7 @@ use fecshop\services\Service;
 use Yii;
 
 /**
- * Cms StaticBlock services.
+ * Cms StaticBlock services. 静态块部分，譬如首页的某个区块，类似走马灯图，广告图等经常需要改动的部分，可以在后台进行改动。
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -42,14 +42,10 @@ class Staticblock extends Service
      */
     protected function actionGetStoreContentByIdentify($identify, $app = 'common')
     {
-        $staticBlock = $this->_static_block->getByIdentify($identify);
-        $content = $staticBlock['content'];
-        //echo '###';
-        //var_dump($content);
-        //echo '###';
-        $storeContent = Yii::$service->store->getStoreAttrVal($content, 'content');
-        //echo $storeContent;
-        $_params_ = $this->getStaticBlockVariableArr($app);
+        $staticBlock    = $this->_static_block->getByIdentify($identify);
+        $content        = $staticBlock['content'];
+        $storeContent   = Yii::$service->store->getStoreAttrVal($content, 'content');
+        $_params_       = $this->getStaticBlockVariableArr($app);
         ob_start();
         ob_implicit_flush(false);
         extract($_params_, EXTR_OVERWRITE);
@@ -70,8 +66,8 @@ class Staticblock extends Service
     protected function getStaticBlockVariableArr($app)
     {
         return [
-            'homeUrl' => Yii::$service->url->homeUrl(),
-            'imgBaseUrl' => Yii::$service->image->getBaseImgUrl($app),
+            'homeUrl'   => Yii::$service->url->homeUrl(),
+            'imgBaseUrl'=> Yii::$service->image->getBaseImgUrl($app),
         ];
     }
 

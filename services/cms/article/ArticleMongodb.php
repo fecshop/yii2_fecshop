@@ -84,11 +84,11 @@ class ArticleMongodb implements ArticleInterface
         }
         $model->updated_at = time();
         unset($one['_id']);
-        $saveStatus = Yii::$service->helper->ar->save($model, $one);
-        $originUrl = $originUrlKey.'?'.$this->getPrimaryKey() .'='. $primaryVal;
-        $originUrlKey = isset($one['url_key']) ? $one['url_key'] : '';
-        $defaultLangTitle = Yii::$service->fecshoplang->getDefaultLangAttrVal($one['title'], 'title');
-        $urlKey = Yii::$service->url->saveRewriteUrlKeyByStr($defaultLangTitle, $originUrl, $originUrlKey);
+        $saveStatus         = Yii::$service->helper->ar->save($model, $one);
+        $originUrl          = $originUrlKey.'?'.$this->getPrimaryKey() .'='. $primaryVal;
+        $originUrlKey       = isset($one['url_key']) ? $one['url_key'] : '';
+        $defaultLangTitle   = Yii::$service->fecshoplang->getDefaultLangAttrVal($one['title'], 'title');
+        $urlKey             = Yii::$service->url->saveRewriteUrlKeyByStr($defaultLangTitle, $originUrl, $originUrlKey);
         $model->url_key = $urlKey;
         $model->save();
 

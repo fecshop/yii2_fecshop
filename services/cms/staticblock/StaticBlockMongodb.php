@@ -12,7 +12,8 @@ namespace fecshop\services\cms\staticblock;
 use fecshop\models\mongodb\cms\StaticBlock;
 use Yii;
 
-/**
+/** 
+ * staticBlock部分，mongodb的实现部分。
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -103,11 +104,11 @@ class StaticBlockMongodb implements StaticBlockInterface
 
     protected function validateIdentify($one)
     {
-        $identify = $one['identify'];
-        $id = $this->getPrimaryKey();
+        $identify   = $one['identify'];
+        $id         = $this->getPrimaryKey();
         $primaryVal = isset($one[$id]) ? $one[$id] : '';
-        $where = ['identify' => $identify];
-        $query = StaticBlock::find()->asArray();
+        $where      = ['identify' => $identify];
+        $query      = StaticBlock::find()->asArray();
         $query->where(['identify' => $identify]);
         if ($primaryVal) {
             $query->andWhere([$id => ['$ne'=> new \MongoDB\BSON\ObjectId($primaryVal)]]);

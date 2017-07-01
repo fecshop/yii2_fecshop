@@ -15,7 +15,7 @@ use fecshop\models\mysqldb\customer\CustomerRegister;
 use Yii;
 
 /**
- * Customer service.
+ * Customer service. 前端用户部分
  * @property Image|\fecshop\services\Product\Image $image ,This property is read-only.
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
@@ -67,15 +67,15 @@ class Customer extends Service
 
     /**
      * @property $data|array
-     * like :['email'=>'xxx@xxx.com','password'=>'xxxx']
+     * 数组格式：['email'=>'xxx@xxx.com','password'=>'xxxx']
      */
     protected function actionLogin($data)
     {
         $model = new CustomerLogin();
-        $model->email = $data['email'];
-        $model->password = $data['password'];
-        $loginStatus = $model->login();
-        $errors = $model->errors;
+        $model->email       = $data['email'];
+        $model->password    = $data['password'];
+        $loginStatus        = $model->login();
+        $errors             = $model->errors;
         if (empty($errors)) {
             // 合并购物车数据
             Yii::$service->cart->mergeCartAfterUserLogin();
@@ -87,11 +87,14 @@ class Customer extends Service
     }
 
     /**
-     * @property $data|array
-     * register customer account
-     * ['email','firstname','lastname','password'
-     *
+     * @property $data|array 数据格式如下：
+     * [
+     *      'email',
+     *      'firstname',
+     *      'lastname',
+     *      'password'
      * ]
+     * register customer account，
      */
     protected function actionRegister($param)
     {
@@ -110,7 +113,10 @@ class Customer extends Service
             return false;
         }
     }
-
+    /**
+     * @property $email | String , email字符串
+     * 查看该email是否被注册过。
+     */
     protected function actionIsRegistered($email)
     {
         $customer = CustomerModel::findOne(['email' => $email]);
@@ -120,7 +126,12 @@ class Customer extends Service
             return false;
         }
     }
-
+    /**
+     * @property $param | array ，用户的数组
+     * 数据格式如下：
+     * ['email' => 'xxx', 'password' => 'xxxx','firstname' => 'xxx','lastname' => 'xxx',]
+     * 保存customer信息
+     */
     protected function actionSave($param)
     {
         $primaryKey = $this->getPrimaryKey();
@@ -148,7 +159,7 @@ class Customer extends Service
         }
     }
 
-    /**
+    /**该方法已废弃
      * @property $customerId|int
      * Get customer info by customerId, if customer id is empty, current customer id will be set,
      * if current customer id is empty , false will be return .
@@ -160,8 +171,7 @@ class Customer extends Service
     /**
      * @property $password|string
      * @property $customerId|int or String or Object
-     * change  customer password.
-     * if $customer id is empty, it will be equals current customer id.
+     * 更改用户的密码。
      */
     protected function actionChangePassword($password, $identity)
     {
@@ -174,9 +184,14 @@ class Customer extends Service
         } elseif (is_object($identity)) {
             $customerModel = $identity;
         }
-        $customerModel->updated_at = time();
-        $customerModel->setPassword($password);
-        $customerModel->save();
+        if($customerModel['email']){
+            $customerModel->updated_at = time();
+            $customerModel->setPassword($password);
+            $customerModel->save();
+            return true;
+        }else{
+            return false;
+        }
     }
 
     /**
@@ -188,7 +203,9 @@ class Customer extends Service
 
         return get_class($model);
     }
-
+    /**
+     * 通过主键，得到customer model
+     */
     protected function actionGetByPrimaryKey($val)
     {
         if ($val) {
@@ -232,7 +249,7 @@ class Customer extends Service
         return true;
     }
 
-    /**
+    /**废弃
      * @property $customerId|array
      * ['firstname','lastname','password','customerId']
      */
@@ -241,14 +258,17 @@ class Customer extends Service
     }
 
     /**
-     * get current customer identify.
+     * get current customer .
      */
+    /* 废弃
     protected function actionGetCurrentAccount()
     {
         return Yii::$app->user->identity->username;
     }
+    */
 
     /**
+     * @property $email | string ， email string
      * get CustomerModel by Email address.
      */
     protected function actionGetUserIdentityByEmail($email)
@@ -264,7 +284,7 @@ class Customer extends Service
     /**
      * @property $identify|object(customer object) or String
      * @return 生成的resetToken，如果生成失败返回false
-     *                                                             用来找回密码，生成resetToken，返回
+     * 生成resetToken，用来找回密码
      */
     protected function actionGeneratePasswordResetToken($identify)
     {
@@ -286,6 +306,7 @@ class Customer extends Service
     }
 
     /**
+     * @property $token | String 
      * 通过PasswordResetToken 得到user.
      */
     protected function actionFindByPasswordResetToken($token)
@@ -314,8 +335,11 @@ class Customer extends Service
 
         return $url ? $url : '';
     }
-
-    protected function actionLoginSuccessRedirect($urlKey)
+    /**
+     * @property $urlKey | String
+     * 登录用户成功后，进行url跳转。
+     */
+    protected function actionLoginSuccessRedirect($urlKey = '')
     {
         $url = $this->getLoginSuccessRedirectUrl();
 
@@ -326,8 +350,10 @@ class Customer extends Service
             //echo Yii::$app->session->get($this::USER_LOGIN_SUCCESS_REDIRECT_URL_KEY);
             //exit;
             return Yii::$service->url->redirect($url);
-        } else {
+        } else if($urlKey) {
             return Yii::$service->url->redirectByUrlKey($urlKey);
+        } else {
+            return Yii::$service->url->redirectHome();
         }
     }
 
@@ -346,12 +372,30 @@ class Customer extends Service
     {
         return CustomerModel::STATUS_ACTIVE;
     }
-
+    /**
+     * 得到customer 表的主键（mysql表）
+     */
     protected function actionGetPrimaryKey()
     {
         return 'id';
     }
-
+    /**
+     * @property $filter|array
+     * get  collection by $filter
+     * example filter:
+     * [
+     * 		'numPerPage' 	=> 20,
+     * 		'pageNum'		=> 1,
+     * 		'orderBy'	=> ['_id' => SORT_DESC, 'sku' => SORT_ASC ],
+     * 		'where'			=> [
+     *			['>','price','1'],
+     *			['<','price','10'],
+     * 			['sku' => 'uk10001'],
+     * 		],
+     * 	'asArray' => true,
+     * ]
+     * 通过上面的filter数组，得到过滤后的用户数据列表集合。
+     */
     protected function actionColl($filter = '')
     {
         $query = CustomerModel::find();
@@ -362,7 +406,12 @@ class Customer extends Service
             'count'=> $query->limit(null)->offset(null)->count(),
         ];
     }
-
+    /**
+     * @property $user_ids | Array ， 子项为Int类型
+     * @return Array ，数据格式为：
+     * ['id' => 'email']
+     * 得到customer id 和customer email的对应数组。
+     */
     protected function actionGetEmailByIds($user_ids)
     {
         $arr = [];
@@ -381,12 +430,13 @@ class Customer extends Service
     }
 
     //2. 创建第三方用户的账户，密码自动生成
-
     /**
      * @property  $user | Array ,example:
      * ['first_name' => $first_name,'last_name' => $last_name,'email' => $email,]
      * @property  $type | String 代表第三方登录的名称，譬如google，facebook
      * @return bool
+     * 如果用户emai存在，则直接登录，成功后返回true
+     * 如果用户不存在，则注册用户，然后直接登录，成功后返回true
      */
     protected function actionRegisterThirdPartyAccountAndLogin($user, $type)
     {
@@ -422,7 +472,9 @@ class Customer extends Service
         return false;
     }
 
-    // 生成账户密码
+    /**
+     * 生成账户密码
+     */
     protected function getRandomPassword()
     {
         srand((float) microtime() * 1000000); //create a random number feed.
