@@ -14,7 +14,7 @@ use fecshop\services\category\CategoryMysqldb;
 use Yii;
 
 /**
- * Category Service is the component that you can get category info from it.
+ * Category Service 分类service 
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */

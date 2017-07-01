@@ -20,7 +20,6 @@ use Yii;
 class Menu extends Service
 {
     public $rootCategoryId = '0';
-
     /**
      * @property $parentId|int
      * 得到分类的目录信息
@@ -36,14 +35,13 @@ class Menu extends Service
         ])->where([
             'parent_id' => $parentId,
         ])->all();
-
         if (is_array($data) && !empty($data)) {
             foreach ($data as $category) {
                 $categoryOne = [
-                    '_id'        => (string) $category['_id'],
-                    'name'        => Yii::$service->store->getStoreAttrVal($category['name'], 'name'),
-                    'menu_custom'=> Yii::$service->store->getStoreAttrVal($category['menu_custom'], 'menu_custom'),
-                    'url'        => Yii::$service->url->getUrl($category['url_key']),
+                    '_id'           => (string) $category['_id'],
+                    'name'          => Yii::$service->store->getStoreAttrVal($category['name'], 'name'),
+                    'menu_custom'   => Yii::$service->store->getStoreAttrVal($category['menu_custom'], 'menu_custom'),
+                    'url'           => Yii::$service->url->getUrl($category['url_key']),
                 ];
                 $childMenu = $this->getCategoryMenuArr((string) $category['_id']);
                 if ($childMenu) {

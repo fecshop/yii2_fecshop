@@ -12,7 +12,7 @@ namespace fecshop\services;
 use Yii;
 
 /**
- * AdminUser services.
+ * AdminUser services. 用来给后台的用户提供数据。
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */

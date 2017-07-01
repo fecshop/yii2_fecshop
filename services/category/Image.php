@@ -13,6 +13,7 @@ use fecshop\services\Service;
 use Yii;
 
 /**
+ * 分类图片的一些处理。
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */

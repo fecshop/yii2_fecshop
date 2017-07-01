@@ -14,7 +14,7 @@ use fecshop\services\Service;
 use Yii;
 
 /**
- * Cart services.
+ * Cart services. 对购物车产品操作的具体实现部分。
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -48,7 +48,7 @@ class QuoteItem extends Service
         }
         $where = [
             'cart_id'    => $cart_id,
-            'product_id'=> $item['product_id'],
+            'product_id' => $item['product_id'],
         ];
         if (isset($item['custom_option_sku']) && !empty($item['custom_option_sku'])) {
             $where['custom_option_sku'] = $item['custom_option_sku'];
@@ -61,15 +61,15 @@ class QuoteItem extends Service
             Yii::$service->cart->quote->computeCartInfo();
         } else {
             $item_one = new MyCartItem();
-            $item_one->store = Yii::$service->store->currentStore;
-            $item_one->cart_id = $cart_id;
-            $item_one->created_at = time();
-            $item_one->updated_at = time();
-            $item_one->product_id = $item['product_id'];
-            $item_one->qty = $item['qty'];
+            $item_one->store        = Yii::$service->store->currentStore;
+            $item_one->cart_id      = $cart_id;
+            $item_one->created_at   = time();
+            $item_one->updated_at   = time();
+            $item_one->product_id   = $item['product_id'];
+            $item_one->qty          = $item['qty'];
             $item_one->custom_option_sku = ($item['custom_option_sku'] ? $item['custom_option_sku'] : '');
             $item_one->save();
-            // 重新计算购物车的数量
+            // 重新计算购物车的数量,并写入sales_flat_cart表存储
             Yii::$service->cart->quote->computeCartInfo();
         }
     }
@@ -84,14 +84,15 @@ class QuoteItem extends Service
      * @return boolean;
      *                  将购物车中的某个产品更改个数，更改后的个数就是上面qty的值。
      */
+    /** 该函数已经被遗弃
     public function changeItemQty($item)
     {
         $cart_id = Yii::$service->cart->quote->getCartId();
         // 查看是否存在此产品，如果存在，则更改
         $item_one = MyCartItem::find()->where([
-            'cart_id'    => $cart_id,
-            'product_id'=> $item['product_id'],
-            'custom_option_sku'    => $item['custom_option_sku'],
+            'cart_id'           => $cart_id,
+            'product_id'        => $item['product_id'],
+            'custom_option_sku' => $item['custom_option_sku'],
         ])->one();
         if ($item_one['cart_id']) {
             $item_one->qty = $item['qty'];
@@ -106,6 +107,7 @@ class QuoteItem extends Service
             return false;
         }
     }
+    */
 
     /**
      * 通过quoteItem表，计算得到所有产品的总数
@@ -118,7 +120,7 @@ class QuoteItem extends Service
         $cart_id = Yii::$service->cart->quote->getCartId();
         $item_qty = 0;
         if ($cart_id) {
-            $data = MyCartItem::find()->where([
+            $data = MyCartItem::find()->asArray()->where([
                 'cart_id' => $cart_id,
             ])->all();
             if (is_array($data) && !empty($data)) {
@@ -143,9 +145,9 @@ class QuoteItem extends Service
      */
     public function getCartProductInfo()
     {
-        $cart_id = Yii::$service->cart->quote->getCartId();
-        $products = [];
-        $product_total = 0;
+        $cart_id        = Yii::$service->cart->quote->getCartId();
+        $products       = [];
+        $product_total  = 0;
         $product_weight = 0;
         if ($cart_id) {
             if (!isset($this->_cart_product_info[$cart_id])) {
@@ -154,54 +156,53 @@ class QuoteItem extends Service
                 ])->all();
                 if (is_array($data) && !empty($data)) {
                     foreach ($data as $one) {
-                        $product_id = $one['product_id'];
-                        $product_one = Yii::$service->product->getByPrimaryKey($product_id);
+                        $product_id     = $one['product_id'];
+                        $product_one    = Yii::$service->product->getByPrimaryKey($product_id);
                         if ($product_one['_id']) {
-                            $qty = $one['qty'];
-                            $custom_option_sku = $one['custom_option_sku'];
-                            $product_price_arr = Yii::$service->product->price->getCartPriceByProductId($product_id, $qty, $custom_option_sku, 2);
+                            $qty                = $one['qty'];
+                            $custom_option_sku  = $one['custom_option_sku'];
+                            $product_price_arr  = Yii::$service->product->price->getCartPriceByProductId($product_id, $qty, $custom_option_sku, 2);
                             $curr_product_price = isset($product_price_arr['curr_price']) ? $product_price_arr['curr_price'] : 0;
                             $base_product_price = isset($product_price_arr['base_price']) ? $product_price_arr['base_price'] : 0;
-                            $product_price = isset($curr_product_price['value']) ? $curr_product_price['value'] : 0;
+                            $product_price      = isset($curr_product_price['value']) ? $curr_product_price['value'] : 0;
 
-                            $product_row_price = $product_price * $qty;
-                            $product_total += $product_row_price;
+                            $product_row_price  = $product_price * $qty;
+                            $product_total      += $product_row_price;
 
                             $base_product_row_price = $base_product_price * $qty;
-                            $base_product_total += $base_product_row_price;
+                            $base_product_total     += $base_product_row_price;
 
-                            $p_wt = $product_one['weight'] * $qty;
-                            $product_weight += $p_wt;
-                            $productSpuOptions = $this->getProductSpuOptions($product_one);
+                            $p_wt               = $product_one['weight'] * $qty;
+                            $product_weight     += $p_wt;
+                            $productSpuOptions  = $this->getProductSpuOptions($product_one);
                             $products[] = [
-                                'item_id' => $one['item_id'],
+                                'item_id'           => $one['item_id'],
                                 'product_id'        => $product_id,
-                                'sku'                => $product_one['sku'],
-                                'name'                => Yii::$service->store->getStoreAttrVal($product_one['name'], 'name'),
-                                'qty'                => $qty,
+                                'sku'               => $product_one['sku'],
+                                'name'              => Yii::$service->store->getStoreAttrVal($product_one['name'], 'name'),
+                                'qty'               => $qty,
                                 'custom_option_sku' => $custom_option_sku,
-                                'product_price'    => $product_price,
+                                'product_price'     => $product_price,
                                 'product_row_price' => $product_row_price,
 
                                 'base_product_price'    => $base_product_price,
-                                'base_product_row_price' => $base_product_row_price,
+                                'base_product_row_price'=> $base_product_row_price,
 
-                                'product_name'        => $product_one['name'],
+                                'product_name'      => $product_one['name'],
                                 'product_weight'    => $product_one['weight'],
                                 'product_row_weight'=> $p_wt,
-                                'product_url'        => $product_one['url_key'],
-                                'product_image'        => $product_one['image'],
-                                'custom_option'        => $product_one['custom_option'],
-                                'spu_options'            => $productSpuOptions,
+                                'product_url'       => $product_one['url_key'],
+                                'product_image'     => $product_one['image'],
+                                'custom_option'     => $product_one['custom_option'],
+                                'spu_options'       => $productSpuOptions,
                             ];
-                            //var_dump($product_one['image']);exit;
                         }
                     }
                     $this->_cart_product_info[$cart_id] = [
-                        'products'        => $products,
-                        'product_total' => $product_total,
-                        'base_product_total' => $base_product_total,
-                        'product_weight'=> $product_weight,
+                        'products'          => $products,
+                        'product_total'     => $product_total,
+                        'base_product_total'=> $base_product_total,
+                        'product_weight'    => $product_weight,
                     ];
                 }
             }
@@ -223,14 +224,8 @@ class QuoteItem extends Service
         if (isset($productOb['attr_group']) && !empty($productOb['attr_group'])) {
             $productAttrGroup = $productOb['attr_group'];
             Yii::$service->product->addGroupAttrs($productAttrGroup);
-
-            //$attrInfo = Yii::$service->product->getGroupAttrInfo($productAttrGroup);
-            //if(is_array($attrInfo) && !empty($attrInfo)){
-            //	$attrs = array_keys($attrInfo);
-            //	\fecshop\models\mongodb\Product::addCustomProductAttrs($attrs);
-            //}
-            $productOb = Yii::$service->product->getByPrimaryKey((string) $productOb['_id']);
-            $spuArr = Yii::$service->product->getSpuAttr($productAttrGroup);
+            $productOb  = Yii::$service->product->getByPrimaryKey((string) $productOb['_id']);
+            $spuArr     = Yii::$service->product->getSpuAttr($productAttrGroup);
             if (is_array($spuArr) && !empty($spuArr)) {
                 foreach ($spuArr as $spu_attr) {
                     if (isset($productOb[$spu_attr]) && !empty($productOb[$spu_attr])) {

@@ -58,7 +58,7 @@ class CartController extends AppfrontController
                 if ($addToCart) {
                     echo json_encode([
                         'status' => 'success',
-                        'items_count' => Yii::$service->cart->quote->getCartItemsCount(),
+                        'items_count' => Yii::$service->cart->quote->getCartItemCount(),
                     ]);
                     $innerTransaction->commit();
                     exit;
@@ -67,7 +67,7 @@ class CartController extends AppfrontController
                     echo json_encode([
                         'status' => 'fail',
                         'content'=> $errors,
-                        //'items_count' => Yii::$service->cart->quote->getCartItemsCount(),
+                        //'items_count' => Yii::$service->cart->quote->getCartItemCount(),
                     ]);
                     $innerTransaction->rollBack();
                     exit;

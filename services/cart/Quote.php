@@ -14,7 +14,7 @@ use fecshop\services\Service;
 use Yii;
 
 /**
- * Cart services.
+ * Cart services. 对购物车操作的具体实现部分。
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -31,7 +31,9 @@ class Quote extends Service
 
     /**
      * @return int 得到cart_id
-     *             Cart的session的超时时间由session组件决定。
+     * Cart的session的超时时间由session组件决定。
+     * 在执行$this->CreateCart $this->mergeCartAfterUserLogin,都会执行 $this->setCartId,执行 Yii::$app->session->set(self::SESSION_CART_ID,'xxxx'); 给其赋值。
+     * 当新用户没有任何购物车操作，则返回为空值。
      */
     public function getCartId()
     {
@@ -44,7 +46,7 @@ class Quote extends Service
     }
 
     /**
-     * @property $address|array 地址信息数组
+     * @property $address|array 地址信息数组，详细参看下面函数显示的字段。
      * @property $shipping_method | String 货运方式
      * @property $payment_method | String 支付方式
      * @property bool
@@ -54,19 +56,19 @@ class Quote extends Service
     {
         $cart = $this->getCurrentCart();
         if ($cart) {
-            $cart->customer_firstname = $address['first_name'];
-            $cart->customer_lastname = $address['last_name'];
-            $cart->customer_email = $address['email'];
-            $cart->customer_telephone = $address['telephone'];
+            $cart->customer_firstname       = $address['first_name'];
+            $cart->customer_lastname        = $address['last_name'];
+            $cart->customer_email           = $address['email'];
+            $cart->customer_telephone       = $address['telephone'];
             $cart->customer_address_street1 = $address['street1'];
             $cart->customer_address_street2 = $address['street2'];
             $cart->customer_address_country = $address['country'];
-            $cart->customer_address_city = $address['city'];
-            $cart->customer_address_state = $address['state'];
-            $cart->customer_address_zip = $address['zip'];
+            $cart->customer_address_city    = $address['city'];
+            $cart->customer_address_state   = $address['state'];
+            $cart->customer_address_zip     = $address['zip'];
 
-            $cart->shipping_method = $shipping_method;
-            $cart->payment_method = $payment_method;
+            $cart->shipping_method          = $shipping_method;
+            $cart->payment_method           = $payment_method;
 
             return $cart->save();
         }
@@ -87,9 +89,9 @@ class Quote extends Service
     {
         $cart = $this->getCurrentCart();
         if ($cart && $address_id) {
-            $cart->customer_address_id = $address_id;
-            $cart->shipping_method = $shipping_method;
-            $cart->payment_method = $payment_method;
+            $cart->customer_address_id  = $address_id;
+            $cart->shipping_method      = $shipping_method;
+            $cart->payment_method       = $payment_method;
 
             return $cart->save();
         }
@@ -97,8 +99,8 @@ class Quote extends Service
 
     /**
      * @return object
-     *                得到当前的cart，如果当前的cart不存在，
-     *                则返回为空（注意，这个就是 getCurrentCart() 和 getCart()两个函数的区别）
+     *                得到当前的cart，如果当前的cart不存在，则返回为空
+     *                注意：这是getCurrentCart() 和 getCart()两个函数的区别，getCart()函数在没有cart_id的时候会创建cart。
      */
     public function getCurrentCart()
     {
@@ -150,15 +152,19 @@ class Quote extends Service
     }
 
     /**
-     * 得到购物车中产品的个数。头部的ajax请求一般访问这个.
+     * @return $items_count | Int , 得到购物车中产品的个数。头部的ajax请求一般访问这个.
+     * 目前是通过表查询获取的。
      */
     public function getCartItemCount()
     {
         $items_count = 0;
         if ($cart_id = $this->getCartId()) {
-            $one = MyCart::findOne(['cart_id' => $cart_id]);
-            if ($one['items_count']) {
-                $items_count = $one['items_count'];
+            if($cart_id ){
+                $cart = $this->getCart();
+                //$one = MyCart::findOne(['cart_id' => $cart_id]);
+                if (isset($cart['items_count']) && $cart['items_count']) {
+                    $items_count = $cart['items_count'];
+                }
             }
         }
 
@@ -166,10 +172,10 @@ class Quote extends Service
     }
 
     /**
-     * @property $item_qty | Int ，当$item_qty 不等于null时，代表
-     * 		已经知道购物车中产品的个数，不需要去cart_item表中查询。
-     *		譬如清空购物车操作，直接就知道产品个数肯定为零。
-     * 当购物车的产品变动后，更新cart表的产品总数
+     * @property $item_qty | Int 
+     * 当$item_qty为null时，从cart items表中查询产品总数。
+     * 当$item_qty 不等于null时，代表已经知道购物车中产品的个数，不需要去cart_item表中查询，譬如清空购物车操作，直接就知道产品个数肯定为零。
+     * 当购物车的产品变动后，会调用该函数，更新cart表的产品总数
      */
     public function computeCartInfo($item_qty = null)
     {
@@ -183,33 +189,6 @@ class Quote extends Service
         return true;
     }
 
-    /**
-     * 得到购物车中 产品的总数.
-     */
-    public function getCartItemsCount()
-    {
-        $cart = $this->getCart();
-
-        return $cart->items_count;
-    }
-
-    /**
-     * 返回当前的购物车Db对象
-     */
-    /*
-    public function getMyCart(){
-        if(!$this->_my_cart){
-            if($cart_id = $this->getCartId()){
-                if(!$this->_my_cart){
-                    $this->_my_cart = MyCart::findOne(['cart_id'=>$cart_id]);
-                }
-            }else{
-                $this->createCart();
-            }
-        }
-        return $this->_my_cart;
-    }
-    */
 
     /**
      * @property $cart_id | int
@@ -242,70 +221,34 @@ class Quote extends Service
         $myCart->created_at = time();
         $myCart->updated_at = time();
         if (!Yii::$app->user->isGuest) {
-            $identity = Yii::$app->user->identity;
-            $id = $identity['id'];
-            $firstname = $identity['firstname'];
-            $lastname = $identity['lastname'];
-            $email = $identity['email'];
-            $myCart->customer_id = $id;
-            $myCart->customer_email = $email;
+            $identity   = Yii::$app->user->identity;
+            $id         = $identity['id'];
+            $firstname  = $identity['firstname'];
+            $lastname   = $identity['lastname'];
+            $email      = $identity['email'];
+            $myCart->customer_id        = $id;
+            $myCart->customer_email     = $email;
             $myCart->customer_firstname = $firstname;
-            $myCart->customer_lastname = $lastname;
-            $myCart->customer_is_guest = 2;
+            $myCart->customer_lastname  = $lastname;
+            $myCart->customer_is_guest  = 2;
         } else {
-            $myCart->customer_is_guest = 1;
+            $myCart->customer_is_guest  = 1;
         }
-        $myCart->remote_ip = \fec\helpers\CFunc::get_real_ip();
-        $myCart->app_name = Yii::$service->helper->getAppName();
+        $myCart->remote_ip  = \fec\helpers\CFunc::get_real_ip();
+        $myCart->app_name   = Yii::$service->helper->getAppName();
         if ($defaultShippingMethod = Yii::$service->shipping->getDefaultShippingMethod()) {
             $myCart->shipping_method = $defaultShippingMethod;
         }
         $myCart->save();
-        $cart_id = Yii::$app->db->getLastInsertId();
+        $cart_id = $myCart['cart_id'];
         $this->setCartId($cart_id);
         $this->setCart(MyCart::findOne($cart_id));
     }
 
-    /*
-    public function addCustomerDefautAddressToCart(){
-        if(!Yii::$app->user->isGuest){
-            $cart = $this->getCart();
-            # 购物车没有customer address  id，则
-            # 使用登录用户的默认address
-            $identity = Yii::$app->user->identity;
-            //echo $cart['customer_id'] ;
-            //echo "##";
-            //echo $identity['id'];
-            //exit;
-            if($cart['customer_id'] == $identity['id']){
-                if(!isset($cart['customer_address_id']) || empty($cart['customer_address_id'])){
-                    $defaultAddress = Yii::$service->customer->address->getDefaultAddress();
-                    if(is_array($defaultAddress) && !empty($defaultAddress)){
-                        $cart->customer_telephone = isset($defaultAddress['telephone']) ? $defaultAddress['telephone'] : '';
-                        $cart->customer_email= isset($defaultAddress['email']) ? $defaultAddress['email'] : '';
-                        $cart->customer_firstname= isset($defaultAddress['first_name']) ? $defaultAddress['first_name'] : '';
-                        $cart->customer_lastname= isset($defaultAddress['last_name']) ? $defaultAddress['last_name'] : '';
-                        $cart->customer_address_id= isset($defaultAddress['address_id']) ? $defaultAddress['address_id'] : '';
-                        $cart->customer_address_country= isset($defaultAddress['country']) ? $defaultAddress['country'] : '';
-                        $cart->customer_address_state= isset($defaultAddress['state']) ? $defaultAddress['state'] : '';
-                        $cart->customer_address_city= isset($defaultAddress['city']) ? $defaultAddress['city'] : '';
-                        $cart->customer_address_zip= isset($defaultAddress['zip']) ? $defaultAddress['zip'] : '';
-                        $cart->customer_address_street1= isset($defaultAddress['street1']) ? $defaultAddress['street1'] : '';
-                        $cart->customer_address_street2= isset($defaultAddress['street2']) ? $defaultAddress['street2'] : '';
-                        $cart->save();
-                        $this->setCart($cart);
-
-                    }
-
-                }
-            }
-        }
-    }
-    */
-
-    /**
+    /** 该函数已经废弃
      * 购物车数据中是否含有address_id，address_id，是登录用户才会有的。
      */
+    /*
     public function hasAddressId()
     {
         $cart = $this->getCart();
@@ -314,10 +257,12 @@ class Quote extends Service
             return true;
         }
     }
+    */
 
     /**
      * 得到购物车中的用户地址信息.
      */
+    /** 该函数已经废弃
     public function getCartAddress()
     {
         $email = '';
@@ -359,20 +304,21 @@ class Quote extends Service
 
         ];
     }
+    */
 
     /**
      * @property $shipping_method | String  传递的货运方式
      * @property $country | String 货运国家
      * @property $region | String 省市
-     * @return bool OR array ，如果存在问题返回false
-     *              如果没有问题，返回购物车的信息。
+     * @return bool OR array ，如果存在问题返回false，对于返回的数组的格式参看下面$this->cartInfo[$cartInfoKey] 部分的数组。
+     *              返回当前购物车的信息。包括购物车对应的产品信息。
      *              对于可选参数，如果不填写，就是返回当前的购物车的数据。
      *              对于填写了参数，返回的是填写参数后的数据，这个一般是用户选择了了货运方式，国家等，然后
      *              实时的计算出来数据反馈给用户，但是，用户选择的数据并没有进入cart表
      */
     public function getCartInfo($shipping_method = '', $country = '', $region = '*')
     {
-        //echo 333;exit;
+        // 根据传递的参数的不同，购物车数据计算一次后，第二次调用，不会重新计算数据。
         $cartInfoKey = $shipping_method.'-shipping-'.$country.'-country-'.$region.'-region';
         if (!isset($this->cartInfo[$cartInfoKey])) {
             $cart_id = $this->getCartId();
@@ -406,10 +352,6 @@ class Quote extends Service
                         $currShippingCost = $shippingCost['currCost'];
                         $baseShippingCost = $shippingCost['baseCost'];
                     }
-                    //echo 333;
-                    //var_dump([$base_product_total,$product_total]);
-                    //exit;
-                    //echo $coupon_code;exit;
                     $couponCost = $this->getCouponCost($base_product_total, $coupon_code);
 
                     $baseDiscountCost = $couponCost['baseCost'];
@@ -419,23 +361,23 @@ class Quote extends Service
                     $base_grand_total = $base_product_total + $baseShippingCost - $baseDiscountCost;
 
                     $this->cartInfo[$cartInfoKey] = [
-                        'store'            => $cart['store'],                // store nme
-                        'items_count'    => $cart['items_count'],        // 购物车中的产品总数
-                        'coupon_code'    => $coupon_code,                // coupon卷码
-                        'shipping_method'    => $shipping_method,
+                        'store'             => $cart['store'],          // store nme
+                        'items_count'       => $cart['items_count'],    // 购物车中的产品总数
+                        'coupon_code'       => $coupon_code,            // coupon卷码
+                        'shipping_method'   => $shipping_method,
                         'payment_method'    => $cart['payment_method'],
-                        'grand_total'    => $curr_grand_total,            // 当前货币总金额
-                        'shipping_cost' => $currShippingCost,            // 当前货币，运费
-                        'coupon_cost'    => $currDiscountCost,            // 当前货币，优惠券优惠金额
-                        'product_total' => $product_total,                // 当前货币，购物车中产品的总金额
+                        'grand_total'       => $curr_grand_total,       // 当前货币总金额
+                        'shipping_cost'     => $currShippingCost,       // 当前货币，运费
+                        'coupon_cost'       => $currDiscountCost,       // 当前货币，优惠券优惠金额
+                        'product_total'     => $product_total,          // 当前货币，购物车中产品的总金额
 
-                        'base_grand_total'        => $base_grand_total,    // 基础货币总金额
-                        'base_shipping_cost'    => $baseShippingCost,    // 基础货币，运费
-                        'base_coupon_cost'        => $baseDiscountCost,    // 基础货币，优惠券优惠金额
-                        'base_product_total'    => $base_product_total, // 基础货币，购物车中产品的总金额
+                        'base_grand_total'  => $base_grand_total,       // 基础货币总金额
+                        'base_shipping_cost'=> $baseShippingCost,       // 基础货币，运费
+                        'base_coupon_cost'  => $baseDiscountCost,       // 基础货币，优惠券优惠金额
+                        'base_product_total'=> $base_product_total,     // 基础货币，购物车中产品的总金额
 
-                        'products'        => $products,        //产品信息。
-                        'product_weight'=> $product_weight,    //产品的总重量。
+                        'products'          => $products,               //产品信息。
+                        'product_weight'    => $product_weight,         //产品的总重量。
                     ];
                 }
             }
@@ -448,9 +390,9 @@ class Quote extends Service
      * @property $shippingCost | Array ,example:
      * 	[
      *		'currCost'   => 33.22, #当前货币的运费金额
-     *		'baseCost'	=> 26.44,  #基础货币的运费金额
+     *		'baseCost'	 => 26.44,  #基础货币的运费金额
      *	];
-     *  设置快递运费金额。
+     *  设置快递运费金额。根据国家地址和产品重量等信息计算出来的运费
      */
     public function setShippingCost($shippingCost)
     {
@@ -475,12 +417,8 @@ class Quote extends Service
             $region = '*';
         }
         if (!$this->_shipping_cost) {
-            //echo "$shipping_method,$weight,$country,$region";
             $shippingCost = Yii::$service->shipping->getShippingCost($shipping_method, $weight, $country, $region);
             $this->_shipping_cost = $shippingCost;
-            //if(isset($shippingCost['currentCost'])){
-            //	$this->_shipping_cost = $shippingCost['currentCost'];
-            //}
         }
 
         return $this->_shipping_cost;
@@ -496,11 +434,7 @@ class Quote extends Service
      */
     public function getCouponCost($base_product_total, $coupon_code)
     {
-        //echo '###'; var_dump($product_total);exit;
-        //list($base_product_total,$product_total) = $product_total;
-        //$dc_price = Yii::$service->page->currency->getBaseCurrencyPrice($product_total);
         $dc_discount = Yii::$service->cart->coupon->getDiscount($coupon_code, $base_product_total);
-        //var_dump($dc_discount);exit;
         return $dc_discount;
     }
 
@@ -537,22 +471,22 @@ class Quote extends Service
     public function mergeCartAfterUserLogin()
     {
         if (!Yii::$app->user->isGuest) {
-            $identity = Yii::$app->user->identity;
-            $customer_id = $identity['id'];
-            $email = $identity->email;
+            $identity           = Yii::$app->user->identity;
+            $customer_id        = $identity['id'];
+            $email              = $identity->email;
             $customer_firstname = $identity->firstname;
-            $customer_lastname = $identity->lastname;
-            $customer_cart = $this->getCartByCustomerId($customer_id);
-            $cart_id = $this->getCartId();
+            $customer_lastname  = $identity->lastname;
+            $customer_cart      = $this->getCartByCustomerId($customer_id);
+            $cart_id            = $this->getCartId();
             if (!$customer_cart) {
                 if ($cart_id) {
                     $cart = $this->getCart();
                     if ($cart) {
-                        $cart['customer_email'] = $email;
-                        $cart['customer_id'] = $customer_id;
+                        $cart['customer_email']     = $email;
+                        $cart['customer_id']        = $customer_id;
                         $cart['customer_firstname'] = $customer_firstname;
-                        $cart['customer_lastname'] = $customer_lastname;
-                        $cart['customer_is_guest'] = 2;
+                        $cart['customer_lastname']  = $customer_lastname;
+                        $cart['customer_is_guest']  = 2;
                         $cart->save();
                     }
                 }
