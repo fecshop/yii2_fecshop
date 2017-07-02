@@ -12,17 +12,17 @@ namespace fecshop\services\helper;
 use fecshop\services\Service;
 
 /**
- * Helper Captcha services.
+ * Helper Captcha services. 验证码部分
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
 class Captcha extends Service
 {
     public $charset = 'abcdefghkmnprstuvwxyzABCDEFGHKMNPRSTUVWXYZ0123456789'; //随机因子
-    public $codelen = 4; //验证码长度
-    public $width = 130; //宽度
-    public $height = 50; //高度
-    public $fontsize = 20; //指定字体大小
+    public $codelen = 4;    //验证码长度
+    public $width   = 130;  //宽度
+    public $height  = 50;   //高度
+    public $fontsize= 20;  //指定字体大小
     public $case_sensitive = false;
     private $fontcolor; //指定字体颜色
     private $code; //验证码
@@ -37,7 +37,6 @@ class Captcha extends Service
     public function __construct()
     {
         $this->font = dirname(__FILE__).'/captcha/Elephant.ttf'; //注意字体路径要写对，否则显示不了图片
-        //echo $this->font;exit;
     }
 
     //生成随机码
@@ -52,8 +51,8 @@ class Captcha extends Service
     //生成背景
     private function createBg()
     {
-        $this->img = imagecreatetruecolor($this->width, $this->height);
-        $color = imagecolorallocate($this->img, mt_rand(157, 255), mt_rand(157, 255), mt_rand(157, 255));
+        $this->img  = imagecreatetruecolor($this->width, $this->height);
+        $color      = imagecolorallocate($this->img, mt_rand(157, 255), mt_rand(157, 255), mt_rand(157, 255));
         imagefilledrectangle($this->img, 0, $this->height, $this->width, 0, $color);
     }
 

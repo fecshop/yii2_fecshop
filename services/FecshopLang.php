@@ -12,6 +12,7 @@ namespace fecshop\services;
 use Yii;
 
 /**
+ * language services 语言部分
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -37,26 +38,17 @@ class Fecshoplang extends Service
     {
         return $attrName.'_'.$langCode;
     }
-
+    /**
+     * @property $attrName | String 属性名称
+     * 得到默认语言的属性名称
+     */
     protected function actionGetDefaultLangAttrName($attrName)
     {
         return $attrName.'_'.$this->defaultLangCode;
     }
-
     /**
-     * 返回所有的，用于mongodb 生成fullSearch的语言名称。
+     * 得到所有的语言简码，譬如：en,es,fr,zh,de等
      */
-    /*
-    protected function actionGetAllmongoSearchLangName(){
-        $arr = [];
-        foreach($this->allLangCode as $codeInfo){
-            $mongoSearchLangName = $codeInfo['mongoSearchLangName'];
-            $arr[] = $mongoSearchLangName;
-        }
-        return $arr;
-    }
-    */
-
     protected function actionGetAllLangCode()
     {
         if (!$this->_allLangCode) {
@@ -82,6 +74,7 @@ class Fecshoplang extends Service
      * @property $attrName|String, attribute name ,like: title ,description.
      * get default language attr value.
      * example getDefaultLangAttrVal(['title_en'=>'xx','title_fr'=>'yy'],'title');
+     * 得到属性默认语言对应的值。上面是title属性默认语言的值。
      */
     protected function actionGetDefaultLangAttrVal($attrVal, $attrName)
     {

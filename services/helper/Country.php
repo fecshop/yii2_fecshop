@@ -19,7 +19,9 @@ use fecshop\services\Service;
 class Country extends Service
 {
     public $default_country;
-
+    /**
+     * 得到默认的国家
+     */
     public function getDefaultCountry()
     {
         if (!$this->default_country) {
@@ -28,7 +30,9 @@ class Country extends Service
 
         return $this->default_country;
     }
-
+    /**
+     * 通过国家，得到省的option html的字符串
+     */
     public function getStateOptionsByContryCode($CountryCode, $selected = '')
     {
         if (!$CountryCode) {
@@ -54,8 +58,9 @@ class Country extends Service
 
         return $str;
     }
-
-    //得到所有国家的option
+    /**
+     * 得到所有国家的option
+     */
     public function getAllCountryOptions($name = 'country', $class = 'country', $current = '', $nullShow = '')
     {
         $all_country_array = $this->getAllCountryArray();
@@ -80,14 +85,18 @@ class Country extends Service
 
         return $str;
     }
-
+    /**
+     * 通过国家简码得到国家的全称名字
+     */
     public function getCountryNameByKey($key)
     {
         $all_country = $this->getAllCountryArray();
 
         return isset($all_country[$key]) ? $all_country[$key] : $key;
     }
-
+    /**
+     * 国家option html
+     */
     public static function getCountryOptionsHtml($selectd = '')
     {
         if (!$selectd) {

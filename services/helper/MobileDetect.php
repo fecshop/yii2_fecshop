@@ -31,7 +31,7 @@ class MobileDetect
 {
     /**
      * Mobile detection type.
-     *
+     * 这是第三方的文件，用来检测设备。是pc mobile等
      * @deprecated since version 2.6.9
      */
     const DETECTION_TYPE_MOBILE = 'mobile';

@@ -34,7 +34,11 @@ class Errors extends Service
             $this->_errors[] = $errros;
         }
     }
-
+    /**
+     * @property $model_errors | Array
+     * Yii2的model在使用rules验证数据格式的时候，报错保存在errors中
+     * 本函数将errors的内容添加到errors services中。
+     */
     public function addByModelErrors($model_errors)
     {
         $error_arr = [];
@@ -60,17 +64,18 @@ class Errors extends Service
      */
     public function get($separator = false)
     {
-        if ($this->_errors) {
-            $errors = $this->_errors;
+        if ($errors = $this->_errors;) {
             $this->_errors = false;
-            if (!$separator) {
-                if ($separator === true) {
-                    $separator = '|';
-                }
+            if(is_array($errors) && !empty($errors)){
+                if ($separator) {
+                    if ($separator === true) {
+                        $separator = '|';
+                    }
 
-                return implode($separator, $errors);
-            } else {
-                return $errors;
+                    return implode($separator, $errors);
+                } else {
+                    return $errors;
+                }
             }
         }
 

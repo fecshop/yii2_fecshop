@@ -13,7 +13,7 @@ use fecshop\services\Service;
 use Yii;
 
 /**
- * AR services.
+ * AR services.（Active Record）
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -35,16 +35,16 @@ class AR extends Service
      * 		],
      * 	'asArray' => true,
      * ]
+     * 查询方面使用的函数，根据传递的参数，进行query
      */
     public function getCollByFilter($query, $filter)
     {
-        $select = isset($filter['select']) ? $filter['select'] : '';
-        $asArray = isset($filter['asArray']) ? $filter['asArray'] : true;
+        $select     = isset($filter['select']) ? $filter['select'] : '';
+        $asArray    = isset($filter['asArray']) ? $filter['asArray'] : true;
         $numPerPage = isset($filter['numPerPage']) ? $filter['numPerPage'] : $this->numPerPage;
-        $pageNum = isset($filter['pageNum']) ? $filter['pageNum'] : $this->pageNum;
-        $orderBy = isset($filter['orderBy']) ? $filter['orderBy'] : '';
-        $where = isset($filter['where']) ? $filter['where'] : '';
-
+        $pageNum    = isset($filter['pageNum']) ? $filter['pageNum'] : $this->pageNum;
+        $orderBy    = isset($filter['orderBy']) ? $filter['orderBy'] : '';
+        $where      = isset($filter['where']) ? $filter['where'] : '';
         if ($asArray) {
             $query->asArray();
         }
@@ -64,7 +64,6 @@ class AR extends Service
                 }
             }
         }
-
         $offset = ($pageNum - 1) * $numPerPage;
         $query->limit($numPerPage)->offset($offset);
         if ($orderBy) {
@@ -73,7 +72,11 @@ class AR extends Service
 
         return $query;
     }
-
+    /**
+     * @property $model | Object , 数据库model
+     * @property $one | Array ， 数据数组，对model进行赋值
+     * 通过循环的方式，对$model对象的属性进行赋值。
+     */
     public function save($model, $one, $serialize = false)
     {
         if (!$model) {
