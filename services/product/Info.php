@@ -76,16 +76,34 @@ class Info extends Service
      */
 
     /**
+     * @property $custom_option_arr | Array ， 用户选择提交数据，格式为
+     *    [
+     *        'color' => 'red',
+     *        'size'  => 'L',
+     *    ]
+     * @property $product_custom_option | Array ， 产品表中的custom_option属性值，譬如：
+     *  [
+     *      "black-s-s2-s3": [
+     *          "my_color": "black",
+     *          "my_size": "S",
+     *          "my_size2": "S2",
+     *          "my_size3": "S3",
+     *          "sku": "black-s-s2-s3",
+     *          "qty": NumberInt(99999),
+     *          "price": 0,
+     *          "image": "/2/01/20161024170457_10036.jpg"
+     *      ],
+     *  ]
      * 通过前台传递的custom option 得到customOptionSku.
      */
-    public function getProductCOSku($custom_option_sku, $product_custom_option)
+    public function getProductCOSku($custom_option_arr, $product_custom_option)
     {
         if (is_array($product_custom_option) && !empty($product_custom_option)) {
             foreach ($product_custom_option as $co_sku => $info) {
                 $bool = true;
                 if (is_array($info) && !empty($info)) {
                     foreach ($info as $k=>$v) {
-                        if (isset($custom_option_sku[$k]) && ($custom_option_sku[$k] != $v)) {
+                        if (isset($custom_option_arr[$k]) && ($custom_option_arr[$k] != $v)) {
                             $bool = false;
                             break;
                         }

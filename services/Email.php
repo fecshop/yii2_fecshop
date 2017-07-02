@@ -12,6 +12,7 @@ namespace fecshop\services;
 use Yii;
 
 /**
+ * service mail ：邮件服务部分
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -25,7 +26,7 @@ class Email extends Service
      */
     public $defaultObMethod = 'getLastData';
 
-    protected $_mailer;  // Array
+    protected $_mailer;      // Array
     protected $_mailer_from; //Array
     protected $_from;
 
@@ -64,6 +65,7 @@ class Email extends Service
     }
 
     /**
+     * @property $key | String
      * 得到MailConfig.
      */
     protected function getMailerConfig($key = 'default')
@@ -89,29 +91,34 @@ class Email extends Service
                 return $mailerConfig['transport']['username'];
             }
         }
+        return '';
     }
 
     /**
-     * @property $mailerConfig | Array or String  mailer组件的配置，下面是例子，
-     您可以使用在email service里面默认的配置，也可以动态配置他，下面是参数的例子：
-     注意：如果自定义传递邮箱配置，不同的配置，要使用不同的configKey
-     [
-     'configKey' => [
-     'class' => 'yii\swiftmailer\Mailer',
-     'transport' => [
-     'class' => 'Swift_SmtpTransport',
-     'host' => 'smtp.qq.net',
-     'username' => 'support@mail.com',
-     'password' => 'xxxx',
-     'port' => '587',
-     'encryption' => 'tls',
-     ],
-     'messageConfig'=>[
-     'charset'=>'UTF-8',
-     ],
-     ],
-     ]
-     * @return yii的mail组件、
+     * @property $mailerConfig | Array or String  mailer组件的配置， 您可以设置为空，使用默认的邮箱配置，也可以设置为字符串，字符串对应配置中$mailerConfig对应的key。
+     * 1.打开@fecshop/config/services/Config.php ， 可以看到 $mailerConfig =>  ['default' => [...]]的配置，当该参数为空或'default'的时候，就使用该默认配置。
+     * 2.当该参数设置除default之外的字符串的时候，就是 $mailerConfig 配置数组中其他的key对应的配置，如果不存在，则返回为空。
+     * 3.您可以完全不使用配置数组中的配置，完全动态配置他，下面该参数动态配置的例子：
+     * 注意：如果自定义传递邮箱配置，不同的配置，要使用不同的configKey
+     * [
+     *      'configKey' => [   # 唯一key，这个必须在 @fecshop/config/services/Config.php 中 $mailerConfig 配置数组中不存在该key值，否则将会重复。
+     *          'class' => 'yii\swiftmailer\Mailer',  # email组件对应的class
+     *          'transport' => [            # 组件注入的配置参数。
+     *             'class' => 'Swift_SmtpTransport',
+     *             'host' => 'smtp.qq.net',
+     *             'username' => 'support@mail.com',
+     *             'password' => 'xxxx',
+     *             'port' => '587',
+     *            'encryption' => 'tls',
+     *          ],
+     *          'messageConfig'=>[
+     *              'charset'=>'UTF-8',
+     *          ],
+     *      ] //数组中只能一个configKey,配置多个无效，只有第一个有效。
+     * ]
+     * @return yii的mail组件compoent
+     * 通过 $mailerConfigParam 的三种方式，可以使用系统配置的mail组件，也可以自己动态配置mail组件
+     * 增强mail组件使用的方面和灵活。
      */
     protected function actionMailer($mailerConfigParam = '')
     {
@@ -123,23 +130,28 @@ class Email extends Service
         } elseif (is_string($mailerConfigParam)) {
             $key = $mailerConfigParam;
         } else {
+            Yii::$service->helper->errors->add('you mail config param is not correct');
             return;
         }
         if (!$key) {
+            Yii::$service->helper->errors->add('mail config key is empty');
             return;
         }
-        //exit;
         if (!$this->_mailer[$key]) {
             $component_name = 'mailer_'.$key;
             if (!$mailerConfigParam) {
                 $mailerConfig = $this->getMailerConfig();
                 if (!is_array($mailerConfig) || empty($mailerConfig)) {
+                    Yii::$service->helper->errors->add('you must config mail var $mailerConfig is your mail config file');
+                    
                     return;
                 }
                 Yii::$app->set($component_name, $mailerConfig);
             } elseif (is_array($mailerConfigParam)) {
                 $mailerConfig = $mailerConfigParam[$key];
                 if (!is_array($mailerConfig) || empty($mailerConfig)) {
+                    Yii::$service->helper->errors->add('function param $mailerConfigParam format is not correct');
+                    
                     return;
                 }
                 $component_name .= 'custom_';
@@ -147,6 +159,8 @@ class Email extends Service
             } elseif (is_string($mailerConfigParam)) {
                 $mailerConfig = $this->getMailerConfig($mailerConfigParam);
                 if (!is_array($mailerConfig) || empty($mailerConfig)) {
+                    Yii::$service->helper->errors->add('string param ($mailerConfigParam) can not find in config file , you must config var $mailerConfig in mail config file');
+                    
                     return;
                 }
                 Yii::$app->set($component_name, $mailerConfig);
@@ -154,9 +168,8 @@ class Email extends Service
             $this->_mailer_from[$key] = $this->defaultForm($mailerConfig);
             $this->_mailer[$key] = Yii::$app->get($component_name);
         }
-        $this->_from = $this->_mailer_from[$key];
-        //var_dump($this->_mailer[$key]);exit;
-        return $this->_mailer[$key];
+        $this->_from = isset($this->_mailer_from[$key]) ? $this->_mailer_from[$key] : '';
+        return isset($this->_mailer[$key]) ? $this->_mailer[$key] : '' ;
     }
 
     /**
@@ -167,47 +180,38 @@ class Email extends Service
      *	'htmlBody' => $htmlBody,
      *	'senderName'=> $senderName,
      * ]
-     * @property $mailerConfigParam | array or String， 具体为@fecshop/config/services/Email.php
-     * 中的mailerConfig的配置对应的值。
+     * @property $mailerConfigParam | array or String，对于该参数的配置，
+     * 您可以参看上面的函数 function actionMailer($mailerConfigParam = '') 或者到 @fecshop/config/services/Email.php参看 $mailerConfig的配置
+     * 该函数用于发送邮件.
      */
     protected function actionSend($sendInfo, $mailerConfigParam = '')
     {
-        $to = isset($sendInfo['to']) ? $sendInfo['to'] : '';
-        $subject = isset($sendInfo['subject']) ? $sendInfo['subject'] : '';
-        $htmlBody = isset($sendInfo['htmlBody']) ? $sendInfo['htmlBody'] : '';
+        $to         = isset($sendInfo['to']) ? $sendInfo['to'] : '';
+        $subject    = isset($sendInfo['subject']) ? $sendInfo['subject'] : '';
+        $htmlBody   = isset($sendInfo['htmlBody']) ? $sendInfo['htmlBody'] : '';
         $senderName = isset($sendInfo['senderName']) ? $sendInfo['senderName'] : '';
-        /*
-        $this->mailer()->compose()
-            ->setFrom('support@fecshop.com')
-            ->setTo('2851823529@qq.com')
-            ->setSubject('111111Message subject222')
-            ->setHtmlBody('<b>HTML content333333333df</b>')
-            ->send();
-        */
         if (!$subject) {
             Yii::$service->helper->errors->add('email title is empty');
 
-            return;
+            return false;
         }
         if (!$htmlBody) {
             Yii::$service->helper->errors->add('email body is empty');
 
-            return;
+            return false;
         }
 
         $mailer = $this->mailer($mailerConfigParam);
         if (!$mailer) {
-            //error
             Yii::$service->helper->errors->add('compose is empty, you must check you email config');
 
-            return;
+            return false;
         }
 
         if (!$this->_from) {
-            //error
             Yii::$service->helper->errors->add('email send from is empty');
 
-            return;
+            return false;
         } else {
             $from = $this->_from;
         }
@@ -222,6 +226,7 @@ class Email extends Service
             ->setSubject($subject)
             ->setHtmlBody($htmlBody)
             ->send();
+        return true;
     }
 
     /**
@@ -233,6 +238,9 @@ class Email extends Service
      * 最终得到邮件标题和邮件内容
      * 如果当前语言的邮件模板不存在，则使用默认语言的模板。
      * 关于函数参数的例子值，可以参看配置文件 @fecshop/config/services/Email.php
+     * 打开这个配置文件，可以看到 emailTheme部分的配置， 里面有 widget 和 viewPath的配置，
+     * 配置和下面的参数是对应起来的，在执行下面的函数，会使用配置里面的参数，譬如：
+     * @fecshop/services/email/Customer.php 中的函数  sendRegisterEmail($emailInfo) 里面对该函数的调用。
      */
     public function getSubjectAndBody($widget, $viewPath, $langCode = '', $params = [])
     {
@@ -290,7 +298,7 @@ class Email extends Service
      *		'params'=> $params
      *	];
      * @return String(text)
-     *                      通过配置得到邮件内容。
+     *                      通过配置得到邮件内容，原理是使用了 Yii::$app->view->renderFile()函数。
      */
     public function getHtmlContent($config)
     {

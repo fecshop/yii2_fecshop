@@ -46,6 +46,12 @@ class Info extends Service
         $qty = $item['qty'];
         $product_id = $item['product_id'];
         $custom_option_sku = $item['custom_option_sku'];
+        // 验证产品是否是激活状态
+        if ($product['status'] != 1) {
+            Yii::$service->helper->errors->add('product is not active');
+
+            return false;
+        }
         // 加入购物车的产品个数超出 购物车中产品的最大个数。
         if ($qty > $this->maxCountAddToCart) {
             Yii::$service->helper->errors->add('The number of products added to the shopping cart can not exceed '.$this->maxCountAddToCart);
@@ -76,27 +82,47 @@ class Info extends Service
                 return false;
             }
         }
-        // 验证产品是否是激活状态
-        if ($product['status'] != 1) {
-            Yii::$service->helper->errors->add('product is not active');
-
-            return false;
-        }
+        
 
         return true;
     }
-
+    /**
+     * @property $item | Array , 数据格式为：
+     * [
+     *    'product_id'  => xxxxx
+     *    'qty'           => 55,
+     *    'custom_option_sku' => [
+     *        'color' => 'red',
+     *        'size'  => 'L',
+     *    ]
+     * ]
+     * @property $product | Product Model ， 产品的model对象
+     * $product['custom_option'] 的数据格式如下：
+     *  [
+     *      "black-s-s2-s3": [
+     *          "my_color": "black",
+     *          "my_size": "S",
+     *          "my_size2": "S2",
+     *          "my_size3": "S3",
+     *          "sku": "black-s-s2-s3",
+     *          "qty": NumberInt(99999),
+     *          "price": 0,
+     *          "image": "/2/01/20161024170457_10036.jpg"
+     *      ],
+     *  ]
+     * @return 得到custom option部分对应的sku
+     * 当用户在产品加入购物车的时候选择了颜色尺码等属性，通过这个函数，可以得到这些属性对应的custom_option_sku的值。
+     * 如果不存在，则返回为空。
+     */
     public function getCustomOptionSku($item, $product)
     {
         $qty = $item['qty'];
-        $custom_option_sku = $item['custom_option_sku'];
+        $custom_option_arr = $item['custom_option_sku'];
         $product_id = $item['product_id'];
-
         $co_sku = '';
-        if ($custom_option_sku) {
+        if ($custom_option_arr) {
             $product_custom_option = $product['custom_option'];
-            $co_sku = Yii::$service->product->info->getProductCOSku($custom_option_sku, $product_custom_option);
-
+            $co_sku = Yii::$service->product->info->getProductCOSku($custom_option_arr, $product_custom_option);
             if ($co_sku) {
                 return $co_sku;
             }
