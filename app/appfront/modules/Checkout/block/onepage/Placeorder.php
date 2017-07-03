@@ -48,6 +48,7 @@ class Placeorder
                 $gus_status = $this->guestCreateAndLoginAccount($post);
                 $save_address_status = $this->updateAddress($post);
                 if ($gus_status && $save_address_status) {
+                    
                     // 更新Cart信息
                     //$this->updateCart();
                     // 设置checkout type
@@ -69,7 +70,6 @@ class Placeorder
                             
                             $startUrl = Yii::$service->payment->getStandardStartUrl();
                             $innerTransaction->commit();
-                            //echo $startUrl;exit;
                             Yii::$service->url->redirect($startUrl);
 
                             return true;
@@ -84,7 +84,6 @@ class Placeorder
             } else {
             }
         }
-        //echo 333;exit;
         Yii::$service->page->message->addByHelperErrors();
 
         return false;

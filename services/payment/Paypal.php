@@ -21,19 +21,19 @@ use Yii;
 class Paypal extends Service
 {
     // paypal支付状态
-    public $payment_status_none = 'none';
-    public $payment_status_completed = 'completed';
-    public $payment_status_denied = 'denied';
-    public $payment_status_expired = 'expired';
-    public $payment_status_failed = 'failed';
-    public $payment_status_in_progress = 'in_progress';
-    public $payment_status_pending = 'pending';
-    public $payment_status_refunded = 'refunded';
-    public $payment_status_refunded_part = 'partially_refunded';
-    public $payment_status_reversed = 'reversed';
-    public $payment_status_unreversed = 'canceled_reversal';
-    public $payment_status_processed = 'processed';
-    public $payment_status_voided = 'voided';
+    public $payment_status_none         = 'none';
+    public $payment_status_completed    = 'completed';
+    public $payment_status_denied       = 'denied';
+    public $payment_status_expired      = 'expired';
+    public $payment_status_failed       = 'failed';
+    public $payment_status_in_progress  = 'in_progress';
+    public $payment_status_pending      = 'pending';
+    public $payment_status_refunded     = 'refunded';
+    public $payment_status_refunded_part= 'partially_refunded';
+    public $payment_status_reversed     = 'reversed';
+    public $payment_status_unreversed   = 'canceled_reversal';
+    public $payment_status_processed    = 'processed';
+    public $payment_status_voided       = 'voided';
 
     // 是否使用证书的方式（https）
     public $use_local_certs = false;
@@ -46,8 +46,8 @@ class Paypal extends Service
     protected $_postData;
     protected $_order;
 
-    const EXPRESS_TOKEN = 'paypal_express_token';
-    const EXPRESS_PAYER_ID = 'paypal_express_payer_id';
+    const EXPRESS_TOKEN     = 'paypal_express_token';
+    const EXPRESS_PAYER_ID  = 'paypal_express_payer_id';
     
     protected $expressPayerID;
     protected $expressToken;
@@ -114,10 +114,10 @@ class Paypal extends Service
                 $urlParamStr .= '&'.$k.'='.urlencode($v);
             }
         }
-        $urlParamStr .= '&cmd=_notify-validate';
-        $urlParamStr = substr($urlParamStr, 1);
-        $verifyUrl = Yii::$service->payment->getStandardPaymentUrl();
-        $verifyUrl = $verifyUrl.'?'.$urlParamStr;
+        $urlParamStr   .= '&cmd=_notify-validate';
+        $urlParamStr    = substr($urlParamStr, 1);
+        $verifyUrl      = Yii::$service->payment->getStandardPaymentUrl();
+        $verifyUrl      = $verifyUrl.'?'.$urlParamStr;
 
         return $verifyUrl;
     }
@@ -457,15 +457,14 @@ class Paypal extends Service
         $nvp_array['ADDROVERRIDE'] = 0;
         //ADDROVERRIDE
         // 得到购物车的信息，通过购物车信息填写。
-        $orderInfo = Yii::$service->order->getInfoByPaymentToken($token);
-        //$cartInfo = Yii::$service->cart->getCartInfo();
-        $currency = Yii::$service->page->currency->getCurrentCurrency();
-
-        $grand_total = Yii::$service->helper->format->number_format($orderInfo['grand_total']);
-        $subtotal = Yii::$service->helper->format->number_format($orderInfo['subtotal']);
+        $orderInfo      = Yii::$service->order->getInfoByPaymentToken($token);
+        //$cartInfo     = Yii::$service->cart->getCartInfo();
+        $currency       = Yii::$service->page->currency->getCurrentCurrency();
+        $grand_total    = Yii::$service->helper->format->number_format($orderInfo['grand_total']);
+        $subtotal       = Yii::$service->helper->format->number_format($orderInfo['subtotal']);
         $shipping_total = Yii::$service->helper->format->number_format($orderInfo['shipping_total']);
-        $discount_amount = Yii::$service->helper->format->number_format($orderInfo['subtotal_with_discount']);
-        $subtotal = $subtotal - $discount_amount;
+        $discount_amount= Yii::$service->helper->format->number_format($orderInfo['subtotal_with_discount']);
+        $subtotal       = $subtotal - $discount_amount;
 
         $nvp_array['PAYMENTREQUEST_0_SHIPTOSTREET']         = $orderInfo['customer_address_street1'].' '.$orderInfo['customer_address_street2'];
         $nvp_array['PAYMENTREQUEST_0_SHIPTOCITY']           = $orderInfo['customer_address_city'];
@@ -482,15 +481,15 @@ class Paypal extends Service
         $i = 0;
 
         foreach ($orderInfo['products'] as $item) {
-            $nvp_array['L_PAYMENTREQUEST_0_QTY'.$i] = $item['qty'];
-            $nvp_array['L_PAYMENTREQUEST_0_NUMBER'.$i] = $item['sku'];
-            $nvp_array['L_PAYMENTREQUEST_0_AMT'.$i] = Yii::$service->helper->format->number_format($item['price']);
-            $nvp_array['L_PAYMENTREQUEST_0_NAME'.$i] = $item['name'];
+            $nvp_array['L_PAYMENTREQUEST_0_QTY'.$i]     = $item['qty'];
+            $nvp_array['L_PAYMENTREQUEST_0_NUMBER'.$i]  = $item['sku'];
+            $nvp_array['L_PAYMENTREQUEST_0_AMT'.$i]     = Yii::$service->helper->format->number_format($item['price']);
+            $nvp_array['L_PAYMENTREQUEST_0_NAME'.$i]    = $item['name'];
             $nvp_array['L_PAYMENTREQUEST_0_CURRENCYCODE'.$i] = $currency;
             $i++;
         }
         $nvp_array['L_PAYMENTREQUEST_0_NAME'.$i] = 'Discount';
-        $nvp_array['L_PAYMENTREQUEST_0_AMT'.$i] = '-'.$discount_amount;
+        $nvp_array['L_PAYMENTREQUEST_0_AMT'.$i]  = '-'.$discount_amount;
         //var_dump($nvp_array);
         $nvpStr = $this->getRequestUrlStrByArray($nvp_array);
         //var_dump($nvpStr);

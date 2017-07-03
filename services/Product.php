@@ -34,8 +34,6 @@ class Product extends Service
         }
     }
 
-    // Yii::$service->product->getCustomAttrGroup();
-
     /**
      * 得到产品的所有的属性组。
      */
@@ -50,9 +48,9 @@ class Product extends Service
 
     /**
      * @property $productAttrGroup|string
-     *  得到这个产品属性组里面的所有的产品属性，
-     *  注解：不同类型的产品，对应不同的属性组，譬如衣服有颜色尺码，电脑类型的有不同cpu型号等
-     *  属性组，以及属性组对应的属性，是在Product Service config中配置的。
+     * 得到这个产品属性组里面的所有的产品属性，
+     * 注解：不同类型的产品，对应不同的属性组，譬如衣服有颜色尺码，电脑类型的有不同cpu型号等
+     * 属性组，以及属性组对应的属性，是在Product Service config中配置的。
      */
     protected function actionGetGroupAttrInfo($productAttrGroup)
     {
@@ -79,7 +77,8 @@ class Product extends Service
     /**
      * @property $productAttrGroup|string
      * @return 一维数组
-     *                      得到这个产品属性组里面的 属性
+     * 得到这个产品属性组里面的 属性,也就是原来的产品属性+属性组对应的属性
+     * 
      */
     protected function actionGetSpuAttr($productAttrGroup)
     {
@@ -108,7 +107,6 @@ class Product extends Service
         if ($productAttrGroup == $this->_defaultAttrGroup) {
             return '';
         }
-
         // 得到用于spu，细分sku的属性，譬如颜色尺码之类。
         if (isset($this->customAttrGroup[$productAttrGroup]['spu_attr'])
                 && is_array($this->customAttrGroup[$productAttrGroup]['spu_attr'])
@@ -122,12 +120,18 @@ class Product extends Service
 
         return '';
     }
-
+    /**
+     * @property $status | Int 
+     * @return boolean ， 产品状态是否是active
+     */
     protected function actionIsActive($status)
     {
         return ($status == 1) ? true : false;
     }
-
+    /**
+     * @property $productAttrGroup | String  产品属性组
+     * 通过产品属性组，从配置中得到对应的custom_options部分的配置
+     */
     protected function actionGetCustomOptionAttrInfo($productAttrGroup)
     {
         $arr = [];
@@ -158,43 +162,53 @@ class Product extends Service
     }
 
     /**
-     * get Category model by primary key.
+     * get Product model by primary key.
      */
     protected function actionGetByPrimaryKey($primaryKey)
     {
         return $this->_product->getByPrimaryKey($primaryKey);
     }
-
+    /**
+     * @property $attr_group | String , 属性组名称
+     * 给product model 增加相应的属性组对应的属性。
+     */
     protected function actionAddGroupAttrs($attr_group)
     {
         return $this->_product->addGroupAttrs($attr_group);
     }
 
     /**
+     * api部分
      * 和coll()的不同在于，该方式不走active record，因此可以获取产品的所有数据的。
      */
     protected function actionApicoll()
     {
         return $this->_product->apicoll();
     }
-
+    /**
+     * api部分
+     */
     protected function actionApiGetByPrimaryKey($primaryKey)
     {
         return $this->_product->apiGetByPrimaryKey($primaryKey);
     }
-
+    /**
+     * api部分
+     */
     protected function actionApiSave($product_one)
     {
         return $this->_product->apiSave($product_one);
     }
-
+    /**
+     * api部分
+     */
     protected function actionApiDelete($primaryKey)
     {
         return $this->_product->apiDelete($primaryKey);
     }
 
     /**
-     * 得到category model的全名.
+     * 得到Product model的全名.
      */
     protected function actionGetModelName()
     {
@@ -202,6 +216,8 @@ class Product extends Service
     }
 
     /**
+     * @property $sku | string
+     * @property $returnArr | boolean ， 是否返回数组格式
      * 通过sku查询产品
      */
     protected function actionGetBySku($sku, $returnArr = true)
@@ -210,6 +226,7 @@ class Product extends Service
     }
 
     /**
+     * @property $spu | string
      * 通过spu查询产品
      */
     protected function actionGetBySpu($spu)
@@ -225,13 +242,14 @@ class Product extends Service
      * 		'numPerPage' 	=> 20,
      * 		'pageNum'		=> 1,
      * 		'orderBy'	=> ['_id' => SORT_DESC, 'sku' => SORT_ASC ],
-     * 		where'			=> [
-     ['>','price',1],
-     ['<=','price',10]
+     * 		'where'			=> [
+     *          ['>','price',1],
+     *          ['<=','price',10]
      * 			['sku' => 'uk10001'],
      * 		],
-     * 	'asArray' => true,
+     * 	    'asArray' => true,
      * ]
+     * 根据传入的查询条件，得到产品的列表
      */
     protected function actionColl($filter = '')
     {
@@ -357,6 +375,7 @@ class Product extends Service
 
     /**
      * @property $ids | Array
+     * 通过产品ids得到产品sku
      */
     protected function actionGetSkusByIds($ids)
     {

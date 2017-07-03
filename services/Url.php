@@ -12,13 +12,14 @@ namespace fecshop\services;
 use Yii;
 
 /**
+ * Url Service
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
 class Url extends Service
 {
-    public $randomCount = 8;
-    public $showScriptName;
+    public    $randomCount = 8;
+    public    $showScriptName;
     protected $_secure;
     protected $_currentBaseUrl;
     protected $_origin_url;

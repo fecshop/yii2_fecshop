@@ -8,66 +8,7 @@
 return [
     'product' => [
         'class' => 'fecshop\services\Product',
-        /*
-        'customAttrGroup' => [
-            'dress_group' => [
-                'dresses-length' 	=> [
-                    'dbtype' 	=> 'Int',
-                    'label'=>'裙长',
-                    'name'=>'dresses-length',
-                    'display'=>[
-                        'type' => 'inputString',
-                        'lang' => true,
-                    ],
-                    'require' => 1,
-                ],
-                'style-status'		=> [
-                    'dbtype' 	=> 'Int',
-                    'label'=>'分类状态',
-                    'name'=>'status',
-                    'display'=>[
-                        'type' => 'select',
-                        'data' => [
-                            1 	=> '激活',
-                            2 	=> '关闭',
-                        ]
-                    ],
-                    'require' => 1,
-                    'default' => 1,
-                ],
-            ],
-
-            'computer_group' => [
-                'memory_capacity' 	=> [
-                    'dbtype' 	=> 'String',
-                    'label'=>'Memory Capacity',
-                    'name'=>'memory_capacity',
-                    'display'=>[
-                        'type' => 'inputString',
-                        'lang' => true,
-                    ],
-                    'require' => 1,
-                ],
-                'cpu'		=> [
-                    'dbtype' 	=> 'Int',
-                    'label'=>'CPU型号',
-                    'name'=>'cpu',
-                    'display'=>[
-                        'type' => 'select',
-                        'data' => [
-                            1 	=> 'i3',
-                            2 	=> 'i5',
-                            3 	=> 'i7',
-                        ]
-                    ],
-                    'require' => 1,
-                    'default' => 1,
-                ],
-            ],
-
-
-        ],
-        */
+        // 'customAttrGroup' => [], 详细参看@common/config/fecshop_local_services/Product.php 里面的配置
         // 子服务
         'childService' => [
             'image' => [

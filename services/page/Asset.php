@@ -13,7 +13,7 @@ use fecshop\services\Service;
 use Yii;
 
 /**
- * page asset services.
+ * page asset services. Yii2的Asset部分，这里对这个功能做了一定的重构
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */

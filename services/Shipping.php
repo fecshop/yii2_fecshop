@@ -110,15 +110,15 @@ class Shipping extends Service
         }
         //var_dump($priceData);
         $prev_weight = 0;
-        $prev_price = 0;
-        $last_price = 0;
+        $prev_price  = 0;
+        $last_price  = 0;
         if (is_array($priceData)) {
             foreach ($priceData as $data) {
                 $csv_weight = (float) $data[0];
-                $csv_price = (float) $data[1];
+                $csv_price  = (float) $data[1];
                 if ($weight >= $csv_weight) {
                     $prev_weight = $csv_weight;
-                    $prev_price = $csv_price;
+                    $prev_price  = $csv_price;
                     continue;
                 } else {
                     $last_price = $prev_price;
@@ -143,10 +143,6 @@ class Shipping extends Service
      */
     protected function actionGetShippingCost($shipping_method, $weight, $country = '', $region = '*')
     {
-        //echo $weight;
-        //echo $country;
-        //echo $region;
-        //echo $shipping_method;
         $allmethod = $this->getShippingMethod();
         $m = $allmethod[$shipping_method];
         //var_dump($m );exit;

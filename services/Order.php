@@ -13,33 +13,40 @@ use fecshop\models\mysqldb\Order as MyOrder;
 use Yii;
 
 /**
- * Order services.
+ * Order services. 
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
 class Order extends Service
 {
     public $requiredAddressAttr; // 必填的订单字段。
-    //public $paymentStatus; # 订单支付状态。
-
-    public $payment_status_pending = 'pending';
-    public $payment_status_processing = 'processing';
-    public $payment_status_canceled = 'canceled';
-    public $payment_status_complete = 'complete';
-    public $payment_status_holded = 'holded';
-    public $payment_status_suspected_fraud = 'suspected_fraud';
-    // $this->payment_status_pending
-
+    // 下面是订单支付状态
+    public $payment_status_pending          = 'pending';
+    public $payment_status_processing       = 'processing';
+    public $payment_status_canceled         = 'canceled';
+    public $payment_status_complete         = 'complete';
+    public $payment_status_holded           = 'holded';
+    public $payment_status_suspected_fraud  = 'suspected_fraud';
+    // 订单号格式。
     public $increment_id = 1000000000;
-    public $minuteBeforeThatReturnPendingStock = 60;
-    public $orderCountThatReturnPendingStock = 30;
-
+    // 将xx分钟内未支付的pending订单取消掉，并释放产品库存的设置
+    public $minuteBeforeThatReturnPendingStock  = 60;
+    // 每次处理未支付的pending订单的个数限制。
+    public $orderCountThatReturnPendingStock    = 30;
+    // 支付类型，目前只有standard 和 express 两种，express 指的是在购物车点击支付按钮的方式，譬如paypal的express
+    // standard类型指的是填写完货运地址后生成订单跳转到第三方支付平台的支付类型。
     protected $checkout_type;
+    // 当前的订单信息保存到这个变量中，订单信息是从数据库中取出来订单和产品信息，然后进行了一定的数据处理后，再保存到该变量的。
     protected $_currentOrderInfo;
-    const CHECKOUT_TYPE_STANDARD = 'standard';
-    const CHECKOUT_TYPE_EXPRESS = 'express';
-    const CURRENT_ORDER_CREAMENT_ID = 'current_order_creament_id';
-
+    // 支付类型常量
+    const CHECKOUT_TYPE_STANDARD    = 'standard';
+    const CHECKOUT_TYPE_EXPRESS     = 'express';
+    // 作为保存incrementId到session的key，把当前的order incrementId保存到session的时候，对应的key就是该常量。
+    const CURRENT_ORDER_INCREAMENT_ID = 'current_order_increament_id';
+    /**
+     * @property $checkout_type | String  ，支付类型
+     * 设置支付类型，其他计算以此设置作为基础，进而获取其他的配置。
+     */
     protected function actionSetCheckoutType($checkout_type)
     {
         $arr = [self::CHECKOUT_TYPE_STANDARD, self::CHECKOUT_TYPE_EXPRESS];
@@ -51,7 +58,9 @@ class Order extends Service
 
         return false;
     }
-
+    /**
+     * 得到支付类型
+     */
     protected function actionGetCheckoutType()
     {
         return $this->checkout_type;
@@ -60,7 +69,7 @@ class Order extends Service
     /**
      * @property $billing | Array
      * @return bool
-     *              检查地址的必填。
+     *              通过$this->requiredAddressAttr，检查地址的必填。
      */
     protected function actionCheckRequiredAddressAttr($billing)
     {
@@ -77,7 +86,9 @@ class Order extends Service
 
         return true;
     }
-
+    /**
+     * 得到order 表的id字段。
+     */
     protected function actionGetPrimaryKey()
     {
         return 'order_id';
@@ -86,7 +97,7 @@ class Order extends Service
     /**
      * @property $primaryKey | Int
      * @return Object(MyOrder)
-     *                         通过id找到cupon的对象
+     * 通过主键值，返回Order Model对象
      */
     protected function actionGetByPrimaryKey($primaryKey)
     {
@@ -102,7 +113,7 @@ class Order extends Service
     /**
      * @property $increment_id | String , 订单号
      * @return object （MyOrder），返回 MyOrder model
-     *                通过订单号，得到订单信息。
+     * 通过订单号incrementId，得到订单Model对象。
      */
     protected function actionGetByIncrementId($increment_id)
     {
@@ -117,7 +128,8 @@ class Order extends Service
 
     /**
      * @property $reflush | boolean 是否从数据库中重新获取，如果是，则不会使用类变量中计算的值
-     * 通过从session中取出来订单的increment_id
+     * 获取当前的订单信息，原理为：
+     * 通过从session中取出来订单的increment_id,
      * 在通过increment_id(订单编号)取出来订单信息。
      */
     protected function actionGetCurrentOrderInfo($reflush = false)
@@ -133,8 +145,8 @@ class Order extends Service
     /**
      * @property $increment_id | String 订单编号
      * @return array
-     *               通过order_id 从数据库中取出来订单数据，
-     *               然后在进行了二次处理后的订单数据。
+     *               通过increment_id 从数据库中取出来订单数据，
+     *               然后进行一系列的处理，返回订单数组数据。
      */
     protected function actionGetOrderInfoByIncrementId($increment_id)
     {
@@ -151,10 +163,10 @@ class Order extends Service
         foreach ($one as $k=>$v) {
             $order_info[$k] = $v;
         }
-        $order_info['customer_address_state_name'] = Yii::$service->helper->country->getStateByContryCode($order_info['customer_address_country'], $order_info['customer_address_state']);
-        $order_info['customer_address_country_name'] = Yii::$service->helper->country->getCountryNameByKey($order_info['customer_address_country']);
-        $order_info['currency_symbol'] = Yii::$service->page->currency->getSymbol($order_info['order_currency_code']);
-        $order_info['products'] = Yii::$service->order->item->getByOrderId($one[$primaryKey]);
+        $order_info['customer_address_state_name']      = Yii::$service->helper->country->getStateByContryCode($order_info['customer_address_country'], $order_info['customer_address_state']);
+        $order_info['customer_address_country_name']    = Yii::$service->helper->country->getCountryNameByKey($order_info['customer_address_country']);
+        $order_info['currency_symbol']                  = Yii::$service->page->currency->getSymbol($order_info['order_currency_code']);
+        $order_info['products']                         = Yii::$service->order->item->getByOrderId($one[$primaryKey]);
 
         return $order_info;
     }
@@ -163,7 +175,7 @@ class Order extends Service
      * @property $order_id | Int
      * @return array
      *               通过order_id 从数据库中取出来订单数据，
-     *               然后在进行了二次处理后的订单数据。
+     *               然后进行一系列的处理，返回订单数组数据。
      */
     protected function actionGetOrderInfoById($order_id)
     {
@@ -179,10 +191,10 @@ class Order extends Service
         foreach ($one as $k=>$v) {
             $order_info[$k] = $v;
         }
-        $order_info['customer_address_state_name'] = Yii::$service->helper->country->getStateByContryCode($order_info['customer_address_country'], $order_info['customer_address_state']);
-        $order_info['customer_address_country_name'] = Yii::$service->helper->country->getCountryNameByKey($order_info['customer_address_country']);
-        $order_info['currency_symbol'] = Yii::$service->page->currency->getSymbol($order_info['order_currency_code']);
-        $order_info['products'] = Yii::$service->order->item->getByOrderId($order_id);
+        $order_info['customer_address_state_name']  = Yii::$service->helper->country->getStateByContryCode($order_info['customer_address_country'], $order_info['customer_address_state']);
+        $order_info['customer_address_country_name']= Yii::$service->helper->country->getCountryNameByKey($order_info['customer_address_country']);
+        $order_info['currency_symbol']              = Yii::$service->page->currency->getSymbol($order_info['order_currency_code']);
+        $order_info['products']                     = Yii::$service->order->item->getByOrderId($order_id);
 
         return $order_info;
     }
@@ -190,25 +202,26 @@ class Order extends Service
     /**
      * @property $filter|array
      * @return Array;
-     *                通过过滤条件，得到coupon的集合。
-     *                example filter:
-     *                [
-     *                'numPerPage' 	=> 20,
-     *                'pageNum'		=> 1,
-     *                'orderBy'	=> ['_id' => SORT_DESC, 'sku' => SORT_ASC ],
-     'where'			=> [
-     ['>','price',1],
-     ['<=','price',10]
-     * 			['sku' => 'uk10001'],
-     * 		],
-     * 	'asArray' => true,
-     * ]
+     *              通过过滤条件，得到coupon的集合。
+     *              example filter:
+     *              [
+     *                  'numPerPage' 	=> 20,
+     *                  'pageNum'		=> 1,
+     *                  'orderBy'	    => ['_id' => SORT_DESC, 'sku' => SORT_ASC ],
+     *                  'where'			=> [
+     *                      ['>','price',1],
+     *                      ['<=','price',10]
+     * 			            ['sku' => 'uk10001'],
+     * 		            ],
+     * 	                'asArray' => true,
+     *              ]
+     * 根据$filter 搜索参数数组，返回满足条件的订单数据。
      */
     protected function actionColl($filter = '')
     {
-        $query = MyOrder::find();
-        $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
-        $coll = $query->all();
+        $query  = MyOrder::find();
+        $query  = Yii::$service->helper->ar->getCollByFilter($query, $filter);
+        $coll   = $query->all();
         
         return [
             'coll' => $coll,
@@ -228,30 +241,18 @@ class Order extends Service
         if ($primaryVal) {
             $model = MyOrder::findOne($primaryVal);
             if (!$model) {
-                Yii::$service->helper->errors->add('coupon '.$this->getPrimaryKey().' is not exist');
+                Yii::$service->helper->errors->add('order '.$this->getPrimaryKey().' is not exist');
 
                 return;
             }
         } else {
             $model = new MyOrder();
             $model->created_at = time();
-            /*
-            if(isset(Yii::$app->user)){
-                $user = Yii::$app->user;
-                if(isset($user->identity)){
-                    $identity = $user->identity;
-                    $person_id = $identity['id'];
-                    $model->created_person = $person_id;
-                }
-            }
-            */
         }
         $model->updated_at = time();
-        $saveStatus = Yii::$service->helper->ar->save($model, $one);
-        if (!$primaryVal) {
-            $primaryVal = Yii::$app->db->getLastInsertID();
-        }
-
+        $model = Yii::$service->helper->ar->save($model, $one);
+        $primaryVal = $model[$this->getPrimaryKey()];
+        
         return $primaryVal;
     }
 
@@ -274,7 +275,7 @@ class Order extends Service
                 if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
                     $model->delete();
                 } else {
-                    Yii::$service->helper->errors->add("Coupon Remove Errors:ID $id is not exist.");
+                    Yii::$service->helper->errors->add("Order Remove Errors:ID $id is not exist.");
 
                     return false;
                 }
@@ -293,9 +294,6 @@ class Order extends Service
 
         return true;
     }
-
-    
-
     /**
      * @property $increment_id | String , 订单号
      * @return object （MyOrder），返回 MyOrder model
@@ -303,13 +301,12 @@ class Order extends Service
      */
     protected function actionGetInfoByIncrementId($increment_id)
     {
-        //echo 1;exit;
-        $order = $this->getByIncrementId($increment_id);
-        $orderInfo = [];
+        $order      = $this->getByIncrementId($increment_id);
+        $orderInfo  = [];
         if ($order) {
             $primaryKey = $this->getPrimaryKey();
-            $order_id = $order[$primaryKey];
-            $items = Yii::$service->order->item->getByOrderId($order_id);
+            $order_id   = $order[$primaryKey];
+            $items      = Yii::$service->order->item->getByOrderId($order_id);
             foreach ($order as $k=>$v) {
                 $orderInfo[$k] = $v;
             }
@@ -387,13 +384,13 @@ class Order extends Service
         if (!$cart) {
             Yii::$service->helper->errors->add('current cart is empty');
         }
-        $currency_info = Yii::$service->page->currency->getCurrencyInfo();
-        $currency_code = $currency_info['code'];
-        $currency_rate = $currency_info['rate'];
-        $country = $address['country'];
-        $state = $address['state'];
+        $currency_info  = Yii::$service->page->currency->getCurrencyInfo();
+        $currency_code  = $currency_info['code'];
+        $currency_rate  = $currency_info['rate'];
+        $country        = $address['country'];
+        $state          = $address['state'];
         //echo "$shipping_method,$country,$state";exit;
-        $cartInfo = Yii::$service->cart->getCartInfo($shipping_method, $country, $state);
+        $cartInfo       = Yii::$service->cart->getCartInfo($shipping_method, $country, $state);
         // 检查cartInfo中是否存在产品
         if (!is_array($cartInfo) && empty($cartInfo)) {
             Yii::$service->helper->errors->add('current cart product is empty');
@@ -413,9 +410,8 @@ class Order extends Service
             // 库存不足则返回
             return false;
         }
-        
         $beforeEventName = 'event_generate_order_before';
-        $afterEventName = 'event_generate_order_after';
+        $afterEventName  = 'event_generate_order_after';
         Yii::$service->event->trigger($beforeEventName, $cartInfo);
         if($token){
             // 有token 代表前面已经生成了order，直接通过token查询出来即可。
@@ -429,26 +425,23 @@ class Order extends Service
         }else{
             $myOrder = new MyOrder();
         }
-        
-        $myOrder['order_status'] = $this->payment_status_pending;
-        $myOrder['store'] = $cartInfo['store'];
-        $myOrder['created_at'] = time();
-        $myOrder['updated_at'] = time();
-        $myOrder['items_count'] = $cartInfo['items_count'];
-        $myOrder['total_weight'] = $cartInfo['product_weight'];
+        $myOrder['order_status']        = $this->payment_status_pending;
+        $myOrder['store']               = $cartInfo['store'];
+        $myOrder['created_at']          = time();
+        $myOrder['updated_at']          = time();
+        $myOrder['items_count']         = $cartInfo['items_count'];
+        $myOrder['total_weight']        = $cartInfo['product_weight'];
         $myOrder['order_currency_code'] = $currency_code;
-        $myOrder['order_to_base_rate'] = $currency_rate;
-
-        $myOrder['grand_total'] = $cartInfo['grand_total'];
-        $myOrder['base_grand_total'] = $cartInfo['base_grand_total'];
-        $myOrder['subtotal'] = $cartInfo['product_total'];
-        $myOrder['base_subtotal'] = $cartInfo['base_product_total'];
+        $myOrder['order_to_base_rate']  = $currency_rate;
+        $myOrder['grand_total']         = $cartInfo['grand_total'];
+        $myOrder['base_grand_total']    = $cartInfo['base_grand_total'];
+        $myOrder['subtotal']            = $cartInfo['product_total'];
+        $myOrder['base_subtotal']       = $cartInfo['base_product_total'];
         $myOrder['subtotal_with_discount'] = $cartInfo['coupon_cost'];
         $myOrder['base_subtotal_with_discount'] = $cartInfo['base_coupon_cost'];
-        $myOrder['shipping_total'] = $cartInfo['shipping_cost'];
+        $myOrder['shipping_total']      = $cartInfo['shipping_cost'];
         $myOrder['base_shipping_total'] = $cartInfo['base_shipping_cost'];
-
-        $myOrder['checkout_method'] = $this->getCheckoutType();
+        $myOrder['checkout_method']     = $this->getCheckoutType();
         if ($address['customer_id']) {
             $is_guest = 2;
         } else {
@@ -459,22 +452,21 @@ class Order extends Service
         } else {
             $customer_id = '';
         }
-        $myOrder['customer_id'] = $customer_id;
-        $myOrder['customer_email'] = $address['email'];
-        $myOrder['customer_firstname'] = $address['first_name'];
-        $myOrder['customer_lastname'] = $address['last_name'];
-        $myOrder['customer_is_guest'] = $is_guest;
-        $myOrder['customer_telephone'] = $address['telephone'];
-        $myOrder['customer_address_country'] = $address['country'];
-        $myOrder['customer_address_state'] = $address['state'];
-        $myOrder['customer_address_city'] = $address['city'];
-        $myOrder['customer_address_zip'] = $address['zip'];
-        $myOrder['customer_address_street1'] = $address['street1'];
-        $myOrder['customer_address_street2'] = $address['street2'];
-
-        $myOrder['coupon_code'] = $cartInfo['coupon_code'];
-        $myOrder['payment_method'] = $payment_method;
-        $myOrder['shipping_method'] = $shipping_method;
+        $myOrder['customer_id']             = $customer_id;
+        $myOrder['customer_email']          = $address['email'];
+        $myOrder['customer_firstname']      = $address['first_name'];
+        $myOrder['customer_lastname']       = $address['last_name'];
+        $myOrder['customer_is_guest']       = $is_guest;
+        $myOrder['customer_telephone']      = $address['telephone'];
+        $myOrder['customer_address_country']= $address['country'];
+        $myOrder['customer_address_state']  = $address['state'];
+        $myOrder['customer_address_city']   = $address['city'];
+        $myOrder['customer_address_zip']    = $address['zip'];
+        $myOrder['customer_address_street1']= $address['street1'];
+        $myOrder['customer_address_street2']= $address['street2'];
+        $myOrder['coupon_code']             = $cartInfo['coupon_code'];
+        $myOrder['payment_method']          = $payment_method;
+        $myOrder['shipping_method']         = $shipping_method;
         $myOrder->save();
         $order_id = $myOrder['order_id'];
         if(!$increment_id){
@@ -482,8 +474,6 @@ class Order extends Service
             $myOrder['increment_id'] = $increment_id;
             $myOrder->save();
         }
-        
-        
         Yii::$service->event->trigger($afterEventName, $myOrder);
         if ($myOrder[$this->getPrimaryKey()]) {
             Yii::$service->order->item->saveOrderItems($cartInfo['products'], $order_id, $cartInfo['store']);
@@ -546,7 +536,7 @@ class Order extends Service
      */
     protected function actionSetSessionIncrementId($increment_id)
     {
-        Yii::$app->session->set(self::CURRENT_ORDER_CREAMENT_ID, $increment_id);
+        Yii::$app->session->set(self::CURRENT_ORDER_INCREAMENT_ID, $increment_id);
     }
 
     /**
@@ -554,7 +544,7 @@ class Order extends Service
      */
     protected function actionGetSessionIncrementId()
     {
-        return Yii::$app->session->get(self::CURRENT_ORDER_CREAMENT_ID);
+        return Yii::$app->session->get(self::CURRENT_ORDER_INCREAMENT_ID);
     }
     /**
      * @property $increment_id | String 订单号
@@ -574,7 +564,7 @@ class Order extends Service
      */
     protected function actionRemoveSessionIncrementId()
     {
-        return Yii::$app->session->remove(self::CURRENT_ORDER_CREAMENT_ID);
+        return Yii::$app->session->remove(self::CURRENT_ORDER_INCREAMENT_ID);
     }
 
     /**
@@ -589,14 +579,14 @@ class Order extends Service
         return $increment_id;
     }
 
-    /**
+    /**废弃
      * get order list by customer account id.
      */
     protected function actionGetCustomerOrderList($customer_id = '')
     {
     }
 
-    /**
+    /**废弃
      * @property $order_id 订单id
      * 订单支付成功后，更改订单的状态为支付成功状态。
      */
@@ -608,6 +598,7 @@ class Order extends Service
      * @property $increment_id | String
      * @return bool
      *              取消订单，更新订单的状态为cancel。
+     *              并且释放库存给产品
      */
     protected function actionCancel($increment_id = '')
     {
@@ -617,11 +608,14 @@ class Order extends Service
         if ($increment_id) {
             $order = $this->getByIncrementId($increment_id);
             if ($order) {
-                $cancalStatus = $this->payment_status_canceled;
-                $order->order_status = $cancalStatus;
-                $order->updated_at = time();
+                $order->order_status    = $this->payment_status_canceled;
+                $order->updated_at      = time();
                 $order->save();
-
+                // 释放库存
+                $order_primary_key      = $this->getPrimaryKey();
+                $product_items          = Yii::$service->order->item->getByOrderId($order[$order_primary_key],true);
+                Yii::$service->product->stock->returnQty($product_items);
+                
                 return true;
             }
         }
@@ -631,10 +625,11 @@ class Order extends Service
 
     /**
      * 将xx时间内未支付的pending订单取消掉，并释放产品库存。
+     * 这个是后台脚本执行的函数。
      */
     protected function actionReturnPendingStock()
     {
-        $minute = $this->minuteBeforeThatReturnPendingStock;
+        $minute     = $this->minuteBeforeThatReturnPendingStock;
         $begin_time = strtotime(date('Y-m-d H:i:s'). ' -'.$minute.' minutes ');
 
         // 不需要释放库存的支付方式。譬如货到付款，在系统中
@@ -645,22 +640,21 @@ class Order extends Service
             ['<', 'updated_at', $begin_time],
             ['order_status' => $this->payment_status_pending],
             ['if_is_return_stock' => 2],
-
         ];
         if ($noRelasePaymentMethod) {
             $where[] = ['<>', 'payment_method', $noRelasePaymentMethod];
         }
 
         $filter = [
-            'where'            => $where,
+            'where'         => $where,
             'numPerPage'    => $this->orderCountThatReturnPendingStock,
-            'pageNum'        => 1,
-            'asArray'        => false,
+            'pageNum'       => 1,
+            'asArray'       => false,
         ];
 
-        $data = $this->coll($filter);
-        $coll = $data['coll'];
-        $count = $data['count'];
+        $data   = $this->coll($filter);
+        $coll   = $data['coll'];
+        $count  = $data['count'];
 
         if ($count > 0) {
             foreach ($coll as $one) {

@@ -15,6 +15,7 @@ use Yii;
 use yii\base\InvalidValueException;
 
 /**
+ * Product Review Service
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -193,6 +194,7 @@ class Review extends Service
     }
 
     /**
+     * @property $primaryKey | String 主键值
      * get artile model by primary key.
      */
     protected function actionGetByPrimaryKey($primaryKey)
@@ -261,7 +263,11 @@ class Review extends Service
 
         return true;
     }
-
+    /**
+     * @property $ids | Array or String
+     * @return boolean
+     * 根据提供的ReviewId，删除产品评论
+     */
     protected function actionRemove($ids)
     {
         if (!$ids) {
@@ -358,7 +364,6 @@ class Review extends Service
             ],
         ];
         $coll = $this->coll($filter);
-
         $count = $coll['count'];
         $data = $coll['coll'];
         $rate_total = 0;
@@ -397,12 +402,12 @@ class Review extends Service
      * 		'numPerPage' 	=> 20,
      * 		'pageNum'		=> 1,
      * 		'orderBy'	=> [$this->getPrimaryKey() => SORT_DESC, 'sku' => SORT_ASC ],
-     'where'			=> [
-     ['>','price',1],
-     ['<=','price',10]
+     *      'where'			=> [
+     *          ['>','price',1],
+     *          ['<=','price',10]
      * 			['sku' => 'uk10001'],
      * 		],
-     * 	'asArray' => true,
+     * 	    'asArray' => true,
      * ]
      */
     protected function actionGetReviewsByUserId($filter)

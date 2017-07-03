@@ -14,24 +14,24 @@ use Yii;
 use yii\base\InvalidValueException;
 
 /**
- * Theme services.
+ * Page Theme services. 关于fecshop模板的更多知识可以参阅文档：http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-theme.html
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
 class Theme extends Service
 {
     /**
-     * user current theme dir. Highest priority.
+     * 用户本地的模板路径，优先级最高
      */
     public $localThemeDir;
     /**
      * $thirdThemeDir | Array
-     * user current theme dir.Second priority.
+     * 第三方模板的模板路径，数组格式，允许多个，数组第一个模板路径的优先级高于第二个模板路径。
      * array[0] priority is higher than array[1],.
      */
     public $thirdThemeDir;
     /**
-     * fecshop theme dir. lower priority.
+     * fecshop的模板路径，模板文件最全，但是优先级最低，因此本地模板路径和第三方模板路径的文件会覆盖fecshop的文件，来实现模板文件的重写。
      */
     public $fecshopThemeDir;
     /**
@@ -42,7 +42,10 @@ class Theme extends Service
      * array that contains mutil theme dir.
      */
     protected $_themeDirArr;
-
+    /**
+     * @return  array ，根据模板路径的优先级，以及得到各个模板路径，组合成数组
+     * 数组前面的模板路径优先级最高
+     */
     protected function actionGetThemeDirArr()
     {
         if (!$this->_themeDirArr) {
@@ -65,7 +68,9 @@ class Theme extends Service
     }
 
     /**
-     * find theme file by mutil theme ,if not find view file  and $throwError=true, it will throw InvalidValueException.
+     * @property $view | String ，view路径的字符串。
+     * @property $throwError | boolean，view文件找不到的时候是否抛出异常。
+     * 根据模板路径的优先级，依次查找view文件，找到后，返回view文件的绝对路径。
      */
     protected function actionGetViewFile($view, $throwError = true)
     {
@@ -102,12 +107,16 @@ class Theme extends Service
             return false;
         }
     }
-
+    /**
+     * @property $dir | string 设置本地模板路径
+     */
     protected function actionSetLocalThemeDir($dir)
     {
         $this->localThemeDir = $dir;
     }
-
+    /**
+     * @property $dir | string 设置第三方模板路径
+     */
     protected function actionSetThirdThemeDir($dir)
     {
         $this->thirdThemeDir = $dir;

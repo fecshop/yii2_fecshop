@@ -14,13 +14,17 @@ use Yii;
 use yii\base\InvalidValueException;
 
 /**
+ * Url Rewrite RewriteMongodb service
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
 class RewriteMongodb implements RewriteInterface
 {
     public $numPerPage = 20;
-
+    /**
+     * @property $urlKey | string 
+     * 通过重写后的urlkey字符串，去url_rewrite表中查询，找到重写前的url字符串。
+     */
     public function getOriginUrl($urlKey)
     {
         $UrlData = UrlRewrite::find()->where([
@@ -92,7 +96,10 @@ class RewriteMongodb implements RewriteInterface
 
         return true;
     }
-
+    /**
+     * @property $ids | Array or String 
+     * 删除相应的url rewrite 记录
+     */
     public function remove($ids)
     {
         if (!$ids) {
@@ -128,7 +135,10 @@ class RewriteMongodb implements RewriteInterface
 
         return true;
     }
-
+    /**
+     * @property $time | Int
+     * 根据updated_at 更新时间，删除相应的url rewrite 记录
+     */
     public function removeByUpdatedAt($time)
     {
         if ($time) {
@@ -150,17 +160,23 @@ class RewriteMongodb implements RewriteInterface
             echo "delete complete \n";
         }
     }
-
+    /**
+     * 返回url rewrite model 对应的query
+     */
     public function find()
     {
         return UrlRewrite::find();
     }
-
+    /**
+     * 返回url rewrite 查询结果
+     */
     public function findOne($where)
     {
         return UrlRewrite::findOne($where);
     }
-
+    /**
+     * 返回url rewrite model
+     */
     public function newModel()
     {
         return new UrlRewrite();

@@ -12,6 +12,7 @@ namespace fecshop\services\product;
 use fecshop\services\Service;
 
 /**
+ * Product BestSell Services 未开发
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */

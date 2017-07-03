@@ -64,7 +64,7 @@ class Errors extends Service
      */
     public function get($separator = false)
     {
-        if ($errors = $this->_errors;) {
+        if ($errors = $this->_errors) {
             $this->_errors = false;
             if(is_array($errors) && !empty($errors)){
                 if ($separator) {

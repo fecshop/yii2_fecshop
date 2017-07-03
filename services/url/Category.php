@@ -14,12 +14,14 @@ use Yii;
 use yii\base\InvalidValueException;
 
 /**
+ * Url Category Service
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
 class Category extends Service
 {
     /**
+     * @property $strVal | String
      * 把属性值转换成url格式的字符串，用于生成url.
      */
     protected function actionAttrValConvertUrlStr($strVal)
@@ -38,6 +40,7 @@ class Category extends Service
     }
 
     /**
+     * @property $urlStr | String
      * 把url格式的字符串转换成属性值，用于解析url，得到相应的属性值
      */
     protected function actionUrlStrConvertAttrVal($urlStr)
@@ -49,7 +52,9 @@ class Category extends Service
 
         return $urlStr;
     }
-
+    /**
+     * 对Url中的特殊字符进行转换。（用name生成url的时候，会使用这些字符进行转换）
+     */
     protected function strUrlRelation()
     {
         return [

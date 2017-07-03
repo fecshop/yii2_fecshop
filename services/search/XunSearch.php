@@ -15,7 +15,7 @@ use fecshop\services\Service;
 use Yii;
 
 /**
- * Search.
+ * Search XunSearch Service.
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -39,13 +39,13 @@ class XunSearch extends Service implements SearchInterface
     protected function actionSyncProductInfo($product_ids, $numPerPage)
     {
         if (is_array($product_ids) && !empty($product_ids)) {
-            $productPrimaryKey = Yii::$service->product->getPrimaryKey();
-            $XunSearchModel = new XunSearchModel();
-            $filter['select'] = $XunSearchModel->attributes();
-            $filter['asArray'] = true;
-            $filter['where'][] = ['in', $productPrimaryKey, $product_ids];
+            $productPrimaryKey    = Yii::$service->product->getPrimaryKey();
+            $XunSearchModel       = new XunSearchModel();
+            $filter['select']     = $XunSearchModel->attributes();
+            $filter['asArray']    = true;
+            $filter['where'][]    = ['in', $productPrimaryKey, $product_ids];
             $filter['numPerPage'] = $numPerPage;
-            $filter['pageNum'] = 1;
+            $filter['pageNum']    = 1;
             $coll = Yii::$service->product->coll($filter);
             if (is_array($coll['coll']) && !empty($coll['coll'])) {
                 foreach ($coll['coll'] as $one) {
@@ -108,7 +108,7 @@ class XunSearch extends Service implements SearchInterface
     }
 
     /**
-     * 得到搜索的sku列表.
+     * 得到搜索的产品列表.
      */
     protected function actionGetSearchProductColl($select, $where, $pageNum, $numPerPage, $product_search_max_count)
     {

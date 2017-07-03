@@ -127,11 +127,9 @@ class StaticBlockMysqldb implements StaticBlockInterface
                 $one[$attrName] = serialize($one[$attrName]);
             }
         }
-
-        $saveStatus = Yii::$service->helper->ar->save($model, $one);
-        if (!$primaryVal) {
-            $primaryVal = Yii::$app->db->getLastInsertID();
-        }
+        $primaryKey = $this->getPrimaryKey();
+        $model      = Yii::$service->helper->ar->save($model, $one);
+        $primaryVal = $model[$primaryKey];
 
         return true;
     }

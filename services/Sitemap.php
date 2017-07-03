@@ -12,21 +12,27 @@ namespace fecshop\services;
 use Yii;
 
 /**
- * Shipping services.
+ * Sitemap services.
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
 class Sitemap extends Service
 {
-    public $numPerPage = 100;
-    public $sitemapConfig;
+    public    $numPerPage = 100;
+    public    $sitemapConfig;
     protected $currentDate; // = date('Y-m-d');
 
     protected function initSiteMap()
     {
         $this->currentDate = date('Y-m-d');
     }
-
+    /**
+     * 在store的配置中，没一个store都有一个sitemap文件路径的配置项，譬如：
+     * 'sitemapDir' => '@appfront/web/sitemap.xml',
+     * 下面就是sitemap开始阶段，把格式头写入到对应的sitemap文件中
+     * 对于sitemp.xml文件的访问，为了需要，您可以在nginx中做重新的指向。
+     * sitemap的更多资料，您可以参看：http://www.fecshop.com/doc/fecshop-guide/instructions/cn-1.0/guide-fecshop_sitemap.html
+     */
     protected function actionBeginSiteMap()
     {
         $this->initSiteMap();
@@ -52,7 +58,9 @@ class Sitemap extends Service
             }
         }
     }
-
+    /**
+     * sitemap 文件写入内容后的结束执行的函数。
+     */
     protected function actionEndSiteMap()
     {
         $this->initSiteMap();
@@ -75,7 +83,9 @@ class Sitemap extends Service
             }
         }
     }
-
+    /**
+     * 在sitemap文件中写入home部分的链接
+     */
     protected function actionHome()
     {
         $this->initSiteMap();
@@ -101,7 +111,9 @@ class Sitemap extends Service
             }
         }
     }
-
+    /**
+     * 得到分类的总个数
+     */
     protected function actionCategorypagecount()
     {
         $this->initSiteMap();
@@ -109,7 +121,9 @@ class Sitemap extends Service
         $count = $coll['count'];
         echo ceil($count / $this->numPerPage);
     }
-
+    /**
+     * 在sitemap文件中写入分类部分的链接
+     */
     protected function actionCategory($pageNum)
     {
         $this->initSiteMap();
@@ -147,7 +161,9 @@ class Sitemap extends Service
             }
         }
     }
-
+    /**
+     * 得到产品的总个数
+     */
     protected function actionProductpagecount()
     {
         $this->initSiteMap();
@@ -155,7 +171,9 @@ class Sitemap extends Service
         $count = $coll['count'];
         echo ceil($count / $this->numPerPage);
     }
-
+    /**
+     * 在sitemap文件中写入产品部分的链接
+     */
     protected function actionProduct()
     {
         $this->initSiteMap();
@@ -193,7 +211,9 @@ class Sitemap extends Service
             }
         }
     }
-
+    /**
+     * page页的总个数
+     */
     protected function actionCmspagepagecount()
     {
         $this->initSiteMap();
@@ -201,7 +221,9 @@ class Sitemap extends Service
         $count = $coll['count'];
         echo ceil($count / $this->numPerPage);
     }
-
+    /**
+     * 在sitemap文件中写入page部分的链接
+     */
     protected function actionCmspage()
     {
         $this->initSiteMap();

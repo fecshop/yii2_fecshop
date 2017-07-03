@@ -13,7 +13,7 @@ use fec\helpers\CUrl;
 use fecshop\services\Service;
 
 /**
- * Breadcrumbs services.
+ * Page Breadcrumbs services. 面包屑导航
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -29,7 +29,7 @@ class Breadcrumbs extends Service
         if ($this->homeName) {
             $items['name'] = $this->homeName;
             if ($this->ifAddHomeUrl) {
-                $items['url'] = CUrl::getHomeUrl();
+                $items['url'] = Yii::$service->url->homeUrl();
             }
             $this->addItems($items);
         }
@@ -37,7 +37,7 @@ class Breadcrumbs extends Service
 
     /**
      * property $items|Array. add $items to $this->_items.
-     * $items format example.
+     * $items format example. 将各个部分的链接加入到面包屑导航中
      * $items = ['name'=>'fashion handbag','url'=>'http://www.xxx.com'];.
      */
     protected function actionAddItems($items)
@@ -46,7 +46,10 @@ class Breadcrumbs extends Service
             $this->_items[] = $items;
         }
     }
-
+    /**
+     * 通过上面的方法addItems($items)，把item加入进来后
+     * 然后，通过该函数取出来。
+     */
     protected function actionGetItems()
     {
         if ($this->active) {

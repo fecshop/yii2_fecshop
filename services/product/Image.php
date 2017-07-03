@@ -14,6 +14,7 @@ use Yii;
 use yii\base\InvalidValueException;
 
 /**
+ * Product Image Services
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -37,9 +38,10 @@ class Image extends Service
         'image/jpg',
         'image/pjpeg',
     ];
-
+    // 默认产品图片，当产品图片找不到的时候，就会使用该默认图片
     public $defaultImg = '/default.jpg';
-    public $waterImg = 'product_water.jpg';
+    // 产品水印图片。
+    public $waterImg   = 'product_water.jpg';
     protected $_defaultImg;
     protected $_md5WaterImgPath;
 
@@ -92,7 +94,9 @@ class Image extends Service
 
         return Yii::$service->image->saveUploadImg($FILE);
     }
-
+    /**
+     * 获取产品默认图片的完整URL
+     */
     protected function actionDefautImg()
     {
         if (!$this->_defaultImg) {
@@ -103,8 +107,11 @@ class Image extends Service
     }
 
     /**
-     * $imgResize 可以为数组 [230,230] 代表生成的图片为230*230，如果宽度或者高度不够，则会用白色填充
-     * 如果 $imgResize设置为 230， 则宽度不变，高度按照原始图的比例计算出来。
+     * @property $imageVal | String ，图片相对路径字符串。
+     * @property $imgResize | Array or Int ， 数组 [230,230] 代表生成的图片为230*230，如果宽度或者高度不够，则会用白色填充
+     *                  如果 $imgResize设置为 230， 则宽度不变，高度按照原始图的比例计算出来。
+     * @property $isWatered | Boolean ， 产品图片是否打水印。
+     * 获取相应尺寸的产品图片。
      */
     protected function actionGetResize($imageVal, $imgResize, $isWatered = false)
     {
@@ -124,7 +131,13 @@ class Image extends Service
 
         return $newUrl;
     }
-
+    /**
+     * @property $imageVal | String ，图片相对路径字符串。
+     * @property $imgResize | Array or Int ， 数组 [230,230] 代表生成的图片为230*230，如果宽度或者高度不够，则会用白色填充
+     *                  如果 $imgResize设置为 230， 则宽度不变，高度按照原始图的比例计算出来。
+     * @property $waterImgPath | String ， 水印图片的路径
+     * 获取按照自定义尺寸获取的产品图片的文件绝对路径和完整url
+     */
     protected function getProductNewPath($imageVal, $imgResize, $waterImgPath)
     {
         if (!$this->_md5WaterImgPath) {

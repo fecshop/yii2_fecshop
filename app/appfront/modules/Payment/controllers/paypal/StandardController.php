@@ -52,8 +52,16 @@ class StandardController extends AppfrontController
     
     public function actionCancel()
     {
-        Yii::$service->order->cancel();
-
+        $innerTransaction = Yii::$app->db->beginTransaction();
+		try {
+            if(Yii::$service->order->cancel()){
+                $innerTransaction->commit();
+            }else{
+                $innerTransaction->rollBack();
+            }
+		} catch (Exception $e) {
+			$innerTransaction->rollBack();
+		}
         return Yii::$service->url->redirectByUrlKey('checkout/onepage');
     }
     

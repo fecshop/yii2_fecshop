@@ -26,7 +26,10 @@ class RewriteMysqldb implements RewriteInterface
     protected $_lang_attr = [
 
         ];
-
+    /**
+     * @property $urlKey | string 
+     * 通过重写后的urlkey字符串，去url_rewrite表中查询，找到重写前的url字符串。
+     */
     public function getOriginUrl($urlKey)
     {
         $UrlData = UrlRewrite::find()->where([
@@ -118,7 +121,10 @@ class RewriteMysqldb implements RewriteInterface
 
         return true;
     }
-
+    /**
+     * @property $ids | Array or Int 
+     * 删除相应的url rewrite 记录
+     */
     public function remove($ids)
     {
         if (!$ids) {
@@ -172,7 +178,10 @@ class RewriteMysqldb implements RewriteInterface
 
         return true;
     }
-
+    /**
+     * @property $time | Int
+     * 根据updated_at 更新时间，删除相应的url rewrite 记录
+     */
     public function removeByUpdatedAt($time)
     {
         if ($time) {
@@ -181,17 +190,23 @@ class RewriteMysqldb implements RewriteInterface
             ]);
         }
     }
-
+    /**
+     * 返回url rewrite model 对应的query
+     */
     public function find()
     {
         return UrlRewrite::find();
     }
-
+    /**
+     * 返回url rewrite 查询结果
+     */
     public function findOne($where)
     {
         return UrlRewrite::findOne($where);
     }
-
+    /**
+     * 返回url rewrite model
+     */
     public function newModel()
     {
         return new UrlRewrite();

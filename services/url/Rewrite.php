@@ -31,7 +31,10 @@ class Rewrite extends Service
             $this->_urlRewrite = new RewriteMysqldb();
         }
     }
-
+    /**
+     * @property $urlKey | string 
+     * 通过重写后的urlkey字符串，去url_rewrite表中查询，找到重写前的url字符串。
+     */
     protected function actionGetOriginUrl($urlKey)
     {
         return $this->_urlRewrite->getOriginUrl($urlKey);
@@ -87,27 +90,39 @@ class Rewrite extends Service
     {
         return $this->_urlRewrite->save($one);
     }
-
+    /**
+     * @property $ids | Array or String or Int 
+     * 删除相应的url rewrite 记录
+     */
     protected function actionRemove($ids)
     {
         return $this->_urlRewrite->remove($ids);
     }
-
+    /**
+     * @property $time | Int
+     * 根据updated_at 更新时间，删除相应的url rewrite 记录
+     */
     protected function actionRemoveByUpdatedAt($time)
     {
         return $this->_urlRewrite->removeByUpdatedAt($time);
     }
-
+    /**
+     * 返回url rewrite model 对应的query
+     */
     protected function actionFind()
     {
         return $this->_urlRewrite->find();
     }
-
+    /**
+     * 返回url rewrite 查询结果
+     */
     protected function actionFindOne($where)
     {
         return $this->_urlRewrite->findOne($where);
     }
-
+    /**
+     * 返回url rewrite model
+     */
     protected function actionNewModel()
     {
         return $this->_urlRewrite->newModel();

@@ -13,13 +13,12 @@ use fecshop\services\search\MongoSearch;
 use Yii;
 
 /**
- * Search.
+ * Product Search.
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
 class Search extends Service
 {
-    //protected $_searchEngine;
     /**
      * 在搜索页面侧栏的搜索过滤属性字段.
      */
@@ -52,7 +51,7 @@ class Search extends Service
 
     /**
      * @property  $product_ids | Array  产品id数组
-     * 批量处理，将所有产品
+     * 批量处理，将所有产品批量同步到搜索工具的库里面。
      */
     protected function actionSyncProductInfo($product_ids, $numPerPage = 20)
     {
@@ -66,7 +65,9 @@ class Search extends Service
     }
 
     /**
-     * 在批量更新脚本中，将no active 的产品，从搜索表中删除掉.
+     * @property $nowTimeStamp | int 
+     * 批量更新过程中，被更新的产品都会更新字段sync_updated_at
+     * 删除xunSearch引擎中sync_updated_at小于$nowTimeStamp的字段.
      */
     protected function actionDeleteNotActiveProduct($nowTimeStamp)
     {
@@ -80,7 +81,25 @@ class Search extends Service
     }
 
     /**
-     * 得到搜索的sku列表.
+     * @property $select | Array 
+     * @property $where | Array 
+     * @property $pageNum | Int
+     * @property $numPerPage | Array 
+     * @property $product_search_max_count | Int ， 搜索结果最大产品数。 
+     * 对于上面的参数和以前的$filter类似，大致和下面的类似
+     * [
+     *	'category_id' 	=> 1,
+     *	'pageNum'		=> 2,
+     *	'numPerPage'	=> 50,
+     *	'orderBy'		=> 'name',
+     *	'where'			=> [
+     *		['>','price',11],
+     *		['<','price',22],
+     *	],
+     *	'select'		=> ['xx','yy'],
+     *	'group'			=> '$spu',
+     * ]
+     * 得到搜索的产品列表.
      */
     protected function actionGetSearchProductColl($select, $where, $pageNum, $numPerPage, $product_search_max_count)
     {
@@ -109,7 +128,11 @@ class Search extends Service
     /**
      * 得到搜索的sku列表侧栏的过滤.
      * @property $filter_attr | Array
-     * @property $where | Array
+     * @property $where | Array , like 
+     *  [
+     *		['>','price',11],
+     *		['<','price',22],
+     *	],
      */
     protected function actionGetFrontSearchFilter($filter_attr, $where)
     {

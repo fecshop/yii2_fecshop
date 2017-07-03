@@ -13,6 +13,7 @@ use fecshop\services\Service;
 use Yii;
 
 /**
+ * Product Price Services
  * Product Service is the component that you can get product info from it.
  * @property Image|\fecshop\services\Product\Image $image ,This property is read-only.
  * @author Terry Zhao <2358269014@qq.com>
@@ -38,12 +39,15 @@ class Price extends Service
         $price = ceil($price * 100) / 100;
 
         return [
-            'code'        => $currencyInfo['code'],
-            'symbol'    => $currencyInfo['symbol'],
-            'value'    => $price,
+            'code'   => $currencyInfo['code'],
+            'symbol' => $currencyInfo['symbol'],
+            'value'  => $price,
         ];
     }
-
+    /**
+     * @property $price | Float 产品价格
+     * @return String ， 带有相应货币符号的价格
+     */
     protected function actionFormatSamplePrice($price)
     {
         $currencyInfo = $this->getCurrentInfo();
@@ -89,7 +93,7 @@ class Price extends Service
      * @property $productId | String
      * @property $qty | Int
      * @property $custom_option_sku | String
-     @property $format | Int , 返回的价格的格式，0代表为美元格式，1代表为当前货币格式，2代表美元和当前货币格式都有
+     * @property $format | Int , 返回的价格的格式，0代表为美元格式，1代表为当前货币格式，2代表美元和当前货币格式都有
      * 通过产品以及个数，custonOptionSku 得到产品的最终价格
      */
     protected function actionGetCartPriceByProductId($productId, $qty, $custom_option_sku, $format = 1)
@@ -101,9 +105,9 @@ class Price extends Service
         if ($product['price'] && Yii::$service->product->isActive($status)) {
             $price = $product['price'];
             $special_price = isset($product['special_price']) ? $product['special_price'] : 0;
-            $special_from = isset($product['special_from']) ? $product['special_from'] : '';
-            $special_to = isset($product['special_to']) ? $product['special_to'] : '';
-            $tier_price = isset($product['tier_price']) ? $product['tier_price'] : [];
+            $special_from  = isset($product['special_from']) ? $product['special_from'] : '';
+            $special_to    = isset($product['special_to']) ? $product['special_to'] : '';
+            $tier_price    = isset($product['tier_price']) ? $product['tier_price'] : [];
             $custom_option = isset($product['custom_option']) ? $product['custom_option'] : '';
 
             if (!empty($custom_option) && $custom_option_sku && isset($custom_option[$custom_option_sku])) {
@@ -124,6 +128,17 @@ class Price extends Service
     // 产品加入购物车，得到相应个数的最终价格。
 
     /**
+     * @property $price | Float 
+     * @property $special_price | Float
+     * @property $special_from | Int
+     * @property $special_to | Int
+     * @property $qty | Int
+     * @property $custom_option_price | Float
+     * @property $tier_price | Array ， 例子：
+     * $tier_price = [
+     *		['qty'=>2,'price'=>33],
+     *		['qty'=>4,'price'=>30],
+     *	];
      * @property $format | Int , 返回的价格的格式，0代表为美元格式，1代表为当前货币格式，2代表美元和当前货币格式都有
      */
     protected function actionGetCartPrice(

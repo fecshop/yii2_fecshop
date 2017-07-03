@@ -9,13 +9,12 @@
 
 namespace fecshop\services\page;
 
-use fec\helpers\CSession;
 use fecshop\services\Service;
 use Yii;
 use yii\base\InvalidConfigException;
 
 /**
- * Currency.
+ * Page Currency services 货币部分
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -195,7 +194,7 @@ class Currency extends Service
     protected function actionGetCurrentCurrency()
     {
         if (!$this->_currentCurrencyCode) {
-            $this->_currentCurrencyCode = CSession::get(self::CURRENCY_CURRENT);
+            $this->_currentCurrencyCode = Yii::$app->session->get(self::CURRENCY_CURRENT);
         }
 
         return $this->_currentCurrencyCode;
@@ -211,7 +210,7 @@ class Currency extends Service
             $currencyCode = $this->defaultCurrency;
         }
         if ($currencyCode) {
-            CSession::set(self::CURRENCY_CURRENT, $currencyCode);
+            Yii::$app->session->set(self::CURRENCY_CURRENT, $currencyCode);
 
             return true;
         }

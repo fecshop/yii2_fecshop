@@ -13,6 +13,7 @@ use Yii;
 use yii\base\InvalidValueException;
 
 /**
+ * store service
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -117,6 +118,8 @@ class Store extends Service
     }
 
     /**
+     * @property $store_code | String 
+     * @property $store | Array
      * mobile devide url redirect.
      */
     protected function html5DevideCheckAndRedirect($store_code, $store)
@@ -149,6 +152,8 @@ class Store extends Service
     }
 
     /**
+     * @property $store_code | String
+     * @property $redirectDomain | String
      * 设备满足什么条件的时候进行跳转。
      */
     protected function redirectMobile($store_code, $redirectDomain)

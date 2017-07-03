@@ -15,6 +15,7 @@ use fecshop\models\mongodb\product\ViewLog as MongodbViewLog;
 use fecshop\services\Service;
 
 /**
+ * Product viewlog Mongodb services
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */

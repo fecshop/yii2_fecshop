@@ -15,7 +15,7 @@ use fecshop\services\Service;
 use Yii;
 
 /**
- * Search.
+ * Search MongoSearch Service
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -138,7 +138,8 @@ class MongoSearch extends Service implements SearchInterface
         return true;
     }
 
-    /**
+     /**
+     * @property $nowTimeStamp | int 
      * 批量更新过程中，被更新的产品都会更新字段sync_updated_at
      * 删除xunSearch引擎中sync_updated_at小于$nowTimeStamp的字段.
      */
@@ -181,6 +182,24 @@ class MongoSearch extends Service implements SearchInterface
     }
 
     /**
+     * @property $select | Array 
+     * @property $where | Array 
+     * @property $pageNum | Int
+     * @property $numPerPage | Array 
+     * @property $product_search_max_count | Int ， 搜索结果最大产品数。 
+     * 对于上面的参数和以前的$filter类似，大致和下面的类似
+     * [
+     *	'category_id' 	=> 1,
+     *	'pageNum'		=> 2,
+     *	'numPerPage'	=> 50,
+     *	'orderBy'		=> 'name',
+     *	'where'			=> [
+     *		['>','price',11],
+     *		['<','price',22],
+     *	],
+     *	'select'		=> ['xx','yy'],
+     *	'group'			=> '$spu',
+     * ]
      * 得到搜索的产品列表.
      */
     protected function actionGetSearchProductColl($select, $where, $pageNum, $numPerPage, $product_search_max_count)

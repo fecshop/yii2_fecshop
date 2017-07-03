@@ -14,7 +14,7 @@ use fecshop\services\Service;
 use Yii;
 
 /**
- * Cart services.
+ * Cart items services.
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -51,8 +51,8 @@ class Item extends Service
 
     /**
      * @property $product_one | Object, product model
-     * @property $item_one | Array , order item
-     * 得到产品的图片。
+     * @property $item_one | Array , order item ，是订单产品表取出来的数据
+     * 得到产品的图片。如果存在custom option image，则返回custom option image，如果不存在，则返回产品的主图
      */
     public function getProductImage($product_one, $item_one)
     {
@@ -77,8 +77,7 @@ class Item extends Service
     /**
      * @property $item_one | Array , order item
      * 通过$item_one 的$item_one['custom_option_sku']，$item_one['custom_option'] , $item_one['spu_options']
-     * @return array
-     *               将spu的选择属性和自定义属性custom_option 组合起来，返回一个统一的数组
+     * 将spu的选择属性和自定义属性custom_option 组合起来，返回一个统一的数组
      */
     public function getProductOptions($item_one)
     {

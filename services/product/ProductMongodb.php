@@ -13,6 +13,7 @@ use fecshop\models\mongodb\Product;
 use Yii;
 
 /**
+ * Product ProductMysqldb Service
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -128,7 +129,8 @@ class ProductMongodb implements ProductInterface
     }
 
     /**
-     * 和getByPrimaryKey()的不同在于，该方式不走active record，因此可以获取产品的所有数据的。
+     * @property $primaryKey | String 主键
+     * @return  array ，和getByPrimaryKey()的不同在于，该方式不走active record，因此可以获取产品的所有数据的。
      */
     public function apiGetByPrimaryKey($primaryKey)
     {
@@ -143,6 +145,7 @@ class ProductMongodb implements ProductInterface
     }
 
     /**
+     * @property $product_one | String 产品数据数组。这个要和mongodb里面保存的产品数据格式一致。
      * 通过api保存产品
      */
     public function apiSave($product_one)
@@ -154,7 +157,8 @@ class ProductMongodb implements ProductInterface
     }
 
     /**
-     * 通过api保存产品
+     * @property $primaryKey | String
+     * 通过api删除产品
      */
     public function apiDelete($primaryKey)
     {
@@ -164,8 +168,20 @@ class ProductMongodb implements ProductInterface
         return true;
     }
 
-    /**
-     *  得到总数.
+    /*
+     * @property $filter | Array ， example filter:
+     * [
+     * 		'numPerPage' 	=> 20,
+     * 		'pageNum'		=> 1,
+     * 		'orderBy'	=> ['_id' => SORT_DESC, 'sku' => SORT_ASC ],
+     * 		'where'			=> [
+                ['>','price',1],
+                ['<=','price',10]
+     * 			['sku' => 'uk10001'],
+     * 		],
+     * 	'asArray' => true,
+     * ]
+     * 得到总数。
      */
     public function collCount($filter = '')
     {
@@ -201,9 +217,7 @@ class ProductMongodb implements ProductInterface
                 }
             }
         }
-        //echo '####';
-        //var_dump($id_arr);
-        //echo '####';
+        
         return $id_arr;
     }
 
@@ -529,8 +543,6 @@ class ProductMongodb implements ProductInterface
                 '$sort'    => $orderBy,
             ],
         ];
-        //var_dump($orderBy);
-        //exit;
         $product_data = Product::getCollection()->aggregate($pipelines);
         $product_total_count = count($product_data);
         $pageOffset = ($pageNum - 1) * $numPerPage;
@@ -572,45 +584,14 @@ class ProductMongodb implements ProductInterface
         return $filter_data;
     }
 
-    /*
-    $project 		= [];
-    $group['_id'] 	= $filter['group'];
-    foreach($select as $column){
-        $project[$column] 	= 1;
-        if($column != '_id'){
-            $group[$column] 	= ['$first' => '$'.$column];
-        }else{
-            $group['mongo_id'] 	= ['$first' => '$'.$column];
-
-        }
-
-    }
-
-    $pipelines = [
-        [
-            '$match' 	=> $where,
-        ],
-
-        [
-            '$project' 	=> $project
-        ],
-        [
-            '$group'	=> $group,
-        ],
-
-    ];
-    //var_dump($pipelines);
-    //exit;
-    $data = Product::getCollection()->aggregate($pipelines);
-
-    */
-    //var_dump($where);exit;
-    //var_dump($productIds );
-    //$data = Product::getCollection()
-    //	->fullTextSearch($searchText,[],['_id'],['limit'=>$product_search_max_count])
-    //	;
-    //exit;
-
+    /**
+     * @property $spu | String 
+     * @property $avag_rate | Int ，平均评星
+     * @property $count | Int ，评论次数
+     * @property $lang_code | String ，语言简码
+     * @property $avag_lang_rate | Int ，语言下平均评星
+     * @property $lang_count | Int ， 语言下评论次数。
+     */
     public function updateProductReviewInfo($spu, $avag_rate, $count, $lang_code, $avag_lang_rate, $lang_count)
     {
         $data = Product::find()->where([
@@ -621,16 +602,15 @@ class ProductMongodb implements ProductInterface
             $review_star_lang = Yii::$service->fecshoplang->getLangAttrName($attrName, $lang_code);
             $attrName = 'review_count_lang';
             $review_count_lang = Yii::$service->fecshoplang->getLangAttrName($attrName, $lang_code);
-
             foreach ($data as $one) {
                 $one['reviw_rate_star_average'] = $avag_rate;
-                $one['review_count'] = $count;
-                $a = $one['reviw_rate_star_average_lang'];
-                $a[$review_star_lang] = $avag_lang_rate;
-                $b = $one['review_count_lang'];
-                $b[$review_count_lang] = $lang_count;
+                $one['review_count']            = $count;
+                $a                              = $one['reviw_rate_star_average_lang'];
+                $a[$review_star_lang]           = $avag_lang_rate;
+                $b                              = $one['review_count_lang'];
+                $b[$review_count_lang]          = $lang_count;
                 $one['reviw_rate_star_average_lang'] = $a;
-                $one['review_count_lang'] = $b;
+                $one['review_count_lang']       = $b;
                 $one->save();
             }
         }

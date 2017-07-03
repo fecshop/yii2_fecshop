@@ -14,6 +14,7 @@ use fecshop\services\Service;
 use Yii;
 
 /**
+ * Product Info Services
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -22,11 +23,11 @@ class Info extends Service
     /**
      * @property $custome_option | Array
      * $custome_option = [
-     "my_color" 	=> "red",
-     "my_size" 	=> "M",
-     "my_size2" 	=> "M2",
-     "my_size3" 	=> "L3"
-     ]
+     *      "my_color" 	=> "red",
+     *      "my_size" 	=> "M",
+     *      "my_size2" 	=> "M2",
+     *      "my_size3" 	=> "L3"
+     * ]
      * 通过custom的各个值，生成custom option sku
      */
     public function getCustomOptionSkuByValue($custome_option)

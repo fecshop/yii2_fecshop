@@ -14,6 +14,7 @@ use fecshop\services\Service;
 use Yii;
 
 /**
+ * Product Favorite Services
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -33,7 +34,11 @@ class Favorite extends Service
             return new FavoriteModel();
         }
     }
-
+    /**
+     * @property $product_id | String ， 产品id
+     * @property $user_id | Int ，用户id
+     * @return FavoriteModel ，如果用户在该产品收藏，则返回相应model。
+     */
     protected function actionGetByProductIdAndUserId($product_id, $user_id = '')
     {
         if (!$user_id) {
@@ -50,7 +55,11 @@ class Favorite extends Service
             }
         }
     }
-
+    /**
+     * @property $product_id | String ， 产品id
+     * @property $user_id | Int ，用户id
+     * @return boolean，用户收藏该产品时，执行的操作。
+     */
     protected function actionAdd($product_id, $user_id)
     {
         $user_id = (int) $user_id;
@@ -91,7 +100,7 @@ class Favorite extends Service
 
     /**
      * @property $product_id | String
-     * 更新该产品被收藏的总个数。
+     * 更新该产品被收藏的总次数。
      */
     protected function updateProductFavoriteCount($product_id)
     {
@@ -153,7 +162,7 @@ class Favorite extends Service
     }
 
     /**
-     * @property $favorite_id|string
+     * @property $favorite_id | string
      * 通过id删除favorite
      */
     protected function actionCurrentUserRemove($favorite_id)

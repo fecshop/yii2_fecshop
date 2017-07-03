@@ -20,6 +20,7 @@ use fecshop\services\Service;
 class Newsletter extends Service
 {
     /**
+     * @property $email | String  
      * newsletter subscription.
      */
     protected function actionSubscription($email)

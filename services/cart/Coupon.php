@@ -172,10 +172,8 @@ class Coupon extends Service
             }
         }
         $model->updated_at = time();
-        $saveStatus = Yii::$service->helper->ar->save($model, $one);
-        if (!$primaryVal) {
-            $primaryVal = Yii::$app->db->getLastInsertID();
-        }
+        $model      = Yii::$service->helper->ar->save($model, $one);
+        $primaryVal = $model[$primaryKey];
 
         return $primaryVal;
     }

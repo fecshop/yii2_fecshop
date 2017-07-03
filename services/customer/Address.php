@@ -176,11 +176,8 @@ class Address extends Service
             $model->created_at = time();
         }
         $model->updated_at = time();
-        $saveStatus = Yii::$service->helper->ar->save($model, $one);
-
-        if (!$primaryVal) {
-            $primaryVal = Yii::$app->db->getLastInsertID();
-        }
+        $model      = Yii::$service->helper->ar->save($model, $one);
+        $primaryVal = $model[$primaryKey];
         if ($one['is_default'] == 1) {
             $customer_id = $one['customer_id'];
             MyAddress::updateAll(

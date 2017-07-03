@@ -16,15 +16,14 @@ use fecshop\services\Service;
 use Yii;
 
 /**
+ * Product Stock Service
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
 class Stock extends Service
 {
     // 零库存：也就是说库存忽略掉，产品的库存
-
     public $zeroInventory = 0;
-
     // product model arr
     protected $_product_arr;
     // product items（譬如购物车信息）
@@ -39,6 +38,7 @@ class Stock extends Service
      * [
      *      'product_id'  => 'qty',
      * ]
+     * 得到产品的主库存，对于Custom Option里面的库存，该函数无法获取。
      */
     public function getQtyByProductIds($productIds){
         if(!is_array($productIds)){
@@ -215,6 +215,7 @@ class Stock extends Service
                     }
                 }
             }
+            
             return true;
         }else{
             Yii::$service->helper->errors->add('cart products is empty');
@@ -381,9 +382,9 @@ class Stock extends Service
         // 开始扣除库存。
         if (is_array($product_items) && !empty($product_items)) {
             foreach ($product_items as $k=>$item) {
-                $product_id     = $item['product_id'];
-                $sale_qty       = $item['qty'];
-                $custom_option_sku = $item['custom_option_sku'];
+                $product_id         = $item['product_id'];
+                $sale_qty           = $item['qty'];
+                $custom_option_sku  = $item['custom_option_sku'];
                 if ($product_id && $sale_qty) {
                     if(!$custom_option_sku){
                         $sql = 'update '.ProductFlatQty::tableName().' set qty = qty + :sale_qty where product_id = :product_id';

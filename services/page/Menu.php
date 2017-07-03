@@ -15,7 +15,7 @@ use fecshop\services\Service;
 use Yii;
 
 /**
- * Menu services.
+ * Page Menu services.
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -39,7 +39,7 @@ class Menu extends Service
     /**
      * return menu array data, contains:
      * home,frontCustomMenu,productCategory,behindCustomMenu.
-     * example:.
+     * 得到网站的分类导航栏菜单。
      */
     protected function actionGetMenuData()
     {
@@ -76,26 +76,22 @@ class Menu extends Service
             }
         }
 
-        //var_dump($arr);
         return $arr;
     }
-
+    /**
+     * @property $customMenu | Array , 自定义菜单部分数组，从配置中取出
+     * @return Array，获取处理后的自定义菜单数组
+     */
     protected function customMenuInit($customMenu)
     {
         $cMenu = [];
         if (is_array($customMenu) && !empty($customMenu)) {
             foreach ($customMenu as $k=>$menu) {
-                //echo $menu['name'];
-                $name = Yii::$service->page->translate->__($menu['name']);
-                $menu['name'] = $name;
-                //echo $name;
-                //if(is_array($name)){
-                    //$name = Yii::$service->store->getStoreAttrVal($name,'name');
-
-                //}
-                $urlPath = $menu['urlPath'];
-                $menu['url'] = Yii::$service->url->getUrl($urlPath);
-                $cMenu[$k] = $menu;
+                $name           = Yii::$service->page->translate->__($menu['name']);
+                $menu['name']   = $name;
+                $urlPath        = $menu['urlPath'];
+                $menu['url']    = Yii::$service->url->getUrl($urlPath);
+                $cMenu[$k]      = $menu;
                 if (isset($menu['childMenu'])) {
                     $cMenu[$k]['childMenu'] = $this->customMenuInit($menu['childMenu']);
                 }

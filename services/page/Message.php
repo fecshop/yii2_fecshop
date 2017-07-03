@@ -13,18 +13,18 @@ use fecshop\services\Service;
 use Yii;
 
 /**
- * Breadcrumbs services.
+ * page message services.
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
 class Message extends Service
 {
     protected $_correctName = 'correct_message';
-    protected $_errorName = 'error_message';
+    protected $_errorName   = 'error_message';
 
     /**
-     * 增加 correct message.
      * @property $message | String
+     * 增加 correct message. 添加一些操作成功的提示信息，譬如产品加入购物车成功
      */
     protected function actionAddCorrect($message)
     {
@@ -43,8 +43,8 @@ class Message extends Service
     }
 
     /**
-     * 增加 error message.
      * @property $message | String
+     * 增加 error message.
      */
     protected function actionAddError($message)
     {
@@ -63,21 +63,20 @@ class Message extends Service
     }
 
     /**
-     * 从service->helper_errors中取出来错误信息，加入到
-     *   service->page->message 中。
+     * 对于Yii2 service的错误信息都是放到Yii::$service->helper->errors中
+     * 该函数的作用为，从 Yii::$service->helper->errors 获取报错信息，然后把
+     * errors信息添加到Yii::$service->page->message中的errors里面，
+     * Yii::$service->page->message是要在前台页面显示的。
+     * 而 Yii::$service->helper->errors 不会在前台显示，只是记录Yii Service执行过程中的报错信息。
      */
     protected function actionAddByHelperErrors()
     {
-        $errors = Yii::$service->helper->errors->get(true);
+        $errors = Yii::$service->helper->errors->get();
         //var_dump($errors);
         if ($errors) {
             if (is_array($errors) && !empty($errors)) {
                 foreach ($errors as $error) {
-                    //if(is_array($error) && !empty($error)){
-                    //	foreach($error as $er){
-                            Yii::$service->page->message->addError($error);
-                        //}
-                    //}
+                    Yii::$service->page->message->addError($error);
                 }
             }
 
