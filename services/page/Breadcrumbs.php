@@ -9,6 +9,7 @@
 
 namespace fecshop\services\page;
 
+use Yii;
 use fec\helpers\CUrl;
 use fecshop\services\Service;
 
