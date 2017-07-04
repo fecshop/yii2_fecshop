@@ -1,38 +1,42 @@
-### 1. Éú³ÉÇ¨ÒÆÎÄ¼şµÄÃüÁî£º
 
-1.1 Éú³ÉmysqlÎÄ¼ş:
+è¿™é‡Œæ˜¯æ‰§è¡Œçš„å‘½ä»¤ï¼Œåœ¨å®‰è£…fecshopçš„æ—¶å€™ï¼Œæ–‡æ¡£é‡Œé¢å·²ç»
+å†™å¥½äº†migrateçš„å‘½ä»¤ï¼Œæ‚¨ä¸éœ€è¦å†æ¬¡æ‰§è¡Œä¸‹é¢çš„æ“ä½œã€‚
+
+### 1. ç”Ÿæˆè¿ç§»æ–‡ä»¶çš„å‘½ä»¤ï¼š
+
+1.1 ç”Ÿæˆmysqlæ–‡ä»¶:
 
 ```
 ./yii migrate/create   --migrationPath=@fecshop/migrations/mysqldb    fecshop_tables
 ```
 
-1.2 Éú³ÉmongodbÎÄ¼ş:
+1.2 ç”Ÿæˆmongodbæ–‡ä»¶:
 
 ```
 ./yii mongodb-migrate/create   --migrationPath=@fecshop/migrations/mongodb    fecshop_tables
 ```
 
 
-### 2. Ç¨ÒÆµÄÃüÁî£¨µ¼ÈëÊı¾İ¿â±í£©
+### 2. è¿ç§»çš„å‘½ä»¤ï¼ˆå¯¼å…¥æ•°æ®åº“è¡¨ï¼‰
 
-2.1 mysql(µ¼ÈëmysqlµÄ±í£¬Êı¾İ£¬Ë÷Òı):
+2.1 mysql(å¯¼å…¥mysqlçš„è¡¨ï¼Œæ•°æ®ï¼Œç´¢å¼•):
 
 ```
 ./yii migrate --interactive=0 --migrationPath=@fecshop/migrations/mysqldb
 ```
 
 
-2.2 mongodb(µ¼ÈëmongodbµÄ±í£¬Êı¾İ£¬Ë÷Òı):
+2.2 mongodb(å¯¼å…¥mongodbçš„è¡¨ï¼Œæ•°æ®ï¼Œç´¢å¼•):
 
 ```
 ./yii mongodb-migrate  --interactive=0 --migrationPath=@fecshop/migrations/mongodb
 ```
 
-2.2.2 mongodbµÄÊ¾ÀıÊı¾İ´æ·ÅÂ·¾¶Îª£º
+2.2.2 mongodbçš„ç¤ºä¾‹æ•°æ®å­˜æ”¾è·¯å¾„ä¸ºï¼š
 
 /vendor/fancyecommerce/fecshop/migrations/mongodb-example-data/example_data.js
 
-¿ÉÒÔÍ¨¹ımongodbµÄºóÌ¨£¬»òÕßÍ¨¹ıphpµÄrockmongo°²×°ÕâĞ©mongodbÖĞµÄÊ¾ÀıÊı¾İ¡£
+å¯ä»¥é€šè¿‡mongodbçš„åå°ï¼Œæˆ–è€…é€šè¿‡phpçš„rockmongoå®‰è£…è¿™äº›mongodbä¸­çš„ç¤ºä¾‹æ•°æ®ã€‚
 
 
 

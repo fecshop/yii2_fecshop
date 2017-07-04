@@ -23,7 +23,9 @@ class Search extends ActiveRecord
      */
     public static $_lang;
     public static $_filterColumns;
-
+    /**
+     * mongodb collection 的名字，相当于mysql的table name
+     */
     public static function collectionName()
     {
         if (self::$_lang) {
@@ -33,7 +35,10 @@ class Search extends ActiveRecord
             return 'full_search_product_no_lang';
         }
     }
-
+    /**
+     * mongodb是没有表结构的，因此不能像mysql那样取出来表结构的字段作为model的属性
+     * 因此，需要自己定义model的属性，下面的方法就是这个作用
+     */
     public function attributes()
     {
         $origin = [

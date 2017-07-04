@@ -50,24 +50,26 @@ class Customer extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @property $id | Int , 用户id
+     * 通过id 找到identity（状态有效）
      */
-    // 通过id 找到identity
     public static function findIdentity($id)
     {
         return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
     }
 
     /**
-     * {@inheritdoc}
+     * @property $token | String
+     * 通过access_token 找到identity
      */
-    // 通过access_token 找到identity
     public static function findIdentityByAccessToken($token, $type = null)
     {
         return static::findOne(['access_token' => $token, 'status' => self::STATUS_ACTIVE]);
     }
 
-    // 生成access_token
+    /**
+     * 生成access_token
+     */
     public function generateAccessToken()
     {
         $this->access_token = Yii::$app->security->generateRandomString();

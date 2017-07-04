@@ -21,13 +21,16 @@ Xun Search 只支持中文，
 
 ### 2.initDb.sh
 
-本脚本为第一次安装的时候，初始化数据库。
+本脚本为第一次安装的时候，初始化数据库，在文档中已经写好，
+按照文档进行migrate即可，不需要执行该脚本
 
 ### 3.computeProductFinalPrice.sh
 
-本脚本为计算每一个产品的final_price的值，
+本脚本为计算每一个产品的final_price的值
+
 3.1 同时会同步信息到搜索表，但是不会执行删除操作（譬如某个产品
 删除了，这个脚本是不会检测，同步删除的，如果要删除需要执行 fullSearchSync.sh脚本。）
+
 3.2 url rewrite的产品数据也会同步，同样不会执行删除url rewrite里面的数据（
 如果要清除残留的url rewrite数据，请执行urlRewrite.sh脚本）。
 
@@ -37,13 +40,17 @@ Xun Search 只支持中文，
 4.1 将产品的url自定义重新跑一次。包括分类，产品等
 4.2 将urlRewrite表中残留的重新数据，但是在产品和分类中不存在的清空。
 
-### 5.returnPendingProductQtyStock.sh
-cron执行，将60分钟内没有支付的订单的库存释放，并将订单状态设置为cancel。
+### 5.sitemapGeneral.sh
+
+生成sitemap的脚本。
 
 ### 6.order/returnPendingProductQtyStock.sh
+
 将一段时间内还是pending的订单的库存返还给产品。
 
+### 7. search/deleteXunSearchAllData.sh
 
+将xunsearch中的数据清空。
 
 
 
