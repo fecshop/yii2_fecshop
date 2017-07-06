@@ -34,14 +34,14 @@ return [
                 'forgotCaptcha' => true,
 
             ],
-
+            // 在账户中心左侧栏显示的菜单。
             'leftMenu'  => [
-                'Account Dashboard' => 'customer/account',
-                'Account Information' => 'customer/editaccount',
-                'Address Book' => 'customer/address',
-                'My Orders' => 'customer/order',
-                'My Product Reviews' => 'customer/productreview',
-                'My Favorite' => 'customer/productfavorite',
+                'Account Dashboard'     => 'customer/account',
+                'Account Information'   => 'customer/editaccount',
+                'Address Book'          => 'customer/address',
+                'My Orders'             => 'customer/order',
+                'My Product Reviews'    => 'customer/productreview',
+                'My Favorite'           => 'customer/productfavorite',
 
             ],
 
