@@ -32,13 +32,13 @@ class Quote extends Service
     /**
      * @return int 得到cart_id
      * Cart的session的超时时间由session组件决定。
-     * 在执行$this->CreateCart $this->mergeCartAfterUserLogin,都会执行 $this->setCartId,执行 Yii::$app->session->set(self::SESSION_CART_ID,'xxxx'); 给其赋值。
+     * 在执行$this->CreateCart $this->mergeCartAfterUserLogin,都会执行 $this->setCartId,执行 Yii::$service->session->set(self::SESSION_CART_ID,'xxxx'); 给其赋值。
      * 当新用户没有任何购物车操作，则返回为空值。
      */
     public function getCartId()
     {
         if (!$this->_cart_id) {
-            $cart_id = Yii::$app->session->get(self::SESSION_CART_ID);
+            $cart_id = Yii::$service->session->get(self::SESSION_CART_ID);
             $this->_cart_id = $cart_id;
         }
 
@@ -199,7 +199,7 @@ class Quote extends Service
     {
         $this->_cart_id = $cart_id;
 
-        Yii::$app->session->set(self::SESSION_CART_ID, $cart_id);
+        Yii::$service->session->set(self::SESSION_CART_ID, $cart_id);
     }
 
     /**
@@ -207,7 +207,7 @@ class Quote extends Service
      */
     protected function actionClearCart()
     {
-        Yii::$app->session->remove(self::SESSION_CART_ID);
+        Yii::$service->session->remove(self::SESSION_CART_ID);
     }
 
     /**

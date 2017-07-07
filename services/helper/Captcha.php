@@ -108,7 +108,7 @@ class Captcha extends Service
     public function setSessionCode()
     {
         $code = $this->getCode($this->code);
-        \Yii::$app->session->set($this->_sessionKey, $code);
+        \Yii::$service->session->set($this->_sessionKey, $code);
     }
 
     //获取验证码
@@ -124,7 +124,7 @@ class Captcha extends Service
     public function validateCaptcha($captchaData)
     {
         $captchaData = $this->getCode($captchaData);
-        $sessionCaptchaData = \Yii::$app->session->get($this->_sessionKey);
+        $sessionCaptchaData = \Yii::$service->session->get($this->_sessionKey);
 
         return ($captchaData === $sessionCaptchaData) ? true : false;
     }

@@ -22,6 +22,10 @@ return [
         //'appfrontBaseTheme' 	=> '@fecshop/app/appfront/theme/base/front',
         //'appfrontBaseLayoutName'=> 'main.php',
         'appName' => 'appserver',
+        // access-token 过期时间。
+        'accessTokenTimeout'    => 86400,
+        // 速度控制[120,60] 代表  60秒内最大访问120次，
+        'rateLimit'             => [120, 60],
     ],
     // language config.
     'components' => [
@@ -40,12 +44,13 @@ return [
         ],
 
         'user' => [
-            'identityClass' => 'fecadmin\models\AdminUser',
-            'enableAutoLogin' => true,
+            //'class'            => 'fecshop\yii\web\User',
+            'identityClass'     => 'fecshop\models\mysqldb\customer\CustomerAccessToken',
+            
         ],
 
         'errorHandler' => [
-            'errorAction' => 'site/error',
+            'errorAction' => 'site/helper/error',
         ],
 
         'urlManager' => [

@@ -536,7 +536,7 @@ class Order extends Service
      */
     protected function actionSetSessionIncrementId($increment_id)
     {
-        Yii::$app->session->set(self::CURRENT_ORDER_INCREAMENT_ID, $increment_id);
+        Yii::$service->session->set(self::CURRENT_ORDER_INCREAMENT_ID, $increment_id);
     }
 
     /**
@@ -544,7 +544,7 @@ class Order extends Service
      */
     protected function actionGetSessionIncrementId()
     {
-        return Yii::$app->session->get(self::CURRENT_ORDER_INCREAMENT_ID);
+        return Yii::$service->session->get(self::CURRENT_ORDER_INCREAMENT_ID);
     }
     /**
      * @property $increment_id | String 订单号
@@ -564,7 +564,7 @@ class Order extends Service
      */
     protected function actionRemoveSessionIncrementId()
     {
-        return Yii::$app->session->remove(self::CURRENT_ORDER_INCREAMENT_ID);
+        return Yii::$service->session->remove(self::CURRENT_ORDER_INCREAMENT_ID);
     }
 
     /**

@@ -39,7 +39,7 @@ class Message extends Service
             $message = array_merge($correct, $message);
         }
 
-        return Yii::$app->session->setFlash($this->_correctName, $message);
+        return Yii::$service->session->setFlash($this->_correctName, $message);
     }
 
     /**
@@ -59,7 +59,7 @@ class Message extends Service
             $message = array_merge($error, $message);
         }
 
-        return Yii::$app->session->setFlash($this->_errorName, $message);
+        return Yii::$service->session->setFlash($this->_errorName, $message);
     }
 
     /**
@@ -90,7 +90,7 @@ class Message extends Service
      */
     protected function actionGetCorrects()
     {
-        return Yii::$app->session->getFlash($this->_correctName);
+        return Yii::$service->session->getFlash($this->_correctName);
     }
 
     /**
@@ -99,6 +99,6 @@ class Message extends Service
      */
     protected function actionGetErrors()
     {
-        return Yii::$app->session->getFlash($this->_errorName);
+        return Yii::$service->session->getFlash($this->_errorName);
     }
 }
