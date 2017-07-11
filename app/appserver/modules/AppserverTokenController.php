@@ -54,10 +54,13 @@ class AppserverTokenController extends AppserverController
             你可以禁用这些头信息通过配置 yii\filters\RateLimiter::enableRateLimitHeaders 为false, 就像在上面的代码示例所示。  
   
         */  
-        $behaviors['rateLimiter'] = [  
-            'class' => RateLimiter::className(),  
-            'enableRateLimitHeaders' => true,  
-        ];  
+        $rateLimit = Yii::$app->params['rateLimit'];
+        if(isset($rateLimit['enable']) && $rateLimit['enable']){
+            $behaviors['rateLimiter'] = [  
+                'class' => RateLimiter::className(),  
+                'enableRateLimitHeaders' => true,  
+            ]; 
+        }
         return $behaviors;  
     }  
     

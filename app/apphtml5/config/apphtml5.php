@@ -6,8 +6,10 @@
  * @copyright Copyright (c) 2016 FecShop Software LLC
  * @license http://www.fecshop.com/license/
  */
-// 本文件在app/web/index.php 处引入。
-// fecshop - apphtml5 的核心模块
+/**
+ * 本文件在@apphtml5/web/index.php 处，会被引入。
+ * 该配置文件会加载./modules/*.php，并合并成一个数组，返回。
+ */
 $modules = [];
 foreach (glob(__DIR__ . '/modules/*.php') as $filename) {
     $modules = array_merge($modules, require($filename));
@@ -16,13 +18,22 @@ $params = require __DIR__ .'/params.php';
 // 此处也可以重写fecshop的组件。供调用。
 return [
     'modules'=>$modules,
-    /* only config in front web */
+    /**
+     * bootstrap指的是yii2中的初始化（注意，这个bootstrap不是css那个bootstrap），关于Yii2 bootstrap的功能描述可以
+     * 参看地址：http://www.yiichina.com/doc/guide/2.0/runtime-bootstrapping
+     *
+     * 下面的配置的作用为：在fecshop初始化的时候，执行store component的bootstrap方法。
+     * 也就是 @fecshop/components/Store.php的bootstrap($app)函数。
+     * 最终是Yii::$service->store->bootstrap($app); 这样，无论执行任何controller，都会执行该函数
+     * 这也就是bootstap的作用，在Yii2初始化的时候执行的部分代码。
+     */
     'bootstrap' => ['store'],
+    // 参数配置部分
     'params'    => $params,
 
-    // Yii组件配置
+    // Yii组件配置 ，关于yii2组件，可以参看：http://www.yiichina.com/doc/guide/2.0/structure-application-components
     'components' => [
-        // language config.
+        // yii2 语言组件配置，关于Yii2国际化，可以参看：http://www.yiichina.com/doc/guide/2.0/tutorial-i18n
         'i18n' => [
             'translations' => [
                 'apphtml5' => [
@@ -34,7 +45,7 @@ return [
                 ],
             ],
         ],
-
+        // Yii2 user组件配置，可以参看：http://www.yiichina.com/doc/guide/2.0/input-validation#client-side-validation
         'user' => [
             'class'            => 'fecshop\yii\web\User',
             'identityClass'    => 'fecshop\models\mysqldb\Customer',
@@ -64,7 +75,11 @@ return [
                 '' => 'cms/home/index',
             ],
         ],
-
+        /**
+         * Yii2 Request组件，这里进行了重写，目的是为了实现URL自定义伪静态功能。
+         * 关于fecshop的url伪静态部分，可以参看：http://www.fancyecommerce.com/2016/05/18/yii2-url-%E8%87%AA%E5%AE%9A%E4%B9%89-%E4%BC%AA%E9%9D%99%E6%80%81url/
+         * 关于Yii2 request的一些知识，可以参看：http://www.yiichina.com/doc/guide/2.0/runtime-requests
+         */
         'request' => [
             'class' => 'fecshop\yii\web\Request',
             /*

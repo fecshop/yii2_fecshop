@@ -9,7 +9,7 @@
 
 namespace fecshop\app\apphtml5\helper;
 
-/**
+/**废弃
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */

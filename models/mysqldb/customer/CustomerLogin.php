@@ -60,15 +60,15 @@ class CustomerLogin extends Model
      * 1. 当不开启cookie时，$duration的设置是无效的，yii2只会从user组件Yii::$app->user->authTimeout
      *    中读取过期时间
      * 2. 当开启cookie，$duration是有效的，会设置cookie的过期时间。
-     *	  如果不传递时间，默认使用 Yii::$app->session->timeout的值。
+     *	  如果不传递时间，默认使用 Yii::$service->session->timeout的值。
      * 总之，为了方便处理cookie和session的超时时间，统一使用
      * session的超时时间，这样做的好处为，可以让account 和 cart session的超时时间保持一致
      */
     public function login($duration = 0)
     {
         if (!$duration) {
-            if (Yii::$app->session->timeout) {
-                $duration = Yii::$app->session->timeout;
+            if (Yii::$service->session->timeout) {
+                $duration = Yii::$service->session->timeout;
             }
         }
         if ($this->validate()) {

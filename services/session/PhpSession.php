@@ -19,9 +19,15 @@ use fecshop\models\mysqldb\SessionStorage;
  */
 class PhpSession implements SessionInterface
 {
+    public $timeout;
+    
+    public function __construct(){
+        $this->timeout = Yii::$app->session->timeout;
+    }
     
     public function set($key,$val,$timeout){
         if($timeout){
+            $this->timeout = $timeout;
             Yii::$app->session->setTimeout($timeout);
         }
         return Yii::$app->session->set($key,$val);
@@ -38,6 +44,7 @@ class PhpSession implements SessionInterface
 
     public function setFlash($key,$val,$timeout){
         if($timeout){
+            $this->timeout = $timeout;
             Yii::$app->session->setTimeout($timeout);
         }
         return Yii::$app->session->setFlash($key,$val);

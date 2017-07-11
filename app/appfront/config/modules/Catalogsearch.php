@@ -7,8 +7,15 @@
  * @license http://www.fecshop.com/license/
  */
 return [
+    /**
+     * Catalogsearch 模块的配置，您可以在@appfront/config/fecshop_local_modules/Catalogsearch.php 
+     * 中进行配置，二开，或者重写该模块（在上面路径中如果文件不存在，自行新建配置文件。）
+     */
     'catalogsearch' => [
         'class' => '\fecshop\app\appfront\modules\Catalogsearch\Module',
+        /**
+         * 模块内部的params配置。
+         */
         'params'=> [
             //'categorysearch_filter_attr' =>[
             //	'color','size',

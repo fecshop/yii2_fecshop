@@ -17,7 +17,9 @@ use Yii;
  */
 class Country
 {
-    // 快捷支付，得到省的html
+    /**废弃    
+     * 快捷支付，得到省的html
+     */
     public static function getExpressPaymentStateHtml($countryCode, $stateCode = '', $ischangestate = '')
     {
         $state = Yii::$service->helper->country->getStateOptionsByContryCode($countryCode, $stateCode);
@@ -47,7 +49,9 @@ class Country
         return $stateHtml;
     }
 
-    // 标准支付，得到省的html
+    /**废弃    
+     * 快捷支付，得到省的html
+     */
     public static function getStandPaymentStateHtml($countryCode, $stateCode = '', $isajaxchange = '')
     {
         $state = Yii::$service->helper->country->getStateOptionsByContryCode($countryCode, $stateCode);

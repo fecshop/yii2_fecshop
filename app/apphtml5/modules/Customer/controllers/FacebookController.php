@@ -29,7 +29,7 @@ class FacebookController extends AppfrontController
      */
     public function actionLoginv()
     {
-        Yii::$app->session->set('fbs', 1);
+        Yii::$service->session->set('fbs', 1);
         $thirdLogin = Yii::$service->store->thirdLogin;
         $facebook_app_id = isset($thirdLogin['facebook']['facebook_app_id']) ? $thirdLogin['facebook']['facebook_app_id'] : '';
         $facebook_app_secret = isset($thirdLogin['facebook']['facebook_app_secret']) ? $thirdLogin['facebook']['facebook_app_secret'] : '';

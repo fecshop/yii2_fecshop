@@ -12,6 +12,7 @@ namespace fecshop\app\apphtml5\modules;
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
+ * Apphtml5 入口的Module的基类
  */
 class AppfrontModule extends \yii\base\Module
 {

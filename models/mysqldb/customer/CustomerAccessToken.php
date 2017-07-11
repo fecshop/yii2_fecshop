@@ -44,8 +44,8 @@ class CustomerAccessToken extends Customer implements IdentityInterface ,RateLim
     # 文档标注：返回允许的请求的最大数目及时间，例如，[100, 600] 表示在600秒内最多100次的API调用。  
     public  function getRateLimit($request, $action){  
         $rateLimit = Yii::$app->params['rateLimit'];
-        if(is_array($rateLimit) && !empty($rateLimit)){
-            return $rateLimit; 
+        if(is_array($rateLimit['limit']) && !empty($rateLimit['limit'])){
+            return $rateLimit['limit']; 
         }else{
             return [120, 60]; 
         }

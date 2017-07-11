@@ -25,7 +25,10 @@ return [
         // access-token 过期时间。
         'accessTokenTimeout'    => 86400,
         // 速度控制[120,60] 代表  60秒内最大访问120次，
-        'rateLimit'             => [120, 60],
+        'rateLimit'             => [
+            'enable'=> false,   # 是否开启？默认不开启速度控制。
+            'limit' => [120, 60],
+        ]
     ],
     // language config.
     'components' => [
