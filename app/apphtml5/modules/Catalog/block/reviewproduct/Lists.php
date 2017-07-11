@@ -25,12 +25,16 @@ class Lists
     public $_page = 'p';
     public $numPerPage = 20;
     public $pageNum;
-
+    
     public function __construct()
     {
+        // 初始化服务
         ReviewHelper::initReviewConfig();
     }
-
+    /**
+     * @property $countTotal | Int
+     * 得到toolbar的分页部分
+     */
     protected function getProductPage($countTotal)
     {
         if ($countTotal <= $this->numPerPage) {
@@ -47,7 +51,7 @@ class Lists
 
         return Yii::$service->page->widget->renderContent('category_product_page', $config);
     }
-
+    // 初始化参数
     public function initParam()
     {
         $this->pageNum = Yii::$app->request->get($this->_page);
@@ -104,7 +108,10 @@ class Lists
             ];
         }
     }
-
+    /**
+     * @property $spu  | String
+     * 通过spu得到产品评论
+     */
     public function getReviewsBySpu($spu)
     {
         $currentIp = \fec\helpers\CFunc::get_real_ip();
@@ -131,7 +138,7 @@ class Lists
 
         return Yii::$service->product->review->getListBySpu($filter);
     }
-
+    // 产品价格信息
     protected function getProductPriceInfo($product)
     {
         $price = $product['price'];

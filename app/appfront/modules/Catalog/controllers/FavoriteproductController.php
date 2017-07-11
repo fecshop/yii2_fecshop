@@ -23,7 +23,7 @@ class FavoriteproductController extends AppfrontController
         return $this->getBlock()->getLastData();
         //return $this->render($this->action->id,$data);
     }
-
+    // 收藏列表
     public function actionLists()
     {
         $data = $this->getBlock()->getLastData($editForm);

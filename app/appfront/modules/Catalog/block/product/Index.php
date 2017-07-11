@@ -18,12 +18,19 @@ use Yii;
  */
 class Index
 {
+    // 当前产品
     protected $_product;
+    // 产品页面的title
     protected $_title;
+    // 产品的主键对应的值
     protected $_primaryVal;
+    // 产品的spu属性数组。
     protected $_productSpuAttrArr;
+    // 以图片方式显示的spu属性
     protected $_spuAttrShowAsImg;
+    // 在产品详细页面，在橱窗图部分，以放大镜的方式显示的产品图片列表
     protected $_image_thumbnails;
+    // 在产品详细页面，在产品描述部分显示的产品图片列表
     protected $_image_detail;
 
     public function getLastData()
@@ -60,8 +67,10 @@ class Index
         ];
     }
     /**
-     * 
-     * 对gallery 中的图片进行处理，只要 is_thumbnails=1 的图片，其他的过滤掉 
+     * @property $product_images | Array ，产品的图片属性
+     * 根据图片数组，得到橱窗图，和描述图
+     * 橱窗图：在产品详细页面顶部，放大镜显示部分的产品列表
+     * 描述图，在产品description文字描述后面显示的产品图片。
      */
     public function filterProductImg($product_images){
         $this->_image_thumbnails        = $product_images;
@@ -88,7 +97,7 @@ class Index
         
     }
     
-    /**
+    /**废弃
      * @property $data | Array 和当前产品的spu相同，但sku不同的产品  数组。
      * @property $current_size | String 当前产品的size值
      * @property $current_color | String 当前产品的颜色值
@@ -152,7 +161,9 @@ class Index
     }
 
     /**
+     * @property $select | Array ， 需要查询的字段。
      * 得到当前spu下面的所有的sku的数组、
+     * 这个是为了产品详细页面的spu下面的产品切换，譬如同一spu下的不同的颜色尺码切换。
      */
     protected function getSpuData($select)
     {
@@ -172,11 +183,10 @@ class Index
     }
 
     /**
-     * 显示这个的前提是，该产品所在属性组对应的spu_attr 只有color 和size 两种
-     * 也就是说，这个只针对服装做的一种方式，其他的会按照大众化的那种方式显示出来过滤。（下拉条）
-     * 这个有点像定制化的范畴，目前我只做了color和size这类
-     * 衣服类产品需要用到的属性，对于其他的类似属性，就需要自己做定制修改了.
-     * @return 返回和当前产品spu相同的其他产品，然后以颜色和尺码的方式罗列出来。
+     * @return Array得到spu下面的sku的spu属性的数据。用于在产品
+     * 得到spu下面的sku的spu属性的数据。用于在产品详细页面显示其他的sku
+     * 譬如页面：https://fecshop.appfront.fancyecommerce.com/raglan-sleeves-letter-printed-crew-neck-sweatshirt-53386451-77774122
+     * 该spu的其他sku的颜色尺码也在这里显示出来。
      */
     protected function getSameSpuInfo()
     {
@@ -250,7 +260,7 @@ class Index
 
         return $spuShowArr;
     }
-
+    // spu属性部分
     protected function getSpuAttrInfo($spuAttr, $attrVal, $reverse_val_spu)
     {
         $current = $this->_currentSpuAttrValArr;
@@ -409,7 +419,7 @@ class Index
             Yii::$service->page->breadcrumbs->active = false;
         }
     }
-
+    // 买了的人还买了什么，通过产品字段取出来sku，然后查询得到。
     protected function getProductBySkus($skus)
     {
         $buy_also_buy_sku = $this->_product['buy_also_buy_sku'];

@@ -18,18 +18,31 @@ use yii\base\InvalidValueException;
  */
 class Index
 {
+    // 当前分类对象
     protected $_category;
+    // 页面标题
     protected $_title;
+    // 当前分类主键对应的值
     protected $_primaryVal;
+    // 默认的排序字段
     protected $_defautOrder;
+    // 默认的排序方向，升序还是降序
     protected $_defautOrderDirection = SORT_DESC;
+    // 当前的where条件
     protected $_where;
+    // url的参数，每页产品个数
     protected $_numPerPage = 'numPerPage';
+    // url的参数，排序方向
     protected $_direction = 'dir';
+    // url的参数，排序字段
     protected $_sort = 'sort';
+    // url的参数，页数
     protected $_page = 'p';
+    // url的参数，价格
     protected $_filterPrice = 'price';
+    // url的参数，价格
     protected $_filterPriceAttr = 'price';
+    // 产品总数
     protected $_productCount;
     protected $_filter_attr;
     protected $_numPerPageVal;
@@ -77,7 +90,10 @@ class Index
 
         return $filter_category;
     }
-
+    /**
+     * @property $filter_category | Array
+     * 通过递归的方式，得到分类以及子分类的html。
+     */
     protected function getFilterCategoryHtml($filter_category = '')
     {
         $str = '';
@@ -104,7 +120,10 @@ class Index
         //exit;
         return $str;
     }
-
+    /**
+     * 得到产品页面的toolbar部分
+     * 也就是分类页面的分页工具条部分。
+     */
     protected function getProductPage()
     {
         $productNumPerPage = $this->getNumPerPage();
@@ -121,12 +140,15 @@ class Index
 
         return Yii::$service->page->widget->renderContent('category_product_page', $config);
     }
-
+    /**
+     * 分类页面toolbar部分：
+     * 产品排序，产品每页的产品个数等，为这些部分提供数据。
+     */
     protected function getQueryItem()
     {
-        $category_query = Yii::$app->controller->module->params['category_query'];
-        $numPerPage = $category_query['numPerPage'];
-        $sort = $category_query['sort'];
+        $category_query  = Yii::$app->controller->module->params['category_query'];
+        $numPerPage      = $category_query['numPerPage'];
+        $sort            = $category_query['sort'];
         $frontNumPerPage = [];
         if (is_array($numPerPage) && !empty($numPerPage)) {
             $attrUrlStr = $this->_numPerPage;
@@ -174,7 +196,14 @@ class Index
 
         return $data;
     }
-
+    /**
+     * @return Array
+     * 得到当前分类，侧栏用于过滤的属性数组，由三部分计算得出
+     * 1.全局默认属性过滤（catalog module 配置文件中配置 category_filter_attr），
+     * 2.当前分类属性过滤，也就是分类表的 filter_product_attr_selected 字段
+     * 3.当前分类去除的属性过滤，也就是分类表的 filter_product_attr_unselected
+     * 最终出来一个当前分类，用于过滤的属性数组。
+     */
     protected function getFilterAttr()
     {
         if (!$this->_filter_attr) {
@@ -190,7 +219,9 @@ class Index
 
         return $this->_filter_attr;
     }
-
+    /**
+     * 得到分类侧栏用于属性过滤的部分数据
+     */
     protected function getRefineByInfo()
     {
         $get_arr = Yii::$app->request->get();
@@ -230,7 +261,9 @@ class Index
 
         return $refineInfo;
     }
-
+    /**
+     * 侧栏除价格外的其他属性过滤部分
+     */
     protected function getFilterInfo()
     {
         $filter_info = [];
@@ -243,7 +276,9 @@ class Index
 
         return $filter_info;
     }
-
+    /**
+     * 侧栏价格过滤部分
+     */
     protected function getFilterPrice()
     {
         $filter = [];
@@ -258,7 +293,9 @@ class Index
 
         return $filter;
     }
-
+    /**
+     * 格式化价格格式，侧栏价格过滤部分
+     */
     protected function getFormatFilterPrice($price_item)
     {
         list($f_price, $l_price) = explode('-', $price_item);
@@ -274,7 +311,10 @@ class Index
 
         return $str;
     }
-
+    /**
+     * @property $str | String
+     * 字符串转换成数组。
+     */
     protected function getFilterArr($str)
     {
         $arr = [];
@@ -291,7 +331,9 @@ class Index
 
         return $arr;
     }
-
+    /**
+     * 用于搜索条件的排序部分
+     */
     protected function getOrderBy()
     {
         $primaryKey = Yii::$service->category->getPrimaryKey();
@@ -326,7 +368,12 @@ class Index
             }
         }
     }
-
+    /**
+     * 分类页面的产品，每页显示的产品个数。
+     * 对于前端传递的个数参数，在后台验证一下是否是合法的个数（配置里面有一个分类产品个数列表）
+     * 如果不合法，则报异常
+     * 这个功能是为了防止分页攻击，伪造大量的不同个数的url，绕过缓存。
+     */
     protected function getNumPerPage()
     {
         if (!$this->_numPerPageVal) {
@@ -352,14 +399,18 @@ class Index
 
         return $this->_numPerPageVal;
     }
-
+    /**
+     * 得到当前第几页
+     */
     protected function getPageNum()
     {
         $numPerPage = Yii::$app->request->get($this->_page);
 
         return $numPerPage ? (int) $numPerPage : 1;
     }
-
+    /**
+     * 得到当前分类的产品
+     */
     protected function getCategoryProductColl()
     {
         $select = [
@@ -384,7 +435,9 @@ class Index
         //var_dump($filter);exit;
         return Yii::$service->category->product->getFrontList($filter);
     }
-
+    /**
+     * 得到用于查询的where数组。
+     */
     protected function initWhere()
     {
         $filterAttr = $this->getFilterAttr();
@@ -408,7 +461,10 @@ class Index
         //var_dump($where);exit;
         return $where;
     }
-
+    /**
+     * 分类部分的初始化
+     * 对一些属性进行赋值。
+     */
     protected function initCategory()
     {
         $primaryKey = Yii::$service->category->getPrimaryKey();

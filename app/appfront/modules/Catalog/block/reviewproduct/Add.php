@@ -24,7 +24,9 @@ class Add
     {
         ReviewHelper::initReviewConfig();
     }
-
+    /**
+     * @return boolean , review页面是否开启验证码验证。
+     */
     public function getAddCaptcha()
     {
         if (!$this->_add_captcha) {
@@ -77,7 +79,10 @@ class Add
             'url'        => Yii::$service->url->getUrl($url_key),
         ];
     }
-
+    /**
+     * @property $editForm | Array
+     * @return boolean ，保存评论信息
+     */
     public function saveReview($editForm)
     {
         $add_captcha = $this->getAddCaptcha();
@@ -135,7 +140,10 @@ class Add
 
         return true;
     }
-
+    /**
+     * @property $product | String Or Object
+     * 得到产品的价格信息
+     */
     protected function getProductPriceInfo($product)
     {
         $price = $product['price'];
@@ -145,7 +153,7 @@ class Add
 
         return Yii::$service->product->price->getCurrentCurrencyProductPriceInfo($price, $special_price, $special_from, $special_to);
     }
-
+    // 废弃
     protected function getSpuData()
     {
         $spu = $this->_product['spu'];

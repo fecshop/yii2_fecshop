@@ -17,6 +17,9 @@ use Yii;
  */
 class Add
 {
+    /**
+     * 用户添加收藏产品
+     */
     public function getLastData()
     {
         $product_id = Yii::$app->request->get('product_id');

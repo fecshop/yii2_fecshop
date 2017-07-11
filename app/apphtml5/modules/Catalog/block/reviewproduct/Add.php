@@ -24,7 +24,9 @@ class Add
     {
         ReviewHelper::initReviewConfig();
     }
-
+    /**
+     * @return boolean , review页面是否开启验证码验证。
+     */
     public function getAddCaptcha()
     {
         if (!$this->_add_captcha) {
@@ -77,7 +79,10 @@ class Add
             'url'        => Yii::$service->url->getUrl($url_key),
         ];
     }
-
+    /**
+     * @property $editForm | Array
+     * @return boolean ，保存评论信息
+     */
     public function saveReview($editForm)
     {
         $add_captcha = $this->getAddCaptcha();
@@ -85,48 +90,48 @@ class Add
         if (!$product_id) {
             Yii::$service->page->message->addError(['Product id can not empty']);
 
-            return;
+            return false;
         }
         $rate_star = isset($editForm['rate_star']) ? $editForm['rate_star'] : '';
         if (!$rate_star) {
             Yii::$service->page->message->addError(['Rate Star can not empty']);
 
-            return;
+            return false;
         }
         $name = isset($editForm['name']) ? $editForm['name'] : '';
         if (!$name) {
             Yii::$service->page->message->addError(['Your Name can not empty']);
 
-            return;
+            return false;
         }
         $summary = isset($editForm['summary']) ? $editForm['summary'] : '';
         if (!$summary) {
             Yii::$service->page->message->addError(['Summary can not empty']);
 
-            return;
+            return false;
         }
         $review_content = isset($editForm['review_content']) ? $editForm['review_content'] : '';
         if (!$review_content) {
             Yii::$service->page->message->addError(['Review content can not empty']);
 
-            return;
+            return false;
         }
         // captcha validate
         $captcha = isset($editForm['captcha']) ? $editForm['captcha'] : '';
         if ($add_captcha && !$captcha) {
             Yii::$service->page->message->addError(['Captcha can not empty']);
 
-            return;
+            return false;
         } elseif ($captcha && $add_captcha && !\Yii::$service->helper->captcha->validateCaptcha($captcha)) {
             Yii::$service->page->message->addError(['Captcha is not right']);
 
-            return;
+            return false;
         }
         $product = Yii::$service->product->getByPrimaryKey($product_id);
         if (!$product['spu']) {
             Yii::$service->page->message->addError('product _id:'.$product_id.'  is not exist in product collection');
 
-            return;
+            return false;
         }
         $editForm['spu'] = $product['spu'];
         $editForm['status'] = $product['spu'];
@@ -135,7 +140,10 @@ class Add
 
         return true;
     }
-
+    /**
+     * @property $product | String Or Object
+     * 得到产品的价格信息
+     */
     protected function getProductPriceInfo($product)
     {
         $price = $product['price'];
@@ -145,7 +153,7 @@ class Add
 
         return Yii::$service->product->price->getCurrentCurrencyProductPriceInfo($price, $special_price, $special_from, $special_to);
     }
-
+    // 废弃
     protected function getSpuData()
     {
         $spu = $this->_product['spu'];

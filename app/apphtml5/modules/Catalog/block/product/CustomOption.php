@@ -34,7 +34,9 @@ class CustomOption
             'middle_img_width'  => $this->middle_img_width,
         ];
     }
-
+    /**
+     * 得到custom option 部分
+     */
     public function getAllItems()
     {
         $custom_option_attr_info = Yii::$service->product->getCustomOptionAttrInfo($this->attr_group);

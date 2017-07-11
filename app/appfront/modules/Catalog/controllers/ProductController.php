@@ -24,7 +24,7 @@ class ProductController extends AppfrontController
         Yii::$service->page->theme->layoutFile = 'product_view.php';
     }
 
-    // 网站信息管理
+    // 产品详细页面
     public function actionIndex()
     {
         //$data = Yii::$service->product->apicoll();
@@ -34,7 +34,10 @@ class ProductController extends AppfrontController
 
         return $this->render($this->action->id, $data);
     }
-
+    /**
+     * Yii2 behaviors 可以参看地址：http://www.yiichina.com/doc/guide/2.0/concept-behaviors
+     * 这里的行为的作用为添加page cache（整页缓存）。
+     */
     public function behaviors()
     {
         $primaryKey = Yii::$service->product->getPrimaryKey();

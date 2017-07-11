@@ -29,12 +29,14 @@ class CustomOption
         //var_dump($items);exit;
         return [
             'items' => $items,
-            'product_id'         => $this->product_id,
+            'product_id'        => $this->product_id,
             'custom_option_arr' => json_encode($this->_custom_option_arr),
             'middle_img_width'  => $this->middle_img_width,
         ];
     }
-
+    /**
+     * 得到custom option 部分
+     */
     public function getAllItems()
     {
         $custom_option_attr_info = Yii::$service->product->getCustomOptionAttrInfo($this->attr_group);

@@ -28,7 +28,9 @@ class Review
         // 初始化当前appfront的设置，覆盖service的初始设置。
         ReviewHelper::initReviewConfig();
     }
-
+    /**
+     * 得到当前spu下面的所有评论信息。
+     */
     public function getLastData()
     {
         if (!$this->spu || !$this->product_id) {
@@ -48,7 +50,9 @@ class Review
             ];
         }
     }
-
+    /**
+     * 得到当前spu下面的所有评论信息。
+     */
     public function getReviewsBySpu($spu)
     {
         $review = Yii::$app->getModule('catalog')->params['review'];
