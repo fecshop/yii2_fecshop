@@ -93,7 +93,10 @@ class Placeorder
 
         return false;
     }
-
+    /**
+     * @property $token | String 
+     * 通过paypal的api接口，进行支付下单
+     */
     public function doExpressCheckoutPayment($token)
     {
         $methodName_ = 'DoExpressCheckoutPayment';

@@ -18,16 +18,21 @@ use yii\base\InvalidValueException;
  */
 class Index
 {
+    // 当前的搜索词
     protected $_searchText;
+    // 当前页面的title
     protected $_title;
-    protected $_primaryVal;
-    protected $_defautOrder;
-    protected $_defautOrderDirection = SORT_DESC;
+    // where 条件，用于查询
     protected $_where;
+    // url中的参数，每页的产品个数
     protected $_numPerPage = 'numPerPage';
+    // url中的参数，排序方向
     protected $_direction = 'dir';
+    // url中的参数，排序属性
     protected $_sort = 'sort';
+    // url中的参数，页数
     protected $_page = 'p';
+    // url中的参数，产品价格
     protected $_filterPrice = 'price';
     protected $_filterPriceAttr = 'price';
     protected $_productCount;
@@ -58,51 +63,11 @@ class Index
             'refine_by_info'=> $this->getRefineByInfo(),
             'filter_info'    => $this->getFilterInfo(),
             'filter_price'    => $this->getFilterPrice(),
-            //'filter_category'=> $this->getFilterCategoryHtml(),
-            //'content' => Yii::$service->store->getStoreAttrVal($this->_category['content'],'content'),
-            //'created_at' => $this->_category['created_at'],
         ];
     }
-
     /**
-     * 得到子分类，如果子分类不存在，则返回同级分类。
+     * 得到toolbar的分页部分
      */
-    protected function getFilterCategory()
-    {
-        $category_id = $this->_primaryVal;
-        $parent_id = $this->_category['parent_id'];
-        $filter_category = Yii::$service->category->getFilterCategory($category_id, $parent_id);
-
-        return $filter_category;
-    }
-
-    protected function getFilterCategoryHtml($filter_category = '')
-    {
-        $str = '';
-        if (!$filter_category) {
-            $filter_category = $this->getFilterCategory();
-        }
-        if (is_array($filter_category) && !empty($filter_category)) {
-            $str .= '<ul>';
-            foreach ($filter_category as $cate) {
-                $name = Yii::$service->store->getStoreAttrVal($cate['name'], 'name');
-                $url = Yii::$service->url->getUrl($cate['url_key']);
-                $current = '';
-                if (isset($cate['current']) && $cate['current']) {
-                    $current = 'class="current"';
-                }
-                $str .= '<li '.$current.'><a href="'.$url.'">'.$name.'</a>';
-                if (isset($cate['child']) && is_array($cate['child']) && !empty($cate['child'])) {
-                    $str .= $this->getFilterCategoryHtml($cate['child']);
-                }
-                $str .= '</li>';
-            }
-            $str .= '</ul>';
-        }
-        //exit;
-        return $str;
-    }
-
     protected function getProductPage()
     {
         $productNumPerPage = $this->getNumPerPage();
@@ -120,7 +85,9 @@ class Index
 
         return Yii::$service->page->widget->renderContent('category_product_page', $config);
     }
-
+    /**
+     * 得到toolbar的页面显示个数和排序部分
+     */
     protected function getQueryItem()
     {
         $category_query = Yii::$app->controller->module->params['search_query'];
@@ -148,7 +115,9 @@ class Index
         //var_dump($data);
         return $data;
     }
-
+    /**
+     * 得到侧栏属性过滤属性
+     */
     protected function getFilterAttr()
     {
         if (!$this->_filter_attr) {
@@ -157,7 +126,10 @@ class Index
 
         return $this->_filter_attr;
     }
-
+    /**
+     * 得到已经选择了的过滤属性，譬如对color属性，点击了blue，进行了选择，就会出现在这里
+     * 方便用户通过点击的方式取消掉属性过滤
+     */
     protected function getRefineByInfo()
     {
         $get_arr = Yii::$app->request->get();
@@ -197,7 +169,9 @@ class Index
 
         return $refineInfo;
     }
-
+    /**
+     * 得到搜索页面进行过滤的属性
+     */
     protected function getFilterInfo()
     {
         $filter_info = [];
@@ -210,7 +184,9 @@ class Index
 
         return $filter_info;
     }
-
+    /**
+     * 得到分类页面价格过滤部分
+     */
     protected function getFilterPrice()
     {
         $filter = [];
@@ -226,7 +202,9 @@ class Index
 
         return $filter;
     }
-
+    /**
+     * 产品价格显示格式处理
+     */
     protected function getFormatFilterPrice($price_item)
     {
         list($f_price, $l_price) = explode('-', $price_item);
@@ -242,7 +220,7 @@ class Index
 
         return $str;
     }
-
+    
     protected function getFilterArr($str)
     {
         $arr = [];
@@ -259,7 +237,9 @@ class Index
 
         return $arr;
     }
-
+    /**
+     * 得到排序数组，用于查询。
+     */
     protected function getOrderBy()
     {
         $primaryKey = Yii::$service->category->getPrimaryKey();
@@ -294,7 +274,9 @@ class Index
             }
         }
     }
-
+    /**
+     * 得到每页显示的产品的个数。
+     */
     protected function getNumPerPage()
     {
         if (!$this->_numPerPageVal) {
@@ -319,15 +301,19 @@ class Index
         }
 
         return $this->_numPerPageVal;
-    }
-
+    } 
+    /**
+     * 得到第几页
+     */
     protected function getPageNum()
     {
         $numPerPage = Yii::$app->request->get($this->_page);
 
         return $numPerPage ? (int) $numPerPage : 1;
     }
-
+    /**
+     * 得到搜索的产品collection
+     */
     protected function getSearchProductColl()
     {
         $select = [
@@ -344,7 +330,9 @@ class Index
 
         return Yii::$service->search->getSearchProductColl($select, $where, $pageNum, $numPerPage, $product_search_max_count);
     }
-
+    /**
+     * 初始化where
+     */
     protected function initWhere()
     {
         $filterAttr = $this->getFilterAttr();
@@ -375,7 +363,9 @@ class Index
 
         return $where;
     }
-
+    /**
+     * 初始化部分
+     */
     protected function initSearch()
     {
         //$primaryKey = Yii::$service->category->getPrimaryKey();
@@ -419,7 +409,9 @@ class Index
         $this->_where = $this->initWhere();
     }
 
-    // 面包屑导航
+    /**
+     * 面包屑导航
+     */
     protected function breadcrumbs()
     {
         if (Yii::$app->controller->module->params['search_breadcrumbs']) {
