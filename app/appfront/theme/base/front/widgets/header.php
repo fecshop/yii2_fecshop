@@ -11,18 +11,16 @@
 	<input type="hidden" class="currentBaseUrl" value="<?= $currentBaseUrl ?>" />
 	<input type="hidden" class="logoutUrl" value="<?= $logoutUrl ?>" />
 	<input type="hidden" class="logoutStr" value="<?= Yii::$service->page->translate->__('Logout'); ?>" />
-	
 	<input type="hidden" class="welcome_str" value="<?= Yii::$service->page->translate->__('Welcome!'); ?>" />
 	<div class="top_nav_inner">	    
 		<div class="top_nav_left">
-		
 			<dl class="top_lang">
 				<dt><span class="current_lang" rel="<?= $currentStore ?>"><?= $currentStoreLang ?></span></dt>
 				<dd class="lang_list">
 					<ul>
-						<?php foreach($stores as $store=> $langName){   ?>
+						<?php foreach($stores as $store=> $langName):   ?>
 							<li  class="store_lang"  rel="<?= $store ?>"><a href="javascript:void(0)"><?= $langName ?></a></li>
-						<?php } ?>
+						<?php endforeach; ?>
 						</ul>
 				</dd>
 			</dl>
@@ -32,20 +30,18 @@
 				<dd class="currency_list">
 					<ul>
 					
-					<?php foreach($currencys as $c){    ?>
+					<?php foreach($currencys as $c):    ?>
 						<li rel="<?= $c['code'] ?>"><label><?= $c['symbol'] ?></label><?= $c['code'] ?></li>
-					<?php } ?>							
+					<?php endforeach; ?>							
 					</ul>
 				</dd>
 			</dl>
 		</div>
-		
 		<div class="top_nav_right">
 			<div class="login-text t_r">
 				<span id="js_isNotLogin">
 					<a href="<?= Yii::$service->url->getUrl('customer/account/login') ?>" rel="nofollow"><?= Yii::$service->page->translate->__('Sign In / Join Free'); ?></a>
 				</span>
-				
 			</div>
 			<dl class="top_account t_r">
 				<dt>
@@ -73,28 +69,19 @@
 				<span class="mycart-text" id="js_cart_items">0</span>
 			</div>
 		</div>
-		
 	</div><!--end .top_nav_inner-->
 </div><!--end #top_nav-->
 
-
-
-
 <div id="top_main">
-
-
-
 	<div class="top_main_inner pr">
 		<div class="top_header clearfix">
 			<div class="topSeachForm">
 				<?= Yii::$service->page->widget->render('topsearch',$this); ?>
 			</div>
-			
 			<div class="logo"><a titel="fecshop logo" href="<?= $homeUrl ?>" style="">
 				<img src="<?= Yii::$service->image->getImgUrl('custom/logo.png','appfront'); ?>"  />
 			</a></div>
 		</div><!--end .top_header-->
-
-		</div><!--end .top_main_inner-->
+    </div><!--end .top_main_inner-->
 </div>
 		

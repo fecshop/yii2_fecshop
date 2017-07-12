@@ -1,4 +1,13 @@
 <?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
+<?php
 use fecshop\app\appfront\helper\Format;
 ?>
 <div class="main container two-columns-left">
@@ -13,17 +22,18 @@ use fecshop\app\appfront\helper\Format;
 					<div class="col2-set order-info-box">
 						<div class="col-1">
 							<div class="box">
-							<div class="box-title">
-								<h2><?= Yii::$service->page->translate->__('Shipping Address');?></h2>
-							</div>
-							<div class="box-content">
-								<address><?=  $customer_firstname ?> <?=  $customer_lastname ?><br>
-								<?=  $customer_address_street1 ?><br><?=  $customer_address_street2 ?><br><?=  $customer_address_city ?>,<?=  $customer_address_state_name ?>,<?=  $customer_address_country_name ?><br>
-								<?= Yii::$service->page->translate->__('T:');?><?=  $customer_telephone ?>
+                                <div class="box-title">
+                                    <h2><?= Yii::$service->page->translate->__('Shipping Address');?></h2>
+                                </div>
+                                <div class="box-content">
+                                    <address><?=  $customer_firstname ?> <?=  $customer_lastname ?><br>
+                                    <?=  $customer_address_street1 ?><br><?=  $customer_address_street2 ?><br><?=  $customer_address_city ?>,<?=  $customer_address_state_name ?>,<?=  $customer_address_country_name ?><br>
+                                    <?= Yii::$service->page->translate->__('T:');?><?=  $customer_telephone ?>
 
-								</address>
-							</div>
-						</div>				</div>
+                                    </address>
+                                </div>
+                            </div>				
+                        </div>
 						<div class="col-2">
 							<div class="box">
 								<div class="box-title">
@@ -41,7 +51,8 @@ use fecshop\app\appfront\helper\Format;
 								<div class="box-content">
 									<p><strong><?=  $payment_method ?></strong></p>
 								</div>
-							</div>				</div>
+							</div>				
+                        </div>
 					</div>
 					
 					<div class="order-items order-details">
@@ -91,8 +102,8 @@ use fecshop\app\appfront\helper\Format;
 								</tr>
 							</tfoot>
 							<tbody class="odd">
-								<?php if(is_array($products) && !empty($products)){  ?>
-									<?php foreach($products as $product){ ?>
+								<?php if(is_array($products) && !empty($products)):  ?>
+									<?php foreach($products as $product): ?>
 									<tr id="order-item-row" class="border first">	
 										<td>
 											<a href="<?=  Yii::$service->url->getUrl($product['redirect_url']) ; ?>">
@@ -100,15 +111,15 @@ use fecshop\app\appfront\helper\Format;
 													<?= $product['name'] ?>
 												</h3>
 											</a>
-											<?php  if(is_array($product['custom_option_info'])){  ?>
+											<?php  if(is_array($product['custom_option_info'])):  ?>
 											<ul>
-												<?php foreach($product['custom_option_info'] as $label => $val){  ?>
+												<?php foreach($product['custom_option_info'] as $label => $val):  ?>
 													
 													<li><?= Yii::$service->page->translate->__($label.':') ?><?= Yii::$service->page->translate->__($val) ?> </li>
 													
-												<?php }  ?>
+												<?php endforeach;  ?>
 											</ul>
-											<?php }  ?>
+											<?php endif;  ?>
 											<dl class="item-options">
 												
 											</dl>
@@ -141,8 +152,8 @@ use fecshop\app\appfront\helper\Format;
 											<br>
 										</td>
 									</tr>
-									<?php } ?>
-								<?php } ?>
+									<?php endforeach; ?>
+								<?php endif; ?>
 								</tbody>								   
 						</table>
 						<br/>
@@ -151,10 +162,8 @@ use fecshop\app\appfront\helper\Format;
 						</div>
 					</div>
 				</div>
-
 			</div>
 		</div>
-
 	</div>
 	
 	<div class="col-left ">

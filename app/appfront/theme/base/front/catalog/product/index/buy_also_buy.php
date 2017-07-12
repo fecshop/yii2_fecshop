@@ -1,4 +1,13 @@
-<?php  if(is_array($parentThis['products']) && !empty($parentThis['products'])){ ?>
+<?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
+<?php  if(is_array($parentThis['products']) && !empty($parentThis['products'])): ?>
 <div class="buy_also_buy" >
 	<div class="scroll_left">
 		<a href=""><?= Yii::$service->page->translate->__('Customers Who Bought This Item Also Bought'); ?></a>
@@ -6,7 +15,7 @@
 	<div class="scrollBox">	
 		<div class="viewport" style="overflow: hidden; position: relative;">
 			<div id="owl-buy-also-buy" class="owl-carousel">	
-				<?php foreach($parentThis['products'] as $product){ ?>
+				<?php foreach($parentThis['products'] as $product): ?>
 					<div class="item">
 						<p class="tc pro_img">
 							<a style="" class="i_proImg" href="<?= $product['url'] ?>">
@@ -30,7 +39,7 @@
 							echo Yii::$service->page->widget->renderContent('category_product_price',$config);
 						?>
 					</div>
-				<?php  }  ?>
+				<?php  endforeach;  ?>
 			</div>
 		</div>
 	</div>
@@ -53,5 +62,5 @@ $(document).ready(function(){
 <?php $this->endBlock(); ?>  
 </script>  
 <?php $this->registerJs($this->blocks['owl_fecshop_slider'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
-<?php  }  ?>
+<?php  endif;  ?>
 

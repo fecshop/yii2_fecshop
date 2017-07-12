@@ -1,18 +1,23 @@
+<?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
 <div class="main container one-column">
 <?= Yii::$service->page->widget->render('flashmessage'); ?>
-
-<?php  if(!empty($identity)){  ?>
-	
+<?php  if(!empty($identity)):  ?>
 	<div class="account-create">
 		<div class="page-title">
 			<h1><?= Yii::$service->page->translate->__('Forgot Password'); ?></h1>
 		</div>
-		<form action="<?= Yii::$service->url->getUrl('customer/account/resetpassword',['resetToken'=>$resetToken]); ?>" method="post" id="form-validate">
-				
+		<form action="<?= Yii::$service->url->getUrl('customer/account/resetpassword',['resetToken'=>$resetToken]); ?>" method="post" id="form-validate">	
 			<div class="fieldset" style="width:auto">
 				<h2 class="legend"><?= Yii::$service->page->translate->__('Select your new password'); ?></h2>
 				<ul class="form-list">
-					
 					<li>
 						<label for="email_address" class="required"><em>*</em><?= Yii::$service->page->translate->__('Email Address'); ?></label>
 						<div class="input-box">
@@ -41,14 +46,11 @@
 			<?= \fec\helpers\CRequest::getCsrfInputHtml();  ?>
 			<input type="hidden"  name="editForm[resetToken]"  value="<?= $resetToken ?>" />
 			<div class="buttons-set">
-				
 				<button type="button" id="js_registBtn" class="redBtn"><em><span><i></i><?= Yii::$service->page->translate->__('Submit'); ?></span></em></button>
-				
 			</div>
 			<div class="clear"></div>
 		</form>
 	</div>
-	
 	<?php 
 	$requiredValidate 			= Yii::$service->page->translate->__('This is a required field.');
 	$emailFormatValidate 		= Yii::$service->page->translate->__('Please enter a valid email address. For example johndoe@domain.com.');
@@ -132,7 +134,7 @@
 	<?php $this->registerJs($this->blocks['customer_account_reset'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
 
 
-<?php  }else{  ?>
+<?php  else:  ?>
 	<div>
 		<?php
 			$param = ['logUrlB' => '<a href="'.$forgotPasswordUrl.'">','logUrlE' => '</a> '];
@@ -140,5 +142,5 @@
 		<?= Yii::$service->page->translate->__('Your Reset Password Token is Expired, You can {logUrlB} click here {logUrlE} to retrieve it ',$param); ?>
 		
 	</div>
-<?php  } ?>
+<?php  endif; ?>
 </div>

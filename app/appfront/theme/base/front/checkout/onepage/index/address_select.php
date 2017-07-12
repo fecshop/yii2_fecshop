@@ -1,3 +1,12 @@
+<?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
 <?php  $address_list = $parentThis['address_list'];   ?>
 <?php  $cart_address_id = $parentThis['cart_address_id'];   ?>
 <?php  $country_select = $parentThis['country_select'];   ?>
@@ -12,18 +21,18 @@
 		<li>
 			<div>
 				<select name="address_id" class="address_list">
-					<?php  	if(is_array($address_list) && !empty($address_list)){    ?>
-					<?php  	foreach($address_list as $address_id => $info){  ?>
-					<?php  	if($cart_address_id == $address_id ){ 
-								$str = 'selected="true;"';
-							}else{  
-								$str = ''; 
-							}
+					<?php  	if(is_array($address_list) && !empty($address_list)):    ?>
+					<?php  	    foreach($address_list as $address_id => $info):  ?>
+					<?php  	        if($cart_address_id == $address_id ): 
+                                        $str = 'selected="true;"';
+                                    else:  
+                                        $str = ''; 
+                                    endif;
 					?>
 					<option <?= $str  ?> value="<?= $address_id ?>"><?= $info['address'] ?></option>
 					
-					<?php  }  ?>
-					<?php  }  ?>
+					<?php       endforeach;  ?>
+					<?php  endif;  ?>
 					<option value=""> <?= Yii::$service->page->translate->__('New Address');?> </option>
 				</select>
 				<ul id="billing_address_list" class="billing_address_list_new" style="display:none;">			

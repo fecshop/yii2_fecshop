@@ -1,7 +1,14 @@
+<?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
 <div class="main container two-columns-left">
-	
 	<div class="col-main account_center">
-		
 		<div class="account_review_product">
 			<div style="margin:4px 0 0">
 				<div class="page-title">
@@ -10,13 +17,12 @@
 				<div style="width:100%;min-height:500px;">
 					<div style="width:100%;">
 						<div>
-							<?php  if(is_array($coll) && !empty($coll)){  ?>
+							<?php  if(is_array($coll) && !empty($coll)):  ?>
 							<div class="product-Reviews"> 
 								<div class="clear"></div>
 								<div class="product-Reviews_top">
 									<ul id="review_description">
-										<?php foreach($coll as $one){  ?>
-										
+										<?php foreach($coll as $one):  ?>
 										<li>
 											<?php $main_image = isset($one['image']['main']['image']) ? $one['image']['main']['image'] : '' ?>
 											<div class="review_description_left">
@@ -36,35 +42,35 @@
 														<?= $one['review_content'] ?>
 													</div>
 													
-													<?php if($one['status'] == $noActiveStatus){ ?>  
+													<?php if($one['status'] == $noActiveStatus): ?>  
 													<div class="review_moderation">
 														<?= Yii::$service->page->translate->__('Your Review is awaiting moderation...');?>
 													</div>
-													<?php }else if($one['status'] == $refuseStatus){ ?>
+													<?php elseif($one['status'] == $refuseStatus): ?>
 													<div class="review_refuse">
 														<?= Yii::$service->page->translate->__('Your Review is refused.');?>
 													</div>
-													<?php }else if($one['status'] == $activeStatus){ ?>
+													<?php elseif($one['status'] == $activeStatus): ?>
 													<div class="review_accept">
 														<?= Yii::$service->page->translate->__('Your Review is accept.');?>
 													</div>
-													<?php } ?>
+													<?php endif; ?>
 												</div>
 											</div>
 											<div class="clear"></div>
 										</li>
-										<?php } ?>
+										<?php endforeach; ?>
 									</ul>
 								</div>
-								<?php if($pageToolBar){ ?>
+								<?php if($pageToolBar): ?>
 								<div class="pageToolbar">
 									<label class="title"><?= Yii::$service->page->translate->__('Page:');?></label><?= $pageToolBar ?>
 								</div>
-								<?php } ?>
+								<?php endif; ?>
 							</div>
-							<?php }else{ ?>
+							<?php else: ?>
 								<?= Yii::$service->page->translate->__('You have submitted no reviews');?>.
-							<?php } ?>
+							<?php endif; ?>
 						</div>	
 					</div>
 				</div>

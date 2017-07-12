@@ -1,3 +1,12 @@
+<?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
 <div class="main container one-column">
 <?= Yii::$service->page->widget->render('flashmessage'); ?>
 	<div class="col-main">
@@ -83,7 +92,7 @@
 								<span class="review_span_error" id="review_review_span"></span>
 							</li>
 							
-							<?php if($add_captcha){  ?>
+							<?php if($add_captcha):  ?>
 							<li style="width:700px;">
 								<label for="captcha" class="required"><em>*</em><?= Yii::$service->page->translate->__('Captcha');?></label>
 								<div class="input-box login-captcha">
@@ -103,9 +112,8 @@
 								<?php $this->registerJs($this->blocks['login_captcha_onclick_refulsh'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
 
 							</li>
-							<?php }  ?>
+							<?php endif;  ?>
 							<li>
-							
 								<button type="submit" title="Submit Review" class="button" id="m_top_10" onclick="return check_review()"><span><span><?= Yii::$service->page->translate->__('Submit');?></span></span></button>
 							</li>
 						</ul>
@@ -116,10 +124,6 @@
 		</div>
 	</div>
 </div>
-
-
-
-		
 
 <script>
 	// add to cart js	

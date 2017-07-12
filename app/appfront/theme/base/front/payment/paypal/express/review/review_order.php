@@ -1,9 +1,18 @@
 <?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
+<?php
 use fecshop\app\appfront\helper\Format;
 ?>
 <?php  $cart_info = $parentThis['cart_info'];   ?>
 <?php  $currency_info = $parentThis['currency_info'];   ?>
-<?php  if(is_array( $cart_info) && !empty( $cart_info)){ ?>
+<?php  if(is_array( $cart_info) && !empty( $cart_info)): ?>
 <?php  	$products = $cart_info['products']  ?>
 <p class="onestepcheckout-numbers onestepcheckout-numbers-4"><?= Yii::$service->page->translate->__('Review your order') ?></p>
 <div class="onestepcheckout-summary">
@@ -17,7 +26,7 @@ use fecshop\app\appfront\helper\Format;
 			</tr>
 		</thead>
 		<tbody>
-			<?php foreach($products as $product){  ?>
+			<?php foreach($products as $product):  ?>
 			<tr>
 				<td class='image'>
 					<a href="<?= $product['url'] ?>" title="<?= $product['name'] ?>" class="product-image">
@@ -32,20 +41,20 @@ use fecshop\app\appfront\helper\Format;
 							<?= $product['name'] ?>
 						</a>
 					</h2>
-					<?php  if(is_array($product['custom_option_info'])){  ?>
+					<?php  if(is_array($product['custom_option_info'])):  ?>
 					<ul>
-						<?php foreach($product['custom_option_info'] as $label => $val){  ?>
+						<?php foreach($product['custom_option_info'] as $label => $val):  ?>
 							
 							<li><?= Yii::$service->page->translate->__(ucwords($label).':') ?><?= Yii::$service->page->translate->__($val) ?> </li>
 							
-						<?php }  ?>
+						<?php endforeach;  ?>
 					</ul>
-					<?php }  ?>
+					<?php endif;  ?>
 				</td>
 				<td class="qty"><?= $product['qty']; ?></td>
 				<td class="total"><span class="price"><?=  $currency_info['symbol'];  ?><?= Format::price($product['product_row_price']); ?></span></td>
 			</tr>
-			<?php  } ?>			
+			<?php  endforeach; ?>			
 		</tbody>
 	</table>
 
@@ -78,4 +87,4 @@ use fecshop\app\appfront\helper\Format;
 	</table>
 </div>
 
-<?php  } ?>
+<?php  endif; ?>

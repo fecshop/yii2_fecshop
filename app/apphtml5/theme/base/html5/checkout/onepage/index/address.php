@@ -1,9 +1,17 @@
+<?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
 <?php  $address_list = $parentThis['address_list'];   ?>
 <?php  $cart_address_id = $parentThis['cart_address_id'];   ?>
 <?php  $country_select = $parentThis['country_select'];   ?>
 <?php  $state_html = $parentThis['state_html'];   ?>
 <?php  $cart_address = $parentThis['cart_address'];   ?>
-
 <div id="billing_address">		
 	<ul>
 		<li>
@@ -11,7 +19,6 @@
 		</li>
 		<li>
 			<div>
-			
 				<ul id="billing_address_list" class="billing_address_list_new" style="">			
 					<li class="clearfix">
 						<div class="input-box input-firstname">
@@ -55,37 +62,28 @@
 									</select>
 							</div>
 					</li>
-					
 					<li class="clearfix">
-						
 						<div class="input-box input-state"><label for="billing:state" class="required"><?= Yii::$service->page->translate->__('State');?><span class="required">*</span></label>
 							<div class="state_html">
 							<?=  $state_html ?>
 							</div>
 						</div>
 					</li>
-					
 					<li class="clearfix">
 						<div class="input-box input-city">
 							<label for="billing:city"><?= Yii::$service->page->translate->__('City');?> <span class="required">*</span></label>
 							<input value="<?= $cart_address['city'] ?>" id="billing:city" class="required-entry input-text" title="City" name="billing[city]" type="text">
 						</div>
 					</li>
-					
 					<li class="clearfix">
 						<div class="input-box input-zip">
 							<label for="billing:zip"><?= Yii::$service->page->translate->__('Zip Code');?> <span class="required">*</span></label>
 							<input value="<?= $cart_address['zip'] ?>" class="validate-zip-international required-entry input-text" id="billing:zip" name="billing[zip]" title="Zip Code" type="text">
 						</div>
-						
 					</li>
-					<?php if(!Yii::$app->user->isGuest){  ?>
-					<!--
-					<li class="control">
-						<input class="save_in_address_book checkbox" id="billing:save_in_address_book" title="Save in address book" value="1" name="billing[save_in_address_book]" checked="checked" type="checkbox"><label for="billing:save_in_address_book">Save in address book</label>
-					</li>  
-					-->
-					<?php }else{ ?>
+					<?php if(!Yii::$app->user->isGuest):  ?>
+					
+					<?php else: ?>
 					<li class="clearfix">
 						<div class="input-box">
 							<input value="1" name="create_account" id="id_create_account" type="checkbox">
@@ -105,10 +103,9 @@
 							<input name="billing[confirm_password]" title="Confirm Password" id="billing:confirm_password" value="" class="validate-password input-text customer_confirm_password" type="password">
 						</div>
 					</li>
-					<?php }  ?>
+					<?php endif;  ?>
 				</ul>							
 			</div>
 		</li>
-		
 	</ul>
 </div>

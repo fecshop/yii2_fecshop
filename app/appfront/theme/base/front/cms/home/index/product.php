@@ -1,8 +1,17 @@
+<?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
 <div class="scrollBox">	
 	<div class="viewport" style="overflow: hidden; position: relative;">
-		<?php  if(is_array($parentThis['products']) && !empty($parentThis['products'])){ ?>
+		<?php  if(is_array($parentThis['products']) && !empty($parentThis['products'])): ?>
 		<div id="owl-<?= $parentThis['name']; ?>" class="owl-carousel">	
-			<?php foreach($parentThis['products'] as $product){ ?>
+			<?php foreach($parentThis['products'] as $product): ?>
 				<div class="item">
 					<p class="tc pro_img">
 						<a style="" class="i_proImg" href="<?= $product['url'] ?>">
@@ -24,15 +33,8 @@
 						echo Yii::$service->page->widget->renderContent('category_product_price',$config);
 					?>
 				</div>
-			<?php  }  ?>
-			
-		</div>
-				
-		<?php  }  ?>
+			<?php  endforeach;  ?>
+		</div>	
+		<?php  endif;  ?>
 	</div>
 </div>
-
-
-
-
-

@@ -1,3 +1,12 @@
+<?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
 <div class="shopping-cart-img">
 	<?= Yii::$service->page->translate->__('Contacts'); ?>
 </div>
@@ -58,7 +67,7 @@
 						</div>
 					</div>
 				</li>
-				<?php if($contactsCaptcha){  ?>
+				<?php if($contactsCaptcha):  ?>
 					<li>
 						<div class="item-content">
 							<div class="item-media"><i class="icon icon-form-password"></i></div>
@@ -80,7 +89,7 @@
 						</script>  
 						<?php $this->registerJs($this->blocks['forgot_password_captcha_onclick_refulsh'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
 					</li>
-				<?php } ?>
+				<?php endif; ?>
 			</ul>
 			<div class="clear"></div>
 			<div class="buttons-set">

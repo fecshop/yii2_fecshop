@@ -1,3 +1,12 @@
+<?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
 <div class="main container one-column">
 	<div class="col-main">
 		<div class="product_page">
@@ -151,13 +160,13 @@
 						<?= $description; ?>
                         
                         <div class="img-section">
-                            <?php   if(is_array($image_detail)){  ?>
-                                <?php foreach($image_detail as $image_detail_one){ ?>
+                            <?php   if(is_array($image_detail)):  ?>
+                                <?php foreach($image_detail as $image_detail_one): ?>
                                     <br/>
                                     <img class="js_lazy" src="<?= Yii::$service->image->getImgUrl('images/lazyload.gif');   ?>" data-original="<?= Yii::$service->product->image->getUrl($image_detail_one['image']);  ?>"  />
                                     
-                                <?php  }  ?>
-                            <?php  }  ?>
+                                <?php  endforeach;  ?>
+                            <?php  endif;  ?>
                         </div>
 					</div>  
 					<div class="text-reviews" id="text-reviews" style="">

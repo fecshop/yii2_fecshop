@@ -1,4 +1,13 @@
 <?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
+<?php
 use fecshop\app\apphtml5\helper\Format;
 ?>
 <div class="account-ds">
@@ -116,8 +125,8 @@ use fecshop\app\apphtml5\helper\Format;
 								</tr>
 							</tfoot>
 							<tbody class="odd">
-								<?php if(is_array($products) && !empty($products)){  ?>
-									<?php foreach($products as $product){ ?>
+								<?php if(is_array($products) && !empty($products)):  ?>
+									<?php foreach($products as $product): ?>
 									<tr id="order-item-row" class="border first">	
 										<td>
 											<a href="<?=  Yii::$service->url->getUrl($product['redirect_url']) ; ?>">
@@ -126,15 +135,15 @@ use fecshop\app\apphtml5\helper\Format;
 										</td>
 										<td>
 											<div><?= Yii::$service->page->translate->__('sku')?>:<?= $product['sku'] ?></div>
-											<?php  if(is_array($product['custom_option_info'])){  ?>
+											<?php  if(is_array($product['custom_option_info'])):  ?>
 											
-												<?php foreach($product['custom_option_info'] as $label => $val){  ?>
+												<?php foreach($product['custom_option_info'] as $label => $val):  ?>
 													<div>
 														<?= Yii::$service->page->translate->__($label.':') ?><?= Yii::$service->page->translate->__($val) ?>
 													</div>
-												<?php }  ?>
+												<?php endforeach;  ?>
 											
-											<?php }  ?>
+											<?php endif;  ?>
 											
 											<dl class="item-options">
 											</dl>
@@ -153,8 +162,8 @@ use fecshop\app\apphtml5\helper\Format;
 											<br>
 										</td>
 									</tr>
-									<?php } ?>
-								<?php } ?>
+									<?php endforeach; ?>
+								<?php endif; ?>
 								</tbody>								   
 						</table>
 					</div>

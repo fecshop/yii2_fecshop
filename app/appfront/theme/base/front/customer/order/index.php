@@ -1,6 +1,14 @@
+<?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
 <div class="main container two-columns-left">
 <?= Yii::$service->page->widget->render('flashmessage'); ?>
-
 	<div class="col-main account_center">
 		<div class="std">
 			<div style="margin:4px 0 0">
@@ -19,11 +27,10 @@
 						</tr>
 					</thead>
 					<tbody>
-					<?php  if(is_array($order_list) && !empty($order_list)){  ?>
-						<?php foreach($order_list as $order){ 
+					<?php  if(is_array($order_list) && !empty($order_list)):  ?>
+						<?php foreach($order_list as $order):
 							$currencyCode = $order['order_currency_code'];
-							$symbol = Yii::$service->page->currency->getSymbol($currencyCode);
-							
+							$symbol = Yii::$service->page->currency->getSymbol($currencyCode);	
 						?>
 							<tr class="first odd">
 								<td><?= $order['increment_id'] ?></td>
@@ -37,17 +44,16 @@
 									</span>
 								</td>
 							</tr>
-						
-						<?php } ?>
-					<?php } ?>
+						<?php endforeach; ?>
+					<?php endif; ?>
 						
 					</tbody>
 				</table>
-				<?php if($pageToolBar){ ?>
+				<?php if($pageToolBar): ?>
 					<div class="pageToolbar">
 						<label class="title"><?= Yii::$service->page->translate->__('Page:');?></label><?= $pageToolBar ?>
 					</div>
-				<?php } ?>
+				<?php endif; ?>
 			</div>
 		</div>
 	</div>

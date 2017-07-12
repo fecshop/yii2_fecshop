@@ -7,7 +7,6 @@
  * @license http://www.fecshop.com/license/
  */
 ?>
-
 <div class="content">
 	<div class="content-block">
 		<?= Yii::$service->page->widget->render('breadcrumbs',$this); ?>
@@ -30,7 +29,7 @@
 				<div class=" infinite-scroll infinite-scroll-bottom" data-distance="10">
 					<div class="list-block">
 						<div class="list-container">
-							<?php  if(is_array($products) && !empty($products)){ ?>
+							<?php  if(is_array($products) && !empty($products)): ?>
                                 <?php
                                     $parentThis['products'] = $products;
                                     $config = [
@@ -38,9 +37,9 @@
                                     ];
                                     echo Yii::$service->page->widget->renderContent('category_product_price',$config,$parentThis);
                                 ?>
-                            <?php }else{ ?>
+                            <?php else: ?>
                                 <?= Yii::$service->page->translate->__('Search results for \'{searchText}\' returns no results',['searchText' => $searchText]); ?>
-                            <?php } ?>
+                            <?php endif; ?>
 						</div>
 						<!-- 加载提示符 -->
 						<div class="infinite-scroll-preloader">

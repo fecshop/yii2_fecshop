@@ -1,11 +1,19 @@
-
+<?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
 <?php $i = 0; ?>
-<?php  if(is_array($parentThis['products']) && !empty($parentThis['products'])){ ?>
-	<?php foreach($parentThis['products'] as $product){ ?>
+<?php  if(is_array($parentThis['products']) && !empty($parentThis['products'])): ?>
+	<?php foreach($parentThis['products'] as $product): ?>
 		
-		<?php if($i%2 == 0){  ?>
+		<?php if($i%2 == 0):  ?>
 			<div class="row">
-		<?php } ?>
+		<?php endif; ?>
 			<div class="col-50 product_list">
 				<a href="<?= $product['url'] ?>" external>
 					<img width="100%" src="<?= Yii::$service->image->getImgUrl('images/lazyload.gif'); ?>"  class="lazy" data-src="<?= Yii::$service->product->image->getResize($product['image'],296,false) ?>"  />
@@ -27,14 +35,15 @@
 					?>
 				</p>
 			</div>
-			
 		<?php $i++; ?>
-		<?php if($i%2 == 0){  ?>
+		<?php if($i%2 == 0):  ?>
 			</div>
-		<?php } ?>
-		
-	<?php  }  ?>
-	<?php if($i%2 != 0){  ?>
+		<?php endif; ?>
+        
+	<?php  endforeach;  ?>
+    
+	<?php if($i%2 != 0):  ?>
 		</div>
-	<?php } ?>
-<?php  }  ?>
+	<?php endif; ?>
+    
+<?php  endif;  ?>

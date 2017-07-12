@@ -1,4 +1,13 @@
-<?php  if(is_array($parentThis['products']) && !empty($parentThis['products'])){ ?>
+<?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
+<?php  if(is_array($parentThis['products']) && !empty($parentThis['products'])): ?>
 <div class="buy_also_buy" >
 	<div class="scroll_left">
 		<a href=""><?= Yii::$service->page->translate->__('Customers Who Bought This Item Also Bought'); ?></a>
@@ -18,12 +27,5 @@
 		</div>
 	</div>
 </div>
- 
-<script>
-<?php $this->beginBlock('owl_fecshop_slider') ?>  
-
-<?php $this->endBlock(); ?>  
-</script>  
-<?php $this->registerJs($this->blocks['owl_fecshop_slider'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
-<?php  }  ?>
+<?php  endif;  ?>
 

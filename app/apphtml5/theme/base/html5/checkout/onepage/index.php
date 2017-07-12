@@ -1,3 +1,12 @@
+<?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
 <div class="main container one-column">
 	<div class="col-main">
 		<?= Yii::$service->page->widget->render('flashmessage'); ?>
@@ -98,7 +107,6 @@
 		</form>
 	</div>
 </div>
-
 <script>
 <?php $this->beginBlock('placeOrder') ?>
 	function validateEmail(email) {
@@ -116,10 +124,7 @@
 		if(country || address_id){
 			$(".onestepcheckout-summary").html('<div style="text-align:center;min-height:40px;"><img src="<?= Yii::$service->image->getImgUrl('images/ajax-loader.gif'); ?>"  /></div>');
 			$(".onestepcheckout-shipping-method-block").html('<div style="text-align:center;min-height:40px;"><img src="<?= Yii::$service->image->getImgUrl('images/ajax-loader.gif'); ?>"  /></div>');
-				
 			ajaxurl = "<?= Yii::$service->url->getUrl('checkout/onepage/ajaxupdateorder');  ?>";
-			
-			
 			$.ajax({
 				async:false,
 				timeout: 8000,
@@ -194,8 +199,6 @@
 				},
 				error:function (XMLHttpRequest, textStatus, errorThrown){}
 			});
-				
-			
 		});
 		
 		// 对于非登录用户，可以填写密码，进行注册账户，这里进行信息的检查。
@@ -264,8 +267,6 @@
 				j = 1;
 			}
 			
-			
-			
 			if(address_list){
 				if(!j){
 					$(".onestepcheckout-place-order").addClass('visit');
@@ -292,7 +293,6 @@
 				}
 				// password 是否长度大于6，并且两个密码一致
 				if($("#id_create_account").is(':checked')){
-					
 					new_user_pass = $(".customer_password").val();
 					new_user_pass_cm = $(".customer_confirm_password").val();
 					//alert(new_user_pass);
@@ -315,7 +315,6 @@
 						i++; 
 					}  
 				}
-				
 				//alert(222);
 				if(!i && !j){
 					//alert(333);
@@ -325,7 +324,6 @@
 			}
 			
 		});
-		
 		//登录用户切换地址列表
 		$(".address_list").change(function(){
 			val = $(this).val();
@@ -345,7 +343,6 @@
 				}
 			}
 		});
-		
 		// 国家选择后，state需要清空，重新选择或者填写
 		$(".billing_country").change(function(){
 			country = $(this).val();
@@ -378,7 +375,6 @@
 			});
 			ajaxreflush();	
 		});
-		
 		// state select 改变后的事件
 		$(".input-state").off("change").on("change","select.address_state",function(){
 			ajaxreflush();
@@ -387,24 +383,10 @@
 		$(".input-state").off("blur").on("blur","input.address_state",function(){
 			ajaxreflush();
 		});
-		
-		
 		//改变shipping methos
 		$(".onestepcheckout-column-middle").off("click").on("click","input[name=shipping_method]",function(){
 			ajaxreflush();
 		});
-		
-		
-		
-		//$("#billing_address_list").off("change").on("change",".selectstate",function(){
-		//	value = $(".selectstate option:selected").text();
-		//	if($(".selectstate").val()){
-		//		$(".inputstate").val(value);
-		//	}else{
-		//		$(".inputstate").val('');
-		//	}
-		//});
-		
 	});	
 	//ajaxreflush();
 <?php $this->endBlock(); ?> 

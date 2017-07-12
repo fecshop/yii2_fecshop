@@ -21,7 +21,6 @@
 				echo Yii::$service->page->widget->renderContent('category_product_price',$config,$parentThis);
 			?>
 		</div>
-
 	</div>
 	<div class="clear"></div>
 	<div class="mt10" style="margin-top:34px;">
@@ -37,7 +36,6 @@
 			?>
 		</div>
 	</div>
-	
 </div>
 
 <script>

@@ -1,7 +1,14 @@
+<?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
 <div class="main container two-columns-left">
 	<div class="col-main account_center">
-		
-
 		<div class="std">
 			<div>
 				<form class="addressedit" action="<?= Yii::$service->url->getUrl('customer/address/edit'); ?>" id="form-validate" method="post">
@@ -121,7 +128,6 @@
 						
 					</div>
 					
-					
 					<a href="javascript:void(0)" onclick="submit_address()" class="submitbutton"><span><span><?= Yii::$service->page->translate->__('Save');?></span></span> </a>
 					
 				</form>
@@ -197,7 +203,6 @@
 			alert("You Must Fill All Field");
 		}
 	}
-	
 	
 <?php $this->endBlock(); ?> 
 <?php $this->registerJs($this->blocks['editCustomerAddress'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>

@@ -1,10 +1,19 @@
 <?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
+<?php
 use fecshop\app\apphtml5\helper\Format;
 ?>
 <div class="main container one-column">
 	<div class="col-main">
      <?= Yii::$service->page->widget->render('flashmessage'); ?>
-	<?php if(is_array($cart_info) && !empty($cart_info)){   ?>
+	<?php if(is_array($cart_info) && !empty($cart_info)):   ?>
 			    
 		<div class="product_page">
 			
@@ -15,8 +24,8 @@ use fecshop\app\apphtml5\helper\Format;
 					</div>
 				</div>
 				<div class="cart_info">
-					<?php if(is_array($cart_info['products']) && (!empty($cart_info['products']))){ ?>
-						<?php foreach($cart_info['products'] as $product_one){ ?>
+					<?php if(is_array($cart_info['products']) && (!empty($cart_info['products']))): ?>
+						<?php foreach($cart_info['products'] as $product_one): ?>
 							<div class="row">
 								<div class="col-20">
 									<a external href="<?= $product_one['url'] ?>" title="<?= $product_one['name'] ?>" class="product-image">
@@ -27,16 +36,16 @@ use fecshop\app\apphtml5\helper\Format;
 									<h2 class="product-name">
 										<a external href="<?= $product_one['url'] ?>"><?= $product_one['name'] ?></a>
 									</h2>
-									<?php  if(is_array($product_one['custom_option_info'])){  ?>
+									<?php  if(is_array($product_one['custom_option_info'])):  ?>
 									<ul class="options">
-										<?php foreach($product_one['custom_option_info'] as $label => $val){  ?>
+										<?php foreach($product_one['custom_option_info'] as $label => $val):  ?>
 											
 											<li><?= Yii::$service->page->translate->__(ucwords($label).':') ?><?= Yii::$service->page->translate->__($val) ?> </li>
 											
-										<?php }  ?>
+										<?php endforeach;  ?>
 									</ul>
 									<div class="clear"></div>
-									<?php }  ?>
+									<?php endif;  ?>
 									<span class="cart-price">
 										<span class="price"><?=  $currency_info['symbol'];  ?><?= Format::price($product_one['product_price']); ?></span>                
 									</span>
@@ -50,8 +59,8 @@ use fecshop\app\apphtml5\helper\Format;
 									
 								</div>
 							</div>
-						<?php } ?>
-					<?php } ?>
+						<?php endforeach; ?>
+					<?php endif; ?>
 
 				</div>
 				
@@ -125,7 +134,7 @@ use fecshop\app\apphtml5\helper\Format;
 				
 			</div>
 		</div>
-	<?php }else{ ?>
+	<?php else: ?>
 		<div class="empty_cart ">
             <?php
                 $param = ['urlB' => '<a  external rel="nofollow" href="'.Yii::$service->url->getUrl('customer/account/login').'">','urlE' =>'</a>'];
@@ -141,7 +150,7 @@ use fecshop\app\apphtml5\helper\Format;
         <div class="empty_cart_img">
             
         </div>
-	<?php  } ?>
+	<?php  endif; ?>
 	</div>
 </div>
 

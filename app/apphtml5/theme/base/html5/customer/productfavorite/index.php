@@ -1,4 +1,13 @@
 <?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
+<?php
 use fecshop\app\apphtml5\helper\Format;
 ?>
 <div class="account-ds">
@@ -17,9 +26,9 @@ use fecshop\app\apphtml5\helper\Format;
 			<div style="margin:4px 0 0">
 				<div style="width:100%;min-height:500px;">
 					<div style="width:100%;">
-						<?php if(is_array($coll) && !empty($coll)){  ?>
+						<?php if(is_array($coll) && !empty($coll)):  ?>
 						<table class="product-Reviews"> 
-							<?php  foreach($coll as $one){  ?>
+							<?php  foreach($coll as $one):  ?>
 							<?php  $main_img = $one['image']['main']['image'];  ?>
 							
 							<tr>
@@ -63,18 +72,17 @@ use fecshop\app\apphtml5\helper\Format;
 									</div>
 								</td>
 							</tr>
-									
-							
-							<?php  }  ?>
+								
+							<?php  endforeach;  ?>
 						</table>
-						<?php  }else{  ?>
+						<?php  else:  ?>
 							<?= Yii::$service->page->translate->__('You have no items in your favorite.');?>
-						<?php  } ?>
-						<?php if($pageToolBar){ ?>
+						<?php  endif; ?>
+						<?php if($pageToolBar): ?>
 						<div class="pageToolbar">
 							<label class="title">Page:</label><?= $pageToolBar ?>
 						</div>
-						<?php } ?>
+						<?php endif; ?>
 					</div>
 				</div>
 			</div>

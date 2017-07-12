@@ -1,37 +1,46 @@
+<?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
 <div class="tb_rg">
-	<?php  if($prevPage){  ?>
+	<?php  if($prevPage):  ?>
 		<a href="<?= $prevPage['url']['url'] ?>"><</a>
-	<?php }else{  ?>
+	<?php else:  ?>
 		<span><</span>
-	<?php }  ?>	
-	<?php if($firstSpaceShow){  ?>
+	<?php endif;  ?>	
+	<?php if($firstSpaceShow):  ?>
 		<a href="<?= $firstSpaceShow['url']['url'] ?>"><?= $firstSpaceShow['p'] ?></a>
-	<?php }  ?>	
+	<?php endif;  ?>	
 	<?= $hiddenFrontStr ?>		
-	<?php  if(!empty($frontPage )){ ?>
-		<?php foreach($frontPage as $page){ ?>
+	<?php  if(!empty($frontPage )): ?>
+		<?php foreach($frontPage as $page): ?>
 			<a href="<?= $page['url']['url'] ?>"><?= $page['p'] ?></a>
-		<?php }  ?>	
-	<?php }  ?>	
+		<?php endforeach;  ?>	
+	<?php endif;  ?>	
 	
-	<?php if($currentPage){ ?>
+	<?php if($currentPage): ?>
 		<span class="current" ><?= $currentPage['p'] ?></span>
-	<?php }  ?>	
+	<?php endif;  ?>	
 	
-	<?php  if(!empty($behindPage )){ ?>
-		<?php foreach($behindPage as $page){ ?>
+	<?php if(!empty($behindPage )): ?>
+		<?php foreach($behindPage as $page): ?>
 			<a href="<?= $page['url']['url'] ?>"><?= $page['p'] ?></a>
-		<?php }  ?>	
-	<?php }  ?>		
+		<?php endforeach;  ?>	
+	<?php endif;  ?>		
 		
 	<?= $hiddenBehindStr ?>			
-	<?php if($lastSpaceShow){ ?>
+	<?php if($lastSpaceShow): ?>
 		<a href="<?= $lastSpaceShow['url']['url'] ?>"><?= $lastSpaceShow['p'] ?></a>
-	<?php }  ?>	
-	<?php  if($nextPage){  ?>
+	<?php endif;  ?>	
+	<?php if($nextPage):  ?>
 		<a href="<?= $nextPage['url']['url'] ?>">></a>
-	<?php }else{  ?>
+	<?php else:  ?>
 		<span>></span>
-	<?php }  ?>	
-	</div>
+	<?php endif;  ?>	
+</div>
 	

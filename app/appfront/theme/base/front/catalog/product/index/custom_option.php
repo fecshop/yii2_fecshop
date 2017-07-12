@@ -1,45 +1,53 @@
-<?php	if(is_array($items) && !empty($items)){  ?>
+<?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
+<?php	if(is_array($items) && !empty($items)):  ?>
 <div class="product_options">
 	<input type="hidden" value="" class="product_custom_options"    />
-<?php 	foreach($items as $attr => $v_info){  ?>
+<?php 	foreach($items as $attr => $v_info):  ?>
 <?php 	$info = $v_info['info'];  $require = $v_info['require']; ?>
 <?php 	$required = $require ? 'required' : '' ?>
 	<div class="pg">
 		<div class="label"><?= Yii::$service->page->translate->__(ucwords(str_replace("-"," ",str_replace("_"," ",$attr))).':'); ?></div>
 		<div class="chose_<?= $attr  ?> rg  <?= $attr ?>">
 			<ul  class="no_chosen_ul <?= $required; ?>" attr="<?= $attr ?>">
-<?php  			if(is_array($info) && !empty($info)){ ?>
-<?php  				foreach($info as $one){ ?>
+<?php  			if(is_array($info) && !empty($info)): ?>
+<?php  				foreach($info as $one): ?>
 <?php					$val 		= $one['val'];  ?>
 <?php					$key 		= $one['key'];  ?>
 <?php					$image 		= $one['image'];  ?>
-			<?php   	if($image){  ?>
+			<?php   	if($image):  ?>
 				<li id="gal1">
 					<a data-image="<?= Yii::$service->product->image->getResize($image,$middle_img_width,false) ?>"  data-zoom-image="<?= Yii::$service->product->image->getUrl($image);  ?>"  attr="<?= $attr ?>"  class="imgshow active_v"  value="<?= $key ?>">
 						<img  src="<?= Yii::$service->product->image->getResize($image,[50,55],false) ?>" /></a>
 					<b></b>
 				</li>
-			<?php   	}else{ ?>
+			<?php   	else: ?>
 				<li>
 					<a attr="<?= $attr ?>" class="noimgshow active_v" value="<?= $key ?>"><?= Yii::$service->page->translate->__($val); ?></a>
 					<b></b>
 				</li>
-<?php   				}  ?>
-<?php   			}  ?>	
-<?php   		}  ?>
+<?php   				endif;  ?>
+<?php   			endforeach;  ?>	
+<?php   		endif;  ?>
 			</ul>
 		</div>	
 		<div class="clear"></div>
 	</div>
-<?php		}  ?>
+<?php	    endforeach;  ?>
 </div>
-<?php	}  ?>
+<?php	endif;  ?>
 
 <script>
 <?php $this->beginBlock('product_custom_option') ?>  
 $(document).ready(function(){
 	custom_option_arr = <?= $custom_option_arr ?>;
-	
 	$(".product_custom_options ul li a").click(function(){
 		if(!$(this).hasClass('no_active')){
 			$chosen_custom_option_arr = [];
@@ -50,7 +58,6 @@ $(document).ready(function(){
 			$(this).parent().parent().removeClass("no_chosen_ul");
 			$(this).parent().parent().addClass("chosen_ul");
 			$chosen_attr = [];
-			
 			// custom option 被选择的部分的处理 - 开始
 			$c_arr = [];
 			$c_chosen_custom_option_arr = new Object();;
@@ -75,7 +82,6 @@ $(document).ready(function(){
 						}
 						$c_chosen_custom_option_arr[attr].push(one);
 					}
-					
 				}
 			});
 			
@@ -120,9 +126,6 @@ $(document).ready(function(){
 				
 			});
 			
-			
-				
-			///////
 			for(x in custom_option_arr){
 				one = custom_option_arr[x];	
 				i = 1;
@@ -221,14 +224,6 @@ $(document).ready(function(){
 			}
 		}
 	});
-	
-	
-	
-	
-	
-	
-	
-	
 });
 <?php $this->endBlock(); ?>  
 </script>  

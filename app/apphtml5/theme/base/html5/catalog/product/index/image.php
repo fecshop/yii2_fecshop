@@ -1,8 +1,15 @@
+<?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
 <?php 
-
 $media_size = isset($parentThis['media_size']) ? $parentThis['media_size'] : null;
 $image = $parentThis['image'];
-
 $middle_img_width = isset($media_size['middle_img_width']) ? $media_size['middle_img_width'] : 400;
 ?>
 <div class="swiper-container" data-space-between='10'>
@@ -20,12 +27,12 @@ $middle_img_width = isset($media_size['middle_img_width']) ? $media_size['middle
 		$gallerys = $main_arr;
 	}
 ?>
-	<?php if(is_array($gallerys) && !empty($gallerys)){ ?>
-		<?php foreach($gallerys as $gallery){ ?>
+	<?php if(is_array($gallerys) && !empty($gallerys)): ?>
+		<?php foreach($gallerys as $gallery): ?>
 			<?php $image = $gallery['image']; ?>
 			<div class="swiper-slide"><img class="lazy" data-src="<?= Yii::$service->product->image->getResize($image,$middle_img_width,false)  ?>" src="<?= Yii::$service->image->getImgUrl('images/lazyload.gif'); ?>" alt="" style='width: 100%'></div>	
-		<?php } ?>
-	<?php } ?>
+		<?php endforeach ?>
+	<?php endif; ?>
 	</div>
 	<div class="swiper-pagination"></div>
 </div>

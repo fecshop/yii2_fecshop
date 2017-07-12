@@ -1,3 +1,12 @@
+<?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
 <div class="main container one-column">
 <?= Yii::$service->page->widget->render('flashmessage'); ?>
 	<div class="col-main">
@@ -72,10 +81,9 @@
 					<div class="review_title">
 						<a external href="#"><?= Yii::$service->page->translate->__('Product Review');?></a>
 					</div>
-					
-						<?php  if(is_array($coll) && !empty($coll)){  ?>
+						<?php  if(is_array($coll) && !empty($coll)):  ?>
 						
-							<?php foreach($coll as $one){  ?>
+							<?php foreach($coll as $one):  ?>
 								<div class="card">
 									<div class="fec-card-header">
 										<?= $one['summary'] ?>
@@ -87,11 +95,11 @@
 											</div>
 												
 											<div class="moderation">
-											<?php if($one['status'] == $noActiveStatus){ ?>  
+											<?php if($one['status'] == $noActiveStatus): ?>  
 												<?= Yii::$service->page->translate->__('Your Review is awaiting moderation...');?>
-											<?php }else if($one['status'] == $refuseStatus){ ?>
+											<?php elseif($one['status'] == $refuseStatus): ?>
 												<?= Yii::$service->page->translate->__('Your Review is refused.');?>
-											<?php } ?>
+											<?php endif; ?>
 											</div>
 											<div class="review_list_remark">
 												<p><?= Yii::$service->page->translate->__('By');?> <?= $one['name'] ?></p>
@@ -103,15 +111,15 @@
 										<a href="#" class="review_star review_star_<?= $one['rate_star'] ?>" onclick="javascript:return false;"></a>
 									</div>
 								</div>
-							<?php  } ?>
+							<?php  endforeach; ?>
 						
-						<?php } ?>
+						<?php endif; ?>
 					
-					<?php if($pageToolBar){ ?>
+					<?php if($pageToolBar): ?>
 					<div class="pageToolbar">
 						<label class="title"><?= Yii::$service->page->translate->__('Page:');?></label><?= $pageToolBar ?>
 					</div>
-					<?php } ?>
+					<?php endif; ?>
 				</div>
 			</div>
 		</div>

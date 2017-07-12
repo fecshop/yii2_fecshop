@@ -1,3 +1,12 @@
+<?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
 <div class="account-ds">
 	<div class="bar bar-nav account-top-m">
 		<a external class="button button-link button-nav pull-left" href="<?= Yii::$service->url->getUrl('customer/account/index'); ?>">
@@ -8,7 +17,7 @@
 </div>
 <?= Yii::$service->page->widget->render('flashmessage'); ?>	
 <div class="list-block customer-login ">
-	<?php  if(!empty($identity)){  ?>
+	<?php  if(!empty($identity)):  ?>
 		
 		<div class="account-create">
 			
@@ -157,7 +166,7 @@
 		<?php $this->registerJs($this->blocks['customer_account_reset'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
 
 
-	<?php  }else{  ?>
+	<?php  else:  ?>
 		<div class="customer-forgot-success">
 			<?php
 				$param = ['logUrlB' => '<a external href="'.$forgotPasswordUrl.'">','logUrlE' => '</a> '];
@@ -165,6 +174,6 @@
 			<?= Yii::$service->page->translate->__('Your Reset Password Token is Expired, You can {logUrlB} click here {logUrlE} to retrieve it ',$param); ?>
 			
 		</div>
-	<?php  } ?>
+	<?php  endif; ?>
 	
 </div>

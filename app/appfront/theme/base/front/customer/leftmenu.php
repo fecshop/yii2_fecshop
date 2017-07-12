@@ -1,3 +1,12 @@
+<?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
 <div class="col-left sidebar">
 	<div class="block block-account">
 		<div class="block-title">
@@ -5,13 +14,13 @@
 		</div>
 		<div class="block-content">
 			<ul>
-				<?php  if(!empty($leftMenuArr) && is_array($leftMenuArr)){  ?>
-					<?php foreach($leftMenuArr as $one){ ?>
+				<?php  if(!empty($leftMenuArr) && is_array($leftMenuArr)):  ?>
+					<?php foreach($leftMenuArr as $one): ?>
 					<li <?= $one['current'] ?>>
 						<a href="<?= $one['url'] ?>"  ><?= Yii::$service->page->translate->__($one['name']); ?></a>
 					</li>
-					<?php } ?>
-				<?php } ?>	
+					<?php endforeach; ?>
+				<?php endif; ?>	
 			</ul>
 		</div>
 	</div>

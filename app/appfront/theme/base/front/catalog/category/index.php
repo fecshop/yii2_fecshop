@@ -21,7 +21,7 @@
 				<?=  $description ?>
 			</div>
 			<div class="panelBar">
-				<?php  if(is_array($products) && !empty($products)){ ?>
+				<?php  if(is_array($products) && !empty($products)): ?>
 					<?php
 						$parentThis = [
 							'query_item' => $query_item,
@@ -33,14 +33,14 @@
 						$toolbar = Yii::$service->page->widget->renderContent('category_toolbar',$config,$parentThis);
 						echo $toolbar;
 					?>
-				<?php } ?>
+				<?php endif; ?>
 			</div>
 			<div class="category_product">
-				<?php  if(is_array($products) && !empty($products)){ ?>
-					<?php $i = 0;  foreach($products as $product){ ?>
-						<?php  if($i%$count == 0){ ?>
+				<?php  if(is_array($products) && !empty($products)): ?>
+					<?php $i = 0;  foreach($products as $product): ?>
+						<?php  if($i%$count == 0): ?>
 						<ul>
-						<?php  } ?>
+						<?php  endif; ?>
 							<li>
 								<div class="c_img">
 									<a href="<?= $product['url'] ?>">
@@ -64,21 +64,21 @@
 									echo Yii::$service->page->widget->renderContent('category_product_price',$config);
 								?>
 							</li>
-						<?php  if($i%$count == $end){ ?>
+						<?php  if($i%$count == $end): ?>
 						</ul>
-						<?php  } ?>
+						<?php  endif; ?>
 						<?php  $i++; ?>
-					<?php  }  ?>
-					<?php  if($i%$count != $end){ ?>
+					<?php  endforeach;  ?>
+					<?php  if($i%$count != $end): ?>
 						</ul>
-						<?php  } ?>
-				<?php  }  ?>
+					<?php  endif; ?>
+				<?php  endif;  ?>
 			</div>
 			<div class="clear"></div>
 			<div class="panelBar">
-				<?php  if(is_array($products) && !empty($products)){ ?>
+				<?php  if(is_array($products) && !empty($products)): ?>
 					<?php echo $toolbar; ?>
-				<?php  }  ?>
+				<?php  endif;  ?>
 			</div>
 		</div>
 	</div>

@@ -1,6 +1,14 @@
+<?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
 <div class="main container two-columns-left">
 <?= Yii::$service->page->widget->render('flashmessage'); ?>
-
 	<div class="col-main account_center">
 		<div class="std">
 			<div style="margin:4px 0 0">
@@ -14,29 +22,26 @@
 							<li>
 								<label for="email" class="required"><?= Yii::$service->page->translate->__('Email Address');?></label>
 								<div class="input-box">
-									
 									<input style="color:#ccc;" readonly="true" id="customer_email" name="editForm[email]" value="<?= $email ?>" title="Email" maxlength="255" class="input-text required-entry" type="text">
-									
 								</div>
 							</li>
 							<li class="">
-								
-									<div class="field name-firstname">
-										<label for="firstname" class="required"><?= Yii::$service->page->translate->__('First Name');?></label>
-										<div class="input-box">
-											<input id="firstname" name="editForm[firstname]" value="<?= $firstname ?>" title="First Name" maxlength="255" class="input-text required-entry" type="text">
-											<div class="validation-advice" id="required_current_firstname" style="display:none;"><?= Yii::$service->page->translate->__('This is a required field.');?></div>
-										</div>
-									</div>
+                                <div class="field name-firstname">
+                                    <label for="firstname" class="required"><?= Yii::$service->page->translate->__('First Name');?></label>
+                                    <div class="input-box">
+                                        <input id="firstname" name="editForm[firstname]" value="<?= $firstname ?>" title="First Name" maxlength="255" class="input-text required-entry" type="text">
+                                        <div class="validation-advice" id="required_current_firstname" style="display:none;"><?= Yii::$service->page->translate->__('This is a required field.');?></div>
+                                    </div>
+                                </div>
 							</li>
 							<li>
 								<div class="field name-lastname">
-										<label for="lastname" class="required"><?= Yii::$service->page->translate->__('Last Name');?></label>
-										<div class="input-box">
-											<input id="lastname" name="editForm[lastname]" value="<?= $lastname ?>" title="Last Name" maxlength="255" class="input-text required-entry" type="text">
-											<div class="validation-advice" id="required_current_lastname" style="display:none;"><?= Yii::$service->page->translate->__('This is a required field.');?></div>
-										</div>
-									</div>
+                                    <label for="lastname" class="required"><?= Yii::$service->page->translate->__('Last Name');?></label>
+                                    <div class="input-box">
+                                        <input id="lastname" name="editForm[lastname]" value="<?= $lastname ?>" title="Last Name" maxlength="255" class="input-text required-entry" type="text">
+                                        <div class="validation-advice" id="required_current_lastname" style="display:none;"><?= Yii::$service->page->translate->__('This is a required field.');?></div>
+                                    </div>
+                                </div>
 							</li>
 							<li class="control">
 								<input name="editForm[change_password]" id="change_password" value="1" onclick="setPasswordForm(this.checked)" title="Change Password" class="checkbox" type="checkbox">

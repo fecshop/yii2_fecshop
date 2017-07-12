@@ -13,11 +13,8 @@
 	<div class="col-main">
 		<?= Yii::$service->page->widget->render('breadcrumbs',$this); ?>
 		<div class="menu_category">
-			
-				
-			<?php  if(is_array($products) && !empty($products)){ ?>
+			<?php  if(is_array($products) && !empty($products)): ?>
 				<div class="panelBar">
-					
 					<?php
 						$parentThis = [
 							'query_item' => $query_item,
@@ -29,13 +26,12 @@
 						$toolbar = Yii::$service->page->widget->renderContent('category_toolbar',$config,$parentThis);
 						echo $toolbar;
 					?>
-					
 				</div>
 				<div class="category_product">
-					<?php $i = 0;  foreach($products as $product){ ?>
-						<?php  if($i%$count == 0){ ?>
+					<?php $i = 0;  foreach($products as $product): ?>
+						<?php  if($i%$count == 0): ?>
 						<ul>
-						<?php  } ?>
+						<?php  endif; ?>
 							<li>
 								<div class="c_img">
 									<a href="<?= $product['url'] ?>">
@@ -57,24 +53,24 @@
 									echo Yii::$service->page->widget->renderContent('category_product_price',$config);
 								?>
 							</li>
-						<?php  if($i%$count == $end){ ?>
+						<?php  if($i%$count == $end): ?>
 						</ul>
-						<?php  } ?>
+						<?php  endif; ?>
 						<?php  $i++; ?>
-					<?php  }  ?>
-					<?php  if($i%$count != $end){ ?>
+					<?php  endforeach;  ?>
+					<?php  if($i%$count != $end): ?>
 						</ul>
-						<?php  } ?>
+                    <?php  endif; ?>
 					
 				</div>
 				<div class="clear"></div>
 				<div class="panelBar">
 					<?php echo $toolbar; ?>
 				</div>
-			<?php }else{ ?>
+			<?php else: ?>
 				<?= Yii::$service->page->translate->__('Search results for \'{searchText}\' returns no results',['searchText' => $searchText]); ?>
 				
-			<?php } ?>
+			<?php endif; ?>
 		</div>
 	</div>
 	<div class="col-left ">

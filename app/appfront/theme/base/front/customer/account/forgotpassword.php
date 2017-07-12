@@ -1,3 +1,12 @@
+<?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
 <div class="main container one-column">
 <?= Yii::$service->page->widget->render('flashmessage'); ?>
 
@@ -18,7 +27,7 @@
 						</div>
 					</li>
 					
-					<?php  if($forgotCaptcha){   ?>
+					<?php  if($forgotCaptcha):   ?>
 					<li>
 						<div class="field">
                             <label for="captcha" class="required"><em>*</em><?= Yii::$service->page->translate->__('Captcha'); ?></label>
@@ -42,7 +51,7 @@
                         </div>
 						
                     </li>
-					<?php }  ?>
+					<?php endif;  ?>
 				</ul>
 			</div>
 			
@@ -60,7 +69,6 @@
 <?php 
 $requiredValidate 			= 'This is a required field.';
 $emailFormatValidate 		= 'Please enter a valid email address. For example johndoe@domain.com.';
-
 ?>
 <script>
 <?php $this->beginBlock('forgot_password') ?>  

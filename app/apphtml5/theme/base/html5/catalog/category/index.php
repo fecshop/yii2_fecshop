@@ -110,7 +110,7 @@
 			<?php
 				$parentThis = [
 					'query_item' => $query_item,
-					'product_page'=>$product_page,
+					//'product_page'=>$product_page,
 				];
 				$config = [
 					'view'  		=> 'catalog/category/index/toolbar.php',

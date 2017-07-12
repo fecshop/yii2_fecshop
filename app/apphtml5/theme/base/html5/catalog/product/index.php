@@ -1,10 +1,17 @@
-
+<?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
 <div class="product_page">
 	<div class="product_view">
 		<input type="hidden" class="product_view_id" value="<?=  $_id ?>">
 		<input type="hidden" class="sku" value="<?= $sku; ?>" />
 		<input type="hidden" class="product_csrf" name="" value="" />
-		
 		<div class="media_img">
 			<div class="media_img_content">
 				<?php # 图片部分。
@@ -20,7 +27,6 @@
 				<?= Yii::$service->page->widget->render($imageView,$imageParam); ?>
 			</div>
 		</div>
-		
 		<div class="product_info">
 			<h1><?= $name; ?></h1>
 			<div>
@@ -64,9 +70,7 @@
 						];
 					?>
 					<?= Yii::$service->page->widget->render($optionsView,$optionsParam); ?>
-				
 				</div>
-				
 				<div class="product_custom_options">
 					<?php # custom options部分
 						$optionsView = [
@@ -80,13 +84,9 @@
 						$optionsParam = [
 							
 						];
-						
-						
 					?>
 					<?= Yii::$service->page->widget->render($optionsView,$optionsParam); ?>
-				
 				</div>
-				
 				<div class="product_qty pg">
 					<div class="label"><?= Yii::$service->page->translate->__('Qty:'); ?></div>
 					<div class="rg">
@@ -111,13 +111,10 @@
 							<option value="18">18</option>
 							<option value="19">19</option>
 							<option value="20">20</option>
-							
 						  </select>
 					</div>
 					<div class="clear"></div>
 				</div>
-				
-				
 				<div class="tier_price_info">
 					<?php # tier price 部分。
 						$priceView = [
@@ -128,9 +125,7 @@
 						];
 					?>
 					<?= Yii::$service->page->widget->render($priceView,$priceParam); ?>
-				
 				</div>
-				
 				<div class="addtocart">
 					<a external href="javascript:void(0)" id="js_registBtn" class="button button-fill button-success redBtn addProductToCart">
 						<em><span><i></i><?= Yii::$service->page->translate->__('Add To Cart'); ?></span></em>
@@ -143,25 +138,15 @@
 					<div class="clear"></div>
 				</div>
 			</div>
-			
 		</div>
-		
-		
 	</div>
-	
-	
-	
-	
 	<div class="clear"></div>
 	<div class="product_description_info">
-		
-		
-		 <div class="buttons-tab">
+		<div class="buttons-tab">
 			<a href="#tab1" class="tab-link active button"><?= Yii::$service->page->translate->__('Description'); ?></a>
 			<a href="#tab2" class="tab-link button"><?= Yii::$service->page->translate->__('Reviews'); ?></a>
 			<a href="#tab3" class="tab-link button"><?= Yii::$service->page->translate->__('Shipping & Payment'); ?></a>
-		  </div>
-		
+		</div>
 		<div class="content-block">
 			<div class="tabs">
 			  <div id="tab1" class="tab active">
@@ -198,18 +183,12 @@
 						?>
 						<?= Yii::$service->page->widget->render($paymentView); ?>
 					
-					
-						
 					</div>  
 				</div>
 			  </div>
 			</div>
 		</div>
-		
-		
-		
 	</div>
-	
 	<div class="buy_also_buy_cer">
 		<?php # buy also buy 部分。
 			$buyAlsoBuyView = [
@@ -220,10 +199,8 @@
 			];
 		?>
 		<?= Yii::$service->page->widget->render($buyAlsoBuyView,$buyAlsoBuyParam); ?>
-	
 	</div>
 </div>
-
 <script>
 	// add to cart js	
 	<?php $this->beginBlock('add_to_cart') ?>
@@ -287,7 +264,6 @@
 					},
 					error:function (XMLHttpRequest, textStatus, errorThrown){}
 				});
-				
 			}
 		});
 	   
@@ -357,7 +333,6 @@
     $.init(); 
 	<?php $this->endBlock(); ?> 
 	<?php $this->registerJs($this->blocks['add_to_cart'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
-
 </script> 
   
  

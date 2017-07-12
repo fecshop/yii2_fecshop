@@ -1,3 +1,12 @@
+<?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
 <?php  $address_list = $parentThis['address_list'];   ?>
 <?php  $cart_address_id = $parentThis['cart_address_id'];   ?>
 <?php  $country_select = $parentThis['country_select'];   ?>
@@ -77,12 +86,9 @@
 							<label for="billing:zip"><?= Yii::$service->page->translate->__('Zip Code');?> <span class="required">*</span></label>
 							<input value="<?= $cart_address['zip'] ?>" class="validate-zip-international required-entry input-text" id="billing:zip" name="billing[zip]" title="Zip Code" type="text">
 						</div>
-						
 					</li>
-					
 				</ul>							
 			</div>
 		</li>
-		
 	</ul>
 </div>

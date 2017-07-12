@@ -1,3 +1,12 @@
+<?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
 <html>
 	<body>
 		<?= Yii::$service->page->translate->__('You will be redirected to the PayPal website in a few seconds...');  ?>
@@ -5,7 +14,6 @@
 		<?php // https://www.paypal.com/cgi-bin/webscr ?>
 		<form action="<?= $payment_url ?>" id="paypal_standard_checkout" name="paypal_standard_checkout" method="POST">
 			<input id="business" name="business" value="<?= $account ?>" type="hidden"/>
-			
 			<input id="invoice" name="invoice" value="<?= $order['increment_id']  ?>" type="hidden"/>
 			<input id="currency_code" name="currency_code" value="<?= $order['order_currency_code']  ?>" type="hidden"/>
 			<input id="paymentaction" name="paymentaction" value="<?= $payment_action  ?>" type="hidden"/>

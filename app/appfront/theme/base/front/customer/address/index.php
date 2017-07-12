@@ -1,3 +1,12 @@
+<?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
 <div class="main container two-columns-left">
 	<div class="col-main account_center">
 		<div class="std">
@@ -20,8 +29,8 @@
 						</tr>
 					</thead>
 					<tbody>
-					<?php   if(is_array($coll) && !empty($coll)){   ?>
-					<?php 		foreach($coll as $one){ ?>
+					<?php   if(is_array($coll) && !empty($coll)):   ?>
+					<?php 		foreach($coll as $one): ?>
 						<tr class="">
 							<td valign="top" align="center"><?= $one['first_name'] ?></td>
 							<td valign="top" align="center"><?= $one['last_name'] ?></td>
@@ -33,13 +42,13 @@
 							<td class="ltp" valign="top ltp" align="center">
 								<input onclick="javascript:window.location.href='<?= Yii::$service->url->getUrl('customer/address/edit',['address_id' => $one['address_id']]); ?>'" class="cpointer" value="<?= Yii::$service->page->translate->__('Modify');?>" name="" type="button">
 								<a href="javascript:deleteAddress(<?= $one['address_id'] ?>)"><?= Yii::$service->page->translate->__('Delete');?></a>
-								<?php  if($one['is_default'] == 1){ ?>
+								<?php  if($one['is_default'] == 1): ?>
 								<span style=" color:#cc0000"><?= Yii::$service->page->translate->__('Default');?></span> 
-								<?php  } ?>								
+								<?php  endif; ?>								
 							</td>
 						</tr>	
-					<?php 		} ?>
-					<?php 	} ?>
+					<?php 		endforeach; ?>
+					<?php 	endif; ?>
 					</tbody>
 				</table>
 				<div class="product-Reviews">

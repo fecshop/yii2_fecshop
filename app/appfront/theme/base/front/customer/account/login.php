@@ -1,6 +1,14 @@
+<?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
 <div class="main container one-column">
 <?= Yii::$service->page->widget->render('flashmessage'); ?>
-
 	<div class="account-login">
 		<div class="page-title">
 			<h1><?= Yii::$service->page->translate->__('Login or Create an Account'); ?></h1>
@@ -31,7 +39,7 @@
 									<input name="editForm[password]" class="input-text required-entry validate-password" id="pass" title="Password" type="password">
 								</div>
 							</li>
-							<?php if($loginPageCaptcha){  ?>
+							<?php if($loginPageCaptcha):  ?>
 							<li>
 								<label for="captcha" class="required"><em>*</em><?= Yii::$service->page->translate->__('Captcha'); ?></label>
 								<div class="input-box login-captcha">
@@ -51,7 +59,7 @@
 								<?php $this->registerJs($this->blocks['login_captcha_onclick_refulsh'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
 
 							</li>
-							<?php }  ?>
+							<?php endif;  ?>
 						
 						<div class="clear"></div>
 						<div class="buttons-set">
@@ -76,7 +84,6 @@
 				</div>
 				<div class="col-2 registered-users">
 					
-					
 				</div>
 			</div>
 		</form>
@@ -84,52 +91,49 @@
 </div>
 
 <script type="text/javascript">
+    var newwindow;
+    var intId;
+    function facebooklogin(){
+        var  screenX    = typeof window.screenX != 'undefined' ? window.screenX : window.screenLeft,
+             screenY    = typeof window.screenY != 'undefined' ? window.screenY : window.screenTop,
+             outerWidth = typeof window.outerWidth != 'undefined' ? window.outerWidth : document.body.clientWidth,
+             outerHeight = typeof window.outerHeight != 'undefined' ? window.outerHeight : (document.body.clientHeight - 22),
+             width    = 800,
+             height   = 450,
+             left     = parseInt(screenX + ((outerWidth - width) / 2), 10),
+             top      = parseInt(screenY + ((outerHeight - height) / 2.5), 10),
+             features = (
+                'width=' + width +
+                ',height=' + height +
+                ',left=' + left +
+                ',top=' + top
+              );
 
-        var newwindow;
-        var intId;
-        function facebooklogin(){
-            var  screenX    = typeof window.screenX != 'undefined' ? window.screenX : window.screenLeft,
-                 screenY    = typeof window.screenY != 'undefined' ? window.screenY : window.screenTop,
-                 outerWidth = typeof window.outerWidth != 'undefined' ? window.outerWidth : document.body.clientWidth,
-                 outerHeight = typeof window.outerHeight != 'undefined' ? window.outerHeight : (document.body.clientHeight - 22),
-                 width    = 800,
-                 height   = 450,
-                 left     = parseInt(screenX + ((outerWidth - width) / 2), 10),
-                 top      = parseInt(screenY + ((outerHeight - height) / 2.5), 10),
-                 features = (
-                    'width=' + width +
-                    ',height=' + height +
-                    ',left=' + left +
-                    ',top=' + top
-                  );
- 
-            newwindow=window.open('<?php echo $facebookLoginUrl; ?>','Login_by_facebook',features);
- 
-           if (window.focus) {newwindow.focus()}
-          return false;
-        }
-		
-		function googlelogin(){
-            var  screenX    = typeof window.screenX != 'undefined' ? window.screenX : window.screenLeft,
-                 screenY    = typeof window.screenY != 'undefined' ? window.screenY : window.screenTop,
-                 outerWidth = typeof window.outerWidth != 'undefined' ? window.outerWidth : document.body.clientWidth,
-                 outerHeight = typeof window.outerHeight != 'undefined' ? window.outerHeight : (document.body.clientHeight - 22),
-                 width    = 800,
-                 height   = 450,
-                 left     = parseInt(screenX + ((outerWidth - width) / 2), 10),
-                 top      = parseInt(screenY + ((outerHeight - height) / 2.5), 10),
-                 features = (
-                    'width=' + width +
-                    ',height=' + height +
-                    ',left=' + left +
-                    ',top=' + top
-                  );
- 
-            newwindow=window.open('<?= $googleLoginUrl; ?>   ','Login_by_facebook',features);
- 
-           if (window.focus) {newwindow.focus()}
-          return false;
-        }
-		
-	
+        newwindow=window.open('<?php echo $facebookLoginUrl; ?>','Login_by_facebook',features);
+
+       if (window.focus) {newwindow.focus()}
+      return false;
+    }
+    
+    function googlelogin(){
+        var  screenX    = typeof window.screenX != 'undefined' ? window.screenX : window.screenLeft,
+             screenY    = typeof window.screenY != 'undefined' ? window.screenY : window.screenTop,
+             outerWidth = typeof window.outerWidth != 'undefined' ? window.outerWidth : document.body.clientWidth,
+             outerHeight = typeof window.outerHeight != 'undefined' ? window.outerHeight : (document.body.clientHeight - 22),
+             width    = 800,
+             height   = 450,
+             left     = parseInt(screenX + ((outerWidth - width) / 2), 10),
+             top      = parseInt(screenY + ((outerHeight - height) / 2.5), 10),
+             features = (
+                'width=' + width +
+                ',height=' + height +
+                ',left=' + left +
+                ',top=' + top
+              );
+
+        newwindow=window.open('<?= $googleLoginUrl; ?>   ','Login_by_facebook',features);
+
+       if (window.focus) {newwindow.focus()}
+      return false;
+    }
  </script>

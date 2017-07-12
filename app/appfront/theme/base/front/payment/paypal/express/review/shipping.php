@@ -1,4 +1,13 @@
 <?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
+<?php
 use fecshop\app\appfront\helper\Format;
 ?>
 <?php  $shippings = $parentThis['shippings'];   ?>
@@ -6,9 +15,8 @@ use fecshop\app\appfront\helper\Format;
 	<p class="onestepcheckout-numbers onestepcheckout-numbers-2"><?= Yii::$service->page->translate->__('Shipping Method') ?></p>
 	<div class="onestepcheckout-shipping-method-block">    
 		<dl class="shipment-methods">
-			<?php if(!empty($shippings) &&  is_array($shippings)){ ?>
-			<?php 	foreach($shippings as $shipping){ ?>
-			
+			<?php if(!empty($shippings) &&  is_array($shippings)): ?>
+			<?php 	foreach($shippings as $shipping): ?>
 			<div class="shippingmethods">
 				<div class="flatrate"><?= Yii::$service->page->translate->__($shipping['label']) ?></div>
 				<div>
@@ -20,8 +28,8 @@ use fecshop\app\appfront\helper\Format;
 					</label>
 				</div>
 			</div>
-			<?php 	} ?>
-			<?php } ?>
+			<?php 	endforeach; ?>
+			<?php endif; ?>
 		</dl>
 	</div>
 </div>

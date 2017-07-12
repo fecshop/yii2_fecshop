@@ -1,10 +1,19 @@
 <?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
+<?php
 use fecshop\app\appfront\helper\Format;
 ?>
 <div class="main container one-column">
 	<div class="col-main">
     <?= Yii::$service->page->widget->render('flashmessage'); ?>
-	<?php if(is_array($cart_info) && !empty($cart_info)){   ?>
+	<?php if(is_array($cart_info) && !empty($cart_info)):   ?>
 			    
 		<div class="product_page">
 			
@@ -15,7 +24,7 @@ use fecshop\app\appfront\helper\Format;
 					</div>
 				</div>
 				<div>
-					<?php if(is_array($cart_info['products']) && (!empty($cart_info['products']))){ ?>
+					<?php if(is_array($cart_info['products']) && (!empty($cart_info['products']))): ?>
 								
 					<div class="shopping-cart-div">
 						<div class="shopping-cart-ab">
@@ -45,7 +54,7 @@ use fecshop\app\appfront\helper\Format;
 								
 							</tfoot>
 							<tbody>
-								<?php foreach($cart_info['products'] as $product_one){ ?>
+								<?php foreach($cart_info['products'] as $product_one): ?>
 								
 								<tr class="first last odd">
 									<td>
@@ -58,15 +67,15 @@ use fecshop\app\appfront\helper\Format;
 										<h2 class="product-name">
 											<a href="<?= $product_one['url'] ?>"><?= $product_one['name'] ?></a>
 										</h2>
-										<?php  if(is_array($product_one['custom_option_info'])){  ?>
+										<?php  if(is_array($product_one['custom_option_info'])):  ?>
 										<ul>
-											<?php foreach($product_one['custom_option_info'] as $label => $val){  ?>
+											<?php foreach($product_one['custom_option_info'] as $label => $val):  ?>
 												
 												<li><?= Yii::$service->page->translate->__(ucwords($label).':') ?><?= Yii::$service->page->translate->__($val) ?> </li>
 												
-											<?php }  ?>
+											<?php endforeach;  ?>
 										</ul>
-										<?php }  ?>
+										<?php endif;  ?>
 									</td>
 									
 									
@@ -96,12 +105,12 @@ use fecshop\app\appfront\helper\Format;
 										<a href="javascript:void(0)"  rel="<?= $product_one['item_id']; ?>" title="Remove item" class="btn-remove btn-remove2"><?= Yii::$service->page->translate->__('Remove item');?></a>
 									</td>
 								</tr>
-								<?php  }  ?>
+								<?php  endforeach;  ?>
 								
 							</tbody>
 						</table>
 					</div>
-					<?php  }  ?>
+					<?php  endif;  ?>
 				</div>
 				
 				<div class="cart-collaterals">
@@ -190,7 +199,7 @@ use fecshop\app\appfront\helper\Format;
 				
 			</div>
 		</div>
-	<?php }else{ ?>
+	<?php else: ?>
 		<div class="empty_cart">
 		<?php
 			$param = ['urlB' => '<a rel="nofollow" href="'.Yii::$service->url->getUrl('customer/account/login').'">','urlE' =>'</a>'];
@@ -205,7 +214,7 @@ use fecshop\app\appfront\helper\Format;
   
   
 		</div>
-	<?php  } ?>
+	<?php  endif; ?>
 	</div>
 </div>
 

@@ -1,3 +1,12 @@
+<?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
 <div class="main container one-column">
 	<div class="col-main">
 		<?= Yii::$service->page->widget->render('flashmessage'); ?>
@@ -42,10 +51,7 @@
 							?>
 							<?= Yii::$service->page->widget->render($shippingView,$shippingParam); ?>
 						</div>
-				
-				
-						
-							
+					
 						<div class="onestepcheckout-coupons">
 							<div style="display: none;" id="coupon-notice"></div>
 							<div class="op_block_title"><?= Yii::$service->page->translate->__('Coupon codes (optional)');?></div>
@@ -183,7 +189,6 @@
 				},
 				error:function (XMLHttpRequest, textStatus, errorThrown){}
 			});
-				
 			
 		});
 		
@@ -245,9 +250,6 @@
 				j = 1;
 			}
 			
-			
-			
-			
 			$("#onestepcheckout-form .required-entry").each(function(){
 				value = $(this).val();
 				if(!value){
@@ -269,8 +271,6 @@
 			
 			
 		});
-		
-		
 		
 		// 国家选择后，state需要清空，重新选择或者填写
 		$(".billing_country").change(function(){
@@ -314,22 +314,10 @@
 			ajaxreflush();
 		});
 		
-		
 		//改变shipping methos
 		$(".onestepcheckout-column-middle").off("click").on("click","input[name=shipping_method]",function(){
 			ajaxreflush();
 		});
-		
-		
-		
-		//$("#billing_address_list").off("change").on("change",".selectstate",function(){
-		//	value = $(".selectstate option:selected").text();
-		//	if($(".selectstate").val()){
-		//		$(".inputstate").val(value);
-		//	}else{
-		//		$(".inputstate").val('');
-		//	}
-		//});
 		
 	});	
 	//ajaxreflush();

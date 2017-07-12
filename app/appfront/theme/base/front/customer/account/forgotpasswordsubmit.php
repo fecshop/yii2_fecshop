@@ -1,5 +1,14 @@
+<?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
 <div class="main container one-column">
-<?php if(!empty($identity)){  ?>
+<?php if(!empty($identity)):  ?>
 	<div>
 		<?= Yii::$service->page->translate->__('We\'ve sent a message to the email address'); ?> <?=  $identity['email'] ?>
 		<?= Yii::$service->page->translate->__('Please follow the instructions provided in the message to reset your password.'); ?>
@@ -13,7 +22,7 @@
 		?>
 		<p><?= Yii::$service->page->translate->__('Confirm your identity to reset password ,If you still can\'t find it, click {logUrlB} support center {logUrlE} for help',$param); ?></p>
 	</div>
-<?php }else{  ?>
+<?php else:  ?>
 	<div>
 		<?php
 			$param = ['logUrlB' => '<a href="'. $forgotPasswordUrl.' ">','logUrlE' => '</a> '];
@@ -21,9 +30,5 @@
 		<?= Yii::$service->page->translate->__('Email address do not exist, please {logUrlB} click here {logUrlE} to re-enter!',$param); ?> 
 	</div>
 	<div>
-		
-
-
-
-<?php  } ?>
+<?php  endif; ?>
 </div>

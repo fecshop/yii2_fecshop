@@ -1,13 +1,20 @@
-
+<?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
 <div class="product-Reviews">
 	<div id="pic_list_2" class="scroll_horizontal">
-		
 		<div class="clear"></div>
 		<div class="box">
 			<div class="product-Reviews_top">
-				<?php  if(is_array($coll) && !empty($coll)){  ?>
+				<?php  if(is_array($coll) && !empty($coll)):  ?>
 						
-					<?php foreach($coll as $one){  ?>
+					<?php foreach($coll as $one):  ?>
 						<div class="card">
 							<div class="fec-card-header">
 								<?= $one['summary'] ?>
@@ -19,11 +26,11 @@
 									</div>
 										
 									<div class="moderation">
-									<?php if($one['status'] == $noActiveStatus){ ?>  
+									<?php if($one['status'] == $noActiveStatus): ?>  
 										<?= Yii::$service->page->translate->__('Your Review is awaiting moderation...');?>
-									<?php }else if($one['status'] == $refuseStatus){ ?>
+									<?php elseif($one['status'] == $refuseStatus): ?>
 										<?= Yii::$service->page->translate->__('Your Review is refused.');?>
-									<?php } ?>
+									<?php endif; ?>
 									</div>
 									<div class="review_list_remark">
 										<p><?= Yii::$service->page->translate->__('By');?> <?= $one['name'] ?></p>
@@ -35,9 +42,9 @@
 								<a href="#" class="review_star review_star_<?= $one['rate_star'] ?>" onclick="javascript:return false;"></a>
 							</div>
 						</div>
-					<?php  } ?>
+					<?php  endforeach; ?>
 				
-				<?php } ?>
+				<?php endif; ?>
 			</div>
 			<div class="clear"></div>
 			

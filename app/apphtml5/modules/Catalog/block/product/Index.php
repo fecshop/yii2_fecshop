@@ -34,26 +34,26 @@ class Index
         list($review_count, $reviw_rate_star_average) = $ReviewAndStarCount;
 
         return [
-            'name'                    => Yii::$service->store->getStoreAttrVal($this->_product['name'], 'name'),
-            'image'                    => $this->_product['image'],
-            'sku'                    => $this->_product['sku'],
-            'spu'                    => $this->_product['spu'],
-            'attr_group'            => $this->_product['attr_group'],
-            'review_count'            => $review_count,
-            'reviw_rate_star_average'=> $reviw_rate_star_average,
-            'price_info'            => $this->getProductPriceInfo(),
-            'tier_price'            => $this->_product['tier_price'],
-            'media_size' => [
-                'small_img_width'    => $productImgSize['small_img_width'],
-                'small_img_height'    => $productImgSize['small_img_height'],
-                'middle_img_width'    => $productImgSize['middle_img_width'],
+            'name'                      => Yii::$service->store->getStoreAttrVal($this->_product['name'], 'name'),
+            'image'                     => $this->_product['image'],
+            'sku'                       => $this->_product['sku'],
+            'spu'                       => $this->_product['spu'],
+            'attr_group'                => $this->_product['attr_group'],
+            'review_count'              => $review_count,
+            'reviw_rate_star_average'   => $reviw_rate_star_average,
+            'price_info'                => $this->getProductPriceInfo(),
+            'tier_price'                => $this->_product['tier_price'],
+            'media_size'    => [
+                'small_img_width'       => $productImgSize['small_img_width'],
+                'small_img_height'      => $productImgSize['small_img_height'],
+                'middle_img_width'      => $productImgSize['middle_img_width'],
             ],
-            'productImgMagnifier'    => $productImgMagnifier,
-            'options'                => $this->getSameSpuInfo(),
-            'custom_option'            => $this->_product['custom_option'],
-            'description'            => Yii::$service->store->getStoreAttrVal($this->_product['description'], 'description'),
-            '_id'                    => $this->_product['_id'],
-            'buy_also_buy'            => $this->getProductBySkus($skus),
+            'productImgMagnifier'       => $productImgMagnifier,
+            'options'                   => $this->getSameSpuInfo(),
+            'custom_option'             => $this->_product['custom_option'],
+            'description'               => Yii::$service->store->getStoreAttrVal($this->_product['description'], 'description'),
+            '_id'                       => $this->_product['_id'],
+            'buy_also_buy'              => $this->getProductBySkus($skus),
         ];
     }
 
@@ -80,38 +80,38 @@ class Index
             //echo $attr1_val;
             //echo $size;
             //echo '##';
-            $image = $one['image'];
-            $name = $one['name'];
+            $image   = $one['image'];
+            $name    = $one['name'];
             $url_key = $one['url_key'];
             if ($attr1_val || $attr2_val) {
                 if ($attr1_val) {
                     $all_attr1[$attr1_val] = [
-                        'name'        => $name,
+                        'name'     => $name,
                         'image'    => $image,
-                        'url_key'    => $url_key,
+                        'url_key'  => $url_key,
                     ];
                 }
                 if ($attr2_val) {
                     $all_attr2[$attr2_val] = [
-                        'name'        => $name,
+                        'name'     => $name,
                         'image'    => $image,
-                        'url_key'    => $url_key,
+                        'url_key'  => $url_key,
                     ];
                 }
                 //echo $attr2_val.'#'.$current_attr2;
                 //echo '<br/>';
                 if ($attr2_val && $current_attr2 == $attr2_val) {
                     $attr1_2_attr2[$attr1_val] = [
-                        'name'        => $name,
+                        'name'     => $name,
                         'image'    => $image,
-                        'url_key'    => $url_key,
+                        'url_key'  => $url_key,
                     ];
                 }
                 if ($attr1_val && $current_attr1 == $attr1_val) {
                     $attr2_2_attr1[$attr2_val] = [
-                        'name'        => $name,
+                        'name'     => $name,
                         'image'    => $image,
-                        'url_key'    => $url_key,
+                        'url_key'  => $url_key,
                     ];
                 }
             }
@@ -127,12 +127,12 @@ class Index
      */
     protected function getSpuData($select)
     {
-        $spu = $this->_product['spu'];
+        $spu    = $this->_product['spu'];
         $select = array_merge($select, $this->_productSpuAttrArr);
 
         $filter = [
-            'select'    => $select,
-            'where'            => [
+            'select' => $select,
+            'where'  => [
                 ['spu' => $spu],
             ],
             'asArray' => true,
@@ -153,7 +153,7 @@ class Index
         // 当前的产品对应的spu属性组的属性，譬如 ['color','size','myyy']
         $this->_productSpuAttrArr = Yii::$service->product->getSpuAttr($this->_product['attr_group']);
 
-        $this->_spuAttrShowAsImg = Yii::$service->product->getSpuImgAttr($this->_product['attr_group']);
+        $this->_spuAttrShowAsImg  = Yii::$service->product->getSpuImgAttr($this->_product['attr_group']);
         if (!is_array($this->_productSpuAttrArr) || empty($this->_productSpuAttrArr)) {
             return;
         }
@@ -170,8 +170,8 @@ class Index
             }
         }
         // 得到当前的spu下面的所有的值
-        $select = ['name', 'image', 'url_key'];
-        $data = $this->getSpuData($select);
+        $select     = ['name', 'image', 'url_key'];
+        $data       = $this->getSpuData($select);
         $spuValColl = [];
         // 通过值，找到spu。
         $reverse_val_spu = [];
@@ -185,9 +185,9 @@ class Index
 
                 //$active = 'class="active"';
                 $one['main_img'] = isset($one['image']['main']['image']) ? $one['image']['main']['image'] : '';
-                $one['url'] = Yii::$service->url->getUrl($one['url_key']);
+                $one['url']      = Yii::$service->url->getUrl($one['url_key']);
                 $reverse_val_spu[$reverse_key] = $one;
-                $showAsImgVal = $one[$this->_spuAttrShowAsImg];
+                $showAsImgVal    = $one[$this->_spuAttrShowAsImg];
                 if ($showAsImgVal) {
                     if (!isset($this->_spuAttrShowAsImgArr[$this->_spuAttrShowAsImg])) {
                         $this->_spuAttrShowAsImgArr[$showAsImgVal] = $one;
@@ -232,10 +232,10 @@ class Index
                 $active = true;
             }
         }
-        $reverse_key = $this->generateSpuReverseKey($current);
-        $return = [];
+        $reverse_key        = $this->generateSpuReverseKey($current);
+        $return             = [];
         $return['attr_val'] = $attrVal;
-        $return['active'] = 'noactive';
+        $return['active']   = 'noactive';
 
         //echo $reverse_key."<br/>";
         if (isset($reverse_val_spu[$reverse_key]) && is_array($reverse_val_spu[$reverse_key])) {
@@ -289,8 +289,8 @@ class Index
         // 对size排序一下
         $size = [];
         $attr_group = $this->_product['attr_group'];
-        $attrInfo = Yii::$service->product->getGroupAttrInfo($attr_group);
-        $size_arr = isset($attrInfo[$spuAttr]['display']['data']) ? $attrInfo[$spuAttr]['display']['data'] : '';
+        $attrInfo   = Yii::$service->product->getGroupAttrInfo($attr_group);
+        $size_arr   = isset($attrInfo[$spuAttr]['display']['data']) ? $attrInfo[$spuAttr]['display']['data'] : '';
         $d_arr = [];
         if (is_array($size_arr) && !empty($size_arr)) {
             foreach ($size_arr as $size) {
@@ -312,10 +312,10 @@ class Index
      */
     protected function getProductPriceInfo()
     {
-        $price = $this->_product['price'];
+        $price         = $this->_product['price'];
         $special_price = $this->_product['special_price'];
-        $special_from = $this->_product['special_from'];
-        $special_to = $this->_product['special_to'];
+        $special_from  = $this->_product['special_from'];
+        $special_to    = $this->_product['special_to'];
 
         return Yii::$service->product->price->getCurrentCurrencyProductPriceInfo($price, $special_price, $special_from, $special_to);
     }
@@ -331,17 +331,17 @@ class Index
      */
     protected function initProduct()
     {
-        $primaryKey = Yii::$service->product->getPrimaryKey();
-        $primaryVal = Yii::$app->request->get($primaryKey);
+        $primaryKey        = Yii::$service->product->getPrimaryKey();
+        $primaryVal        = Yii::$app->request->get($primaryKey);
         $this->_primaryVal = $primaryVal;
-        $product = Yii::$service->product->getByPrimaryKey($primaryVal);
-        $this->_product = $product;
+        $product           = Yii::$service->product->getByPrimaryKey($primaryVal);
+        $this->_product    = $product;
         Yii::$app->view->registerMetaTag([
-            'name' => 'keywords',
+            'name'    => 'keywords',
             'content' => Yii::$service->store->getStoreAttrVal($product['meta_keywords'], 'meta_keywords'),
         ]);
         Yii::$app->view->registerMetaTag([
-            'name' => 'description',
+            'name'    => 'description',
             'content' => Yii::$service->store->getStoreAttrVal($product['meta_description'], 'meta_description'),
         ]);
         $this->_title = Yii::$service->store->getStoreAttrVal($product['meta_title'], 'meta_title');
@@ -370,7 +370,7 @@ class Index
             if (is_array($parent_info) && !empty($parent_info)) {
                 foreach ($parent_info as $info) {
                     $parent_name = Yii::$service->store->getStoreAttrVal($info['name'], 'name');
-                    $parent_url = Yii::$service->url->getUrl($info['url_key']);
+                    $parent_url  = Yii::$service->url->getUrl($info['url_key']);
                     Yii::$service->page->breadcrumbs->addItems(['name' => $parent_name, 'url' => $parent_url]);
                 }
             }
@@ -393,9 +393,8 @@ class Index
                     'url_key', 'score',
                 ];
                 $filter['where'] = ['in', 'sku', $skus];
-                $products = Yii::$service->product->getProducts($filter);
-                //var_dump($products);
-                $products = Yii::$service->category->product->convertToCategoryInfo($products);
+                $products        = Yii::$service->product->getProducts($filter);
+                $products        = Yii::$service->category->product->convertToCategoryInfo($products);
 
                 return $products;
             }

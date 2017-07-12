@@ -1,3 +1,12 @@
+<?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
 <div class="main container two-columns-left">
 	<div class="col-main account_center">
 		<div class="std">
@@ -18,38 +27,30 @@
 									<a href="<?= $accountEditUrl ?>"><?= Yii::$service->page->translate->__('Edit'); ?></a>
 								</div>
 								<div class="box-content">
-									<div>
-																	
+									<div>							
 										<span style="margin:0 10px;"><?= $email ?></span>
 									</div>
-									
 								</div>
 							</div>
 						</div>
-						
 					</div>
 					<div class="col2-set addressbook">
-						
-						
 						<div class="col2-set">
 							<div class="col-1">
 								<div class="box">
 									<div class="box-title">
-										<h3><?= Yii::$service->page->translate->__('My Address Book'); ?></h3>
-										
+										<h3><?= Yii::$service->page->translate->__('My Address Book'); ?></h3>	
 									</div>
 									<div class="box-content">
 										<p><?= Yii::$service->page->translate->__('You Can Manager Your Address'); ?>. </p>
 										<a href="<?= $accountAddressUrl ?>"><?= Yii::$service->page->translate->__('Manager Addresses'); ?></a>
 									</div>
-									
 								</div>
 							</div>
 							<div class="col-2">
 								<div class="box">
 									<div class="box-title">
 										<h3><?= Yii::$service->page->translate->__('My Order'); ?></h3>
-										
 									</div>
 									<div class="box-content">
 										<p><?= Yii::$service->page->translate->__('You Can View Your Order'); ?>. </p>

@@ -1,3 +1,12 @@
+<?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+?>
 <div class="main container one-column">
 <?= Yii::$service->page->widget->render('flashmessage'); ?>
 	<div class="col-main">
@@ -17,7 +26,7 @@
 						</a> </div>
 						<div class="product_info review_add_price">
 							<div class="price_info">
-								<?php # 浠锋牸閮ㄥ垎
+								<?php # 价格
 									$priceView = [
 										'view'	=> 'catalog/product/index/price.php'
 									];
@@ -56,10 +65,9 @@
 						<a href=""><?= Yii::$service->page->translate->__('Product Review');?></a>
 					</div>
 					<div class="product-Reviews_top">
-						<?php  if(is_array($coll) && !empty($coll)){  ?>
+						<?php  if(is_array($coll) && !empty($coll)):  ?>
 						<ul id="review_description">
-							<?php foreach($coll as $one){  ?>
-							
+							<?php foreach($coll as $one):  ?>
 							<li>
 								<div class="review_description_left">
 									<a href="#" class="review_star review_star_<?= $one['rate_star'] ?>" onclick="javascript:return false;"></a>
@@ -74,27 +82,26 @@
 										<div class="review-content">
 											<?= $one['review_content'] ?>
 										</div>
-										
 										<div class="moderation">
-										<?php if($one['status'] == $noActiveStatus){ ?>  
+										<?php if($one['status'] == $noActiveStatus): ?>  
 											<?= Yii::$service->page->translate->__('Your Review is awaiting moderation...');?>
-										<?php }else if($one['status'] == $refuseStatus){ ?>
+										<?php elseif($one['status'] == $refuseStatus): ?>
 											<?= Yii::$service->page->translate->__('Your Review is refused.');?>
-										<?php } ?>
+										<?php endif; ?>
 										</div>
 									</div>
 								</div>
 								<div class="clear"></div>
 							</li>
-							<?php } ?>
+							<?php endforeach; ?>
 						</ul>
-						<?php } ?>
+						<?php endif; ?>
 					</div>
-					<?php if($pageToolBar){ ?>
+					<?php if($pageToolBar): ?>
 					<div class="pageToolbar">
 						<label class="title"><?= Yii::$service->page->translate->__('Page:');?></label><?= $pageToolBar ?>
 					</div>
-					<?php } ?>
+					<?php endif; ?>
 				</div>
 			</div>
 		</div>

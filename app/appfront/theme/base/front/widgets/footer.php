@@ -12,7 +12,6 @@
 		<div class="container">
 			<div class="row">
 				<?=  Yii::$service->cms->staticblock->getStoreContentByIdentify('social','appfront') ?>
-				
 				<div class="col-xs-12 col-sm-6 col-md-3 newsletter widget links">
 					<header>
 						<h3 class="title">
@@ -31,12 +30,10 @@
 					</form>
 				</div>
 				<?=  Yii::$service->cms->staticblock->getStoreContentByIdentify('links_and_account','appfront') ?>
-				
 				<div class="clear"></div>
 			</div>
 		</div>
 	</div>
-	
 	<div class="footer-bottom">
 		<?=  Yii::$service->cms->staticblock->getStoreContentByIdentify('copy_right','appfront') ?>
 	</div>

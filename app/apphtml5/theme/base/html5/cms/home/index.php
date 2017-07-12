@@ -58,11 +58,11 @@
 		<div class="c_left">Language:</div>
 		<div class="c_right">
 			<select class="lang" rel="">
-				<?php foreach($stores as $store=> $langName){   ?>
+				<?php foreach($stores as $store=> $langName):   ?>
 					<?php  $selected = ""; ?>
 					<?php if($store == $currentStore){ $selected = 'selected = "selected"';  } ?>
 					<option <?= $selected ?> value="<?= '//'.$store ?>"><?= $langName ?></option>
-				<?php } ?>	
+				<?php endforeach; ?>	
 			</select>
 		</div>
 		<div class="clear"></div>
@@ -72,16 +72,15 @@
 		<div class="c_left">Currency:</div>
 		<div class="c_right">
 			<select class="currency">
-				<?php foreach($currencys as $c){    ?>
+				<?php foreach($currencys as $c):    ?>
 					<?php  $selected = ""; ?>
 					<?php if($c['code'] == $currency['code']){ $selected = 'selected = "selected"';  } ?>
 					<option <?= $selected ?> value="<?= $c['code'] ?>"><label><?= $c['symbol'] ?></label><?= $c['code'] ?></option>
-				<?php } ?>	
+				<?php endforeach; ?>	
 			</select>
 		</div>
 		<div class="clear"></div>
 	</div>
-	
 </div>
 
 <div class="footer-bottom">
