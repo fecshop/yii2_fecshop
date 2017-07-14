@@ -138,15 +138,10 @@
 					];
 				?>
 				<?= Yii::$service->page->widget->render($buyAlsoBuyView,$buyAlsoBuyParam); ?>
-			
 			</div>
 			
 			<div class="clear"></div>
 			<div class="product_description_info">
-				
-				
-				
-				
 				<div class="nav" id="nav-container">  
 					<ul id="nav-box">
 						<li  class="nav_tab cur" rel="description"><?= Yii::$service->page->translate->__('Description'); ?></li>  
@@ -157,6 +152,15 @@
 				</div>  
 				<div id="text">  
 					<div class="text-description" style="">
+                        <?php if(is_array($groupAttrArr)): ?>
+                            <table>
+                            <?php foreach($groupAttrArr as $k => $v): ?>
+                                <tr><td><?= $k ?></td><td><?= $v ?></td></tr>
+                            <?php endforeach; ?>
+                            </table>
+                            <br/>
+                        <?php endif; ?>
+                        
 						<?= $description; ?>
                         
                         <div class="img-section">
@@ -383,7 +387,7 @@
 
 			interval = setInterval(function(){  
 				if(scroll.scrollTop + a<=textChild[self.index].offsetTop){  
-					scroll.scrollTop += 40;  
+					scroll.scrollTop += 1500;  
 					if(scroll.scrollTop + a>=textChild[self.index].offsetTop){  
 						scroll.scrollTop = textChild[self.index].offsetTop-a;  
 						clearInterval(interval);  
@@ -395,7 +399,7 @@
 						clearInterval(interval);  
 					}  
 				}  
-			},40);  
+			},4);  
 		};  
 	}  
 	<?php $this->endBlock(); ?>  

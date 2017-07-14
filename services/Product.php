@@ -48,7 +48,7 @@ class Product extends Service
 
     /**
      * @property $productAttrGroup|string
-     * 得到这个产品属性组里面的所有的产品属性，
+     * 得到这个产品属性组里面的所有的产品属性详细，
      * 注解：不同类型的产品，对应不同的属性组，譬如衣服有颜色尺码，电脑类型的有不同cpu型号等
      * 属性组，以及属性组对应的属性，是在Product Service config中配置的。
      */
@@ -70,10 +70,46 @@ class Product extends Service
         ) {
             $arr = array_merge($arr, $this->customAttrGroup[$productAttrGroup]['spu_attr']);
         }
-
+        //var_dump($arr);
         return $arr;
     }
-
+    
+    
+    /**
+     * @property $productAttrGroup|string
+     * 得到这个产品属性组里面的所有的产品属性，
+     * 注解：不同类型的产品，对应不同的属性组，譬如衣服有颜色尺码，电脑类型的有不同cpu型号等
+     * 属性组，以及属性组对应的属性，是在Product Service config中配置的。
+     */
+    protected function actionGetGroupAttr($productAttrGroup)
+    {
+        $arr = [];
+        
+        // 得到普通属性
+        if (isset($this->customAttrGroup[$productAttrGroup]['general_attr'])
+                && is_array($this->customAttrGroup[$productAttrGroup]['general_attr'])
+        ) {
+            $general_attr = $this->customAttrGroup[$productAttrGroup]['general_attr'];
+            if(is_array($general_attr)){
+                foreach($general_attr as $attr => $info){
+                    $arr[] = $attr;
+                }
+            }
+        }
+        // 得到用于spu，细分sku的属性，譬如颜色尺码之类。
+        if (isset($this->customAttrGroup[$productAttrGroup]['spu_attr'])
+                && is_array($this->customAttrGroup[$productAttrGroup]['spu_attr'])
+        ) {
+            $spu_attr = $this->customAttrGroup[$productAttrGroup]['spu_attr'];
+            if(is_array($spu_attr)){
+                foreach($spu_attr as $attr => $info){
+                    $arr[] = $attr;
+                }
+            }
+        }
+        //var_dump($arr);
+        return $arr;
+    }
     /**
      * @property $productAttrGroup|string
      * @return 一维数组

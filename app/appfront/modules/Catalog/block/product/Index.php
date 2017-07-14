@@ -42,7 +42,10 @@ class Index
         $ReviewAndStarCount = ReviewHelper::getReviewAndStarCount($this->_product);
         list($review_count, $reviw_rate_star_average) = $ReviewAndStarCount;
         $this->filterProductImg($this->_product['image']);
+        $groupAttr = Yii::$service->product->getGroupAttr($this->_product['attr_group']);
+        $groupAttrArr = $this->getGroupAttrArr($groupAttr);
         return [
+            'groupAttrArr'              => $groupAttrArr,
             'name'                      => Yii::$service->store->getStoreAttrVal($this->_product['name'], 'name'),
             'image_thumbnails'          => $this->_image_thumbnails,
             'image_detail'              => $this->_image_detail,
@@ -65,6 +68,18 @@ class Index
             '_id'                       => $this->_product['_id'],
             'buy_also_buy'              => $this->getProductBySkus($skus),
         ];
+    }
+    public function getGroupAttrArr($groupAttr){
+        $gArr = [];
+        if(is_array($groupAttr)){
+            foreach($groupAttr as $attr){
+                if(isset($this->_product[$attr]) && $this->_product[$attr]){
+                    $gArr[$attr] = $this->_product[$attr];
+                }
+            }
+        }
+        //var_dump($gArr);
+        return $gArr;
     }
     /**
      * @property $product_images | Array ，产品的图片属性
@@ -190,9 +205,10 @@ class Index
      */
     protected function getSameSpuInfo()
     {
+        $groupAttr = Yii::$service->product->getGroupAttr($this->_product['attr_group']);
         // 当前的产品对应的spu属性组的属性，譬如 ['color','size','myyy']
         $this->_productSpuAttrArr = Yii::$service->product->getSpuAttr($this->_product['attr_group']);
-
+        //var_dump($this->_productSpuAttrArr);exit;
         $this->_spuAttrShowAsImg = Yii::$service->product->getSpuImgAttr($this->_product['attr_group']);
         if (!is_array($this->_productSpuAttrArr) || empty($this->_productSpuAttrArr)) {
             return;
