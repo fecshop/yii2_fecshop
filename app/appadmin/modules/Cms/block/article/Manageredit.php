@@ -34,10 +34,10 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
     public function getLastData()
     {
         return [
-            'editBar'    => $this->getEditBar(),
-            'textareas'    => $this->_textareas,
-            'lang_attr'    => $this->_lang_attr,
-            'saveUrl'    => $this->_saveUrl,
+            'editBar'     => $this->getEditBar(),
+            'textareas'   => $this->_textareas,
+            'lang_attr'   => $this->_lang_attr,
+            'saveUrl'     => $this->_saveUrl,
         ];
     }
 

@@ -97,7 +97,7 @@ class Country extends Service
     /**
      * 国家option html
      */
-    public static function getCountryOptionsHtml($selectd = '')
+    public function getCountryOptionsHtml($selectd = '')
     {
         if (!$selectd) {
             $selectd = $this->getDefaultCountry();

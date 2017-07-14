@@ -59,7 +59,7 @@
 				<?= Yii::$service->page->widget->render($priceView,$priceParam); ?>
 			
 			</div>
-			<div class="product_info_section">
+			<div class="product_info_section" id="product_info_section">
 				<div class="product_options">
 					<?php # options部分
 						$optionsView = [

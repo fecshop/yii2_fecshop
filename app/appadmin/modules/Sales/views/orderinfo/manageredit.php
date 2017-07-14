@@ -26,7 +26,7 @@ use fecshop\app\appfront\helper\Format;
 		<?php echo CRequest::getCsrfInputHtml();  ?>	
 		<div layouth="56" class="pageFormContent" style="height: 240px; overflow: auto;">
 			
-				<input type="hidden"  value="<?=  $product_id; ?>" size="30" name="product_id" class="textInput ">
+				<input type="hidden"  value="<?=  $order['order_id']; ?>" size="30" name="editForm[order_id]" class="textInput ">
 				
 				<fieldset id="fieldset_table_qbe">
 					<legend style="color:#cc0000">订单信息</legend>
@@ -38,12 +38,14 @@ use fecshop\app\appfront\helper\Format;
 						
 						<p class="edit_p">
 							<label>订单状态：</label>
-							<span><?= $order['order_status'] ?></span>
+							<span><select name="editForm[order_status]"><?= $order['order_status_options'] ?></select></span>
 						</p>
 						
 						<p class="edit_p">
 							<label>Store：</label>
-							<span><?= $order['store'] ?></span>
+							<span>
+                                <input type="text" name="editForm[store]" value="<?= $order['store'] ?>" />
+                            </span>
 						</p>
 						
 						<p class="edit_p">
@@ -60,7 +62,12 @@ use fecshop\app\appfront\helper\Format;
 						
 						<p class="edit_p">
 							<label>订单货币简码：</label>
-							<span><?= $order['order_currency_code'] ?></span>
+                            <span><?= $order['order_to_base_rate'] ?></span>
+                            <!--
+							<span>
+                                <select name="editForm[order_currency_code]"><?= $order['order_currency_code_options'] ?></select>
+                            </span>
+                            -->
 						</p>
 						<?php $symbol = Yii::$service->page->currency->getSymbol($order['order_currency_code']);  ?>
 						<p class="edit_p">
@@ -68,9 +75,16 @@ use fecshop\app\appfront\helper\Format;
 							<span><?= $order['order_to_base_rate'] ?></span>
 						</p>
 						
-						
+						<!--
 						<p class="edit_p">
 							<label>支付类型：</label>
+							<span>
+                                <select name="editForm[checkout_method]"><?= $order['checkout_method_options'] ?></select>
+                            </span>
+						</p>
+                        -->
+                        <p class="edit_p">
+							<label>支付方式：</label>
 							<span><?= $order['checkout_method'] ?></span>
 						</p>
 						<p class="edit_p">
@@ -129,28 +143,36 @@ use fecshop\app\appfront\helper\Format;
 				
 						<p class="edit_p">
 							<label>FirstName：</label>
-							<span><?= $symbol.$order['customer_firstname'] ?></span>
-						</p>
+							<span>
+                                <input type="text" name="editForm[customer_firstname]" value="<?= $order['customer_firstname'] ?>" />
+                            </span>
+                        </p>
 						<p class="edit_p">
 							<label>LastName：</label>
-							<span><?= $order['customer_lastname'] ?></span>
-						</p>
-						<?php  if($order['customer_is_guest'] == 1){  ?>
+							<span>
+                                <input type="text" name="editForm[customer_lastname]" value="<?= $order['customer_lastname'] ?>" />
+                            </span>
+                        </p>
 						<p class="edit_p">
-							<label>游客下单？</label>
-							<span><?= '是' ?></span>
+							<label>是否游客下单：</label>
+							<span>
+                                <select name="editForm[customer_is_guest]"><?= $order['customer_is_guest_options'] ?></select>
+                            </span>
 						</p>
-						<?php } ?>
 						<p class="edit_p">
 							<label>Email：</label>
-							<span><?= $order['customer_email'] ?></span>
-						</p>
-						<?php  if($order['customer_id']){  ?>
+							<span>
+                                <input type="text" name="editForm[customer_email]" value="<?= $order['customer_email'] ?>" />
+                            </span>
+                            
+                        </p>
+						
 						<p class="edit_p">
 							<label>customer_id：</label>
-							<span><?= $order['customer_id'] ?></span>
+							<span>
+                                <input type="text" name="" value="<?= $order['customer_id'] ?>" />
+                            </span>
 						</p>
-						<?php } ?>
 					</div>
 				</fieldset>
 				
@@ -169,34 +191,95 @@ use fecshop\app\appfront\helper\Format;
 						
 						<p class="edit_p">
 							<label>电话：</label>
-							<span><?= $order['customer_telephone'] ?></span>
-						</p>
+							<span>
+                                <input type="text" name="editForm[customer_telephone]" value="<?= $order['customer_telephone'] ?>" />
+                            </span>
+                        </p>
 						
 						<p class="edit_p">
 							<label>国家：</label>
-							<span><?= $order['customer_address_country'] ?></span>
-						</p>
+							<span>
+                                <select class="customer_country" style="width:200px;" name="editForm[customer_address_country]"><?= $order['customer_address_country_options'] ?></select>
+                            </span>
+                        </p>
 						
 						<p class="edit_p">
 							<label>省/市：</label>
-							<span><?= $order['customer_address_state'] ?></span>
-						</p>
+                            <input type="hidden" class="hidden_state" value="<?= $order['customer_address_state']; ?>"  />
+                            <span class="state_span">
+                            <?php if($order['customer_address_state_options']): ?>
+                                <select class="customer_state" style="width:200px;" name="editForm[customer_address_state]"><?= $order['customer_address_state_options'] ?></select>
+                            <?php else: ?>
+                                <input class="customer_state"  type="text" name="editForm[customer_address_state]" value="<?= $order['customer_address_state'] ?>" />
+                           
+                            <?php endif;?>
+                            </span>
+                        </p>
+                        <script>
+                            $(document).ready(function(){
+                                $(".customer_country").change(function(){
+                                    url = '<?= Yii::$service->url->getUrl('sales/orderinfo/getstate')  ?>';
+                                    country = $(this).val();
+                                    state   = $(".hidden_state").val();
+                                    url += '?country='+country+'&state='+state;
+                                    //data = {"country":country};
+                                    $.ajax({
+                                        url:url,
+                                        type:'GET',
+                                        async:false,
+                                        //data:data,
+                                        dataType: 'json', 
+                                        timeout: 8000,
+                                        cache: false,
+                                        contentType: false,		//不可缺参数
+                                        processData: false,		//不可缺参数
+                                        success:function(data, textStatus){
+                                            if(data.status == "success"){
+                                                content = data.content;
+                                                if(content){
+                                                    str = '<select class="customer_state" style="width:200px;" name="editForm[customer_address_state]">'+content+'</select>';
+                                                   
+                                                }else{
+                                                    str = '<input class="customer_state"  type="text" name="editForm[customer_address_state]" value="" />';
+                           
+                                                }
+                                                
+                                                $(".state_span").html(str); 
+                                            }
+                                        },
+                                        error:function(){
+                                            alert('获取省市出错');
+                                        }
+                                    });
+                                    
+                                });
+                            });
+                        
+                        </script>
 						<p class="edit_p">
 							<label>城市：</label>
-							<span><?= $order['customer_address_city'] ?></span>
-						</p>
+							<span>
+                                <input type="text" name="editForm[customer_address_city]" value="<?= $order['customer_address_city'] ?>" />
+                            </span>
+                        </p>
 						<p class="edit_p">
 							<label>邮编：</label>
-							<span><?= $order['customer_address_zip'] ?></span>
-						</p>
+							<span>
+                                <input type="text" name="editForm[customer_address_zip]" value="<?= $order['customer_address_zip'] ?>" />
+                            </span>
+                        </p>
 						<p class="edit_p">
 							<label>街道1：</label>
-							<span><?= $order['customer_address_street1'] ?></span>
-						</p>
+							<span>
+                                <input type="text" name="editForm[customer_address_street1]" value="<?= $order['customer_address_street1'] ?>" />
+                            </span>
+                        </p>
 						<p class="edit_p">
 							<label>街道2：</label>
-							<span><?= $order['customer_address_street2'] ?></span>
-						</p>
+							<span>
+                                <input type="text" name="editForm[customer_address_street2]" value="<?= $order['customer_address_street2'] ?>" />
+                            </span>
+                        </p>
 						
 					</div>
 				</fieldset>

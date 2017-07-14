@@ -41,8 +41,40 @@ class Order extends Service
     // 支付类型常量
     const CHECKOUT_TYPE_STANDARD    = 'standard';
     const CHECKOUT_TYPE_EXPRESS     = 'express';
+    const CHECKOUT_TYPE_ADMIN_CREATE= 'admin_create';
     // 作为保存incrementId到session的key，把当前的order incrementId保存到session的时候，对应的key就是该常量。
     const CURRENT_ORDER_INCREAMENT_ID = 'current_order_increament_id';
+    
+    
+    
+    /**
+     * @return array 
+     * 将订单所有的支付类型，组合成一个数组，进行返回。
+     */
+    protected function actionGetCheckoutTypeArr(){
+        return [
+            self::CHECKOUT_TYPE_ADMIN_CREATE => self::CHECKOUT_TYPE_ADMIN_CREATE,
+            self::CHECKOUT_TYPE_STANDARD     => self::CHECKOUT_TYPE_STANDARD,
+            self::CHECKOUT_TYPE_EXPRESS      => self::CHECKOUT_TYPE_EXPRESS,
+        ];
+    }
+    /**
+     * @return array 
+     * 将订单所有的状态，组合成一个数组，进行返回。
+     */
+    protected function actionGetStatusArr(){
+        return [
+            $this->payment_status_pending         => $this->payment_status_pending,
+            $this->payment_status_processing      => $this->payment_status_processing,
+            $this->payment_status_canceled        => $this->payment_status_canceled,
+            $this->payment_status_complete        => $this->payment_status_complete,
+            $this->payment_status_holded          => $this->payment_status_holded,
+            $this->payment_status_suspected_fraud => $this->payment_status_suspected_fraud,
+            
+        ];
+        
+    }
+    
     /**
      * @property $checkout_type | String  ，支付类型
      * 设置支付类型，其他计算以此设置作为基础，进而获取其他的配置。
