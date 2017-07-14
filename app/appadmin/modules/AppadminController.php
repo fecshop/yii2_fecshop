@@ -36,6 +36,11 @@ class AppadminController extends FecadminbaseController
         if (!Yii::$service->page->theme->layoutFile) {
             Yii::$service->page->theme->layoutFile = CConfig::param('appadminBaseLayoutName');
         }
+        // 设置本地模板路径
+        $localThemeDir = Yii::$app->params['localThemeDir'];
+        if($localThemeDir){
+            Yii::$service->page->theme->setLocalThemeDir($localThemeDir);
+        }
         /*
          *  set i18n translate category.
          */
