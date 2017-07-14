@@ -12,11 +12,12 @@ $modules = [];
 foreach (glob(__DIR__ . '/modules/*.php') as $filename) {
     $modules = array_merge($modules, require($filename));
 }
-
+$params = require __DIR__ .'/params.php';
 return [
     'modules'=>$modules,
     /* only config in front web */
     //'bootstrap' => ['store'],
+    'params'    => $params,
     'components' => [
         'user' => [
             'identityClass' => 'fecadmin\models\AdminUser',
@@ -33,7 +34,5 @@ return [
             ],
         ],
     ],
-    'params' => [
-        'appName' => 'appadmin',
-    ],
+    
 ];

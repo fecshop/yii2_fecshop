@@ -48,7 +48,7 @@ class Theme extends Service
      */
     protected function actionGetThemeDirArr()
     {
-        if (!$this->_themeDirArr) {
+        if (!$this->_themeDirArr || empty($this->_themeDirArr)) {
             $arr = [];
             if ($localThemeDir = Yii::getAlias($this->localThemeDir)) {
                 $arr[] = $localThemeDir;

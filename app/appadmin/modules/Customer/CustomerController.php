@@ -15,8 +15,9 @@ namespace fecshop\app\appadmin\modules\Customer;
  */
 use fecadmin\FecadminbaseController;
 use Yii;
+use fecshop\app\appadmin\modules\AppadminController;
 
-class CustomerController extends FecadminbaseController
+class CustomerController extends AppadminController
 {
     public function getViewPath()
     {
