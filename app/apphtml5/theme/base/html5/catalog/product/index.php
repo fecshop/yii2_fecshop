@@ -19,10 +19,10 @@
 						'view'	=> 'catalog/product/index/image.php'
 					];
 					$imageParam = [
-						'media_size' => $media_size,
-						'image' => $image,
-						'productImgMagnifier' => $productImgMagnifier,
-					];
+                        'media_size' => $media_size,
+                        'image' => $image_thumbnails,
+                        'productImgMagnifier' => $productImgMagnifier,
+                    ];
 				?>
 				<?= Yii::$service->page->widget->render($imageView,$imageParam); ?>
 			</div>
@@ -152,7 +152,24 @@
 			  <div id="tab1" class="tab active">
 				<div class="content-block">
 					<div class="text-description" style="">
+                        <?php if(is_array($groupAttrArr)): ?>
+                            <table>
+                            <?php foreach($groupAttrArr as $k => $v): ?>
+                                <tr><td><?= $k ?></td><td><?= $v ?></td></tr>
+                            <?php endforeach; ?>
+                            </table>
+                            <br/>
+                        <?php endif; ?>
 						<?= $description; ?>
+                        <div class="img-section">
+                            <?php   if(is_array($image_detail)):  ?>
+                                <?php foreach($image_detail as $image_detail_one): ?>
+                                    <br/>
+                                    <img class="lazy" src="<?= Yii::$service->image->getImgUrl('images/lazyload.gif');   ?>" data-src="<?= Yii::$service->product->image->getUrl($image_detail_one['image']); //->getResize($image_detail_one['image'],550,false) ?>"  />
+                                    
+                                <?php  endforeach;  ?>
+                            <?php  endif;  ?>
+                        </div>
 					</div>  
 				</div>
 			  </div>
