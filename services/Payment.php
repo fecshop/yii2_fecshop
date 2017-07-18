@@ -97,9 +97,9 @@ class Payment extends Service
         }
         if ($payment_method) {
             $paymentConfig = $this->paymentConfig;
-            if (isset($paymentConfig['standard'][$payment_method]['IPN_url'])) {
-                if (!empty($paymentConfig['standard'][$payment_method]['IPN_url'])) {
-                    return $this->getUrl($paymentConfig['standard'][$payment_method]['IPN_url']);
+            if (isset($paymentConfig['standard'][$payment_method]['ipn_url'])) {
+                if (!empty($paymentConfig['standard'][$payment_method]['ipn_url'])) {
+                    return $this->getUrl($paymentConfig['standard'][$payment_method]['ipn_url']);
                 }
             }
         }

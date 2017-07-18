@@ -112,11 +112,10 @@ class Currency extends Service
      */
     protected function actionGetCurrentCurrencyPrice($price)
     {
-        if (isset($this->currencys[$this->getCurrentCurrency()]['rate'])) {
-            $rate = $this->currencys[$this->getCurrentCurrency()]['rate'];
-            if ($rate) {
-                return ceil($price * $rate * 100) / 100;
-            }
+        $currencyCode  = $this->getCurrentCurrency();
+        $currencyPrice = $this->GetCurrencyPrice($price,$currencyCode);
+        if($currencyPrice){
+            return $currencyPrice;
         }
         /*
          * 如果上面出现错误，当前的货币在货币配置中找不到，则会使用默认货币
@@ -125,6 +124,20 @@ class Currency extends Service
         $this->setCurrentCurrency($this->baseCurrecy);
 
         return $price;
+    }
+    /**
+     * property $price|Float ，默认货币的价格
+     * property $currencyCode|String，货币简码,譬如 USD
+     * 根据基础货币，得到相应货币的价格
+     */
+    protected function actionGetCurrencyPrice($price,$currencyCode)
+    {
+        if (isset($this->currencys[$currencyCode]['rate'])) {
+            $rate = $this->currencys[$currencyCode]['rate'];
+            if ($rate) {
+                return ceil($price * $rate * 100) / 100;
+            }
+        }
     }
 
     /**

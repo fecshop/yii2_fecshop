@@ -159,7 +159,7 @@ return [
                         'rate' 		=> 1,
                         'symbol' 	=> '$',
                     ],
-                    'RMB' => [
+                    'CNY' => [
                         'rate' 		=> 6.3,
                         'symbol' 	=> '￥',
                     ],
