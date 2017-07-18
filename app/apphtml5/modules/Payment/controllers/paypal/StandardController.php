@@ -19,19 +19,24 @@ use Yii;
 class StandardController extends AppfrontController
 {
     public $enableCsrfValidation = true;
-
+    
+    /**
+     * 1.start部分，跳转到paypal前的部分
+     */
     public function actionStart()
     {
         return $this->getBlock()->startExpress();
     }
-
-    // 2.Review  从paypal确认后返回
+    /**
+     * 2.Review  从paypal确认后返回的部分
+     */
     public function actionReview()
     {
         $this->getBlock('placeorder')->getLastData();
     }
-    
-    
+    /**
+     * IPN，paypal消息接收部分
+     */
     public function actionIpn()
     {
         \Yii::info('paypal ipn begin', 'fecshop_debug');
@@ -47,7 +52,9 @@ class StandardController extends AppfrontController
             //Yii::$service->payment->paypal->receiveIpn($post);
         }
     }
-    
+    /**
+     * paypal 取消后的部分。
+     */
     public function actionCancel()
     {
         $innerTransaction = Yii::$app->db->beginTransaction();

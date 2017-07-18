@@ -20,7 +20,10 @@ class StandardController extends AppfrontController
 {
     
     public $enableCsrfValidation = false;
-
+    /**
+     * 在网站下单页面，选择支付宝支付方式后，
+     * 跳转到支付宝支付页面前准备的部分。
+     */
     public function actionStart()
     {
         //$AopSdkFile = Yii::getAlias('@fecshop/lib/alipay/AopSdk.php');
@@ -29,8 +32,9 @@ class StandardController extends AppfrontController
         return Yii::$service->payment->alipay->start();
         
     }
-
-    // 2.Review  从paypal确认后返回
+    /**
+     * 从支付宝支付成功后，跳转返回 fec-shop 的部分
+     */
     public function actionReview()
     {
         Yii::$service->payment->alipay->review();
@@ -40,8 +44,9 @@ class StandardController extends AppfrontController
         //    echo Yii::$service->payment->alipay->review($trade_no,$out_trade_no);
         //}
     }
-    
-    
+    /**
+     * IPN，支付宝消息接收部分
+     */
     public function actionIpn()
     {
         \Yii::info('alipay ipn begin', 'fecshop_debug');
