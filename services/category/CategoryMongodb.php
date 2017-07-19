@@ -27,7 +27,18 @@ class CategoryMongodb implements CategoryInterface
     {
         return '_id';
     }
-
+    /**
+     * 得到分类激活状态的值
+     */
+    public function getCategoryEnableStatus(){
+        return Category::STATUS_ENABLE;
+    }
+    /**
+     * 得到分类在menu中显示的状态值
+     */
+    public function getCategoryMenuShowStatus(){
+        return Category::MENU_SHOW;
+    }
     /**
      * 通过主键，得到Category对象。
      */
@@ -112,7 +123,8 @@ class CategoryMongodb implements CategoryInterface
         }
         $model->updated_at = time();
         unset($one['_id']);
-
+        $one['status']    = (int)$one['status'];
+        $one['menu_show'] = (int)$one['menu_show'];
         $saveStatus = Yii::$service->helper->ar->save($model, $one);
         $originUrl = $originUrlKey.'?'.$this->getPrimaryKey() .'='. $primaryVal;
         $originUrlKey = isset($one['url_key']) ? $one['url_key'] : '';

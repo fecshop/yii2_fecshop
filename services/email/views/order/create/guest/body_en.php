@@ -55,7 +55,7 @@ use fecshop\app\appfront\helper\Format;
 												
 										<td>&nbsp;</td>
 										<td valign="top" style="padding:7px 9px 9px;font-size:12px;border-right-color:rgb(234,234,234);border-bottom-color:rgb(234,234,234);border-left-color:rgb(234,234,234);border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-right-style:solid;border-bottom-style:solid;border-left-style:solid">
-											<p><b>PayPal - <?= $order['payment_method']; ?></b></p>
+											<p><b><?= ucfirst(str_replace('_',' ',$order['payment_method'])); ?></b></p>
 
 											</td>
 									</tr>

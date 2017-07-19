@@ -252,6 +252,20 @@ class Index extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInterf
                 'require' => 1,
                 'default' => 1,
             ],
+            
+            [
+                'label'=>'Menu是否显示',
+                'name'=>'menu_show',
+                'display'=>[
+                    'type' => 'select',
+                    'data' => [
+                        1    => '菜单中显示',
+                        2    => '菜单中不显示',
+                    ],
+                ],
+                'require' => 1,
+                'default' => 1,
+            ],
 
             [
                 'label'=>'Url Key',

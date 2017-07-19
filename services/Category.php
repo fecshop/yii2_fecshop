@@ -35,6 +35,18 @@ class Category extends Service
             //$this->_category = new CategoryMysqldb;
         }
     }
+    
+    
+    
+    protected function actionGetCategoryEnableStatus()
+    {
+        return $this->_category->getCategoryEnableStatus();
+    }
+    
+    protected function actionGetCategoryMenuShowStatus()
+    {
+        return $this->_category->getCategoryMenuShowStatus();
+    }
 
     /**
      * 得到当前的category service 对应的主键名称，譬如如果是mongo，返回的是 _id.

@@ -26,6 +26,7 @@ class Menu extends Service
      */
     protected function actionGetCategoryMenuArr($parentId = '')
     {
+        
         $arr = [];
         if (!$parentId) {
             $parentId = $this->rootCategoryId;
@@ -34,6 +35,8 @@ class Menu extends Service
             '_id', 'parent_id', 'name', 'url_key', 'menu_custom',
         ])->where([
             'parent_id' => $parentId,
+            'status'    => Category::STATUS_ENABLE,
+            'menu_show' => Category::MENU_SHOW,
         ])->all();
         if (is_array($data) && !empty($data)) {
             foreach ($data as $category) {

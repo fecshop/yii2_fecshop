@@ -24,12 +24,13 @@ class CategoryController extends AppfrontController
         Yii::$service->page->theme->layoutFile = 'category_view.php';
     }
 
-    // 网站信息管理
+    // 分类页面。
     public function actionIndex()
     {
         $data = $this->getBlock()->getLastData();
-
-        return $this->render($this->action->id, $data);
+        if(is_array($data)){
+            return $this->render($this->action->id, $data);
+        }
     }
     /**
      * Yii2 behaviors 可以参看地址：http://www.yiichina.com/doc/guide/2.0/concept-behaviors

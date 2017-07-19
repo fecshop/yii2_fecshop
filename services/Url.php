@@ -423,4 +423,13 @@ class Url extends Service
             //header("Location: $homeUrl");
         }
     }
+    
+    protected function actionRedirect404()
+    {
+        $error404UrlKey = Yii::$app->errorHandler->errorAction;
+        $error404Url    = $this->getUrl($error404UrlKey);
+        if ($error404Url) {
+            Yii::$app->getResponse()->redirect($error404Url)->send();
+        }
+    }
 }

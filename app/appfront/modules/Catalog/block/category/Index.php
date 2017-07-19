@@ -53,8 +53,11 @@ class Index
         // 这样是为了防止恶意攻击，也就是发送很多不同的页面个数的链接，绕开缓存。
         $this->getNumPerPage();
         //echo Yii::$service->page->translate->__('fecshop,{username}', ['username' => 'terry']);
-        $this->initCategory();
-
+        if(!$this->initCategory()){
+            Yii::$service->url->redirect404();
+            return;
+        }
+        
         // change current layout File.
         //Yii::$service->page->theme->layoutFile = 'home.php';
 
@@ -471,6 +474,16 @@ class Index
         $primaryVal = Yii::$app->request->get($primaryKey);
         $this->_primaryVal = $primaryVal;
         $category = Yii::$service->category->getByPrimaryKey($primaryVal);
+        if ($category) {
+            $enableStatus = Yii::$service->category->getCategoryEnableStatus();
+            if ($category['status'] != $enableStatus){
+                
+                return false;
+            }
+        } else {
+            
+            return false;
+        }
         $this->_category = $category;
         Yii::$app->view->registerMetaTag([
             'name' => 'keywords',
@@ -486,6 +499,7 @@ class Index
         $this->_title = $this->_title ? $this->_title : $name;
         Yii::$app->view->title = $this->_title;
         $this->_where = $this->initWhere();
+        return true;
     }
 
     // 面包屑导航
