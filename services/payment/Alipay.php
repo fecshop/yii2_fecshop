@@ -62,7 +62,8 @@ class Alipay extends Service
     /**
      * 初始化 $this->_AopClient
      */
-    protected function initParam(){
+    protected function initParam()
+    {
         if(!$this->_AopClient){
             $this->_AopClient = new \AopClient;
             $this->_AopClient->gatewayUrl        = $this->gatewayUrl;
@@ -91,7 +92,8 @@ class Alipay extends Service
      * 在支付宝的业务通知中，只有交易通知状态为TRADE_SUCCESS或TRADE_FINISHED时，
      * 支付宝才会认定为买家付款成功。
      */
-    protected function validateReviewOrder($out_trade_no,$total_amount,$seller_id,$auth_app_id){
+    protected function validateReviewOrder($out_trade_no,$total_amount,$seller_id,$auth_app_id)
+    {
         if(!$this->_order){
             $this->_order = Yii::$service->order->getByIncrementId($out_trade_no);
             Yii::$service->payment->setPaymentMethod($this->_order['payment_method']);
@@ -130,7 +132,8 @@ class Alipay extends Service
      * 支付宝 支付成功后，返回网站，调用该函数进行支付宝订单支付状态查询
      * 如果支付成功，则修改订单状态为支付成功状态。
      */
-    protected function actionReview(){
+    protected function actionReview()
+    {
         $this->initParam();
         $trade_no       = Yii::$app->request->get('trade_no');
         $out_trade_no   = Yii::$app->request->get('out_trade_no');
@@ -138,7 +141,7 @@ class Alipay extends Service
         $seller_id      = Yii::$app->request->get('seller_id');
         $auth_app_id    = Yii::$app->request->get('auth_app_id');
         //验证订单的合法性
-        if(!$this->validateReviewOrder($out_trade_no,$total_amount,$seller_id,$auth_app_id)){
+        if (!$this->validateReviewOrder($out_trade_no,$total_amount,$seller_id,$auth_app_id)){
             
             return false;
         }
@@ -153,17 +156,16 @@ class Alipay extends Service
         $result = $this->_AopClient->execute($this->_alipayRequest);
         $responseNode = str_replace(".", "_", $this->_alipayRequest->getApiMethodName()) . "_response";
         $resultCode = $result->$responseNode->code;
-        if(!empty($resultCode)&&$resultCode == 10000){
-            $this->paymentSuccess($out_trade_no,$trade_no,false);
+        if (!empty($resultCode)&&$resultCode == 10000) {
+            $this->paymentSuccess($out_trade_no,$trade_no);
             // 清空购物车
             Yii::$service->cart->clearCartProductAndCoupon();
-            // 跳转 success_redirect_url
-            $successRedirectUrl = Yii::$service->payment->getStandardSuccessRedirectUrl();
-            //echo $successRedirectUrl;exit;
-            return Yii::$service->url->redirect($successRedirectUrl);
+            
+            return true;
         } else {
-            echo 'resultCode:'.$resultCode."<br/>";
-            echo "alipay payment fail";
+            Yii::$service->helper->errors->add('alipay payment fail,resultCode:'.$resultCode);
+            
+            return false;
         }
         
     }
@@ -172,14 +174,15 @@ class Alipay extends Service
      * 您开启log后，可以在@app/runtime/fecshop_logs
      *      文件夹下执行：tail -f fecshop_debug.log ， 来查看log输出。
      */
-    public function receiveIpn(){
+    public function receiveIpn()
+    {
         Yii::info('alipay service receiveIpn():begin init param', 'fecshop_debug');
         $this->initParam();
         Yii::info('alipay service receiveIpn():begin rsaCheck', 'fecshop_debug');
         // 验签 
         $checkV2Status = $this->_AopClient->rsaCheckV1($_POST, '' ,$this->signType);
         Yii::info('alipay service receiveIpn():rsacheck end', 'fecshop_debug');
-        if($checkV2Status){
+        if ($checkV2Status) {
             Yii::info('alipay service receiveIpn():rsacheck success', 'fecshop_debug');
             $trade_no       = Yii::$app->request->post('trade_no');
             $out_trade_no   = Yii::$app->request->post('out_trade_no');
@@ -195,14 +198,15 @@ class Alipay extends Service
             Yii::info('alipay service receiveIpn(): [ trade_status: ]'.$trade_status, 'fecshop_debug');
             
             //验证订单的合法性
-            if(!$this->validateReviewOrder($out_trade_no,$total_amount,$seller_id,$auth_app_id)){
+            if (!$this->validateReviewOrder($out_trade_no,$total_amount,$seller_id,$auth_app_id)) {
                 Yii::info('alipay service receiveIpn(): validate order fail', 'fecshop_debug');
+                
                 return false;
             }
             Yii::info('alipay service receiveIpn():validate order success', 'fecshop_debug');
-            if(self::TRADE_SUCCESS == $trade_status){
+            if (self::TRADE_SUCCESS == $trade_status){
                 Yii::info('alipay service receiveIpn():alipay trade success ', 'fecshop_debug');
-                if($this->paymentSuccess($out_trade_no,$trade_no)){
+                if ($this->paymentSuccess($out_trade_no,$trade_no)){
                     Yii::info('alipay service receiveIpn():update order status success', 'fecshop_debug');
                     
                     return true;
@@ -214,7 +218,6 @@ class Alipay extends Service
         }
         
     }
-    
     /**
      * @property $increment_id | String 订单号
      * @property $sendEmail | boolean 是否发送邮件
@@ -222,12 +225,17 @@ class Alipay extends Service
      */
     protected function paymentSuccess($increment_id,$trade_no,$sendEmail = true)
     {
-        if(!$this->_order){
+        if (!$this->_order) {
             $this->_order = Yii::$service->order->getByIncrementId($increment_id);
             Yii::$service->payment->setPaymentMethod($this->_order['payment_method']);
         }
+        // 如果订单状态已经是processing，那么，不需要更改订单状态了。
+        if ($this->_order['order_status'] == Yii::$service->order->payment_status_processing){
+            
+            return true;
+        }
         $order = $this->_order;        
-        if(isset($order['increment_id']) && $order['increment_id']){
+        if (isset($order['increment_id']) && $order['increment_id']) {
             // 如果支付成功，则更改订单状态为支付成功
             $order->order_status = Yii::$service->order->payment_status_processing;
             $order->txn_id = $trade_no; // 支付宝的交易号
@@ -236,9 +244,8 @@ class Alipay extends Service
             // 得到当前的订单信息
             $orderInfo = Yii::$service->order->getOrderInfoByIncrementId($order['increment_id']);
             // 发送新订单邮件
-            if($sendEmail){
-                Yii::$service->email->order->sendCreateEmail($orderInfo);
-            }
+            Yii::$service->email->order->sendCreateEmail($orderInfo);
+        
             return true;
         }
     }
