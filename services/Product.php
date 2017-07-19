@@ -33,7 +33,13 @@ class Product extends Service
             //$this->_category = new CategoryMysqldb;
         }
     }
-
+    
+    protected function actionGetEnableStatus()
+    {
+        return $this->_product->getEnableStatus();
+    }
+    
+    
     /**
      * 得到产品的所有的属性组。
      */

@@ -27,12 +27,10 @@ class ProductController extends AppfrontController
     // 产品详细页面
     public function actionIndex()
     {
-        //$data = Yii::$service->product->apicoll();
-        //var_dump($data);
-        //echo 1;exit;
         $data = $this->getBlock()->getLastData();
-
-        return $this->render($this->action->id, $data);
+        if(is_array($data)){
+            return $this->render($this->action->id, $data);
+        }
     }
     /**
      * Yii2 behaviors 可以参看地址：http://www.yiichina.com/doc/guide/2.0/concept-behaviors

@@ -25,7 +25,13 @@ class ProductMongodb implements ProductInterface
     {
         return '_id';
     }
-
+    /**
+     * 得到分类激活状态的值
+     */
+    public function getEnableStatus(){
+        return Product::STATUS_ENABLE;
+    }
+    
     public function getByPrimaryKey($primaryKey)
     {
         if ($primaryKey) {
@@ -80,6 +86,8 @@ class ProductMongodb implements ProductInterface
             }
         }
     }
+    
+    
 
     /*
      * example filter:
@@ -478,6 +486,7 @@ class ProductMongodb implements ProductInterface
         $select = $filter['select'];
         $query = Product::find()->asArray();
         $query->where($where);
+        $query->andWhere(['status' => $this->getEnableStatus()]);
         if (is_array($select) && !empty($select)) {
             $query->select($select);
         }

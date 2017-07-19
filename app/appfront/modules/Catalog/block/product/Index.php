@@ -37,7 +37,10 @@ class Index
     {
         $productImgSize = Yii::$app->controller->module->params['productImgSize'];
         $productImgMagnifier = Yii::$app->controller->module->params['productImgMagnifier'];
-        $this->initProduct();
+        if(!$this->initProduct()){
+            Yii::$service->url->redirect404();
+            return;
+        }
         ReviewHelper::initReviewConfig();
         $ReviewAndStarCount = ReviewHelper::getReviewAndStarCount($this->_product);
         list($review_count, $reviw_rate_star_average) = $ReviewAndStarCount;
@@ -391,6 +394,16 @@ class Index
         $primaryVal = Yii::$app->request->get($primaryKey);
         $this->_primaryVal = $primaryVal;
         $product = Yii::$service->product->getByPrimaryKey($primaryVal);
+        if ($product) {
+            $enableStatus = Yii::$service->product->getEnableStatus();
+            if ($product['status'] != $enableStatus){
+                
+                return false;
+            }
+        } else {
+            
+            return false;
+        }
         $this->_product = $product;
         Yii::$app->view->registerMetaTag([
             'name' => 'keywords',
@@ -416,6 +429,7 @@ class Index
         // 重新查询产品信息。
         $product = Yii::$service->product->getByPrimaryKey($primaryVal);
         $this->_product = $product;
+        return true;
     }
 
     // 面包屑导航

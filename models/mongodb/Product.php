@@ -18,7 +18,10 @@ use yii\mongodb\ActiveRecord;
 class Product extends ActiveRecord
 {
     public static $_customProductAttrs;
-
+    
+    const STATUS_ENABLE  = 1;
+    const STATUS_DISABLE = 2;
+    
     /**
      * mongodb collection 的名字，相当于mysql的table name
      */
