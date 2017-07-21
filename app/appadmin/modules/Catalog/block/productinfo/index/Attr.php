@@ -10,7 +10,7 @@
 namespace fecshop\app\appadmin\modules\Catalog\block\productinfo\index;
 
 use fec\helpers\CRequest;
-use fecshop\app\appadmin\modules\Catalog\helper\Product as ProductHelper;
+//use fecshop\app\appadmin\modules\Catalog\helper\Product as ProductHelper;
 use Yii;
 
 /**
@@ -22,9 +22,19 @@ class Attr
 {
     protected $_currentAttrGroup;
     protected $_attrInfo;
+    /**
+     * 为了可以使用rewriteMap，use 引入的文件统一采用下面的方式，通过Yii::mapGet()得到className和Object
+     */
+    protected $_productHelperName = '\fecshop\app\appadmin\modules\Catalog\helper\Product';
+    protected $_productHelper;
 
     public function __construct($one)
     {
+        /**
+         * 通过Yii::mapGet() 得到重写后的class类名以及对象。Yii::mapGet是在文件@fecshop\yii\Yii.php中
+         */
+        list($this->_productHelperName,$this->_productHelper) = Yii::mapGet($this->_productHelperName);  
+        
         $currentAttrGroup = CRequest::param('attr_group');
         if ($currentAttrGroup) {
             $this->_currentAttrGroup = $currentAttrGroup;
@@ -165,7 +175,7 @@ class Attr
                 'name'=>'status',
                 'display'=>[
                     'type' => 'select',
-                    'data' => ProductHelper::getStatusArr(),
+                    'data' => $this->_productHelper::getStatusArr(),
                 ],
                 'require' => 1,
                 'default' => 1,
@@ -212,7 +222,7 @@ class Attr
                 'name'=>'is_in_stock',
                 'display'=>[
                     'type' => 'select',
-                    'data' => ProductHelper::getInStockArr(),
+                    'data' => $this->_productHelper::getInStockArr(),
                 ],
                 'require' => 1,
                 'default' => 1,

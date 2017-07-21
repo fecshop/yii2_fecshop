@@ -39,7 +39,9 @@ class ConsoleController extends FecController
 
         $relativeFile = '\\'.$this->blockNamespace;
         $relativeFile .= '\\'.$this->id.'\\'.ucfirst($blockName);
-
+        //查找是否在rewriteMap中存在重写
+        $relativeFile = Yii::mapGetName($relativeFile);
+        
         return new $relativeFile();
     }
 }

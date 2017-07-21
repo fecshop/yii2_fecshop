@@ -9,7 +9,7 @@
 
 namespace fecshop\app\appfront\modules\Catalog\block\reviewproduct;
 
-use fecshop\app\appfront\modules\Catalog\helpers\Review as ReviewHelper;
+//use fecshop\app\appfront\modules\Catalog\helpers\Review as ReviewHelper;
 use Yii;
 
 /**
@@ -25,11 +25,20 @@ class Lists
     public $_page = 'p';
     public $numPerPage = 20;
     public $pageNum;
+    /**
+     * 为了可以使用rewriteMap，use 引入的文件统一采用下面的方式，通过Yii::mapGet()得到className和Object
+     */
+    protected $_reviewHelperName = '\fecshop\app\appfront\modules\Catalog\helpers\Review';
+    protected $_reviewHelper;
 
     public function __construct()
     {
-        // 初始化服务
-        ReviewHelper::initReviewConfig();
+        /**
+         * 通过Yii::mapGet() 得到重写后的class类名以及对象。Yii::mapGet是在文件@fecshop\yii\Yii.php中
+         */
+        list($this->_reviewHelperName,$this->_reviewHelper) = Yii::mapGet($this->_reviewHelperName);  
+        
+        $this->_reviewHelper::initReviewConfig();
     }
     /**
      * @property $countTotal | Int
@@ -88,7 +97,7 @@ class Lists
 
             $pageToolBar = $this->getProductPage($count);
             $coll = $data['coll'];
-            $ReviewAndStarCount = ReviewHelper::getReviewAndStarCount($product);
+            $ReviewAndStarCount = $this->_reviewHelper::getReviewAndStarCount($product);
             list($review_count, $reviw_rate_star_average) = $ReviewAndStarCount;
 
             return [

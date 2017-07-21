@@ -9,7 +9,7 @@
 
 namespace fecshop\app\apphtml5\modules\Catalog\block\product;
 
-use fecshop\app\apphtml5\modules\Catalog\helpers\Review as ReviewHelper;
+//use fecshop\app\apphtml5\modules\Catalog\helpers\Review as ReviewHelper;
 use Yii;
 
 /**
@@ -32,7 +32,20 @@ class Index
     protected $_image_thumbnails;
     // 在产品详细页面，在产品描述部分显示的产品图片列表
     protected $_image_detail;
-
+    /**
+     * 为了可以使用rewriteMap，use 引入的文件统一采用下面的方式，通过Yii::mapGet()得到className和Object
+     */
+    protected $_reviewHelperName = '\fecshop\app\apphtml5\modules\Catalog\helpers\Review';
+    protected $_reviewHelper;
+    
+    public function __construct()
+    {
+        /**
+         * 通过Yii::mapGet() 得到重写后的class类名以及对象。Yii::mapGet是在文件@fecshop\yii\Yii.php中
+         */
+        list($this->_reviewHelperName,$this->_reviewHelper) = Yii::mapGet($this->_reviewHelperName);  
+        
+    }
     public function getLastData()
     {
         $productImgSize = Yii::$app->controller->module->params['productImgSize'];
@@ -41,8 +54,8 @@ class Index
             Yii::$service->url->redirect404();
             return;
         }
-        ReviewHelper::initReviewConfig();
-        $ReviewAndStarCount = ReviewHelper::getReviewAndStarCount($this->_product);
+        $this->_reviewHelper::initReviewConfig();
+        $ReviewAndStarCount = $this->_reviewHelper::getReviewAndStarCount($this->_product);
         list($review_count, $reviw_rate_star_average) = $ReviewAndStarCount;
         $this->filterProductImg($this->_product['image']);
         $groupAttr = Yii::$service->product->getGroupAttr($this->_product['attr_group']);

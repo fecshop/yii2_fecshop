@@ -12,7 +12,7 @@ namespace fecshop\app\appadmin\modules\Catalog\block\productinfo;
 use fec\helpers\CUrl;
 use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockInterface;
 use fecshop\app\appadmin\modules\AppadminbaseBlock;
-use fecshop\app\appadmin\modules\Catalog\helper\Product as ProductHelper;
+//use fecshop\app\appadmin\modules\Catalog\helper\Product as ProductHelper;
 use Yii;
 
 /**
@@ -23,12 +23,23 @@ use Yii;
 class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 {
     protected $_copyUrl;
-
+    
+    /**
+     * 为了可以使用rewriteMap，use 引入的文件统一采用下面的方式，通过Yii::mapGet()得到className和Object
+     */
+    protected $_productHelperName = '\fecshop\app\appadmin\modules\Catalog\helper\Product';
+    protected $_productHelper;
+    
     /**
      * init param function ,execute in construct.
      */
     public function init()
     {
+        /**
+         * 通过Yii::mapGet() 得到重写后的class类名以及对象。Yii::mapGet是在文件@fecshop\yii\Yii.php中
+         */
+        list($this->_productHelperName,$this->_productHelper) = Yii::mapGet($this->_productHelperName);  
+        
         /*
          * edit data url
          */
@@ -82,14 +93,14 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
                 'title'=>'状态',
                 'name'=>'status',
                 'columns_type' =>'int',  // int使用标准匹配， string使用模糊查询
-                'value'=> ProductHelper::getStatusArr(),
+                'value'=> $this->_productHelper::getStatusArr(),
             ],
             [    // selecit的Int 类型
                 'type'=>'select',
                 'title'=>'库存状态',
                 'name'=>'is_in_stock',
                 'columns_type' =>'int',  // int使用标准匹配， string使用模糊查询
-                'value'=> ProductHelper::getInStockArr(),
+                'value'=> $this->_productHelper::getInStockArr(),
             ],
             [    // 字符串类型
                 'type'            =>'inputtext',
@@ -191,7 +202,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
                 'label'            => '状态',
                 'width'            => '50',
                 'align'        => 'center',
-                'display'        => ProductHelper::getStatusArr(),
+                'display'        => $this->_productHelper::getStatusArr(),
             ],
 
             [

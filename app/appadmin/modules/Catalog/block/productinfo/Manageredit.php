@@ -13,7 +13,7 @@ use fec\helpers\CRequest;
 use fec\helpers\CUrl;
 use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockEditInterface;
 use fecshop\app\appadmin\modules\AppadminbaseBlockEdit;
-use fecshop\app\appadmin\modules\Catalog\block\productinfo\index\Attr;
+//use fecshop\app\appadmin\modules\Catalog\block\productinfo\index\Attr;
 use Yii;
 
 /**
@@ -26,9 +26,19 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
     public $_saveUrl;
     protected $_attr;
     protected $_custom_option_list_str;
+    /**
+     * 为了可以使用rewriteMap，use 引入的文件统一采用下面的方式，通过Yii::mapGet()得到className和Object
+     */
+    protected $_attrBlockName = '\fecshop\app\appadmin\modules\Catalog\block\productinfo\index\Attr';
+    protected $_attrBlock;
 
     public function init()
     {
+        /**
+         * 通过Yii::mapGet() 得到重写后的class类名以及对象。Yii::mapGet是在文件@fecshop\yii\Yii.php中
+         */
+        $this->_attrBlockName = Yii::mapGetName($this->_attrBlockName);  
+        
         $this->_saveUrl = CUrl::getUrl('catalog/productinfo/managereditsave');
         parent::init();
         $product_id = $this->_param[$this->_primaryKey];
@@ -38,7 +48,7 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
             $this->_one['qty'] = $qty ;
         }
         
-        $this->_attr = new Attr($this->_one);
+        $this->_attr = new $this->_attrBlockName($this->_one);
         //$this->_param		= $request_param[$this->_editFormData];
     }
 
