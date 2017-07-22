@@ -64,7 +64,7 @@ class Index
         $product_ids = [];
         $favorites = [];
         foreach ($coll as $one) {
-            $p_id = (string)$one['product_id']
+            $p_id = (string)$one['product_id'];
             $product_ids[] = $one['product_id'];
             $favorites[$p_id] = [
                 'updated_at' => $one['updated_at'],

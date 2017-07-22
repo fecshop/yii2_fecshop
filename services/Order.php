@@ -9,7 +9,7 @@
 
 namespace fecshop\services;
 
-use fecshop\models\mysqldb\Order as MyOrder;
+//use fecshop\models\mysqldb\Order as MyOrder;
 use Yii;
 
 /**
@@ -45,7 +45,12 @@ class Order extends Service
     // 作为保存incrementId到session的key，把当前的order incrementId保存到session的时候，对应的key就是该常量。
     const CURRENT_ORDER_INCREAMENT_ID = 'current_order_increament_id';
     
+    protected $_orderModelName = '\fecshop\models\mysqldb\Order';
+    protected $_orderModel;
     
+    public function __construct(){
+        list($this->_orderModelName,$this->_orderModel) = \Yii::mapGet($this->_orderModelName);  
+    }
     
     /**
      * @return array 
@@ -128,28 +133,28 @@ class Order extends Service
 
     /**
      * @property $primaryKey | Int
-     * @return Object(MyOrder)
+     * @return Object($this->_orderModel)
      * 通过主键值，返回Order Model对象
      */
     protected function actionGetByPrimaryKey($primaryKey)
     {
-        $one = MyOrder::findOne($primaryKey);
+        $one = $this->_orderModel::findOne($primaryKey);
         $primaryKey = $this->getPrimaryKey();
         if ($one[$primaryKey]) {
             return $one;
         } else {
-            return new MyOrder();
+            return new $this->_orderModelName();
         }
     }
     
     /**
      * @property $increment_id | String , 订单号
-     * @return object （MyOrder），返回 MyOrder model
+     * @return object （$this->_orderModel），返回 $this->_orderModel model
      * 通过订单号incrementId，得到订单Model对象。
      */
     protected function actionGetByIncrementId($increment_id)
     {
-        $one = MyOrder::findOne(['increment_id' => $increment_id]);
+        $one = $this->_orderModel::findOne(['increment_id' => $increment_id]);
         $primaryKey = $this->getPrimaryKey();
         if ($one[$primaryKey]) {
             return $one;
@@ -214,7 +219,7 @@ class Order extends Service
         if (!$order_id) {
             return;
         }
-        $one = MyOrder::findOne($order_id);
+        $one = $this->_orderModel::findOne($order_id);
         $primaryKey = $this->getPrimaryKey();
         if (!isset($one[$primaryKey]) || empty($one[$primaryKey])) {
             return;
@@ -251,7 +256,7 @@ class Order extends Service
      */
     protected function actionColl($filter = '')
     {
-        $query  = MyOrder::find();
+        $query  = $this->_orderModel::find();
         $query  = Yii::$service->helper->ar->getCollByFilter($query, $filter);
         $coll   = $query->all();
         
@@ -271,14 +276,14 @@ class Order extends Service
         $primaryKey = $this->getPrimaryKey();
         $primaryVal = isset($one[$primaryKey]) ? $one[$primaryKey] : '';
         if ($primaryVal) {
-            $model = MyOrder::findOne($primaryVal);
+            $model = $this->_orderModel::findOne($primaryVal);
             if (!$model) {
                 Yii::$service->helper->errors->add('order '.$this->getPrimaryKey().' is not exist');
 
                 return;
             }
         } else {
-            $model = new MyOrder();
+            $model = new $this->_orderModelName();
             $model->created_at = time();
         }
         $model->updated_at = time();
@@ -303,7 +308,7 @@ class Order extends Service
         }
         if (is_array($ids) && !empty($ids)) {
             foreach ($ids as $id) {
-                $model = MyOrder::findOne($id);
+                $model = $this->_orderModel::findOne($id);
                 if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
                     $model->delete();
                 } else {
@@ -314,7 +319,7 @@ class Order extends Service
             }
         } else {
             $id = $ids;
-            $model = MyOrder::findOne($id);
+            $model = $this->_orderModel::findOne($id);
             if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
                 $model->delete();
             } else {
@@ -328,7 +333,7 @@ class Order extends Service
     }
     /**
      * @property $increment_id | String , 订单号
-     * @return object （MyOrder），返回 MyOrder model
+     * @return object （$this->_orderModel），返回 $this->_orderModel model
      *                通过订单号，得到订单以及订单产品信息。
      */
     protected function actionGetInfoByIncrementId($increment_id)
@@ -355,7 +360,7 @@ class Order extends Service
      *       在paypal 点击continue的时候，可以通过token找到对应的订单。
      */
     protected function actionGeneratePPExpressOrder($token){
-        $myOrder = new MyOrder();
+        $myOrder = new $this->_orderModelName();
         $myOrder->payment_token = $token;
         $myOrder->save();
         $order_id = $myOrder['order_id'];
@@ -375,7 +380,7 @@ class Order extends Service
      *   通过token 得到订单 Object
      */
     protected function actionGetByPaymentToken($token){
-        $one = MyOrder::find()->where(['payment_token' => $token])
+        $one = $this->_orderModel::find()->where(['payment_token' => $token])
             ->one();
         if(isset($one['order_id']) && $one['order_id']){
             return $one;
@@ -455,7 +460,7 @@ class Order extends Service
                 $increment_id = $myOrder['increment_id'];
             }
         }else{
-            $myOrder = new MyOrder();
+            $myOrder = new $this->_orderModelName();
         }
         $myOrder['order_status']        = $this->payment_status_pending;
         $myOrder['store']               = $cartInfo['store'];
@@ -542,19 +547,19 @@ class Order extends Service
      */
     protected  function  checkOrderVersion($increment_id){
         # 更新订单版本号，防止被多次执行。
-        $sql    = 'update '.MyOrder::tableName().' set version = version + 1  where increment_id = :increment_id';
+        $sql    = 'update '.$this->_orderModel::tableName().' set version = version + 1  where increment_id = :increment_id';
         $data   = [
             'increment_id'  => $increment_id,
         ];
-        $result     = MyOrder::getDb()->createCommand($sql,$data)->execute();
-        $MyOrder    = MyOrder::find()->where([
+        $result     = $this->_orderModel::getDb()->createCommand($sql,$data)->execute();
+        $myOrder    = $this->_orderModel::find()->where([
             'increment_id'  => $increment_id,
         ])->one();
         # 如果版本号不等于1，则回滚
-        if($MyOrder['version'] > 1){
+        if($myOrder['version'] > 1){
             Yii::$service->helper->errors->add('Your order has been paid');
             return false;
-        }else if($MyOrder['version'] < 1){
+        }else if($myOrder['version'] < 1){
             Yii::$service->helper->errors->add('Your order is error');
             return false;
         }else{

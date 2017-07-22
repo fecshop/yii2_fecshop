@@ -9,9 +9,9 @@
 
 namespace fecshop\services;
 
-use fecshop\models\mysqldb\Customer as CustomerModel;
-use fecshop\models\mysqldb\customer\CustomerLogin;
-use fecshop\models\mysqldb\customer\CustomerRegister;
+//use fecshop\models\mysqldb\Customer as CustomerModel;
+//use fecshop\models\mysqldb\customer\CustomerLogin;
+//use fecshop\models\mysqldb\customer\CustomerRegister;
 use Yii;
 
 /**
@@ -24,7 +24,20 @@ class Customer extends Service
 {
     public $customer_register;
     const USER_LOGIN_SUCCESS_REDIRECT_URL_KEY = 'usr_login_success_redirect_url';
-
+    
+    protected $_customerModelName = '\fecshop\models\mysqldb\Customer';
+    protected $_customerModel;
+    protected $_customerLoginModelName = '\fecshop\models\mysqldb\customer\CustomerLogin';
+    protected $_customerLoginModel;
+    protected $_customerRegisterModelName = '\fecshop\models\mysqldb\customer\CustomerRegister';
+    protected $_customerRegisterModel;
+    
+    public function __construct(){
+        list($this->_customerModelName,$this->_customerModel) = \Yii::mapGet($this->_customerModelName); 
+        list($this->_customerLoginModelName,$this->_customerLoginModel) = \Yii::mapGet($this->_customerLoginModelName);  
+        list($this->_customerRegisterModelName,$this->_customerRegisterModel) = \Yii::mapGet($this->_customerRegisterModelName);  
+        
+    }
     /**
      * 注册用户名字的最小长度.
      */
@@ -71,7 +84,7 @@ class Customer extends Service
      */
     protected function actionLogin($data)
     {
-        $model = new CustomerLogin();
+        $model = new $this->_customerLoginModelName();
         $model->email       = $data['email'];
         $model->password    = $data['password'];
         $loginStatus        = $model->login();
@@ -98,7 +111,7 @@ class Customer extends Service
      */
     protected function actionRegister($param)
     {
-        $model = new CustomerRegister();
+        $model = new $this->_customerRegisterModelName();
         $model->attributes = $param;
         if ($model->validate()) {
             $model->created_at = time();
@@ -119,7 +132,7 @@ class Customer extends Service
      */
     protected function actionIsRegistered($email)
     {
-        $customer = CustomerModel::findOne(['email' => $email]);
+        $customer = $this->_customerModel::findOne(['email' => $email]);
         if ($customer['email']) {
             return true;
         } else {
@@ -177,10 +190,10 @@ class Customer extends Service
     {
         if (is_int($identity)) {
             $customer_id = $identity;
-            $customerModel = CustomerModel::findIdentity($customer_id);
+            $customerModel = $this->_customerModel::findIdentity($customer_id);
         } elseif (is_string($identity)) {
             $email = $identity;
-            $customerModel = CustomerModel::findByEmail($email);
+            $customerModel = $this->_customerModel::findByEmail($email);
         } elseif (is_object($identity)) {
             $customerModel = $identity;
         }
@@ -199,7 +212,7 @@ class Customer extends Service
      */
     protected function actionGetModelName()
     {
-        $model = new CustomerModel();
+        $model = new $this->_customerModelName();
 
         return get_class($model);
     }
@@ -209,12 +222,12 @@ class Customer extends Service
     protected function actionGetByPrimaryKey($val)
     {
         if ($val) {
-            $one = CustomerModel::findOne($val);
+            $one = $this->_customerModel::findOne($val);
             $primaryKey = $this->getPrimaryKey();
             if ($one[$primaryKey]) {
                 return $one;
             } else {
-                return new CustomerModel();
+                return new $this->_customerModelName();
             }
         }
     }
@@ -229,10 +242,10 @@ class Customer extends Service
     {
         if (is_int($identity)) {
             $customer_id = $identity;
-            $customerModel = CustomerModel::findIdentity($customer_id);
+            $customerModel = $this->_customerModel::findIdentity($customer_id);
         } elseif (is_string($identity)) {
             $email = $identity;
-            $customerModel = CustomerModel::findByEmail($email);
+            $customerModel = $this->_customerModel::findByEmail($email);
         } elseif (is_object($identity)) {
             $customerModel = $identity;
         } else {
@@ -269,11 +282,11 @@ class Customer extends Service
 
     /**
      * @property $email | string ， email string
-     * get CustomerModel by Email address.
+     * get $this->_customerModel by Email address.
      */
     protected function actionGetUserIdentityByEmail($email)
     {
-        $one = CustomerModel::findByEmail($email);
+        $one = $this->_customerModel::findByEmail($email);
         if ($one['email']) {
             return $one;
         } else {
@@ -311,7 +324,7 @@ class Customer extends Service
      */
     protected function actionFindByPasswordResetToken($token)
     {
-        return CustomerModel::findByPasswordResetToken($token);
+        return $this->_customerModel::findByPasswordResetToken($token);
     }
 
     /**
@@ -366,7 +379,7 @@ class Customer extends Service
      */
     protected function actionGetStatusDeleted()
     {
-        return CustomerModel::STATUS_DELETED;
+        return $this->_customerModel::STATUS_DELETED;
     }
 
     /**
@@ -374,7 +387,7 @@ class Customer extends Service
      */
     protected function actionGetStatusActive()
     {
-        return CustomerModel::STATUS_ACTIVE;
+        return $this->_customerModel::STATUS_ACTIVE;
     }
     /**
      * 得到customer 表的主键（mysql表）
@@ -402,7 +415,7 @@ class Customer extends Service
      */
     protected function actionColl($filter = '')
     {
-        $query = CustomerModel::find();
+        $query = $this->_customerModel::find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
         //var_dump($query->all());exit;
         return [
@@ -420,7 +433,7 @@ class Customer extends Service
     {
         $arr = [];
         if (is_array($user_ids) && !empty($user_ids)) {
-            $data = CustomerModel::find()->where([
+            $data = $this->_customerModel::find()->where([
                 'in', 'id', $user_ids,
             ])->all();
             if (is_array($data) && !empty($data)) {
