@@ -9,7 +9,7 @@
 
 namespace fecshop\services\cart;
 
-use fecshop\models\mysqldb\cart\Item as MyCartItem;
+//use fecshop\models\mysqldb\cart\Item as MyCartItem;
 use fecshop\services\Service;
 use Yii;
 
@@ -22,7 +22,14 @@ class QuoteItem extends Service
 {
     protected $_my_cart_item;    // 购物车cart item 对象
     protected $_cart_product_info;
-
+    
+    protected $_itemModelName = '\fecshop\models\mysqldb\cart\Item';
+    protected $_itemModel;
+    
+    public function __construct(){
+        list($this->_itemModelName,$this->_itemModel) = Yii::mapGet($this->_itemModelName);  
+    }
+    
     /**
      * @property $item | Array, example:
      * $item = [
@@ -53,14 +60,14 @@ class QuoteItem extends Service
         if (isset($item['custom_option_sku']) && !empty($item['custom_option_sku'])) {
             $where['custom_option_sku'] = $item['custom_option_sku'];
         }
-        $item_one = MyCartItem::find()->where($where)->one();
+        $item_one = $this->_itemModel::find()->where($where)->one();
         if ($item_one['cart_id']) {
             $item_one->qty = $item['qty'] + $item_one['qty'];
             $item_one->save();
             // 重新计算购物车的数量
             Yii::$service->cart->quote->computeCartInfo();
         } else {
-            $item_one = new MyCartItem();
+            $item_one = new $this->_itemModelName;
             $item_one->store        = Yii::$service->store->currentStore;
             $item_one->cart_id      = $cart_id;
             $item_one->created_at   = time();
@@ -89,7 +96,7 @@ class QuoteItem extends Service
     {
         $cart_id = Yii::$service->cart->quote->getCartId();
         // 查看是否存在此产品，如果存在，则更改
-        $item_one = MyCartItem::find()->where([
+        $item_one = $this->_itemModel::find()->where([
             'cart_id'           => $cart_id,
             'product_id'        => $item['product_id'],
             'custom_option_sku' => $item['custom_option_sku'],
@@ -120,7 +127,7 @@ class QuoteItem extends Service
         $cart_id = Yii::$service->cart->quote->getCartId();
         $item_qty = 0;
         if ($cart_id) {
-            $data = MyCartItem::find()->asArray()->where([
+            $data = $this->_itemModel::find()->asArray()->where([
                 'cart_id' => $cart_id,
             ])->all();
             if (is_array($data) && !empty($data)) {
@@ -151,7 +158,7 @@ class QuoteItem extends Service
         $product_weight = 0;
         if ($cart_id) {
             if (!isset($this->_cart_product_info[$cart_id])) {
-                $data = MyCartItem::find()->where([
+                $data = $this->_itemModel::find()->where([
                     'cart_id' => $cart_id,
                 ])->all();
                 if (is_array($data) && !empty($data)) {
@@ -247,7 +254,7 @@ class QuoteItem extends Service
     {
         $cart_id = Yii::$service->cart->quote->getCartId();
         if ($cart_id) {
-            $one = MyCartItem::find()->where([
+            $one = $this->_itemModel::find()->where([
                 'cart_id' => $cart_id,
                 'item_id' => $item_id,
             ])->one();
@@ -273,7 +280,7 @@ class QuoteItem extends Service
     {
         $cart_id = Yii::$service->cart->quote->getCartId();
         if ($cart_id) {
-            $one = MyCartItem::find()->where([
+            $one = $this->_itemModel::find()->where([
                 'cart_id' => $cart_id,
                 'item_id' => $item_id,
             ])->one();
@@ -301,7 +308,7 @@ class QuoteItem extends Service
     {
         $cart_id = Yii::$service->cart->quote->getCartId();
         if ($cart_id) {
-            $one = MyCartItem::find()->where([
+            $one = $this->_itemModel::find()->where([
                 'cart_id' => $cart_id,
                 'item_id' => $item_id,
             ])->one();
@@ -329,7 +336,7 @@ class QuoteItem extends Service
             $cart_id = Yii::$service->cart->quote->getCartId();
         }
         if ($cart_id) {
-            $items = MyCartItem::deleteAll([
+            $items = $this->_itemModel::deleteAll([
                 'cart_id' => $cart_id,
                 //'item_id' => $item_id,
             ]);
@@ -349,7 +356,7 @@ class QuoteItem extends Service
     public function updateCartId($new_cart_id, $cart_id)
     {
         if ($cart_id && $new_cart_id) {
-            MyCartItem::updateAll(
+            $this->_itemModel::updateAll(
                 ['cart_id'=>$new_cart_id],  // $attributes
                 'cart_id = '.$cart_id       // $condition
             );

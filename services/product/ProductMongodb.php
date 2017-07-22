@@ -20,7 +20,14 @@ use Yii;
 class ProductMongodb implements ProductInterface
 {
     public $numPerPage = 20;
-
+    
+    protected $_productModelName = '\fecshop\models\mongodb\Product';
+    protected $_productModel;
+    
+    public function __construct(){
+        list($this->_productModelName,$this->_productModel) = \Yii::mapGet($this->_productModelName);  
+    }
+    
     public function getPrimaryKey()
     {
         return '_id';
@@ -29,15 +36,15 @@ class ProductMongodb implements ProductInterface
      * 得到分类激活状态的值
      */
     public function getEnableStatus(){
-        return Product::STATUS_ENABLE;
+        return $this->_productModel::STATUS_ENABLE;
     }
     
     public function getByPrimaryKey($primaryKey)
     {
         if ($primaryKey) {
-            return Product::findOne($primaryKey);
+            return $this->_productModel::findOne($primaryKey);
         } else {
-            return new Product();
+            return new $this->_productModelName();
         }
     }
 
@@ -52,11 +59,11 @@ class ProductMongodb implements ProductInterface
     {
         if ($sku) {
             if ($returnArr) {
-                $product = Product::find()->asArray()
+                $product = $this->_productModel::find()->asArray()
                     ->where(['sku' => $sku])
                     ->one();
             } else {
-                $product = Product::findOne(['sku' => $sku]);
+                $product = $this->_productModel::findOne(['sku' => $sku]);
             }
             $primaryKey = $this->getPrimaryKey();
             if (isset($product[$primaryKey]) && !empty($product[$primaryKey])) {
@@ -76,11 +83,11 @@ class ProductMongodb implements ProductInterface
     {
         if ($spu) {
             if ($returnArr) {
-                return Product::find()->asArray()
+                return $this->_productModel::find()->asArray()
                     ->where(['spu' => $spu])
                     ->all();
             } else {
-                return Product::find()
+                return $this->_productModel::find()
                     ->where(['spu' => $spu])
                     ->all();
             }
@@ -105,7 +112,7 @@ class ProductMongodb implements ProductInterface
      */
     public function coll($filter = '')
     {
-        $query = Product::find();
+        $query = $this->_productModel::find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
 
         return [
@@ -121,7 +128,7 @@ class ProductMongodb implements ProductInterface
      */
     public function apicoll()
     {
-        $collection = Product::find()->getCollection();
+        $collection = $this->_productModel::find()->getCollection();
         $cursor = $collection->find();
         $count = $collection->count();
         $arr = [];
@@ -142,7 +149,7 @@ class ProductMongodb implements ProductInterface
      */
     public function apiGetByPrimaryKey($primaryKey)
     {
-        $collection = Product::find()->getCollection();
+        $collection = $this->_productModel::find()->getCollection();
         $cursor = $collection->findOne(['_id' => $primaryKey]);
         $arr = [];
         foreach ($cursor as $k => $v) {
@@ -158,7 +165,7 @@ class ProductMongodb implements ProductInterface
      */
     public function apiSave($product_one)
     {
-        $collection = Product::find()->getCollection();
+        $collection = $this->_productModel::find()->getCollection();
         $collection->save($product_one);
 
         return true;
@@ -170,7 +177,7 @@ class ProductMongodb implements ProductInterface
      */
     public function apiDelete($primaryKey)
     {
-        $collection = Product::find()->getCollection();
+        $collection = $this->_productModel::find()->getCollection();
         $collection->remove(['_id' => $primaryKey]);
 
         return true;
@@ -193,7 +200,7 @@ class ProductMongodb implements ProductInterface
      */
     public function collCount($filter = '')
     {
-        $query = Product::find();
+        $query = $this->_productModel::find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
 
         return $query->count();
@@ -210,7 +217,7 @@ class ProductMongodb implements ProductInterface
     {
         $id_arr = [];
         if (is_array($product_id_arr) && !empty($product_id_arr)) {
-            $query = Product::find()->asArray();
+            $query = $this->_productModel::find()->asArray();
             $mongoIds = [];
             foreach ($product_id_arr as $id) {
                 $mongoIds[] = new \MongoDB\BSON\ObjectId($id);
@@ -238,7 +245,7 @@ class ProductMongodb implements ProductInterface
         $attrInfo = Yii::$service->product->getGroupAttrInfo($attr_group);
         if (is_array($attrInfo) && !empty($attrInfo)) {
             $attrs = array_keys($attrInfo);
-            \fecshop\models\mongodb\Product::addCustomProductAttrs($attrs);
+            $this->_productModel::addCustomProductAttrs($attrs);
         }
     }
 
@@ -257,7 +264,7 @@ class ProductMongodb implements ProductInterface
         $currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
         $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
         if ($primaryVal) {
-            $model = Product::findOne($primaryVal);
+            $model = $this->_productModel::findOne($primaryVal);
             if (!$model) {
                 Yii::$service->helper->errors->add('Product '.$this->getPrimaryKey().' is not exist');
 
@@ -265,7 +272,7 @@ class ProductMongodb implements ProductInterface
             }
 
             //验证sku 是否重复
-            $product_one = Product::find()->asArray()->where([
+            $product_one = $this->_productModel::find()->asArray()->where([
                 '<>', $this->getPrimaryKey(), (new \MongoDB\BSON\ObjectId($primaryVal)),
             ])->andWhere([
                 'sku' => $one['sku'],
@@ -276,13 +283,13 @@ class ProductMongodb implements ProductInterface
                 return;
             }
         } else {
-            $model = new Product();
+            $model = new $this->_productModelName();
             $model->created_at = time();
             $model->created_user_id = \fec\helpers\CUser::getCurrentUserId();
             $primaryVal = new \MongoDB\BSON\ObjectId();
             $model->{$this->getPrimaryKey()} = $primaryVal;
             //验证sku 是否重复
-            $product_one = Product::find()->asArray()->where([
+            $product_one = $this->_productModel::find()->asArray()->where([
                 'sku' => $one['sku'],
             ])->one();
             if ($product_one['sku']) {
@@ -375,7 +382,7 @@ class ProductMongodb implements ProductInterface
         }
         if (is_array($ids)) {
             foreach ($ids as $id) {
-                $model = Product::findOne($id);
+                $model = $this->_productModel::findOne($id);
                 if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
                     $url_key = $model['url_key'];
                     // 删除在重写url里面的数据。
@@ -394,7 +401,7 @@ class ProductMongodb implements ProductInterface
             }
         } else {
             $id = $ids;
-            $model = Product::findOne($id);
+            $model = $this->_productModel::findOne($id);
             if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
                 $url_key = $model['url_key'];
                 // 删除在重写url里面的数据。
@@ -431,7 +438,7 @@ class ProductMongodb implements ProductInterface
                 if (!$product_id) {
                     continue;
                 }
-                $product = Product::findOne($product_id);
+                $product = $this->_productModel::findOne($product_id);
                 if (!$product[$idKey]) {
                     continue;
                 }
@@ -453,7 +460,7 @@ class ProductMongodb implements ProductInterface
                 if (!$product_id) {
                     continue;
                 }
-                $product = Product::findOne($product_id);
+                $product = $this->_productModel::findOne($product_id);
                 if (!$product[$idKey]) {
                     continue;
                 }
@@ -484,7 +491,7 @@ class ProductMongodb implements ProductInterface
             return [];
         }
         $select = $filter['select'];
-        $query = Product::find()->asArray();
+        $query = $this->_productModel::find()->asArray();
         $query->where($where);
         $query->andWhere(['status' => $this->getEnableStatus()]);
         if (is_array($select) && !empty($select)) {
@@ -552,7 +559,7 @@ class ProductMongodb implements ProductInterface
                 '$sort'    => $orderBy,
             ],
         ];
-        $product_data = Product::getCollection()->aggregate($pipelines);
+        $product_data = $this->_productModel::getCollection()->aggregate($pipelines);
         $product_total_count = count($product_data);
         $pageOffset = ($pageNum - 1) * $numPerPage;
         $products = array_slice($product_data, $pageOffset, $numPerPage);
@@ -588,7 +595,7 @@ class ProductMongodb implements ProductInterface
                 '$group'    => $group,
             ],
         ];
-        $filter_data = Product::getCollection()->aggregate($pipelines);
+        $filter_data = $this->_productModel::getCollection()->aggregate($pipelines);
 
         return $filter_data;
     }
@@ -603,7 +610,7 @@ class ProductMongodb implements ProductInterface
      */
     public function updateProductReviewInfo($spu, $avag_rate, $count, $lang_code, $avag_lang_rate, $lang_count)
     {
-        $data = Product::find()->where([
+        $data = $this->_productModel::find()->where([
             'spu' => $spu,
         ])->all();
         if (!empty($data) && is_array($data)) {

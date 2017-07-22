@@ -9,7 +9,6 @@
 
 namespace fecshop\services\email\widgets\customer\newsletter;
 
-use fecshop\app\appfront\helper\mailer\Email;
 use fecshop\services\email\widgets\BodyBase;
 use Yii;
 
@@ -22,13 +21,11 @@ class Body extends BodyBase
     public function getLastData()
     {
         $identity = $this->params;
-        //echo Yii::$service->image->getImgUrl('mail/logo.png','appfront');exit;
         return [
-            'email'        => $identity['email'],
-            //'name'		=> $identity['name'],
-            'logoImg'    => Yii::$service->image->getImgUrl('mail/logo.png', 'appfront'),
-            'homeUrl'    => Yii::$service->url->homeUrl(),
-            'storeName'    => Yii::$service->store->currentStore,
+            'email'     => $identity['email'],
+            'logoImg'   => Yii::$service->image->getImgUrl('mail/logo.png', 'appfront'),
+            'homeUrl'   => Yii::$service->url->homeUrl(),
+            'storeName' => Yii::$service->store->currentStore,
             'identity'  => $identity,
         ];
     }

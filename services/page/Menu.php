@@ -10,7 +10,6 @@
 namespace fecshop\services\page;
 
 use fec\helpers\CUrl;
-use fecshop\models\mongodb\Category;
 use fecshop\services\Service;
 use Yii;
 

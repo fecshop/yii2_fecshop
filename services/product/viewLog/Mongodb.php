@@ -11,7 +11,7 @@ namespace fecshop\services\product\viewLog;
 
 use fec\helpers\CDate;
 use fec\helpers\CUser;
-use fecshop\models\mongodb\product\ViewLog as MongodbViewLog;
+//use fecshop\models\mongodb\product\ViewLog as MongodbViewLog;
 use fecshop\services\Service;
 
 /**
@@ -24,14 +24,17 @@ class Mongodb extends Service
     public $collection;
     public $_defaultCollection = 'log_product_view';
     public $_maxProductCount = 10;
-
+    
+    protected $_logModelName = '\fecshop\models\mongodb\product\ViewLog';
+    protected $_logModel;
     // init
     public function init()
     {
+        list($this->_logModelName,$this->_logModel) = \Yii::mapGet($this->_logModelName);  
         if (!$this->collection) {
             $this->collection = $this->_defaultCollection;
         }
-        MongodbViewLog::setCurrentCollectionName($this->collection);
+        $this->_logModel::setCurrentCollectionName($this->collection);
     }
 
     /**
@@ -48,7 +51,7 @@ class Mongodb extends Service
         if (!$user_id) {
             return;
         }
-        $coll = MongodbViewLog::find()->where([
+        $coll = $this->_logModel::find()->where([
                 'user_id' => $user_id,
             ])
             ->asArray()
@@ -81,7 +84,7 @@ class Mongodb extends Service
             return;
         }
 
-        $MongodbViewLog = MongodbViewLog::getCollection();
-        $MongodbViewLog->save($arr);
+        $mongodbViewLog = $this->_logModel::getCollection();
+        $mongodbViewLog->save($arr);
     }
 }

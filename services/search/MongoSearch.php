@@ -9,8 +9,8 @@
 
 namespace fecshop\services\search;
 
-use fecshop\models\mongodb\Product;
-use fecshop\models\mongodb\Search;
+//use fecshop\models\mongodb\Product;
+//use fecshop\models\mongodb\Search;
 use fecshop\services\Service;
 use Yii;
 
@@ -23,19 +23,26 @@ class MongoSearch extends Service implements SearchInterface
 {
     public $searchIndexConfig;
     public $searchLang;
-
+    
+    protected $_productModelName = '\fecshop\models\mongodb\Product';
+    protected $_productModel;
+    protected $_searchModelName = '\fecshop\models\mongodb\Search';
+    protected $_searchModel;
+    
     public function init()
     {
+        list($this->_productModelName,$this->_productModel) = \Yii::mapGet($this->_productModelName); 
+        list($this->_searchModelName,$this->_searchModel) = \Yii::mapGet($this->_searchModelName); 
         /**
          * 初始化search model 的属性，将需要过滤的属性添加到search model的类属性中。
-         *  $searchModel 		= new Search;
+         *  $searchModel 		= new $this->_searchModelName;
          *  $searchModel->attributes();
          *	上面的获取的属性，就会有下面添加的属性了。
          *  将产品同步到搜索表的时候，就会把这些字段也添加进去.
          */
         $filterAttr = Yii::$service->search->filterAttr;
         if (is_array($filterAttr) && !empty($filterAttr)) {
-            Search::$_filterColumns = $filterAttr;
+            $this->_searchModel::$_filterColumns = $filterAttr;
         }
     }
 
@@ -63,8 +70,8 @@ class MongoSearch extends Service implements SearchInterface
                  * 能够进行搜索的语言列表：https://docs.mongodb.com/manual/reference/text-search-languages/#text-search-languages
                  */
                 if ($mongoSearchLangName) {
-                    Search::$_lang = $langCode;
-                    $searchModel = new Search();
+                    $this->_searchModel::$_lang = $langCode;
+                    $searchModel = new $this->_searchModelName();
                     $colltionM = $searchModel::getCollection();
                     $config2['default_language'] = $mongoSearchLangName;
                     $colltionM->createIndex($config1, $config2);
@@ -97,7 +104,7 @@ class MongoSearch extends Service implements SearchInterface
     {
         if (is_array($product_ids) && !empty($product_ids)) {
             $productPrimaryKey = Yii::$service->product->getPrimaryKey();
-            $searchModel = new Search();
+            $searchModel = new $this->_searchModelName();
             $filter['select'] = $searchModel->attributes();
             $filter['asArray'] = true;
             $filter['where'][] = ['in', $productPrimaryKey, $product_ids];
@@ -114,10 +121,10 @@ class MongoSearch extends Service implements SearchInterface
                     $one_short_description = $one['short_description'];
                     if (!empty($this->searchLang) && is_array($this->searchLang)) {
                         foreach ($this->searchLang as $langCode => $mongoSearchLangName) {
-                            Search::$_lang = $langCode;
-                            $searchModel = Search::findOne(['_id' => $one['_id']]);
+                            $this->_searchModel::$_lang = $langCode;
+                            $searchModel = $this->_searchModel::findOne(['_id' => $one['_id']]);
                             if (!$searchModel['_id']) {
-                                $searchModel = new Search();
+                                $searchModel = new $this->_searchModelName();
                             }
                             $one['name'] = Yii::$service->fecshoplang->getLangAttrVal($one_name, 'name', $langCode);
                             $one['description'] = Yii::$service->fecshoplang->getLangAttrVal($one_description, 'description', $langCode);
@@ -151,13 +158,13 @@ class MongoSearch extends Service implements SearchInterface
         //	foreach($langCodes as $langCodeInfo){
         if (!empty($this->searchLang) && is_array($this->searchLang)) {
             foreach ($this->searchLang as $langCode => $mongoSearchLangName) {
-                Search::$_lang = $langCode;
+                $this->_searchModel::$_lang = $langCode;
                 // 更新时间方式删除。
-                Search::deleteAll([
+                $this->_searchModel::deleteAll([
                     '<', 'sync_updated_at', (int) $nowTimeStamp,
                 ]);
                 // 不存在更新时间的直接删除掉。
-                Search::deleteAll([
+                $this->_searchModel::deleteAll([
                     'sync_updated_at' => [
                         '?exists' => false,
                     ],
@@ -171,8 +178,8 @@ class MongoSearch extends Service implements SearchInterface
         //echo 1;exit;
         if (!empty($this->searchLang) && is_array($this->searchLang)) {
             foreach ($this->searchLang as $langCode => $mongoSearchLangName) {
-                Search::$_lang = $langCode;
-                Search::deleteAll([
+                $this->_searchModel::$_lang = $langCode;
+                $this->_searchModel::deleteAll([
                     '_id' => $product_id,
                 ]);
             }
@@ -248,13 +255,13 @@ class MongoSearch extends Service implements SearchInterface
          *		    详细参看：https://docs.mongodb.com/manual/core/text-search-operators/
          *		 2. sort排序：search_score是全文搜索匹配后的得分，score是product表的一个字段，这个字段可以通过销售量或者其他作为参考设置。
          */
-        Search::$_lang = Yii::$service->store->currentLangCode;
-        //$search_data = Search::getCollection();
+        $this->_searchModel::$_lang = Yii::$service->store->currentLangCode;
+        //$search_data = $this->_searchModel::getCollection();
 
         //$mongodb = Yii::$app->mongodb;
         //$search_data = $mongodb->getCollection('full_search_product_en')
 
-        $search_data = Search::getCollection()->find(
+        $search_data = $this->_searchModel::getCollection()->find(
             $where,
             ['search_score'=>['$meta'=>'textScore'], 'id' => 1, 'spu'=> 1, 'score' => 1],
             [
@@ -281,7 +288,7 @@ class MongoSearch extends Service implements SearchInterface
         }
         $productIds = array_slice($productIds, $offset, $limit);
         if (!empty($productIds)) {
-            $query = Product::find()->asArray()
+            $query = $this->_productModel::find()->asArray()
                     ->select($select)
                     ->where(['_id'=> ['$in'=>$productIds]]);
             $data = $query->all();
@@ -330,8 +337,8 @@ class MongoSearch extends Service implements SearchInterface
                 '$group'    => $group,
             ],
         ];
-        Search::$_lang = Yii::$service->store->currentLangCode;
-        $filter_data = Search::getCollection()->aggregate($pipelines);
+        $this->_searchModel::$_lang = Yii::$service->store->currentLangCode;
+        $filter_data = $this->_searchModel::getCollection()->aggregate($pipelines);
 
         return $filter_data;
     }

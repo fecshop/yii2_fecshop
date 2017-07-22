@@ -9,7 +9,7 @@
 
 namespace fecshop\services\category;
 
-use fecshop\models\mongodb\Category;
+//use fecshop\models\mongodb\Category;
 use fecshop\services\Service;
 use Yii;
 
@@ -20,8 +20,14 @@ use Yii;
 class Menu extends Service
 {
     public $rootCategoryId = '0';
+    protected $_categoryModelName = '\fecshop\models\mongodb\Category';
+    protected $_categoryModel;
+    
+    public function __construct(){
+        list($this->_categoryModelName,$this->_categoryModel) = Yii::mapGet($this->_categoryModelName);  
+    }
     /**
-     * @property $parentId|int
+     * @property $parentId | int 
      * 得到分类的目录信息
      */
     protected function actionGetCategoryMenuArr($parentId = '')
@@ -31,12 +37,12 @@ class Menu extends Service
         if (!$parentId) {
             $parentId = $this->rootCategoryId;
         }
-        $data = Category::find()->asArray()->select([
+        $data = $this->_categoryModel::find()->asArray()->select([
             '_id', 'parent_id', 'name', 'url_key', 'menu_custom',
         ])->where([
             'parent_id' => $parentId,
-            'status'    => Category::STATUS_ENABLE,
-            'menu_show' => Category::MENU_SHOW,
+            'status'    => $this->_categoryModel::STATUS_ENABLE,
+            'menu_show' => $this->_categoryModel::MENU_SHOW,
         ])->all();
         if (is_array($data) && !empty($data)) {
             foreach ($data as $category) {
@@ -65,7 +71,7 @@ class Menu extends Service
      */
     protected function hasChild($categoryId)
     {
-        $one = Category::find()->asArray()->where([
+        $one = $this->_categoryModel::find()->asArray()->where([
                 'parent_id' => $categoryId,
             ])->one();
         if ($one['_id']) {

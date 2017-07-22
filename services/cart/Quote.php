@@ -9,7 +9,7 @@
 
 namespace fecshop\services\cart;
 
-use fecshop\models\mysqldb\Cart as MyCart;
+//use fecshop\models\mysqldb\Cart as MyCart;
 use fecshop\services\Service;
 use Yii;
 
@@ -24,11 +24,17 @@ class Quote extends Service
     protected $_cart_id;
     protected $_cart;
     protected $_shipping_cost;
+    
+    protected $_cartModelName = '\fecshop\models\mysqldb\Cart';
+    protected $_cartModel;
     /**
      * 存储购物车的信息。
      */
     protected $cartInfo;
-
+    
+    public function __construct(){
+        list($this->_cartModelName,$this->_cartModel) = Yii::mapGet($this->_cartModelName);  
+    }
     /**
      * @return int 得到cart_id
      * Cart的session的超时时间由session组件决定。
@@ -107,7 +113,7 @@ class Quote extends Service
         if (!$this->_cart) {
             $cart_id = $this->getCartId();
             if ($cart_id) {
-                $one = MyCart::findOne(['cart_id' => $cart_id]);
+                $one = $this->_cartModel::findOne(['cart_id' => $cart_id]);
                 if ($one['cart_id']) {
                     $this->_cart = $one;
                 }
@@ -129,7 +135,7 @@ class Quote extends Service
             if (!$cart_id) {
                 $this->createCart();
             } else {
-                $one = MyCart::findOne(['cart_id' => $cart_id]);
+                $one = $this->_cartModel::findOne(['cart_id' => $cart_id]);
                 if ($one['cart_id']) {
                     $this->_cart = $one;
                 } else {
@@ -143,7 +149,7 @@ class Quote extends Service
     }
 
     /**
-     * @property $cart | MyCart Object
+     * @property $cart | $this->_cartModel Object
      * 设置$this->_cart 为 当前传递的$cart对象。
      */
     public function setCart($cart)
@@ -161,7 +167,7 @@ class Quote extends Service
         if ($cart_id = $this->getCartId()) {
             if($cart_id ){
                 $cart = $this->getCart();
-                //$one = MyCart::findOne(['cart_id' => $cart_id]);
+                //$one = $this->_cartModel::findOne(['cart_id' => $cart_id]);
                 if (isset($cart['items_count']) && $cart['items_count']) {
                     $items_count = $cart['items_count'];
                 }
@@ -216,7 +222,7 @@ class Quote extends Service
      */
     protected function actionCreateCart()
     {
-        $myCart = new MyCart();
+        $myCart = new $this->_cartModelName;
         $myCart->store = Yii::$service->store->currentStore;
         $myCart->created_at = time();
         $myCart->updated_at = time();
@@ -242,7 +248,7 @@ class Quote extends Service
         $myCart->save();
         $cart_id = $myCart['cart_id'];
         $this->setCartId($cart_id);
-        $this->setCart(MyCart::findOne($cart_id));
+        $this->setCart($this->_cartModel::findOne($cart_id));
     }
 
     /** 该函数已经废弃
@@ -521,13 +527,13 @@ class Quote extends Service
 
     /**
      * @property $customer_id | int
-     * @return MyCart Object。
+     * @return $this->_cartModel Object。
      *                通过用户的customer_id，在cart表中找到对应的购物车
      */
     public function getCartByCustomerId($customer_id)
     {
         if ($customer_id) {
-            $one = MyCart::findOne(['customer_id' => $customer_id]);
+            $one = $this->_cartModel::findOne(['customer_id' => $customer_id]);
             if ($one['cart_id']) {
                 return $one;
             }

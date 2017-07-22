@@ -9,7 +9,7 @@
 
 namespace fecshop\services\product;
 
-use fecshop\models\mongodb\product\Favorite as FavoriteModel;
+//use fecshop\models\mongodb\product\Favorite as FavoriteModel;
 use fecshop\services\Service;
 use Yii;
 
@@ -20,6 +20,13 @@ use Yii;
  */
 class Favorite extends Service
 {
+    protected $_favoriteModelName = '\fecshop\models\mongodb\product\Favorite';
+    protected $_favoriteModel;
+    
+    public function __construct(){
+        list($this->_favoriteModelName,$this->_favoriteModel) = \Yii::mapGet($this->_favoriteModelName);  
+    }
+    
     protected function actionGetPrimaryKey()
     {
         return '_id';
@@ -27,17 +34,17 @@ class Favorite extends Service
 
     protected function actionGetByPrimaryKey($val)
     {
-        $one = FavoriteModel::findOne($val);
+        $one = $this->_favoriteModel::findOne($val);
         if ($one[$this->getPrimaryKey()]) {
             return $one;
         } else {
-            return new FavoriteModel();
+            return new $this->_favoriteModelName();
         }
     }
     /**
      * @property $product_id | String ， 产品id
      * @property $user_id | Int ，用户id
-     * @return FavoriteModel ，如果用户在该产品收藏，则返回相应model。
+     * @return $this->_favoriteModel ，如果用户在该产品收藏，则返回相应model。
      */
     protected function actionGetByProductIdAndUserId($product_id, $user_id = '')
     {
@@ -46,7 +53,7 @@ class Favorite extends Service
             $user_id = $identity['id'];
         }
         if ($user_id) {
-            $one = FavoriteModel::findOne([
+            $one = $this->_favoriteModel::findOne([
                 'product_id' => $product_id,
                 'user_id'     => $user_id,
             ]);
@@ -73,7 +80,7 @@ class Favorite extends Service
         }
         //echo $product_id;exit;
         $favoritePrimaryKey = Yii::$service->product->favorite->getPrimaryKey();
-        $one = FavoriteModel::findOne([
+        $one = $this->_favoriteModel::findOne([
             'product_id' => $product_id,
             'user_id'     => $user_id,
         ]);
@@ -84,7 +91,7 @@ class Favorite extends Service
 
             return true;
         }
-        $one = new FavoriteModel();
+        $one = new $this->_favoriteModelName();
         $one->product_id = $product_id;
         $one->user_id = $user_id;
         $one->created_at = time();
@@ -105,7 +112,7 @@ class Favorite extends Service
     protected function updateProductFavoriteCount($product_id)
     {
         if ($product_id) {
-            $count = FavoriteModel::find()->where(['product_id'=>$product_id])->count();
+            $count = $this->_favoriteModel::find()->where(['product_id'=>$product_id])->count();
             $product = Yii::$service->product->getByPrimaryKey($product_id);
             if ($product['_id']) {
                 $product->favorite_count = $count;
@@ -125,7 +132,7 @@ class Favorite extends Service
             $user_id = $identity['id'];
         }
         if ($user_id) {
-            $count = FavoriteModel::find()->where(['user_id'=>$user_id])->count();
+            $count = $this->_favoriteModel::find()->where(['user_id'=>$user_id])->count();
             $identity->favorite_product_count = $count;
             $identity->save();
         }
@@ -147,7 +154,7 @@ class Favorite extends Service
      */
     protected function actionList($filter)
     {
-        $query = FavoriteModel::find();
+        $query = $this->_favoriteModel::find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
 
         return [
@@ -170,7 +177,7 @@ class Favorite extends Service
         $identity = Yii::$app->user->identity;
         $user_id = $identity['id'];
 
-        $one = FavoriteModel::findOne([
+        $one = $this->_favoriteModel::findOne([
             '_id'        => new \MongoDB\BSON\ObjectId($favorite_id),
             'user_id'    => $user_id,
         ]);

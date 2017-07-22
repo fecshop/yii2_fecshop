@@ -9,8 +9,8 @@
 
 namespace fecshop\services\search;
 
-use fecshop\models\mongodb\Product;
-use fecshop\models\xunsearch\Search as XunSearchModel;
+//use fecshop\models\mongodb\Product;
+//use fecshop\models\xunsearch\Search as XunSearchModel;
 use fecshop\services\Service;
 use Yii;
 
@@ -25,7 +25,17 @@ class XunSearch extends Service implements SearchInterface
     public $searchLang;
     public $fuzzy = false;
     public $synonyms = false;
-
+    
+    protected $_productModelName = '\fecshop\models\mongodb\Product';
+    protected $_productModel;
+    protected $_searchModelName  = '\fecshop\models\xunsearch\Search';
+    protected $_searchModel;
+    
+    public function init()
+    {
+        list($this->_productModelName,$this->_productModel) = \Yii::mapGet($this->_productModelName); 
+        list($this->_searchModelName,$this->_searchModel) = \Yii::mapGet($this->_searchModelName); 
+    }
     /**
      * 初始化xunSearch索引.
      */
@@ -40,8 +50,8 @@ class XunSearch extends Service implements SearchInterface
     {
         if (is_array($product_ids) && !empty($product_ids)) {
             $productPrimaryKey    = Yii::$service->product->getPrimaryKey();
-            $XunSearchModel       = new XunSearchModel();
-            $filter['select']     = $XunSearchModel->attributes();
+            $xunSearchModel       = new $this->_searchModelName();
+            $filter['select']     = $xunSearchModel->attributes();
             $filter['asArray']    = true;
             $filter['where'][]    = ['in', $productPrimaryKey, $product_ids];
             $filter['numPerPage'] = $numPerPage;
@@ -55,15 +65,15 @@ class XunSearch extends Service implements SearchInterface
                     if (!empty($this->searchLang) && is_array($this->searchLang)) {
                         foreach ($this->searchLang as $langCode => $langName) {
                             //echo $langCode;
-                            $XunSearchModel = new XunSearchModel();
-                            $XunSearchModel->_id = (string) $one['_id'];
+                            $xunSearchModel = new $this->_searchModelName();
+                            $xunSearchModel->_id = (string) $one['_id'];
                             $one['name'] = Yii::$service->fecshoplang->getLangAttrVal($one_name, 'name', $langCode);
                             $one['description'] = Yii::$service->fecshoplang->getLangAttrVal($one_description, 'description', $langCode);
                             $one['short_description'] = Yii::$service->fecshoplang->getLangAttrVal($one_short_description, 'short_description', $langCode);
                             $one['sync_updated_at'] = time();
                             //echo $one['name']."\n";
                             $serialize = true;
-                            Yii::$service->helper->ar->save($XunSearchModel, $one, $serialize);
+                            Yii::$service->helper->ar->save($xunSearchModel, $one, $serialize);
                             if ($errors = Yii::$service->helper->errors->get()) {
                                 // 报错。
                                 echo  $errors;
@@ -91,14 +101,14 @@ class XunSearch extends Service implements SearchInterface
     protected function actionXunDeleteAllProduct($numPerPage, $i)
     {
         //var_dump($index);
-        $dbName = XunSearchModel::projectName();
+        $dbName = $this->_searchMode::projectName();
         // 删除索引
         Yii::$app->xunsearch->getDatabase($dbName)->getIndex()->clean();
         //$index = Yii::$app->xunsearch->getDatabase($dbName)->index;
 
         echo "begin delete Xun Search Date \n";
         $nowTimeStamp = (int) $nowTimeStamp;
-        $XunSearchData = XunSearchModel::find()
+        $XunSearchData = $this->_searchMode::find()
             ->limit($numPerPage)
             ->offset(($i - 1) * $numPerPage)
             ->all();
@@ -122,7 +132,7 @@ class XunSearch extends Service implements SearchInterface
 
     protected function fullTearchText($select, $where, $pageNum, $numPerPage, $product_search_max_count)
     {
-        $XunSearchQuery = XunSearchModel::find()->asArray();
+        $XunSearchQuery = $this->_searchMode::find()->asArray();
         $XunSearchQuery->fuzzy($this->fuzzy);
         $XunSearchQuery->synonyms($this->synonyms);
 
@@ -161,7 +171,7 @@ class XunSearch extends Service implements SearchInterface
         $productIds = array_slice($productIds, $offset, $limit);
 
         if (!empty($productIds)) {
-            $query = Product::find()->asArray()
+            $query = $this->_productModel::find()->asArray()
                     ->select($select)
                     ->where(['_id'=> ['$in'=>$productIds]]);
             $data = $query->all();
@@ -191,7 +201,7 @@ class XunSearch extends Service implements SearchInterface
     protected function actionGetFrontSearchFilter($filter_attr, $where)
     {
         //var_dump($where);
-        $dbName = XunSearchModel::projectName();
+        $dbName = $this->_searchMode::projectName();
         $_search = Yii::$app->xunsearch->getDatabase($dbName)->getSearch();
         $text = isset($where['$text']['$search']) ? $where['$text']['$search'] : '';
         if (!$text) {
@@ -235,7 +245,7 @@ class XunSearch extends Service implements SearchInterface
     {
         if (is_object($product_id)) {
             $product_id = (string) $product_id;
-            $model = XunSearchModel::findOne($product_id);
+            $model = $this->_searchMode::findOne($product_id);
             if($model){
                 $model->delete();
             }

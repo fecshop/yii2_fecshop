@@ -9,7 +9,7 @@
 
 namespace fecshop\services\payment;
 
-use fecshop\models\mysqldb\IpnMessage;
+//use fecshop\models\mysqldb\IpnMessage;
 use fecshop\services\Service;
 use Yii;
 
@@ -50,6 +50,10 @@ class Alipay extends Service
     const TRADE_SUCCESS = 'TRADE_SUCCESS';
     //交易结束，不可退款
     const TRADE_FINISHED = 'TRADE_FINISHED';
+    
+    protected $_ipnMessageModelName = '\fecshop\models\mysqldb\IpnMessage';
+    protected $_ipnMessageModel;
+    
     /**
      * 引入 支付宝支付的SDK文件。
      */
@@ -58,6 +62,7 @@ class Alipay extends Service
         parent::init();
         $AopSdkFile = Yii::getAlias('@fecshop/lib/alipay/AopSdk.php');
         require($AopSdkFile);
+        list($this->_ipnMessageModelName,$this->_ipnMessageModel) = \Yii::mapGet($this->_ipnMessageModelName);  
     }
     /**
      * 初始化 $this->_AopClient

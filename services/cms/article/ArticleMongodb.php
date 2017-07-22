@@ -9,7 +9,7 @@
 
 namespace fecshop\services\cms\article;
 
-use fecshop\models\mongodb\cms\Article;
+//use fecshop\models\mongodb\cms\Article;
 use Yii;
 use yii\base\InvalidValueException;
 
@@ -20,7 +20,13 @@ use yii\base\InvalidValueException;
 class ArticleMongodb implements ArticleInterface
 {
     public $numPerPage = 20;
-
+    protected $_articleModelName = '\fecshop\models\mongodb\cms\Article';
+    protected $_articleModel;
+    
+    public function __construct(){
+        list($this->_articleModelName,$this->_articleModel) = Yii::mapGet($this->_articleModelName);  
+    }
+    
     public function getPrimaryKey()
     {
         return '_id';
@@ -29,9 +35,9 @@ class ArticleMongodb implements ArticleInterface
     public function getByPrimaryKey($primaryKey)
     {
         if ($primaryKey) {
-            return Article::findOne($primaryKey);
+            return $this->_articleModel::findOne($primaryKey);
         } else {
-            return new Article();
+            return new $this->_articleModelName;
         }
     }
 
@@ -51,7 +57,7 @@ class ArticleMongodb implements ArticleInterface
      */
     public function coll($filter = '')
     {
-        $query = Article::find();
+        $query = $this->_articleModel::find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
 
         return [
@@ -69,14 +75,14 @@ class ArticleMongodb implements ArticleInterface
         $currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
         $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
         if ($primaryVal) {
-            $model = Article::findOne($primaryVal);
+            $model = $this->_articleModel::findOne($primaryVal);
             if (!$model) {
                 Yii::$service->helper->errors->add('article '.$this->getPrimaryKey().' is not exist');
 
                 return;
             }
         } else {
-            $model = new Article();
+            $model = new $this->_articleModelName;
             $model->created_at = time();
             $model->created_user_id = \fec\helpers\CUser::getCurrentUserId();
             $primaryVal = new \MongoDB\BSON\ObjectId();
@@ -107,7 +113,7 @@ class ArticleMongodb implements ArticleInterface
         }
         if (is_array($ids) && !empty($ids)) {
             foreach ($ids as $id) {
-                $model = Article::findOne($id);
+                $model = $this->_articleModel::findOne($id);
                 if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
                     $url_key = $model['url_key'];
                     Yii::$service->url->removeRewriteUrlKey($url_key);
@@ -121,7 +127,7 @@ class ArticleMongodb implements ArticleInterface
             }
         } else {
             $id = $ids;
-            $model = Article::findOne($id);
+            $model = $this->_articleModel::findOne($id);
             if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
                 $url_key = $model['url_key'];
                 Yii::$service->url->removeRewriteUrlKey($url_key);

@@ -9,7 +9,7 @@
 
 namespace fecshop\services\cms\article;
 
-use fecshop\models\mysqldb\cms\Article;
+//use fecshop\models\mysqldb\cms\Article;
 use Yii;
 use yii\base\InvalidValueException;
 
@@ -20,6 +20,12 @@ use yii\base\InvalidValueException;
 class ArticleMysqldb implements ArticleInterface
 {
     public $numPerPage = 20;
+    protected $_articleModelName = '\fecshop\models\mysqldb\cms\Article';
+    protected $_articleModel;
+    
+    public function __construct(){
+        list($this->_articleModelName,$this->_articleModel) = Yii::mapGet($this->_articleModelName);  
+    }
     /**
      *  language attribute.
      */
@@ -38,7 +44,7 @@ class ArticleMysqldb implements ArticleInterface
     public function getByPrimaryKey($primaryKey)
     {
         if ($primaryKey) {
-            $one = Article::findOne($primaryKey);
+            $one = $this->_articleModel::findOne($primaryKey);
             foreach ($this->_lang_attr as $attrName) {
                 if (isset($one[$attrName])) {
                     $one[$attrName] = unserialize($one[$attrName]);
@@ -47,7 +53,7 @@ class ArticleMysqldb implements ArticleInterface
 
             return $one;
         } else {
-            return new Article();
+            return new $this->_articleModelName();
         }
     }
 
@@ -67,7 +73,7 @@ class ArticleMysqldb implements ArticleInterface
      */
     public function coll($filter = '')
     {
-        $query = Article::find();
+        $query = $this->_articleModel::find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
         $coll = $query->all();
         if (!empty($coll)) {
@@ -94,14 +100,14 @@ class ArticleMysqldb implements ArticleInterface
         $currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
         $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
         if ($primaryVal) {
-            $model = Article::findOne($primaryVal);
+            $model = $this->_articleModel::findOne($primaryVal);
             if (!$model) {
                 Yii::$service->helper->errors->add('article '.$this->getPrimaryKey().' is not exist');
 
                 return;
             }
         } else {
-            $model = new Article();
+            $model = new $this->_articleModelName();
             $model->created_at = time();
             $model->created_user_id = \fec\helpers\CUser::getCurrentUserId();
         }
@@ -136,7 +142,7 @@ class ArticleMysqldb implements ArticleInterface
             $innerTransaction = Yii::$app->db->beginTransaction();
             try {
                 foreach ($ids as $id) {
-                    $model = Article::findOne($id);
+                    $model = $this->_articleModel::findOne($id);
                     if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
                         $url_key = $model['url_key'];
                         Yii::$service->url->removeRewriteUrlKey($url_key);
@@ -159,7 +165,7 @@ class ArticleMysqldb implements ArticleInterface
             }
         } else {
             $id = $ids;
-            $model = Article::findOne($id);
+            $model = $this->_articleModel::findOne($id);
             if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
                 $innerTransaction = Yii::$app->db->beginTransaction();
                 try {

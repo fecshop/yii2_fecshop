@@ -9,7 +9,7 @@
 
 namespace fecshop\services\payment;
 
-use fecshop\models\mysqldb\IpnMessage;
+//use fecshop\models\mysqldb\IpnMessage;
 use fecshop\services\Service;
 use Yii;
 
@@ -51,6 +51,13 @@ class Paypal extends Service
     
     protected $expressPayerID;
     protected $expressToken;
+    
+    protected $_ipnMessageModelName = '\fecshop\models\mysqldb\IpnMessage';
+    protected $_ipnMessageModel;
+    
+    public function __construct(){
+        list($this->_ipnMessageModelName,$this->_ipnMessageModel) = \Yii::mapGet($this->_ipnMessageModelName);  
+    }
     /**
      * @property $domain | string
      * @return 得到证书crt文件的绝对路径
@@ -169,7 +176,7 @@ class Paypal extends Service
      */
     protected function isNotDuplicate()
     {
-        $ipn = IpnMessage::find()
+        $ipn = $this->_ipnMessageModel::find()
             ->asArray()
             ->where([
             'txn_id'=>$this->_postData['txn_id'],
@@ -179,7 +186,7 @@ class Paypal extends Service
         if (is_array($ipn) && !empty($ipn)) {
             return false;
         } else {
-            $IpnMessage = new IpnMessage();
+            $IpnMessage = new $this->_ipnMessageModelName();
             $IpnMessage->txn_id = $this->_postData['txn_id'];
             $IpnMessage->payment_status = $this->_postData['payment_status'];
             $IpnMessage->updated_at = time();

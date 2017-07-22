@@ -252,13 +252,13 @@ class CategoryMongodb implements CategoryInterface
             $parent_category = [];
             if ($parent_parent_id !== '0') {
                 $parent_category[] = [
-                    'name' => $parentModel['name'],
+                    'name'   => $parentModel['name'],
                     'url_key'=>$parentModel['url_key'],
                 ];
                 $parent_category = array_merge($this->getAllParentInfo($parent_parent_id), $parent_category);
             } else {
                 $parent_category[] = [
-                    'name' => $parentModel['name'],
+                    'name'   => $parentModel['name'],
                     'url_key'=>$parentModel['url_key'],
                 ];
             }
@@ -280,9 +280,9 @@ class CategoryMongodb implements CategoryInterface
 
             $currentCategory[] = [
                 '_id'        => $currentId,
-                'name'        => $currentName,
+                'name'       => $currentName,
                 'url_key'    => $currentUrlKey,
-                'parent_id'    => $category['parent_id'],
+                'parent_id'  => $category['parent_id'],
             ];
             $parentCategory = $this->getParentCategory($category['parent_id']);
 
@@ -312,9 +312,9 @@ class CategoryMongodb implements CategoryInterface
         $currentId = (string) $currentCategory['_id'];
         $returnData['current'] = [
             '_id'        => $currentId,
-            'name'        => $currentName,
+            'name'       => $currentName,
             'url_key'    => $currentUrlKey,
-            'parent_id'    => $currentCategory['parent_id'],
+            'parent_id'  => $currentCategory['parent_id'],
         ];
         if ($currentCategory['parent_id']) {
             $allParent = $this->getParentCategory($currentCategory['parent_id']);

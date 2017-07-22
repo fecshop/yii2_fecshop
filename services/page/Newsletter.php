@@ -9,7 +9,7 @@
 
 namespace fecshop\services\page;
 
-use fecshop\models\mongodb\customer\Newsletter as MongoNewsletter;
+//use fecshop\models\mongodb\customer\Newsletter as MongoNewsletter;
 use fecshop\services\Service;
 
 /**
@@ -19,18 +19,24 @@ use fecshop\services\Service;
  */
 class Newsletter extends Service
 {
+    protected $_newsletterModelName = '\fecshop\models\mongodb\customer\Newsletter';
+    protected $_newsletterModel;
+    
+    public function __construct(){
+        list($this->_newsletterModelName,$this->_newsletterModel) = \Yii::mapGet($this->_newsletterModelName);  
+    }
     /**
      * @property $email | String  
      * newsletter subscription.
      */
     protected function actionSubscription($email)
     {
-        $mongoNewsletter = new MongoNewsletter();
+        $mongoNewsletter = new $this->_newsletterModelName();
         $mongoNewsletter->attributes = [
             'email' => $email,
         ];
         if ($mongoNewsletter->validate()) {
-            $one = MongoNewsletter::find()->where(['email' => $email])->one();
+            $one = $this->_newsletterModel::find()->where(['email' => $email])->one();
             if ($one['id']) {
                 return [
                     'code' => 300,

@@ -10,8 +10,9 @@
 namespace fecshop\services\helper;
 
 use fec\helpers\CRequest;
-use fecshop\models\mongodb\FecshopServiceLog;
+//use fecshop\models\mongodb\FecshopServiceLog;
 use fecshop\services\Service;
+use Yii;
 
 /**
  * AR services.
@@ -27,7 +28,13 @@ class Log extends Service
     protected $_isServiceLogDbPrint;
     protected $_isServiceLogHtmlPrint;
     protected $_isServiceLogDbPrintByParam;
-
+    
+    protected $_logModelName = '\fecshop\models\mongodb\FecshopServiceLog';
+    protected $_logModel;
+    
+    public function __construct(){
+        list($this->_logModelName,$this->_logModel) = Yii::mapGet($this->_logModelName);  
+    }
     /**
      * Log：get log uuid .
      */
@@ -65,7 +72,7 @@ class Log extends Service
     public function printServiceLog($log_info)
     {
         if ($this->isServiceLogDbPrint()) {
-            FecshopServiceLog::getCollection()->save($log_info);
+            $this->_logModel::getCollection()->save($log_info);
         }
         if ($this->isServiceLogHtmlPrint() || $this->isServiceLogDbPrintByParam()) {
             $str = '<br>#################################<br><table>';

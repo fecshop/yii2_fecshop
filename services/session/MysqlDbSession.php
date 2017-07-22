@@ -10,7 +10,7 @@
 namespace fecshop\services\session;
 
 use Yii;
-use fecshop\models\mysqldb\SessionStorage;
+//use fecshop\models\mysqldb\SessionStorage;
 
 /**
  * mysql session services
@@ -19,14 +19,21 @@ use fecshop\models\mysqldb\SessionStorage;
  */
 class MysqldbSession implements SessionInterface
 {
+    protected $_sessionModelName = '\fecshop\models\mysqldb\SessionStorage';
+    protected $_sessionModel;
+    
+    public function __construct(){
+        list($this->_sessionModelName,$this->_sessionModel) = \Yii::mapGet($this->_sessionModelName);  
+    }
+    
     public function set($key,$val,$timeout){
         $uuid = Yii::$service->session->getUUID();
-        $one = SessionStorage::find()->where([
+        $one = $this->_sessionModel::find()->where([
             'uuid' => $uuid,
             'key'  => $key,
         ])->one();
         if(!$one['id']){
-            $one = new SessionStorage;
+            $one = new $this->_sessionModelName();
             $one['uuid'] = $uuid;
             $one['key']  = $key;
         }
@@ -39,7 +46,7 @@ class MysqldbSession implements SessionInterface
 
     public function get($key,$reflush){
         $uuid = Yii::$service->session->getUUID();
-        $one = SessionStorage::find()->where([
+        $one = $this->_sessionModel::find()->where([
             'uuid' => $uuid,
             'key'  => $key,
         ])->one();
@@ -58,7 +65,7 @@ class MysqldbSession implements SessionInterface
 
     public function remove($key){
         $uuid = Yii::$service->session->getUUID();
-        $one = SessionStorage::find()->where([
+        $one = $this->_sessionModel::find()->where([
             'uuid' => $uuid,
             'key'  => $key,
         ])->one();
@@ -75,7 +82,7 @@ class MysqldbSession implements SessionInterface
     
     public function getFlash($key){
         $uuid = Yii::$service->session->getUUID();
-        $one = SessionStorage::find()->where([
+        $one = $this->_sessionModel::find()->where([
             'uuid' => $uuid,
             'key'  => $key,
         ])->one();

@@ -11,7 +11,7 @@ namespace fecshop\services\product\viewLog;
 
 use fec\helpers\CDate;
 use fec\helpers\CUser;
-use fecshop\models\db\product\ViewLog as DbViewLog;
+//use fecshop\models\db\product\ViewLog as DbViewLog;
 use fecshop\services\Service;
 
 /**
@@ -23,14 +23,18 @@ class Db extends Service
     public $table;
     public $_defaultTable = 'log_product_view';
     public $_maxProductCount = 10;
-
+    
+    protected $_logModelName = '\fecshop\models\db\product\ViewLog';
+    protected $_logModel;
+    
     // init function
     public function init()
     {
+        list($this->_logModelName,$this->_logModel) = \Yii::mapGet($this->_logModelName);  
         if (!$this->table) {
             $this->table = $this->_defaultTable;
         }
-        DbViewLog::setCurrentTableName($this->table);
+        $this->_logModel::setCurrentTableName($this->table);
     }
 
     /**
@@ -47,7 +51,7 @@ class Db extends Service
         if (!$user_id) {
             return;
         }
-        $coll = DbViewLog::find()->where([
+        $coll = $this->_logModel::find()->where([
                 'user_id' => $user_id,
             ])
             ->asArray()
@@ -63,20 +67,20 @@ class Db extends Service
      */
     public function setHistory($productOb)
     {
-        $DbViewLog = new DbViewLog();
+        $dbViewLog = new $this->_logModelName();
         if (isset($productOb['user_id']) && $productOb['user_id']) {
-            $DbViewLog->user_id = $productOb['user_id'];
+            $dbViewLog->user_id = $productOb['user_id'];
         } elseif ($currentUser = CUser::getCurrentUserId()) {
-            $DbViewLog->user_id = $currentUser;
+            $dbViewLog->user_id = $currentUser;
         } else {
             // if not give user_id, can not save history
             return;
         }
-        $DbViewLog->date_time = CDate::getCurrentDateTime();
-        $DbViewLog->product_id = $productOb['id'];
-        $DbViewLog->sku = $productOb['sku'];
-        $DbViewLog->image = $productOb['image'];
-        $DbViewLog->name = $productOb['name'];
-        $DbViewLog->save();
+        $dbViewLog->date_time = CDate::getCurrentDateTime();
+        $dbViewLog->product_id = $productOb['id'];
+        $dbViewLog->sku = $productOb['sku'];
+        $dbViewLog->image = $productOb['image'];
+        $dbViewLog->name = $productOb['name'];
+        $dbViewLog->save();
     }
 }

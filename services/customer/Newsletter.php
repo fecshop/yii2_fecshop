@@ -9,7 +9,7 @@
 
 namespace fecshop\services\customer;
 
-use fecshop\models\mongodb\customer\Newsletter as NewsletterModel;
+//use fecshop\models\mongodb\customer\Newsletter as NewsletterModel;
 use fecshop\services\Service;
 use Yii;
 
@@ -20,6 +20,12 @@ use Yii;
  */
 class Newsletter extends Service
 {
+    protected $_newsletterModelName = '\fecshop\models\mongodb\customer\Newsletter';
+    protected $_newsletterModel;
+    
+    public function __construct(){
+        list($this->_newsletterModelName,$this->_newsletterModel) = Yii::mapGet($this->_newsletterModelName);  
+    }
     /**
      * @property $emailAddress | String
      * @return bool
@@ -27,8 +33,8 @@ class Newsletter extends Service
      */
     protected function emailIsExist($emailAddress)
     {
-        $primaryKey = NewsletterModel::primaryKey();
-        $one = NewsletterModel::findOne(['email' => $emailAddress]);
+        $primaryKey = $this->_newsletterModel::primaryKey();
+        $one = $this->_newsletterModel::findOne(['email' => $emailAddress]);
         if ($one[$primaryKey]) {
             return true;
         }
@@ -56,10 +62,10 @@ class Newsletter extends Service
 
             return;
         }
-        $newsletterModel = new NewsletterModel();
+        $newsletterModel = new $this->_newsletterModelName();
         $newsletterModel->email = $emailAddress;
         $newsletterModel->created_at = time();
-        $newsletterModel->status = NewsletterModel::ENABLE_STATUS;
+        $newsletterModel->status = $this->_newsletterModel::ENABLE_STATUS;
         $newsletterModel->save();
 
         return true;

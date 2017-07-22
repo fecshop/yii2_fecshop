@@ -9,7 +9,7 @@
 
 namespace fecshop\services\order;
 
-use fecshop\models\mysqldb\order\Item as MyOrderItem;
+//use fecshop\models\mysqldb\order\Item as MyOrderItem;
 use fecshop\services\Service;
 use Yii;
 
@@ -20,6 +20,12 @@ use Yii;
  */
 class Item extends Service
 {
+    protected $_itemModelName = '\fecshop\models\mysqldb\order\Item';
+    protected $_itemModel;
+    
+    public function __construct(){
+        list($this->_itemModelName,$this->_itemModel) = \Yii::mapGet($this->_itemModelName);  
+    }
     /**
      * @property $order_id | Int
      * @property $onlyFromTable | 从数据库取出不做处理
@@ -28,7 +34,7 @@ class Item extends Service
      */
     protected function actionGetByOrderId($order_id, $onlyFromTable = false)
     {
-        $items = MyOrderItem::find()->asArray()->where([
+        $items = $this->_itemModel::find()->asArray()->where([
             'order_id' => $order_id,
         ])->all();
         if ($onlyFromTable) {
@@ -171,10 +177,10 @@ class Item extends Service
          * 由于是通过session查订单的方式，而不是新建，paypal报错可能多次下单（更新方式），
          * 因此在添加订单产品的时候先进行一次删除产品操作。
          */
-        MyOrderItem::deleteAll(['order_id' => $order_id]);
+        $this->_itemModel::deleteAll(['order_id' => $order_id]);
         if (is_array($items) && !empty($items) && $order_id && $store) {
             foreach ($items as $item) {
-                $myOrderItem = new MyOrderItem();
+                $myOrderItem = new $this->_itemModelName();
                 $myOrderItem['order_id'] = $order_id;
                 $myOrderItem['store'] = $store;
                 $myOrderItem['created_at'] = time();

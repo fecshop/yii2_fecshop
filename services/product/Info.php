@@ -9,7 +9,7 @@
 
 namespace fecshop\services\product;
 
-use fecshop\models\mongodb\Product;
+//use fecshop\models\mongodb\Product;
 use fecshop\services\Service;
 use Yii;
 
@@ -20,6 +20,13 @@ use Yii;
  */
 class Info extends Service
 {
+    
+    //protected $_productModelName = '\fecshop\models\mongodb\Product';
+    //protected $_productModel;
+    
+    //public function __construct(){
+        //list($this->_productModelName,$this->_productModel) = \Yii::mapGet($this->_productModelName);  
+    //}
     /**
      * @property $custome_option | Array
      * $custome_option = [
