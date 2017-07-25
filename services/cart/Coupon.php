@@ -54,7 +54,7 @@ class Coupon extends Service
         if ($one[$primaryKey]) {
             return $one;
         } else {
-            return new $this->_couponModel;
+            return new $this->_couponModelName;
         }
     }
     /** 
