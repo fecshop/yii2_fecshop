@@ -34,7 +34,7 @@ class Item extends Service
      */
     protected function actionGetByOrderId($order_id, $onlyFromTable = false)
     {
-        $items = $this->_itemModel::find()->asArray()->where([
+        $items = $this->_itemModel->find()->asArray()->where([
             'order_id' => $order_id,
         ])->all();
         if ($onlyFromTable) {
@@ -177,7 +177,7 @@ class Item extends Service
          * 由于是通过session查订单的方式，而不是新建，paypal报错可能多次下单（更新方式），
          * 因此在添加订单产品的时候先进行一次删除产品操作。
          */
-        $this->_itemModel::deleteAll(['order_id' => $order_id]);
+        $this->_itemModel->deleteAll(['order_id' => $order_id]);
         if (is_array($items) && !empty($items) && $order_id && $store) {
             foreach ($items as $item) {
                 $myOrderItem = new $this->_itemModelName();

@@ -41,7 +41,7 @@ class StaticBlockMysqldb implements StaticBlockInterface
     public function getByPrimaryKey($primaryKey)
     {
         if ($primaryKey) {
-            $one = $this->_staticBlockModel::findOne($primaryKey);
+            $one = $this->_staticBlockModel->findOne($primaryKey);
             foreach ($this->_lang_attr as $attrName) {
                 if (isset($one[$attrName])) {
                     $one[$attrName] = unserialize($one[$attrName]);
@@ -56,7 +56,7 @@ class StaticBlockMysqldb implements StaticBlockInterface
 
     public function getByIdentify($identify)
     {
-        $one = $this->_staticBlockModel::find()->asArray()->where([
+        $one = $this->_staticBlockModel->find()->asArray()->where([
             'identify' => $identify,
         ])->one();
         foreach ($this->_lang_attr as $attrName) {
@@ -84,7 +84,7 @@ class StaticBlockMysqldb implements StaticBlockInterface
      */
     public function coll($filter = '')
     {
-        $query = $this->_staticBlockModel::find();
+        $query = $this->_staticBlockModel->find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
         $coll = $query->all();
         if (!empty($coll)) {
@@ -116,7 +116,7 @@ class StaticBlockMysqldb implements StaticBlockInterface
             return;
         }
         if ($primaryVal) {
-            $model = $this->_staticBlockModel::findOne($primaryVal);
+            $model = $this->_staticBlockModel->findOne($primaryVal);
             if (!$model) {
                 Yii::$service->helper->errors->add('static block '.$this->getPrimaryKey().' is not exist');
 
@@ -146,7 +146,7 @@ class StaticBlockMysqldb implements StaticBlockInterface
         $id = $this->getPrimaryKey();
         $primaryVal = isset($one[$id]) ? $one[$id] : '';
         $where = ['identify' => $identify];
-        $query = $this->_staticBlockModel::find()->asArray();
+        $query = $this->_staticBlockModel->find()->asArray();
         $query->where(['identify' => $identify]);
         if ($primaryVal) {
             $query->andWhere(['<>', $id, $primaryVal]);
@@ -168,13 +168,13 @@ class StaticBlockMysqldb implements StaticBlockInterface
         }
         if (is_array($ids) && !empty($ids)) {
             foreach ($ids as $id) {
-                $model = $this->_staticBlockModel::findOne($id);
+                $model = $this->_staticBlockModel->findOne($id);
                 $model->delete();
             }
         } else {
             $id = $ids;
             foreach ($ids as $id) {
-                $model = $this->_staticBlockModel::findOne($id);
+                $model = $this->_staticBlockModel->findOne($id);
                 $model->delete();
             }
         }

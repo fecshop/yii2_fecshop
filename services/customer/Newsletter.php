@@ -33,8 +33,8 @@ class Newsletter extends Service
      */
     protected function emailIsExist($emailAddress)
     {
-        $primaryKey = $this->_newsletterModel::primaryKey();
-        $one = $this->_newsletterModel::findOne(['email' => $emailAddress]);
+        $primaryKey = $this->_newsletterModel->primaryKey();
+        $one = $this->_newsletterModel->findOne(['email' => $emailAddress]);
         if ($one[$primaryKey]) {
             return true;
         }
@@ -62,10 +62,11 @@ class Newsletter extends Service
 
             return;
         }
+        $model = $this->_newsletterModel;
         $newsletterModel = new $this->_newsletterModelName();
         $newsletterModel->email = $emailAddress;
         $newsletterModel->created_at = time();
-        $newsletterModel->status = $this->_newsletterModel::ENABLE_STATUS;
+        $newsletterModel->status = $model::ENABLE_STATUS;
         $newsletterModel->save();
 
         return true;

@@ -32,17 +32,17 @@ class Menu extends Service
      */
     protected function actionGetCategoryMenuArr($parentId = '')
     {
-        
+        $model = $this->_categoryModel;
         $arr = [];
         if (!$parentId) {
             $parentId = $this->rootCategoryId;
         }
-        $data = $this->_categoryModel::find()->asArray()->select([
+        $data = $this->_categoryModel->find()->asArray()->select([
             '_id', 'parent_id', 'name', 'url_key', 'menu_custom',
         ])->where([
             'parent_id' => $parentId,
-            'status'    => $this->_categoryModel::STATUS_ENABLE,
-            'menu_show' => $this->_categoryModel::MENU_SHOW,
+            'status'    => $model::STATUS_ENABLE,
+            'menu_show' => $model::MENU_SHOW,
         ])->all();
         if (is_array($data) && !empty($data)) {
             foreach ($data as $category) {
@@ -71,7 +71,7 @@ class Menu extends Service
      */
     protected function hasChild($categoryId)
     {
-        $one = $this->_categoryModel::find()->asArray()->where([
+        $one = $this->_categoryModel->find()->asArray()->where([
                 'parent_id' => $categoryId,
             ])->one();
         if ($one['_id']) {

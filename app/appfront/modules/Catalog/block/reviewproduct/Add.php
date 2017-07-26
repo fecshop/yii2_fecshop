@@ -31,8 +31,8 @@ class Add
          * 通过Yii::mapGet() 得到重写后的class类名以及对象。Yii::mapGet是在文件@fecshop\yii\Yii.php中
          */
         list($this->_reviewHelperName,$this->_reviewHelper) = Yii::mapGet($this->_reviewHelperName);  
-        
-        $this->_reviewHelper::initReviewConfig();
+        $reviewHelper = $this->_reviewHelper;
+        $reviewHelper::initReviewConfig();
     }
     /**
      * @return boolean , review页面是否开启验证码验证。

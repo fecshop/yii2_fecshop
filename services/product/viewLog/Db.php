@@ -34,7 +34,7 @@ class Db extends Service
         if (!$this->table) {
             $this->table = $this->_defaultTable;
         }
-        $this->_logModel::setCurrentTableName($this->table);
+        $this->_logModel->setCurrentTableName($this->table);
     }
 
     /**
@@ -51,7 +51,7 @@ class Db extends Service
         if (!$user_id) {
             return;
         }
-        $coll = $this->_logModel::find()->where([
+        $coll = $this->_logModel->find()->where([
                 'user_id' => $user_id,
             ])
             ->asArray()

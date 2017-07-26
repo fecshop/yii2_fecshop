@@ -54,7 +54,7 @@ class Stock extends Service
             Yii::$service->helper->errors->add('ProductIds must be Array');
             return false;
         }
-        $data = $this->_flatQtyModel::find()->asArray()->where([
+        $data = $this->_flatQtyModel->find()->asArray()->where([
             'in','product_id',$productIds
         ])->all();
         $arr = [];
@@ -86,7 +86,7 @@ class Stock extends Service
             Yii::$service->helper->errors->add('save product qty error: product qty is empty');
         }
         // 保存产品flat qty
-        $productFlatQty = $this->_flatQtyModel::find()
+        $productFlatQty = $this->_flatQtyModel->find()
             ->where(['product_id' => $product_id])
             ->one();
         if(!$productFlatQty['product_id']){
@@ -101,7 +101,7 @@ class Stock extends Service
             $co_sku_arr = $this->getProductCustomOptionSkuArr($product_id);
             $product_sku_arr = [];
             foreach($one['custom_option'] as $custom_option_sku => $c_one){
-                $productCustomOptionQty = $this->_COQtyModel::find()
+                $productCustomOptionQty = $this->_COQtyModel->find()
                     ->where([
                         'product_id' => $product_id,
                         'custom_option_sku' => $custom_option_sku,
@@ -120,7 +120,7 @@ class Stock extends Service
             //var_dump($delete_sku_arr);
             // 删除掉产品中不存在customOptionSku对应的库存、
             if(!empty($delete_sku_arr) && is_array($delete_sku_arr)){
-                $this->_COQtyModel::deleteAll([
+                $this->_COQtyModel->deleteAll([
                     'and',
                     ['product_id' => $product_id],
                     ['in','custom_option_sku',$delete_sku_arr]
@@ -138,7 +138,7 @@ class Stock extends Service
             Yii::$service->helper->errors->add('remove product qty error: product is empty');
         }
         // 保存产品flat qty
-        $this->_flatQtyModel::deleteAll(['product_id' => $product_id]);
+        $this->_flatQtyModel->deleteAll(['product_id' => $product_id]);
         productCustomOptionQty::deleteAll(['product_id' => $product_id]);
         return true;
     }
@@ -191,13 +191,13 @@ class Stock extends Service
                 if ($product_id && $sale_qty) {
                     if(!$custom_option_sku){
                         // 应对高并发库存超卖的控制，更新后在查询产品的库存，如果库存小于则回滚。
-                        $sql = 'update '.$this->_flatQtyModel::tableName().' set qty = qty - :sale_qty where product_id = :product_id';
+                        $sql = 'update '.$this->_flatQtyModel->tableName().' set qty = qty - :sale_qty where product_id = :product_id';
                         $data = [
                             'sale_qty'  => $sale_qty,
                             'product_id'=> $product_id,
                         ];
-                        $result = $this->_flatQtyModel::getDb()->createCommand($sql,$data)->execute();
-                        $productFlatQty = $this->_flatQtyModel::find()->where([
+                        $result = $this->_flatQtyModel->getDb()->createCommand($sql,$data)->execute();
+                        $productFlatQty = $this->_flatQtyModel->find()->where([
                             'product_id' => $product_id
                         ])->one();
                         if($productFlatQty['qty'] < 0){
@@ -206,14 +206,14 @@ class Stock extends Service
                         }
                     }else{
                         // 对于custom option（淘宝模式）的库存扣除
-                        $sql = 'update '.$this->_COQtyModel::tableName().' set qty = qty - :sale_qty where product_id = :product_id and custom_option_sku = :custom_option_sku';
+                        $sql = 'update '.$this->_COQtyModel->tableName().' set qty = qty - :sale_qty where product_id = :product_id and custom_option_sku = :custom_option_sku';
                         $data = [
                             'sale_qty'  => $sale_qty,
                             'product_id'=> $product_id,
                             'custom_option_sku' => $custom_option_sku
                         ];
-                        $result = $this->_COQtyModel::getDb()->createCommand($sql,$data)->execute();
-                        $productCustomOptionQty = $this->_COQtyModel::find()->where([
+                        $result = $this->_COQtyModel->getDb()->createCommand($sql,$data)->execute();
+                        $productCustomOptionQty = $this->_COQtyModel->find()->where([
                             'product_id' => $product_id,
                             'custom_option_sku' => $custom_option_sku,
                         ])->one();
@@ -299,7 +299,7 @@ class Stock extends Service
                 $custom_option_sku  = $item['custom_option_sku'];
                 if ($product_id && $sale_qty) {
                     if(!$custom_option_sku){
-                        $productM = $this->_flatQtyModel::find()->where([
+                        $productM = $this->_flatQtyModel->find()->where([
                             'product_id' => $product_id
                         ])->one();
 
@@ -323,7 +323,7 @@ class Stock extends Service
                             ];
                         }
                     }else{
-                        $productCustomOptionM = $this->_COQtyModel::find()->where([
+                        $productCustomOptionM = $this->_COQtyModel->find()->where([
                             'product_id'        => $product_id,
                             'custom_option_sku' => $custom_option_sku,
                         ])->one();
@@ -396,22 +396,22 @@ class Stock extends Service
                 $custom_option_sku  = $item['custom_option_sku'];
                 if ($product_id && $sale_qty) {
                     if(!$custom_option_sku){
-                        $sql = 'update '.$this->_flatQtyModel::tableName().' set qty = qty + :sale_qty where product_id = :product_id';
+                        $sql = 'update '.$this->_flatQtyModel->tableName().' set qty = qty + :sale_qty where product_id = :product_id';
                         $data = [
                             'sale_qty'  => $sale_qty,
                             'product_id'=> $product_id,
                         ];
-                        $result = $this->_flatQtyModel::getDb()->createCommand($sql,$data)->execute();
+                        $result = $this->_flatQtyModel->getDb()->createCommand($sql,$data)->execute();
                         
                     }else{
                         // 对于custom option（淘宝模式）的库存扣除
-                        $sql = 'update '.$this->_COQtyModel::tableName().' set qty = qty + :sale_qty where product_id = :product_id and custom_option_sku = :custom_option_sku';
+                        $sql = 'update '.$this->_COQtyModel->tableName().' set qty = qty + :sale_qty where product_id = :product_id and custom_option_sku = :custom_option_sku';
                         $data = [
                             'sale_qty'  => $sale_qty,
                             'product_id'=> $product_id,
                             'custom_option_sku' => $custom_option_sku
                         ];
-                        $result = $this->_COQtyModel::getDb()->createCommand($sql,$data)->execute();
+                        $result = $this->_COQtyModel->getDb()->createCommand($sql,$data)->execute();
                         
                     }
                 }
@@ -442,7 +442,7 @@ class Stock extends Service
         if ($this->checkOnShelfStatus($is_in_stock)) {
             if ($custom_option_sku) {
                 
-                $productCustomOptionQty = $this->_COQtyModel::find()->where([
+                $productCustomOptionQty = $this->_COQtyModel->find()->where([
                         'product_id'        => $product_id,
                         'custom_option_sku' => $custom_option_sku
                     ])->one();
@@ -459,7 +459,7 @@ class Stock extends Service
                     //Yii::$service->helper->errors->add('Product Id:'.$product['_id'].' && customOptionSku:'.$custom_option_sku.' , The product has no qty');
                 }
             } elseif (($product_qty > 0) && ($product_qty > $sale_qty)) {
-                $productFlatQty = $this->_flatQtyModel::find()->where([
+                $productFlatQty = $this->_flatQtyModel->find()->where([
                         'product_id' => $product_id
                     ])->one();
                 if($productFlatQty['qty']){
@@ -498,7 +498,7 @@ class Stock extends Service
      * 得到产品的库存个数（Flat Qty）
      */
     public function getProductFlatQty($product_id){
-        $productFlatQty = $this->_flatQtyModel::find()->asArray()
+        $productFlatQty = $this->_flatQtyModel->find()->asArray()
             ->where([
                 'product_id' => $product_id
             ])->one();
@@ -516,7 +516,7 @@ class Stock extends Service
      * 得到产品的custom option 部分的库存
      */
     public function getProductCustomOptionQty($product_id,$onlySku=false){
-        $arr = $this->_COQtyModel::find()->asArray()
+        $arr = $this->_COQtyModel->find()->asArray()
             ->where([
                 'product_id' => $product_id
             ])->all();
@@ -536,7 +536,7 @@ class Stock extends Service
      * 得到产品的所有custom_option_sku 数组
      */
     public function getProductCustomOptionSkuArr($product_id){
-        $arr = $this->_COQtyModel::find()->asArray()
+        $arr = $this->_COQtyModel->find()->asArray()
             ->where([
                 'product_id' => $product_id
             ])->all();
@@ -555,7 +555,7 @@ class Stock extends Service
      * 得到产品的custom option 部分，相应的$custom_option_sku的库存
      */
     public function getProductCustomOptionSkuQty($product_id,$custom_option_sku){
-        $productCustomOptionQty = $this->_COQtyModel::find()->asArray()
+        $productCustomOptionQty = $this->_COQtyModel->find()->asArray()
             ->where([
                 'product_id' => $product_id,
                 'custom_option_sku' => $custom_option_sku

@@ -37,8 +37,8 @@ class Lists
          * 通过Yii::mapGet() 得到重写后的class类名以及对象。Yii::mapGet是在文件@fecshop\yii\Yii.php中
          */
         list($this->_reviewHelperName,$this->_reviewHelper) = Yii::mapGet($this->_reviewHelperName);  
-        
-        $this->_reviewHelper::initReviewConfig();
+        $reviewHelper = $this->_reviewHelper;
+        $reviewHelper::initReviewConfig();
     }
     /**
      * @property $countTotal | Int
@@ -97,7 +97,8 @@ class Lists
 
             $pageToolBar = $this->getProductPage($count);
             $coll = $data['coll'];
-            $ReviewAndStarCount = $this->_reviewHelper::getReviewAndStarCount($product);
+            $reviewHelper = $this->_reviewHelper;
+            $ReviewAndStarCount = $reviewHelper::getReviewAndStarCount($product);
             list($review_count, $reviw_rate_star_average) = $ReviewAndStarCount;
 
             return [

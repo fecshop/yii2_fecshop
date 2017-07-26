@@ -49,7 +49,7 @@ class Coupon extends Service
      */
     protected function actionGetByPrimaryKey($primaryKey)
     {
-        $one = $this->_couponModel::findOne($primaryKey);
+        $one = $this->_couponModel->findOne($primaryKey);
         $primaryKey = $this->getPrimaryKey();
         if ($one[$primaryKey]) {
             return $one;
@@ -73,7 +73,7 @@ class Coupon extends Service
                 $coupon_id = isset($couponModel['coupon_id']) ? $couponModel['coupon_id'] : '';
             }
             if ($customer_id && $coupon_id) {
-                $one = $this->_couponUsageModel::findOne([
+                $one = $this->_couponUsageModel->findOne([
                     'customer_id' => $customer_id,
                     'coupon_id'  => $coupon_id,
                 ]);
@@ -97,7 +97,7 @@ class Coupon extends Service
                 $coupon_code = $this->_coupon_code;
             }
             if ($coupon_code) {
-                $one = $this->_couponModel::findOne(['coupon_code' => $coupon_code]);
+                $one = $this->_couponModel->findOne(['coupon_code' => $coupon_code]);
                 if ($one['coupon_code']) {
                     $this->_coupon_model = $one;
                 }
@@ -127,7 +127,7 @@ class Coupon extends Service
      */
     protected function actionColl($filter = '')
     {
-        $query = $this->_couponModel::find();
+        $query = $this->_couponModel->find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
         $coll = $query->all();
         return [
@@ -145,13 +145,13 @@ class Coupon extends Service
         $primaryKey = $this->getPrimaryKey();
         $primaryVal = isset($one[$primaryKey]) ? $one[$primaryKey] : '';
         if ($primaryVal) {
-            $model = $this->_couponModel::findOne($primaryVal);
+            $model = $this->_couponModel->findOne($primaryVal);
             if (!$model) {
                 Yii::$service->helper->errors->add('coupon '.$this->getPrimaryKey().' is not exist');
 
                 return;
             } else {
-                $o_one = $this->_couponModel::find()
+                $o_one = $this->_couponModel->find()
                     ->where(['coupon_code' =>$one['coupon_code']])
                     ->andWhere(['!=', $primaryKey, $primaryVal])
                     ->one();
@@ -162,7 +162,7 @@ class Coupon extends Service
                 }
             }
         } else {
-            $o_one = $this->_couponModel::find()
+            $o_one = $this->_couponModel->find()
                 ->where(['coupon_code' =>$one['coupon_code']])
                 ->one();
             if ($o_one[$primaryKey]) {
@@ -203,7 +203,7 @@ class Coupon extends Service
         }
         if (is_array($ids) && !empty($ids)) {
             foreach ($ids as $id) {
-                $model = $this->_couponModel::findOne($id);
+                $model = $this->_couponModel->findOne($id);
                 if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
                     $model->delete();
                 } else {
@@ -214,7 +214,7 @@ class Coupon extends Service
             }
         } else {
             $id = $ids;
-            $model = $this->_couponModel::findOne($id);
+            $model = $this->_couponModel->findOne($id);
             if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
                 $model->delete();
             } else {
@@ -341,35 +341,35 @@ class Coupon extends Service
                         $cu_model->save();
                     } else {
                         // 通过update函数 将times_used +1
-                        $sql = 'update '.$this->_couponUsageModel::tableName().' set times_used = times_used + 1 where id = :id';
+                        $sql = 'update '.$this->_couponUsageModel->tableName().' set times_used = times_used + 1 where id = :id';
                         $data = [
                             'id'  => $cu_model['id'],
                         ];
-                        $result = $this->_couponUsageModel::getDb()->createCommand($sql,$data)->execute();
+                        $result = $this->_couponUsageModel->getDb()->createCommand($sql,$data)->execute();
                     }
                     // coupon的总使用次数+1
-                    $sql = 'update '.$this->_couponModel::tableName().' set times_used = times_used + 1 where coupon_id  = :coupon_id ';
+                    $sql = 'update '.$this->_couponModel->tableName().' set times_used = times_used + 1 where coupon_id  = :coupon_id ';
                     $data = [
                         'coupon_id' => $c_model['coupon_id'],
                     ];
-                    $result = $this->_couponModel::getDb()->createCommand($sql,$data)->execute();
+                    $result = $this->_couponModel->getDb()->createCommand($sql,$data)->execute();
                     return true;
                 } elseif ($type == 'cancel') {
                     $couponModel = $this->getCouponModel();
                     $cu_model = $this->getCouponUsageModel();
                     if ($cu_model) {
                         // $this->_couponUsageModel 使用次数-1
-                        $sql = 'update '.$this->_couponUsageModel::tableName().' set times_used = times_used - 1 where id = :id';
+                        $sql = 'update '.$this->_couponUsageModel->tableName().' set times_used = times_used - 1 where id = :id';
                         $data = [
                             'id'  => $cu_model['id'],
                         ];
-                        $result = $this->_couponUsageModel::getDb()->createCommand($sql,$data)->execute();
+                        $result = $this->_couponUsageModel->getDb()->createCommand($sql,$data)->execute();
                         // $this->_couponModel 使用次数-1
-                        $sql = 'update '.$this->_couponModel::tableName().' set times_used = times_used - 1 where coupon_id  = :coupon_id ';
+                        $sql = 'update '.$this->_couponModel->tableName().' set times_used = times_used - 1 where coupon_id  = :coupon_id ';
                         $data = [
                             'coupon_id' => $c_model['coupon_id'],
                         ];
-                        $result = $this->_couponModel::getDb()->createCommand($sql,$data)->execute();
+                        $result = $this->_couponModel->getDb()->createCommand($sql,$data)->execute();
                         
                         return true;
                     }

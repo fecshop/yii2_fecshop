@@ -28,7 +28,7 @@ class MysqldbSession implements SessionInterface
     
     public function set($key,$val,$timeout){
         $uuid = Yii::$service->session->getUUID();
-        $one = $this->_sessionModel::find()->where([
+        $one = $this->_sessionModel->find()->where([
             'uuid' => $uuid,
             'key'  => $key,
         ])->one();
@@ -46,7 +46,7 @@ class MysqldbSession implements SessionInterface
 
     public function get($key,$reflush){
         $uuid = Yii::$service->session->getUUID();
-        $one = $this->_sessionModel::find()->where([
+        $one = $this->_sessionModel->find()->where([
             'uuid' => $uuid,
             'key'  => $key,
         ])->one();
@@ -65,7 +65,7 @@ class MysqldbSession implements SessionInterface
 
     public function remove($key){
         $uuid = Yii::$service->session->getUUID();
-        $one = $this->_sessionModel::find()->where([
+        $one = $this->_sessionModel->find()->where([
             'uuid' => $uuid,
             'key'  => $key,
         ])->one();
@@ -82,7 +82,7 @@ class MysqldbSession implements SessionInterface
     
     public function getFlash($key){
         $uuid = Yii::$service->session->getUUID();
-        $one = $this->_sessionModel::find()->where([
+        $one = $this->_sessionModel->find()->where([
             'uuid' => $uuid,
             'key'  => $key,
         ])->one();

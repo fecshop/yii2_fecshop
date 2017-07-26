@@ -54,8 +54,9 @@ class Index
             Yii::$service->url->redirect404();
             return;
         }
-        $this->_reviewHelper::initReviewConfig();
-        $ReviewAndStarCount = $this->_reviewHelper::getReviewAndStarCount($this->_product);
+        $reviewHelper = $this->_reviewHelper;
+        $reviewHelper::initReviewConfig();
+        $ReviewAndStarCount = $reviewHelper::getReviewAndStarCount($this->_product);
         list($review_count, $reviw_rate_star_average) = $ReviewAndStarCount;
         $this->filterProductImg($this->_product['image']);
         $groupAttr = Yii::$service->product->getGroupAttr($this->_product['attr_group']);

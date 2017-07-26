@@ -101,15 +101,15 @@ class XunSearch extends Service implements SearchInterface
     protected function actionXunDeleteAllProduct($numPerPage, $i)
     {
         //var_dump($index);
-        $dbName = $this->_searchMode::projectName();
+        $dbName = $this->_searchModel->projectName();
         // 删除索引
         Yii::$app->xunsearch->getDatabase($dbName)->getIndex()->clean();
         //$index = Yii::$app->xunsearch->getDatabase($dbName)->index;
 
         echo "begin delete Xun Search Date \n";
         $nowTimeStamp = (int) $nowTimeStamp;
-        $XunSearchData = $this->_searchMode::find()
-            ->limit($numPerPage)
+        $XunSearchData = $this->_searchModel->find()
+            ->limit($numPerPage)  
             ->offset(($i - 1) * $numPerPage)
             ->all();
         foreach ($XunSearchData as $one) {
@@ -132,7 +132,7 @@ class XunSearch extends Service implements SearchInterface
 
     protected function fullTearchText($select, $where, $pageNum, $numPerPage, $product_search_max_count)
     {
-        $XunSearchQuery = $this->_searchMode::find()->asArray();
+        $XunSearchQuery = $this->_searchModel->find()->asArray();
         $XunSearchQuery->fuzzy($this->fuzzy);
         $XunSearchQuery->synonyms($this->synonyms);
 
@@ -171,7 +171,7 @@ class XunSearch extends Service implements SearchInterface
         $productIds = array_slice($productIds, $offset, $limit);
 
         if (!empty($productIds)) {
-            $query = $this->_productModel::find()->asArray()
+            $query = $this->_productModel->find()->asArray()
                     ->select($select)
                     ->where(['_id'=> ['$in'=>$productIds]]);
             $data = $query->all();
@@ -201,7 +201,7 @@ class XunSearch extends Service implements SearchInterface
     protected function actionGetFrontSearchFilter($filter_attr, $where)
     {
         //var_dump($where);
-        $dbName = $this->_searchMode::projectName();
+        $dbName = $this->_searchModel->projectName();
         $_search = Yii::$app->xunsearch->getDatabase($dbName)->getSearch();
         $text = isset($where['$text']['$search']) ? $where['$text']['$search'] : '';
         if (!$text) {
@@ -245,7 +245,7 @@ class XunSearch extends Service implements SearchInterface
     {
         if (is_object($product_id)) {
             $product_id = (string) $product_id;
-            $model = $this->_searchMode::findOne($product_id);
+            $model = $this->_searchModel->findOne($product_id);
             if($model){
                 $model->delete();
             }

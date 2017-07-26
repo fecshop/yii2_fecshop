@@ -44,7 +44,7 @@ class ArticleMysqldb implements ArticleInterface
     public function getByPrimaryKey($primaryKey)
     {
         if ($primaryKey) {
-            $one = $this->_articleModel::findOne($primaryKey);
+            $one = $this->_articleModel->findOne($primaryKey);
             foreach ($this->_lang_attr as $attrName) {
                 if (isset($one[$attrName])) {
                     $one[$attrName] = unserialize($one[$attrName]);
@@ -73,7 +73,7 @@ class ArticleMysqldb implements ArticleInterface
      */
     public function coll($filter = '')
     {
-        $query = $this->_articleModel::find();
+        $query = $this->_articleModel->find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
         $coll = $query->all();
         if (!empty($coll)) {
@@ -100,7 +100,7 @@ class ArticleMysqldb implements ArticleInterface
         $currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
         $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
         if ($primaryVal) {
-            $model = $this->_articleModel::findOne($primaryVal);
+            $model = $this->_articleModel->findOne($primaryVal);
             if (!$model) {
                 Yii::$service->helper->errors->add('article '.$this->getPrimaryKey().' is not exist');
 
@@ -142,7 +142,7 @@ class ArticleMysqldb implements ArticleInterface
             $innerTransaction = Yii::$app->db->beginTransaction();
             try {
                 foreach ($ids as $id) {
-                    $model = $this->_articleModel::findOne($id);
+                    $model = $this->_articleModel->findOne($id);
                     if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
                         $url_key = $model['url_key'];
                         Yii::$service->url->removeRewriteUrlKey($url_key);
@@ -165,7 +165,7 @@ class ArticleMysqldb implements ArticleInterface
             }
         } else {
             $id = $ids;
-            $model = $this->_articleModel::findOne($id);
+            $model = $this->_articleModel->findOne($id);
             if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
                 $innerTransaction = Yii::$app->db->beginTransaction();
                 try {

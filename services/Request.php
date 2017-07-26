@@ -131,7 +131,7 @@ class Request extends \yii\web\Request
      */
     protected function getOriginUrl($urlKey)
     {
-        $UrlData = $this->_urlRewriteModel::find()->where([
+        $UrlData = $this->_urlRewriteModel->find()->where([
             'custom_url_key' => $urlKey,
         ])->asArray()->one();
         if ($UrlData['custom_url_key']) {

@@ -35,9 +35,9 @@ class Review
          * 通过Yii::mapGet() 得到重写后的class类名以及对象。Yii::mapGet是在文件@fecshop\yii\Yii.php中
          */
         list($this->_reviewHelperName,$this->_reviewHelper) = Yii::mapGet($this->_reviewHelperName);  
-        
+        $reviewHelper = $this->_reviewHelper;
         // 初始化当前appfront的设置，覆盖service的初始设置。
-        $this->_reviewHelper::initReviewConfig();
+        $reviewHelper::initReviewConfig();
     }
     /**
      * 得到当前spu下面的所有评论信息。

@@ -72,7 +72,7 @@ class Log extends Service
     public function printServiceLog($log_info)
     {
         if ($this->isServiceLogDbPrint()) {
-            $this->_logModel::getCollection()->save($log_info);
+            $this->_logModel->getCollection()->save($log_info);
         }
         if ($this->isServiceLogHtmlPrint() || $this->isServiceLogDbPrintByParam()) {
             $str = '<br>#################################<br><table>';

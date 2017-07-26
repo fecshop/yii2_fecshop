@@ -33,7 +33,7 @@ class CategoryMongodb implements CategoryInterface
     public function getByPrimaryKey($primaryKey)
     {
         if ($primaryKey) {
-            return $this->_categoryModel::findOne($primaryKey);
+            return $this->_categoryModel->findOne($primaryKey);
         } else {
             return new $this->_categoryModelName;
         }
@@ -50,14 +50,15 @@ class CategoryMongodb implements CategoryInterface
      * 得到分类激活状态的值
      */
     public function getCategoryEnableStatus(){
-        
-        return $this->_categoryModel::STATUS_ENABLE;
+        $model = $this->_categoryModel;
+        return $model::STATUS_ENABLE;
     }
     /**
      * 得到分类在menu中显示的状态值
      */
     public function getCategoryMenuShowStatus(){
-        return $this->_categoryModel::MENU_SHOW;
+        $model = $this->_categoryModel;
+        return $model::MENU_SHOW;
     }
     
 
@@ -77,7 +78,7 @@ class CategoryMongodb implements CategoryInterface
      */
     public function coll($filter = '')
     {
-        $query = $this->_categoryModel::find();
+        $query = $this->_categoryModel->find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
 
         return [
@@ -91,7 +92,7 @@ class CategoryMongodb implements CategoryInterface
      */
     public function collCount($filter = '')
     {
-        $query = $this->_categoryModel::find();
+        $query = $this->_categoryModel->find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
 
         return $query->count();
@@ -107,7 +108,7 @@ class CategoryMongodb implements CategoryInterface
         $currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
         $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
         if ($primaryVal) {
-            $model = $this->_categoryModel::findOne($primaryVal);
+            $model = $this->_categoryModel->findOne($primaryVal);
             if (!$model) {
                 Yii::$service->helper->errors->add('Category '.$this->getPrimaryKey().' is not exist');
 
@@ -126,7 +127,7 @@ class CategoryMongodb implements CategoryInterface
         if ($parent_id === '0') {
             $model['level'] = 1;
         } else {
-            $parent_model = $this->_categoryModel::findOne($parent_id);
+            $parent_model = $this->_categoryModel->findOne($parent_id);
             if ($parent_level = $parent_model['level']) {
                 $model['level'] = $parent_level + 1;
             }
@@ -159,7 +160,7 @@ class CategoryMongodb implements CategoryInterface
             return false;
         }
 
-        $model = $this->_categoryModel::findOne($id);
+        $model = $this->_categoryModel->findOne($id);
         if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
             $url_key = $model['url_key'];
             Yii::$service->url->removeRewriteUrlKey($url_key);
@@ -176,7 +177,7 @@ class CategoryMongodb implements CategoryInterface
 
     protected function removeChildCate($id)
     {
-        $data = $this->_categoryModel::find()->where(['parent_id'=>$id])->all();
+        $data = $this->_categoryModel->find()->where(['parent_id'=>$id])->all();
         if (!empty($data)) {
             foreach ($data as $one) {
                 $idVal = (string) $one['_id'];
@@ -206,7 +207,7 @@ class CategoryMongodb implements CategoryInterface
         } else {
             $where = ['parent_id' => $rootCategoryId];
         }
-        $categorys = $this->_categoryModel::find()->asArray()->where($where)->all();
+        $categorys = $this->_categoryModel->find()->asArray()->where($where)->all();
         //var_dump($categorys);exit;
         $idKey = $this->getPrimaryKey();
         if (!empty($categorys)) {
@@ -229,7 +230,7 @@ class CategoryMongodb implements CategoryInterface
 
     protected function hasChildCategory($idVal)
     {
-        $one = $this->_categoryModel::find()->asArray()->where(['parent_id'=>$idVal])->one();
+        $one = $this->_categoryModel->find()->asArray()->where(['parent_id'=>$idVal])->one();
         if (!empty($one)) {
             return true;
         }
@@ -247,7 +248,7 @@ class CategoryMongodb implements CategoryInterface
     public function getAllParentInfo($parent_id)
     {
         if ($parent_id) {
-            $parentModel = $this->_categoryModel::findOne($parent_id);
+            $parentModel = $this->_categoryModel->findOne($parent_id);
             $parent_parent_id = $parentModel['parent_id'];
             $parent_category = [];
             if ($parent_parent_id !== '0') {
@@ -272,7 +273,7 @@ class CategoryMongodb implements CategoryInterface
         if ($parent_id === '0') {
             return [];
         }
-        $category = $this->_categoryModel::find()->asArray()->where(['_id' => new \MongoDB\BSON\ObjectId($parent_id)])->one();
+        $category = $this->_categoryModel->find()->asArray()->where(['_id' => new \MongoDB\BSON\ObjectId($parent_id)])->one();
         if (isset($category['_id']) && !empty($category['_id'])) {
             $currentUrlKey = $category['url_key'];
             $currentName = $category['name'];
@@ -306,7 +307,7 @@ class CategoryMongodb implements CategoryInterface
     {
         $returnData = [];
         $primaryKey = $this->getPrimaryKey();
-        $currentCategory = $this->_categoryModel::findOne($category_id);
+        $currentCategory = $this->_categoryModel->findOne($category_id);
         $currentUrlKey = $currentCategory['url_key'];
         $currentName = $currentCategory['name'];
         $currentId = (string) $currentCategory['_id'];
@@ -337,7 +338,7 @@ class CategoryMongodb implements CategoryInterface
         $_id = $category['_id'];
         $name = $category['name'];
         $url_key = $category['url_key'];
-        $cate = $this->_categoryModel::find()->asArray()->where([
+        $cate = $this->_categoryModel->find()->asArray()->where([
             'parent_id' => $_id,
         ])->all();
         if (is_array($cate) && !empty($cate)) {
@@ -365,7 +366,7 @@ class CategoryMongodb implements CategoryInterface
                 $category_id = $category['_id'];
                 $parent_id = $category['parent_id'];
                 if ($parent_id) {
-                    $cate = $this->_categoryModel::find()->asArray()->where([
+                    $cate = $this->_categoryModel->find()->asArray()->where([
                         'parent_id' => $parent_id,
                     ])->all();
                     //var_dump($cate);
@@ -404,7 +405,7 @@ class CategoryMongodb implements CategoryInterface
     protected function getChildCate($category_id)
     {
         //echo $category_id;
-        $data = $this->_categoryModel::find()->asArray()->where([
+        $data = $this->_categoryModel->find()->asArray()->where([
                         'parent_id' => $category_id,
                     ])->all();
         $arr = [];

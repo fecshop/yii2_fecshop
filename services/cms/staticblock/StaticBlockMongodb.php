@@ -34,7 +34,7 @@ class StaticBlockMongodb implements StaticBlockInterface
     public function getByPrimaryKey($primaryKey)
     {
         if ($primaryKey) {
-            return $this->_staticBlockModel::findOne($primaryKey);
+            return $this->_staticBlockModel->findOne($primaryKey);
         } else {
             return new $this->_staticBlockModelName();
         }
@@ -42,7 +42,7 @@ class StaticBlockMongodb implements StaticBlockInterface
 
     public function getByIdentify($identify)
     {
-        return $this->_staticBlockModel::find()->asArray()->where([
+        return $this->_staticBlockModel->find()->asArray()->where([
             'identify' => $identify,
         ])->one();
     }
@@ -63,7 +63,7 @@ class StaticBlockMongodb implements StaticBlockInterface
      */
     public function coll($filter = '')
     {
-        $query = $this->_staticBlockModel::find();
+        $query = $this->_staticBlockModel->find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
 
         return [
@@ -86,7 +86,7 @@ class StaticBlockMongodb implements StaticBlockInterface
             return;
         }
         if ($primaryVal) {
-            $model = $this->_staticBlockModel::findOne($primaryVal);
+            $model = $this->_staticBlockModel->findOne($primaryVal);
             if (!$model) {
                 Yii::$service->helper->errors->add('StaticBlock '.$this->getPrimaryKey().' is not exist');
 
@@ -113,7 +113,7 @@ class StaticBlockMongodb implements StaticBlockInterface
         $id         = $this->getPrimaryKey();
         $primaryVal = isset($one[$id]) ? $one[$id] : '';
         $where      = ['identify' => $identify];
-        $query      = $this->_staticBlockModel::find()->asArray();
+        $query      = $this->_staticBlockModel->find()->asArray();
         $query->where(['identify' => $identify]);
         if ($primaryVal) {
             $query->andWhere([$id => ['$ne'=> new \MongoDB\BSON\ObjectId($primaryVal)]]);
@@ -139,12 +139,12 @@ class StaticBlockMongodb implements StaticBlockInterface
         }
         if (is_array($ids) && !empty($ids)) {
             foreach ($ids as $id) {
-                $model = $this->_staticBlockModel::findOne($id);
+                $model = $this->_staticBlockModel->findOne($id);
                 $model->delete();
             }
         } else {
             $id = $ids;
-            $model = $this->_staticBlockModel::findOne($id);
+            $model = $this->_staticBlockModel->findOne($id);
             $model->delete();
         }
 

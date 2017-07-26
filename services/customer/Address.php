@@ -41,7 +41,7 @@ class Address extends Service
      */
     protected function actionGetByPrimaryKey($primaryKey)
     {
-        $one = $this->_addressModel::findOne($primaryKey);
+        $one = $this->_addressModel->findOne($primaryKey);
         $primaryKey = $this->getPrimaryKey();
         if ($one[$primaryKey]) {
             return $one;
@@ -58,7 +58,7 @@ class Address extends Service
     protected function actionGetAddressByIdAndCustomerId($address_id, $customer_id)
     {
         $primaryKey = $this->getPrimaryKey();
-        $one = $this->_addressModel::findOne([
+        $one = $this->_addressModel->findOne([
             $primaryKey    => $address_id,
             'customer_id'    => $customer_id,
         ]);
@@ -88,7 +88,7 @@ class Address extends Service
      */
     protected function actionColl($filter = '')
     {
-        $query = $this->_addressModel::find();
+        $query = $this->_addressModel->find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
         $coll = $query->all();
         
@@ -171,7 +171,7 @@ class Address extends Service
         $primaryKey = $this->getPrimaryKey();
         $primaryVal = isset($one[$primaryKey]) ? $one[$primaryKey] : '';
         if ($primaryVal) {
-            $model = $this->_addressModel::findOne($primaryVal);
+            $model = $this->_addressModel->findOne($primaryVal);
             if (!$model) {
                 Yii::$service->helper->errors->add('address '.$this->getPrimaryKey().' is not exist');
 
@@ -186,7 +186,7 @@ class Address extends Service
         $primaryVal = $model[$primaryKey];
         if ($one['is_default'] == 1) {
             $customer_id = $one['customer_id'];
-            $this->_addressModel::updateAll(
+            $this->_addressModel->updateAll(
                 ['is_default'=>2],  // $attributes
                 'customer_id = '.$customer_id.' and  '.$primaryKey.' != ' .$primaryVal      // $condition
                 //[':customer_id' => $customer_id]
@@ -212,7 +212,7 @@ class Address extends Service
         }
         if (is_array($ids) && !empty($ids)) {
             foreach ($ids as $id) {
-                $model = $this->_addressModel::findOne($id);
+                $model = $this->_addressModel->findOne($id);
                 if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
                     if ($customer_id) {
                         if ($model['customer_id'] == $customer_id) {
@@ -234,7 +234,7 @@ class Address extends Service
             }
         } else {
             $id = $ids;
-            $model = $this->_addressModel::findOne($id);
+            $model = $this->_addressModel->findOne($id);
             if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
                 if ($customer_id) {
                     if ($model['customer_id'] == $customer_id) {
@@ -256,11 +256,11 @@ class Address extends Service
         }
         // 查看是否有默认地址？如果该用户存在记录，但是没有默认地址，
         // 则查找用户是否存在非默认地址，如果存在，则取一个设置为默认地址
-        $addressOne = $this->_addressModel::find()->asArray()
+        $addressOne = $this->_addressModel->find()->asArray()
                     ->where(['customer_id' => $customer_id, 'is_default' => 1])
                     ->one();
         if (!$addressOne['address_id']) {
-            $assOne = $this->_addressModel::find()
+            $assOne = $this->_addressModel->find()
                     ->where(['customer_id' => $customer_id])
                     ->one();
             if ($assOne['address_id']) {
@@ -300,13 +300,13 @@ class Address extends Service
             $customer_id = $identity['id'];
         }
         if($customer_id ){
-            $addressOne = $this->_addressModel::find()->asArray()
+            $addressOne = $this->_addressModel->find()->asArray()
                             ->where(['customer_id' => $customer_id,'is_default' => 1])
                             ->one();
             if($addressOne['address_id']){
                 return $addressOne;
             }else{
-                $assOne = $this->_addressModel::find()->asArray()
+                $assOne = $this->_addressModel->find()->asArray()
                             ->where(['customer_id' => $customer_id])
                             ->one();
                 if($assOne['address_id']){

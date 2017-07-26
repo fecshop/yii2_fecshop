@@ -34,7 +34,7 @@ class Mongodb extends Service
         if (!$this->collection) {
             $this->collection = $this->_defaultCollection;
         }
-        $this->_logModel::setCurrentCollectionName($this->collection);
+        $this->_logModel->setCurrentCollectionName($this->collection);
     }
 
     /**
@@ -51,7 +51,7 @@ class Mongodb extends Service
         if (!$user_id) {
             return;
         }
-        $coll = $this->_logModel::find()->where([
+        $coll = $this->_logModel->find()->where([
                 'user_id' => $user_id,
             ])
             ->asArray()
@@ -84,7 +84,7 @@ class Mongodb extends Service
             return;
         }
 
-        $mongodbViewLog = $this->_logModel::getCollection();
+        $mongodbViewLog = $this->_logModel->getCollection();
         $mongodbViewLog->save($arr);
     }
 }

@@ -35,7 +35,7 @@ class ArticleMongodb implements ArticleInterface
     public function getByPrimaryKey($primaryKey)
     {
         if ($primaryKey) {
-            return $this->_articleModel::findOne($primaryKey);
+            return $this->_articleModel->findOne($primaryKey);
         } else {
             return new $this->_articleModelName;
         }
@@ -57,7 +57,7 @@ class ArticleMongodb implements ArticleInterface
      */
     public function coll($filter = '')
     {
-        $query = $this->_articleModel::find();
+        $query = $this->_articleModel->find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
 
         return [
@@ -75,7 +75,7 @@ class ArticleMongodb implements ArticleInterface
         $currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
         $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
         if ($primaryVal) {
-            $model = $this->_articleModel::findOne($primaryVal);
+            $model = $this->_articleModel->findOne($primaryVal);
             if (!$model) {
                 Yii::$service->helper->errors->add('article '.$this->getPrimaryKey().' is not exist');
 
@@ -113,7 +113,7 @@ class ArticleMongodb implements ArticleInterface
         }
         if (is_array($ids) && !empty($ids)) {
             foreach ($ids as $id) {
-                $model = $this->_articleModel::findOne($id);
+                $model = $this->_articleModel->findOne($id);
                 if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
                     $url_key = $model['url_key'];
                     Yii::$service->url->removeRewriteUrlKey($url_key);
@@ -127,7 +127,7 @@ class ArticleMongodb implements ArticleInterface
             }
         } else {
             $id = $ids;
-            $model = $this->_articleModel::findOne($id);
+            $model = $this->_articleModel->findOne($id);
             if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
                 $url_key = $model['url_key'];
                 Yii::$service->url->removeRewriteUrlKey($url_key);

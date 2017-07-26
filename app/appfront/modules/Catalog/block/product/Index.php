@@ -50,14 +50,15 @@ class Index
     
     public function getLastData()
     {
+        $reviewHelper = $this->_reviewHelper;
         $productImgSize = Yii::$app->controller->module->params['productImgSize'];
         $productImgMagnifier = Yii::$app->controller->module->params['productImgMagnifier'];
         if(!$this->initProduct()){
             Yii::$service->url->redirect404();
             return;
         }
-        $this->_reviewHelper::initReviewConfig();
-        $ReviewAndStarCount = $this->_reviewHelper::getReviewAndStarCount($this->_product);
+        $reviewHelper::initReviewConfig();
+        $ReviewAndStarCount = $reviewHelper::getReviewAndStarCount($this->_product);
         list($review_count, $reviw_rate_star_average) = $ReviewAndStarCount;
         $this->filterProductImg($this->_product['image']);
         $groupAttr = Yii::$service->product->getGroupAttr($this->_product['attr_group']);

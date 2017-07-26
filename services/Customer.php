@@ -132,7 +132,7 @@ class Customer extends Service
      */
     protected function actionIsRegistered($email)
     {
-        $customer = $this->_customerModel::findOne(['email' => $email]);
+        $customer = $this->_customerModel->findOne(['email' => $email]);
         if ($customer['email']) {
             return true;
         } else {
@@ -190,10 +190,10 @@ class Customer extends Service
     {
         if (is_int($identity)) {
             $customer_id = $identity;
-            $customerModel = $this->_customerModel::findIdentity($customer_id);
+            $customerModel = $this->_customerModel->findIdentity($customer_id);
         } elseif (is_string($identity)) {
             $email = $identity;
-            $customerModel = $this->_customerModel::findByEmail($email);
+            $customerModel = $this->_customerModel->findByEmail($email);
         } elseif (is_object($identity)) {
             $customerModel = $identity;
         }
@@ -222,7 +222,7 @@ class Customer extends Service
     protected function actionGetByPrimaryKey($val)
     {
         if ($val) {
-            $one = $this->_customerModel::findOne($val);
+            $one = $this->_customerModel->findOne($val);
             $primaryKey = $this->getPrimaryKey();
             if ($one[$primaryKey]) {
                 return $one;
@@ -242,10 +242,10 @@ class Customer extends Service
     {
         if (is_int($identity)) {
             $customer_id = $identity;
-            $customerModel = $this->_customerModel::findIdentity($customer_id);
+            $customerModel = $this->_customerModel->findIdentity($customer_id);
         } elseif (is_string($identity)) {
             $email = $identity;
-            $customerModel = $this->_customerModel::findByEmail($email);
+            $customerModel = $this->_customerModel->findByEmail($email);
         } elseif (is_object($identity)) {
             $customerModel = $identity;
         } else {
@@ -286,7 +286,7 @@ class Customer extends Service
      */
     protected function actionGetUserIdentityByEmail($email)
     {
-        $one = $this->_customerModel::findByEmail($email);
+        $one = $this->_customerModel->findByEmail($email);
         if ($one['email']) {
             return $one;
         } else {
@@ -324,7 +324,7 @@ class Customer extends Service
      */
     protected function actionFindByPasswordResetToken($token)
     {
-        return $this->_customerModel::findByPasswordResetToken($token);
+        return $this->_customerModel->findByPasswordResetToken($token);
     }
 
     /**
@@ -379,7 +379,8 @@ class Customer extends Service
      */
     protected function actionGetStatusDeleted()
     {
-        return $this->_customerModel::STATUS_DELETED;
+        $model = $this->_customerModel;
+        return $model::STATUS_DELETED;
     }
 
     /**
@@ -387,7 +388,8 @@ class Customer extends Service
      */
     protected function actionGetStatusActive()
     {
-        return $this->_customerModel::STATUS_ACTIVE;
+        $model = $this->_customerModel;
+        return $model::STATUS_ACTIVE;
     }
     /**
      * 得到customer 表的主键（mysql表）
@@ -415,7 +417,7 @@ class Customer extends Service
      */
     protected function actionColl($filter = '')
     {
-        $query = $this->_customerModel::find();
+        $query = $this->_customerModel->find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
         //var_dump($query->all());exit;
         return [
@@ -433,7 +435,7 @@ class Customer extends Service
     {
         $arr = [];
         if (is_array($user_ids) && !empty($user_ids)) {
-            $data = $this->_customerModel::find()->where([
+            $data = $this->_customerModel->find()->where([
                 'in', 'id', $user_ids,
             ])->all();
             if (is_array($data) && !empty($data)) {

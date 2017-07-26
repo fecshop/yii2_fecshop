@@ -34,7 +34,7 @@ class RewriteMongodb implements RewriteInterface
      */
     public function getOriginUrl($urlKey)
     {
-        $UrlData = $this->_urlRewriteModel::find()->where([
+        $UrlData = $this->_urlRewriteModel->find()->where([
             'custom_url_key' => $urlKey,
         ])->asArray()->one();
         if ($UrlData['custom_url_key']) {
@@ -50,7 +50,7 @@ class RewriteMongodb implements RewriteInterface
     public function getByPrimaryKey($primaryKey)
     {
         if ($primaryKey) {
-            return $this->_urlRewriteModel::findOne($primaryKey);
+            return $this->_urlRewriteModel->findOne($primaryKey);
         } else {
             return new $this->_urlRewriteModelName();
         }
@@ -72,7 +72,7 @@ class RewriteMongodb implements RewriteInterface
      */
     public function coll($filter = '')
     {
-        $query = $this->_urlRewriteModel::find();
+        $query = $this->_urlRewriteModel->find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
 
         return [
@@ -89,7 +89,7 @@ class RewriteMongodb implements RewriteInterface
     {
         $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
         if ($primaryVal) {
-            $model = $this->_urlRewriteModel::findOne($primaryVal);
+            $model = $this->_urlRewriteModel->findOne($primaryVal);
             if (!$model) {
                 Yii::$service->helper->errors->add('UrlRewrite '.$this->getPrimaryKey().' is not exist');
 
@@ -116,7 +116,7 @@ class RewriteMongodb implements RewriteInterface
         }
         if (is_array($ids) && !empty($ids)) {
             foreach ($ids as $id) {
-                $model = $this->_urlRewriteModel::findOne($id);
+                $model = $this->_urlRewriteModel->findOne($id);
                 if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
                     $url_key = $model['url_key'];
                     $model->delete();
@@ -129,7 +129,7 @@ class RewriteMongodb implements RewriteInterface
             }
         } else {
             $id = $ids;
-            $model = $this->_urlRewriteModel::findOne($id);
+            $model = $this->_urlRewriteModel->findOne($id);
             if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
                 $url_key = $model['url_key'];
                 $model->delete();
@@ -149,7 +149,7 @@ class RewriteMongodb implements RewriteInterface
     public function removeByUpdatedAt($time)
     {
         if ($time) {
-            $this->_urlRewriteModel::deleteAll([
+            $this->_urlRewriteModel->deleteAll([
                 '$or' => [
                     [
                         'updated_at' => [
@@ -172,14 +172,14 @@ class RewriteMongodb implements RewriteInterface
      */
     public function find()
     {
-        return $this->_urlRewriteModel::find();
+        return $this->_urlRewriteModel->find();
     }
     /**
      * 返回url rewrite 查询结果
      */
     public function findOne($where)
     {
-        return $this->_urlRewriteModel::findOne($where);
+        return $this->_urlRewriteModel->findOne($where);
     }
     /**
      * 返回url rewrite model

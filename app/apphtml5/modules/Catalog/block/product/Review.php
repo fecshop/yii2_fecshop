@@ -35,7 +35,8 @@ class Review
          */
         list($this->_reviewHelperName,$this->_reviewHelper) = Yii::mapGet($this->_reviewHelperName);  
         // 初始化当前apphtml5的设置，覆盖service的初始设置。
-        $this->_reviewHelper::initReviewConfig();
+        $reviewHelper = $this->_reviewHelper;
+        $reviewHelper::initReviewConfig();
     }
     
     /**

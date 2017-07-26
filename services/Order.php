@@ -138,7 +138,7 @@ class Order extends Service
      */
     protected function actionGetByPrimaryKey($primaryKey)
     {
-        $one = $this->_orderModel::findOne($primaryKey);
+        $one = $this->_orderModel->findOne($primaryKey);
         $primaryKey = $this->getPrimaryKey();
         if ($one[$primaryKey]) {
             return $one;
@@ -154,7 +154,7 @@ class Order extends Service
      */
     protected function actionGetByIncrementId($increment_id)
     {
-        $one = $this->_orderModel::findOne(['increment_id' => $increment_id]);
+        $one = $this->_orderModel->findOne(['increment_id' => $increment_id]);
         $primaryKey = $this->getPrimaryKey();
         if ($one[$primaryKey]) {
             return $one;
@@ -219,7 +219,7 @@ class Order extends Service
         if (!$order_id) {
             return;
         }
-        $one = $this->_orderModel::findOne($order_id);
+        $one = $this->_orderModel->findOne($order_id);
         $primaryKey = $this->getPrimaryKey();
         if (!isset($one[$primaryKey]) || empty($one[$primaryKey])) {
             return;
@@ -256,7 +256,7 @@ class Order extends Service
      */
     protected function actionColl($filter = '')
     {
-        $query  = $this->_orderModel::find();
+        $query  = $this->_orderModel->find();
         $query  = Yii::$service->helper->ar->getCollByFilter($query, $filter);
         $coll   = $query->all();
         
@@ -276,7 +276,7 @@ class Order extends Service
         $primaryKey = $this->getPrimaryKey();
         $primaryVal = isset($one[$primaryKey]) ? $one[$primaryKey] : '';
         if ($primaryVal) {
-            $model = $this->_orderModel::findOne($primaryVal);
+            $model = $this->_orderModel->findOne($primaryVal);
             if (!$model) {
                 Yii::$service->helper->errors->add('order '.$this->getPrimaryKey().' is not exist');
 
@@ -308,7 +308,7 @@ class Order extends Service
         }
         if (is_array($ids) && !empty($ids)) {
             foreach ($ids as $id) {
-                $model = $this->_orderModel::findOne($id);
+                $model = $this->_orderModel->findOne($id);
                 if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
                     $model->delete();
                 } else {
@@ -319,7 +319,7 @@ class Order extends Service
             }
         } else {
             $id = $ids;
-            $model = $this->_orderModel::findOne($id);
+            $model = $this->_orderModel->findOne($id);
             if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
                 $model->delete();
             } else {
@@ -380,7 +380,7 @@ class Order extends Service
      *   通过token 得到订单 Object
      */
     protected function actionGetByPaymentToken($token){
-        $one = $this->_orderModel::find()->where(['payment_token' => $token])
+        $one = $this->_orderModel->find()->where(['payment_token' => $token])
             ->one();
         if(isset($one['order_id']) && $one['order_id']){
             return $one;
@@ -547,12 +547,12 @@ class Order extends Service
      */
     protected  function  checkOrderVersion($increment_id){
         # 更新订单版本号，防止被多次执行。
-        $sql    = 'update '.$this->_orderModel::tableName().' set version = version + 1  where increment_id = :increment_id';
+        $sql    = 'update '.$this->_orderModel->tableName().' set version = version + 1  where increment_id = :increment_id';
         $data   = [
             'increment_id'  => $increment_id,
         ];
-        $result     = $this->_orderModel::getDb()->createCommand($sql,$data)->execute();
-        $myOrder    = $this->_orderModel::find()->where([
+        $result     = $this->_orderModel->getDb()->createCommand($sql,$data)->execute();
+        $myOrder    = $this->_orderModel->find()->where([
             'increment_id'  => $increment_id,
         ])->one();
         # 如果版本号不等于1，则回滚

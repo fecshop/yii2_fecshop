@@ -39,7 +39,7 @@ class RewriteMysqldb implements RewriteInterface
      */
     public function getOriginUrl($urlKey)
     {
-        $UrlData = $this->_urlRewriteModel::find()->where([
+        $UrlData = $this->_urlRewriteModel->find()->where([
             'custom_url_key' => $urlKey,
         ])->asArray()->one();
         if ($UrlData['custom_url_key']) {
@@ -55,7 +55,7 @@ class RewriteMysqldb implements RewriteInterface
     public function getByPrimaryKey($primaryKey)
     {
         if ($primaryKey) {
-            $one = $this->_urlRewriteModel::findOne($primaryKey);
+            $one = $this->_urlRewriteModel->findOne($primaryKey);
             if (!empty($this->_lang_attr)) {
                 foreach ($this->_lang_attr as $attrName) {
                     if (isset($one[$attrName])) {
@@ -86,7 +86,7 @@ class RewriteMysqldb implements RewriteInterface
      */
     public function coll($filter = '')
     {
-        $query = $this->_urlRewriteModel::find();
+        $query = $this->_urlRewriteModel->find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
         $coll = $query->all();
         if (!empty($coll)) {
@@ -114,7 +114,7 @@ class RewriteMysqldb implements RewriteInterface
     {
         $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
         if ($primaryVal) {
-            $model = $this->_urlRewriteModel::findOne($primaryVal);
+            $model = $this->_urlRewriteModel->findOne($primaryVal);
             if (!$model) {
                 Yii::$service->helper->errors->add('UrlRewrite '.$this->getPrimaryKey().' is not exist');
 
@@ -143,7 +143,7 @@ class RewriteMysqldb implements RewriteInterface
             $innerTransaction = Yii::$service->db->beginTransaction();
             try {
                 foreach ($ids as $id) {
-                    $model = $this->_urlRewriteModel::findOne($id);
+                    $model = $this->_urlRewriteModel->findOne($id);
                     if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
                         $url_key = $model['url_key'];
                         $model->delete();
@@ -165,7 +165,7 @@ class RewriteMysqldb implements RewriteInterface
             }
         } else {
             $id = $ids;
-            $model = $this->_urlRewriteModel::findOne($id);
+            $model = $this->_urlRewriteModel->findOne($id);
             if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
                 $innerTransaction = Yii::$service->db->beginTransaction();
                 try {
@@ -192,7 +192,7 @@ class RewriteMysqldb implements RewriteInterface
     public function removeByUpdatedAt($time)
     {
         if ($time) {
-            $this->_urlRewriteModel::deleteAll([
+            $this->_urlRewriteModel->deleteAll([
                 '<', 'updated_at', $time,
             ]);
         }
@@ -202,14 +202,14 @@ class RewriteMysqldb implements RewriteInterface
      */
     public function find()
     {
-        return $this->_urlRewriteModel::find();
+        return $this->_urlRewriteModel->find();
     }
     /**
      * 返回url rewrite 查询结果
      */
     public function findOne($where)
     {
-        return $this->_urlRewriteModel::findOne($where);
+        return $this->_urlRewriteModel->findOne($where);
     }
     /**
      * 返回url rewrite model

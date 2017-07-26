@@ -36,7 +36,7 @@ class Newsletter extends Service
             'email' => $email,
         ];
         if ($mongoNewsletter->validate()) {
-            $one = $this->_newsletterModel::find()->where(['email' => $email])->one();
+            $one = $this->_newsletterModel->find()->where(['email' => $email])->one();
             if ($one['id']) {
                 return [
                     'code' => 300,

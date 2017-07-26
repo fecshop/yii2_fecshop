@@ -113,7 +113,7 @@ class Quote extends Service
         if (!$this->_cart) {
             $cart_id = $this->getCartId();
             if ($cart_id) {
-                $one = $this->_cartModel::findOne(['cart_id' => $cart_id]);
+                $one = $this->_cartModel->findOne(['cart_id' => $cart_id]);
                 if ($one['cart_id']) {
                     $this->_cart = $one;
                 }
@@ -135,7 +135,7 @@ class Quote extends Service
             if (!$cart_id) {
                 $this->createCart();
             } else {
-                $one = $this->_cartModel::findOne(['cart_id' => $cart_id]);
+                $one = $this->_cartModel->findOne(['cart_id' => $cart_id]);
                 if ($one['cart_id']) {
                     $this->_cart = $one;
                 } else {
@@ -167,7 +167,7 @@ class Quote extends Service
         if ($cart_id = $this->getCartId()) {
             if($cart_id ){
                 $cart = $this->getCart();
-                //$one = $this->_cartModel::findOne(['cart_id' => $cart_id]);
+                //$one = $this->_cartModel->findOne(['cart_id' => $cart_id]);
                 if (isset($cart['items_count']) && $cart['items_count']) {
                     $items_count = $cart['items_count'];
                 }
@@ -248,7 +248,7 @@ class Quote extends Service
         $myCart->save();
         $cart_id = $myCart['cart_id'];
         $this->setCartId($cart_id);
-        $this->setCart($this->_cartModel::findOne($cart_id));
+        $this->setCart($this->_cartModel->findOne($cart_id));
     }
 
     /** 该函数已经废弃
@@ -533,7 +533,7 @@ class Quote extends Service
     public function getCartByCustomerId($customer_id)
     {
         if ($customer_id) {
-            $one = $this->_cartModel::findOne(['customer_id' => $customer_id]);
+            $one = $this->_cartModel->findOne(['customer_id' => $customer_id]);
             if ($one['cart_id']) {
                 return $one;
             }
