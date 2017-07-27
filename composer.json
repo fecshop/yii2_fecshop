@@ -29,6 +29,7 @@
     "yiisoft/yii2-mongodb": "~2.1.0" ,
     "skeeks/yii2-assets-auto-compress": "*",
     "ramsey/uuid": "*",
+    "facebook/graph-sdk": "*",
     "hightman/xunsearch": "*@beta"
   },  
   "autoload": {  
@@ -37,6 +38,6 @@
     }
   },  
   "config": {  
-	  "process-timeout": 1800
+	"process-timeout": 1800
   }
 }

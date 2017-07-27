@@ -9,10 +9,6 @@
 
 namespace fecshop\app\apphtml5\modules\Customer\controllers;
 
-use Facebook\FacebookRedirectLoginHelper;
-use Facebook\FacebookRequest;
-use Facebook\FacebookRequestException;
-use Facebook\FacebookSession;
 use fecshop\app\apphtml5\modules\AppfrontController;
 use Yii;
 
@@ -23,43 +19,57 @@ use Yii;
 class FacebookController extends AppfrontController
 {
     // http://fecshop.apphtml5.fancyecommerce.com/customer/facebook/loginv
-
     /**
      * facebook 账号在facebook确认后，返回网站的url地址。
      */
     public function actionLoginv()
     {
-        Yii::$service->session->set('fbs', 1);
+        //Yii::$service->session->set('fbs', 1);
         $thirdLogin = Yii::$service->store->thirdLogin;
         $facebook_app_id = isset($thirdLogin['facebook']['facebook_app_id']) ? $thirdLogin['facebook']['facebook_app_id'] : '';
         $facebook_app_secret = isset($thirdLogin['facebook']['facebook_app_secret']) ? $thirdLogin['facebook']['facebook_app_secret'] : '';
-        FacebookSession::setDefaultApplication($facebook_app_id, $facebook_app_secret);
-        $redirectUrl = Yii::$service->url->getUrl('customer/facebook/loginv');
-        $helper = new FacebookRedirectLoginHelper($redirectUrl, $facebook_app_id, $facebook_app_secret);
-        try {
-            $session = $helper->getSessionFromRedirect();
-        } catch (FacebookRequestException $ex) {
-            // When Facebook returns an error
-        } catch (Exception $ex) {
-            // When validation fails or other local issues
+        $fb = new \Facebook\Facebook([
+            'app_id' => $facebook_app_id,
+            'app_secret' => $facebook_app_secret,
+            'default_graph_version' => 'v2.10',
+        ]);
+        $helper = $fb->getRedirectLoginHelper();
+        if (isset($_GET['state'])) {
+            $helper->getPersistentDataHandler()->set('state', $_GET['state']);
         }
-        //echo 1;
-        //var_dump($session);
-        // see if we have a session
-        if (isset($session)) {
-            // graph api request for user data
-            $request = new FacebookRequest($session, 'GET', '/me');
-            $response = $request->execute();
-            // get response
-            $graphObject = $response->getGraphObject();
-            $fbid = $graphObject->getProperty('id');              // To Get Facebook ID
-            $fbfullname = $graphObject->getProperty('name'); // To Get Facebook full name
-            $femail = $graphObject->getProperty('email');    // To Get Facebook email ID
-            /* ---- Session Variables -----*/
-            $_SESSION['FBID'] = $fbid;
-            $_SESSION['FULLNAME'] = $fbfullname;
-            $_SESSION['EMAIL'] = $femail;
-            $this->accountLogin();
+        try {
+            $accessToken = $helper->getAccessToken();
+        } catch(\Facebook\Exceptions\FacebookResponseException $e) {
+            // When Graph returns an error
+            echo 'Graph returned an error: ' . $e->getMessage();
+            exit;
+        } catch(\Facebook\Exceptions\FacebookSDKException $e) {
+            // When validation fails or other local issues
+            echo 'Facebook SDK returned an error: ' . $e->getMessage();
+            exit;
+        }
+        if (! isset($accessToken)) {
+            if ($helper->getError()) {
+                header('HTTP/1.0 401 Unauthorized');
+                echo "Error: " . $helper->getError() . "\n";
+                echo "Error Code: " . $helper->getErrorCode() . "\n";
+                echo "Error Reason: " . $helper->getErrorReason() . "\n";
+                echo "Error Description: " . $helper->getErrorDescription() . "\n";
+            } else {
+                header('HTTP/1.0 400 Bad Request');
+                echo 'Bad request';
+            }
+          exit;
+        }
+        $fb->setDefaultAccessToken($accessToken->getValue());
+        $response = $fb->get('/me?locale=en_US&fields=name,email');
+        $userNode = $response->getGraphUser();
+        $email    = $userNode->getField('email');
+        $name     = $userNode['name'];
+        $fbid     = $userNode['id'];
+        //echo $email.$name.$fbid;exit;
+        if ($email) {
+            $this->accountLogin($fbid,$name,$email);
             exit;
         } else {
             $loginUrl = $helper->getLoginUrl();
@@ -68,12 +78,9 @@ class FacebookController extends AppfrontController
     }
 
     // facebook账户登录
-    public function accountLogin()
+    public function accountLogin($fbid,$name,$email)
     {
-        $fb_id = $_SESSION['FBID'];
-        $full_name = $_SESSION['FULLNAME'];
-        $email = $_SESSION['EMAIL'];
-        $name_arr = explode(' ', $full_name);
+        $name_arr = explode(' ', $name);
         $first_name = $name_arr[0];
         $last_name = $name_arr[1];
         $user = [
