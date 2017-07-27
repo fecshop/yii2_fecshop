@@ -459,22 +459,23 @@ class Customer extends Service
      */
     protected function actionRegisterThirdPartyAccountAndLogin($user, $type)
     {
-        if (!(isset($user['password']) && $user['password'])) {
-            $user['password'] = $this->getRandomPassword();
-        }
+        
         // 查看邮箱是否存在
         $email = $user['email'];
         $customer_one = Yii::$service->customer->getUserIdentityByEmail($email);
         if ($customer_one) {
-            $loginStatus = Yii::$service->customer->login($user);
+            $loginStatus = \Yii::$app->user->login($customer_one);
             if ($loginStatus) {
                 return true;
             }
         // 不存在，注册。
         } else {
+            if (!(isset($user['password']) && $user['password'])) {
+                $user['password'] = $this->getRandomPassword();
+            }
             $registerData = [
-                'email'    => $email,
-                'firstname' => $user['first_name'],
+                'email'       => $email,
+                'firstname'   => $user['first_name'],
                 'lastname'    => $user['last_name'],
                 'password'    => $user['password'],
                 'type'        => $type,

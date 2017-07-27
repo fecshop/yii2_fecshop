@@ -31,6 +31,7 @@ class GoogleController extends AppfrontController
     {
         Yii::$service->session->set('logintype', 'google');
         $thirdLogin = Yii::$service->store->thirdLogin;
+        global $googleapiinfo;
         $googleapiinfo['GOOGLE_CLIENT_ID'] = isset($thirdLogin['google']['CLIENT_ID']) ? $thirdLogin['google']['CLIENT_ID'] : '';
         $googleapiinfo['GOOGLE_CLIENT_SECRET'] = isset($thirdLogin['google']['CLIENT_SECRET']) ? $thirdLogin['google']['CLIENT_SECRET'] : '';
         $lib_google_base = Yii::getAlias('@fecshop/lib/google');
