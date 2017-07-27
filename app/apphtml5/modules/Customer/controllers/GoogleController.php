@@ -66,7 +66,10 @@ class GoogleController extends AppfrontController
         Yii::$service->customer->registerThirdPartyAccountAndLogin($user, 'google');
         echo '<script>
 					window.close();
-					window.opener.location.reload();
+					window.onunload = refreshParent;
+                    function refreshParent() {
+                        window.opener.location.reload();
+                    }
 				</script>';
         exit;
     }

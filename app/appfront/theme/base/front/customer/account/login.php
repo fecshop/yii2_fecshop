@@ -121,7 +121,7 @@
              outerWidth = typeof window.outerWidth != 'undefined' ? window.outerWidth : document.body.clientWidth,
              outerHeight = typeof window.outerHeight != 'undefined' ? window.outerHeight : (document.body.clientHeight - 22),
              width    = 800,
-             height   = 450,
+             height   = 650,
              left     = parseInt(screenX + ((outerWidth - width) / 2), 10),
              top      = parseInt(screenY + ((outerHeight - height) / 2.5), 10),
              features = (
