@@ -29,34 +29,36 @@
 				</div>
 				<div class="category_product">
 					<?php $i = 0;  foreach($products as $product): ?>
-						<?php  if($i%$count == 0): ?>
-						<ul>
-						<?php  endif; ?>
-							<li>
-								<div class="c_img">
-									<a href="<?= $product['url'] ?>">
-										<img  class="js_lazy" src="<?= Yii::$service->image->getImgUrl('images/lazyload.gif');   ?>" data-original="<?= Yii::$service->product->image->getResize($product['image'],[230,230],false) ?>"  />
-									</a>
-								</div>
-								<div class="c_name">
-									<a href="<?= $product['url'] ?>">
-										<?= $product['name'] ?>
-									</a>
-								</div>
-								<?php
-									$config = [
-										'class' 		=> 'fecshop\app\appfront\modules\Catalog\block\category\Price',
-										'view'  		=> 'catalog/category/price.php',
-										'price' 		=> $product['price'],
-										'special_price' => $product['special_price'],
-									];
-									echo Yii::$service->page->widget->renderContent('category_product_price',$config);
-								?>
-							</li>
-						<?php  if($i%$count == $end): ?>
-						</ul>
-						<?php  endif; ?>
-						<?php  $i++; ?>
+                        <?php  if(isset($product['sku']) && $product['sku']): ?>
+                            <?php  if($i%$count == 0): ?>
+                            <ul>
+                            <?php  endif; ?>
+                                <li>
+                                    <div class="c_img">
+                                        <a href="<?= $product['url'] ?>">
+                                            <img  class="js_lazy" src="<?= Yii::$service->image->getImgUrl('images/lazyload.gif');   ?>" data-original="<?= Yii::$service->product->image->getResize($product['image'],[230,230],false) ?>"  />
+                                        </a>
+                                    </div>
+                                    <div class="c_name">
+                                        <a href="<?= $product['url'] ?>">
+                                            <?= $product['name'] ?>
+                                        </a>
+                                    </div>
+                                    <?php
+                                        $config = [
+                                            'class' 		=> 'fecshop\app\appfront\modules\Catalog\block\category\Price',
+                                            'view'  		=> 'catalog/category/price.php',
+                                            'price' 		=> $product['price'],
+                                            'special_price' => $product['special_price'],
+                                        ];
+                                        echo Yii::$service->page->widget->renderContent('category_product_price',$config);
+                                    ?>
+                                </li>
+                            <?php  if($i%$count == $end): ?>
+                            </ul>
+                            <?php  endif; ?>
+                            <?php  $i++; ?>
+                        <?php  endif; ?>
 					<?php  endforeach;  ?>
 					<?php  if($i%$count != $end): ?>
 						</ul>

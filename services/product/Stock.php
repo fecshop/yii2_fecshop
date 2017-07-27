@@ -139,7 +139,7 @@ class Stock extends Service
         }
         // 保存产品flat qty
         $this->_flatQtyModel->deleteAll(['product_id' => $product_id]);
-        productCustomOptionQty::deleteAll(['product_id' => $product_id]);
+        $this->_COQtyModel->deleteAll(['product_id' => $product_id]);
         return true;
     }
     

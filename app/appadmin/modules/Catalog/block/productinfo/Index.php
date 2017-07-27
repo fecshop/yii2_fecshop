@@ -93,14 +93,14 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
                 'title'=>'状态',
                 'name'=>'status',
                 'columns_type' =>'int',  // int使用标准匹配， string使用模糊查询
-                'value'=> $this->_productHelper::getStatusArr(),
+                'value'=> $this->_productHelper->getStatusArr(),
             ],
             [    // selecit的Int 类型
                 'type'=>'select',
                 'title'=>'库存状态',
                 'name'=>'is_in_stock',
                 'columns_type' =>'int',  // int使用标准匹配， string使用模糊查询
-                'value'=> $this->_productHelper::getInStockArr(),
+                'value'=> $this->_productHelper->getInStockArr(),
             ],
             [    // 字符串类型
                 'type'            =>'inputtext',
@@ -202,7 +202,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
                 'label'            => '状态',
                 'width'            => '50',
                 'align'        => 'center',
-                'display'        => $this->_productHelper::getStatusArr(),
+                'display'        => $this->_productHelper->getStatusArr(),
             ],
 
             [

@@ -45,6 +45,8 @@ class Facebook extends Service
         $this->facebook_app_secret = isset($thirdLogin['facebook']['facebook_app_secret']) ? $thirdLogin['facebook']['facebook_app_secret'] : '';
 
         if ($this->facebook_app_secret && $this->facebook_app_id) {
+            echo $this->facebook_app_secret;
+            echo $this->facebook_app_id;
             FacebookSession::setDefaultApplication($this->facebook_app_id, $this->facebook_app_secret);
             $redirectUrl = Yii::$service->url->getUrl($urlKey);
             //echo $redirectUrl;exit;

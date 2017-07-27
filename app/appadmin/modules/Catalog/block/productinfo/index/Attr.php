@@ -175,7 +175,7 @@ class Attr
                 'name'=>'status',
                 'display'=>[
                     'type' => 'select',
-                    'data' => $this->_productHelper::getStatusArr(),
+                    'data' => $this->_productHelper->getStatusArr(),
                 ],
                 'require' => 1,
                 'default' => 1,
@@ -222,7 +222,7 @@ class Attr
                 'name'=>'is_in_stock',
                 'display'=>[
                     'type' => 'select',
-                    'data' => $this->_productHelper::getInStockArr(),
+                    'data' => $this->_productHelper->getInStockArr(),
                 ],
                 'require' => 1,
                 'default' => 1,
