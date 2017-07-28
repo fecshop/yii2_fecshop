@@ -171,7 +171,7 @@ class Paypal extends Service
     }
 
     /**
-     * paypal 可能发送多次IPN消息，
+     * paypal 可能发送多次IPN消息
      * 判断是否重复，如果不重复，把当前的插入。
      */
     protected function isNotDuplicate()
