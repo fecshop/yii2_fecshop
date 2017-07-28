@@ -11,7 +11,7 @@
 [![Latest Stable Version](https://poser.pugx.org/fancyecommerce/fecshop/v/stable)](https://packagist.org/packages/fancyecommerce/fecshop) [![Total Downloads](https://poser.pugx.org/fancyecommerce/fecshop/downloads)](https://packagist.org/packages/fancyecommerce/fecshop) [![Latest Unstable Version](https://poser.pugx.org/fancyecommerce/fecshop/v/unstable)](https://packagist.org/packages/fancyecommerce/fecshop)
 
 
-开源协议：[Fecshop 授权协议](http://www.fecshop.com/license/)
+
 
 项目状态：
 
@@ -43,6 +43,7 @@ FecShop Email：2358269014@qq.com
 
 [Fecshop](http://www.fecshop.com) Github地址: https://github.com/fancyecommerce/yii2_fecshop
 
+开源协议：[Fecshop 授权协议](http://www.fecshop.com/license/)
 
 2、Fecshop文档
 ------------
