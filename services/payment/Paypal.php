@@ -176,7 +176,7 @@ class Paypal extends Service
      */
     protected function isNotDuplicate()
     {
-        $ipn = $this->_ipnMessageModel::find()
+        $ipn = $this->_ipnMessageModel->find()
             ->asArray()
             ->where([
             'txn_id'=>$this->_postData['txn_id'],
