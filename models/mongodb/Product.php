@@ -111,7 +111,11 @@ class Product extends ActiveRecord
         $indexs = [
             ['spu'        => -1],
             ['sku'        => -1],
-            ['category' => -1],
+            ['category' => -1,'score'           => 1],
+            ['category' => -1,'review_count'    => 1],
+            ['category' => -1,'favorite_count'  => 1],
+            ['category' => -1,'created_at'      => 1],
+            ['category' => -1,'final_price'     => 1],
         ];
 
         $options = ['background' => true];

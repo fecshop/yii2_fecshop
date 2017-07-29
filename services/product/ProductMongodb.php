@@ -20,6 +20,7 @@ use Yii;
 class ProductMongodb implements ProductInterface
 {
     public $numPerPage = 20;
+    public $maxCount = 6000;
     
     protected $_productModelName = '\fecshop\models\mongodb\Product';
     protected $_productModel;
@@ -541,6 +542,12 @@ class ProductMongodb implements ProductInterface
             $project[$column] = 1;
             $group[$column] = ['$first' => '$'.$column];
         }
+        
+        $langCode = Yii::$service->store->currentLangCode;
+        $name_lang  = Yii::$service->fecshoplang->getLangAttrName('name',$langCode);
+        $project['name'] = [
+            $name_lang => 1
+        ];
         $pipelines = [
             [
                 '$match'    => $where,
@@ -558,6 +565,9 @@ class ProductMongodb implements ProductInterface
             ],
             [
                 '$sort'    => $orderBy,
+            ],
+            [
+                '$limit'    => $this->maxCount,
             ],
         ];
         $product_data = $this->_productModel->getCollection()->aggregate($pipelines);
@@ -595,6 +605,9 @@ class ProductMongodb implements ProductInterface
             [
                 '$group'    => $group,
             ],
+            [
+                '$limit'    => $this->maxCount,
+            ], 
         ];
         $filter_data = $this->_productModel->getCollection()->aggregate($pipelines);
 
