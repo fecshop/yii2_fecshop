@@ -342,7 +342,7 @@ class ProductMongodb implements ProductInterface
      * 对保存的数据进行数据验证
      * sku  spu   默认语言name ， 默认语言description不能为空。
      */
-    protected function initSave($one)
+    protected function initSave(&$one)
     {
         if (!isset($one['sku']) || empty($one['sku'])) {
             Yii::$service->helper->errors->add(' sku 必须存在 ');
@@ -365,6 +365,14 @@ class ProductMongodb implements ProductInterface
             Yii::$service->helper->errors->add(' description '.$defaultLangDes.'不能为空 ');
 
             return false;
+        }
+        if (is_array($one['custom_option']) && !empty($one['custom_option'])) {
+            $new_custom_option = [];
+            foreach ($one['custom_option'] as $k=>$v) {
+                $k = preg_replace('/[^A-Za-z0-9\-_]/', '', $k); 
+                $new_custom_option[$k] = $v;
+            }
+            $one['custom_option'] = $new_custom_option;
         }
 
         return true;
