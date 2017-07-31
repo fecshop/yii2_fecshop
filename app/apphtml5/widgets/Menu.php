@@ -18,8 +18,9 @@ class Menu implements BlockCache
 
     public function getCacheKey()
     {
-        $lang = Yii::$service->store->currentLangCode;
-
-        return self::BLOCK_CACHE_PREFIX.'_'.$lang;
+        $lang           = Yii::$service->store->currentLangCode;
+        $appName        = Yii::$service->helper->getAppName();
+        $cacheKeyName   = 'menu';
+        return self::BLOCK_CACHE_PREFIX.'_'.$lang.'_'.$appName.'_'.$cacheKeyName;
     }
 }

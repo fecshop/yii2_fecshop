@@ -30,7 +30,8 @@ class Headers implements BlockCache
     {
         $lang = Yii::$service->store->currentLangCode;
         $currency = Yii::$service->page->currency->getCurrentCurrency();
-
-        return self::BLOCK_CACHE_PREFIX.'_'.$lang.'_'.$currency;
+        $appName        = Yii::$service->helper->getAppName();
+        $cacheKeyName   = 'footer';
+        return self::BLOCK_CACHE_PREFIX.'_'.$lang.'_'.$currency.'_'.$appName.'_'.$cacheKeyName;
     }
 }
