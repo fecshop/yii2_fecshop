@@ -22,6 +22,7 @@ class Product extends Service
 {
     public $storage = 'mongodb';
     public $customAttrGroup;
+    public $categoryAggregateMaxCount; // Yii::$service->product->categoryAggregateMaxCount;
     protected $_product;
     protected $_defaultAttrGroup = 'default';
 

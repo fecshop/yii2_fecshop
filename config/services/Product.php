@@ -8,6 +8,12 @@
 return [
     'product' => [
         'class' => 'fecshop\services\Product',
+        /**
+         * 分类页面的最大的产品总数
+         * aggregate 的分页，是把全部产品查出来，然后php进去切分，类似于Es。
+         * 因此对总数进行了限制。
+         */
+        'categoryAggregateMaxCount' => 6000,
         // 'customAttrGroup' => [], 详细参看@common/config/fecshop_local_services/Product.php 里面的配置
         // 子服务
         'childService' => [

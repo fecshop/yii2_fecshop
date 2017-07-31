@@ -20,7 +20,7 @@ use Yii;
 class ProductMongodb implements ProductInterface
 {
     public $numPerPage = 20;
-    public $maxCount = 6000;
+    
     
     protected $_productModelName = '\fecshop\models\mongodb\Product';
     protected $_productModel;
@@ -567,7 +567,7 @@ class ProductMongodb implements ProductInterface
                 '$sort'    => $orderBy,
             ],
             [
-                '$limit'    => $this->maxCount,
+                '$limit'    => Yii::$service->product->categoryAggregateMaxCount,
             ],
         ];
         $product_data = $this->_productModel->getCollection()->aggregate($pipelines);
@@ -606,7 +606,7 @@ class ProductMongodb implements ProductInterface
                 '$group'    => $group,
             ],
             [
-                '$limit'    => $this->maxCount,
+                '$limit'    => Yii::$service->product->categoryAggregateMaxCount,
             ], 
         ];
         $filter_data = $this->_productModel->getCollection()->aggregate($pipelines);
