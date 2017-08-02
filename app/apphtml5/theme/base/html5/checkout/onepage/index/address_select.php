@@ -16,7 +16,7 @@
 <div id="billing_address">		
 	<ul>
 		<li>
-			<p class="onestepcheckout-numbers onestepcheckout-numbers-1"><?= Yii::$service->page->translate->__('Billing address');?></p>
+			<p class="onestepcheckout-numbers onestepcheckout-numbers-1"><?= Yii::$service->page->translate->__('Shipping Address');?></p>
 		</li>
 		<li>
 			<div>

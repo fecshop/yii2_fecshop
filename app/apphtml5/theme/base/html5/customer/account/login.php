@@ -9,7 +9,7 @@
 ?>
 <div class="shopping-cart-img">
 	<?= Yii::$service->page->translate->__('Login'); ?>
-	<a external href="<?= Yii::$service->url->getUrl('customer/account/register');  ?>" class="f-right"><?= Yii::$service->page->translate->__('Resister'); ?></a>
+	<a external href="<?= Yii::$service->url->getUrl('customer/account/register');  ?>" class="f-right"><?= Yii::$service->page->translate->__('Register'); ?></a>
 </div>
 <?= Yii::$service->page->widget->render('flashmessage'); ?>	
 <div class="list-block customer-login">
