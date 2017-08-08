@@ -9,45 +9,57 @@
 
 namespace fecshop\app\appserver\modules;
 
-use fec\controllers\FecController;
+use yii\rest\Controller;
 use fec\helpers\CConfig;
 use Yii;
+use yii\web\Response;
+use yii\filters\auth\CompositeAuth;
+use yii\filters\auth\HttpBasicAuth;
+use yii\filters\auth\HttpBearerAuth;
+use yii\filters\auth\QueryParamAuth;
 use yii\base\InvalidValueException;
 
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class AppserverController extends FecController
+class AppserverController extends Controller
 {
     public $blockNamespace;
 
-    /**
-     * init theme component property : $fecshopThemeDir and $layoutFile
-     * $fecshopThemeDir is appfront base theme directory.
-     * layoutFile is current layout relative path.
-     */
-    
     public function init()
     {
         parent::init();
         Yii::$app->user->enableSession = false;
-        //if (!Yii::$service->page->theme->fecshopThemeDir) {
-        //    Yii::$service->page->theme->fecshopThemeDir = Yii::getAlias(CConfig::param('appfrontBaseTheme'));
-        //}
-        //if (!Yii::$service->page->theme->layoutFile) {
-        //    Yii::$service->page->theme->layoutFile = CConfig::param('appfrontBaseLayoutName');
-        //}
-        
-        //Yii::$service->page->translate->category = 'appfront';
-        
+    }
+    
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        $behaviors['contentNegotiator']['formats']['text/html'] = Response::FORMAT_JSON;
+        $behaviors["corsFilter"] = [
+            'class' => \yii\filters\Cors::className(),
+            'cors' => [
+                // restrict access to
+                'Origin' => ['*'],
+                'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
+                // Allow only POST and PUT methods
+                'Access-Control-Request-Headers' => ['*'],
+                // Allow only headers 'X-Wsse'
+                'Access-Control-Allow-Credentials' => null,
+                // Allow OPTIONS caching
+                'Access-Control-Max-Age' => 86400,
+                // Allow the X-Pagination-Current-Page header to be exposed to the browser.
+                'Access-Control-Expose-Headers' => ['fecshop_uuid'],
+            ],
+        ];
+        return $behaviors;
     }
     
     /**
      * get current block
      * you can change $this->blockNamespace.
      */
-    
     public function getBlock($blockName = '')
     {
         if (!$blockName) {

@@ -53,7 +53,8 @@ class Store extends Service
 
     public $thirdLogin;
     //public $https;
-
+    
+    public $serverLangs;
     /**
      *	Bootstrap:init website,  class property $currentLang ,$currentTheme and $currentStore.
      *  if you not config this ,default class property will be set.
@@ -108,6 +109,33 @@ class Store extends Service
                      */
                     $init_compelte = 1;
                     $this->thirdLogin = $store['thirdLogin'];
+                    /**
+                     * appserver 部分
+                     */
+                    if(isset($store['serverLangs']) && !empty($store['serverLangs'])){
+                        $this->serverLangs = $store['serverLangs'];
+                    }
+                    $headers = Yii::$app->request->getHeaders();
+                    if(isset($headers['language']) && $headers['language']){
+                        $h_lang = $headers['language'];
+                        if(is_array($this->serverLangs)){
+                            foreach($this->serverLangs as $one){
+                                if($one['code'] == $h_lang){
+                                    Yii::$service->store->currentLangCode = $h_lang;
+                                }
+                            }
+                        }
+                    }
+                    if(isset($headers['currency']) && $headers['currency']){
+                        $currentC = Yii::$service->page->currency->getCurrentCurrency();
+                        if($currentC != $headers['currency']){
+                            Yii::$service->page->currency->setCurrentCurrency($currentC);
+                        }
+                    }
+                    
+                    
+                    
+                    
                     break;
                 }
             }

@@ -29,8 +29,9 @@ class QueryParamAuth extends YiiQueryParamAuth
             return $identity;
         }else{
             $result = ['status' => 'ERROR', 'code' => 401,'message' => 'token is time out'];
-            echo json_encode($result);
-            exit;
+            Yii::$app->response->data=json_encode($result);
+            Yii::$app->response->send();
+            Yii::$app->end();
         }
     }
     

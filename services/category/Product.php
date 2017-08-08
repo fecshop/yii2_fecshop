@@ -106,12 +106,13 @@ class Product extends Service
                 }
                 list($price, $special_price) = $this->getPrices($one['price'], $one['special_price'], $one['special_from'], $one['special_to']);
                 $arr[] = [
-                    'name'            => $name,
-                    'sku'            => $one['sku'],
-                    'image'        => $image,
-                    'price'        => $price,
+                    'name'          => $name,
+                    'sku'           => $one['sku'],
+                    'image'         => $image,
+                    'price'         => $price,
                     'special_price' => $special_price,
-                    'url'            => Yii::$service->url->getUrl($url_key),
+                    'url'           => Yii::$service->url->getUrl($url_key),
+                    'product_id'    => (string)$one['_id'],
                 ];
             }
         }

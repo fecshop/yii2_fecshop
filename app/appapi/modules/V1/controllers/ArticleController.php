@@ -18,7 +18,7 @@ class ArticleController extends AppapiController
 
     public function actionTest()
     {
-        //echo 11;exit;
+        echo 11;exit;
         //var_dump(get_class(Yii::$service->cms->article->getByPrimaryKey('')));
     }
 }

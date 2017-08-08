@@ -105,9 +105,9 @@ class Category extends Service
      *  数组中只有  id  name(default language), child(子分类) 等数据。
      *  目前此函数仅仅用于后台对分类的编辑使用。 appadmin.
      */
-    protected function actionGetTreeArr($rootCategoryId = 0)
+    protected function actionGetTreeArr($rootCategoryId = 0,$lang = '',$appserver=false)
     {
-        return $this->_category->getTreeArr($rootCategoryId);
+        return $this->_category->getTreeArr($rootCategoryId,$lang,$appserver);
     }
 
     /**
