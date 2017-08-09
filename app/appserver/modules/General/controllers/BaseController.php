@@ -19,38 +19,32 @@ use Yii;
 class BaseController extends AppserverController
 {
     
-    public function actionMenu(){
+    public function actionMenu()
+    {
         $arr = Yii::$service->category->getTreeArr('','',true);
         return $arr ;
     }
     // 语言
-    public function actionLang(){
-        
+    public function actionLang()
+    {
         $langs = Yii::$service->store->serverLangs;
         $currentLangCode = Yii::$service->store->currentLangCode;
-        foreach($langs as $k => $one){
-            $code = $one['code'];
-            if($currentLangCode == $code){
-                $langs[$k]['selected'] = true;
-            }else{
-                $langs[$k]['selected'] = false;
-            }
-        }
-        return $langs ;
+        
+        return [
+            'langList' => $langs,
+            'currentLang' => $currentLangCode
+        ];
     }
     
-    public function actionCurrency(){
+    public function actionCurrency()
+    {
         $currencys = Yii::$service->page->currency->getCurrencys();
         $currentCurrencyCode = Yii::$service->page->currency->getCurrentCurrency();
-        foreach($currencys as $k => $one){
-            $code = $one['code'];
-            if($currentCurrencyCode == $code){
-                $currencys[$k]['selected'] = true;
-            }else{
-                $currencys[$k]['selected'] = false;
-            }
-        }
-        return $currencys;
+        
+        return [
+            'currencyList' => $currencys,
+            'currentCurrency' => $currentCurrencyCode
+        ];
     }
     
 }

@@ -25,6 +25,7 @@
                     </p>
                     <p style="color: #333;">
                         <?php
+                            
                             $config = [
                                 'class' 		=> 'fecshop\app\apphtml5\modules\Catalog\block\category\Price',
                                 'view'  		=> 'cms/home/index/price.php',

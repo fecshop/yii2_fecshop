@@ -224,7 +224,7 @@ class Currency extends Service
         }
         if ($currencyCode) {
             Yii::$service->session->set(self::CURRENCY_CURRENT, $currencyCode);
-
+            $this->_currentCurrencyCode = $currencyCode;
             return true;
         }
     }

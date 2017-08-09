@@ -33,7 +33,7 @@ class Session extends Service
     protected $_uuid;
     
     private $_session;
-    const UUID = 'fecshop_uuid';
+    public  $fecshop_uuid = 'fecshop-uuid';
     /**
         1. \Yii::$app->user->enableSession = false;
             查看是否是false，如果是
@@ -67,7 +67,7 @@ class Session extends Service
     public function getUUID(){
         if(!$this->_uuid){
             $header = Yii::$app->request->getHeaders();
-            $uuidName = self::UUID;
+            $uuidName = $this->fecshop_uuid;
             // 1.从requestheader里面获取uuid，
             if(isset($header[$uuidName]) && !empty($header[$uuidName])){
                 $this->_uuid = $header[$uuidName];

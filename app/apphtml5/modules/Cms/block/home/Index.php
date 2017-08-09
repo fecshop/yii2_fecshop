@@ -49,9 +49,9 @@ class Index
             ];
             $filter['where'] = ['in', 'sku', $skus];
             $products = Yii::$service->product->getProducts($filter);
-            //var_dump($products);
+            //
             $products = Yii::$service->category->product->convertToCategoryInfo($products);
-
+            //var_dump($products);
             return $products;
         }
     }

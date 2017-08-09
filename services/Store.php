@@ -116,20 +116,24 @@ class Store extends Service
                         $this->serverLangs = $store['serverLangs'];
                     }
                     $headers = Yii::$app->request->getHeaders();
-                    if(isset($headers['language']) && $headers['language']){
-                        $h_lang = $headers['language'];
+                    if(isset($headers['fecshop-lang']) && $headers['fecshop-lang']){
+                        $h_lang = $headers['fecshop-lang'];
                         if(is_array($this->serverLangs)){
                             foreach($this->serverLangs as $one){
                                 if($one['code'] == $h_lang){
                                     Yii::$service->store->currentLangCode = $h_lang;
+                                    Yii::$service->store->currentLang = $one['language'];
+                                    Yii::$service->store->currentLangName = $one['languageName'];
+                                    Yii::$service->page->translate->setLanguage($one['language']);
                                 }
                             }
                         }
                     }
-                    if(isset($headers['currency']) && $headers['currency']){
+                    
+                    if(isset($headers['fecshop-currency']) && $headers['fecshop-currency']){
                         $currentC = Yii::$service->page->currency->getCurrentCurrency();
-                        if($currentC != $headers['currency']){
-                            Yii::$service->page->currency->setCurrentCurrency($currentC);
+                        if($currentC != $headers['fecshop-currency']){
+                            Yii::$service->page->currency->setCurrentCurrency($headers['fecshop-currency']);
                         }
                     }
                     

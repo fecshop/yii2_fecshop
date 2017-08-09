@@ -35,6 +35,8 @@ class AppserverController extends Controller
     
     public function behaviors()
     {
+        $fecshop_uuid = Yii::$service->session->fecshop_uuid;
+        $cors_allow_headers = [$fecshop_uuid,'fecshop-lang','fecshop-currency'];
         $behaviors = parent::behaviors();
         $behaviors['contentNegotiator']['formats']['text/html'] = Response::FORMAT_JSON;
         $behaviors["corsFilter"] = [
@@ -44,13 +46,13 @@ class AppserverController extends Controller
                 'Origin' => ['*'],
                 'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
                 // Allow only POST and PUT methods
-                'Access-Control-Request-Headers' => ['*'],
+                'Access-Control-Request-Headers' => $cors_allow_headers,
                 // Allow only headers 'X-Wsse'
-                'Access-Control-Allow-Credentials' => null,
+                //'Access-Control-Allow-Credentials' => null,
                 // Allow OPTIONS caching
                 'Access-Control-Max-Age' => 86400,
                 // Allow the X-Pagination-Current-Page header to be exposed to the browser.
-                'Access-Control-Expose-Headers' => ['fecshop_uuid'],
+                'Access-Control-Expose-Headers' => $cors_allow_headers,
             ],
         ];
         return $behaviors;
