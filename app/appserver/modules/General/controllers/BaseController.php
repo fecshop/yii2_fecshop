@@ -21,7 +21,24 @@ class BaseController extends AppserverController
     
     public function actionMenu()
     {
-        $arr = Yii::$service->category->getTreeArr('','',true);
+        $arr = [];
+        $displayHome = Yii::$service->page->menu->displayHome;
+        if($displayHome['enable']){
+            $home = $displayHome['display'] ? $displayHome['display'] : 'Home';
+            $arr['home'] = [
+                '_id'   => 'home',
+                'level' => 1,
+                'name'  => $home,
+                'url'   => '/'
+            ];
+        }
+        
+        $treeArr = Yii::$service->category->getTreeArr('','',true);
+        if (is_array($treeArr)) {
+            foreach ($treeArr as $k=>$v) {
+                $arr[$k] = $v ;
+            }
+        }
         return $arr ;
     }
     // 语言

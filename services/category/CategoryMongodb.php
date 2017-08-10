@@ -196,7 +196,7 @@ class CategoryMongodb implements CategoryInterface
      *  数组中只有  id  name(default language), child(子分类) 等数据。
      *  目前此函数仅仅用于后台对分类的编辑使用。 appadmin.
      */
-    public function getTreeArr($rootCategoryId = '', $lang = '',$appserver=false)
+    public function getTreeArr($rootCategoryId = '', $lang = '',$appserver=false,$level = 1)
     {
         $arr = [];
         if (!$lang) {
@@ -215,15 +215,16 @@ class CategoryMongodb implements CategoryInterface
                 $idVal = (string) $cate[$idKey];
                 $arr[$idVal] = [
                     $idKey    => $idVal,
+                    'level'   => $level,
                     'name'    => Yii::$service->fecshoplang->getLangAttrVal($cate['name'], 'name', $lang),
                 ];
                 if($appserver){
-                    $arr[$idVal]['url'] = Yii::$service->url->getUrl('catalog/category/'.$idVal);
+                    $arr[$idVal]['url'] = '/catalog/category/'.$idVal;
                 }
                 //echo $arr[$idVal]['name'];
 
                 if ($this->hasChildCategory($idVal)) {
-                    $arr[$idVal]['child'] = $this->getTreeArr($idVal, $lang,$appserver);
+                    $arr[$idVal]['child'] = $this->getTreeArr($idVal, $lang,$appserver,$level+1);
                 }
             }
         }
