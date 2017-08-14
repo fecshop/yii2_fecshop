@@ -549,13 +549,15 @@ class ProductMongodb implements ProductInterface
         foreach ($select as $column) {
             $project[$column] = 1;
             $group[$column] = ['$first' => '$'.$column];
+            
         }
-        
+        $group['product_id'] = ['$first' => '$product_id'];
         $langCode = Yii::$service->store->currentLangCode;
         $name_lang  = Yii::$service->fecshoplang->getLangAttrName('name',$langCode);
         $project['name'] = [
             $name_lang => 1
         ];
+        $project['product_id'] = '$_id';
         $pipelines = [
             [
                 '$match'    => $where,

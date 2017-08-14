@@ -108,6 +108,7 @@ class Product extends Service
                 $arr[] = [
                     'name'          => $name,
                     'sku'           => $one['sku'],
+                    '_id'           => (string)$one['product_id'],
                     'image'         => $image,
                     'price'         => $price,
                     'special_price' => $special_price,

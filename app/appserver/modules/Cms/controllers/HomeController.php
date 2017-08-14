@@ -73,7 +73,7 @@ class HomeController extends AppserverController
                 foreach($products as $k=>$v){
                     $i++;
                     $products[$k]['url'] = '/catalog/product/'.$v['product_id'];
-                    $products[$k]['image'] = Yii::$service->product->image->getUrl($v['image'] );
+                    $products[$k]['image'] = Yii::$service->product->image->getResize($v['image'],296,false);
                     $priceInfo = Yii::$service->product->price->getCurrentCurrencyProductPriceInfo($v['price'], $v['special_price'],$v['special_from'],$v['special_to']);
                     $products[$k]['price'] = isset($priceInfo['price']) ? $priceInfo['price'] : '';
                     $products[$k]['special_price'] = isset($priceInfo['special_price']) ? $priceInfo['special_price'] : '';
