@@ -264,8 +264,10 @@ class CategoryController extends AppserverController
             $current_fileter_unselect     = $this->_category['filter_product_attr_unselected'];
             $current_fileter_select_arr   = $this->getFilterArr($current_fileter_select);
             $current_fileter_unselect_arr = $this->getFilterArr($current_fileter_unselect);
+            //var_dump($current_fileter_select_arr);
             $filter_attrs                 = array_merge($filter_default, $current_fileter_select_arr);
             $filter_attrs                 = array_diff($filter_attrs, $current_fileter_unselect_arr);
+            $filter_attrs                 = array_unique($filter_attrs);
             $this->_filter_attr           = $filter_attrs;
         }
 
@@ -276,36 +278,29 @@ class CategoryController extends AppserverController
      */
     protected function getRefineByInfo()
     {
-        $get_arr = Yii::$app->request->get();
-        //var_dump($get_arr);
-        if (is_array($get_arr) && !empty($get_arr)) {
-            $refineInfo     = [];
-            $filter_attrs   = $this->getFilterAttr();
-            $filter_attrs[] = 'price';
-            $currentUrl     = Yii::$service->url->getCurrentUrl();
-            foreach ($get_arr as $k=>$v) {
-                $attr = Yii::$service->url->category->urlStrConvertAttrVal($k);
-                //echo $attr;
-                if (in_array($attr, $filter_attrs)) {
-                    if ($attr == 'price') {
-                        $refine_attr_str = $this->getFormatFilterPrice($v);
-                        //$refine_attr_str = Yii::$service->url->category->urlStrConvertAttrVal($v);
-                    } else {
-                        $refine_attr_str = Yii::$service->url->category->urlStrConvertAttrVal($v);
-                    }
-                    $removeUrlParamStr = $k.'='.$v;
-                    $refine_attr_url   = Yii::$service->url->removeUrlParamVal($currentUrl, $removeUrlParamStr);
-                    $refineInfo[] = [
-                        'name' =>  $refine_attr_str,
-                        'url'  =>  $refine_attr_url,
-                    ];
-                }
+        $refineInfo     = [];
+        $chosenAttrs = Yii::$app->request->get('filterAttrs');
+        $chosenAttrArr = json_decode($chosenAttrs,true);
+        if(!empty($chosenAttrArr)){
+            foreach ($chosenAttrArr as $attr=>$val) {
+                $refineInfo[] = [
+                    'attr' =>  $attr,
+                    'val'  =>  $val,
+                ];
             }
         }
+        $currenctPriceFilter = Yii::$app->request->get($this->_filterPrice); 
+        if($currenctPriceFilter){
+            $refineInfo[] = [
+                'attr' =>  $this->_filterPrice,
+                'val'  =>  $currenctPriceFilter,
+            ];
+        }
+        
         if (!empty($refineInfo)) {
             $arr[] = [
-                'name'   => 'clear all',
-                'url'    => Yii::$service->url->getCurrentUrlNoParam(),
+                'attr'   => 'clearAll',
+                'val'    => 'clear all',
             ];
             $refineInfo = array_merge($arr, $refineInfo);
         }
@@ -319,9 +314,29 @@ class CategoryController extends AppserverController
     {
         $filter_info  = [];
         $filter_attrs = $this->getFilterAttr();
+        $chosenAttrs = Yii::$app->request->get('filterAttrs');
+        $chosenAttrArr = json_decode($chosenAttrs,true);
         foreach ($filter_attrs as $attr) {
             if ($attr != 'price') {
-                $filter_info[$attr] = Yii::$service->product->getFrontCategoryFilter($attr, $this->_where);
+                $label = preg_replace_callback('/([-_]+([a-z]{1}))/i',function($matches){
+                    return ' '.strtoupper($matches[2]);
+                },$attr);
+                $items = Yii::$service->product->getFrontCategoryFilter($attr, $this->_where);
+                if(is_array($items) && !empty($items)){
+                    foreach($items as $k=>$one){
+                        if(isset($chosenAttrArr[$attr]) && $chosenAttrArr[$attr] == $one['_id']){
+                            $items[$k]['selected'] = true;
+                        } else {
+                            $items[$k]['selected'] = false;
+                        }
+                        
+                    }
+                }
+                
+                $filter_info[$attr] = [
+                    'label' => $label,
+                    'items' => $items,
+                ];
             }
         }
 
@@ -545,13 +560,18 @@ class CategoryController extends AppserverController
      */
     protected function initWhere()
     {
-        $filterAttr = $this->getFilterAttr();
-        foreach ($filterAttr as $attr) {
-            $attrUrlStr = Yii::$service->url->category->attrValConvertUrlStr($attr);
-            $val = Yii::$app->request->get($attrUrlStr);
-            if ($val) {
-                $val = Yii::$service->url->category->urlStrConvertAttrVal($val);
-                $where[$attr] = $val;
+        
+        $chosenAttrs = Yii::$app->request->get('filterAttrs');
+        $chosenAttrArr = json_decode($chosenAttrs,true);
+        //var_dump($chosenAttrArr);
+        
+        if(is_array($chosenAttrArr) && !empty($chosenAttrArr)){
+            $filterAttr = $this->getFilterAttr();
+            //var_dump($filterAttr);
+            foreach ($filterAttr as $attr) {
+                if(isset($chosenAttrArr[$attr]) && $chosenAttrArr[$attr]){
+                    $where[$attr] = $chosenAttrArr[$attr];
+                }
             }
         }
         $filter_price = Yii::$app->request->get($this->_filterPrice);
