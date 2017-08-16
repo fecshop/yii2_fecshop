@@ -36,7 +36,7 @@ class CategoryController extends AppserverController
     // url的参数，排序方向
     protected $_direction = 'dir';
     // url的参数，排序字段
-    protected $_sort = 'sort';
+    protected $_sort = 'sortColumn';
     // url的参数，页数
     protected $_page = 'p';
     // url的参数，价格
@@ -48,6 +48,8 @@ class CategoryController extends AppserverController
     protected $_filter_attr;
     protected $_numPerPageVal;
     protected $_page_count;
+    protected $category_name;
+    protected $sp = '---';
     
     
     public function actionIndex(){
@@ -70,21 +72,14 @@ class CategoryController extends AppserverController
         $this->_productCount = $productCollInfo['count'];
         $p = Yii::$app->request->get('p');
         $p = (int)$p;
-        if ($p > 1) {
-            //$this->getAjaxProductHtml($products);
-            return [
-                'code' => 200,
-                'content' => [
-                    'products' => $products
-                ]
-            ];
-        }
         $query_item = $this->getQueryItem();
         $page_count = $this->getProductPageCount();
+        $this->category_name = Yii::$service->store->getStoreAttrVal($this->_category['name'], 'name');
         //echo $this->_productCount;
         return  [
             'code' => 200,
             'content' => [
+                'name'              => $this->category_name ,
                 'title'             => $this->_title,
                 'image'             => $this->_category['image'] ? Yii::$service->category->image->getUrl($this->_category['image']) : '',
                 'products'          => $products,
@@ -92,7 +87,7 @@ class CategoryController extends AppserverController
                 'refine_by_info'    => $this->getRefineByInfo(),
                 'filter_info'       => $this->getFilterInfo(),
                 'filter_price'      => $this->getFilterPrice(),
-                'filter_category'   => $this->getFilterCategoryHtml(),
+                'filter_category'   => $this->getFilterCategory(),
                 'page_count'        => $page_count,
             ],
             //'content' => Yii::$service->store->getStoreAttrVal($this->_category['content'],'content'),
@@ -148,12 +143,31 @@ class CategoryController extends AppserverController
      */
     protected function getFilterCategory()
     {
+        $arr = [];
         $category_id = $this->_primaryVal;
         $parent_id = $this->_category['parent_id'];
         $filter_category = Yii::$service->category->getFilterCategory($category_id, $parent_id);
-
+        return $this->getAppServerFilterCategory($filter_category);
+    }
+    
+    protected function getAppServerFilterCategory($filter_category){
+        if((is_array($filter_category) || is_object($filter_category)) && !empty($filter_category)){
+            foreach($filter_category as $category_id => $v){
+                $filter_category[$category_id]['name'] = Yii::$service->store->getStoreAttrVal($v['name'],'name');
+                if($filter_category[$category_id]['name'] == $this->category_name){
+                    $filter_category[$category_id]['current'] = true;
+                }else{
+                    $filter_category[$category_id]['current'] = false;
+                }
+                $filter_category[$category_id]['url'] = 'catalog/category/'.$category_id;
+                if(isset($v['child'])){
+                    $filter_category[$category_id]['child'] = $this->getAppServerFilterCategory($v['child']);
+                }
+            }
+        }
         return $filter_category;
     }
+    
     /**
      * @property $filter_category | Array
      * 通过递归的方式，得到分类以及子分类的html。
@@ -204,20 +218,9 @@ class CategoryController extends AppserverController
         $category_query  = Yii::$app->controller->module->params['category_query'];
         $numPerPage      = $category_query['numPerPage'];
         $sort            = $category_query['sort'];
+        $current_sort    = Yii::$app->request->get($this->_sort);
         $frontNumPerPage = [];
-        if (is_array($numPerPage) && !empty($numPerPage)) {
-            $attrUrlStr = $this->_numPerPage;
-            foreach ($numPerPage as $np) {
-                $urlInfo = Yii::$service->url->category->getFilterChooseAttrUrl($attrUrlStr, $np, $this->_page);
-                //var_dump($url);
-                //exit;
-                $frontNumPerPage[] = [
-                    'value'    => $np,
-                    'url'        => $urlInfo['url'],
-                    'selected'    => $urlInfo['selected'],
-                ];
-            }
-        }
+        
         $frontSort = [];
         if (is_array($sort) && !empty($sort)) {
             $attrUrlStr = $this->_sort;
@@ -225,21 +228,16 @@ class CategoryController extends AppserverController
             foreach ($sort as $np=>$info) {
                 $label      = $info['label'];
                 $direction  = $info['direction'];
-                $arr['sort']= [
-                    'key' => $attrUrlStr,
-                    'val' => $np,
-                ];
-                $arr['dir'] = [
-                    'key' => $dirUrlStr,
-                    'val' => $direction,
-                ];
-                $urlInfo = Yii::$service->url->category->getFilterSortAttrUrl($arr, $this->_page);
                 
+                if($current_sort == $np){
+                    $selected = true;
+                }else{
+                    $selected = false;
+                }
                 $frontSort[] = [
                     'label'     => $label,
                     'value'     => $np,
-                    'url'       => $urlInfo['url'],
-                    'selected'  => $urlInfo['selected'],
+                    'selected'  => $selected,
                 ];
             }
         }
@@ -334,12 +332,28 @@ class CategoryController extends AppserverController
      */
     protected function getFilterPrice()
     {
+        $symbol = Yii::$service->page->currency->getCurrentSymbol();
+        
+        $currenctPriceFilter = Yii::$app->request->get($this->_filterPrice);
         $filter = [];
         $priceInfo = Yii::$app->controller->module->params['category_query'];
         if (isset($priceInfo['price_range']) && !empty($priceInfo['price_range']) && is_array($priceInfo['price_range'])) {
             foreach ($priceInfo['price_range'] as $price_item) {
-                $info = Yii::$service->url->category->getFilterChooseAttrUrl($this->_filterPrice, $price_item, $this->_page);
-                $info['val'] = $this->getFormatFilterPrice($price_item);
+                list($b_price,$e_price) = explode('-',$price_item);
+                $b_price = $b_price ? $symbol.$b_price : '';
+                $e_price = $e_price ? $symbol.$e_price : '';
+                $label = $b_price.$this->sp.$e_price;
+                if($currenctPriceFilter && ($currenctPriceFilter == $price_item)){
+                    $selected = true;
+                }else{
+                    $selected = false;
+                }
+                $info = [
+                    'selected'  => $selected,
+                    'label'     => $label,
+                    'val'       => $price_item
+                ];
+                
                 $filter[$this->_filterPrice][] = $info;
             }
         }
@@ -397,9 +411,14 @@ class CategoryController extends AppserverController
         if (isset($category_query_config['sort'])) {
             $sortConfig = $category_query_config['sort'];
             if (is_array($sortConfig)) {
+                
                 //return $category_query_config['numPerPage'][0];
                 if ($sort && isset($sortConfig[$sort])) {
                     $orderInfo = $sortConfig[$sort];
+                    //var_dump($orderInfo);
+                    if (!$direction) {
+                        $direction = $orderInfo['direction'];
+                    }
                 } else {
                     foreach ($sortConfig as $k => $v) {
                         $orderInfo = $v;
@@ -409,6 +428,7 @@ class CategoryController extends AppserverController
                         break;
                     }
                 }
+                
                 $db_columns = $orderInfo['db_columns'];
                 if ($direction == 'desc') {
                     $direction = -1;
@@ -416,7 +436,7 @@ class CategoryController extends AppserverController
                     $direction = 1;
                 }
                 //var_dump([$db_columns => $direction]);
-
+                //exit;
                 return [$db_columns => $direction];
             }
         }
@@ -535,6 +555,7 @@ class CategoryController extends AppserverController
             }
         }
         $filter_price = Yii::$app->request->get($this->_filterPrice);
+        //echo $filter_price;
         list($f_price, $l_price) = explode('-', $filter_price);
         if ($f_price == '0' || $f_price) {
             $where[$this->_filterPriceAttr]['$gte'] = (float) $f_price;
