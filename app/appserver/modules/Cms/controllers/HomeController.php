@@ -19,7 +19,24 @@ use Yii;
 class HomeController extends AppserverController
 {
     
-    public function actionAdvertise(){
+    public function actionIndex(){
+        $advertiseImg = $this->getAdvertise();
+        $productList  = $this->getProduct();
+        $language = $this->getLang();
+        $currency = $this->getCurrency();
+        return [
+            'code' => 200,
+            'content' => [
+                'productList' => $productList,
+                'advertiseImg'=> $advertiseImg,
+                'language'    => $language,
+                'currency'    => $currency,
+            ]
+        ];
+        
+    }
+    
+    public function getAdvertise(){
         
         $bigImg1 = Yii::$service->image->getImgUrl('custom/home_img_1.jpg','apphtml5');
         $bigImg2 = Yii::$service->image->getImgUrl('custom/home_img_2.jpg','apphtml5');
@@ -40,7 +57,7 @@ class HomeController extends AppserverController
         ];
     }
     
-    public function actionProduct(){
+    public function getProduct(){
         $featured_skus = Yii::$app->controller->module->params['homeFeaturedSku'];
         Yii::$service->session->getUUID();
         return $this->getProductBySkus($featured_skus);
@@ -96,6 +113,29 @@ class HomeController extends AppserverController
             }
             return $product_return;
         }
+    }
+    
+    // 语言
+    public function getLang()
+    {
+        $langs = Yii::$service->store->serverLangs;
+        $currentLangCode = Yii::$service->store->currentLangCode;
+        
+        return [
+            'langList' => $langs,
+            'currentLang' => $currentLangCode
+        ];
+    }
+    // 货币
+    public function getCurrency()
+    {
+        $currencys = Yii::$service->page->currency->getCurrencys();
+        $currentCurrencyCode = Yii::$service->page->currency->getCurrentCurrency();
+        
+        return [
+            'currencyList' => $currencys,
+            'currentCurrency' => $currentCurrencyCode
+        ];
     }
    
     
