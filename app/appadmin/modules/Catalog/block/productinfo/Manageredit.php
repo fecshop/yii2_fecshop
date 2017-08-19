@@ -425,12 +425,22 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         $custom_option = $custom_option ? json_decode($custom_option, true) : [];
         $custom_option_arr = [];
         if (is_array($custom_option) && !empty($custom_option)) {
-            foreach ($custom_option as $one) {
-                $one['qty'] = (int) $one['qty'];
-                $one['price'] = (float) $one['price'];
-                $custom_option_arr[$one['sku']] = $one;
+            foreach ($custom_option as $option) {
+                if(is_array($option) && !empty($option)){
+                    foreach($option as $key => $val){
+                        if($key == 'qty'){
+                            $option[$key] = (int) $option[$key];
+                        } else if ($key == 'price') {
+                            $option[$key] = (float) $option[$key];
+                        } else {
+                            $option[$key] = html_entity_decode($val);
+                        }
+                    }
+                }
+                $custom_option_arr[$option['sku']] = $option;
             }
         }
+        
         $this->_param['custom_option'] = $custom_option_arr;
         //var_dump($this->_param['custom_option']);
         $image_gallery = CRequest::param('image_gallery');
