@@ -21,7 +21,7 @@ use yii\base\Object;
 class Service extends Object
 {
     public $childService;
-    public $enable = true; /* 该服务是否可用  */
+    public $enableService = true; /* 该服务是否可用  */
     protected $_childService;
 
     protected $_beginCallTime;
@@ -67,7 +67,7 @@ class Service extends Object
             $childService = $this->childService;
             if (isset($childService[$childServiceName])) {
                 $service = $childService[$childServiceName];
-                if(!isset($service['enable']) || $service['enable']){
+                if(!isset($service['enableService']) || $service['enableService']){
                     $this->_childService[$childServiceName] = Yii::createObject($service);  
                 }else{
                     throw new InvalidConfigException('Child Service ['.$childServiceName.'] is disable in '.get_called_class().', you must config it! ');

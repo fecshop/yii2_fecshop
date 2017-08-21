@@ -262,7 +262,7 @@ class ProductMongodb implements ProductInterface
         if (!$this->initSave($one)) {
             return;
         }
-        
+        $one['min_sales_qty'] = (int)$one['min_sales_qty'];
         $currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
         $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
         if ($primaryVal) {

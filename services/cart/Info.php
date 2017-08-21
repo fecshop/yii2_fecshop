@@ -44,6 +44,12 @@ class Info extends Service
     public function checkProductBeforeAdd($item, $product)
     {
         $qty = $item['qty'];
+        $min_sales_qty = $product['min_sales_qty'];
+        if(($min_sales_qty > 0) && ($min_sales_qty > $qty) ){
+            Yii::$service->helper->errors->add('the minimum number of purchases for this item is '.$min_sales_qty);
+            
+            return false;
+        }
         $product_id = $item['product_id'];
         $custom_option_sku = $item['custom_option_sku'];
         // 验证产品是否是激活状态

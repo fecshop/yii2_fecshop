@@ -52,6 +52,7 @@ class Product extends ActiveRecord
             'score',
             'status',
             'qty',
+            'min_sales_qty',
             'is_in_stock',
             'visibility',
             'url_key',

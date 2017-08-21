@@ -45,7 +45,7 @@ class Application
             $childService = $this->childService;
             if (isset($childService[$childServiceName])) {
                 $service = $childService[$childServiceName];
-                if(!isset($service['enable']) || $service['enable']){
+                if(!isset($service['enableService']) || $service['enableService']){
                     $this->_childService[$childServiceName] = Yii::createObject($service);
                 }else{
                     throw new InvalidConfigException('Child Service ['.$childServiceName.'] is disable in '.get_called_class().', you must config it! ');

@@ -216,6 +216,15 @@ class Attr
                 ],
                 'require' => 1,
             ],
+            
+            [
+                'label'=>'最小购买数',
+                'name'=>'min_sales_qty',
+                'display'=>[
+                    'type' => 'inputString',
+                ],
+                'require' => 0,
+            ],
 
             [
                 'label'=>'库存状态',

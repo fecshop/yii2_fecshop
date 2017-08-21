@@ -189,6 +189,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
                 'width'            => '50',
                 'align'        => 'center',
             ],
+            
 
             [
                 'orderField'    => 'weight',
