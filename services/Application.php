@@ -40,11 +40,16 @@ class Application
      */
     public function getChildService($childServiceName)
     {
+        
         if (!$this->_childService[$childServiceName]) {
             $childService = $this->childService;
             if (isset($childService[$childServiceName])) {
                 $service = $childService[$childServiceName];
-                $this->_childService[$childServiceName] = Yii::createObject($service);
+                if(!isset($service['enable']) || $service['enable']){
+                    $this->_childService[$childServiceName] = Yii::createObject($service);
+                }else{
+                    throw new InvalidConfigException('Child Service ['.$childServiceName.'] is disable in '.get_called_class().', you must config it! ');
+                }
             } else {
                 throw new InvalidConfigException('Child Service ['.$childServiceName.'] is not find in '.get_called_class().', you must config it! ');
             }

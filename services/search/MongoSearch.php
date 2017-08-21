@@ -23,7 +23,7 @@ class MongoSearch extends Service implements SearchInterface
 {
     public $searchIndexConfig;
     public $searchLang;
-    
+    public $enable;
     protected $_productModelName = '\fecshop\models\mongodb\Product';
     protected $_productModel;
     protected $_searchModelName = '\fecshop\models\mongodb\Search';
@@ -145,7 +145,8 @@ class MongoSearch extends Service implements SearchInterface
                 }
             }
         }
-
+        echo "MongoSearch sync done ... \n";
+        
         return true;
     }
 

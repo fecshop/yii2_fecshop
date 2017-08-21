@@ -25,7 +25,7 @@ class XunSearch extends Service implements SearchInterface
     public $searchLang;
     public $fuzzy = false;
     public $synonyms = false;
-    
+    public $enable;
     protected $_productModelName = '\fecshop\models\mongodb\Product';
     protected $_productModel;
     protected $_searchModelName  = '\fecshop\models\xunsearch\Search';
@@ -84,7 +84,8 @@ class XunSearch extends Service implements SearchInterface
                 }
             }
         }
-
+        echo "XunSearch sync done ... \n";
+        
         return true;
     }
 
