@@ -21,6 +21,7 @@ use yii\base\Object;
 class Service extends Object
 {
     public $childService;
+    public $enable = true; /* 该服务是否可用  */
     protected $_childService;
 
     protected $_beginCallTime;
