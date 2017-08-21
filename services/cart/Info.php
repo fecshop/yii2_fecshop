@@ -46,7 +46,7 @@ class Info extends Service
         $qty = $item['qty'];
         $min_sales_qty = $product['min_sales_qty'];
         if(($min_sales_qty > 0) && ($min_sales_qty > $qty) ){
-            Yii::$service->helper->errors->add('The minimum number of shopping carts for this item is 4'.$min_sales_qty);
+            Yii::$service->helper->errors->add('The minimum number of shopping carts for this item is '.$min_sales_qty);
             
             return false;
         }
