@@ -145,7 +145,7 @@ class MongoSearch extends Service implements SearchInterface
                 }
             }
         }
-        echo "MongoSearch sync done ... \n";
+        //echo "MongoSearch sync done ... \n";
         
         return true;
     }

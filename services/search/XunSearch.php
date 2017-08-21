@@ -83,7 +83,7 @@ class XunSearch extends Service implements SearchInterface
                 }
             }
         }
-        echo "XunSearch sync done ... \n";
+        //echo "XunSearch sync done ... \n";
         
         return true;
     }
