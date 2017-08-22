@@ -23,6 +23,7 @@ class Head implements BlockCache
         $urlPathKey = $moduleId.'_'.$controllerId.'_'.$actionId;
         $appName        = Yii::$service->helper->getAppName();
         $cacheKeyName   = 'head';
-        return self::BLOCK_CACHE_PREFIX.'_'.$store.'_'.$urlPathKey.'_'.$appName.'_'.$cacheKeyName;
+        $currentStore   = Yii::$service->store->currentStore;
+        return self::BLOCK_CACHE_PREFIX.'_'.$currentStore.'_'.$store.'_'.$urlPathKey.'_'.$appName.'_'.$cacheKeyName;
     }
 }
