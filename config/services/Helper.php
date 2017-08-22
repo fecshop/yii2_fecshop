@@ -13,6 +13,7 @@ return [
             'ar' => [
                 'class' => 'fecshop\services\helper\AR',
             ],
+            /* 已经废除，现在使用Yii::$app->serviceLog
             'log' => [
                 'class' => 'fecshop\services\helper\Log',
                 'log_config' => [
@@ -34,6 +35,7 @@ return [
                     ],
                 ],
             ],
+            */
             'errors' => [
                 'class' => 'fecshop\services\helper\Errors',
             ],

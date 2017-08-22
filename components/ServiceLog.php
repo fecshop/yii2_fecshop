@@ -1,25 +1,23 @@
 <?php
 /**
  * FecShop file.
- *
  * @link http://www.fecshop.com/
  * @copyright Copyright (c) 2016 FecShop Software LLC
  * @license http://www.fecshop.com/license/
  */
 
-namespace fecshop\services\helper;
+namespace fecshop\components;
 
-use fec\helpers\CRequest;
-//use fecshop\models\mongodb\FecshopServiceLog;
-use fecshop\services\Service;
 use Yii;
+use yii\base\BootstrapInterface;
+use yii\base\Component;
+use fec\helpers\CRequest;
 
 /**
- * AR services.
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Log extends Service
+class ServiceLog extends Component
 {
     public $log_config;
     protected $_serviceContent;
@@ -36,7 +34,7 @@ class Log extends Service
         list($this->_logModelName,$this->_logModel) = Yii::mapGet($this->_logModelName);  
     }
     /**
-     * Logï¼šget log uuid .
+     * Log£ºget log uuid .
      */
     public function getLogUid()
     {
@@ -48,7 +46,7 @@ class Log extends Service
     }
 
     /**
-     * ServiceLogï¼šæ˜¯å¦å¼€å¯service log.
+     * ServiceLog£ºÊÇ·ñ¿ªÆôservice log.
      */
     public function isServiceLogEnable()
     {
@@ -67,7 +65,7 @@ class Log extends Service
     }
 
     /**
-     * ServiceLogï¼šä¿å­˜serviceLog.
+     * ServiceLog£º±£´æserviceLog.
      */
     public function printServiceLog($log_info)
     {
@@ -94,7 +92,7 @@ class Log extends Service
     }
 
     /**
-     * ServiceLogï¼šif service log db print is enable.
+     * ServiceLog£ºif service log db print is enable.
      */
     protected function isServiceLogDbPrint()
     {
@@ -115,7 +113,7 @@ class Log extends Service
     }
 
     /**
-     * ServiceLogï¼šåœ¨å‰å°æ‰“å°servicelogæ˜¯å¦å¼€å¯.
+     * ServiceLog£ºÔÚÇ°Ì¨´òÓ¡servicelogÊÇ·ñ¿ªÆô.
      */
     protected function isServiceLogHtmlPrint()
     {
@@ -136,7 +134,7 @@ class Log extends Service
     }
 
     /**
-     * ServiceLogï¼šé€šè¿‡å‚æ•°ï¼Œåœ¨å‰å°æ‰“å°servicelogæ˜¯å¦å¼€å¯.
+     * ServiceLog£ºÍ¨¹ı²ÎÊı£¬ÔÚÇ°Ì¨´òÓ¡servicelogÊÇ·ñ¿ªÆô.
      */
     protected function isServiceLogDbPrintByParam()
     {
@@ -180,8 +178,7 @@ class Log extends Service
                 .substr($charid, 16, 4).$hyphen
                 .substr($charid, 20, 12)
                 //.chr(125)// "}"
-;
-
+                ;
             return $uuid;
         }
     }

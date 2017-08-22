@@ -103,7 +103,7 @@ class Service extends Object
      */
     protected function beginCall($originMethod, $arguments)
     {
-        if (Yii::$service->helper->log->isServiceLogEnable()) {
+        if (Yii::$app->serviceLog->isServiceLogEnable()) {
             $this->_beginCallTime = microtime(true);
         }
     }
@@ -116,7 +116,7 @@ class Service extends Object
      */
     protected function endCall($originMethod, $arguments)
     {
-        if (Yii::$service->helper->log->isServiceLogEnable()) {
+        if (Yii::$app->serviceLog->isServiceLogEnable()) {
             list($logTrace, $isCalledByThis) = $this->debugBackTrace();
             /*
              * if function is called by $this ,not log it to mongodb.
@@ -134,24 +134,22 @@ class Service extends Object
             } else {
                 $arguments = 'string or int or other';
             }
-            $serviceLogUid = Yii::$service->helper->log->getLogUid();
+            $serviceLogUid = Yii::$app->serviceLog->getLogUid();
             $log_info = [
-                'service_uid'                => $serviceLogUid,
-                'current_url'                => Yii::$service->url->getCurrentUrl(),
-                'home_url'                    => Yii::$service->url->homeUrl(),
-                'service_file'                => get_class($this),
+                'service_uid'               => $serviceLogUid,
+                'current_url'               => Yii::$service->url->getCurrentUrl(),
+                'home_url'                  => Yii::$service->url->homeUrl(),
+                'service_file'              => get_class($this),
                 'service_method'            => $originMethod,
-                'service_method_argument'    => $arguments,
-                'begin_microtime'            => $begin_microtime,
-                'end_microtime'            => $endCallTime,
-                'used_time'                => $used_time,
-
-                'process_date_time'        => date('Y-m-d H:i:s'),
-                'log_trace'                    => $logTrace,
+                'service_method_argument'   => $arguments,
+                'begin_microtime'           => $begin_microtime,
+                'end_microtime'             => $endCallTime,
+                'used_time'                 => $used_time,
+                'process_date_time'         => date('Y-m-d H:i:s'),
+                'log_trace'                 => $logTrace,
             ];
 
-            //Yii::$service->helper->log->fetchServiceLog($log_info);
-            Yii::$service->helper->log->printServiceLog($log_info);
+            Yii::$app->serviceLog->printServiceLog($log_info);
         }
     }
 
