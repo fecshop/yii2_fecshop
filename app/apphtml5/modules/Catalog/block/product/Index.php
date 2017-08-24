@@ -37,6 +37,8 @@ class Index
      */
     protected $_reviewHelperName = '\fecshop\app\apphtml5\modules\Catalog\helpers\Review';
     protected $_reviewHelper;
+    protected $_currentSpuAttrValArr;
+     protected $_spuAttrShowAsImgArr;
     
     public function __construct()
     {
