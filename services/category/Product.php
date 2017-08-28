@@ -74,9 +74,7 @@ class Product extends Service
         $coll = Yii::$service->product->getFrontCategoryProducts($filter);
         $collection = $coll['coll'];
         $count = $coll['count'];
-
         $arr = $this->convertToCategoryInfo($collection);
-
         return [
             'coll' => $arr,
             'count'=> $count,

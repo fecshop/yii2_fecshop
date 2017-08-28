@@ -62,7 +62,10 @@ class ProductController extends AppserverController
         $this->filterProductImg($this->_product['image']);
         $groupAttr = Yii::$service->product->getGroupAttr($this->_product['attr_group']);
         $groupAttrArr = $this->getGroupAttrArr($groupAttr);
-        
+        $custom_option_attr_info = Yii::$service->product->getCustomOptionAttrInfo($this->_product['attr_group']);
+        //var_dump($custom_option_attr_info);exit;
+        $custom_option_showImg_attr = $this->getCustomOptionShowImgAttr($custom_option_attr_info);
+        //var_dump($custom_option_showImg_attr );exit;
         $thumbnail_img = [];
         $image = $this->_image_thumbnails;
         if(isset($image['gallery']) && is_array($image['gallery']) && !empty($image['gallery'])){
@@ -83,7 +86,7 @@ class ProductController extends AppserverController
                 $thumbnail_img[] = Yii::$service->product->image->getResize($image,$middle_img_width,false);
             }
         }
-            
+        $custom_option = $this->getCustomOption($this->_product['custom_option'],$middle_img_width); 
         return [
             'code' => 200,
             'content' =>[
@@ -92,7 +95,8 @@ class ProductController extends AppserverController
                     'sku'                       => $this->_product['sku'],
                     'spu'                       => $this->_product['spu'],
                     'thumbnail_img'             => $thumbnail_img,
-                    'groupAttrArr'              => $groupAttrArr,
+                    'custom_option_showImg_attr'=> $custom_option_showImg_attr,
+                    //'groupAttrArr'              => $groupAttrArr,
                     //'image_thumbnails'          => $this->_image_thumbnails,
                     'image_detail'              => $this->_image_detail,
                     'attr_group'                => $this->_product['attr_group'],
@@ -107,7 +111,7 @@ class ProductController extends AppserverController
                     //],
                     //'productImgMagnifier'       => $productImgMagnifier,
                     'options'                   => $this->getSameSpuInfo(),
-                    'custom_option'             => $this->_product['custom_option'],
+                    'custom_option'             => $custom_option,
                     'description'               => Yii::$service->store->getStoreAttrVal($this->_product['description'], 'description'),
                     '_id'                       => $this->_product['_id'],
                     'buy_also_buy'              => $this->getProductBySkus($skus),
@@ -115,6 +119,29 @@ class ProductController extends AppserverController
             ]
         ];
     }
+    
+    public function getCustomOptionShowImgAttr($custom_option_attr_info){
+        foreach($custom_option_attr_info as $attr => $one){
+            if($one['showAsImg']){
+                return $attr;
+            }
+        }
+        
+    }
+    
+    public function getCustomOption($custom_option,$middle_img_width){
+        $arr = [];
+        if(is_array($custom_option)){
+            foreach($custom_option as $attr => $one){
+                if($attr && isset($one['image']) && $one['image']){
+                    $one['image'] = Yii::$service->product->image->getResize($one['image'],[40,45],false);
+                    $arr[$attr] = $one;
+                }
+            }
+        }
+        return $arr;
+    }
+    
     public function getGroupAttrArr($groupAttr){
         $gArr = [];
         if(is_array($groupAttr)){

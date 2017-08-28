@@ -553,9 +553,12 @@ class ProductMongodb implements ProductInterface
         }
         $group['product_id'] = ['$first' => '$product_id'];
         $langCode = Yii::$service->store->currentLangCode;
+        
         $name_lang  = Yii::$service->fecshoplang->getLangAttrName('name',$langCode);
+        $default_name_lang  = Yii::$service->fecshoplang->GetDefaultLangAttrName('name');
         $project['name'] = [
-            $name_lang => 1
+            $default_name_lang => 1,
+            $name_lang => 1,
         ];
         $project['product_id'] = '$_id';
         $pipelines = [
