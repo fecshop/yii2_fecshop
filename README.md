@@ -29,9 +29,9 @@ Fecshop支持多语言，多货币，架构上支持pc，手机web，手机app�
 
 [Fecshop](http://www.fecshop.com) 官网：http://www.fecshop.com ，您可以在这里提交bug，问题咨询等等。
 
-[Fecshop](http://www.fecshop.com) PC Web Demo：http://fecshop.appfront.fancyecommerce.com/
+[Fecshop](http://www.fecshop.com) PC Web Demo ：http://fecshop.appfront.fancyecommerce.com/
 
-[Fecshop](http://www.fecshop.com) Mobile Web Demo：http://fecshop.apphtml5.fancyecommerce.com
+[Fecshop](http://www.fecshop.com) Mobile Web Demo（WAP）：http://fecshop.apphtml5.fancyecommerce.com
 
 [Fecshop](http://www.fecshop.com) Mobile VUE Demo(Appserver,前后端彻底分离模式，目前在开发中)：http://demo.fancyecommerce.com/
 
