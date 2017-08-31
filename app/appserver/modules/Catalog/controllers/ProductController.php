@@ -135,6 +135,9 @@ class ProductController extends AppserverController
             foreach($custom_option as $attr => $one){
                 if($attr && isset($one['image']) && $one['image']){
                     $one['image'] = Yii::$service->product->image->getResize($one['image'],[40,45],false);
+                    if($price = $one['price']){
+                        $one['price'] = Yii::$service->page->currency->getCurrentCurrencyPrice($price);
+                    }
                     $arr[$attr] = $one;
                 }
             }

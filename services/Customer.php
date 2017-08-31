@@ -425,6 +425,34 @@ class Customer extends Service
             'count'=> $query->limit(null)->offset(null)->count(),
         ];
     }
+    
+    
+    /**
+     * @property $id | String  主键值
+     * 通过主键值找到分类，并且删除分类在url rewrite表中的记录
+     * 查看这个分类是否存在子分类，如果存在子分类，则删除所有的子分类，以及子分类在url rewrite表中对应的数据。
+     */
+    public function remove($id)
+    {
+        if (!$id) {
+            Yii::$service->helper->errors->add('remove id is empty');
+
+            return false;
+        }
+
+        $model = $this->_customerModel->findOne($id);
+        if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
+            
+            $model->delete();
+        } else {
+            Yii::$service->helper->errors->add("customer Remove Errors:ID:$id is not exist.");
+
+            return false;
+        }
+
+        return true;
+    }
+    
     /**
      * @property $user_ids | Array ， 子项为Int类型
      * @return Array ，数据格式为：

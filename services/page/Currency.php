@@ -113,7 +113,7 @@ class Currency extends Service
     protected function actionGetCurrentCurrencyPrice($price)
     {
         $currencyCode  = $this->getCurrentCurrency();
-        $currencyPrice = $this->GetCurrencyPrice($price,$currencyCode);
+        $currencyPrice = $this->getCurrencyPrice($price,$currencyCode);
         if($currencyPrice){
             return $currencyPrice;
         }
