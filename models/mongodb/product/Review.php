@@ -24,6 +24,19 @@ class Review extends ActiveRecord
     const ACTIVE_STATUS = 1;
     // 审核拒绝的状态
     const REFUSE_STATUS = 2;
+    
+    
+    public function getActiveStatus(){
+        return self::ACTIVE_STATUS;
+    }
+    
+    public function getNoActiveStatus(){
+        return self::NOACTIVE_STATUS;
+    }
+    
+    public function getRefuseStatus(){
+        return self::REFUSE_STATUS;
+    }
     /**
      * mongodb collection 的名字，相当于mysql的table name
      */
