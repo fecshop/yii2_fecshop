@@ -108,9 +108,10 @@ class Alipay extends Service
             
             return false;
         }
-        $base_grand_total = $this->_order['base_grand_total'];
-        $order_total_amount = Yii::$service->page->currency->getCurrencyPrice($base_grand_total,'CNY');
-        if($order_total_amount != $total_amount){
+        //$base_grand_total = $this->_order['base_grand_total'];
+        //$order_total_amount = Yii::$service->page->currency->getCurrencyPrice($base_grand_total,'CNY');
+        $order_total_amount = $this->_order['grand_total'];
+	if($order_total_amount != $total_amount){
             Yii::$service->helper->errors->add('order increment id:'.$out_trade_no.' , total_amount('.$total_amount.') is not equal to order_total_amount('.$order_total_amount.')');
             
             return false;
