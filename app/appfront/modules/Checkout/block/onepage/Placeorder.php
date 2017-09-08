@@ -41,7 +41,12 @@ class Placeorder
              * 对传递的数据，去除掉非法xss攻击部分内容（通过\Yii::$service->helper->htmlEncode()）.
              */
             $post = \Yii::$service->helper->htmlEncode($post);
-            // 检查前台传递的数据的完整
+            // 如果是支付宝，那么更改货币为人民币
+            $alipay_payment_key = Yii::$service->payment->alipay->getAlipayHandle();
+            if($post['payment_method'] == $alipay_payment_key){
+                Yii::$service->page->currency->setCurrentCurrency2CNY(); 
+            }
+	    // 检查前台传递的数据的完整
             if ($this->checkOrderInfoAndInit($post)) {
                 
                 // 如果游客用户勾选了注册账号，则注册，登录，并把地址写入到用户的address中

@@ -329,6 +329,9 @@ class Alipay extends Service
     }
     
     
-    
+    // 支付宝的 标示
+    public function getAlipayHandle(){
+        return 'alipay_standard';
+    }   
     
 }

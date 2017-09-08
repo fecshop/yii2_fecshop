@@ -242,4 +242,9 @@ class Currency extends Service
             return false;
         }
     }
+
+
+    public function setCurrentCurrency2CNY(){
+        return $this->setCurrentCurrency('CNY');
+    }
 }
