@@ -313,8 +313,9 @@ class Alipay extends Service
             if(!empty($subject_arr)){
                 $subject = implode(',',$subject_arr);
                 $increment_id = $currentOrderInfo['increment_id'];
-                $base_grand_total = $currentOrderInfo['base_grand_total'];
-                $total_amount = Yii::$service->page->currency->getCurrencyPrice($base_grand_total,'CNY');
+                //$base_grand_total = $currentOrderInfo['base_grand_total'];
+                //$total_amount = Yii::$service->page->currency->getCurrencyPrice($base_grand_total,'CNY');
+                $total_amount = $currentOrderInfo['grand_total'];
                 Yii::$service->payment->setPaymentMethod($currentOrderInfo['payment_method']);
                 return json_encode([
                     // param 参看：https://docs.open.alipay.com/common/105901
