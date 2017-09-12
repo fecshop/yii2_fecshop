@@ -140,4 +140,28 @@ appserver（手机app服务），appapi（erp，或者其他接口对接），
 鉴于以上特点，您可以下载安装[Fecshop](http://www.fecshop.com)，然后更改[Fecshop](http://www.fecshop.com)的模板和功能，扩展自己想要
 的功能，或者安装第三方开发好了的扩展或者模板，来快速的组建起来您的网站。
 
+6、捐赠
+-----------
+
+如果您认为这是一个不错的项目，对您有帮助，你可以通过下面的方式进行捐赠，
+这里感谢您对开源项目的支持。
+
+支付宝：
+
+![](http://www.fecshop.com/alipay.png)
+
+微信：
+
+![](http://www.fecshop.com/weixin.png)
+
+
+
+
+
+
+
+
+
+
+
 
