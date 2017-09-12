@@ -72,31 +72,52 @@ class Placeorder
                     if ($genarateStatus) {
                         // 得到当前的订单信息
                         $doExpressCheckoutReturn = $this->doExpressCheckoutPayment($token);
+                        //echo $doExpressCheckoutReturn;exit;
                         //echo 333;
                         if ($doExpressCheckoutReturn) {
-                            $ExpressOrderPayment = Yii::$service->payment->paypal->updateExpressOrderPayment($doExpressCheckoutReturn,$token);
-                            // 如果支付成功，并把信息更新到了订单数据中，则进行下面的操作。
-                            //echo 444;
-                            if ($ExpressOrderPayment) {
-                                // 支付成功后，在清空购物车数据。而不是在生成订单的时候。
-                                Yii::$service->cart->clearCartProductAndCoupon();
-                                // (删除)支付成功后，扣除库存。
-                                // (删除)Yii::$service->product->stock->deduct();
-                                // echo 555;
-                                // 发送新订单邮件
+                            $increment_id = Yii::$service->order->getSessionIncrementId();
+                            $innerTransaction = Yii::$app->db->beginTransaction();
+                            try {
+                                // 插件这个订单是否被支付过，如果被支付过，则回滚
+                                if(!Yii::$service->order->checkOrderVersion($increment_id)){    
+                                    $innerTransaction->rollBack();
+                                    return false;
+                                }
+                                $ExpressOrderPayment = Yii::$service->payment->paypal->updateExpressOrderPayment($doExpressCheckoutReturn,$token);
+                                // 如果支付成功，并把信息更新到了订单数据中，则进行下面的操作。
+                                //echo 444;
+                                if ($ExpressOrderPayment) {
+                                    // 查看订单是否被多次支付，如果被多次支付，则回滚
+                                    
+                                    // 支付成功后，在清空购物车数据。而不是在生成订单的时候。
+                                    Yii::$service->cart->clearCartProductAndCoupon();
+                                    // (删除)支付成功后，扣除库存。
+                                    // (删除)Yii::$service->product->stock->deduct();
+                                    // echo 555;
+                                    // 发送新订单邮件
 
-                                // 扣除库存和优惠券
-                                // 在生成订单的时候已经扣除了。参看order service GenerateOrderByCart() function
+                                    // 扣除库存和优惠券
+                                    // 在生成订单的时候已经扣除了。参看order service GenerateOrderByCart() function
 
-                                // 得到支付跳转前的准备页面。
-                                $paypal_express = Yii::$service->payment->paypal->express_payment_method;
-                                $successRedirectUrl = Yii::$service->payment->getExpressSuccessRedirectUrl($paypal_express);
-                                Yii::$service->url->redirect($successRedirectUrl);
-
-                                return true;
+                                    // 得到支付跳转前的准备页面。
+                                    $paypal_express = Yii::$service->payment->paypal->express_payment_method;
+                                    $successRedirectUrl = Yii::$service->payment->getExpressSuccessRedirectUrl($paypal_express);
+                                    Yii::$service->url->redirect($successRedirectUrl);
+                                    $innerTransaction->commit();
+                                    
+                                    return true;
+                                }else{
+                                    
+                                    $innerTransaction->rollBack();
+                                    return false;
+                                }
+                            } catch (Exception $e) {
+                                $innerTransaction->rollBack();
+                                return false;
                             }
                         }
                         // 如果订单支付过程中失败，将订单取消掉
+                        /* 2017-09-12修改，认为没有必要取消订单，如果取消掉，在支付页面就无法继续下单，因此注释掉下面的代码
                         if (!$doExpressCheckoutReturn || !$ExpressOrderPayment) {
                             $innerTransaction = Yii::$app->db->beginTransaction();
                             try {
@@ -109,6 +130,7 @@ class Placeorder
                                 $innerTransaction->rollBack();
                             }
                         }
+                        */
                         //return true;
                     }
                 }

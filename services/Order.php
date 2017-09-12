@@ -517,11 +517,13 @@ class Order extends Service
             
             // 有token的，代表是更新类型，譬如购物车点击paypal express支付的方式
             // 这种类型要进行检查，不能多次执行。该函数必须在订单操作完成的情况下执行。
+            /*
             if($token){
                 if(!$this->checkOrderVersion($increment_id)){
                     return false;
                 }
             }
+            */
             // 优惠券
             // 优惠券是在购物车页面添加的，添加后，优惠券的使用次数会被+1，
             // 因此在生成订单部分，是没有优惠券使用次数操作的（在购物车添加优惠券已经被执行该操作）
@@ -545,7 +547,7 @@ class Order extends Service
      * @property $increment_id | String 每执行一次，version都会+1 （version默认为0）
      * 执行完，查看version是否为1，如果不为1，则说明已经执行过了，返回false
      */
-    protected  function  checkOrderVersion($increment_id){
+    public  function  checkOrderVersion($increment_id){
         # 更新订单版本号，防止被多次执行。
         $sql    = 'update '.$this->_orderModel->tableName().' set version = version + 1  where increment_id = :increment_id';
         $data   = [
