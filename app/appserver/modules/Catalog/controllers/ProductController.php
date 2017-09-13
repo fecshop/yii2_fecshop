@@ -11,6 +11,7 @@ namespace fecshop\app\appserver\modules\Catalog\controllers;
 
 use fecshop\app\appserver\modules\AppserverController;
 use Yii;
+use fecshop\app\appserver\modules\Catalog\helpers\Review as ReviewHelper;
 
 /**
  * @author Terry Zhao <2358269014@qq.com>
@@ -87,6 +88,12 @@ class ProductController extends AppserverController
             }
         }
         $custom_option = $this->getCustomOption($this->_product['custom_option'],$middle_img_width); 
+        
+        $reviewHelper = new ReviewHelper;
+        $reviewHelper->product_id = $this->_product['_id'];
+        $reviewHelper->spu = $this->_product['spu'];
+        $productReview = $reviewHelper->getLastData();
+        
         return [
             'code' => 200,
             'content' =>[
@@ -95,6 +102,7 @@ class ProductController extends AppserverController
                     'sku'                       => $this->_product['sku'],
                     'spu'                       => $this->_product['spu'],
                     'thumbnail_img'             => $thumbnail_img,
+                    'productReview'             => $productReview,
                     'custom_option_showImg_attr'=> $custom_option_showImg_attr,
                     //'groupAttrArr'              => $groupAttrArr,
                     //'image_thumbnails'          => $this->_image_thumbnails,
@@ -103,7 +111,7 @@ class ProductController extends AppserverController
                     'review_count'              => $review_count,
                     'reviw_rate_star_average'   => $reviw_rate_star_average,
                     'price_info'                => $this->getProductPriceInfo(),
-                    'tier_price'                => $this->_product['tier_price'],
+                    'tier_price'                => $this->getTierPrice(),
                     //'media_size' => [
                     //    'small_img_width'       => $productImgSize['small_img_width'],
                     //    'small_img_height'      => $productImgSize['small_img_height'],
@@ -114,10 +122,37 @@ class ProductController extends AppserverController
                     'custom_option'             => $custom_option,
                     'description'               => Yii::$service->store->getStoreAttrVal($this->_product['description'], 'description'),
                     '_id'                       => $this->_product['_id'],
-                    'buy_also_buy'              => $this->getProductBySkus($skus),
+                    'buy_also_buy'              => $this->getProductBySkus(),
                 ]
             ]
         ];
+    }
+    
+    public function getTierPrice(){
+        $i = 1;
+        $pre_qty = 1;
+        $t_arr = [];
+        $tier_price = $this->_product['tier_price'];
+        if(is_array($tier_price) && !empty($tier_price)){
+            $tier_price_arr = \fec\helpers\CFunc::array_sort($tier_price,'qty');
+            $arr = ['Qty:'];
+            foreach($tier_price_arr as $one){
+                if($i != 1){
+                    $arr[] = $pre_qty.'-'.$one['qty'];
+                }
+                $i++;
+                $pre_qty = $one['qty'];
+            }
+            $arr[] = '>='.$pre_qty;
+            $t_arr[] = $arr;
+            
+            $arr = ['Price:'];
+            foreach($tier_price as $one){
+                $arr[] = Yii::$service->product->price->formatSamplePrice($one['price']);
+            }
+            $t_arr[] = $arr;
+        }
+        return $t_arr;
     }
     
     public function getCustomOptionShowImgAttr($custom_option_attr_info){
@@ -176,14 +211,16 @@ class ProductController extends AppserverController
                     $thumbnails_arr[]   = $one;
                 }
                 if($is_detail == 1){
-                    $detail_arr[]       = $one;
+                    $detail_arr[]       = Yii::$service->product->image->getUrl($one['image']);
                 }
+                
             }
             $this->_image_thumbnails['gallery'] = $thumbnails_arr;
             $this->_image_detail     = $detail_arr;
         }
+
         if(isset($product_images['main']['is_detail']) && $product_images['main']['is_detail'] == 1 ){
-            $this->_image_detail[] = $product_images['main'];
+            $this->_image_detail[] = Yii::$service->product->image->getUrl($product_images['main']['image']);
         }
         
     }
@@ -524,8 +561,8 @@ class ProductController extends AppserverController
         }
     }
     // 买了的人还买了什么，通过产品字段取出来sku，然后查询得到。
-    protected function getProductBySkus($skus)
-    {
+    public function getProductBySkus()
+    {   
         $buy_also_buy_sku = $this->_product['buy_also_buy_sku'];
         if ($buy_also_buy_sku) {
             $skus = explode(',', $buy_also_buy_sku);
@@ -540,8 +577,35 @@ class ProductController extends AppserverController
                 $products = Yii::$service->product->getProducts($filter);
                 //var_dump($products);
                 $products = Yii::$service->category->product->convertToCategoryInfo($products);
-
-                return $products;
+                $i = 1;
+                $product_return = [];
+                if(is_array($products) && !empty($products)){
+                    
+                    foreach($products as $k=>$v){
+                        $i++;
+                        $products[$k]['url'] = '/catalog/product/'.$v['product_id'];
+                        $products[$k]['image'] = Yii::$service->product->image->getResize($v['image'],296,false);
+                        $priceInfo = Yii::$service->product->price->getCurrentCurrencyProductPriceInfo($v['price'], $v['special_price'],$v['special_from'],$v['special_to']);
+                        $products[$k]['price'] = isset($priceInfo['price']) ? $priceInfo['price'] : '';
+                        $products[$k]['special_price'] = isset($priceInfo['special_price']) ? $priceInfo['special_price'] : '';
+                        
+                        if($i%2 === 0){
+                            $arr = $products[$k];
+                        }else{
+                            $product_return[] = [
+                                'one' => $arr,
+                                'two' => $products[$k],
+                            ];
+                        }
+                    }
+                    if($i%2 === 0){
+                        $product_return[] = [
+                            'one' => $arr,
+                            'two' => [],
+                        ];
+                    }
+                }
+                return $product_return;
             }
         }
     }
