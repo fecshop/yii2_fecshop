@@ -42,6 +42,35 @@ class ProductController extends AppserverController
     protected $_currentSpuAttrValArr;
     protected $_spuAttrShowAsImgArr;
     
+    public function actionFavorite(){
+        if(Yii::$app->user->isGuest){
+            return [
+                'code' => 400,
+                'content' => 'no login',
+            ];
+        }
+        $product_id = Yii::$app->request->get('product_id');
+        $identity = Yii::$app->user->identity;
+        $user_id = $identity->id;
+
+        $addStatus = Yii::$service->product->favorite->add($product_id, $user_id);
+        if (!$addStatus) {
+            $errors = Yii::$service->helper->errors->get();
+            return [
+                'code' => 401,
+                'content' => $errors,
+            ];
+        }else{
+            return [
+                'code' => 200,
+                'content' => 'success',
+            ];
+        }
+        // 收藏失败，需要登录
+        
+        
+    }
+    
     // 网站信息管理
     public function actionIndex()
     {
@@ -121,7 +150,7 @@ class ProductController extends AppserverController
                     'options'                   => $this->getSameSpuInfo(),
                     'custom_option'             => $custom_option,
                     'description'               => Yii::$service->store->getStoreAttrVal($this->_product['description'], 'description'),
-                    '_id'                       => $this->_product['_id'],
+                    '_id'                       => (string)$this->_product['_id'],
                     'buy_also_buy'              => $this->getProductBySkus(),
                 ]
             ]
