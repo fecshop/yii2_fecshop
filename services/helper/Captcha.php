@@ -93,6 +93,22 @@ class Captcha extends Service
         imagepng($this->img);
         imagedestroy($this->img);
     }
+    
+    //对外生成
+    public function doBase64img()
+    {
+        $this->createBg();
+        $this->createCode();
+        $this->createLine();
+        $this->createFont();
+        ob_start();
+        imagepng($this->img);
+        imagedestroy($this->img);
+        $fileContent = ob_get_contents();
+        ob_end_clean();
+        $this->setSessionCode();
+        return base64_encode($fileContent);
+    }
 
     //对外生成
     public function doimg()

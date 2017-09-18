@@ -20,28 +20,61 @@ use \Firebase\JWT\JWT;
 class LoginController extends AppserverController
 {
     public $enableCsrfValidation = false ;
-    
-    public function actionIndex(){
+    /**
+     * 登录用户的部分
+     */
+    public function actionAccount(){
+        $identity = Yii::$service->customer->loginByAccessToken(get_class($this));
+        if($identity){
+            // 用户已经登录
+            return [
+                'code'         => 400,
+                'content'       => 'account is login',
+                
+            ];
+        }
         $email       = Yii::$app->request->post('email');
         $password    = Yii::$app->request->post('password');
         $accessToken = Yii::$service->customer->loginAndGetAccessToken($email,$password);
         if($accessToken){
-            echo json_encode([
+            return [
                 'access-token' => $accessToken,
                 'status'       => 'success',
                 'code'         => 200,
-            ]);
-            return;
+            ];
         }else{
-            echo json_encode([
+            return [
                 'access-token' => '',
                 'status'       => 'error',
                 'code'         => 401,
-            ]);
-            return;
+            ];
         }
         
     }
     
+    /**
+     * 登录部分的显示
+     *
+     */
+    public function actionIndex(){
+        if($identity){
+            // 用户已经登录
+            return [
+                'code'          => 400,
+                'content'       => 'account is login',
+                
+            ];
+        }
+        $loginParam = \Yii::$app->getModule('customer')->params['login'];
+        $loginCaptchaActive = isset($loginParam['loginPageCaptcha']) ? $loginParam['loginPageCaptcha'] : false;
+        return [
+            'code'              => 200,
+            'loginCaptchaActive'  => $loginCaptchaActive,
+            'googleLoginUrl'    => Yii::$service->customer->google->getLoginUrl('customer/google/loginv'),
+            'facebookLoginUrl'  => Yii::$service->customer->facebook->getLoginUrl('customer/facebook/loginv'),
+        ];
+        
+        
+    }
     
 }

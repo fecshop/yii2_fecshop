@@ -38,7 +38,7 @@ class AppserverController extends Controller
     public function behaviors()
     {
         $fecshop_uuid = Yii::$service->session->fecshop_uuid;
-        $cors_allow_headers = [$fecshop_uuid,'fecshop-lang','fecshop-currency'];
+        $cors_allow_headers = [$fecshop_uuid,'fecshop-lang','fecshop-currency','access-token'];
         $behaviors = parent::behaviors();
         $behaviors['contentNegotiator']['formats']['text/html'] = Response::FORMAT_JSON;
         $behaviors["corsFilter"] = [

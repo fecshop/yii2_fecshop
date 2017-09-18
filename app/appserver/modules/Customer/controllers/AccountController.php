@@ -21,14 +21,55 @@ class AccountController extends AppserverTokenController
     
     
     public function actionIndex(){
-        //echo Yii::$service->session->getUUID();exit;
+        if (Yii::$app->user->isGuest) {
+            return [
+                'code' => 400,
+                'content' => 'no login'
+            ];
+        }
         $identity = Yii::$app->user->identity;
-        var_dump($identity['email']);
-        exit;
-        //$accessToken = Yii::$app->request->post('access_token'); 
+
+        return [
+            'email'            => $identity['email'],
+        ];
     
     }
     
-   
+    
+    
+    /**
+     * 登录.
+     */
+    public function actionLogin()
+    {
+        if (!Yii::$app->user->isGuest) {
+            return [
+                'code' => 400,
+                'content' => 'has login'
+            ];
+        }
+        
+        $data = $this->getBlock()->getLastData($param);
+
+        return $this->render($this->action->id, $data);
+    }
+    
+    public function actionLoginpost(){
+        if (!Yii::$app->user->isGuest) {
+            return [
+                'code' => 400,
+                'content' => 'has login'
+            ];
+        }
+        $param = Yii::$app->request->post('editForm');
+        if (!empty($param) && is_array($param)) {
+            $this->getBlock()->login($param);
+            if (!Yii::$app->user->isGuest) {
+                return Yii::$service->customer->loginSuccessRedirect('customer/account');
+            }
+        }
+        
+    }
+
     
 }
