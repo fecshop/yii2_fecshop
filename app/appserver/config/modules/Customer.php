@@ -31,7 +31,14 @@ return [
 
             ],
 
-            
+            'leftMenu'  => [
+                'Account Information' => '/customer/editaccount',
+                'Address Book' => '/customer/address',
+                'My Orders' => '/customer/order',
+                'My Product Reviews' => '/customer/productreview',
+                'My Favorite' => '/customer/productfavorite',
+
+            ],
 
             'contacts'    => [
                 // 联系我们页面的验证码是否开启

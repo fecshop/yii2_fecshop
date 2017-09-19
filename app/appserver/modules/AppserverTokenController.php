@@ -12,6 +12,7 @@ namespace fecshop\app\appserver\modules;
 use fec\controllers\FecController;
 use fec\helpers\CConfig;
 use Yii;
+use yii\web\Response;
 use yii\rest\Controller;
 use yii\base\InvalidValueException;
 use yii\filters\auth\CompositeAuth;  
@@ -61,24 +62,24 @@ class AppserverTokenController extends Controller
         $behaviors['authenticator'] = [  
             'class' => CompositeAuth::className(),  
             'authMethods' => [  
-                # ÏÂÃæÊÇÈıÖÖÑéÖ¤access_token·½Ê½  
+                # ä¸‹é¢æ˜¯ä¸‰ç§éªŒè¯access_tokenæ–¹å¼  
                 //HttpBasicAuth::className(),  
                 //HttpBearerAuth::className(),  
-                # ÕâÊÇGET²ÎÊıÑéÖ¤µÄ·½Ê½  
+                # è¿™æ˜¯GETå‚æ•°éªŒè¯çš„æ–¹å¼  
                 # http://10.10.10.252:600/user/index/index?access-token=xxxxxxxxxxxxxxxxxxxx  
                 QueryParamAuth::className(),  
             ],  
           
         ];  
           
-        # rate limit²¿·Ö£¬ËÙ¶ÈµÄÉèÖÃÊÇÔÚ  
+        # rate limitéƒ¨åˆ†ï¼Œé€Ÿåº¦çš„è®¾ç½®æ˜¯åœ¨  
         #   \myapp\code\core\Erp\User\models\User::getRateLimit($request, $action){  
-        /*  ¹Ù·½ÎÄµµ£º  
-            µ±ËÙÂÊÏŞÖÆ±»¼¤»î£¬Ä¬ÈÏÇé¿öÏÂÃ¿¸öÏìÓ¦½«°üº¬ÒÔÏÂHTTPÍ··¢ËÍ Ä¿Ç°µÄËÙÂÊÏŞÖÆĞÅÏ¢£º  
-            X-Rate-Limit-Limit: Í¬Ò»¸öÊ±¼ä¶ÎËùÔÊĞíµÄÇëÇóµÄ×î´óÊıÄ¿;  
-            X-Rate-Limit-Remaining: ÔÚµ±Ç°Ê±¼ä¶ÎÄÚÊ£ÓàµÄÇëÇóµÄÊıÁ¿;  
-            X-Rate-Limit-Reset: ÎªÁËµÃµ½×î´óÇëÇóÊıËùµÈ´ıµÄÃëÊı¡£  
-            Äã¿ÉÒÔ½ûÓÃÕâĞ©Í·ĞÅÏ¢Í¨¹ıÅäÖÃ yii\filters\RateLimiter::enableRateLimitHeaders Îªfalse, ¾ÍÏñÔÚÉÏÃæµÄ´úÂëÊ¾ÀıËùÊ¾¡£  
+        /*  å®˜æ–¹æ–‡æ¡£ï¼š  
+            å½“é€Ÿç‡é™åˆ¶è¢«æ¿€æ´»ï¼Œé»˜è®¤æƒ…å†µä¸‹æ¯ä¸ªå“åº”å°†åŒ…å«ä»¥ä¸‹HTTPå¤´å‘é€ ç›®å‰çš„é€Ÿç‡é™åˆ¶ä¿¡æ¯ï¼š  
+            X-Rate-Limit-Limit: åŒä¸€ä¸ªæ—¶é—´æ®µæ‰€å…è®¸çš„è¯·æ±‚çš„æœ€å¤§æ•°ç›®;  
+            X-Rate-Limit-Remaining: åœ¨å½“å‰æ—¶é—´æ®µå†…å‰©ä½™çš„è¯·æ±‚çš„æ•°é‡;  
+            X-Rate-Limit-Reset: ä¸ºäº†å¾—åˆ°æœ€å¤§è¯·æ±‚æ•°æ‰€ç­‰å¾…çš„ç§’æ•°ã€‚  
+            ä½ å¯ä»¥ç¦ç”¨è¿™äº›å¤´ä¿¡æ¯é€šè¿‡é…ç½® yii\filters\RateLimiter::enableRateLimitHeaders ä¸ºfalse, å°±åƒåœ¨ä¸Šé¢çš„ä»£ç ç¤ºä¾‹æ‰€ç¤ºã€‚  
   
         */  
         $rateLimit = Yii::$app->params['rateLimit'];
@@ -112,7 +113,7 @@ class AppserverTokenController extends Controller
         $viewId = str_replace('/', '\\', $viewId);
         $relativeFile = '\\'.$this->blockNamespace;
         $relativeFile .= '\\'.$viewId.'\\'.ucfirst($blockName);
-        //²éÕÒÊÇ·ñÔÚrewriteMapÖĞ´æÔÚÖØĞ´
+        //æŸ¥æ‰¾æ˜¯å¦åœ¨rewriteMapä¸­å­˜åœ¨é‡å†™
         $relativeFile = Yii::mapGetName($relativeFile);
         
         return new $relativeFile();

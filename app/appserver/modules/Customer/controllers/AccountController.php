@@ -18,8 +18,6 @@ use Yii;
  */
 class AccountController extends AppserverTokenController
 {
-    
-    
     public function actionIndex(){
         if (Yii::$app->user->isGuest) {
             return [
@@ -27,46 +25,23 @@ class AccountController extends AppserverTokenController
                 'content' => 'no login'
             ];
         }
-        $identity = Yii::$app->user->identity;
-
+        $leftMenu = $this->getLeftMenu();
         return [
-            'email'            => $identity['email'],
+            'code' => 200,
+            'menuList' => $leftMenu,
         ];
     
     }
     
     
     
-    /**
-     * 登录.
-     */
-    public function actionLogin()
+    public function getLeftMenu()
     {
-        if (!Yii::$app->user->isGuest) {
-            return [
-                'code' => 400,
-                'content' => 'has login'
-            ];
-        }
-        
-        $data = $this->getBlock()->getLastData($param);
-
-        return $this->render($this->action->id, $data);
-    }
-    
-    public function actionLoginpost(){
-        if (!Yii::$app->user->isGuest) {
-            return [
-                'code' => 400,
-                'content' => 'has login'
-            ];
-        }
-        $param = Yii::$app->request->post('editForm');
-        if (!empty($param) && is_array($param)) {
-            $this->getBlock()->login($param);
-            if (!Yii::$app->user->isGuest) {
-                return Yii::$service->customer->loginSuccessRedirect('customer/account');
-            }
+        $leftMenu = \Yii::$app->getModule('customer')->params['leftMenu'];
+        if (is_array($leftMenu) && !empty($leftMenu)) {
+            return $leftMenu;
+        }else{
+            return [];
         }
         
     }

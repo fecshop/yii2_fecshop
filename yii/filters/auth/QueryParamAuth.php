@@ -20,7 +20,7 @@ class QueryParamAuth extends YiiQueryParamAuth
 {
     
     /**
-     * ÖØĞ´¸Ã·½·¨¡£¸Ã·½·¨´Órequest headerÖĞ¶ÁÈ¡access-token¡£
+     * é‡å†™è¯¥æ–¹æ³•ã€‚è¯¥æ–¹æ³•ä»request headerä¸­è¯»å–access-tokenã€‚
      */
     public function authenticate($user, $request, $response)
     {   
@@ -28,10 +28,19 @@ class QueryParamAuth extends YiiQueryParamAuth
         if($identity){
             return $identity;
         }else{
+            $fecshop_uuid = Yii::$service->session->fecshop_uuid;
+            $cors_allow_headers = [$fecshop_uuid,'fecshop-lang','fecshop-currency','access-token'];
+            
+            header('Access-Control-Allow-Origin: *');
+            header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, ".implode(', ',$cors_allow_headers));
+            header('Access-Control-Allow-Methods: GET, POST, PUT,DELETE');
+            
             $result = ['status' => 'ERROR', 'code' => 401,'message' => 'token is time out'];
-            Yii::$app->response->data=json_encode($result);
+            Yii::$app->response->data = $result;
             Yii::$app->response->send();
             Yii::$app->end();
+            
+            
         }
     }
     
