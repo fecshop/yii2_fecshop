@@ -35,28 +35,39 @@ class LoginController extends AppserverController
         }
         $email       = Yii::$app->request->post('email');
         $password    = Yii::$app->request->post('password');
+        $loginParam = \Yii::$app->getModule('customer')->params['login'];
+        $loginCaptchaActive = isset($loginParam['loginPageCaptcha']) ? $loginParam['loginPageCaptcha'] : false;
+        if($loginCaptchaActive){
+            $captcha    = Yii::$app->request->post('captcha');
+            if(!Yii::$service->helper->captcha->validateCaptcha($captcha)){
+                return [
+                    'code'         => 401,
+                    'content'       => 'captcha ['.$captcha.'] is not right',
+                ];
+            }
+        }
         $accessToken = Yii::$service->customer->loginAndGetAccessToken($email,$password);
         if($accessToken){
             return [
-                'access-token' => $accessToken,
-                'status'       => 'success',
                 'code'         => 200,
+                'content'      => 'login success',
             ];
         }else{
             return [
-                'access-token' => '',
-                'status'       => 'error',
-                'code'         => 401,
+                'code'          => 402,
+                'content'       => 'email or password is not right',
+                
             ];
         }
         
     }
     
     /**
-     * 登录部分的显示
+     * 登录页面
      *
      */
     public function actionIndex(){
+        $identity = Yii::$service->customer->loginByAccessToken(get_class($this));
         if($identity){
             // 用户已经登录
             return [

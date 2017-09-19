@@ -547,6 +547,7 @@ class Customer extends Service
         if(isset($header['access-token']) && $header['access-token']){
             $accessToken = $header['access-token'];
         }   
+        // 如果request header中有access-token，则查看这个 access-token 是否有效
         if($accessToken){
             $identity = Yii::$app->user->loginByAccessToken($accessToken);
             if ($identity !== null) {
@@ -557,7 +558,7 @@ class Customer extends Service
                 } 
             }
         }
-        
+        // 如果上面access-token不存在
         $data = [
             'email'     => $email,
             'password'  => $password,
@@ -570,6 +571,7 @@ class Customer extends Service
             $identity->save();
             # 执行购物车合并等操作。
             Yii::$service->cart->mergeCartAfterUserLogin();
+            $this->setHeaderAccessToken($identity->access_token);
             return $identity->access_token;
             
         }
@@ -602,6 +604,13 @@ class Customer extends Service
                     return $identity;
                 }
             }
+        }
+    }
+    
+    protected function actionSetHeaderAccessToken($accessToken){
+        if($accessToken){
+            Yii::$app->response->getHeaders()->set('access-token',$accessToken);
+            return true;
         }
     }
 }

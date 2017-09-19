@@ -30,7 +30,6 @@ class AppserverController extends Controller
     public function init()
     {
         parent::init();
-        Yii::$app->user->enableSession = false;
         // 如果用户登录，会在header中传递access-token，这个函数就会登录用户。
         Yii::$service->customer->loginByAccessToken();
     }
