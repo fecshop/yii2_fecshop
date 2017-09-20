@@ -99,7 +99,6 @@ class Session extends Service
     }
     
     
-    
     public function setFlash($key,$val,$timeout=''){
         if(!$timeout && (Yii::$app->user->enableSession == false) ){
             $timeout = $this->timeout;
@@ -111,6 +110,10 @@ class Session extends Service
         return $this->_session->getFlash($key);
     }
     
+    public function destroy(){
+        return $this->_session->destroy();
+        
+    }
     
     
 }

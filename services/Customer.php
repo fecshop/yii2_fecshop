@@ -606,6 +606,25 @@ class Customer extends Service
             }
         }
     }
+    /**
+     * 通过accessToek的方式，进行登出从操作。
+     */
+    public function logoutByAccessToken()
+    {
+        $userComponent = Yii::$app->user;
+        $identity = $userComponent->identity;
+        if ($identity !== null ) {
+            if(!Yii::$app->user->isGuest){
+                $identity->access_token = '';
+                $identity->access_token_created_at = null;
+                $identity->save();
+            }
+            $userComponent->switchIdentity(null);
+        }
+
+        return $userComponent->getIsGuest();
+    }
+
     
     protected function actionSetHeaderAccessToken($accessToken){
         if($accessToken){

@@ -75,6 +75,28 @@ class MysqldbSession implements SessionInterface
         }
         
     }
+    /**
+     * 销毁所有
+     */
+    public function destroy(){
+        if(!Yii::$app->user->isGuest){
+            $identity = Yii::$app->user->identity;
+            $identity->access_token = '';
+            $identity->access_token_created_at = null;
+            $identity->save();
+        }
+        $uuid = Yii::$service->session->getUUID();
+        $result = $this->_sessionModel->deleteAll([
+            'uuid' => $uuid,
+        ]);
+        $access_token_created_at = $identity->access_token_created_at;
+        $timeout = Yii::$service->session->timeout;
+        if($access_token_created_at + $timeout > time()){
+            return $accessToken;
+        } 
+        return true;
+       
+    }
 
     public function setFlash($key,$val,$timeout){
         return $this->set($key,$val,$timeout);

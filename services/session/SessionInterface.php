@@ -24,4 +24,6 @@ interface SessionInterface
     public function setFlash($key,$val,$timeout);
     
     public function getFlash($key);
+    
+    public function destroy();
 }

@@ -45,6 +45,28 @@ class AccountController extends AppserverTokenController
         }
         
     }
+    
+    
+    /**
+     * 登出账户.
+     */
+    public function actionLogout()
+    {
+        if (Yii::$app->user->isGuest) {
+            return [
+                'code' => 400,
+                'content' => 'no login'
+            ];
+        }
+        Yii::$service->customer->logoutByAccessToken();
+        Yii::$service->cart->clearCart();
+        return [
+            'code' => 200,
+            'content' => 'logout success'
+        ];
+       
+        
+    }
 
     
 }

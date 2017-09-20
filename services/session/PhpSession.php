@@ -54,4 +54,8 @@ class PhpSession implements SessionInterface
         return Yii::$app->session->getFlash($key);
     }
     
+    public function destroy(){
+        return Yii::$app->getSession()->destroy();
+    }
+    
 }
