@@ -24,23 +24,11 @@ class RegisterController extends AppserverController
     
      public function register($param)
     {
-        $captcha = $param['captcha'];
-        $registerParam = \Yii::$app->getModule('customer')->params['register'];
-        $registerPageCaptcha = isset($registerParam['registerPageCaptcha']) ? $registerParam['registerPageCaptcha'] : false;
-        // Èç¹û¿ªÆôÁËÑéÖ¤Âë£¬µ«ÊÇÑéÖ¤ÂëÑéÖ¤²»ÕýÈ·¾Í±¨´í·µ»Ø¡£
-        if ($registerPageCaptcha && !$captcha) {
-            $this->_errors[] = ['Captcha can not empty'];
-
-            return false;
-        } elseif ($captcha && $registerPageCaptcha && !\Yii::$service->helper->captcha->validateCaptcha($captcha)) {
-            $this->_errors[] = ['Captcha is not right'];
-            
-            return false;
-        }
+        
         Yii::$service->customer->register($param);
         $errors = Yii::$service->helper->errors->get(',');
         if (!$errors) {
-            // ·¢ËÍ×¢²áÓÊ¼þ
+            // å‘é€æ³¨å†Œé‚®ä»¶
             $this->sendRegisterEmail($param);
 
             return true;
@@ -52,7 +40,7 @@ class RegisterController extends AppserverController
     }
 
     /**
-     * ·¢ËÍµÇÂ¼ÓÊ¼þ.
+     * å‘é€ç™»å½•é‚®ä»¶.
      */
     public function sendRegisterEmail($param)
     {
@@ -62,13 +50,64 @@ class RegisterController extends AppserverController
         }
     }
     
+    public function validateParam($email,$password,$firstname,$lastname,$captcha){
+        $minNameLength = Yii::$service->customer->getRegisterNameMinLength();
+        $maxNameLength = Yii::$service->customer->getRegisterNameMaxLength();
+        $minPassLength = Yii::$service->customer->getRegisterPassMinLength();
+        $maxPassLength = Yii::$service->customer->getRegisterPassMaxLength();
+            
+        $registerParam = \Yii::$app->getModule('customer')->params['register'];
+        $registerPageCaptcha = isset($registerParam['registerPageCaptcha']) ? $registerParam['registerPageCaptcha'] : false;
+        // å¦‚æžœå¼€å¯äº†éªŒè¯ç ï¼Œä½†æ˜¯éªŒè¯ç éªŒè¯ä¸æ­£ç¡®å°±æŠ¥é”™è¿”å›žã€‚
+        if ($registerPageCaptcha && !$captcha) {
+            
+            return [
+                'code'         => 401,
+                'content'       => 'Captcha can not empty',
+            ];
+        } elseif ($captcha && $registerPageCaptcha && !\Yii::$service->helper->captcha->validateCaptcha($captcha)) {
+            
+            return [
+                'code'         => 401,
+                'content'       => 'Captcha is not right',
+            ];
+        } elseif (!$email) {
+            return [
+                'code'         => 401,
+                'content'       => 'email can not empty',
+            ];
+        } elseif (!$password) {
+            return [
+                'code'         => 401,
+                'content'       => 'password can not empty',
+            ];
+        } elseif (strlen($password) < $minPassLength || strlen($password) > $maxPassLength) {
+            return [
+                'code'         => 401,
+                'content'       => 'password must >= '.$minPassLength.' and <= '.$maxPassLength,
+            ];
+        } elseif (strlen($firstname) < $minNameLength || strlen($firstname) > $maxNameLength) {
+            return [
+                'code'         => 401,
+                'content'       => 'firstname must >= '.$minPassLength.' and <= '.$maxPassLength,
+            ];
+        } elseif (strlen($lastname) < $minNameLength || strlen($lastname) > $maxNameLength) {
+            return [
+                'code'         => 401,
+                'content'       => 'lastname must >= '.$minPassLength.' and <= '.$maxPassLength,
+            ];
+        }
+        return false;
+        
+    }
+    
     
     
     public function actionAccount(){
         
         $identity = Yii::$service->customer->loginByAccessToken(get_class($this));
         if($identity){
-            // ÓÃ»§ÒÑ¾­µÇÂ¼
+            // ç”¨æˆ·å·²ç»ç™»å½•
             return [
                 'code'         => 400,
                 'content'       => 'account is login',
@@ -80,22 +119,24 @@ class RegisterController extends AppserverController
         $lastname   = Yii::$app->request->post('lastname');
         $captcha    = Yii::$app->request->post('captcha');
         $is_subscribed = Yii::$app->request->post('is_subscribed');
+        $is_subscribed = $is_subscribed ? 1 : 2;
+        if($errorInfo = $this->validateParam($email,$password,$firstname,$lastname,$captcha)){
+            return $errorInfo;
+        }
         
         $param['email']         = $email;
         $param['password']      = $password;
         $param['firstname']     = $firstname;
         $param['lastname']      = $lastname;
         $param['is_subscribed'] = $is_subscribed;
-        $param['captcha']       = $captcha;
         
         if (!empty($param) && is_array($param)) {
             $param = \Yii::$service->helper->htmlEncode($param);
             $registerStatus = $this->register($param);
-            //echo $registerStatus;exit;
             if ($registerStatus) {
                 $params_register = Yii::$app->getModule('customer')->params['register'];
                 $redirect = '/customer/account/login';
-                // ×¢²á³É¹¦ºó£¬ÊÇ·ñ×Ô¶¯µÇÂ¼
+                // æ³¨å†ŒæˆåŠŸåŽï¼Œæ˜¯å¦è‡ªåŠ¨ç™»å½•
                 if (isset($params_register['successAutoLogin']) && $params_register['successAutoLogin']) {
                     $accessToken = Yii::$service->customer->loginAndGetAccessToken($email,$password);
                     if($accessToken){
@@ -106,71 +147,25 @@ class RegisterController extends AppserverController
                     'code' => 200,
                     'content' => 'register success',
                     'redirect' => $redirect,
-                ]
+                ];
             }else{
                 return [
                     'code' => 402,
-                    'content' => implode(',',$this->_errors);
-                ]
-            }
-        }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        $identity = Yii::$service->customer->loginByAccessToken(get_class($this));
-        if($identity){
-            // ÓÃ»§ÒÑ¾­µÇÂ¼
-            return [
-                'code'         => 400,
-                'content'       => 'account is login',
-                
-            ];
-        }
-        $email       = Yii::$app->request->post('email');
-        $password    = Yii::$app->request->post('password');
-        $loginParam = \Yii::$app->getModule('customer')->params['login'];
-        $loginCaptchaActive = isset($loginParam['loginPageCaptcha']) ? $loginParam['loginPageCaptcha'] : false;
-        if($loginCaptchaActive){
-            $captcha    = Yii::$app->request->post('captcha');
-            if(!Yii::$service->helper->captcha->validateCaptcha($captcha)){
-                return [
-                    'code'         => 401,
-                    'content'       => 'captcha ['.$captcha.'] is not right',
+                    'content' => implode(',',$this->_errors),
                 ];
             }
-        }
-        $accessToken = Yii::$service->customer->loginAndGetAccessToken($email,$password);
-        if($accessToken){
-            return [
-                'code'         => 200,
-                'content'      => 'login success',
-            ];
-        }else{
-            return [
-                'code'          => 402,
-                'content'       => 'email or password is not right',
-                
-            ];
         }
         
     }
     
     /**
-     * µÇÂ¼Ò³Ãæ
+     * ç™»å½•é¡µé¢
      *
      */
     public function actionIndex(){
         $identity = Yii::$service->customer->loginByAccessToken(get_class($this));
         if($identity){
-            // ÓÃ»§ÒÑ¾­µÇÂ¼
+            // ç”¨æˆ·å·²ç»ç™»å½•
             return [
                 'code'          => 400,
                 'content'       => 'account is login',

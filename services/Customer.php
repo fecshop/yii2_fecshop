@@ -615,7 +615,7 @@ class Customer extends Service
         $identity = $userComponent->identity;
         if ($identity !== null ) {
             if(!Yii::$app->user->isGuest){
-                $identity->access_token = '';
+                $identity->access_token = null;
                 $identity->access_token_created_at = null;
                 $identity->save();
             }
