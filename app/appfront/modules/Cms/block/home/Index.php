@@ -4,7 +4,7 @@
  * 都是数组
  */
 
-namespace fecshop\app\appfront\modules\cms\block\home;
+namespace fecshop\app\appfront\modules\Cms\block\home;
 
 use Yii;
 

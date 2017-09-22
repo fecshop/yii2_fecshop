@@ -22,7 +22,7 @@ return [
             ],
             'login' => [
                 // 登录页面的验证码是否开启
-                'loginPageCaptcha' => true,
+                'loginPageCaptcha' => false,
 
             ],
             'forgotPassword' => [

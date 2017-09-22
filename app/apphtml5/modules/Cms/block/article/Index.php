@@ -4,7 +4,7 @@
  * 都是数组
  */
 
-namespace fecshop\app\apphtml5\modules\cms\block\article;
+namespace fecshop\app\apphtml5\modules\Cms\block\article;
 
 use fec\helpers\CRequest;
 use Yii;

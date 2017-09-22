@@ -7,7 +7,7 @@
  * @license http://www.fecshop.com/license/
  */
 
-namespace fecshop\app\apphtml5\modules\checkout\block\cart;
+namespace fecshop\app\apphtml5\modules\Checkout\block\cart;
 
 use Yii;
 
