@@ -27,12 +27,14 @@ class Breadcrumbs extends Service
 
     public function init()
     {
-        if ($this->homeName) {
-            $items['name'] = $this->homeName;
-            if ($this->ifAddHomeUrl) {
-                $items['url'] = Yii::$service->url->homeUrl();
+        if ($this->active) {
+            if ($this->homeName) {
+                $items['name'] = $this->homeName;
+                if ($this->ifAddHomeUrl) {
+                    $items['url'] = Yii::$service->url->homeUrl();
+                }
+                $this->addItems($items);
             }
-            $this->addItems($items);
         }
     }
 
