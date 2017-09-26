@@ -22,6 +22,6 @@ class Address extends ActiveRecord
 
     public static function tableName()
     {
-        return 'customer_address';
+        return '{{%customer_address}}';
     }
 }

@@ -20,6 +20,6 @@ class IpnMessage extends ActiveRecord
 {
     public static function tableName()
     {
-        return 'ipn_message';
+        return '{{%ipn_message}}';
     }
 }

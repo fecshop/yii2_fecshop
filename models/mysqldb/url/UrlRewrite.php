@@ -19,6 +19,6 @@ class UrlRewrite extends ActiveRecord
 {
     public static function tableName()
     {
-        return 'url_rewrite';
+        return '{{%url_rewrite}}';
     }
 }

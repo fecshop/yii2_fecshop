@@ -19,6 +19,6 @@ class Cart extends ActiveRecord
 {
     public static function tableName()
     {
-        return 'sales_flat_cart';
+        return '{{%sales_flat_cart}}';
     }
 }

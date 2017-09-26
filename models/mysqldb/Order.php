@@ -19,6 +19,6 @@ class Order extends ActiveRecord
 {
     public static function tableName()
     {
-        return 'sales_flat_order';
+        return '{{%sales_flat_order}}';
     }
 }

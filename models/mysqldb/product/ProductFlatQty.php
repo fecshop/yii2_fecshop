@@ -19,6 +19,6 @@ class ProductFlatQty extends ActiveRecord
 {
     public static function tableName()
     {
-        return 'product_flat_qty';
+        return '{{%product_flat_qty}}';
     }
 }

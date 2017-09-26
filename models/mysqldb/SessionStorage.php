@@ -19,6 +19,6 @@ class SessionStorage extends ActiveRecord
 {
     public static function tableName()
     {
-        return 'session_storage';
+        return '{{%session_storage}}';
     }
 }

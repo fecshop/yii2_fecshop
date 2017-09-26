@@ -19,6 +19,6 @@ class CouponUsage extends ActiveRecord
 {
     public static function tableName()
     {
-        return 'sales_coupon_usage';
+        return '{{%sales_coupon_usage}}';
     }
 }

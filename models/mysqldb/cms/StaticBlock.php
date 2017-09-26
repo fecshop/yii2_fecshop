@@ -19,6 +19,6 @@ class StaticBlock extends ActiveRecord
 {
     public static function tableName()
     {
-        return 'static_block';
+        return '{{%static_block}}';
     }
 }

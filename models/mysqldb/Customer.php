@@ -38,7 +38,7 @@ class Customer extends ActiveRecord implements IdentityInterface
 
     public static function tableName()
     {
-        return 'customer';
+        return '{{%customer}}';
     }
 
     public function rules()

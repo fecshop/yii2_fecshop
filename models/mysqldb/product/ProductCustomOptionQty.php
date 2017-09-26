@@ -19,6 +19,6 @@ class ProductCustomOptionQty extends ActiveRecord
 {
     public static function tableName()
     {
-        return 'product_custom_option_qty';
+        return '{{%product_custom_option_qty}}';
     }
 }
