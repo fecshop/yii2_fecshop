@@ -36,7 +36,7 @@ class AddressController extends AppserverTokenController
         $address = [];
         $country = '';
         $address_id = Yii::$app->request->get('address_id');
-            if($address_id){
+        if($address_id){
             $addressModel = Yii::$service->customer->address->getByPrimaryKey($address_id);
             $identity = Yii::$app->user->identity;
             $customer_id = $identity['id'];
@@ -59,9 +59,6 @@ class AddressController extends AppserverTokenController
         }
         $countryArr = Yii::$service->helper->country->getAllCountryArray();
         $address['countryArr'] = $countryArr;
-        
-        
-        
         $state = isset($address['state']) ? $address['state'] : '';
         $stateArr = Yii::$service->helper->country->getStateByContryCode($country);
         $stateIsSelect = 0;
@@ -71,15 +68,6 @@ class AddressController extends AppserverTokenController
         $address['stateArr'] = $stateArr;
         $address['stateIsSelect'] = $stateIsSelect;
         
-        // if (!$stateHtml) {
-        //    $stateHtml = '<input id="state" name="address[state]" value="'.$state.'" title="State" class="input-text" style="" type="text">';
-        // } else {
-        //    $stateHtml = '<select id="address:state" class="address_state validate-select" title="State" name="address[state]">
-		//					<option value="">Please select region, state or province</option>'
-        //                .$stateHtml.'</select>';
-        // }
-        // $this->_address['stateHtml'] = $stateHtml;
-
         return [
             'code' => 200,
             'address' => $address,
@@ -138,4 +126,122 @@ class AddressController extends AppserverTokenController
         }
         return $arr;
     }
+    
+    public function actionChangecountry()
+    {
+        $country = Yii::$app->request->get('country');
+        if($country){
+           $stateArr = Yii::$service->helper->country->getStateByContryCode($country);
+           $stateIsSelect = 0;
+            if(!empty($stateArr)){
+                $stateIsSelect = 1;
+            }
+            return [
+                'code' => 200,
+                'stateIsSelect' => $stateIsSelect,
+                'stateArr' => $stateArr,
+            ];
+        }
+    }
+    
+    public function actionSave(){
+        $address_id         = Yii::$app->request->post('address_id'); 
+        $first_name         = Yii::$app->request->post('first_name'); 
+        $last_name          = Yii::$app->request->post('last_name'); 
+        $email              = Yii::$app->request->post('email'); 
+        $telephone          = Yii::$app->request->post('telephone'); 
+        $addressCountry     = Yii::$app->request->post('addressCountry'); 
+        $addressState       = Yii::$app->request->post('addressState'); 
+        $city               = Yii::$app->request->post('city'); 
+        $street1            = Yii::$app->request->post('street1'); 
+        $street2            = Yii::$app->request->post('street2'); 
+        $zip                = Yii::$app->request->post('zip'); 
+        $isDefaultActive    = Yii::$app->request->post('isDefaultActive'); 
+        
+        if($address_id){
+            $addressModel = Yii::$service->customer->address->getByPrimaryKey($address_id);
+            $identity = Yii::$app->user->identity;
+            $customer_id = $identity['id'];
+            if ($customer_id != $addressModel['customer_id']) {
+                return [
+                    'code' => '401',
+                    'content' => 'address is not exist'
+                ];
+            }
+        }
+        
+        $arr = [];
+        if (!$email) {
+            $error[] = ['email'];
+        } else {
+            $arr['email'] = $email;
+        }
+        if (!$first_name) {
+            $error[] = ['first_name'];
+        } else {
+            $arr['first_name'] = $first_name;
+        }
+        if (!$last_name) {
+            $error[] = ['last_name'];
+        } else {
+            $arr['last_name'] = $last_name;
+        }
+        if (!$telephone) {
+            $error[] = ['telephone'];
+        } else {
+            $arr['telephone'] = $telephone;
+        }
+        if (!$addressCountry) {
+            $error[] = ['country'];
+        } else {
+            $arr['country'] = $addressCountry;
+        }
+        if (!$addressState) {
+            $error[] = ['state'];
+        } else {
+            $arr['state'] = $addressState;
+        }
+        if (!$street1) {
+            $error[] = ['street1'];
+        } else {
+            $arr['street1'] = $street1;
+        }
+        if ($street2) {
+            $arr['street2'] = $street2;
+        }
+        if (!$city) {
+            $error[] = ['city'];
+        } else {
+            $arr['city'] = $city;
+        }
+        if (!$zip) {
+            $error[] = ['zip'];
+        } else {
+            $arr['zip'] = $zip;
+        }
+        if (!empty($error)) {
+            $str = implode(',', $error).' can not empty';
+            return [
+                'code' => '401',
+                'content' => $str,
+            ];
+        }
+       
+        if ($isDefaultActive) {
+            $arr['is_default'] = $isDefaultActive ? 1 : 2;
+        }
+        
+        if (isset($address_id)) {
+            $arr['address_id'] = $address_id;
+        }
+        $identity = Yii::$app->user->identity;
+        $arr['customer_id'] = $identity['id'];
+        Yii::$service->customer->address->save($arr);
+        return [
+            'code' => '200',
+            'content' => 'success',
+        ];
+    }
+    
+   
 }
