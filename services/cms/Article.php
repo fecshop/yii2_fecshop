@@ -62,7 +62,7 @@ class Article extends Service
      */
     protected function actionGetModelName()
     {
-        return get_class($this->_article->getByPrimaryKey());
+        return get_class($this->_article);
     }
 
     /**

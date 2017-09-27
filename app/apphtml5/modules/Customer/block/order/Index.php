@@ -30,7 +30,7 @@ class Index
     {
         if (!Yii::$app->user->isGuest) {
             $identity = Yii::$app->user->identity;
-            $this->customer_id = $identity;
+            $this->customer_id = $identity['id'];
         }
         $this->pageNum = (int) Yii::$app->request->get('p');
         $this->pageNum = ($this->pageNum >= 1) ? $this->pageNum : 1;
