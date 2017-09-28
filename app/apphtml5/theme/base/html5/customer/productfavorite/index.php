@@ -101,7 +101,7 @@ use fecshop\app\apphtml5\helper\Format;
 	<div class="clear"></div>
 </div>
 <script>
- function ShowRemark(eval,id){
+    function ShowRemark(eval,id){
         $('#remarkBox_'+id).show("slow");
     }
     function hideRemark(id){
