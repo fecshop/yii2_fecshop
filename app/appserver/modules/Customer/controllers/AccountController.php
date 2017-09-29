@@ -67,6 +67,18 @@ class AccountController extends AppserverTokenController
        
         
     }
+    
+    
+    public function actionForgotpassword()
+    {
+        $forgotPasswordParam = \Yii::$app->getModule('customer')->params['forgotPassword'];
+        $forgotCaptcha = isset($forgotPasswordParam['forgotCaptcha']) ? $forgotPasswordParam['forgotCaptcha'] : false;
 
+        return [
+            'code' => 200,
+            'forgotCaptchaActive' => $forgotCaptcha,
+        ];
+        
+    }
     
 }

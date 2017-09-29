@@ -101,7 +101,15 @@ class ProductfavoriteController extends AppserverTokenController
             }
         }
 
-        return \fec\helpers\CFunc::array_sort($product_arr, 'updated_at', 'desc');
+        $pArr = \fec\helpers\CFunc::array_sort($product_arr, 'updated_at', 'desc');
+        $arr = [];
+        if(is_array($pArr)){
+            foreach($pArr as $one){
+                $one['updated_at'] = date('Y-m-d H:i:s',$one['updated_at']);
+                $arr[] = $one;
+            }
+        }
+        return $arr;
     }
 
     /**

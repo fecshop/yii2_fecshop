@@ -19,7 +19,7 @@ use Yii;
 class Helper extends Service
 {
     protected $_app_name;
-
+    protected $_param;
     /**
      * 得到当前的app入口的名字，譬如 appfront apphtml5  appserver等.
      */
@@ -54,5 +54,18 @@ class Helper extends Service
         }
 
         return $var;
+    }
+    
+    /**
+     * @property $domain | String vue类型的appserver传递的domain
+     * 这个是appservice发送邮件，在邮件里面的url链接地址，在这里保存
+     */
+    public function setAppServiceDomain($domain){
+        $this->_param['appServiceDomain'] = $domain; 
+        return true;
+    }
+    
+    public function getAppServiceDomain(){
+        return isset($this->_param['appServiceDomain']) ? $this->_param['appServiceDomain'] : false;
     }
 }

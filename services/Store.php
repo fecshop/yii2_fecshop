@@ -58,6 +58,15 @@ class Store extends Service
     
     public $apiAppNameArr = ['appserver','appapi'];
     
+    public function isApiStore(){
+        $appName = Yii::$app->params['appName'];
+        if($appName && in_array($appName,$this->apiAppNameArr)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
     /**
      *	Bootstrap:init website,  class property $currentLang ,$currentTheme and $currentStore.
      *  if you not config this ,default class property will be set.
@@ -67,8 +76,7 @@ class Store extends Service
     protected function actionBootstrap($app)
     {
         // 对于 api端口，设置Yii::$app->user->enableSession = false;
-        $appName = Yii::$app->params['appName'];
-        if($appName && in_array($appName,$this->apiAppNameArr)){
+        if($this->isApiStore()){
             Yii::$app->user->enableSession = false;
         }
         

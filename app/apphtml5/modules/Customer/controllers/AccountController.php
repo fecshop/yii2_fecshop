@@ -159,7 +159,7 @@ class AccountController extends AppfrontController
                 $data['identity'] = $identity;
             } else {
                 $redirectUrl = Yii::$service->url->getUrl('customer/account/forgotpassword');
-                Yii::$service->url->redirect($redirectUrl);
+                return Yii::$service->url->redirect($redirectUrl);
             }
         }
 
