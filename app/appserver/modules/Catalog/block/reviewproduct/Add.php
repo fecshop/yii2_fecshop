@@ -7,7 +7,7 @@
  * @license http://www.fecshop.com/license/
  */
 
-namespace fecshop\app\apphtml5\modules\Catalog\block\reviewproduct;
+namespace fecshop\app\appserver\modules\Catalog\block\reviewproduct;
 
 //use fecshop\app\apphtml5\modules\Catalog\helpers\Review as ReviewHelper;
 use Yii;
@@ -48,46 +48,50 @@ class Add
         return $this->_add_captcha;
     }
 
-    public function getLastData($editForm)
+    public function getLastData()
     {
-        if (!is_array($editForm)) {
-            $editForm = [];
+        
+        $product_id = Yii::$app->request->get('product_id');
+        if (!$product_id) {
+            
+            return [
+                'code'  => 401,
+                'content' => 'product id  is empty',
+            ];
         }
-        $_id = Yii::$app->request->get('_id');
-        if (!$_id) {
-            Yii::$service->page->message->addError('product _id  is empty');
-
-            return [];
-        }
-        $product = Yii::$service->product->getByPrimaryKey($_id);
+        
+        $product = Yii::$service->product->getByPrimaryKey($product_id);
         if (!$product['spu']) {
-            Yii::$service->page->message->addError('product _id:'.$_id.'  is not exist in product collection');
-
-            return [];
+            return [
+                'code'  => 401,
+                'content' => 'product is not exist',
+            ];
         }
 
         $price_info = $this->getProductPriceInfo($product);
         $spu = $product['spu'];
         $image = $product['image'];
         $main_img = isset($image['main']['image']) ? $image['main']['image'] : '';
-        $url_key = $product['url_key'];
+        $imgUrl = Yii::$service->product->image->getResize($main_img,[150,150],false);
+        
         $product_name = Yii::$service->store->getStoreAttrVal($product['name'], 'name');
         $customer_name = '';
         if (!Yii::$app->user->isGuest) {
             $identity = Yii::$app->user->identity;
             $customer_name = $identity['firstname'].' '.$identity['lastname'];
         }
-
+        $product = [
+            'product_id' => $product_id,
+            'spu' => $spu,
+            'price_info' => $price_info,
+            'imgUrl' => $imgUrl,
+            'product_name' => $product_name,
+        ];
         return [
-            'customer_name'    => $customer_name,
-            'product_id'    => $_id,
-            'product_name'    => $product_name,
-            'spu'            => $spu,
-            'price_info'    => $price_info,
-            'main_img'        => $main_img,
-            'editForm'        => $editForm,
-            'add_captcha'    => $this->getAddCaptcha(),
-            'url'        => Yii::$service->url->getUrl($url_key),
+            'code'           => 200,
+            'product'        => $product,
+            'customer_name'  => $customer_name,
+            'reviewCaptchaActive'    => $this->getAddCaptcha(),
         ];
     }
     /**
@@ -96,60 +100,12 @@ class Add
      */
     public function saveReview($editForm)
     {
-        $add_captcha = $this->getAddCaptcha();
-        $product_id = isset($editForm['product_id']) ? $editForm['product_id'] : '';
-        if (!$product_id) {
-            Yii::$service->page->message->addError(['Product id can not empty']);
-
-            return false;
+        if(Yii::$service->product->review->addReview($editForm)){
+            return [
+                'code' => 200,
+                'content' => 'add product review success',
+            ];
         }
-        $rate_star = isset($editForm['rate_star']) ? $editForm['rate_star'] : '';
-        if (!$rate_star) {
-            Yii::$service->page->message->addError(['Rate Star can not empty']);
-
-            return false;
-        }
-        $name = isset($editForm['name']) ? $editForm['name'] : '';
-        if (!$name) {
-            Yii::$service->page->message->addError(['Your Name can not empty']);
-
-            return false;
-        }
-        $summary = isset($editForm['summary']) ? $editForm['summary'] : '';
-        if (!$summary) {
-            Yii::$service->page->message->addError(['Summary can not empty']);
-
-            return false;
-        }
-        $review_content = isset($editForm['review_content']) ? $editForm['review_content'] : '';
-        if (!$review_content) {
-            Yii::$service->page->message->addError(['Review content can not empty']);
-
-            return false;
-        }
-        // captcha validate
-        $captcha = isset($editForm['captcha']) ? $editForm['captcha'] : '';
-        if ($add_captcha && !$captcha) {
-            Yii::$service->page->message->addError(['Captcha can not empty']);
-
-            return false;
-        } elseif ($captcha && $add_captcha && !\Yii::$service->helper->captcha->validateCaptcha($captcha)) {
-            Yii::$service->page->message->addError(['Captcha is not right']);
-
-            return false;
-        }
-        $product = Yii::$service->product->getByPrimaryKey($product_id);
-        if (!$product['spu']) {
-            Yii::$service->page->message->addError('product _id:'.$product_id.'  is not exist in product collection');
-
-            return false;
-        }
-        $editForm['spu'] = $product['spu'];
-        $editForm['status'] = $product['spu'];
-        Yii::$service->product->review->addReview($editForm);
-        Yii::$service->page->message->addCorrect('Add product review success,Thank you! you can click product image to continue this product.');
-
-        return true;
     }
     /**
      * @property $product | String Or Object

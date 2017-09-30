@@ -25,32 +25,19 @@ class ReviewproductController extends AppserverController
     // 增加评论
     public function actionAdd()
     {
+        
         $reviewParam = Yii::$app->getModule('catalog')->params['review'];
         $addReviewOnlyLogin = isset($reviewParam['addReviewOnlyLogin']) ? $reviewParam['addReviewOnlyLogin'] : false;
-        if ($addReviewOnlyLogin && Yii::$app->user->isGuest) {
-            $currentUrl = Yii::$service->url->getCurrentUrl();
-            Yii::$service->customer->setLoginSuccessRedirectUrl($currentUrl);
-
-            // 如果评论产品必须登录用户，则跳转到用户登录页面
-            return Yii::$service->url->redirectByUrlKey('customer/account/login');
-        }
-        $editForm = Yii::$app->request->post('editForm');
-        $editForm = \Yii::$service->helper->htmlEncode($editForm);
-        if (!empty($editForm) && is_array($editForm)) {
-            $saveStatus = $this->getBlock()->saveReview($editForm);
-            if ($saveStatus) {
-                $spu = Yii::$app->request->get('spu');
-                $_id = Yii::$app->request->get('_id');
-                if ($spu && $_id) {
-                    $url = Yii::$service->url->getUrl('catalog/reviewproduct/lists', ['spu' => $spu, '_id'=>$_id]);
-                    $this->redirect($url);
-                }
+        if ($addReviewOnlyLogin) {
+            $identity = Yii::$service->customer->loginByAccessToken(get_class($this));
+            if(!$identity){
+                return [
+                    'code' => 400,
+                    'content' => 'you must login your account'
+                ];
             }
         }
-        //echo 1;exit;
-        $data = $this->getBlock()->getLastData($editForm);
-
-        return $this->render($this->action->id, $data);
+        return  $this->getBlock()->getLastData();
     }
 
     public function actionLists()
@@ -60,5 +47,88 @@ class ReviewproductController extends AppserverController
         return $data;
     }
     
+    
+    public function actionSubmitreview()
+    {
+        $captcha = Yii::$app->request->post('captcha');
+        $reviewParam = Yii::$app->getModule('catalog')->params['review'];
+        $add_captcha = isset($reviewParam['add_captcha']) ? $reviewParam['add_captcha'] : false;
+        
+        // 检查验证码
+        if($add_captcha){
+            if(!\Yii::$service->helper->captcha->validateCaptcha($captcha)){
+                return [
+                    'code' => '401',
+                    'content' => 'captcha is not correct',
+                ];
+            }
+        }
+        // 检查用户登录状态
+        $addReviewOnlyLogin = isset($reviewParam['addReviewOnlyLogin']) ? $reviewParam['addReviewOnlyLogin'] : false;
+        if ($addReviewOnlyLogin) {
+            $identity = Yii::$service->customer->loginByAccessToken(get_class($this));
+            if(!$identity){
+                return [
+                    'code' => 400,
+                    'content' => 'you must login your account'
+                ];
+            }
+        }
+        $product_id = Yii::$app->request->post('product_id');
+        $customer_name = Yii::$app->request->post('customer_name');
+        $summary = Yii::$app->request->post('summary');
+        $review_content = Yii::$app->request->post('review_content');
+        $selectStar = Yii::$app->request->post('selectStar');
+        // 产品产品是否存在
+        $product = Yii::$service->product->getByPrimaryKey($product_id);
+        if (!$product['spu']) {
+            return [
+                'code'  => 401,
+                'content' => 'product is not exist',
+            ];
+        }
+        // 检查前台传递的信息
+        if(!$customer_name){
+            return [
+                'code'  => 401,
+                'content' => 'customer name is empty',
+            ];
+        }
+        
+        if(!$summary){
+            return [
+                'code'  => 401,
+                'content' => 'summary is empty',
+            ];
+        }
+        
+        if(!$review_content){
+            return [
+                'code'  => 401,
+                'content' => 'review content is empty',
+            ];
+        }
+        
+        if(!$selectStar){
+            return [
+                'code'  => 401,
+                'content' => 'review Star is empty',
+            ];
+        }
+        $editForm = [
+            'product_id' => $product_id,
+            'rate_star'  => $selectStar,
+            'name'  => $customer_name,
+            'summary'  => $summary,
+            'review_content'  => $review_content,
+            'product_spu'  => $product['spu'],
+        ];
+        // 保存评论
+        return $this->getBlock('add')->saveReview($editForm);
+        
+        
+       
+        
+    }
     
 }
