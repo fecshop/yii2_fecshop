@@ -372,15 +372,15 @@ class Quote extends Service
                         'coupon_code'       => $coupon_code,            // coupon卷码
                         'shipping_method'   => $shipping_method,
                         'payment_method'    => $cart['payment_method'],
-                        'grand_total'       => $curr_grand_total,       // 当前货币总金额
-                        'shipping_cost'     => $currShippingCost,       // 当前货币，运费
-                        'coupon_cost'       => $currDiscountCost,       // 当前货币，优惠券优惠金额
-                        'product_total'     => $product_total,          // 当前货币，购物车中产品的总金额
+                        'grand_total'       => Yii::$service->helper->format->number_format($curr_grand_total),       // 当前货币总金额
+                        'shipping_cost'     => Yii::$service->helper->format->number_format($currShippingCost),       // 当前货币，运费
+                        'coupon_cost'       => Yii::$service->helper->format->number_format($currDiscountCost),       // 当前货币，优惠券优惠金额
+                        'product_total'     => Yii::$service->helper->format->number_format($product_total),          // 当前货币，购物车中产品的总金额
 
-                        'base_grand_total'  => $base_grand_total,       // 基础货币总金额
-                        'base_shipping_cost'=> $baseShippingCost,       // 基础货币，运费
-                        'base_coupon_cost'  => $baseDiscountCost,       // 基础货币，优惠券优惠金额
-                        'base_product_total'=> $base_product_total,     // 基础货币，购物车中产品的总金额
+                        'base_grand_total'  => Yii::$service->helper->format->number_format($base_grand_total),       // 基础货币总金额
+                        'base_shipping_cost'=> Yii::$service->helper->format->number_format($baseShippingCost),       // 基础货币，运费
+                        'base_coupon_cost'  => Yii::$service->helper->format->number_format($baseDiscountCost),       // 基础货币，优惠券优惠金额
+                        'base_product_total'=> Yii::$service->helper->format->number_format($base_product_total),     // 基础货币，购物车中产品的总金额
 
                         'products'          => $products,               //产品信息。
                         'product_weight'    => $product_weight,         //产品的总重量。
