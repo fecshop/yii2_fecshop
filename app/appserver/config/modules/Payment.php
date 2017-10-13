@@ -7,10 +7,9 @@
  * @license http://www.fecshop.com/license/
  */
 return [
-    'checkout' => [
-        'class' => '\fecshop\app\appserver\modules\Checkout\Module',
+    'payment' => [
+        'class' => '\fecshop\app\appserver\modules\Payment\Module',
         'params'=> [
-            'guestOrder' => true, // 是否支持游客下单
         ],
     ]
 ];

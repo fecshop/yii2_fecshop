@@ -602,6 +602,9 @@ class Customer extends Service
                         $identity->save();
                     }
                     return $identity;
+                }else{
+                    $this->logoutByAccessToken();
+                    return false;
                 }
             }
         }
