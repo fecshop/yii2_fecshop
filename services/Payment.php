@@ -50,7 +50,7 @@ class Payment extends Service
      * @return 返回提交订单信息跳转到的第三方支付url，也就是第三方支付的url。
      *                                                                                                    #从配置信息中获取
      */
-    public function getStandardStartUrl($payment_method = '')
+    public function getStandardStartUrl($payment_method = '',$type = '')
     {
         if (!$payment_method) {
             $payment_method = $this->getPaymentMethod();
@@ -59,10 +59,33 @@ class Payment extends Service
             $paymentConfig = $this->paymentConfig;
             if (isset($paymentConfig['standard'][$payment_method]['start_url'])) {
                 if (!empty($paymentConfig['standard'][$payment_method]['start_url'])) {
-                    return $this->getUrl($paymentConfig['standard'][$payment_method]['start_url']);
+                    if($type == 'appserver'){
+                        return $this->getAppServerUrl($paymentConfig['standard'][$payment_method]['start_url']);
+                    }else{
+                        return $this->getUrl($paymentConfig['standard'][$payment_method]['start_url']);
+                    }
                 }
             }
         }
+    }
+    
+    public function getAppServerUrl($url){
+        $url = str_replace('@homeUrl', '', $url);
+
+        return trim($url);
+        
+    }
+    
+    /**
+     * @property $url | String url的字符串
+     * @return string 根据传递的字符串格式，得到相应的url
+     */
+    protected function getUrl($url)
+    {
+        $homeUrl = Yii::$service->url->homeUrl();
+        $url = str_replace('@homeUrl', $homeUrl, $url);
+
+        return trim($url);
     }
 
     /**
@@ -224,17 +247,7 @@ class Payment extends Service
         }
     }
     
-    /**
-     * @property $url | String url的字符串
-     * @return string 根据传递的字符串格式，得到相应的url
-     */
-    protected function getUrl($url)
-    {
-        $homeUrl = Yii::$service->url->homeUrl();
-        $url = str_replace('@homeUrl', $homeUrl, $url);
-
-        return trim($url);
-    }
+    
 
     /**
      * @return array 得到所有支付的数组，数组含有三个字段。

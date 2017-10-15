@@ -29,7 +29,7 @@ class Index
     protected $_cartAddress;
     protected $_cart_address;
     protected $_cart_info;
-
+    protected $is_empty_cart = false;
     public function getLastData()
     {
         $cartInfo = Yii::$service->cart->getCartInfo();
@@ -54,11 +54,12 @@ class Index
             'code' => 200,
             'payments'                  => $this->getPayment(),
             'shippings'                 => $shippings,
+            'current_shipping_method'   => $this->_shipping_method,
             'current_payment_method'    => $this->_payment_method,
             'cart_info'                 => $last_cart_info,  
             'currency_info'             => $currency_info,
             //'address_view_file'       => $this->_address_view_file,
-            
+            //'is_empty_cart'             => $this->is_empty_cart,
             'isGuest'                   => $isGuest,
             'address_list'              => $this->_address_list,
             
@@ -316,6 +317,8 @@ class Index
                         $cart_info['products'][$k]['image'] = $custom_option_image;
                     }
                 }
+            }else{
+                $this->is_empty_cart = true;
             }
             $this->_cart_info = $cart_info;
         }

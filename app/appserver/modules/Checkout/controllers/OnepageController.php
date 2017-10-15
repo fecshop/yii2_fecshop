@@ -46,19 +46,9 @@ class OnepageController extends AppserverController
                 'content' => 'you must login your account'
             ];
         } 
-        $submitOrder = Yii::$app->request->post('submitOrder');
-        $status = $this->getBlock('placeorder')->getLastData();
-        if (!$status) {
-            return [
-                'code' => '401',
-                'content' => 'generate order fail'
-            ]; 
-        }else{
-            return [
-                'code' => '200',
-                'content' => 'generate order success'
-            ]; 
-        }
+        
+        return $this->getBlock('placeorder')->getLastData();
+        
         
         
     }
