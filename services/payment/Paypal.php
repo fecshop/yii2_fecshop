@@ -567,12 +567,20 @@ class Paypal extends Service
      * 这里返回的的字符串，是快捷支付部分获取token和payerId的参数。
      * 通过这些参数最终得到paypal express的token和payerId
      */
-    public function getStandardTokenNvpStr($landingPage = 'Login')
+    public function getStandardTokenNvpStr($landingPage = 'Login',$return_url='',$cancel_url='')
     {
         $nvp_array = [];
         $nvp_array['LANDINGPAGE'] = $landingPage;
-        $nvp_array['RETURNURL'] = Yii::$service->payment->getStandardReturnUrl('paypal_standard');
-        $nvp_array['CANCELURL'] = Yii::$service->payment->getStandardCancelUrl('paypal_standard');
+        if ($return_url) {
+            $nvp_array['RETURNURL'] = $return_url;
+        } else {
+            $nvp_array['RETURNURL'] = Yii::$service->payment->getStandardReturnUrl('paypal_standard');
+        }
+        if ($cancel_url) {
+            $nvp_array['CANCELURL'] = $cancel_url;
+        } else {
+            $nvp_array['CANCELURL'] = Yii::$service->payment->getStandardCancelUrl('paypal_standard');
+        }
         $nvp_array['PAYMENTREQUEST_0_PAYMENTACTION'] = 'Sale';
         $nvp_array['VERSION'] = $this->version;
         // 得到购物车的信息，通过购物车信息填写。
@@ -615,6 +623,9 @@ class Paypal extends Service
     {
         if(!$this->expressToken){
             $token = Yii::$app->request->get('token');
+            if(!$token){
+                $token = Yii::$app->request->post('token');
+            }
             $token = \Yii::$service->helper->htmlEncode($token);
             if ($token) {
                 $this->expressToken = $token;
@@ -630,6 +641,9 @@ class Paypal extends Service
     {
         if(!$this->expressPayerID){
             $PayerID = Yii::$app->request->get('PayerID');
+            if(!$PayerID){
+                $PayerID = Yii::$app->request->post('PayerID');
+            }
             $PayerID = \Yii::$service->helper->htmlEncode($PayerID);
             if ($PayerID) {
                 $this->expressPayerID = $PayerID;
@@ -649,7 +663,7 @@ class Paypal extends Service
             //$increment_id = Yii::$service->order->getSessionIncrementId();
             //echo "\n $increment_id \n\n";
             //$order = Yii::$service->order->getByIncrementId($increment_id);
-            echo '########'.$token.'#####';
+            //echo '########'.$token.'#####';
             $order = Yii::$service->order->getByPaymentToken($token);
             $order_cancel_status = Yii::$service->order->payment_status_canceled;
             // 如果订单状态被取消，那么不能进行支付。
@@ -678,14 +692,14 @@ class Paypal extends Service
                 $order['paypal_order_datetime'] = date('Y-m-d H:i:s', $DoExpressCheckoutReturn['PAYMENTINFO_0_ORDERTIME']);
                 $PAYMENTINFO_0_PAYMENTSTATUS = $DoExpressCheckoutReturn['PAYMENTINFO_0_PAYMENTSTATUS'];
                 
-                echo $this->payment_status_completed.'##'.$PAYMENTINFO_0_PAYMENTSTATUS."<br>";
+                //echo $this->payment_status_completed.'##'.$PAYMENTINFO_0_PAYMENTSTATUS."<br>";
                 if (strtolower($PAYMENTINFO_0_PAYMENTSTATUS) == $this->payment_status_completed) {
                     //echo 222;
                     // 判断金额是否相符
-                    echo $currency."<br/>";
-                    echo $order['order_currency_code']."<br/>";
-                    echo $PAYMENTINFO_0_AMT."<br/>";
-                    echo $order['grand_total']."<br/>";
+                    //echo $currency."<br/>";
+                    //echo $order['order_currency_code']."<br/>";
+                    //echo $PAYMENTINFO_0_AMT."<br/>";
+                    //echo $order['grand_total']."<br/>";
                     if ($currency == $order['order_currency_code'] && $PAYMENTINFO_0_AMT == $order['grand_total']) {
                         //echo 222;
                         $order->order_status = Yii::$service->order->payment_status_processing;
