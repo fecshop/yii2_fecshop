@@ -34,6 +34,7 @@ class Paypal extends Service
     public $payment_status_unreversed   = 'canceled_reversal';
     public $payment_status_processed    = 'processed';
     public $payment_status_voided       = 'voided';
+    public $seller_email ;
 
     // 是否使用证书的方式（https）
     public $use_local_certs = false;
@@ -485,6 +486,9 @@ class Paypal extends Service
         $nvp_array['PAYMENTREQUEST_0_AMT']                  = $grand_total;
         $nvp_array['PAYMENTREQUEST_0_ITEMAMT']              = $subtotal;
         $nvp_array['PAYMENTREQUEST_0_SHIPPINGAMT']          = $shipping_total;
+        if($this->seller_email){
+            $nvp_array['PAYMENTREQUEST_0_SELLERPAYPALACCOUNTID']  = $this->seller_email;
+        }
         $i = 0;
 
         foreach ($orderInfo['products'] as $item) {
@@ -522,12 +526,23 @@ class Paypal extends Service
      * 这里返回的的字符串，是快捷支付部分获取token和payerId的参数。
      * 通过这些参数最终得到paypal express的token和payerId
      */
-    public function getExpressTokenNvpStr($landingPage = 'Login')
+    public function getExpressTokenNvpStr($landingPage = 'Login',$return_url='',$cancel_url='')
     {
         $nvp_array = [];
         $nvp_array['LANDINGPAGE'] = $landingPage;
-        $nvp_array['RETURNURL'] = Yii::$service->payment->getExpressReturnUrl($this->express_payment_method);
-        $nvp_array['CANCELURL'] = Yii::$service->payment->getExpressCancelUrl($this->express_payment_method);
+        
+        
+        if ($return_url) {
+            $nvp_array['RETURNURL'] = $return_url;
+        } else {
+            $nvp_array['RETURNURL'] = Yii::$service->payment->getExpressReturnUrl($this->express_payment_method);
+        
+        }
+        if ($cancel_url) {
+            $nvp_array['CANCELURL'] = $cancel_url;
+        } else {
+            $nvp_array['CANCELURL'] = Yii::$service->payment->getExpressCancelUrl($this->express_payment_method);
+        }
         $nvp_array['PAYMENTREQUEST_0_PAYMENTACTION'] = 'Sale';
         $nvp_array['VERSION'] = $this->version;
         // 得到购物车的信息，通过购物车信息填写。
@@ -544,6 +559,9 @@ class Paypal extends Service
         $nvp_array['PAYMENTREQUEST_0_AMT'] = $grand_total;
         $nvp_array['PAYMENTREQUEST_0_ITEMAMT'] = $subtotal;
         $nvp_array['PAYMENTREQUEST_0_SHIPPINGAMT'] = $shipping_total;
+        if($this->seller_email){
+            $nvp_array['PAYMENTREQUEST_0_SELLERPAYPALACCOUNTID']  = $this->seller_email;
+        }
         $i = 0;
 
         foreach ($cartInfo['products'] as $item) {
@@ -598,6 +616,9 @@ class Paypal extends Service
         $nvp_array['PAYMENTREQUEST_0_AMT']          = $grand_total;
         $nvp_array['PAYMENTREQUEST_0_ITEMAMT']      = $subtotal;
         $nvp_array['PAYMENTREQUEST_0_SHIPPINGAMT']  = $shipping_total;
+        if($this->seller_email){
+            $nvp_array['PAYMENTREQUEST_0_SELLERPAYPALACCOUNTID']  = $this->seller_email;
+        }
         $i = 0;
 
         foreach ($orderInfo['products'] as $item) {
