@@ -261,7 +261,7 @@ class Alipay extends Service
      * 根据订单，将内容提交给支付宝。跳转到支付宝支付页面。
      * 在下单页面点击place order按钮，跳转到支付宝的时候，执行该函数。
      */
-    public function start(){
+    public function start($returnUrl = '',$type="POST"){
         // 初始化参数
         $this->initParam();
         // 根据wap 还是pc ，进行参数初始化
@@ -283,7 +283,9 @@ class Alipay extends Service
         }
         // 设置支付成功返回的url 和 支付消息接收url
         // 在调用这个函数之前一定要先设置 Yii::$service->payment->setPaymentMethod($payment_method);
-        $returnUrl = Yii::$service->payment->getStandardReturnUrl();
+        if(!$returnUrl){
+            $returnUrl = Yii::$service->payment->getStandardReturnUrl();
+        }
         $notifyUrl = Yii::$service->payment->getStandardIpnUrl();    
         /*
         echo $returnUrl;
@@ -297,7 +299,7 @@ class Alipay extends Service
         $this->_alipayRequest->setNotifyUrl($notifyUrl);
         $this->_alipayRequest->setBizContent($bizContent);
 
-        return $this->_AopClient->pageExecute($this->_alipayRequest); 
+        return $this->_AopClient->pageExecute($this->_alipayRequest,$type); 
     }
     /**
      * 通过订单信息，得到支付宝支付传递的参数数据

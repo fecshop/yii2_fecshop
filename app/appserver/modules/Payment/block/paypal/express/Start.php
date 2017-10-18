@@ -30,13 +30,15 @@ class Start
             ];
         }
         $methodName_ = 'SetExpressCheckout';
-        $nvpStr_ = Yii::$service->payment->paypal->getExpressTokenNvpStr();
+        $return_url = Yii::$app->request->post('return_url');
+        $cancel_url = Yii::$app->request->post('cancel_url');
+        $nvpStr_ = Yii::$service->payment->paypal->getExpressTokenNvpStr('Login',$return_url,$cancel_url);
         //echo $nvpStr_;exit;
         $SetExpressCheckoutReturn = Yii::$service->payment->paypal->PPHttpPost5($methodName_, $nvpStr_);
         //var_dump($SetExpressCheckoutReturn);
         if (strtolower($SetExpressCheckoutReturn['ACK']) == 'success') {
             $token = $SetExpressCheckoutReturn['TOKEN'];
-            # Éú³É¶©µ¥£¬¶©µ¥ÖÐÖ»ÓÐid,increment_id,token Èý¸ö×Ö¶ÎÓÐÖµ¡£
+            # ç”Ÿæˆè®¢å•ï¼Œè®¢å•ä¸­åªæœ‰id,increment_id,token ä¸‰ä¸ªå­—æ®µæœ‰å€¼ã€‚
             if($token){
                 if(!Yii::$service->order->generatePPExpressOrder($token)){
                     return [
@@ -64,8 +66,8 @@ class Start
         }
     }
 
-    // ¼ì²é¹ºÎï³µÖÐ²úÆ·µÄ¿â´æ¡£´Ë²½Ö»ÊÇ³õ²½¼ì²é£¬ÔÚ¿ì½ÝÖ§¸¶Íê³É·µ»ØÍøÕ¾µÄÊ±ºò£¬Éú³É¶©µ¥µÄÊ±ºò£¬»¹Òª½øÒ»²½¼ì²é²úÆ·¿â´æ£¬
-    // ÒòÎªÔÚÖ§¸¶µÄ¹ý³ÌÖÐ£¬²úÆ·¿ÉÄÜ±»Âò×ß¡£
+    // æ£€æŸ¥è´­ç‰©è½¦ä¸­äº§å“çš„åº“å­˜ã€‚æ­¤æ­¥åªæ˜¯åˆæ­¥æ£€æŸ¥ï¼Œåœ¨å¿«æ·æ”¯ä»˜å®Œæˆè¿”å›žç½‘ç«™çš„æ—¶å€™ï¼Œç”Ÿæˆè®¢å•çš„æ—¶å€™ï¼Œè¿˜è¦è¿›ä¸€æ­¥æ£€æŸ¥äº§å“åº“å­˜ï¼Œ
+    // å› ä¸ºåœ¨æ”¯ä»˜çš„è¿‡ç¨‹ä¸­ï¼Œäº§å“å¯èƒ½è¢«ä¹°èµ°ã€‚
     public function checkStockQty(){
         $stockCheck = Yii::$service->product->stock->checkItemsQty();
         

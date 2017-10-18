@@ -28,21 +28,15 @@ class ExpressController extends AppserverController
     // 2.Review  从paypal确认后返回
     public function actionReview()
     {
-        $_csrf = Yii::$app->request->post('_csrf');
-        if ($_csrf) {
-            $status = $this->getBlock('placeorder')->getLastData();
-            if ($status) {
-                return;
-            }
-        }
-        $data = $this->getBlock()->getLastData();
-        if (is_array($data) && !empty($data)) {
-            return $this->render($this->action->id, $data);
-        } else {
-            return $data;
-        }
+        return $this->getBlock()->getLastData();
     }
-    
+    // 3. 提交订单
+    public function actionSubmitorder(){
+        return $this->getBlock('placeorder')->getLastData();
+    }
+    /**
+     * IPN已经关掉
+     */
     public function actionIpn()
     {
         \Yii::info('paypal ipn begin', 'fecshop_debug');

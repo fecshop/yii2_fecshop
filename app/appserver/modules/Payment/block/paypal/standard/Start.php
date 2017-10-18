@@ -22,7 +22,7 @@ class Start
         $methodName_ = 'SetExpressCheckout';
         $return_url = Yii::$app->request->post('return_url');
         $cancel_url = Yii::$app->request->post('cancel_url');
-        $nvpStr_ = Yii::$service->payment->paypal->getStandardTokenNvpStr('login',$return_url,$cancel_url);
+        $nvpStr_ = Yii::$service->payment->paypal->getStandardTokenNvpStr('Login',$return_url,$cancel_url);
         //echo $nvpStr_;exit;
         // 通过接口，得到token信息
         $SetExpressCheckoutReturn = Yii::$service->payment->paypal->PPHttpPost5($methodName_, $nvpStr_);

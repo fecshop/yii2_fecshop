@@ -272,7 +272,7 @@ class Placeorder
                             
                             return [
                                 'code' => 401,
-                                'content' => 'address id can not use for guest',
+                                'content' => 'address info error',
                             ];
                         }
                         $arr['customer_id'] = $customer_id;
