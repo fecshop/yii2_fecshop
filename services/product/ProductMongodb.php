@@ -192,11 +192,11 @@ class ProductMongodb implements ProductInterface
      * 		'pageNum'		=> 1,
      * 		'orderBy'	=> ['_id' => SORT_DESC, 'sku' => SORT_ASC ],
      * 		'where'			=> [
-                ['>','price',1],
-                ['<=','price',10]
+     *          ['>','price',1],
+     *          ['<=','price',10]
      * 			['sku' => 'uk10001'],
      * 		],
-     * 	'asArray' => true,
+     * 	    'asArray' => true,
      * ]
      * 得到总数。
      */

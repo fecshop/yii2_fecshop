@@ -60,6 +60,9 @@ return [
                 'class' => 'fecshop\services\helper\Format',
                 //'default_country' => 'US',
             ],
+            'appserver' => [
+                'class' => 'fecshop\services\helper\Appserver',
+            ],
         ],
     ],
 ];
