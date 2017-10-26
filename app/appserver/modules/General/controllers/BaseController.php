@@ -21,6 +21,9 @@ class BaseController extends AppserverController
     
     public function actionMenu()
     {
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $arr = [];
         $displayHome = Yii::$service->page->menu->displayHome;
         if($displayHome['enable']){
@@ -44,6 +47,9 @@ class BaseController extends AppserverController
     // 语言
     public function actionLang()
     {
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $langs = Yii::$service->store->serverLangs;
         $currentLangCode = Yii::$service->store->currentLangCode;
         
@@ -55,6 +61,9 @@ class BaseController extends AppserverController
     
     public function actionCurrency()
     {
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $currencys = Yii::$service->page->currency->getCurrencys();
         $currentCurrencyCode = Yii::$service->page->currency->getCurrentCurrency();
         

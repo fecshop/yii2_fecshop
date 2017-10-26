@@ -25,6 +25,9 @@ class ProductreviewController extends AppserverTokenController
 
     public function actionIndex()
     {
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $this->pageNum = Yii::$app->request->get($this->_page);
         $this->pageNum = $this->pageNum ? $this->pageNum : 1;
         $identity = Yii::$app->user->identity;

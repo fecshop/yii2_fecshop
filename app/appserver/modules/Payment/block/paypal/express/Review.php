@@ -35,10 +35,12 @@ class Review
         $cartInfo = Yii::$service->cart->getCartInfo();
 
         if (!isset($cartInfo['products']) || !is_array($cartInfo['products']) || empty($cartInfo['products'])) {
-            return [
-                'code' => 401,
-                'content' => 'cart is empty',
-            ];
+            
+            $code = Yii::$service->helper->appserver->order_generate_cart_product_empty;
+            $data = [];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
         }
         $currency_info = Yii::$service->page->currency->getCurrencyInfo();
         $this->initAddress();
@@ -54,26 +56,25 @@ class Review
         if(!Yii::$app->user->isGuest){
             $isGuest = 0;
         }
-        return [
-            'code' => 200,
+        
+        $code = Yii::$service->helper->appserver->status_success;
+        $data = [
             'payments'                 => $this->getPayment(),
             'shippings'                => $shippings,
             'current_payment_method'   => $this->_payment_method,
             'current_shipping_method'  => $this->_shipping_method,
             'cart_info'                => $last_cart_info,
             'currency_info'            => $currency_info,
-            //'address_view_file'        => $this->_address_view_file,
             'isGuest'                   => $isGuest,
             'address_list'             => $this->_address_list,
-            
             'cart_address'             => $this->_address,
             'cart_address_id'          => $this->_address_id,
-            
             'countryArr'                => $this->_countrySelect,
             'country'                   => $this->_country,
-            //'state_select'		   => $this->_stateSelect,
-            //'state_html'               => $this->_stateHtml,
         ];
+        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        
+        return $reponseData;
     }
 
     /**
@@ -427,16 +428,20 @@ class Review
         $getToken = Yii::$service->payment->paypal->getExpressToken();
         $getPayerID = Yii::$service->payment->paypal->getExpressPayerID();
         if (!$getToken) {
-            return [
-                'code' => 401,
-                'content' => 'paypal express token is empty'
-            ];
+            
+            $code = Yii::$service->helper->appserver->order_paypal_express_get_token_fail;
+            $data = [];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
         }
         if (!$getPayerID) {
-            return [
-                'code' => 401,
-                'content' => 'paypal express PayerID is empty'
-            ];
+            
+            $code = Yii::$service->helper->appserver->order_paypal_express_get_PayerID_fail;
+            $data = [];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
         }
 
         $methodName_ = 'GetExpressCheckoutDetails';
@@ -447,10 +452,12 @@ class Review
             $this->setValue($expressCheckoutReturn);
             return true;
         } else {
-            return [
-                'code' => 401,
-                'content' => 'get express address by api error',
-            ];
+            
+            $code = Yii::$service->helper->appserver->order_paypal_express_get_apiAddress_fail;
+            $data = [];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
         }
     }
 

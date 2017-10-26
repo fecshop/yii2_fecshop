@@ -43,28 +43,35 @@ class ProductController extends AppserverController
     protected $_spuAttrShowAsImgArr;
     
     public function actionFavorite(){
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         if(Yii::$app->user->isGuest){
-            return [
-                'code' => 400,
-                'content' => 'no login',
-            ];
+            $code = Yii::$service->helper->appserver->account_no_login_or_login_token_timeout;
+            $data = [];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
         }
         $product_id = Yii::$app->request->get('product_id');
-        $identity = Yii::$app->user->identity;
-        $user_id = $identity->id;
-
+        $identity   = Yii::$app->user->identity;
+        $user_id    = $identity->id;
         $addStatus = Yii::$service->product->favorite->add($product_id, $user_id);
         if (!$addStatus) {
-            $errors = Yii::$service->helper->errors->get();
-            return [
-                'code' => 401,
-                'content' => $errors,
-            ];
+            $code = Yii::$service->helper->appserver->product_favorite_fail;
+            $data = [];
+            $message = Yii::$service->helper->errors->get(true);
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data,$message);
+            
+            return $reponseData;
         }else{
-            return [
-                'code' => 200,
+            $code = Yii::$service->helper->appserver->status_success;
+            $data = [
                 'content' => 'success',
             ];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
         }
         // 收藏失败，需要登录
         
@@ -74,6 +81,9 @@ class ProductController extends AppserverController
     // 网站信息管理
     public function actionIndex()
     {
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         /**
          * 通过Yii::mapGet() 得到重写后的class类名以及对象。Yii::mapGet是在文件@fecshop\yii\Yii.php中
          */
@@ -82,8 +92,11 @@ class ProductController extends AppserverController
         $productImgSize = Yii::$app->controller->module->params['productImgSize'];
         //$productImgMagnifier = Yii::$app->controller->module->params['productImgMagnifier'];
         if(!$this->initProduct()){
-            Yii::$service->url->redirect404();
-            return;
+            $code = Yii::$service->helper->appserver->product_not_active;
+            $data = '';
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data,$message);
+            
+            return $reponseData;
         }
         $reviewHelper = $this->_reviewHelper;
         $reviewHelper::initReviewConfig();
@@ -117,44 +130,35 @@ class ProductController extends AppserverController
             }
         }
         $custom_option = $this->getCustomOption($this->_product['custom_option'],$middle_img_width); 
-        
         $reviewHelper = new ReviewHelper;
         $reviewHelper->product_id = $this->_product['_id'];
         $reviewHelper->spu = $this->_product['spu'];
         $productReview = $reviewHelper->getLastData();
-        
-        return [
-            'code' => 200,
-            'content' =>[
-                'product' => [
-                    'name'                      => Yii::$service->store->getStoreAttrVal($this->_product['name'], 'name'),
-                    'sku'                       => $this->_product['sku'],
-                    'spu'                       => $this->_product['spu'],
-                    'thumbnail_img'             => $thumbnail_img,
-                    'productReview'             => $productReview,
-                    'custom_option_showImg_attr'=> $custom_option_showImg_attr,
-                    //'groupAttrArr'              => $groupAttrArr,
-                    //'image_thumbnails'          => $this->_image_thumbnails,
-                    'image_detail'              => $this->_image_detail,
-                    'attr_group'                => $this->_product['attr_group'],
-                    'review_count'              => $review_count,
-                    'reviw_rate_star_average'   => $reviw_rate_star_average,
-                    'price_info'                => $this->getProductPriceInfo(),
-                    'tier_price'                => $this->getTierPrice(),
-                    //'media_size' => [
-                    //    'small_img_width'       => $productImgSize['small_img_width'],
-                    //    'small_img_height'      => $productImgSize['small_img_height'],
-                    //    'middle_img_width'      => $productImgSize['middle_img_width'],
-                    //],
-                    //'productImgMagnifier'       => $productImgMagnifier,
-                    'options'                   => $this->getSameSpuInfo(),
-                    'custom_option'             => $custom_option,
-                    'description'               => Yii::$service->store->getStoreAttrVal($this->_product['description'], 'description'),
-                    '_id'                       => (string)$this->_product['_id'],
-                    'buy_also_buy'              => $this->getProductBySkus(),
-                ]
+        $code = Yii::$service->helper->appserver->status_success;
+        $data = [
+            'product' => [
+                'name'                      => Yii::$service->store->getStoreAttrVal($this->_product['name'], 'name'),
+                'sku'                       => $this->_product['sku'],
+                'spu'                       => $this->_product['spu'],
+                'thumbnail_img'             => $thumbnail_img,
+                'productReview'             => $productReview,
+                'custom_option_showImg_attr'=> $custom_option_showImg_attr,
+                'image_detail'              => $this->_image_detail,
+                'attr_group'                => $this->_product['attr_group'],
+                'review_count'              => $review_count,
+                'reviw_rate_star_average'   => $reviw_rate_star_average,
+                'price_info'                => $this->getProductPriceInfo(),
+                'tier_price'                => $this->getTierPrice(),
+                'options'                   => $this->getSameSpuInfo(),
+                'custom_option'             => $custom_option,
+                'description'               => Yii::$service->store->getStoreAttrVal($this->_product['description'], 'description'),
+                '_id'                       => (string)$this->_product['_id'],
+                'buy_also_buy'              => $this->getProductBySkus(),
             ]
         ];
+        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data,$message);
+        
+        return $reponseData;
     }
     
     public function getTierPrice(){
@@ -643,6 +647,9 @@ class ProductController extends AppserverController
     // ajax 得到产品加入购物车的价格。
     public function actionGetcoprice()
     {
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $custom_option_sku = Yii::$app->request->get('custom_option_sku');
         $product_id = Yii::$app->request->get('product_id');
         $qty = Yii::$app->request->get('qty');

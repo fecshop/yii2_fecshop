@@ -27,24 +27,32 @@ class OnepageController extends AppserverController
 
     public function actionIndex()
     {
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $guestOrder = Yii::$app->controller->module->params['guestOrder'];
         if(!$guestOrder && Yii::$app->user->isGuest){
-            return [
-                'code' => 400,
-                'content' => 'you must login your account'
-            ];
+            $code = Yii::$service->helper->appserver->account_no_login_or_login_token_timeout;
+            $data = [];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
         } 
 
         return $this->getBlock()->getLastData();
     }
     
     public function actionSubmitorder(){
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $guestOrder = Yii::$app->controller->module->params['guestOrder'];
         if(!$guestOrder && Yii::$app->user->isGuest){
-            return [
-                'code' => 400,
-                'content' => 'you must login your account'
-            ];
+            $code = Yii::$service->helper->appserver->account_no_login_or_login_token_timeout;
+            $data = [];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
         } 
         
         return $this->getBlock('placeorder')->getLastData();
@@ -55,11 +63,17 @@ class OnepageController extends AppserverController
 
     public function actionChangecountry()
     {
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         return $this->getBlock('index')->ajaxChangecountry();
     }
 
-    public function actionAjaxupdateorder()
+    public function actionGetshippingandcartinfo()
     {
-        $this->getBlock('index')->ajaxUpdateOrderAndShipping();
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
+        return $this->getBlock('index')->ajaxUpdateOrderAndShipping();
     }
 }

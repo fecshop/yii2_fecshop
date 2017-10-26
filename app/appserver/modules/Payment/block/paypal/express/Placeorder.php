@@ -18,17 +18,17 @@ use Yii;
 class Placeorder
 {
     /**
-     * ÓÃ»§µÄÕËµ¥µØÖ·ÐÅÏ¢£¬Í¨¹ýÓÃ»§´«µÝµÄÐÅÏ¢¼ÆËã¶øÀ´¡£
+     * ç”¨æˆ·çš„è´¦å•åœ°å€ä¿¡æ¯ï¼Œé€šè¿‡ç”¨æˆ·ä¼ é€’çš„ä¿¡æ¯è®¡ç®—è€Œæ¥ã€‚
      */
     public $_billing;
 
     public $_address_id;
     /**
-     * ÓÃ»§µÄ»õÔË·½Ê½.
+     * ç”¨æˆ·çš„è´§è¿æ–¹å¼.
      */
     public $_shipping_method;
     /**
-     * ÓÃ»§µÄÖ§¸¶·½Ê½.
+     * ç”¨æˆ·çš„æ”¯ä»˜æ–¹å¼.
      */
     public $_payment_method;
 
@@ -37,33 +37,33 @@ class Placeorder
         $post = Yii::$app->request->post();
         $token = Yii::$app->request->post('token');
         if(!$token){
+            $code = Yii::$service->helper->appserver->order_paypal_express_get_token_fail;
+            $data = [];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
             
-            return [
-                'code' => 401,
-                'content' => 'token can not empty',
-            ];
+            return $reponseData;
         }
         if (is_array($post) && !empty($post)) {
             $post = \Yii::$service->helper->htmlEncode($post);
-            // ÉèÖÃpaypal¿ì½ÝÖ§¸¶
+            // è®¾ç½®paypalå¿«æ·æ”¯ä»˜
             $post['payment_method'] = Yii::$service->payment->paypal->express_payment_method;
-            // ¼ì²éÇ°Ì¨´«µÝµÄÊý¾ÝµÄÍêÕûÐÔ
-            // ¼ì²éÇ°Ì¨´«µÝµÄÊý¾ÝµÄÍêÕû
+            // æ£€æŸ¥å‰å°ä¼ é€’çš„æ•°æ®çš„å®Œæ•´æ€§
+            // æ£€æŸ¥å‰å°ä¼ é€’çš„æ•°æ®çš„å®Œæ•´
             $checkInfo = $this->checkOrderInfoAndInit($post);
             if ($checkInfo !== true) {
                 return $checkInfo;
             }
             
-            // Èç¹ûÓÎ¿ÍÓÃ»§¹´Ñ¡ÁË×¢²áÕËºÅ£¬Ôò×¢²á£¬µÇÂ¼£¬²¢°ÑµØÖ·Ð´Èëµ½ÓÃ»§µÄaddressÖÐ
+            // å¦‚æžœæ¸¸å®¢ç”¨æˆ·å‹¾é€‰äº†æ³¨å†Œè´¦å·ï¼Œåˆ™æ³¨å†Œï¼Œç™»å½•ï¼Œå¹¶æŠŠåœ°å€å†™å…¥åˆ°ç”¨æˆ·çš„addressä¸­
             $save_address_status = $this->updateAddress($post);
            
-            // ¸üÐÂCartÐÅÏ¢
+            // æ›´æ–°Cartä¿¡æ¯
             //$this->updateCart();
-            // ÉèÖÃcheckout type
+            // è®¾ç½®checkout type
             $serviceOrder = Yii::$service->order;
             $checkout_type = $serviceOrder::CHECKOUT_TYPE_EXPRESS;
             $serviceOrder->setCheckoutType($checkout_type);
-            // ½«¹ºÎï³µÊý¾Ý£¬Éú³É¶©µ¥,Éú³É¶©µ¥ºó£¬²»Çå¿Õ¹ºÎï³µ£¬²»¿Û³ý¿â´æ£¬ÔÚÖ§¸¶³É¹¦ºóÔÚÇå¿Õ¹ºÎï³µ¡£
+            // å°†è´­ç‰©è½¦æ•°æ®ï¼Œç”Ÿæˆè®¢å•,ç”Ÿæˆè®¢å•åŽï¼Œä¸æ¸…ç©ºè´­ç‰©è½¦ï¼Œä¸æ‰£é™¤åº“å­˜ï¼Œåœ¨æ”¯ä»˜æˆåŠŸåŽåœ¨æ¸…ç©ºè´­ç‰©è½¦ã€‚
             $innerTransaction = Yii::$app->db->beginTransaction();
             try {
                 $genarateStatus = Yii::$service->order->generateOrderByCart($this->_billing, $this->_shipping_method, $this->_payment_method, false,$token);
@@ -77,7 +77,7 @@ class Placeorder
             }
             //echo 22;
             if ($genarateStatus) {
-                // µÃµ½µ±Ç°µÄ¶©µ¥ÐÅÏ¢
+                // å¾—åˆ°å½“å‰çš„è®¢å•ä¿¡æ¯
                 $doExpressCheckoutReturn = $this->doExpressCheckoutPayment($token);
                 //echo $doExpressCheckoutReturn;exit;
                 //echo 333;
@@ -85,55 +85,60 @@ class Placeorder
                     $increment_id = Yii::$service->order->getSessionIncrementId();
                     $innerTransaction = Yii::$app->db->beginTransaction();
                     try {
-                        // ²å¼þÕâ¸ö¶©µ¥ÊÇ·ñ±»Ö§¸¶¹ý£¬Èç¹û±»Ö§¸¶¹ý£¬Ôò»Ø¹ö
+                        // æ’ä»¶è¿™ä¸ªè®¢å•æ˜¯å¦è¢«æ”¯ä»˜è¿‡ï¼Œå¦‚æžœè¢«æ”¯ä»˜è¿‡ï¼Œåˆ™å›žæ»š
                         if(!Yii::$service->order->checkOrderVersion($increment_id)){    
                             $innerTransaction->rollBack();
-                            return [
-                                'code' => 401,
-                                'content' => 'the order has been paid',
+                            
+                            $code = Yii::$service->helper->appserver->order_has_been_paid;
+                            $data = [
+                                'error' => 'the order has been paid',
                             ];
+                            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                            
+                            return $reponseData;
                         }
                         $ExpressOrderPayment = Yii::$service->payment->paypal->updateExpressOrderPayment($doExpressCheckoutReturn,$token);
-                        // Èç¹ûÖ§¸¶³É¹¦£¬²¢°ÑÐÅÏ¢¸üÐÂµ½ÁË¶©µ¥Êý¾ÝÖÐ£¬Ôò½øÐÐÏÂÃæµÄ²Ù×÷¡£
+                        // å¦‚æžœæ”¯ä»˜æˆåŠŸï¼Œå¹¶æŠŠä¿¡æ¯æ›´æ–°åˆ°äº†è®¢å•æ•°æ®ä¸­ï¼Œåˆ™è¿›è¡Œä¸‹é¢çš„æ“ä½œã€‚
                         //echo 444;
                         if ($ExpressOrderPayment) {
-                            // ²é¿´¶©µ¥ÊÇ·ñ±»¶à´ÎÖ§¸¶£¬Èç¹û±»¶à´ÎÖ§¸¶£¬Ôò»Ø¹ö
+                            // æŸ¥çœ‹è®¢å•æ˜¯å¦è¢«å¤šæ¬¡æ”¯ä»˜ï¼Œå¦‚æžœè¢«å¤šæ¬¡æ”¯ä»˜ï¼Œåˆ™å›žæ»š
                             
-                            // Ö§¸¶³É¹¦ºó£¬ÔÚÇå¿Õ¹ºÎï³µÊý¾Ý¡£¶ø²»ÊÇÔÚÉú³É¶©µ¥µÄÊ±ºò¡£
+                            // æ”¯ä»˜æˆåŠŸåŽï¼Œåœ¨æ¸…ç©ºè´­ç‰©è½¦æ•°æ®ã€‚è€Œä¸æ˜¯åœ¨ç”Ÿæˆè®¢å•çš„æ—¶å€™ã€‚
                             Yii::$service->cart->clearCartProductAndCoupon();
-                            // (É¾³ý)Ö§¸¶³É¹¦ºó£¬¿Û³ý¿â´æ¡£
-                            // (É¾³ý)Yii::$service->product->stock->deduct();
+                            // (åˆ é™¤)æ”¯ä»˜æˆåŠŸåŽï¼Œæ‰£é™¤åº“å­˜ã€‚
+                            // (åˆ é™¤)Yii::$service->product->stock->deduct();
                             // echo 555;
-                            // ·¢ËÍÐÂ¶©µ¥ÓÊ¼þ
+                            // å‘é€æ–°è®¢å•é‚®ä»¶
 
-                            // ¿Û³ý¿â´æºÍÓÅ»ÝÈ¯
-                            // ÔÚÉú³É¶©µ¥µÄÊ±ºòÒÑ¾­¿Û³ýÁË¡£²Î¿´order service GenerateOrderByCart() function
+                            // æ‰£é™¤åº“å­˜å’Œä¼˜æƒ åˆ¸
+                            // åœ¨ç”Ÿæˆè®¢å•çš„æ—¶å€™å·²ç»æ‰£é™¤äº†ã€‚å‚çœ‹order service GenerateOrderByCart() function
 
-                            // µÃµ½Ö§¸¶Ìø×ªÇ°µÄ×¼±¸Ò³Ãæ¡£
+                            // å¾—åˆ°æ”¯ä»˜è·³è½¬å‰çš„å‡†å¤‡é¡µé¢ã€‚
                             //$paypal_express = Yii::$service->payment->paypal->express_payment_method;
                             //$successRedirectUrl = Yii::$service->payment->getExpressSuccessRedirectUrl($paypal_express);
                             //Yii::$service->url->redirect($successRedirectUrl);
                             $innerTransaction->commit();
                             
-                            return [
-                                'code' => 200,
-                                'content' => 'order generate and pay success'
-                            ];
+                            $code = Yii::$service->helper->appserver->status_success;
+                            $data = [];
+                            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                            
+                            return $reponseData;
                         }else{
                             
                             $innerTransaction->rollBack();
-                            return [
-                                'code' => 401,
-                                'content' => 'order pay by paypal fail',
-                            ];
+                            $code = Yii::$service->helper->appserver->order_paypal_express_payment_fail;
+                            $data = [];
+                            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                            
+                            return $reponseData;
                         }
                     } catch (Exception $e) {
                         $innerTransaction->rollBack();
-                        return false;
                     }
                 }
-                // Èç¹û¶©µ¥Ö§¸¶¹ý³ÌÖÐÊ§°Ü£¬½«¶©µ¥È¡Ïûµô
-                /* 2017-09-12ÐÞ¸Ä£¬ÈÏÎªÃ»ÓÐ±ØÒªÈ¡Ïû¶©µ¥£¬Èç¹ûÈ¡Ïûµô£¬ÔÚÖ§¸¶Ò³Ãæ¾ÍÎÞ·¨¼ÌÐøÏÂµ¥£¬Òò´Ë×¢ÊÍµôÏÂÃæµÄ´úÂë
+                // å¦‚æžœè®¢å•æ”¯ä»˜è¿‡ç¨‹ä¸­å¤±è´¥ï¼Œå°†è®¢å•å–æ¶ˆæŽ‰
+                /* 2017-09-12ä¿®æ”¹ï¼Œè®¤ä¸ºæ²¡æœ‰å¿…è¦å–æ¶ˆè®¢å•ï¼Œå¦‚æžœå–æ¶ˆæŽ‰ï¼Œåœ¨æ”¯ä»˜é¡µé¢å°±æ— æ³•ç»§ç»­ä¸‹å•ï¼Œå› æ­¤æ³¨é‡ŠæŽ‰ä¸‹é¢çš„ä»£ç 
                 if (!$doExpressCheckoutReturn || !$ExpressOrderPayment) {
                     $innerTransaction = Yii::$app->db->beginTransaction();
                     try {
@@ -149,21 +154,22 @@ class Placeorder
                 */
                 //return true;
             }else{
-                return[
-                    'code' => 401,
-                    'content' => 'generate order fail'
-                ];
+                $code = Yii::$service->helper->appserver->order_generate_fail;
+                $data = [];
+                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                
+                return $reponseData;
             }
             
         }
         //echo 'eeeeeeee';exit;
         Yii::$service->page->message->addByHelperErrors();
 
-        return false;
+        return [];
     }
     /**
      * @property $token | String 
-     * Í¨¹ýpaypalµÄapi½Ó¿Ú£¬½øÐÐÖ§¸¶ÏÂµ¥
+     * é€šè¿‡paypalçš„apiæŽ¥å£ï¼Œè¿›è¡Œæ”¯ä»˜ä¸‹å•
      */
     public function doExpressCheckoutPayment($token)
     {
@@ -178,7 +184,7 @@ class Placeorder
         } else {
             if ($DoExpressCheckoutReturn['ACK'] == 'Failure') {
                 $message = $DoExpressCheckoutReturn['L_LONGMESSAGE0'];
-                // Ìí¼Ó±¨´íÐÅÏ¢¡£
+                // æ·»åŠ æŠ¥é”™ä¿¡æ¯ã€‚
                 //Message::error($message);
                 Yii::$service->helper->errors->add($message);
             } else {
@@ -191,10 +197,10 @@ class Placeorder
 
     /**
      * @property $post | Array
-     * µÇÂ¼ÓÃ»§£¬±£´æ»õÔËµØÖ·µ½customer address £¬È»ºó°ÑÉú³ÉµÄ
-     * address_id Ð´Èëµ½cartÖÐ¡£
-     * shipping methodÐ´Èëµ½cartÖÐ
-     * payment method Ð´Èëµ½cartÖÐ updateCart
+     * ç™»å½•ç”¨æˆ·ï¼Œä¿å­˜è´§è¿åœ°å€åˆ°customer address ï¼Œç„¶åŽæŠŠç”Ÿæˆçš„
+     * address_id å†™å…¥åˆ°cartä¸­ã€‚
+     * shipping methodå†™å…¥åˆ°cartä¸­
+     * payment method å†™å…¥åˆ°cartä¸­ updateCart
      */
     public function updateAddress($post)
     {
@@ -202,7 +208,7 @@ class Placeorder
     }
 
     /**
-     * Èç¹ûÊÇÓÎ¿Í£¬ÄÇÃ´±£´æ»õÔËµØÖ·µ½¹ºÎï³µ±í¡£
+     * å¦‚æžœæ˜¯æ¸¸å®¢ï¼Œé‚£ä¹ˆä¿å­˜è´§è¿åœ°å€åˆ°è´­ç‰©è½¦è¡¨ã€‚
      */
     /*
     public function updateCart(){
@@ -217,36 +223,48 @@ class Placeorder
     /**
      * @property $post | Array
      * @return bool
-     *              ¼ì²éÇ°Ì¨´«µÝµÄÐÅÏ¢ÊÇ·ñÕýÈ·¡£Í¬Ê±³õÊ¼»¯Ò»²¿·ÖÀà±äÁ¿
+     *              æ£€æŸ¥å‰å°ä¼ é€’çš„ä¿¡æ¯æ˜¯å¦æ­£ç¡®ã€‚åŒæ—¶åˆå§‹åŒ–ä¸€éƒ¨åˆ†ç±»å˜é‡
      */
     public function checkOrderInfoAndInit($post)
     {
         $address_one = '';
         $billing = isset($post['billing']) ? $post['billing'] : '';
         if (!Yii::$service->order->checkRequiredAddressAttr($billing)) {
-            return [
-                'code' => 401,
-                'content' => 'address info error',
+            
+            $code = Yii::$service->helper->appserver->order_generate_request_post_param_invaild;
+            $data = [
+                'error' => Yii::$service->helper->errors->get(','),
             ];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
+            
+            
         }
         $this->_billing = $billing;
 
         $shipping_method = isset($post['shipping_method']) ? $post['shipping_method'] : '';
         $payment_method = isset($post['payment_method']) ? $post['payment_method'] : '';
-        // ÑéÖ¤»õÔË·½Ê½
+        // éªŒè¯è´§è¿æ–¹å¼
         if (!$shipping_method) {
-            return [
-                'code' => 401,
-                'content' => 'shipping method can not empty',
+            $code = Yii::$service->helper->appserver->order_generate_request_post_param_invaild;
+            $data = [
+                'error' => 'shipping method can not empty',
             ];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
         } else {
             if (!Yii::$service->shipping->ifIsCorrect($shipping_method)) {
-                
-                return [
-                    'code' => 401,
-                    'content' => 'shipping method is not correct',
+                $code = Yii::$service->helper->appserver->order_generate_request_post_param_invaild;
+                $data = [
+                    'error' => 'shipping method is not correct',
                 ];
+                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                
+                return $reponseData;
             }
+            
         }
 
         $this->_shipping_method = $shipping_method;

@@ -19,6 +19,9 @@ use Yii;
 class AccountController extends AppserverTokenController
 {
     public function actionIndex(){
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         if (Yii::$app->user->isGuest) {
             return [
                 'code' => 400,
@@ -52,6 +55,9 @@ class AccountController extends AppserverTokenController
      */
     public function actionLogout()
     {
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         if (Yii::$app->user->isGuest) {
             return [
                 'code' => 400,
@@ -71,6 +77,9 @@ class AccountController extends AppserverTokenController
     
     public function actionForgotpassword()
     {
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $forgotPasswordParam = \Yii::$app->getModule('customer')->params['forgotPassword'];
         $forgotCaptcha = isset($forgotPasswordParam['forgotCaptcha']) ? $forgotPasswordParam['forgotCaptcha'] : false;
 

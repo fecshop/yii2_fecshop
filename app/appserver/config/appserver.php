@@ -52,9 +52,11 @@ return [
             
         ],
 
+        
         'errorHandler' => [
-            'errorAction' => 'site/helper/error',
+            'class' => 'fecshop\components\AppserverErrorHandler',
         ],
+
 
         'urlManager' => [
             'rules' => [

@@ -28,6 +28,9 @@ class OrderController extends AppserverTokenController
     
     public function actionIndex()
     {
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $identity = Yii::$app->user->identity;
         $this->customer_id = $identity['id'];
         $this->pageNum = (int) Yii::$app->request->get('p');
@@ -64,6 +67,9 @@ class OrderController extends AppserverTokenController
     
     
     public function actionView(){
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $order_id = Yii::$app->request->get('order_id');
         if ($order_id) {
             $order_info = Yii::$service->order->getOrderInfoById($order_id);

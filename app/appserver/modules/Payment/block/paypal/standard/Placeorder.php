@@ -36,10 +36,11 @@ class Placeorder
     {
         $token = Yii::$app->request->post('token');
         if(!$token){
-            return [
-                'code' => 401,
-                'content' => 'token is empty',
-            ];
+            $code = Yii::$service->helper->appserver->order_paypal_standard_get_token_fail;
+            $data = [];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
         }
         
         // 得到当前的订单信息
@@ -67,10 +68,12 @@ class Placeorder
                 //$successRedirectUrl = Yii::$service->payment->getStandardSuccessRedirectUrl($paypal_standard);
                 //Yii::$service->url->redirect($successRedirectUrl);
                 //return true;
-                return [
-                    'code' => 200,
-                    'content' => 'order payment success',
-                ];
+                $code = Yii::$service->helper->appserver->status_success;
+                $data = [ ];
+                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                
+                return $reponseData;
+                
             }else{
                 
                 // 如果订单支付过程中失败，将订单取消掉
@@ -84,16 +87,18 @@ class Placeorder
                 } catch (Exception $e) {
                     $innerTransaction->rollBack();
                 }
-                return [
-                    'code' => 401,
-                    'content' => 'order payment fail',
-                ];
+                $code = Yii::$service->helper->appserver->order_paypal_standard_updateorderinfoafterpayment_fail;
+                $data = [ ];
+                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                
+                return $reponseData;
             }
         }else{
-            return [
-                'code' => 401,
-                'content' => 'order payment fail',
-            ];
+            $code = Yii::$service->helper->appserver->order_paypal_standard_payment_fail;
+            $data = [ ];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
         }
         
     }

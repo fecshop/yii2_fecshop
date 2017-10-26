@@ -23,6 +23,9 @@ class AddressController extends AppserverTokenController
      * 登录用户的部分
      */
     public function actionIndex(){
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $identity = Yii::$app->user->identity;
         return [
             'code' => 200,
@@ -33,6 +36,9 @@ class AddressController extends AppserverTokenController
     
     
     public function actionEdit(){
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $address = [];
         $country = '';
         $address_id = Yii::$app->request->get('address_id');
@@ -78,6 +84,9 @@ class AddressController extends AppserverTokenController
     
     
     public function actionRemove(){
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $address_id = Yii::$app->request->post('address_id');
         if($address_id){
             $this->removeAddressById($address_id);
@@ -129,6 +138,9 @@ class AddressController extends AppserverTokenController
     
     public function actionChangecountry()
     {
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $country = Yii::$app->request->get('country');
         if($country){
            $stateArr = Yii::$service->helper->country->getStateByContryCode($country);
@@ -145,6 +157,9 @@ class AddressController extends AppserverTokenController
     }
     
     public function actionSave(){
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $address_id         = Yii::$app->request->post('address_id'); 
         $first_name         = Yii::$app->request->post('first_name'); 
         $last_name          = Yii::$app->request->post('last_name'); 

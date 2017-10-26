@@ -48,17 +48,32 @@ class Placeorder
             // 检查前台传递的数据的完整
             $checkInfo = $this->checkOrderInfoAndInit($post);
             if ($checkInfo !== true) {
-                return $checkInfo;
+                $code = Yii::$service->helper->appserver->order_generate_request_post_param_invaild;
+                $data = [];
+                $message = $checkInfo;
+                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data, $message);
+                
+                return $reponseData;
             }
             // 如果游客用户勾选了注册账号，则注册，登录，并把地址写入到用户的address中
-            $gus_status = $this->guestCreateAndLoginAccount($post);
-            if ($gus_status !== true) {
-                return $gus_status;
+            $guestInfo = $this->guestCreateAndLoginAccount($post);
+            if ($guestInfo !== true) {
+                $code = Yii::$service->helper->appserver->order_generate_create_account_fail;
+                $data = [];
+                $message = $guestInfo;
+                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data, $message);
+                
+                return $reponseData;
             }
             
-            $save_address = $this->updateAddress($post);
-            if ($save_address !== true) {
-                return $save_address;
+            $save_address_info = $this->updateAddress($post);
+            if ($save_address_info !== true) {
+                $code = Yii::$service->helper->appserver->order_generate_save_address_fail;
+                $data = [];
+                $message = $save_address_info;
+                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data, $message);
+                
+                return $reponseData;
             }
             
             // 更新Cart信息
@@ -80,16 +95,24 @@ class Placeorder
                     // 得到支付跳转前的准备页面。
                     $startUrl = Yii::$service->payment->getStandardStartUrl('','appserver');
                     $innerTransaction->commit();
-                    //Yii::$service->url->redirect($startUrl);
-                    return [
-                        'code' => 200,
-                        'redirect' => $startUrl,
-                        'content' => 'success',
+                    $code = Yii::$service->helper->appserver->status_success;
+                    $data = [
+                            'redirectUrl' => $startUrl,
                     ];
-
-                    return true;
+                    $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                    
+                    return $reponseData;
                 } else {
+                    
                     $innerTransaction->rollBack();
+                    $error = Yii::$service->helper->errors->get(',');
+                    $code = Yii::$service->helper->appserver->order_generate_fail;
+                    $data = [
+                        'error' => $error,
+                    ];
+                    $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                    
+                    return $reponseData;
                 }
             } catch (Exception $e) {
                 $innerTransaction->rollBack();
@@ -98,10 +121,6 @@ class Placeorder
             
         }
         
-        return [
-            'code' => 401,
-            'content' => 'generate order fail',
-        ];
         //echo 333;exit;
         //Yii::$service->page->message->addByHelperErrors();
 
@@ -125,26 +144,17 @@ class Placeorder
             $confirm_password = $billing['confirm_password'];
             if ($customer_password != $confirm_password) {
                 
-                return [
-                    'code' => 401,
-                    'content' => 'the passwords are inconsistent',
-                ];
+                return 'the passwords are inconsistent';
             }
             $passMin = Yii::$service->customer->getRegisterPassMinLength();
             $passMax = Yii::$service->customer->getRegisterPassMaxLength();
             if (strlen($customer_password) < $passMin) {
                 
-                return [
-                    'code' => 401,
-                    'content' => 'password must Greater than '.$passMin,
-                ];
+                return 'password must Greater than '.$passMin;
             }
             if (strlen($customer_password) > $passMax) {
                 
-                return [
-                    'code' => 401,
-                    'content' => 'password must less than '.$passMax,
-                ];
+                return 'password must less than '.$passMax;
             }
             $param['email'] = $billing['email'];
             $param['password'] = $billing['customer_password'];
@@ -152,10 +162,7 @@ class Placeorder
             $param['lastname'] = $billing['last_name'];
             if (!Yii::$service->customer->register($param)) {
                 
-                return [
-                    'code' => 401,
-                    'content' => 'customer register account fail',
-                ];
+                return 'customer register account fail';
             } else {
                 Yii::$service->customer->Login([
                     'email'        => $billing['email'],
@@ -202,10 +209,7 @@ class Placeorder
                 $this->_address_id = $address_id;
                 if (!$address_id) {
                     
-                    return [
-                        'code' => 401,
-                        'content' => 'new customer address save fail',
-                    ];
+                    return 'new customer address save fail';
                 }
                 //echo "$address_id,$this->_shipping_method,$this->_payment_method";
             }
@@ -244,36 +248,20 @@ class Placeorder
         if ($address_id) {
             $this->_address_id = $address_id;
             if (Yii::$app->user->isGuest) {
-                
-                return [
-                    'code' => 401,
-                    'content' => 'address id can not use for guest',
-                ];
+                return 'address id can not use for guest';
                 //return false; // address_id 这种情况，必须是登录用户。
             } else {
                 $customer_id = Yii::$app->user->identity->id;
                 if (!$customer_id) {
-                    
-                    return [
-                        'code' => 401,
-                        'content' => 'customer id is empty',
-                    ];
+                    return 'customer id is empty';
                 } else {
                     $address_one = Yii::$service->customer->address->getAddressByIdAndCustomerId($address_id, $customer_id);
                     if (!$address_one) {
-                        
-                        return [
-                            'code' => 401,
-                            'content' => 'current address id is not belong to current user',
-                        ];
+                        return 'current address id is not belong to current user';
                     } else {
                         // 从address_id中取出来的字段，查看是否满足必写的要求。
                         if (!Yii::$service->order->checkRequiredAddressAttr($address_one)) {
-                            
-                            return [
-                                'code' => 401,
-                                'content' => 'address info error',
-                            ];
+                            return 'address info error';
                         }
                         $arr['customer_id'] = $customer_id;
                         foreach ($address_one as $k=>$v) {
@@ -287,11 +275,7 @@ class Placeorder
             // 检查address的必写字段是否都存在
             //var_dump($billing);exit;
             if (!Yii::$service->order->checkRequiredAddressAttr($billing)) {
-                
-                return [
-                    'code' => 401,
-                    'content' => 'address require attr is empty',
-                ];
+                return 'address require attr is empty';
             }
             $this->_billing = $billing;
         }
@@ -299,37 +283,22 @@ class Placeorder
         $payment_method = isset($post['payment_method']) ? $post['payment_method'] : '';
         // 验证货运方式
         if (!$shipping_method) {
-            
-            return [
-                'code' => 401,
-                'content' => 'shipping method can not empty',
-            ];
+            return 'shipping method can not empty';
         } else {
             if (!Yii::$service->shipping->ifIsCorrect($shipping_method)) {
-                
-                return [
-                    'code' => 401,
-                    'content' => 'shipping method is not correct',
-                ];
+                return 'shipping method is not correct';
             }
         }
         // 验证支付方式
         if (!$payment_method) {
-            return [
-                'code' => 401,
-                'content' => 'payment method can not empty',
-            ];
+            return 'payment method can not empty';
         } else {
             if (!Yii::$service->payment->ifIsCorrectStandard($payment_method)) {
-                
-                return [
-                    'code' => 401,
-                    'content' => 'payment method is not correct',
-                ];
+                return 'payment method is not correct';
             }
         }
         $this->_shipping_method = $shipping_method;
-        $this->_payment_method = $payment_method;
+        $this->_payment_method  = $payment_method;
         Yii::$service->payment->setPaymentMethod($this->_payment_method);
 
         return true;

@@ -32,21 +32,23 @@ class Start
             $increment_id = Yii::$service->order->getSessionIncrementId();
             # 将token写入到订单中
             Yii::$service->order->updateTokenByIncrementId($increment_id,$token);
-            $redirectUrl = Yii::$service->payment->paypal->getSetStandardCheckoutUrl($token);
-            return [
-                'code' => 200,
-                'content' => $redirectUrl,
+            
+            $code = Yii::$service->helper->appserver->status_success;
+            $data = [
+                'redirectUrl' => $redirectUrl,
             ];
-        } elseif (strtolower($SetExpressCheckoutReturn['ACK']) == 'failure') {
-            return [
-                'code' => 403,
-                'content' => $SetExpressCheckoutReturn['L_LONGMESSAGE0'],
-            ];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
+        
         } else {
-            return [
-                'code' => 403,
-                'content' => $SetExpressCheckoutReturn,
+            $code = Yii::$service->helper->appserver->order_paypal_standard_get_token_fail;
+            $data = [
+                'error' => isset($SetExpressCheckoutReturn['L_LONGMESSAGE0']) ? $SetExpressCheckoutReturn['L_LONGMESSAGE0'] : '',
             ];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
         }
     }
 }

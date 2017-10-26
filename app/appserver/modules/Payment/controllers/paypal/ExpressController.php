@@ -22,16 +22,25 @@ class ExpressController extends AppserverController
 
     public function actionStart()
     {
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         return $this->getBlock()->startExpress();
     }
 
     // 2.Review  从paypal确认后返回
     public function actionReview()
     {
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         return $this->getBlock()->getLastData();
     }
     // 3. 提交订单
     public function actionSubmitorder(){
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         return $this->getBlock('placeorder')->getLastData();
     }
     /**
@@ -39,6 +48,9 @@ class ExpressController extends AppserverController
      */
     public function actionIpn()
     {
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         \Yii::info('paypal ipn begin', 'fecshop_debug');
        
         $post = Yii::$app->request->post();

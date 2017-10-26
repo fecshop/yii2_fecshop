@@ -25,6 +25,9 @@ class StandardController extends AppserverController
      */
     public function actionStart()
     {
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         return $this->getBlock()->startExpress();
     }
     /**
@@ -32,6 +35,9 @@ class StandardController extends AppserverController
      */
     public function actionReview()
     {
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         return $this->getBlock('placeorder')->getLastData();
     }
     /**
@@ -39,6 +45,9 @@ class StandardController extends AppserverController
      */
     public function actionIpn()
     {
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         \Yii::info('paypal ipn begin', 'fecshop_debug');
        
         $post = Yii::$app->request->post();

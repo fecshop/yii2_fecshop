@@ -43,6 +43,9 @@ class IndexController extends AppserverController
 
     public function actionIndex()
     {
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $this->getNumPerPage();
         //echo Yii::$service->page->translate->__('fecshop,{username}', ['username' => 'terry']);
         $this->initSearch();
@@ -68,6 +71,9 @@ class IndexController extends AppserverController
     
     public function actionProduct()
     {
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         // 每页显示的产品个数，进行安全验证，如果个数不在预先设置的值内，则会报错。
         // 这样是为了防止恶意攻击，也就是发送很多不同的页面个数的链接，绕开缓存。
         $this->getNumPerPage();

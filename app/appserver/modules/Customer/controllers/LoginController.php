@@ -24,6 +24,9 @@ class LoginController extends AppserverController
      * 登录用户的部分
      */
     public function actionAccount(){
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $identity = Yii::$service->customer->loginByAccessToken(get_class($this));
         if($identity){
             // 用户已经登录
@@ -67,6 +70,9 @@ class LoginController extends AppserverController
      *
      */
     public function actionIndex(){
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $identity = Yii::$service->customer->loginByAccessToken(get_class($this));
         if($identity){
             // 用户已经登录

@@ -32,6 +32,9 @@ class ProductfavoriteController extends AppserverTokenController
 
     public function actionIndex()
     {
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $this->initFavoriteParam();
         $identity = Yii::$app->user->identity;
         $filter = [
@@ -117,6 +120,9 @@ class ProductfavoriteController extends AppserverTokenController
      */
     public function actionRemove()
     {
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $favorite_id = Yii::$app->request->post('favorite_id');
         Yii::$service->product->favorite->currentUserRemove($favorite_id);
         return [

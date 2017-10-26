@@ -104,7 +104,9 @@ class RegisterController extends AppserverController
     
     
     public function actionAccount(){
-        
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $identity = Yii::$service->customer->loginByAccessToken(get_class($this));
         if($identity){
             // 用户已经登录
@@ -159,10 +161,13 @@ class RegisterController extends AppserverController
     }
     
     /**
-     * 登录页面
+     * register页面
      *
      */
     public function actionIndex(){
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $identity = Yii::$service->customer->loginByAccessToken(get_class($this));
         if($identity){
             // 用户已经登录

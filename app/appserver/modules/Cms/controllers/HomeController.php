@@ -20,20 +20,23 @@ class HomeController extends AppserverController
 {
     
     public function actionIndex(){
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $advertiseImg = $this->getAdvertise();
         $productList  = $this->getProduct();
         $language = $this->getLang();
         $currency = $this->getCurrency();
-        return [
-            'code' => 200,
-            'content' => [
+        $code = Yii::$service->helper->appserver->status_success;
+        $data = [
                 'productList' => $productList,
                 'advertiseImg'=> $advertiseImg,
                 'language'    => $language,
                 'currency'    => $currency,
-            ]
-        ];
+            ];
+        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
         
+        return $reponseData;
     }
     
     public function getAdvertise(){

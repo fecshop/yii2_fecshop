@@ -21,6 +21,9 @@ class ForgotController extends AppserverController
     
     public function actionPassword()
     {
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $identity = Yii::$service->customer->loginByAccessToken(get_class($this));
         if($identity['id']){
             // 用户已经登录
@@ -41,6 +44,9 @@ class ForgotController extends AppserverController
     }
     
     public function actionResetpassword(){
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $resetToken = Yii::$app->request->get('resetToken');
         $identity = Yii::$service->customer->findByPasswordResetToken($resetToken);
         //var_dump($identity );exit;
@@ -60,6 +66,9 @@ class ForgotController extends AppserverController
     }
     
     public function actionSubmitresetpassword(){
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $resetToken = Yii::$app->request->post('resetToken');
         $identity = Yii::$service->customer->findByPasswordResetToken($resetToken);
         //var_dump($identity );exit;
@@ -109,6 +118,9 @@ class ForgotController extends AppserverController
     
     public function actionSendcode()
     {
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $identity = Yii::$service->customer->loginByAccessToken(get_class($this));
         if($identity['id']){
             // 用户已经登录
@@ -158,6 +170,9 @@ class ForgotController extends AppserverController
      */
     protected function sendForgotPasswordEmail($identity)
     {
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         if ($identity) {
             Yii::$service->email->customer->sendForgotPasswordEmail($identity);
         }

@@ -24,6 +24,9 @@ class ContactController extends AppserverController
      * 登录用户的部分
      */
     public function actionIndex(){
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $identity = Yii::$service->customer->loginByAccessToken(get_class($this));
         $customer_name = '';
         $customer_email= '';
@@ -58,6 +61,9 @@ class ContactController extends AppserverController
     }
     
     public function actionSubmit(){
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $customer_name  = Yii::$app->request->post('customer_name');
         $email          = Yii::$app->request->post('email');
         $telephone      = Yii::$app->request->post('telephone');

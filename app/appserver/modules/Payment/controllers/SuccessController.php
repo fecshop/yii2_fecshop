@@ -20,12 +20,16 @@ class SuccessController extends AppserverController
 {
     public function actionIndex()
     {
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $increment_id = Yii::$service->order->getSessionIncrementId();
         if (!$increment_id) {
-            return [
-                'code' => 401,
-                'content' => 'current order is not exist',
-            ];
+            $code = Yii::$service->helper->appserver->order_not_find_increment_id_from_dbsession;
+            $data = [];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
         }
         $order = Yii::$service->order->getInfoByIncrementId($increment_id);
         // 清空购物车。这里针对的是未登录用户进行购物车清空。
@@ -34,11 +38,13 @@ class SuccessController extends AppserverController
         //}
         // 清空session中存储的当前订单编号。
         Yii::$service->order->removeSessionIncrementId();
-
-        return [
-            'code' => 200,
-            'increment_id' => $increment_id,
-            'order'            => $order,
+        $code = Yii::$service->helper->appserver->status_success;
+        $data = [ 
+            'increment_id'  => $increment_id,
+            'order'         => $order,
         ];
+        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        
+        return $reponseData;
     }
 }

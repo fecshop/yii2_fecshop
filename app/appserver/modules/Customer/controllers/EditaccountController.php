@@ -24,6 +24,9 @@ class EditaccountController extends AppserverTokenController
      * 登录用户的部分
      */
     public function actionIndex(){
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $identity = Yii::$app->user->identity;
         if(isset($identity['email'])){
             return [
@@ -45,6 +48,9 @@ class EditaccountController extends AppserverTokenController
     
     
     public function actionUpdate(){
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $firstname = Yii::$app->request->post('firstname');
         $lastname  = Yii::$app->request->post('lastname');
         $current_password       = Yii::$app->request->post('current_password');

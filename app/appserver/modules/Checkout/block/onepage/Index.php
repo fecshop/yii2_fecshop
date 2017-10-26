@@ -35,10 +35,12 @@ class Index
         $cartInfo = Yii::$service->cart->getCartInfo();
 
         if (!isset($cartInfo['products']) || !is_array($cartInfo['products']) || empty($cartInfo['products'])) {
-            return [
-                'code' => 401,
-                'content' => 'cart is empty',
-            ];
+            
+            $code = Yii::$service->helper->appserver->order_generate_cart_product_empty;
+            $data = [];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
         }
         $currency_info = Yii::$service->page->currency->getCurrencyInfo();
         $this->initAddress();
@@ -50,8 +52,8 @@ class Index
         if(!Yii::$app->user->isGuest){
             $isGuest = 0;
         }
-        return [
-            'code' => 200,
+        $code = Yii::$service->helper->appserver->status_success;
+        $data = [
             'payments'                  => $this->getPayment(),
             'shippings'                 => $shippings,
             'current_shipping_method'   => $this->_shipping_method,
@@ -67,10 +69,10 @@ class Index
             'cart_address_id'           => $this->_address_id,
             'countryArr'                => $this->_countrySelect,
             'country'                   => $this->_country,
-            //'state_select'			=> $this->_stateSelect,
-            //'stateArr'                  => $this->stateArr,
-            //'state'                     => $this->_state,
         ];
+        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        
+        return $reponseData;
     }
 
     /**
@@ -280,10 +282,13 @@ class Index
         $country = Yii::$app->request->get('country');
         $country = \Yii::$service->helper->htmlEncode($country);
         $state = $this->initState($country);
-        return [
-            'code' => 200,
+        $code = Yii::$service->helper->appserver->status_success;
+        $data = [
             'stateArr' => $this->stateArr,
         ];
+        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        
+        return $reponseData;
     }
 
     /**
@@ -534,53 +539,29 @@ class Index
         }
         if ($this->_country && $this->_state) {
             $shippings = $this->getShippings($shipping_method);
-            $payments = $this->getPayment();
-            /**
-             * 下面是Fecshop的widget，通过一个一个数据数组+第一个view文件
-             * 组合得到对应的html代码，返回给$shippingHtml
-             * 由于fecshop多多模板系统，预先从高级别的模板路径中依次查找view文件，存在则使用该view文件.
-             */
-            $shippingView = [
-                'view'    => 'checkout/onepage/index/shipping.php',
-            ];
-            $shippingParam = [
-                'shippings' => $shippings,
-            ];
-            $shippingHtml = Yii::$service->page->widget->render($shippingView, $shippingParam);
-            /**
-             * 先通过item计算出来重量,得到运费 然后setShippingCost($shippingCost)，将当前根据传递参数计算
-             * 出来的运费结果set到quote.shippingCost中，
-             * 原因：这里是用户勾选切换国家地址进行的运费计算反馈给用户，但是该信息不更新到数据库，仅仅显示出来
-             * 相应的费用给用户看，因此，shippingCost通过传递的参数计算出来设置到quote中，而不是通过数据库中保存
-             * 的信息计算。
-             */
+            
             $quoteItem = Yii::$service->cart->quoteItem->getCartProductInfo();
             $product_weight = $quoteItem['product_weight'];
             $shippingCost = Yii::$service->shipping->getShippingCost($shipping_method, $product_weight, $country, $state);
             Yii::$service->cart->quote->setShippingCost($shippingCost);
 
-            /**
-             * 下面通过当前的货币，购物车信息等数组数据，+上view文件
-             * 返回order部分的html内容。
-             */
-            // 得到当前货币
-            $currency_info = Yii::$service->page->currency->getCurrencyInfo();
-            $reviewOrderView = [
-                'view'    => 'checkout/onepage/index/review_order.php',
+            $last_cart_info = $this->getCartInfo($shipping_method, $this->_country, $this->_state);
+            
+            $code = Yii::$service->helper->appserver->status_success;
+            $data = [
+                'cart_info'                 => $last_cart_info,
+                'shippings'                 => $shippings,
             ];
-            $cart_info = $this->getCartInfo($shipping_method, $this->_country, $this->_state);
-
-            $reviewOrderParam = [
-                'cart_info' => $cart_info,
-                'currency_info' => $currency_info,
-            ];
-            $reviewOrderHtml = Yii::$service->page->widget->render($reviewOrderView, $reviewOrderParam);
-            echo json_encode([
-                'status'        => 'success',
-                'shippingHtml'    => $shippingHtml,
-                'reviewOrderHtml'    => $reviewOrderHtml,
-            ]);
-            exit;
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
+        } else {
+            $code = Yii::$service->helper->appserver->order_shipping_country_empty;
+            $data = [];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
+            
         }
     }
 }

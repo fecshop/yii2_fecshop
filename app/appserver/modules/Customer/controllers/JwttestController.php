@@ -26,7 +26,9 @@ class JwttestController extends AppserverController
     }
     
     public function actionIndex(){
-        
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $privateKey = '
 -----BEGIN RSA PRIVATE KEY-----
 MIICXAIBAAKBgQC8kGa1pSjbSYZVebtTRBLxBz5H4i2p/llLCrEeQhta5kaQu/Rn

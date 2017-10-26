@@ -24,6 +24,9 @@ class CheckmoneyController extends PaymentController
      */
     public function actionStart()
     {
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $checkOrder = $this->checkOrder();
         if($checkOrder !== true){
             return $checkOrder;
@@ -31,10 +34,11 @@ class CheckmoneyController extends PaymentController
         
         $payment_method = isset($this->_order_model['payment_method']) ? $this->_order_model['payment_method'] : '';
         if ($payment_method) {
-            return [
-                'code' => 200,
-                'content' => 'check order generate order success, you can contact customer Offline payment',
-            ];
+            $code = Yii::$service->helper->appserver->status_success;
+            $data = [];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
         }
     }
 

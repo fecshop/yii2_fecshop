@@ -26,18 +26,25 @@ class PaymentController extends AppserverController
         //$homeUrl = Yii::$service->url->homeUrl();
         $this->_increment_id = Yii::$service->order->getSessionIncrementId();
         if (!$this->_increment_id) {
-            return [
-                'code' => 401,
-                'content' => 'order is not exist',
+            
+            $code = Yii::$service->helper->appserver->order_not_find_increment_id_from_dbsession;
+            $data = [
+                'error' => 'can not find order increment id from db session',
             ];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
         }
 
         $this->_order_model = Yii::$service->order->GetByIncrementId($this->_increment_id);
         if (!isset($this->_order_model['increment_id'])) {
-            return [
-                'code' => 401,
-                'content' => 'order is not exist',
-            ];;
+            $code = Yii::$service->helper->appserver->order_not_exist;
+            $data = [
+                'error' => 'order is not exist',
+            ];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
         }
         return true;
     }

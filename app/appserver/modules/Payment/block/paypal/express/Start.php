@@ -24,10 +24,13 @@ class Start
     {
         $checkStatus = $this->checkStockQty();
         if(!$checkStatus){
-            return [
-                'code'      => 401,
-                'content'   => $this->_errors,
+            $code = Yii::$service->helper->appserver->order_generate_product_stock_out;
+            $data = [
+                'error' => $this->_errors,
             ];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
         }
         $methodName_ = 'SetExpressCheckout';
         $return_url = Yii::$app->request->post('return_url');
@@ -41,28 +44,29 @@ class Start
             # 生成订单，订单中只有id,increment_id,token 三个字段有值。
             if($token){
                 if(!Yii::$service->order->generatePPExpressOrder($token)){
-                    return [
-                        'code' => 402,
-                        'content' => 'generate order fail',
-                    ];
+                    $code = Yii::$service->helper->appserver->order_generate_fail;
+                    $data = [];
+                    $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                    
+                    return $reponseData;
                 }
                 $redirectUrl = Yii::$service->payment->paypal->getSetExpressCheckoutUrl($token);
-                return [
-                    'code' => 200,
-                    'content' => $redirectUrl,
+                $code = Yii::$service->helper->appserver->status_success;
+                $data = [
+                    'redirectUrl' => $redirectUrl,
                 ];
+                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                
+                return $reponseData;
             }
-        } elseif (strtolower($SetExpressCheckoutReturn['ACK']) == 'failure') {
-            return [
-                'code' => 403,
-                'content' => $SetExpressCheckoutReturn['L_LONGMESSAGE0'],
-            ];
-            echo $SetExpressCheckoutReturn['L_LONGMESSAGE0'];
         } else {
-            return [
-                'code' => 403,
-                'content' => $SetExpressCheckoutReturn,
+            $code = Yii::$service->helper->appserver->order_paypal_express_get_token_fail;
+            $data = [
+                 'error' => isset($SetExpressCheckoutReturn['L_LONGMESSAGE0']) ? $SetExpressCheckoutReturn['L_LONGMESSAGE0'] : '',
             ];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
         }
     }
 

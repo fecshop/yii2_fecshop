@@ -25,7 +25,9 @@ class ReviewproductController extends AppserverController
     // 增加评论
     public function actionAdd()
     {
-        
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $reviewParam = Yii::$app->getModule('catalog')->params['review'];
         $addReviewOnlyLogin = isset($reviewParam['addReviewOnlyLogin']) ? $reviewParam['addReviewOnlyLogin'] : false;
         if ($addReviewOnlyLogin) {
@@ -42,6 +44,9 @@ class ReviewproductController extends AppserverController
 
     public function actionLists()
     {
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $data = $this->getBlock()->getLastData($editForm);
 
         return $data;
@@ -50,6 +55,9 @@ class ReviewproductController extends AppserverController
     
     public function actionSubmitreview()
     {
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         $captcha = Yii::$app->request->post('captcha');
         $reviewParam = Yii::$app->getModule('catalog')->params['review'];
         $add_captcha = isset($reviewParam['add_captcha']) ? $reviewParam['add_captcha'] : false;
