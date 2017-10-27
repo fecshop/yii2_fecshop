@@ -54,18 +54,20 @@ class Add
         $product_id = Yii::$app->request->get('product_id');
         if (!$product_id) {
             
-            return [
-                'code'  => 401,
-                'content' => 'product id  is empty',
-            ];
+            $code = Yii::$service->helper->appserver->product_id_not_exist;
+            $data = [];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
         }
         
         $product = Yii::$service->product->getByPrimaryKey($product_id);
         if (!$product['spu']) {
-            return [
-                'code'  => 401,
-                'content' => 'product is not exist',
-            ];
+            $code = Yii::$service->helper->appserver->product_not_active;
+            $data = [];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
         }
 
         $price_info = $this->getProductPriceInfo($product);
@@ -87,12 +89,16 @@ class Add
             'imgUrl' => $imgUrl,
             'product_name' => $product_name,
         ];
-        return [
-            'code'           => 200,
+        
+        $code = Yii::$service->helper->appserver->status_success;
+        $data = [
             'product'        => $product,
             'customer_name'  => $customer_name,
             'reviewCaptchaActive'    => $this->getAddCaptcha(),
         ];
+        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        
+        return $reponseData;
     }
     /**
      * @property $editForm | Array
@@ -101,10 +107,17 @@ class Add
     public function saveReview($editForm)
     {
         if(Yii::$service->product->review->addReview($editForm)){
-            return [
-                'code' => 200,
-                'content' => 'add product review success',
-            ];
+            $code = Yii::$service->helper->appserver->status_success;
+            $data = [];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        
+            return $reponseData;
+        }else{
+            $code = Yii::$service->helper->appserver->product_save_review_fail;
+            $data = [];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        
+            return $reponseData;
         }
     }
     /**

@@ -1,12 +1,17 @@
 <?php
 
-namespace fecshop\app\apphtml5\modules\Cms\controllers;
+namespace fecshop\app\appserver\modules\Cms\controllers;
 
-use fecshop\app\apphtml5\modules\AppfrontController;
+use fecshop\app\appserver\modules\AppserverController;
 use Yii;
 
-class ArticleController extends AppfrontController
+class ArticleController extends AppserverController
 {
+    
+    protected $_artile;
+    protected $_title;
+
+    
     public function init()
     {
         parent::init();
@@ -15,16 +20,31 @@ class ArticleController extends AppfrontController
     // 网站信息管理
     public function actionIndex()
     {
-        $data = $this->getBlock()->getLastData();
-
-        return $this->render($this->action->id, $data);
+        $url_key = Yii::$app->request->get('url_key');
+        $article = Yii::$service->cms->article->getByUrlKey($url_key);
+        if ($article) {
+            
+            $data = [
+                'content' => Yii::$service->store->getStoreAttrVal($article['content'], 'content'),
+                'created_at' => $article['created_at'],
+                'title' => Yii::$service->store->getStoreAttrVal($article['title'], 'title'),
+            ];
+            
+            $code = Yii::$service->helper->appserver->status_success;
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
+        } else {
+            $code = Yii::$service->helper->appserver->cms_article_not_exist;
+            $data = [];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
+            
+        }
+        
     }
 
-    public function actionChangecurrency()
-    {
-        $currency = \fec\helpers\CRequest::param('currency');
-        Yii::$service->page->currency->setCurrentCurrency($currency);
-    }
 
     public function behaviors()
     {

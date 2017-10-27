@@ -45,7 +45,7 @@ class Appserver extends Service
     public $account_login_invalid_email_or_password       = 1100002; // 登录：账户的邮箱或者密码不正确
     public $account_no_login_or_login_token_timeout       = 1100003; // 登录：账户的token已经过期,或者没有登录
     public $account_edit_invalid_data                     = 1100004; // 编辑：账户的密码格式不正确
-    
+    public $account_contact_us_send_email_fail            = 1100005; // contact：发送邮件失败
     /**
      * category状态码
      */
@@ -56,6 +56,10 @@ class Appserver extends Service
      */
     public $product_favorite_fail                          = 1300000; // 产品：产品收藏失败
     public $product_not_active                             = 1300001; // 产品：产品不存在，或者已经下架
+    
+    public $product_id_not_exist                           = 1300002; // 产品：产品不存在，或者已经下架
+    public $product_save_review_fail                       = 1300003; // 产品：产品保存平台失败
+    
     
     /**
      * cart
@@ -90,6 +94,12 @@ class Appserver extends Service
     public $order_has_been_paid                            = 1500017;           // Order: 下订单，订单已经被支付过
     public $order_not_exist                                = 1500018;           // Order: 下订单，订单不存在
     public $order_alipay_payment_fail                      = 1500019;           // Order: 下订单，支付宝支付订单失败
+    
+    /**
+     * cms
+     */
+    public $cms_article_not_exist                          = 1600001;           // Article: 文章不存在
+    
     
     
     /**
@@ -201,6 +211,10 @@ class Appserver extends Service
             $this->account_edit_invalid_data => [
                 'message' => 'account edit data is invalid',
             ],
+            $this->account_contact_us_send_email_fail => [
+                'message' => 'customer contact us send email fail',
+            ],
+            
             
             /**
              * category 
@@ -220,6 +234,12 @@ class Appserver extends Service
             ],
             
             
+            $this->product_id_not_exist => [
+                'message' => 'product id is not exist',
+            ],
+            $this->product_save_review_fail => [
+                'message' => 'save product review fail',
+            ],
             /**
              * Cart 
              */
@@ -301,6 +321,12 @@ class Appserver extends Service
                 'message' => 'order pay by alipay payment fail',
             ],
             
+            /**
+             * cms
+             */
+            $this->cms_article_not_exist => [
+                'message' => 'article is not exist',
+            ], 
             
         ];
         return $arr;

@@ -56,6 +56,24 @@ class ArticleMysqldb implements ArticleInterface
             return new $this->_articleModelName();
         }
     }
+    
+    /**
+     * @property $urlKey | String ,  对应表的url_key字段
+     * 根据url_key 查询得到article model
+     */
+    public function getByUrlKey($urlKey)
+    {
+        
+        if ($urlKey) {
+            $model = $this->_articleModel->findOne(['url_key' => '/'.$urlKey]);
+            if (isset($model['url_key'])){
+                $model['content'] = unserialize($model['content']);
+                $model['title'] = unserialize($model['title']);
+                return $model;
+            }
+        }
+        return false;
+    }
 
     /*
      * example filter:

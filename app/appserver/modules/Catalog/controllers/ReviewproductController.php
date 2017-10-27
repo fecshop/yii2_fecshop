@@ -33,10 +33,12 @@ class ReviewproductController extends AppserverController
         if ($addReviewOnlyLogin) {
             $identity = Yii::$service->customer->loginByAccessToken(get_class($this));
             if(!$identity){
-                return [
-                    'code' => 400,
-                    'content' => 'you must login your account'
-                ];
+                
+                $code = Yii::$service->helper->appserver->account_no_login_or_login_token_timeout;
+                $data = [];
+                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                
+                return $reponseData;
             }
         }
         return  $this->getBlock()->getLastData();
@@ -65,10 +67,11 @@ class ReviewproductController extends AppserverController
         // 检查验证码
         if($add_captcha){
             if(!\Yii::$service->helper->captcha->validateCaptcha($captcha)){
-                return [
-                    'code' => '401',
-                    'content' => 'captcha is not correct',
-                ];
+                $code = Yii::$service->helper->appserver->status_invalid_captcha;
+                $data = [];
+                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                
+                return $reponseData;
             }
         }
         // 检查用户登录状态
@@ -76,10 +79,11 @@ class ReviewproductController extends AppserverController
         if ($addReviewOnlyLogin) {
             $identity = Yii::$service->customer->loginByAccessToken(get_class($this));
             if(!$identity){
-                return [
-                    'code' => 400,
-                    'content' => 'you must login your account'
-                ];
+                $code = Yii::$service->helper->appserver->account_no_login_or_login_token_timeout;
+                $data = [];
+                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                
+                return $reponseData;
             }
         }
         $product_id = Yii::$app->request->post('product_id');
@@ -90,38 +94,51 @@ class ReviewproductController extends AppserverController
         // 产品产品是否存在
         $product = Yii::$service->product->getByPrimaryKey($product_id);
         if (!$product['spu']) {
-            return [
-                'code'  => 401,
-                'content' => 'product is not exist',
-            ];
+            $code = Yii::$service->helper->appserver->product_not_active;
+            $data = [];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
         }
         // 检查前台传递的信息
         if(!$customer_name){
-            return [
-                'code'  => 401,
-                'content' => 'customer name is empty',
-            ];
+            
+            $code = Yii::$service->helper->appserver->status_miss_param;
+            $data = [];
+            $message = 'customer name is empty';
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data, $message);
+            
+            return $reponseData;
         }
         
         if(!$summary){
-            return [
-                'code'  => 401,
-                'content' => 'summary is empty',
-            ];
+            
+            $code = Yii::$service->helper->appserver->status_miss_param;
+            $data = [];
+            $message = 'summary is empty';
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data, $message);
+            
+            return $reponseData;
         }
         
         if(!$review_content){
-            return [
-                'code'  => 401,
-                'content' => 'review content is empty',
-            ];
+            
+            $code = Yii::$service->helper->appserver->status_miss_param;
+            $data = [];
+            $message = 'review content is empty';
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data, $message);
+            
+            return $reponseData;
         }
         
         if(!$selectStar){
-            return [
-                'code'  => 401,
-                'content' => 'review Star is empty',
-            ];
+            
+            $code = Yii::$service->helper->appserver->status_miss_param;
+            $data = [];
+            $message = 'review Star is empty';
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data, $message);
+            
+            return $reponseData;
         }
         $editForm = [
             'product_id' => $product_id,

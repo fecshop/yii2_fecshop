@@ -56,6 +56,14 @@ class Article extends Service
     {
         return $this->_article->getByPrimaryKey($primaryKey);
     }
+    /**
+     * @property $urlKey | String ,  对应表的url_key字段
+     * 根据url_key 查询得到article model
+     */
+    protected function actionGetByUrlKey($urlKey)
+    {
+        return $this->_article->getByUrlKey($urlKey);
+    }
 
     /**
      * 得到category model的全名.

@@ -23,6 +23,7 @@ class HomeController extends AppfrontController
 
     public function behaviors()
     {
+        $behaviors = parent::behaviors();
         $cacheName = 'home';
         if (Yii::$service->cache->isEnable($cacheName)) {
             $timeout = Yii::$service->cache->timeout($cacheName);
@@ -30,32 +31,25 @@ class HomeController extends AppfrontController
             $get = Yii::$app->request->get();
             // 存在无缓存参数，则关闭缓存
             if (isset($get[$disableUrlParam])) {
-                return [
-                    [
-                        'enabled' => false,
-                        'class' => 'yii\filters\PageCache',
-                        'only' => ['index'],
-
-                    ],
+                $behaviors[] =  [
+                    'enabled' => false,
+                    'class' => 'yii\filters\PageCache',
+                    'only' => ['index'],
                 ];
             }
             $store = Yii::$service->store->currentStore;
             $currency = Yii::$service->page->currency->getCurrentCurrency();
-
-            return [
-                [
-                    'enabled' => true,
-                    'class' => 'yii\filters\PageCache',
-                    'only' => ['index'],
-                    'duration' => $timeout,
-                    'variations' => [
-                        $store, $currency,
-                    ],
+            $behaviors[] =  [
+                'enabled' => true,
+                'class' => 'yii\filters\PageCache',
+                'only' => ['index'],
+                'duration' => $timeout,
+                'variations' => [
+                    $store, $currency,
                 ],
             ];
         }
-
-        return [];
+        return $behaviors;
     }
 
     public function actionChangecurrency()

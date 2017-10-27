@@ -77,17 +77,20 @@ class Lists
     {
         $this->initParam();
         if (!$this->product_id) {
-            return [
-                'code' => 401,
-                'content' => 'product id is not exist'
-            ];
+            
+            $code = Yii::$service->helper->appserver->product_id_not_exist;
+            $data = [];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
         }
         $product = Yii::$service->product->getByPrimaryKey($this->product_id);
         if (!$product['spu']) {
-            return [
-                'code' => 401,
-                'content' => 'product is not exist'
-            ];
+            $code = Yii::$service->helper->appserver->product_not_active;
+            $data = [];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
         }
         $this->spu = $product['spu'];
         $price_info = $this->getProductPriceInfo($product);
@@ -112,13 +115,17 @@ class Lists
                 'imgUrl' => $imgUrl,
                 'name' => $name,
             ];
-            return [
-                'code'          => 200,
+            
+            $code = Yii::$service->helper->appserver->status_success;
+            $data = [
                 'product'       => $product,
                 'reviewList'    => $coll,
                 'review_count'              => $review_count,
                 'reviw_rate_star_average'   => $reviw_rate_star_average,
             ];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
         }
     }
     /**

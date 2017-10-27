@@ -27,10 +27,14 @@ class SiteController extends AppserverController
         Yii::$service->helper->captcha->height = 30;
         Yii::$service->helper->captcha->fontsize = 18;
         $base64Img = Yii::$service->helper->captcha->doBase64img();
-        return [
-            'code' => 200,
+        
+        $code = Yii::$service->helper->appserver->status_success;
+        $data = [
             'image'  => $base64Img,
         ];
+        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        
+        return $reponseData;
     }
     
 }

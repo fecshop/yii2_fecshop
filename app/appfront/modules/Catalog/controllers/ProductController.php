@@ -38,6 +38,7 @@ class ProductController extends AppfrontController
      */
     public function behaviors()
     {
+        $behaviors = parent::behaviors();
         $primaryKey = Yii::$service->product->getPrimaryKey();
         $product_id = Yii::$app->request->get($primaryKey);
         $cacheName = 'product';
@@ -49,13 +50,10 @@ class ProductController extends AppfrontController
             $get = Yii::$app->request->get();
             // 存在无缓存参数，则关闭缓存
             if (isset($get[$disableUrlParam])) {
-                return [
-                    [
-                        'enabled' => false,
-                        'class' => 'yii\filters\PageCache',
-                        'only' => ['index'],
-
-                    ],
+                $behaviors[] =  [
+                    'enabled' => false,
+                    'class' => 'yii\filters\PageCache',
+                    'only' => ['index'],
                 ];
             }
             if (is_array($get) && !empty($get) && is_array($cacheUrlParam)) {
@@ -70,24 +68,22 @@ class ProductController extends AppfrontController
             $store = Yii::$service->store->currentStore;
             $currency = Yii::$service->page->currency->getCurrentCurrency();
 
-            return [
-                [
-                    'enabled' => true,
-                    'class' => 'yii\filters\PageCache',
-                    'only' => ['index'],
-                    'duration' => $timeout,
-                    'variations' => [
-                        $store, $currency, $get_str, $product_id,
-                    ],
-                    //'dependency' => [
-                    //	'class' => 'yii\caching\DbDependency',
-                    //	'sql' => 'SELECT COUNT(*) FROM post',
-                    //],
+            $behaviors[] =  [
+                'enabled' => true,
+                'class' => 'yii\filters\PageCache',
+                'only' => ['index'],
+                'duration' => $timeout,
+                'variations' => [
+                    $store, $currency, $get_str, $product_id,
                 ],
+                //'dependency' => [
+                //	'class' => 'yii\caching\DbDependency',
+                //	'sql' => 'SELECT COUNT(*) FROM post',
+                //],
             ];
         }
 
-        return [];
+        return $behaviors;
     }
 
     // ajax 得到产品加入购物车的价格。
