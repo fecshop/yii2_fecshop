@@ -58,47 +58,28 @@ class RegisterController extends AppserverController
             
         $registerParam = \Yii::$app->getModule('customer')->params['register'];
         $registerPageCaptcha = isset($registerParam['registerPageCaptcha']) ? $registerParam['registerPageCaptcha'] : false;
+        $errorArr = [];
         // 如果开启了验证码，但是验证码验证不正确就报错返回。
         if ($registerPageCaptcha && !$captcha) {
-            
-            return [
-                'code'         => 401,
-                'content'       => 'Captcha can not empty',
-            ];
+            $errorArr[] = 'Captcha can not empty';
         } elseif ($captcha && $registerPageCaptcha && !\Yii::$service->helper->captcha->validateCaptcha($captcha)) {
-            
-            return [
-                'code'         => 401,
-                'content'       => 'Captcha is not right',
-            ];
+            $errorArr[] = 'Captcha is not right';
         } elseif (!$email) {
-            return [
-                'code'         => 401,
-                'content'       => 'email can not empty',
-            ];
+            $errorArr[] = 'email can not empty';
         } elseif (!$password) {
-            return [
-                'code'         => 401,
-                'content'       => 'password can not empty',
-            ];
+            $errorArr[] = 'password can not empty';
         } elseif (strlen($password) < $minPassLength || strlen($password) > $maxPassLength) {
-            return [
-                'code'         => 401,
-                'content'       => 'password must >= '.$minPassLength.' and <= '.$maxPassLength,
-            ];
+            $errorArr[] = 'password must >= '.$minPassLength.' and <= '.$maxPassLength;
         } elseif (strlen($firstname) < $minNameLength || strlen($firstname) > $maxNameLength) {
-            return [
-                'code'         => 401,
-                'content'       => 'firstname must >= '.$minPassLength.' and <= '.$maxPassLength,
-            ];
+            $errorArr[] = 'firstname must >= '.$minPassLength.' and <= '.$maxPassLength;
         } elseif (strlen($lastname) < $minNameLength || strlen($lastname) > $maxNameLength) {
-            return [
-                'code'         => 401,
-                'content'       => 'lastname must >= '.$minPassLength.' and <= '.$maxPassLength,
-            ];
+            $errorArr[] = 'lastname must >= '.$minPassLength.' and <= '.$maxPassLength;
         }
-        return false;
-        
+        if (!empty($errorArr)) {
+            return implode(',',$errorArr);
+        } else {
+            return true;
+        }
     }
     
     
@@ -109,11 +90,11 @@ class RegisterController extends AppserverController
         }
         $identity = Yii::$service->customer->loginByAccessToken(get_class($this));
         if($identity){
-            // 用户已经登录
-            return [
-                'code'         => 400,
-                'content'       => 'account is login',
-            ];
+            $code = Yii::$service->helper->appserver->account_is_logined;
+            $data = [];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
         }
         $email      = Yii::$app->request->post('email');
         $password   = Yii::$app->request->post('password');
@@ -122,8 +103,15 @@ class RegisterController extends AppserverController
         $captcha    = Yii::$app->request->post('captcha');
         $is_subscribed = Yii::$app->request->post('is_subscribed');
         $is_subscribed = $is_subscribed ? 1 : 2;
-        if($errorInfo = $this->validateParam($email,$password,$firstname,$lastname,$captcha)){
-            return $errorInfo;
+        $errorInfo = $this->validateParam($email,$password,$firstname,$lastname,$captcha);
+        if($errorInfo !== true){
+            $code = Yii::$service->helper->appserver->account_register_invalid_data;
+            $data = [
+                'error' => $errorInfo,
+            ];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
         }
         
         $param['email']         = $email;
@@ -131,7 +119,6 @@ class RegisterController extends AppserverController
         $param['firstname']     = $firstname;
         $param['lastname']      = $lastname;
         $param['is_subscribed'] = $is_subscribed;
-        
         if (!empty($param) && is_array($param)) {
             $param = \Yii::$service->helper->htmlEncode($param);
             $registerStatus = $this->register($param);
@@ -145,16 +132,24 @@ class RegisterController extends AppserverController
                         $redirect = '/customer/account/index';
                     }
                 }
-                return [
-                    'code' => 200,
+                
+                $code = Yii::$service->helper->appserver->status_success;
+                $data = [
                     'content' => 'register success',
-                    'redirect' => $redirect,
+                    //'redirect' => $redirect,
                 ];
+                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                
+                return $reponseData;
+            
             }else{
-                return [
-                    'code' => 402,
-                    'content' => implode(',',$this->_errors),
+                $code = Yii::$service->helper->appserver->account_register_fail;
+                $data = [
+                    'error' => implode(',',$this->_errors),
                 ];
+                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                
+                return $reponseData;
             }
         }
         
@@ -171,25 +166,26 @@ class RegisterController extends AppserverController
         $identity = Yii::$service->customer->loginByAccessToken(get_class($this));
         if($identity){
             // 用户已经登录
-            return [
-                'code'          => 400,
-                'content'       => 'account is login',
-                
-            ];
+            $code = Yii::$service->helper->appserver->account_is_logined;
+            $data = [];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
         }
         $registerParam = \Yii::$app->getModule('customer')->params['register'];
         $registerPageCaptcha = isset($registerParam['registerPageCaptcha']) ? $registerParam['registerPageCaptcha'] : false;
 
-        return [
-            'code' => 200,
+        $code = Yii::$service->helper->appserver->status_success;
+        $data = [
             'minNameLength' => Yii::$service->customer->getRegisterNameMinLength(),
             'maxNameLength' => Yii::$service->customer->getRegisterNameMaxLength(),
             'minPassLength' => Yii::$service->customer->getRegisterPassMinLength(),
             'maxPassLength' => Yii::$service->customer->getRegisterPassMaxLength(),
             'registerCaptchaActive' => $registerPageCaptcha,
         ];
+        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
         
-        
+        return $reponseData;
     }
     
 }

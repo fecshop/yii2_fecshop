@@ -46,6 +46,13 @@ class Appserver extends Service
     public $account_no_login_or_login_token_timeout       = 1100003; // 登录：账户的token已经过期,或者没有登录
     public $account_edit_invalid_data                     = 1100004; // 编辑：账户的密码格式不正确
     public $account_contact_us_send_email_fail            = 1100005; // contact：发送邮件失败
+    public $account_is_logined                            = 1100006; // 登录：账户的token已经过期,或者没有登录
+    public $account_register_fail                         = 1100007; // 注册：邮箱已经存在
+    public $account_email_not_exist                       = 1100008; // 账户中该email不存在
+    public $account_forget_password_token_timeout         = 1100009; // 忘记密码：token超时
+    public $account_forget_password_reset_param_invalid   = 1100010; // 忘记密码：通过邮件充值密码，传递的参数缺失或不正确
+    public $account_forget_password_reset_fail            = 1100011; // 忘记密码：充值密码失败
+    
     /**
      * category状态码
      */
@@ -214,7 +221,27 @@ class Appserver extends Service
             $this->account_contact_us_send_email_fail => [
                 'message' => 'customer contact us send email fail',
             ],
+            $this->account_is_logined => [
+                'message' => 'account is logined',
+            ],
+            $this->account_register_fail => [
+                'message' => 'account register fail',
+            ],
             
+            $this->account_email_not_exist => [
+                'message' => 'account email not exist',
+            ],
+            
+            
+            $this->account_forget_password_token_timeout => [
+                'message' => 'account forget password token timeout',
+            ],
+            $this->account_forget_password_reset_param_invalid => [
+                'message' => 'account forget password reset param invalid',
+            ],
+            $this->account_forget_password_reset_fail => [
+                'message' => 'account forget password reset fail',
+            ],
             
             /**
              * category 

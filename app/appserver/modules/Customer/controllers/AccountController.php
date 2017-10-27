@@ -23,17 +23,20 @@ class AccountController extends AppserverTokenController
             return [];
         }
         if (Yii::$app->user->isGuest) {
-            return [
-                'code' => 400,
-                'content' => 'no login'
-            ];
+            $code = Yii::$service->helper->appserver->account_no_login_or_login_token_timeout;
+            $data = [];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
         }
         $leftMenu = $this->getLeftMenu();
-        return [
-            'code' => 200,
+        $code = Yii::$service->helper->appserver->status_success;
+        $data = [
             'menuList' => $leftMenu,
         ];
-    
+        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        
+        return $reponseData;
     }
     
     
@@ -59,17 +62,19 @@ class AccountController extends AppserverTokenController
             return [];
         }
         if (Yii::$app->user->isGuest) {
-            return [
-                'code' => 400,
-                'content' => 'no login'
-            ];
+            $code = Yii::$service->helper->appserver->account_no_login_or_login_token_timeout;
+            $data = [];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
         }
         Yii::$service->customer->logoutByAccessToken();
         Yii::$service->cart->clearCart();
-        return [
-            'code' => 200,
-            'content' => 'logout success'
-        ];
+        $code = Yii::$service->helper->appserver->status_success;
+        $data = [];
+        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        
+        return $reponseData;
        
         
     }
@@ -83,10 +88,13 @@ class AccountController extends AppserverTokenController
         $forgotPasswordParam = \Yii::$app->getModule('customer')->params['forgotPassword'];
         $forgotCaptcha = isset($forgotPasswordParam['forgotCaptcha']) ? $forgotPasswordParam['forgotCaptcha'] : false;
 
-        return [
-            'code' => 200,
+        $code = Yii::$service->helper->appserver->status_success;
+        $data = [
             'forgotCaptchaActive' => $forgotCaptcha,
         ];
+        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        
+        return $reponseData;
         
     }
     

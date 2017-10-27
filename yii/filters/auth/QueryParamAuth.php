@@ -34,8 +34,8 @@ class QueryParamAuth extends YiiQueryParamAuth
             header('Access-Control-Allow-Origin: *');
             header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, ".implode(', ',$cors_allow_headers));
             header('Access-Control-Allow-Methods: GET, POST, PUT,DELETE');
-            
-            $result = ['status' => 'access token error', 'code' => 400,'message' => 'token is time out'];
+            $code = Yii::$service->helper->appserver->account_no_login_or_login_token_timeout;
+            $result = [ 'code' => $code,'message' => 'token is time out'];
             Yii::$app->response->data = $result;
             Yii::$app->response->send();
             Yii::$app->end();
