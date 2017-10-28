@@ -47,18 +47,19 @@ class ProductfavoriteController extends AppserverTokenController
             'asArray' => true,
         ];
         $data  = Yii::$service->product->favorite->list($filter);
-        
         $coll  = $data['coll'];
         $count = $data['count'];
-        //$pageToolBar = $this->getProductPage($count);
         $product_arr = $this->getProductInfo($coll);
 
-        return [
-            'code'          => 200,
+        $code = Yii::$service->helper->appserver->status_success;
+        $data = [
             'productList'   => $product_arr,
             'count'         => $count,
             'numPerPage'    => $numPerPage,
         ];
+        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        
+        return $reponseData;
     }
 
     // 得到产品的一些信息，来显示Favorite 的产品列表。
@@ -124,11 +125,20 @@ class ProductfavoriteController extends AppserverTokenController
             return [];
         }
         $favorite_id = Yii::$app->request->post('favorite_id');
+        if($favorite_id){
         Yii::$service->product->favorite->currentUserRemove($favorite_id);
-        return [
-            'code' => 200,
-            'content' => 'remove favorite success',
-        ];
+            $code = Yii::$service->helper->appserver->status_success;
+            $data = [];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
+        } else {
+            $code = Yii::$service->helper->appserver->account_favorite_id_not_exist;
+            $data = [];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
+        }
     }
 
     

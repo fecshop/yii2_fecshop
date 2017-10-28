@@ -57,11 +57,14 @@ class OrderController extends AppserverTokenController
                     $order_list[$k]['created_at'] = date('Y-m-d H:i:s',$created_at);
                 }
             }
-            return [
-                'code'          => 200,
+            $code = Yii::$service->helper->appserver->status_success;
+            $data = [
                 'orderList'     => $order_list,
                 'count'         => $count,
             ];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
         }
     }
     
@@ -94,10 +97,13 @@ class OrderController extends AppserverTokenController
                         }
                     }
                     $order_info['products'] = $productArr;
-                    return [
-                        'code' => 200,
+                    $code = Yii::$service->helper->appserver->status_success;
+                    $data = [
                         'order'=> $order_info,
                     ];
+                    $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                    
+                    return $reponseData;
                     
                 }
             }
@@ -106,6 +112,52 @@ class OrderController extends AppserverTokenController
         
     }
     
+    public function actionReorder()
+    {
+        $order_id = Yii::$app->request->get('order_id');
+        $errorArr = [];
+        if (!$order_id) {
+            $errorArr[] = 'The order id is empty';
+        }
+        $order = Yii::$service->order->getByPrimaryKey($order_id);
+        if (!$order['increment_id']) {
+            $errorArr[] = 'The order is not exist';
+        }
+        $customer_id = Yii::$app->user->identity->id;
+        if (!$order['customer_id'] || ($order['customer_id'] != $customer_id)) {
+            $errorArr[] = 'The order does not belong to you';
+        }
+        if(!empty($errorArr)){
+            $code = Yii::$service->helper->appserver->account_reorder_order_id_invalid;
+            $data = [];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
+        }
+        $this->addOrderProductToCart($order_id);
+
+        $code = Yii::$service->helper->appserver->status_success;
+        $data = [];
+        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        
+        return $reponseData;
+    }
     
     
+    public function addOrderProductToCart($order_id)
+    {
+        $items = Yii::$service->order->item->getByOrderId($order_id);
+        //var_dump($items);
+        if (is_array($items) && !empty($items)) {
+            foreach ($items as $one) {
+                $item = [
+                    'product_id'        => $one['product_id'],
+                    'custom_option_sku' => $one['custom_option_sku'],
+                    'qty'                => (int) $one['qty'],
+                ];
+                //var_dump($item);exit;
+                Yii::$service->cart->addProductToCart($item);
+            }
+        }
+    }
 }

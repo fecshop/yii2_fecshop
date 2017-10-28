@@ -52,6 +52,11 @@ class Appserver extends Service
     public $account_forget_password_token_timeout         = 1100009; // 忘记密码：token超时
     public $account_forget_password_reset_param_invalid   = 1100010; // 忘记密码：通过邮件充值密码，传递的参数缺失或不正确
     public $account_forget_password_reset_fail            = 1100011; // 忘记密码：充值密码失败
+    public $account_address_is_not_exist                  = 1100012; // customer address：address id 不存在
+    public $account_address_edit_param_invaild            = 1100013; // customer address：address 编辑传入的param存在问题，无效
+    public $account_reorder_order_id_invalid              = 1100014; // customer order：reorder 传入的order_id 无效
+    public $account_favorite_id_not_exist                 = 1100015; // custome favorite: favorite id is not exit
+    
     
     /**
      * category状态码
@@ -243,6 +248,20 @@ class Appserver extends Service
                 'message' => 'account forget password reset fail',
             ],
             
+            
+            $this->account_address_is_not_exist => [
+                'message' => 'account address id is not exist',
+            ],
+            $this->account_address_edit_param_invaild => [
+                'message' => 'account address edit param is invalid',
+            ],
+            $this->account_reorder_order_id_invalid => [
+                'message' => 'customer reorder  order id is invalid',
+            ],
+            
+            $this->account_favorite_id_not_exist => [
+                'message' => 'customer favorite id is not exit',
+            ],
             /**
              * category 
              */

@@ -29,8 +29,8 @@ class EditaccountController extends AppserverTokenController
         }
         $identity = Yii::$app->user->identity;
         if(isset($identity['email'])){
-            return [
-                'code'      => 200,
+            $code = Yii::$service->helper->appserver->status_success;
+            $data = [
                 'email'     => $identity['email'],
                 'firstname' => $identity['firstname'],
                 'lastname'  => $identity['lastname'],
@@ -38,14 +38,11 @@ class EditaccountController extends AppserverTokenController
                 'maxNameLength' => Yii::$service->customer->getRegisterNameMaxLength(),
                 'minPassLength' => Yii::$service->customer->getRegisterPassMinLength(),
                 'maxPassLength' => Yii::$service->customer->getRegisterPassMaxLength(),
-               
             ];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            return $reponseData;
         }
-        
     }
-    
-    
-    
     
     public function actionUpdate(){
         if(Yii::$app->request->getMethod() === 'OPTIONS'){
@@ -57,8 +54,15 @@ class EditaccountController extends AppserverTokenController
         $new_password           = Yii::$app->request->post('new_password');
         $confirm_new_password   = Yii::$app->request->post('confirm_new_password');
         $identity = Yii::$app->user->identity;
-        if($errorInfo = $this->validateParams($identity ,$firstname,$lastname,$current_password,$new_password,$confirm_new_password)){
-            return $errorInfo;
+        $errorInfo = $this->validateParams($identity ,$firstname,$lastname,$current_password,$new_password,$confirm_new_password);
+        
+        if($errorInfo !== true){
+            $code = Yii::$service->helper->appserver->account_edit_invalid_data;
+            $data = [
+                'error' => $errorInfo,
+            ];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            return $reponseData;
         }
         $identity->firstname = $firstname;
         $identity->lastname = $lastname;
@@ -67,20 +71,22 @@ class EditaccountController extends AppserverTokenController
         }
         if ($identity->validate()) {
             $identity->save();
-            return [
-                'code'         => 200,
-                'content'      => 'update account info success',
-            ];
+            
+            $code = Yii::$service->helper->appserver->status_success;
+            $data = [];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            return $reponseData;
         }else{
             $errors = Yii::$service->helper->errors->getModelErrorsStrFormat($identity->errors);
             if($errors){
-                return [
-                    'code'     => 401,
-                    'content'  => $errors,
+                $code = Yii::$service->helper->appserver->account_edit_invalid_data;
+                $data = [
+                    'error' => $errors,
                 ];
+                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                return $reponseData;
             }
         }
-        
     }
     
     public function validateParams($identity ,$firstname,$lastname,$current_password,$new_password,$confirm_new_password){
@@ -88,47 +94,33 @@ class EditaccountController extends AppserverTokenController
         $maxNameLength = Yii::$service->customer->getRegisterNameMaxLength();
         $minPassLength = Yii::$service->customer->getRegisterPassMinLength();
         $maxPassLength = Yii::$service->customer->getRegisterPassMaxLength();
-         
+        $errorArr = [];
         if(!$identity){
-            return [
-                'code'         => 401,
-                'content'       => 'current user is not exist',
-            ];
+            $errorArr[] = 'current user is not exist';
         }
         if ($current_password && !$new_password) {
-            return [
-                'code'         => 401,
-                'content'       => 'new password can not empty',
-            ];
+            $errorArr[] = 'new password can not empty';
         } elseif ($current_password && ($new_password != $confirm_new_password)) {
-            return [
-                'code'         => 401,
-                'content'       => 'Password and confirmation password must be consistent',
-            ];
+            $errorArr[] = 'Password and confirmation password must be consistent';
+            
         } elseif ($current_password && (strlen($new_password) < $minPassLength || strlen($new_password) > $maxPassLength)) {
-            return [
-                'code'         => 401,
-                'content'       => 'password must >= '.$minPassLength.' and <= '.$maxPassLength,
-            ];
+            $errorArr[] = 'password must >= '.$minPassLength.' and <= '.$maxPassLength;
+           
         } elseif (strlen($firstname) < $minNameLength || strlen($firstname) > $maxNameLength) {
-            return [
-                'code'         => 401,
-                'content'       => 'firstname must >= '.$minPassLength.' and <= '.$maxPassLength,
-            ];
+            $errorArr[] = 'firstname must >= '.$minPassLength.' and <= '.$maxPassLength;
+            
         } elseif (strlen($lastname) < $minNameLength || strlen($lastname) > $maxNameLength) {
-            return [
-                'code'         => 401,
-                'content'       => 'lastname must >= '.$minPassLength.' and <= '.$maxPassLength,
-            ];
+            $errorArr[] = 'lastname must >= '.$minPassLength.' and <= '.$maxPassLength;
         }
         
         if($current_password && !$identity->validatePassword($current_password)){
-            return [
-                'code'         => 401,
-                'content'       => 'current password is not correct',
-            ];
+            $errorArr[] = 'current password is not correct';
         }
-        return false;
+        if(!empty($errorArr)){
+            return implode(',',$errorArr);
+        }else{
+            return true;
+        }
     }
     
 }
