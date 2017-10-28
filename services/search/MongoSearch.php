@@ -219,17 +219,26 @@ class MongoSearch extends Service implements SearchInterface
      */
     protected function actionGetSearchProductColl($select, $where, $pageNum, $numPerPage, $product_search_max_count)
     {
-        $filter = [
-            'pageNum'        => $pageNum,
-            'numPerPage'    => $numPerPage,
-            'where'        => $where,
-            'product_search_max_count' => $product_search_max_count,
-            'select'         => $select,
-        ];
-        //var_dump($filter);exit;
-        $collection = $this->fullTearchText($filter);
+        // 先进行sku搜索，如果有结果，说明是针对sku的搜索
+        
+        $searchText = $where['$text']['$search'];
+        $productM = Yii::$service->product->getBySku($searchText);
+        if ($productM) {
+            $collection['coll'][] = $productM;
+            $collection['count'] = 1;
+        } else {
+            $filter = [
+                'pageNum'        => $pageNum,
+                'numPerPage'    => $numPerPage,
+                'where'        => $where,
+                'product_search_max_count' => $product_search_max_count,
+                'select'         => $select,
+            ];
+            //var_dump($filter);exit;
+            $collection = $this->fullTearchText($filter);
+        }
         $collection['coll'] = Yii::$service->category->product->convertToCategoryInfo($collection['coll']);
-
+        //var_dump($collection);
         return $collection;
     }
 
