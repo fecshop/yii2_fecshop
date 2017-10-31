@@ -65,11 +65,13 @@ class CartController extends AppserverController
             foreach ($cart_info['products'] as $k=>$product_one) {
                 // 设置名字，得到当前store的语言名字。
                 $cart_info['products'][$k]['name'] = Yii::$service->store->getStoreAttrVal($product_one['product_name'], 'name');
+                unset($cart_info['products'][$k]['product_name']);
                 // 设置图片
                 if (isset($product_one['product_image']['main']['image'])) {
                     $productImg = $product_one['product_image']['main']['image'];
                     $cart_info['products'][$k]['img_url'] = Yii::$service->product->image->getResize($productImg,[150,150],false);
                 }
+                unset($cart_info['products'][$k]['product_image']);
                 // 产品的url
                 $cart_info['products'][$k]['url'] = '/catalog/product/'.$product_one['product_id'];
 

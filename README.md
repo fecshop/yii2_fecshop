@@ -15,7 +15,8 @@
 
 项目状态：
 
-> 正式版本已经出来，后台（appadmin）和pc端（appfront）,wap端（apphtml5）已经完成，完成了一些基本的api。
+> 正式版本已经出来，后台（appadmin）和pc端（appfront）,wap端（apphtml5）
+，vue端（appserver）已经完成，完成了一些基本的api。
 
 
 

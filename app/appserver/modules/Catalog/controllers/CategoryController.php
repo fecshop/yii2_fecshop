@@ -54,8 +54,8 @@ class CategoryController extends AppserverController
      public function behaviors()
     {
         $behaviors = parent::behaviors();
-        $primaryKey = Yii::$service->category->getPrimaryKey();
-        $category_id = Yii::$app->request->get($primaryKey);
+        //$primaryKey = Yii::$service->category->getPrimaryKey();
+        $category_id = Yii::$app->request->get('categoryId');
         $cacheName = 'category';
         if (Yii::$service->cache->isEnable($cacheName)) {
             $timeout = Yii::$service->cache->timeout($cacheName);
@@ -293,7 +293,7 @@ class CategoryController extends AppserverController
                 ];
             }
         }
-        $currenctPriceFilter = Yii::$app->request->get($this->_filterPrice); 
+        $currenctPriceFilter = Yii::$app->request->get('filterPrice'); 
         if($currenctPriceFilter){
             $refineInfo[] = [
                 'attr' =>  $this->_filterPrice,
@@ -353,7 +353,7 @@ class CategoryController extends AppserverController
     {
         $symbol = Yii::$service->page->currency->getCurrentSymbol();
         
-        $currenctPriceFilter = Yii::$app->request->get($this->_filterPrice);
+        $currenctPriceFilter = Yii::$app->request->get('filterPrice');
         $filter = [];
         $priceInfo = Yii::$app->controller->module->params['category_query'];
         if (isset($priceInfo['price_range']) && !empty($priceInfo['price_range']) && is_array($priceInfo['price_range'])) {
@@ -578,7 +578,7 @@ class CategoryController extends AppserverController
                 }
             }
         }
-        $filter_price = Yii::$app->request->get($this->_filterPrice);
+        $filter_price = Yii::$app->request->get('filterPrice');
         //echo $filter_price;
         list($f_price, $l_price) = explode('-', $filter_price);
         if ($f_price == '0' || $f_price) {
@@ -597,8 +597,8 @@ class CategoryController extends AppserverController
      */
     protected function initCategory()
     {
-        $primaryKey = 'category_id';
-        $primaryVal = Yii::$app->request->get($primaryKey);
+        //$primaryKey = 'category_id';
+        $primaryVal = Yii::$app->request->get('categoryId');
         $this->_primaryVal = $primaryVal;
         $category = Yii::$service->category->getByPrimaryKey($primaryVal);
         if ($category) {
