@@ -317,7 +317,7 @@ class Index
     protected function getSearchProductColl()
     {
         $select = [
-            'sku', 'spu', 'name', 'image',
+            'product_id','sku', 'spu', 'name', 'image',
             'price', 'special_price',
             'special_from', 'special_to',
             'url_key', 'score',

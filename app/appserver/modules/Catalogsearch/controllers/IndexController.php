@@ -288,8 +288,9 @@ class IndexController extends AppserverController
      */
     protected function getSearchProductColl()
     {
+       /////////////////************
         $select = [
-            'sku', 'spu', 'name', 'image',
+            'product_id','sku', 'spu', 'name', 'image',
             'price', 'special_price',
             'special_from', 'special_to',
             'url_key', 'score',
@@ -308,20 +309,22 @@ class IndexController extends AppserverController
         $products = $productList['coll'];
         if(is_array($products) && !empty($products)){
             foreach($products as $k=>$v){
-                $i++;
-                $products[$k]['url'] = '/catalog/product/'.$v['_id']; 
-                $products[$k]['image'] = Yii::$service->product->image->getResize($v['image'],296,false);
-                $priceInfo = Yii::$service->product->price->getCurrentCurrencyProductPriceInfo($v['price'], $v['special_price'],$v['special_from'],$v['special_to']);
-                $products[$k]['price'] = isset($priceInfo['price']) ? $priceInfo['price'] : '';
-                $products[$k]['special_price'] = isset($priceInfo['special_price']) ? $priceInfo['special_price'] : '';
-                
-                if($i%2 === 0){
-                    $arr = $products[$k];
-                }else{
-                    $product_return[] = [
-                        'one' => $arr,
-                        'two' => $products[$k],
-                    ];
+                if($v['sku']){
+                    $i++;
+                    $products[$k]['url'] = '/catalog/product/'.$v['_id']; 
+                    $products[$k]['image'] = Yii::$service->product->image->getResize($v['image'],296,false);
+                    $priceInfo = Yii::$service->product->price->getCurrentCurrencyProductPriceInfo($v['price'], $v['special_price'],$v['special_from'],$v['special_to']);
+                    $products[$k]['price'] = isset($priceInfo['price']) ? $priceInfo['price'] : '';
+                    $products[$k]['special_price'] = isset($priceInfo['special_price']) ? $priceInfo['special_price'] : '';
+                    
+                    if($i%2 === 0){
+                        $arr = $products[$k];
+                    }else{
+                        $product_return[] = [
+                            'one' => $arr,
+                            'two' => $products[$k],
+                        ];
+                    }
                 }
             }
             if($i%2 === 0){

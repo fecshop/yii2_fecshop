@@ -26,6 +26,9 @@ class StandardController extends AppserverController
      */
     public function actionStart()
     {
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
         //$AopSdkFile = Yii::getAlias('@fecshop/lib/alipay/AopSdk.php');
         //require($AopSdkFile);
         //echo '支付宝支付跳转中...';
@@ -49,9 +52,7 @@ class StandardController extends AppserverController
         if($reviewStatus){
             
             $code = Yii::$service->helper->appserver->status_success;
-            $data = [
-                'redirectUrl'  => Yii::$service->payment->alipay->start($return_url,'GET'),
-            ];
+            $data = [];
             $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
             
             return $reponseData;
@@ -80,7 +81,7 @@ class StandardController extends AppserverController
             var_dump($post);
             $post_log = ob_get_clean();
             \Yii::info($post_log, 'fecshop_debug');
-            $ipnStatus = Yii::$service->payment->alipay->receiveIpn($post);
+            $ipnStatus = Yii::$service->payment->alipay->receiveIpn();
             if($ipnStatus){
                 echo 'success';
                 return;

@@ -189,13 +189,17 @@ class XunSearch extends Service implements SearchInterface
             $s_data = [];
             foreach ($data as $one) {
                 $_id = (string) $one['_id'];
-                $s_data[$_id] = $one;
+                if($_id){
+                    $s_data[$_id] = $one;
+                }
             }
             $return_data = [];
             foreach ($productIds as $product_id) {
-                $return_data[] = $s_data[(string) $product_id];
+                $pid = (string) $product_id;
+                if (isset($s_data[$pid]) && $s_data[$pid]) {
+                    $return_data[] = $s_data[$pid];
+                }
             }
-
             return [
                 'coll' => $return_data,
                 'count'=> $count,

@@ -43,6 +43,7 @@ class Search extends ActiveRecord
     {
         $origin = [
             '_id',
+            'product_id',
             'name',
             'spu',
             'sku',
