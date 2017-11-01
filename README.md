@@ -48,12 +48,16 @@ FecShop Email：2358269014@qq.com
 
 开源协议：[Fecshop 授权协议](http://www.fecshop.com/license/)
 
-2、Fecshop文档
+2、Fecshop文档和视频
 ------------
 
-**二开以及安装文档：** [Fecshop 安装开发文档](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-README.html)【初版文档撰写完成】
+**二开以及安装文档：** [Fecshop 安装开发文档](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-README.html)【撰写完成】
 
-**使用帮助说明文档：** [Fecshop 使用帮助文档](http://www.fecshop.com/doc/fecshop-guide/instructions/cn-1.0/guide-README.html)【初版文档撰写完成】
+**使用帮助说明文档：** [Fecshop 使用帮助文档](http://www.fecshop.com/doc/fecshop-guide/instructions/cn-1.0/guide-README.html)【撰写完成】
+
+**安装开发帮助视频：** [Fecshop 安装开发视频](http://www.fecshop.com/doc/fecshop-guide/instructions/cn-1.0/guide-fecshop_video_install.html)【撰写完成】
+
+**前后端分离模式Api：** [Appserver VUE Api文档](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-server.html)【撰写完成】
 
 
 3、安装Fecshop
