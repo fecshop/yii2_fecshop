@@ -57,7 +57,7 @@ FecShop Email：2358269014@qq.com
 
 **安装开发帮助视频：** [Fecshop 安装开发视频](http://www.fecshop.com/doc/fecshop-guide/instructions/cn-1.0/guide-fecshop_video_install.html)【撰写完成】
 
-**前后端分离模式Api：** [Appserver VUE Api文档](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-server.html)【撰写完成】
+**前后端分离模式Api:** [Appserver VUE Api文档](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-server.html)【撰写完成】
 
 
 3、安装Fecshop
