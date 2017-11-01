@@ -229,7 +229,7 @@ class XunSearch extends Service implements SearchInterface
                 }
             }
         }
-        echo $sh;
+        //echo $sh;
 
         $docs = $_search->setQuery($text.$sh)
             ->setFacets([$filter_attr])
