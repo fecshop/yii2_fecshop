@@ -51,21 +51,69 @@ class OrderController extends AppserverTokenController
             $customer_order_list = Yii::$service->order->coll($filter);
             $order_list = $customer_order_list['coll'];
             $count = $customer_order_list['count'];
+            $orderArr = [];
             if(is_array($order_list)){
                 foreach($order_list as $k=>$order){
-                    $created_at = $order_list[$k]['created_at'];
-                    $order_list[$k]['created_at'] = date('Y-m-d H:i:s',$created_at);
+                    $currencyCode = $order['order_currency_code'];
+                    $order['currency_symbol'] = Yii::$service->page->currency->getSymbol($currencyCode);
+                    $orderArr[] = $this->getOrderArr($order);
                 }
             }
             $code = Yii::$service->helper->appserver->status_success;
             $data = [
-                'orderList'     => $order_list,
+                'orderList'     => $orderArr,
                 'count'         => $count,
             ];
             $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
             
             return $reponseData;
         }
+    }
+    
+    public function getOrderArr($order){
+        $orderInfo = [];
+        $orderInfo['created_at'] = date('Y-m-d H:i:s',$order['created_at']);
+        $orderInfo['updated_at'] = date('Y-m-d H:i:s',$order['updated_at']);
+        $orderInfo['increment_id'] = $order['increment_id'];
+        $orderInfo['order_id'] = $order['order_id'];
+        $orderInfo['order_status'] = $order['order_status'];
+        $orderInfo['items_count'] = $order['items_count'];
+        $orderInfo['total_weight'] = $order['total_weight'];
+        $orderInfo['order_currency_code'] = $order['order_currency_code'];
+        $orderInfo['order_to_base_rate'] = $order['order_to_base_rate'];
+        $orderInfo['grand_total'] = $order['grand_total'];
+        $orderInfo['base_grand_total'] = $order['base_grand_total'];
+        $orderInfo['subtotal'] = $order['subtotal'];
+        $orderInfo['base_subtotal'] = $order['base_subtotal'];
+        $orderInfo['subtotal_with_discount'] = $order['subtotal_with_discount'];
+        $orderInfo['base_subtotal_with_discount'] = $order['base_subtotal_with_discount'];
+        $orderInfo['checkout_method'] = $order['checkout_method'];
+        $orderInfo['customer_id'] = $order['customer_id'];
+        $orderInfo['customer_group'] = $order['customer_group'];
+        $orderInfo['customer_email'] = $order['customer_email'];
+        $orderInfo['customer_firstname'] = $order['customer_firstname'];
+        $orderInfo['customer_lastname'] = $order['customer_lastname'];
+        $orderInfo['customer_is_guest'] = $order['customer_is_guest'];
+        $orderInfo['coupon_code'] = $order['coupon_code'];
+        $orderInfo['payment_method'] = $order['payment_method'];
+        $orderInfo['shipping_method'] = $order['shipping_method'];
+        $orderInfo['shipping_total'] = $order['shipping_total'];
+        $orderInfo['base_shipping_total'] = $order['base_shipping_total'];
+        $orderInfo['customer_telephone'] = $order['customer_telephone'];
+        $orderInfo['customer_address_country'] = $order['customer_address_country'];
+        $orderInfo['customer_address_state'] = $order['customer_address_state'];
+        $orderInfo['customer_address_city'] = $order['customer_address_city'];
+        $orderInfo['customer_address_zip'] = $order['customer_address_zip'];
+        $orderInfo['customer_address_street1'] = $order['customer_address_street1'];
+        $orderInfo['customer_address_street2'] = $order['customer_address_street2'];
+        $orderInfo['customer_address_state_name'] = $order['customer_address_state_name'];
+        $orderInfo['customer_address_country_name'] = $order['customer_address_country_name'];
+        $orderInfo['currency_symbol'] = $order['currency_symbol'];
+        
+        
+        
+        
+        return $orderInfo; 
     }
     
     
@@ -80,7 +128,7 @@ class OrderController extends AppserverTokenController
                 $identity = Yii::$app->user->identity;
                 $customer_id = $identity->id;
                 if ($order_info['customer_id'] == $customer_id) {
-                    $order_info['created_at'] = date('Y-m-d H:i:s',$order_info['created_at']);
+                    $order_info = $this->getOrderArr($order_info);
                     $productArr = [];
                     if(is_array($order_info['products'])){
                         foreach($order_info['products'] as $product){
