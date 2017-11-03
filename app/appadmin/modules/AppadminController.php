@@ -36,7 +36,7 @@ class AppadminController extends FecadminbaseController
         if (!Yii::$service->page->theme->layoutFile) {
             Yii::$service->page->theme->layoutFile = CConfig::param('appadminBaseLayoutName');
         }
-        // ÉèÖÃ±¾µØÄ£°åÂ·¾¶
+        // è®¾ç½®æœ¬åœ°æ¨¡æ¿è·¯å¾„
         $localThemeDir = Yii::$app->params['localThemeDir'];
         if($localThemeDir){
             Yii::$service->page->theme->setLocalThemeDir($localThemeDir);
@@ -46,7 +46,7 @@ class AppadminController extends FecadminbaseController
          */
         Yii::$service->page->translate->category = 'appfront';
         /*
-         * ×Ô¶¨ÒåYii::$classMap,ÓÃÓÚÖØĞ´
+         * è‡ªå®šä¹‰Yii::$classMap,ç”¨äºé‡å†™
          */
     }
 
@@ -108,9 +108,9 @@ class AppadminController extends FecadminbaseController
 		
 		$block_space = implode("\\",$url_key_arr);
 		$blockFile = $modulesDir.$block_space;
-		//²éÕÒÊÇ·ñÔÚrewriteMapÖĞ´æÔÚÖØĞ´
+		//æŸ¥æ‰¾æ˜¯å¦åœ¨rewriteMapä¸­å­˜åœ¨é‡å†™
         //$relativeFile = Yii::mapGetName($relativeFile);
-        $blockFile = Yii::mapGetName($blockFile);£»
+        $blockFile = Yii::mapGetName($blockFile);ï¼›
         //echo $blockFile;exit;
         
 		return new $blockFile;
