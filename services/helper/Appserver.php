@@ -44,7 +44,7 @@ class Appserver extends Service
     public $account_register_invalid_data                 = 1100001; // 注册：邮箱格式不正确 
     public $account_login_invalid_email_or_password       = 1100002; // 登录：账户的邮箱或者密码不正确
     public $account_no_login_or_login_token_timeout       = 1100003; // 登录：账户的token已经过期,或者没有登录
-    public $account_edit_invalid_data                     = 1100004; // 编辑：账户的密码格式不正确
+    public $account_edit_invalid_data                     = 1100004; // 编辑：账户的编辑数据不正确
     public $account_contact_us_send_email_fail            = 1100005; // contact：发送邮件失败
     public $account_is_logined                            = 1100006; // 登录：账户的token已经过期,或者没有登录
     public $account_register_fail                         = 1100007; // 注册：邮箱已经存在
