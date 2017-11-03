@@ -56,17 +56,18 @@ class IndexController extends AppserverController
         $products = $productCollInfo['coll'];
         $this->_productCount = $productCollInfo['count'];
         //echo $this->_productCount;
-        return [
-            'code' => 200,
-            'content' => [
-                'searchText'       => $this->_searchText,
-                'products'         => $products,
-                //'query_item'       => $this->getQueryItem(),
-                'refine_by_info'   => $this->getRefineByInfo(),
-                'filter_info'      => $this->getFilterInfo(),
-                'filter_price'     => $this->getFilterPrice(),
-            ]
+        $data = [
+            'searchText'       => $this->_searchText,
+            'products'         => $products,
+            //'query_item'       => $this->getQueryItem(),
+            'refine_by_info'   => $this->getRefineByInfo(),
+            'filter_info'      => $this->getFilterInfo(),
+            'filter_price'     => $this->getFilterPrice(),
         ];
+        $code = Yii::$service->helper->appserver->status_success;
+        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        
+        return $reponseData;
     }
     
     public function actionProduct()
@@ -78,20 +79,25 @@ class IndexController extends AppserverController
         // 这样是为了防止恶意攻击，也就是发送很多不同的页面个数的链接，绕开缓存。
         $this->getNumPerPage();
         if(!$this->initSearch()){
-            return [
-                'code' => 300,
+            $data = [
                 'content' => 'disable',
             ];
+            $code = Yii::$service->helper->appserver->status_attack;
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
+            
         }
         $productCollInfo = $this->getSearchProductColl();
         $products = $productCollInfo['coll'];
         $this->_productCount = $productCollInfo['count'];
-        return [
-            'code' => 200,
-            'content' => [
-                'products' => $products
-            ]
+        $data = [
+            'products' => $products
         ];
+        $code = Yii::$service->helper->appserver->status_success;
+        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        
+        return $reponseData;
         
     }
     

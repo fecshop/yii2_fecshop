@@ -110,7 +110,7 @@ class AppadminController extends FecadminbaseController
 		$blockFile = $modulesDir.$block_space;
 		//查找是否在rewriteMap中存在重写
         //$relativeFile = Yii::mapGetName($relativeFile);
-        $blockFile = Yii::mapGetName($blockFile);；
+        $blockFile = Yii::mapGetName($blockFile);
         //echo $blockFile;exit;
         
 		return new $blockFile;

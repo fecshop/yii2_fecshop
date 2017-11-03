@@ -41,17 +41,17 @@ class Appserver extends Service
      * 用户部分的状态码
      */
     public $account_register_email_exist                  = 1100000; // 注册：邮箱已经存在
-    public $account_register_invalid_data                 = 1100001; // 注册：邮箱格式不正确 
+    public $account_register_invalid_data                 = 1100001; // 注册：注册数据格式不正确 
     public $account_login_invalid_email_or_password       = 1100002; // 登录：账户的邮箱或者密码不正确
     public $account_no_login_or_login_token_timeout       = 1100003; // 登录：账户的token已经过期,或者没有登录
     public $account_edit_invalid_data                     = 1100004; // 编辑：账户的编辑数据不正确
     public $account_contact_us_send_email_fail            = 1100005; // contact：发送邮件失败
-    public $account_is_logined                            = 1100006; // 登录：账户的token已经过期,或者没有登录
+    public $account_is_logined                            = 1100006; // 登录：用户已经登录
     public $account_register_fail                         = 1100007; // 注册：邮箱已经存在
     public $account_email_not_exist                       = 1100008; // 账户中该email不存在
     public $account_forget_password_token_timeout         = 1100009; // 忘记密码：token超时
-    public $account_forget_password_reset_param_invalid   = 1100010; // 忘记密码：通过邮件充值密码，传递的参数缺失或不正确
-    public $account_forget_password_reset_fail            = 1100011; // 忘记密码：充值密码失败
+    public $account_forget_password_reset_param_invalid   = 1100010; // 忘记密码：通过邮件重置密码，传递的参数缺失或不正确
+    public $account_forget_password_reset_fail            = 1100011; // 忘记密码：重置密码失败
     public $account_address_is_not_exist                  = 1100012; // customer address：address id 不存在
     public $account_address_edit_param_invaild            = 1100013; // customer address：address 编辑传入的param存在问题，无效
     public $account_reorder_order_id_invalid              = 1100014; // customer order：reorder 传入的order_id 无效
@@ -67,10 +67,10 @@ class Appserver extends Service
      * product状态码
      */
     public $product_favorite_fail                          = 1300000; // 产品：产品收藏失败
-    public $product_not_active                             = 1300001; // 产品：产品不存在，或者已经下架
+    public $product_not_active                             = 1300001; // 产品：已经下架
     
-    public $product_id_not_exist                           = 1300002; // 产品：产品不存在，或者已经下架
-    public $product_save_review_fail                       = 1300003; // 产品：产品保存平台失败
+    public $product_id_not_exist                           = 1300002; // 产品：产品不存在
+    public $product_save_review_fail                       = 1300003; // 产品：产品保存评论失败
     
     
     /**
@@ -92,7 +92,7 @@ class Appserver extends Service
     public $order_generate_create_account_fail             = 1500005; // Order: 下订单，游客在下订单的同时直接生成账户失败。
     public $order_generate_save_address_fail               = 1500006; // Order: 下订单，游客在下订单的同时保存address信息失败。
     public $order_generate_cart_product_empty              = 1500007; // Order: 下订单，购物车数据为空
-    public $order_shipping_country_empty                   = 1500008; // Order: 下订单页面，切换address，获取运费的接口，无法获取country
+    public $order_shipping_country_empty                   = 1500008; // Order: 下订单页面，切换address，从customer address中无法获取country 
     public $order_paypal_standard_get_token_fail           = 1500009; // Order: 通过paypal standard方式支付，获取token失败
     public $order_paypal_standard_payment_fail             = 1500010; // Order: 通过paypal standard方式支付，通过api支付失败
     public $order_paypal_standard_updateorderinfoafterpayment_fail  = 1500011; // Order: 通过paypal standard方式支付，api支付订单成功后，更新订单信息失败

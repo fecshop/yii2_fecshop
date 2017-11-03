@@ -80,7 +80,7 @@ class LoginController extends AppserverController
         $identity = Yii::$service->customer->loginByAccessToken(get_class($this));
         if($identity){
             // 用户已经登录
-            $code = Yii::$service->helper->appserver->account_no_login_or_login_token_timeout;
+            $code = Yii::$service->helper->appserver->account_is_logined;
             $data = [ ];
             $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
             
