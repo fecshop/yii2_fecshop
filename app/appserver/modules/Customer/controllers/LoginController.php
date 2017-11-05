@@ -88,12 +88,14 @@ class LoginController extends AppserverController
         }
         $loginParam = \Yii::$app->getModule('customer')->params['login'];
         $loginCaptchaActive = isset($loginParam['loginPageCaptcha']) ? $loginParam['loginPageCaptcha'] : false;
+        $googleRedirectUrl   = Yii::$app->request->get('googleRedirectUrl');
+        $facebookRedirectUrl = Yii::$app->request->get('facebookRedirectUrl');
         
         $code = Yii::$service->helper->appserver->status_success;
         $data = [ 
             'loginCaptchaActive'=> $loginCaptchaActive,
-            'googleLoginUrl'    => Yii::$service->customer->google->getLoginUrl('customer/google/loginv'),
-            'facebookLoginUrl'  => Yii::$service->customer->facebook->getLoginUrl('customer/facebook/loginv'),
+            'googleLoginUrl'    => Yii::$service->customer->google->getLoginUrl($googleRedirectUrl,true),
+            'facebookLoginUrl'  => Yii::$service->customer->facebook->getLoginUrl($facebookRedirectUrl,true),
         ];
         $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
         

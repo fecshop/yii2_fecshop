@@ -22,10 +22,18 @@ class Facebook extends Service
     public $facebook_app_id;
     public $facebook_app_secret;
 
-    // 得到facebook登录的url。
-    public function getLoginUrl($urlKey)
+    /**
+     * @property $url | String , 用于得到返回url的字符串，$customDomain == false时，是urlKey，$customDomain == true时，是完整的url
+     * @property $customDomain | boolean, 是否是自定义url
+     * @return  得到跳转到facebook登录的url
+     */
+    public function getLoginUrl($url,$customDomain = false)
     {
-        $redirectUrl = Yii::$service->url->getUrl($urlKey);
+        if(!$customDomain){
+            $redirectUrl = Yii::$service->url->getUrl($url);
+        }else {
+            $redirectUrl = $url;
+        }
         $thirdLogin  = Yii::$service->store->thirdLogin;
         $this->facebook_app_id     = isset($thirdLogin['facebook']['facebook_app_id']) ? $thirdLogin['facebook']['facebook_app_id'] : '';
         $this->facebook_app_secret = isset($thirdLogin['facebook']['facebook_app_secret']) ? $thirdLogin['facebook']['facebook_app_secret'] : '';
