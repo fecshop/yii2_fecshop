@@ -46,7 +46,7 @@ FecShop Email：2358269014@qq.com
 
 [Fecshop](http://www.fecshop.com) Github地址: https://github.com/fancyecommerce/yii2_fecshop
 
-开源协议：[Fecshop 授权协议](http://www.fecshop.com/license/)
+开源协议：[Fecshop 授权协议](http://www.fecshop.com/license)
 
 2、Fecshop文档和视频
 ------------
