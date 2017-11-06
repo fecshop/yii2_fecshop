@@ -31,6 +31,7 @@ class Index
 
     public function getLastData()
     {
+        //echo 1;exit;
         $cartInfo = Yii::$service->cart->getCartInfo();
 
         if (!isset($cartInfo['products']) || !is_array($cartInfo['products']) || empty($cartInfo['products'])) {
