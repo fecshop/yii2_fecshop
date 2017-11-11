@@ -7,7 +7,7 @@
  * @license http://www.fecshop.com/license/
  */
 
-namespace fecshop\app\apphtml5\modules\Customer\controllers;
+namespace fecshop\app\appserver\modules\Customer\controllers;
 
 use fecshop\app\appserver\modules\AppserverController;
 use Yii;
@@ -41,25 +41,42 @@ class FacebookController extends AppserverController
             $accessToken = $helper->getAccessToken();
         } catch(\Facebook\Exceptions\FacebookResponseException $e) {
             // When Graph returns an error
-            echo 'Graph returned an error: ' . $e->getMessage();
-            exit;
+            $content = 'Graph returned an error: ' . $e->getMessage();
+            
         } catch(\Facebook\Exceptions\FacebookSDKException $e) {
             // When validation fails or other local issues
-            echo 'Facebook SDK returned an error: ' . $e->getMessage();
-            exit;
+            $content =  'Facebook SDK returned an error: ' . $e->getMessage();
+           
+        }
+        if(!$content){
+            $code = Yii::$service->helper->appserver->account_facebook_login_error;
+            $data = [
+                'content' => $content,
+            ];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
         }
         if (! isset($accessToken)) {
             if ($helper->getError()) {
-                header('HTTP/1.0 401 Unauthorized');
-                echo "Error: " . $helper->getError() . "\n";
-                echo "Error Code: " . $helper->getErrorCode() . "\n";
-                echo "Error Reason: " . $helper->getErrorReason() . "\n";
-                echo "Error Description: " . $helper->getErrorDescription() . "\n";
+                //header('HTTP/1.0 401 Unauthorized');
+                $content =  "Error: " . $helper->getError() . "\n";
+                $content .=  "Error Code: " . $helper->getErrorCode() . "\n";
+                $content .=  "Error Reason: " . $helper->getErrorReason() . "\n";
+                $content .=  "Error Description: " . $helper->getErrorDescription() . "\n";
             } else {
-                header('HTTP/1.0 400 Bad Request');
-                echo 'Bad request';
+                //header('HTTP/1.0 400 Bad Request');
+                $content .=  'Bad request';
             }
-          exit;
+        }
+        if(!$content){
+            $code = Yii::$service->helper->appserver->account_facebook_login_error;
+            $data = [
+                'content' => $content,
+            ];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
         }
         $fb->setDefaultAccessToken($accessToken->getValue());
         $response = $fb->get('/me?locale=en_US&fields=name,email');
@@ -70,10 +87,22 @@ class FacebookController extends AppserverController
         //echo $email.$name.$fbid;exit;
         if ($email) {
             $this->accountLogin($fbid,$name,$email);
-            exit;
+            $code = Yii::$service->helper->appserver->status_success;
+            $data = [];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
         } else {
-            $loginUrl = $helper->getLoginUrl();
-            header('Location: '.$loginUrl);
+            $code = Yii::$service->helper->appserver->account_facebook_login_error;
+            $data = [
+                'content' => 'no email find from fb',
+            ];
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            
+            return $reponseData;
+        
+            //$loginUrl = $helper->getLoginUrl();
+            //header('Location: '.$loginUrl);
         }
     }
 
@@ -89,10 +118,13 @@ class FacebookController extends AppserverController
             'email'        =>$email,
         ];
         Yii::$service->customer->registerThirdPartyAccountAndLogin($user, 'facebook');
-        echo '<script>
-					window.close();
-					window.opener.location.reload();
-				</script>';
-        exit;
+        
+        return true;
+        
+        //echo '<script>
+		//			window.close();
+		//			window.opener.location.reload();
+		//		</script>';
+        //exit;
     }
 }

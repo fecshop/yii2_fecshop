@@ -56,6 +56,8 @@ class Appserver extends Service
     public $account_address_edit_param_invaild            = 1100013; // customer address：address 编辑传入的param存在问题，无效
     public $account_reorder_order_id_invalid              = 1100014; // customer order：reorder 传入的order_id 无效
     public $account_favorite_id_not_exist                 = 1100015; // custome favorite: favorite id is not exit
+    public $account_facebook_login_error                  = 1100016; // 使用fb账户登录fecshop出错
+    public $account_google_login_error                    = 1100017; // 使用google账户登录fecshop出错
     
     
     /**
@@ -262,6 +264,16 @@ class Appserver extends Service
             $this->account_favorite_id_not_exist => [
                 'message' => 'customer favorite id is not exit',
             ],
+            
+            $this->account_facebook_login_error => [
+                'message' => 'login F-E-C-shop with facebook account error',
+            ],
+            
+            $this->account_google_login_error => [
+                'message' => 'login F-e-c-shop with google account error',
+            ],
+            
+            
             /**
              * category 
              */

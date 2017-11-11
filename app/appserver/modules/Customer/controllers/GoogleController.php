@@ -7,7 +7,7 @@
  * @license http://www.fecshop.com/license/
  */
 
-namespace fecshop\app\apphtml5\modules\Customer\controllers;
+namespace fecshop\app\appserver\modules\Customer\controllers;
 
 use fecshop\app\appserver\modules\AppserverController;
 use Yii;
@@ -45,9 +45,14 @@ class GoogleController extends AppserverController
             $fullname = $user['name'];
             $email = $user['email'];
             if ($email) {
-                $this->accountLogin($fullname, $email);
+                return $this->accountLogin($fullname, $email);
             }
         }
+        $code = Yii::$service->helper->appserver->account_google_login_error;
+        $data = [];
+        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        
+        return $reponseData;
     }
 
     /**
@@ -64,10 +69,15 @@ class GoogleController extends AppserverController
             'email'        =>$email,
         ];
         Yii::$service->customer->registerThirdPartyAccountAndLogin($user, 'google');
-        echo '<script>
-					window.close();
-					window.opener.location.reload();
-				</script>';
-        exit;
+        $code = Yii::$service->helper->appserver->status_success;
+        $data = [];
+        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        
+        return $reponseData;
+        //echo '<script>
+		//			window.close();
+		//			window.opener.location.reload();
+		//		</script>';
+        //exit;
     }
 }
