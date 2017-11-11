@@ -43,20 +43,20 @@ class Index
         $this->initState();
         $shippings = $this->getShippings();
         $last_cart_info = $this->getCartInfo($this->_shipping_method, $this->_country, $this->_state);
-
+        
         return [
-            'payments'                    => $this->getPayment(),
+            'payments'                 => $this->getPayment(),
             'shippings'                => $shippings,
-            'current_payment_method'    => $this->_payment_method,
+            'current_payment_method'   => $this->_payment_method,
             'cart_info'                => $last_cart_info,
             'currency_info'            => $currency_info,
             'address_view_file'        => $this->_address_view_file,
-            'cart_address'                => $this->_address,
-            'cart_address_id'            => $this->_address_id,
-            'address_list'                => $this->_address_list,
-            'country_select'            => $this->_countrySelect,
-            //'state_select'			=> $this->_stateSelect,
-            'state_html'                => $this->_stateHtml,
+            'cart_address'             => $this->_address,
+            'cart_address_id'          => $this->_address_id,
+            'address_list'             => $this->_address_list,
+            'country_select'           => $this->_countrySelect,
+            //'state_select'		   => $this->_stateSelect,
+            'state_html'               => $this->_stateHtml,
         ];
     }
 

@@ -24,7 +24,7 @@ class Wxpay extends Service
 {
     public $devide;
     public $configFile;
-    public $subjectMaxLength = 80;
+    public $subjectMaxLength = 30;
     public $tradeType;
     public $scanCodeBody = '微信支付';
     public $deviceInfo = 'WEB';
@@ -59,7 +59,7 @@ class Wxpay extends Service
         //MICROPAY--刷卡支付，刷卡支付有单独的支付接口，不调用统一下单接口
        
         if($this->devide == 'wap'){
-            $this->tradeType     = 'APP';
+            $this->tradeType     = 'MWEB';
         }else if($this->devide == 'pc'){
             $this->tradeType = "NATIVE";
         }else{
@@ -160,7 +160,23 @@ class Wxpay extends Service
         $input->SetTrade_type($this->tradeType);
         $input->SetProduct_id($trade_info['product_ids']); //此为二维码中包含的商品ID 
         $result = $notify->GetPayUrl($input);
-        //var_dump($result);
+        //var_dump($result);exit;
+        /**
+         * var_dump($result);
+         * array(11) { 
+         *     ["appid"]=> string(18) "wx426b3015555a46be" 
+         *     ["code_url"]=> string(35) "weixin://wxpay/bizpayurl?pr=Pnu1DAZ" 
+         *     ["device_info"]=> string(3) "WEB" 
+         *     ["mch_id"]=> string(10) "1900009851" 
+         *     ["nonce_str"]=> string(16) "4L2t8gFjJ5qjXE0L" 
+         *     ["prepay_id"]=> string(36) "wx201711070845443ca4736bb20972889642" 
+         *     ["result_code"]=> string(7) "SUCCESS" 
+         *     ["return_code"]=> string(7) "SUCCESS" 
+         *     ["return_msg"]=> string(2) "OK" 
+         *     ["sign"]=> string(32) "07BCF5B7B1D06DBF8E676EEBA6512082" 
+         *     ["trade_type"]=> string(6) "NATIVE" 
+         * } 
+         **/
         //商户根据实际情况处理流程
         if ($result['return_code'] == "FAIL"){
             Yii::$service->helper->errors->add('api error:' . $result['return_msg'] );
@@ -187,6 +203,8 @@ class Wxpay extends Service
             'product_ids'   => $trade_info['product_ids'],
         ];
     }
+    
+    
     
     public function scanCodeCheckTradeIsSuccess($out_trade_no){
         $result = Yii::$service->payment->wxpay->queryOrderByOut($out_trade_no);
@@ -236,17 +254,19 @@ class Wxpay extends Service
     			$subject = implode(',', $subject_arr);
                 // 字符串太长会出问题，这里将产品的name链接起来，在截图一下
                 if(strlen($subject) > $this->subjectMaxLength) {
-                    $subject = substr($subject,0,$this->subjectMaxLength).'...'; 
+                    $subject = mb_substr($subject,0,$this->subjectMaxLength); 
                 }
+                //echo $subject;
     			$increment_id = $currentOrderInfo['increment_id'];
     			$base_grand_total = $currentOrderInfo['base_grand_total'];
     			$total_amount = Yii::$service->page->currency->getCurrencyPrice($base_grand_total, 'CNY');
                 Yii::$service->payment->setPaymentMethod($currentOrderInfo['payment_method']);
     			$products = $currentOrderInfo['products'];
-                $productIds = [];
+                $productIds = '';
                 if(is_array($products)){
                     foreach($products as $product){
-                        $productIds[] = $product['product_id'];
+                        $productIds = $product['product_id'];
+                        break;
                     }
                 }
                 return [
@@ -254,7 +274,7 @@ class Wxpay extends Service
                     'total_amount' => $total_amount,
                     'subject' 	   => $subject,
                     'coupon_code'  => $currentOrderInfo['coupon_code'],
-                    'product_ids'  => implode(',',$productIds),
+                    'product_ids'  => $productIds,
     			];
                 
     		}

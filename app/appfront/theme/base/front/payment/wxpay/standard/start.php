@@ -50,10 +50,12 @@
                     <em>元</em>
                 </div>
                 <div class="o-detail"  style="float:center">
+                    <!--
                     <a onclick="javascript:" href="javascript:;">
                         订单详情
                         <i></i>
                     </a>
+                    -->
                 </div>
             </div>
             <!-- 订单金额 end -->
