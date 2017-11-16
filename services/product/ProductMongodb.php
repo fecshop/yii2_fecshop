@@ -327,7 +327,6 @@ class ProductMongodb implements ProductInterface
         /**
          * 更新产品库存。
          */
-        
         Yii::$service->product->stock->saveProductStock($product_id,$one);
         /**
          * 更新产品信息到搜索表。
