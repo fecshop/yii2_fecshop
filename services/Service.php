@@ -196,4 +196,46 @@ class Service extends Object
 
         return [$arr, $isCalledByThis];
     }
+    
+    /**
+     * @property $object | Object , 调用该函数的对象
+     * 注意：
+     * 1. $object 必须存在属性storage，否则将会报错
+     * 2. 根据该函数得到相应的Storage，该文件必须存在并设置好相应的namespace，否则将报错
+     * 作用：
+     * 作为services，同一个功能的实现，我们可能使用多种实现方式，譬如
+     * search功能的实现，我们可以使用mysql，也可以使用mongodb，
+     * 产品搜索，可以使用mongodb，也可以使用xunsearch，elasticSearch等
+     * 因此一个功能可以有多种实现，我们通过设置$object->storage 来进行切换各种实现方式。
+     * 譬如 searchStorage有2种，\fecshop\services\search\MongoSearch 和 \fecshop\services\search\XunSearch
+     * 使用该函数返回相应的storage类，类似工厂的方式，易于后续的扩展。
+     * 举例：
+     * 在@fecshop\services\Product.php 这个类中设置类变量 $storage     = 'ProductMongodb';
+     * 那么调用该函数返回的字符串为：'\fecshop\services\product\'+$storage，
+     * 最终函数返回值为：\fecshop\services\product\ProductMongodb
+     * 感谢：
+     * @dionyang 提的建议：http://www.fecshop.com/topic/281
+     */
+    public function getStorageService($object){
+        $className = get_class($object);
+        if (!isset($object->storage) || !$object->storage) {
+            throw new InvalidConfigException('you must config class var $storage in '.$className);
+            
+            return false;
+        }
+        if ($object->storagePath) {
+            $storagePath = '\\'.trim($object->storagePath.'\\').'\\';
+        } else {
+            $storagePath = '\\'.strtolower($className).'\\';
+        }
+        $storageServiceClass =  $storagePath.ucfirst($object->storage);
+    
+        if(!class_exists($storageServiceClass)){
+            throw new InvalidCallException('class ['.$storageServiceClass.'] is not exist , you must add the class before you use it');
+            
+            return false;
+        }
+        
+        return $storageServiceClass;
+    }
 }

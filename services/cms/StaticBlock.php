@@ -21,7 +21,17 @@ use Yii;
  */
 class Staticblock extends Service
 {
-    public $storage = 'mongodb';
+    /**
+     * $storagePrex , $storage , $storagePath 为找到当前的storage而设置的配置参数
+     * 可以在配置中更改，更改后，就会通过容器注入的方式修改相应的配置值
+     */
+    public $storage     = 'StaticBlockMongodb';   // 当前的storage，如果在config中配置，那么在初始化的时候会被注入修改
+    /**
+     * 设置storage的path路径，
+     * 如果不设置，则系统使用默认路径
+     * 如果设置了路径，则使用自定义的路径
+     */
+    public $storagePath = ''; 
     protected $_static_block;
 
     /**
@@ -29,11 +39,15 @@ class Staticblock extends Service
      */
     public function init()
     {
+        $currentService = $this->getStorageService($this);
+        $this->_static_block = new $currentService();
+        /*
         if ($this->storage == 'mongodb') {
             $this->_static_block = new StaticBlockMongodb();
         } elseif ($this->storage == 'mysqldb') {
             $this->_static_block = new StaticBlockMysqldb();
         }
+        */
     }
 
     /**
