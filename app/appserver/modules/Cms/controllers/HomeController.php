@@ -93,7 +93,7 @@ class HomeController extends AppserverController
     
     public function getProduct(){
         $featured_skus = Yii::$app->controller->module->params['homeFeaturedSku'];
-        Yii::$service->session->getUUID();
+        //Yii::$service->session->getUUID();
         return $this->getProductBySkus($featured_skus);
     }
     
