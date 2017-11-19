@@ -208,6 +208,7 @@ class CartController extends AppfrontController
             } else {
                 echo json_encode([
                     'status' => 'fail',
+                    'content' => Yii::$service->helper->errors->get(',')
                 ]);
                 $innerTransaction->rollBack();
             }

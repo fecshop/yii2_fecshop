@@ -284,9 +284,19 @@ class QuoteItem extends Service
                 'cart_id' => $cart_id,
                 'item_id' => $item_id,
             ])->one();
+            $lessedQty = $one['qty'] - 1;
+            
+            $product = Yii::$service->product->getByPrimaryKey($one['product_id']);
+            if(isset($product['min_sales_qty']) && $product['min_sales_qty'] > 1){
+                if($lessedQty < $product['min_sales_qty']){
+                    Yii::$service->helper->errors->add('product less buy qty is '.$product['min_sales_qty']);
+                    
+                    return false;
+                }
+            }
             if ($one['item_id']) {
                 if ($one['qty'] > 1) {
-                    $one['qty'] = $one['qty'] - 1;
+                    $one['qty'] = $lessedQty;
                     $one->save();
                     // 重新计算购物车的数量
                     Yii::$service->cart->quote->computeCartInfo();
