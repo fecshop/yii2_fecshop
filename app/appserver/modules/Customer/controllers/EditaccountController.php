@@ -21,7 +21,7 @@ class EditaccountController extends AppserverTokenController
 {
     public $enableCsrfValidation = false ;
     /**
-     * µÇÂ¼ÓÃ»§µÄ²¿·Ö
+     * ç™»å½•ç”¨æˆ·çš„éƒ¨åˆ†
      */
     public function actionIndex(){
         if(Yii::$app->request->getMethod() === 'OPTIONS'){

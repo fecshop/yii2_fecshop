@@ -7,38 +7,23 @@
  * @license http://www.fecshop.com/license/
  */
 
-namespace fecshop\models\mysqldb\customer;
+namespace fecshop\models\mysqldb\adminUser;
 
 use Yii; 
-use fecshop\models\mysqldb\Customer; 
+use fecshop\models\mysqldb\AdminUser;
 use yii\base\NotSupportedException;  
-use yii\behaviors\TimestampBehavior;  
+use yii\behaviors\TimestampBehavior;   
 use yii\web\IdentityInterface;  
 use yii\filters\RateLimitInterface;  
 
 /**
- * User model.
- *
- * @property int $id
- * @property string $username
- * @property string $password_hash
- * @property string $password_reset_token
- * @property string $email
- * @property string $auth_key
- * @property int $status
- * @property int $created_at
- * @property int $updated_at
- * @property string $password write-only password
- */
-/**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class CustomerAccessToken extends Customer implements IdentityInterface ,RateLimitInterface  
+class AdminUserAccessToken extends AdminUser implements IdentityInterface ,RateLimitInterface  
 {
     
-    
-    # 速度控制  6秒内访问3次，注意，数组的第一个不要设置1，设置1会出问题，一定要  
+     # 速度控制  6秒内访问3次，注意，数组的第一个不要设置1，设置1会出问题，一定要  
     #大于2，譬如下面  6秒内只能访问三次  
     # 文档标注：返回允许的请求的最大数目及时间，例如，[100, 600] 表示在600秒内最多100次的API调用。  
     public  function getRateLimit($request, $action){  
@@ -76,4 +61,6 @@ class CustomerAccessToken extends Customer implements IdentityInterface ,RateLim
     }  
     
     
+    
 }
+

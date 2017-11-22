@@ -63,6 +63,9 @@ return [
             'appserver' => [
                 'class' => 'fecshop\services\helper\Appserver',
             ],
+            'appapi' => [
+                'class' => 'fecshop\services\helper\Appapi',
+            ],
         ],
     ],
 ];

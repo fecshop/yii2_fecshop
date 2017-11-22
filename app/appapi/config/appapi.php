@@ -17,10 +17,16 @@ return [
     'modules'=>$modules,
     'params' => [
         'appName' => 'appapi',
+        // 速度控制[120,60] 代表  60秒内最大访问120次，
+        'rateLimit'             => [
+            'enable'=> false,   # 是否开启？默认不开启速度控制。
+            'limit' => [120, 60],
+        ]
     ],
     'components' => [
         'urlManager' => [
             'class' => 'yii\web\UrlManager',
+            /*
             'enablePrettyUrl'        => true,
             'enableStrictParsing'    => true,
             'showScriptName'        => false,
@@ -62,15 +68,15 @@ return [
                 //#################
                 //#Product Api ##
                 //#################
-                /*
-                [
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => 'v1/product',
-                    # 默认开启复数，需要在url后面加一个s，譬如v1/article，默认访问为v1/articles
-                    # 如果为false，则url后面不需要加s，譬如v1/article，默认访问为v1/article	，
-                    //'pluralize' => false,
-                ],
-                */
+                //
+                //[
+                //    'class' => 'yii\rest\UrlRule',
+                //    'controller' => 'v1/product',
+                //    # 默认开启复数，需要在url后面加一个s，譬如v1/article，默认访问为v1/articles
+                //    # 如果为false，则url后面不需要加s，譬如v1/article，默认访问为v1/article	，
+                //    //'pluralize' => false,
+                //],
+                ////
                 'GET v1/products'                    => 'v1/product/customindex',
                 'POST v1/products'                    => 'v1/product/customcreate',
                 'GET v1/products/<product_id>'        => 'v1/product/customview',
@@ -79,17 +85,18 @@ return [
                 'DELETE v1/products/<product_id>'    => 'v1/product/customdelete',
 
             ],
+            */
         ],
         'request' => [
-            'class' => '\yii\web\Request',
-            'enableCookieValidation' => false,
-            'parsers' => [
-                'application/json' => 'yii\web\JsonParser',
-            ],
+            'class' => 'yii\web\Request',
+            // 'enableCookieValidation' => false,
+            // 'parsers' => [
+            //     'application/json' => 'yii\web\JsonParser',
+            // ],
         ],
 
         'user' => [
-            'identityClass' => 'fecadmin\models\AdminUser',
+            'identityClass' => 'fecshop\models\mysqldb\adminUser\AdminUserAccessToken',
             //'enableAutoLogin' => true,
         ],
 
