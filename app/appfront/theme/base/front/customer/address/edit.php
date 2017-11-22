@@ -8,6 +8,7 @@
  */
 ?>
 <div class="main container two-columns-left">
+<?= Yii::$service->page->widget->render('flashmessage'); ?>
 	<div class="col-main account_center">
 		<div class="std">
 			<div>
