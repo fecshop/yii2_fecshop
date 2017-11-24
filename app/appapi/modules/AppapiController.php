@@ -30,13 +30,16 @@ class AppapiController extends Controller
     public function init()
     {
         parent::init();
-        \Yii::$app->user->enableSession = false;
+        Yii::$app->user->enableSession = false;
     }
 
-    public function behaviors()
+
+   public function behaviors()
     {
         $behaviors = parent::behaviors();
         $behaviors['contentNegotiator']['formats']['text/html'] = Response::FORMAT_JSON;
+
+        //$behaviors['contentNegotiator']['formats']['text/html'] = Response::FORMAT_JSON;
         return $behaviors;
     }
 
