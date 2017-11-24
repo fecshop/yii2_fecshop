@@ -69,6 +69,8 @@ class ArticleMysqldb implements ArticleInterface
             if (isset($model['url_key'])){
                 $model['content'] = unserialize($model['content']);
                 $model['title'] = unserialize($model['title']);
+                $model['meta_keywords'] = unserialize($model['meta_keywords']);
+                $model['meta_description'] = unserialize($model['meta_description']);
                 return $model;
             }
         }
@@ -144,9 +146,26 @@ class ArticleMysqldb implements ArticleInterface
         $defaultLangTitle = Yii::$service->fecshoplang->getDefaultLangAttrVal($one['title'], 'title');
         $urlKey = Yii::$service->url->saveRewriteUrlKeyByStr($defaultLangTitle, $originUrl, $originUrlKey);
         $model->url_key = $urlKey;
+        $this->initStatus($model);
         $model->save();
-
-        return true;
+        // 保存的数据格式返回
+        $model['content'] = unserialize($model['content']);
+        $model['title'] = unserialize($model['title']);
+        $model['meta_keywords'] = unserialize($model['meta_keywords']);
+        $model['meta_description'] = unserialize($model['meta_description']);
+        return $model->attributes;
+    }
+    
+    protected function initStatus($model){
+        $statusArr = [$model::STATUS_ACTIVE, $model::STATUS_DELETED];
+        if ($model['status']) {
+            $model['status'] = (int) $model['status'];
+            if (!in_array($model['status'], $statusArr)) {
+                $model['status'] = $model::STATUS_ACTIVE;
+            }
+        } else {
+            $model['status'] = $model::STATUS_ACTIVE;
+        }
     }
 
     public function remove($ids)

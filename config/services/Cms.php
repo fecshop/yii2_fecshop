@@ -12,7 +12,7 @@ return [
         'childService' => [
             'article' => [
                 'class'            => 'fecshop\services\cms\Article',
-                'storage' => 'ArticleMysqldb', // mysqldb or mongodb.
+                'storage' => 'ArticleMongodb', // ArticleMysqldb or ArticleMongodb.
             ],
 
             'staticblock' => [

@@ -110,9 +110,22 @@ class ArticleMongodb implements ArticleInterface
         $defaultLangTitle   = Yii::$service->fecshoplang->getDefaultLangAttrVal($one['title'], 'title');
         $urlKey             = Yii::$service->url->saveRewriteUrlKeyByStr($defaultLangTitle, $originUrl, $originUrlKey);
         $model->url_key = $urlKey;
+        $this->initStatus($model);
         $model->save();
-
-        return true;
+        $model['_id'] = (string)$model['_id'];
+        return $model->attributes;
+    }
+    
+    protected function initStatus($model){
+        $statusArr = [$model::STATUS_ACTIVE, $model::STATUS_DELETED];
+        if ($model['status']) {
+            $model['status'] = (int) $model['status'];
+            if (!in_array($model['status'], $statusArr)) {
+                $model['status'] = $model::STATUS_ACTIVE;
+            }
+        } else {
+            $model['status'] = $model::STATUS_ACTIVE;
+        }
     }
 
     /**

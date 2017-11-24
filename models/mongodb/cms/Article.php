@@ -17,6 +17,10 @@ use yii\mongodb\ActiveRecord;
  */
 class Article extends ActiveRecord
 {
+    
+    const STATUS_DELETED = 10;
+    const STATUS_ACTIVE = 1;
+    
     /**
      * mongodb collection 的名字，相当于mysql的table name
      */

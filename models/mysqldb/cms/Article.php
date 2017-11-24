@@ -17,6 +17,9 @@ use yii\db\ActiveRecord;
  */
 class Article extends ActiveRecord
 {
+    const STATUS_DELETED = 10;
+    const STATUS_ACTIVE = 1;
+    
     public static function tableName()
     {
         return '{{%article}}';
