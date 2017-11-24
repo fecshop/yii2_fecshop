@@ -139,6 +139,7 @@ class ArticleMongodb implements ArticleInterface
             return false;
         }
         if (is_array($ids) && !empty($ids)) {
+            $deleteAll = true;
             foreach ($ids as $id) {
                 $model = $this->_articleModel->findOne($id);
                 if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
@@ -148,10 +149,10 @@ class ArticleMongodb implements ArticleInterface
                 } else {
                     //throw new InvalidValueException("ID:$id is not exist.");
                     Yii::$service->helper->errors->add("Article Remove Errors:ID $id is not exist.");
-
-                    return false;
+                    $deleteAll = false;
                 }
             }
+            return $deleteAll;
         } else {
             $id = $ids;
             $model = $this->_articleModel->findOne($id);

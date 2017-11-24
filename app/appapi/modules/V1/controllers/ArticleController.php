@@ -169,7 +169,65 @@ class ArticleController extends AppapiTokenController
      * Update One Api：更新一条记录的api
      */
     public function actionUpdateone(){
-    
+        $id            = Yii::$app->request->post('id');
+        // 选填
+        $url_key            = Yii::$app->request->post('url_key');
+        // 选填 多语言
+        $title              = Yii::$app->request->post('title');
+        // 选填 多语言
+        $meta_keywords      = Yii::$app->request->post('meta_keywords');
+        // 选填 多语言
+        $meta_description   = Yii::$app->request->post('meta_description');
+        // 选填 多语言
+        $content            = Yii::$app->request->post('content');
+        $status             = Yii::$app->request->post('status');
+        if (!$id){
+            $error[] = '[id] can not empty';
+        }
+        
+        if($title && !Yii::$service->fecshoplang->getDefaultLangAttrVal($title, 'title')){
+            $defaultLangAttrName = Yii::$service->fecshoplang->getDefaultLangAttrName('title');
+            $error[] = '[title.'.$defaultLangAttrName.'] can not empty';
+        }
+        if($content && !Yii::$service->fecshoplang->getDefaultLangAttrVal($content, 'content')){
+            $defaultLangAttrName = Yii::$service->fecshoplang->getDefaultLangAttrName('content');
+            $error[] = '[content.'.$defaultLangAttrName.'] can not empty';
+        }
+        if($meta_keywords && !is_array($meta_keywords)){
+            $error[] = '[meta_keywords] must be array';
+        }
+        if($meta_description && !is_array($meta_description)){
+            $error[] = '[meta_description] must be array';
+        }
+        if (!empty($error)) {
+            
+            return [
+                'code'    => 400,
+                'message' => 'data param format error',
+                'data'    => [
+                    'error' => $error,
+                ],
+            ];
+        }
+        $param = [];
+        $identity = Yii::$app->user->identity;
+        $url_key ? ($param['url_key'] = $url_key) : '';
+        $title ? ($param['title'] = $title) : '';
+        $meta_keywords ? ($param['meta_keywords'] = $meta_keywords) : '';
+        $meta_description ? ($param['meta_description'] = $meta_description) : '';
+        $content ? ($param['content'] = $content) : '';
+        $status ? ($param['status'] = $status) : '';
+        
+        $primaryKey = Yii::$service->cms->article->getPrimaryKey();
+        $param[$primaryKey] = $id;
+        $saveData = Yii::$service->cms->article->save($param, 'cms/article/index');
+        return [
+            'code'    => 200,
+            'message' => 'add article success',
+            'data'    => [
+                'updateData' => $saveData,
+            ]
+        ];
     
     
     }
@@ -178,9 +236,24 @@ class ArticleController extends AppapiTokenController
      * Delete One Api：删除一条记录的api
      */
     public function actionDeleteone(){
-    
-    
-    
+        $ids            = Yii::$app->request->post('ids');
+        Yii::$service->cms->article->remove($ids);
+        $errors = Yii::$service->helper->errors->get();
+        if (!empty($errors)) {
+            return [
+                'code'    => 400,
+                'message' => 'remove article by ids fail',
+                'data'    => [
+                    'error' => $errors,
+                ],
+            ];
+        } else {
+            return [
+                'code'    => 200,
+                'message' => 'delete article success',
+                'data'    => []
+            ];
+        }
     }
     
     
