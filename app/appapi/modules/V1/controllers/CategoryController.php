@@ -15,12 +15,12 @@ use Yii;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class ArticleController extends AppapiTokenController
+class CategoryController extends AppapiTokenController
 {
     public $numPerPage = 5;
     
     /**
-     * Get Lsit Apiï¼šå¾—åˆ°article åˆ—è¡¨çš„api
+     * Get Lsit Api£ºµÃµ½Category ÁÐ±íµÄapi
      */
     public function actionList(){
         
@@ -31,15 +31,16 @@ class ArticleController extends AppapiTokenController
             'pageNum'       => $page,
             'asArray'       => true,
         ];
-        $data  = Yii::$service->cms->article->coll($filter);
+        $data  = Yii::$service->category->coll($filter);
         $coll  = $data['coll'];
-        $count = $data['count']; 
         foreach ($coll as $k => $one) {
+            // ´¦ÀímongodbÀàÐÍ
             if (isset($one['_id'])) {
                 $coll[$k]['id'] = (string)$one['_id'];
                 unset($coll[$k]['_id']);
             }
         }
+        $count = $data['count'];
         $pageCount = ceil($count / $this->numPerPage);
         $serializer = new \yii\rest\Serializer();
         Yii::$app->response->getHeaders()
@@ -50,19 +51,19 @@ class ArticleController extends AppapiTokenController
         if ($page <= $pageCount ) {
             return [
                 'code'    => 200,
-                'message' => 'fetch article success',
+                'message' => 'fetch category success',
                 'data'    => $coll,
             ];
         } else {
             return [
                 'code'    => 400,
-                'message' => 'fetch article fail , exceeded the maximum number of pages',
+                'message' => 'fetch category fail , exceeded the maximum number of pages',
                 'data'    => [],
             ];
         }
     }
     /**
-     * Get One Apiï¼šæ ¹æ®url_key å’Œ id å¾—åˆ°article åˆ—è¡¨çš„api
+     * Get One Api£º¸ù¾Ýurl_key ºÍ id µÃµ½Category ÁÐ±íµÄapi
      */
     public function actionFetchone(){
         $url_key       = Yii::$app->request->get('url_key');
@@ -76,46 +77,52 @@ class ArticleController extends AppapiTokenController
                 'data'    => [],
             ];
         } else if ($primaryKeyVal) {
-            $article = Yii::$service->cms->article->getByPrimaryKey($primaryKeyVal);
-            if(isset($article['url_key']) && $article['url_key']){
-                $data = $article;
+           
+            $category = Yii::$service->category->getByPrimaryKey($primaryKeyVal);
+            if(isset($category['url_key']) && $category['url_key']){
+                $data = $category;
             }
         } else if ($url_key) {
-            $article = Yii::$service->cms->article->getByUrlKey($url_key);
-            if(isset($article['url_key']) && $article['url_key']){
-                $data = $article;
+            $category = Yii::$service->category->getByUrlKey($url_key);
+            if(isset($category['url_key']) && $category['url_key']){
+                $data = $category;
             }
         }
         if (empty($data)) {
             
             return [
                 'code'    => 400,
-                'message' => 'can not find article by id or url_key',
+                'message' => 'can not find category by id or url_key',
                 'data'    => [],
             ];
         } else {
-            
+            // ´¦ÀímongodbÀàÐÍ
+            if (isset($data['_id'])) {
+                $data = $data->attributes;
+                $data['id'] = (string)$data['_id'];
+                unset($data['_id']);
+            }
             return [
                 'code'    => 200,
-                'message' => 'fetch article success',
+                'message' => 'fetch category success',
                 'data'    => $data,
             ];
         } 
     }
     /**
-     * Add One Apiï¼šæ–°å¢žä¸€æ¡è®°å½•çš„api
+     * Add One Api£ºÐÂÔöÒ»Ìõ¼ÇÂ¼µÄapi
      */
     public function actionAddone(){
         //var_dump(Yii::$app->request->post());exit;
-        // é€‰å¡«
+        // Ñ¡Ìî
         $url_key            = Yii::$app->request->post('url_key');
-        // å¿…å¡« å¤šè¯­è¨€
+        // ±ØÌî ¶àÓïÑÔ
         $title              = Yii::$app->request->post('title');
-        // é€‰å¡« å¤šè¯­è¨€
+        // Ñ¡Ìî ¶àÓïÑÔ
         $meta_keywords      = Yii::$app->request->post('meta_keywords');
-        // é€‰å¡« å¤šè¯­è¨€
+        // Ñ¡Ìî ¶àÓïÑÔ
         $meta_description   = Yii::$app->request->post('meta_description');
-        // å¿…å¡« å¤šè¯­è¨€
+        // ±ØÌî ¶àÓïÑÔ
         $content            = Yii::$app->request->post('content');
         $status             = Yii::$app->request->post('status');
         if (!$title) {
@@ -167,19 +174,19 @@ class ArticleController extends AppapiTokenController
         ];
     }
     /**
-     * Update One Apiï¼šæ›´æ–°ä¸€æ¡è®°å½•çš„api
+     * Update One Api£º¸üÐÂÒ»Ìõ¼ÇÂ¼µÄapi
      */
     public function actionUpdateone(){
         $id            = Yii::$app->request->post('id');
-        // é€‰å¡«
+        // Ñ¡Ìî
         $url_key            = Yii::$app->request->post('url_key');
-        // é€‰å¡« å¤šè¯­è¨€
+        // Ñ¡Ìî ¶àÓïÑÔ
         $title              = Yii::$app->request->post('title');
-        // é€‰å¡« å¤šè¯­è¨€
+        // Ñ¡Ìî ¶àÓïÑÔ
         $meta_keywords      = Yii::$app->request->post('meta_keywords');
-        // é€‰å¡« å¤šè¯­è¨€
+        // Ñ¡Ìî ¶àÓïÑÔ
         $meta_description   = Yii::$app->request->post('meta_description');
-        // é€‰å¡« å¤šè¯­è¨€
+        // Ñ¡Ìî ¶àÓïÑÔ
         $content            = Yii::$app->request->post('content');
         $status             = Yii::$app->request->post('status');
         if (!$id) {
@@ -228,7 +235,7 @@ class ArticleController extends AppapiTokenController
         ];
     }
     /**
-     * Delete One Apiï¼šåˆ é™¤ä¸€æ¡è®°å½•çš„api
+     * Delete One Api£ºÉ¾³ýÒ»Ìõ¼ÇÂ¼µÄapi
      */
     public function actionDeleteone(){
         $ids            = Yii::$app->request->post('ids');
@@ -253,7 +260,7 @@ class ArticleController extends AppapiTokenController
     
     
     /**
-     * ç”¨äºŽæµ‹è¯•çš„action
+     * ÓÃÓÚ²âÊÔµÄaction
      */
     public function actionTest()
     {

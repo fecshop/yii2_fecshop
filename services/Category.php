@@ -84,9 +84,18 @@ class Category extends Service
      */
     protected function actionGetByPrimaryKey($primaryKey)
     {
+        
         return $this->_category->getByPrimaryKey($primaryKey);
     }
-
+    /**
+     * @property $urlKey | String or Int , Url Key
+     * 通过主键，得到category info
+     */
+    protected function actionGetByUrlKey($urlKey)
+    {
+        return $this->_category->getByUrlKey($urlKey);
+    }
+    
     protected function actionCollCount($filter = '')
     {
         return $this->_category->collCount($filter);

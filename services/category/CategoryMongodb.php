@@ -33,11 +33,26 @@ class CategoryMongodb implements CategoryInterface
     public function getByPrimaryKey($primaryKey)
     {
         if ($primaryKey) {
+             
             return $this->_categoryModel->findOne($primaryKey);
         } else {
             return new $this->_categoryModelName;
         }
     }
+    
+    /**
+     * 通过url_key，得到Category对象。
+     */
+    public function getByUrlKey($urlKey)
+    {
+        if ($urlKey) {
+            $urlKey = "/".trim($urlKey,"/");
+            return $this->_categoryModel->findOne(['url_key' => $urlKey]);
+        } else {
+            return new $this->_categoryModelName;
+        }
+    }
+    
     
     /**
      * 返回主键。
