@@ -120,13 +120,13 @@ class ProductApi
         $this->_param['is_in_stock'] = $is_in_stock;
         // 选填 特价
         $special_price  = (float)$post['special_price'];
-        if (!$special_price){
+        if ($special_price){
             $this->_param['special_price'] = $special_price;
         }
         // 选填 特价开始时间 开始时间只要“年-月-日”部分，其他部分去除，然后取00:00:00的数据
         $special_from   = $post['special_from'];
-        if(!$special_from) {
-            $special_from = substr($special_from, 0, 5).' 00:00:00';
+        if($special_from) {
+            $special_from = substr($special_from, 0, 10).' 00:00:00';
             $special_from = strtotime($special_from);
             if ($special_from) {
                 $this->_param['special_from'] = $special_from;
@@ -134,8 +134,8 @@ class ProductApi
         }
         // 选填 特价结束时间 开始时间只要“年-月-日”部分，其他部分去除，然后取23:59:59的数据
         $special_to     = $post['special_to'];
-        if(!$special_to) {
-            $special_to = substr($special_to, 0, 5).' 23:59:59';
+        if($special_to) {
+            $special_to = substr($special_to, 0, 10).' 23:59:59';
             $special_to = strtotime($special_to);
             if ($special_to) {
                 $this->_param['special_to'] = $special_to;
@@ -143,7 +143,7 @@ class ProductApi
         }
         // 选填
         $tier_price     = $post['tier_price'];
-        if (!$tier_price){
+        if ($tier_price){
             /** 检查数据个数是否如下
              * "tier_price": [
              *      {
@@ -179,8 +179,8 @@ class ProductApi
         
         // 选填 开始时间只要“年-月-日”部分，其他部分去除，然后取00:00:00的数据
         $new_product_from    = $post['new_product_from'];
-        if (!$new_product_from) {
-            $new_product_from = substr($new_product_from, 0, 5).' 00:00:00';
+        if ($new_product_from) {
+            $new_product_from = substr($new_product_from, 0, 10).' 00:00:00';
             $new_product_from = strtotime($new_product_from);
             if ($new_product_from) {
                 $this->_param['new_product_from'] = $new_product_from;
@@ -188,8 +188,8 @@ class ProductApi
         }
         // 选填 结束时间只要“年-月-日”部分，其他部分去除，然后取23:59:59的数据
         $new_product_to      = $post['new_product_to'];
-        if (!$new_product_to) {
-            $new_product_to = substr($new_product_to, 0, 5).' 23:59:59';
+        if ($new_product_to) {
+            $new_product_to = substr($new_product_to, 0, 10).' 23:59:59';
             $new_product_to = strtotime($new_product_to);
             if ($new_product_to) {
                 $this->_param['new_product_to'] = $new_product_to;
@@ -395,11 +395,12 @@ class ProductApi
             },
           */
         $image = $post['image'];
-        if( !$image ) {
-            $correct = 1;
+        if( $image ) {
             if (isset($image['main'])) {
-                if (isset($image['main']['image']) && isset($image['main']['image'])) {
+                if (isset($image['main']['image']) && $image['main']['image']) {
                     // 正确
+                    $image['main']['is_thumbnails'] = 1;
+                    $image['main']['is_detail'] = 1;
                 } else {
                     $this->_error[] = 'image[\'main\'][\'image\'] must exist ';
                 }
