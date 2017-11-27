@@ -43,7 +43,9 @@ return [
             ],
             'info' => [
                 'class' => 'fecshop\services\product\Info',
-
+            ],
+            'productapi' => [
+                'class' => 'fecshop\services\product\ProductApi',
             ],
             'stock' => [
                 'class' => 'fecshop\services\product\Stock',

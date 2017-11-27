@@ -104,7 +104,8 @@ class ProductController extends AppapiTokenController
      */
     public function actionAddone(){
         //var_dump(Yii::$app->request->post());exit;
-        
+        $data = Yii::$service->product->productapi->insertByPost();
+        return $data;
     }
     /**
      * Update One Api：更新一条记录的api

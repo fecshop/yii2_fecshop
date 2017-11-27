@@ -44,7 +44,7 @@ class ProductApi
         $model = $this->_productModel;
         if (empty($post) || !is_array($post)) {
             $this->_error[] = 'post data is empty or is not array';
-            return false;
+            return ;
         }
         // 产品名字：【必填】 【多语言属性】
         $name = $post['name'];
@@ -104,10 +104,10 @@ class ProductApi
         $this->_param['qty'] = $qty; 
         // 选填 数组
         $category       = $post['category'];
-        if (!$category && !is_array($category)) {
+        if ($category && !is_array($category)) {
             $this->_error[] = '[category] must be array';
         }
-        if (!$category) {
+        if ($category) {
             $this->_param['category'] = $category;
         }
         
@@ -160,8 +160,8 @@ class ProductApi
                 $correct = 1;
                 foreach ($tier_price as $one) {
                     if(
-                        isset($one['qty']) && $one['qty'] &&
-                        isset($one['price']) && $one['price'] 
+                        !isset($one['qty']) || !$one['qty'] ||
+                        !isset($one['price']) || !$one['price'] 
                     ){
                         $correct = 0;
                         break;
@@ -170,9 +170,13 @@ class ProductApi
                 if (!$correct){
                     $this->_error[] = '[tier_price] data format is error , you can see doc example data';
                 }
+                $this->_param['tier_price'] = $tier_price;
+            } else {
+                $this->_error[] = '[tier_price] data must be array';
             }
-            $this->_param['tier_price'] = $tier_price;
         }
+        
+        
         // 选填 开始时间只要“年-月-日”部分，其他部分去除，然后取00:00:00的数据
         $new_product_from    = $post['new_product_from'];
         if (!$new_product_from) {
@@ -205,7 +209,7 @@ class ProductApi
         $attr_group          = $post['attr_group'];
         $customAttrGroup     = Yii::$service->product->customAttrGroup;
         if (!$attr_group) {
-            $this->_error[] = '[attr_group] must be array';
+            $this->_error[] = '[attr_group] can not empty';
         } else if (!isset($customAttrGroup[$attr_group])){
             $this->_error[] = '[attr_group:'.$attr_group.'] is not config is Product Service Config File';
         } else {
@@ -258,7 +262,6 @@ class ProductApi
         
         $custom_option = $post['custom_option'];
         if (!empty( $custom_option) && is_array($custom_option) && isset($customAttrGroup[$attr_group]['custom_options']) && $customAttrGroup[$attr_group]['custom_options']) {
-            $correct = 1;
             $custom_option_arr = [];
             // 1.
             // 该属性组对应的 custom option 的数据配置结构
@@ -304,15 +307,9 @@ class ProductApi
                                 // error：$attrKey 这个属性在当前的插入数据中存在，但是值不合法，值必须存在于 "数据配置结构" 中对应的数据列表中
                             }
                         } else {
-                            $this->_error[] = '[custom option config error]: (attr_group:'.$attr_group.') attr['.$attrKey'] config is not correct , it must exist: [\'display\'][\'data\']';
+                            $this->_error[] = '[custom option config error]: (attr_group:'.$attr_group.') attr['.$attrKey.'] config is not correct , it must exist: [\'display\'][\'data\']';
                         }
-                        
                     }
-                    if (!$info['qty']) {
-                        $info['qty'] = 0;
-                    }
-                    
-                    
                 } else {
                     $this->_error[] = '[custom option config error]: (attr_group:'.$attr_group.') , it must be array';
                 }
@@ -343,20 +340,81 @@ class ProductApi
         if( !$see_also_see_sku ) {
             $this->_param['see_also_see_sku'] = $see_also_see_sku;
         }
-        // 选填
+        
+        
+        
+        // 选填 产品状态
         $status = $post['status'];
-        if( !$status ) {
-            $status = 1;
-            $this->_param['status'] = $status;
+        $allowStatus = [$model::STATUS_ENABLE,$model::STATUS_DISABLE];
+        if( !$status || !in_array($status, $allowStatus) ) {
+            $status = $model::STATUS_ENABLE;
         }
-        // 选填
+        $this->_param['status'] = $status;
+        // 选填 产品的url key
         $url_key = $post['url_key'];
         if( !$url_key ) {
             $this->_param['url_key'] = $url_key;
         }
-        // 选填
+        
+        /**
+         *  选填 产品的图片
+         *  图片的格式如下：
+            "image": {
+                "gallery": [
+                    {
+                        "image": "/2/01/20161024170457_13851.jpg",
+                        "label": "",
+                        "sort_order": ""
+                    },
+                    {
+                        "image": "/2/01/20161024170457_21098.jpg",
+                        "label": "",
+                        "sort_order": ""
+                    },
+                    {
+                        "image": "/2/01/20161101155240_26690.jpg",
+                        "label": "",
+                        "sort_order": ""
+                    },
+                    {
+                        "image": "/2/01/20161101155240_56328.jpg",
+                        "label": "",
+                        "sort_order": ""
+                    },
+                    {
+                        "image": "/2/01/20161101155240_94256.jpg",
+                        "label": "",
+                        "sort_order": ""
+                    }
+                ],
+                "main": {
+                    "image": "/2/01/20161024170457_10036.jpg",
+                    "label": "",
+                    "sort_order": ""
+                }
+            },
+          */
         $image = $post['image'];
         if( !$image ) {
+            $correct = 1;
+            if (isset($image['main'])) {
+                if (isset($image['main']['image']) && isset($image['main']['image'])) {
+                    // 正确
+                } else {
+                    $this->_error[] = 'image[\'main\'][\'image\'] must exist ';
+                }
+            }
+            if (isset($image['gallery'])) {
+                if (is_array($image['gallery']) && !empty($image['gallery'])) {
+                    foreach ($image['gallery'] as $one) {
+                        if (!isset($one['image']) || !$one['image']) {
+                            $this->_error[] = 'image[\'gallery\'][][\'image\'] must exist ';
+                        }
+                    }
+                } else {
+                    $this->_error[] = 'image[\'gallery\'] must be array ';
+                }
+            }
             $this->_param['image'] = $image;
         }
         // 选填 多语言
@@ -377,8 +435,9 @@ class ProductApi
         // 属性组属性，这里没有做强制的必填判断，有值就会加入 $this->_param 中。
         $attrInfo = Yii::$service->product->getGroupAttrInfo($attr_group);
         if (is_array($attrInfo) && !empty($attrInfo)) {
+            
             foreach($attrInfo as $attrName => $info){
-                if (isset($post[$attrName] && $post[$attrName]) {
+                if (isset($post[$attrName]) && $post[$attrName]) {
                     $attrVal = $post[$attrName];
                     if (isset($info['display']['type']) && $info['display']['type'] === 'select') {
                         $selectArr = $info['display']['data'];
@@ -404,34 +463,17 @@ class ProductApi
             $post = Yii::$app->request->post();
         }
         $this->checkPostDataRequireAndInt($post);
-        
-        
-        return [
-            'code'    => 400,
-            'message' => ''
-            'error'  => $this->_error
-        ]
-        
-        
-        
-        
-        
-        
-        $param = [];
-        
-        
-        if (!empty($error)) {
+        if (!empty($this->_error)) {
             return [
                 'code'    => 400,
-                'message' => 'data param format error',
-                'data'    => [
-                    'error' => $error,
-                ],
+                'message' => '',
+                'error'  => $this->_error,
             ];
         }
         
+        Yii::$service->product->addGroupAttrs($this->_param['attr_group']);
         $originUrlKey   = 'catalog/product/index';
-        $saveData       = Yii::$service->category->save($param, $originUrlKey);
+        $saveData       = Yii::$service->product->save($this->_param, $originUrlKey);
         $errors         = Yii::$service->helper->errors->get();
         if (!$errors) {
             $saveData = $saveData->attributes;
@@ -441,7 +483,7 @@ class ProductApi
             }
             return [
                 'code'    => 200,
-                'message' => 'add article success',
+                'message' => 'add product success',
                 'data'    => [
                     'addData' => $saveData,
                 ]

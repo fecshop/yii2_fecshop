@@ -262,7 +262,7 @@ class ProductMongodb implements ProductInterface
     public function save($one, $originUrlKey = 'catalog/product/index')
     {
         if (!$this->initSave($one)) {
-            return;
+            return false;
         }
         $one['min_sales_qty'] = (int)$one['min_sales_qty'];
         $currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
@@ -272,7 +272,7 @@ class ProductMongodb implements ProductInterface
             if (!$model) {
                 Yii::$service->helper->errors->add('Product '.$this->getPrimaryKey().' is not exist');
 
-                return;
+                return false;
             }
 
             //验证sku 是否重复
@@ -284,7 +284,7 @@ class ProductMongodb implements ProductInterface
             if ($product_one['sku']) {
                 Yii::$service->helper->errors->add('Product Sku 已经存在，请使用其他的sku');
 
-                return;
+                return false;
             }
         } else {
             $model = new $this->_productModelName();
@@ -299,7 +299,7 @@ class ProductMongodb implements ProductInterface
             if ($product_one['sku']) {
                 Yii::$service->helper->errors->add('Product Sku 已经存在，请使用其他的sku');
 
-                return;
+                return false;
             }
         }
         $model->updated_at = time();
@@ -335,7 +335,7 @@ class ProductMongodb implements ProductInterface
          */
         Yii::$service->search->syncProductInfo([$product_id]);
 
-        return true;
+        return $model;
     }
 
     /**
