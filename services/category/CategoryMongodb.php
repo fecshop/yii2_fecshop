@@ -127,7 +127,7 @@ class CategoryMongodb implements CategoryInterface
             if (!$model) {
                 Yii::$service->helper->errors->add('Category '.$this->getPrimaryKey().' is not exist');
 
-                return;
+                return false;
             }
             $parent_id = $model['parent_id'];
         } else {
@@ -151,6 +151,14 @@ class CategoryMongodb implements CategoryInterface
         unset($one['_id']);
         $one['status']    = (int)$one['status'];
         $one['menu_show'] = (int)$one['menu_show'];
+        $allowMenuShowArr = [ $model::MENU_SHOW, $model::MENU_NOT_SHOW];
+        if (!in_array($one['menu_show'],$allowMenuShowArr)) {
+            $one['menu_show'] = $model::MENU_SHOW;
+        }
+        $allowStatusArr = [ $model::STATUS_ENABLE, $model::STATUS_DISABLE];
+        if (!in_array($one['status'],$allowStatusArr)) {
+            $one['status'] = $model::STATUS_ENABLE;
+        }
         $saveStatus = Yii::$service->helper->ar->save($model, $one);
         $originUrl = $originUrlKey.'?'.$this->getPrimaryKey() .'='. $primaryVal;
         $originUrlKey = isset($one['url_key']) ? $one['url_key'] : '';
@@ -159,7 +167,7 @@ class CategoryMongodb implements CategoryInterface
         $model->url_key = $urlKey;
         $model->save();
 
-        return true;
+        return $model;
     }
 
     /**
@@ -167,26 +175,44 @@ class CategoryMongodb implements CategoryInterface
      * 通过主键值找到分类，并且删除分类在url rewrite表中的记录
      * 查看这个分类是否存在子分类，如果存在子分类，则删除所有的子分类，以及子分类在url rewrite表中对应的数据。
      */
-    public function remove($id)
+    public function remove($ids)
     {
-        if (!$id) {
-            Yii::$service->helper->errors->add('remove id is empty');
+        if (!$ids) {
+            Yii::$service->helper->errors->add('remove ids is empty');
 
             return false;
         }
+        if (is_array($ids) && !empty($ids)) {
+            $deleteAll = true;
+            foreach ($ids as $id) {
+                $model = $this->_categoryModel->findOne($id);
+                if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
+                    $url_key = $model['url_key'];
+                    Yii::$service->url->removeRewriteUrlKey($url_key);
+                    $model->delete();
+                    $this->removeChildCate($id);
+                } else {
+                    Yii::$service->helper->errors->add("Category Remove Errors:ID:$id is not exist.");
 
-        $model = $this->_categoryModel->findOne($id);
-        if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
-            $url_key = $model['url_key'];
-            Yii::$service->url->removeRewriteUrlKey($url_key);
-            $model->delete();
-            $this->removeChildCate($id);
+                    $deleteAll = false;
+                }
+            }
+            return $deleteAll;
         } else {
-            Yii::$service->helper->errors->add("Category Remove Errors:ID:$id is not exist.");
+            $id = $ids;
+            //echo $id;exit;
+            $model = $this->_categoryModel->findOne($id);
+            if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
+                $url_key = $model['url_key'];
+                Yii::$service->url->removeRewriteUrlKey($url_key);
+                $model->delete();
+                $this->removeChildCate($id);
+            } else {
+                Yii::$service->helper->errors->add("Category Remove Errors:ID:$id is not exist.");
 
-            return false;
+                return false;
+            }
         }
-
         return true;
     }
 

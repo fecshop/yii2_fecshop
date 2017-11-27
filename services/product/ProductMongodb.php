@@ -41,6 +41,8 @@ class ProductMongodb implements ProductInterface
         return $model::STATUS_ENABLE;
     }
     
+    
+    
     public function getByPrimaryKey($primaryKey)
     {
         if ($primaryKey) {

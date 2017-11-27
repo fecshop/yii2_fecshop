@@ -245,7 +245,7 @@ class ArticleController extends AppapiTokenController
         } else {
             return [
                 'code'    => 200,
-                'message' => 'delete article success',
+                'message' => 'delete article by ids success',
                 'data'    => []
             ];
         }

@@ -22,6 +22,8 @@ class Product extends ActiveRecord
     const STATUS_ENABLE  = 1;
     const STATUS_DISABLE = 2;
     
+    const IS_IN_STOCK = 1;
+    const OUT_STOCK = 2;
     /**
      * mongodb collection 的名字，相当于mysql的table name
      */

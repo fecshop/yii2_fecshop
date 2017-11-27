@@ -20,7 +20,7 @@ class CategoryController extends AppapiTokenController
     public $numPerPage = 5;
     
     /**
-     * Get Lsit Api£ºµÃµ½Category ÁÐ±íµÄapi
+     * Get Lsit Apiï¼šå¾—åˆ°Category åˆ—è¡¨çš„api
      */
     public function actionList(){
         
@@ -34,7 +34,7 @@ class CategoryController extends AppapiTokenController
         $data  = Yii::$service->category->coll($filter);
         $coll  = $data['coll'];
         foreach ($coll as $k => $one) {
-            // ´¦ÀímongodbÀàÐÍ
+            // å¤„ç†mongodbç±»åž‹
             if (isset($one['_id'])) {
                 $coll[$k]['id'] = (string)$one['_id'];
                 unset($coll[$k]['_id']);
@@ -63,7 +63,7 @@ class CategoryController extends AppapiTokenController
         }
     }
     /**
-     * Get One Api£º¸ù¾Ýurl_key ºÍ id µÃµ½Category ÁÐ±íµÄapi
+     * Get One Apiï¼šæ ¹æ®url_key å’Œ id å¾—åˆ°Category åˆ—è¡¨çš„api
      */
     public function actionFetchone(){
         $url_key       = Yii::$app->request->get('url_key');
@@ -96,7 +96,7 @@ class CategoryController extends AppapiTokenController
                 'data'    => [],
             ];
         } else {
-            // ´¦ÀímongodbÀàÐÍ
+            // å¤„ç†mongodbç±»åž‹
             if (isset($data['_id'])) {
                 $data = $data->attributes;
                 $data['id'] = (string)$data['_id'];
@@ -110,43 +110,48 @@ class CategoryController extends AppapiTokenController
         } 
     }
     /**
-     * Add One Api£ºÐÂÔöÒ»Ìõ¼ÇÂ¼µÄapi
+     * Add One Apiï¼šæ–°å¢žä¸€æ¡è®°å½•çš„api
      */
     public function actionAddone(){
         //var_dump(Yii::$app->request->post());exit;
-        // Ñ¡Ìî
+        // å¿…å¡«
+        $parent_id            = Yii::$app->request->post('parent_id');
+        // å¿…å¡«
+        $name            = Yii::$app->request->post('name');
+        // é€‰å¡«
+        $status            = Yii::$app->request->post('status');
+        // é€‰å¡«
         $url_key            = Yii::$app->request->post('url_key');
-        // ±ØÌî ¶àÓïÑÔ
+        // é€‰å¡«
+        $description            = Yii::$app->request->post('description');
+        // é€‰å¡«
+        $menu_custom            = Yii::$app->request->post('menu_custom');
+        // é€‰å¡«
+        $filter_product_attr_selected   = Yii::$app->request->post('filter_product_attr_selected');
+        // é€‰å¡«
+        $filter_product_attr_unselected            = Yii::$app->request->post('filter_product_attr_unselected');
+        // é€‰å¡«
+        $thumbnail_image            = Yii::$app->request->post('thumbnail_image');
+        // é€‰å¡«
+        $image            = Yii::$app->request->post('image');
+        // é€‰å¡« å¤šè¯­è¨€
         $title              = Yii::$app->request->post('title');
-        // Ñ¡Ìî ¶àÓïÑÔ
+        // é€‰å¡« å¤šè¯­è¨€
         $meta_keywords      = Yii::$app->request->post('meta_keywords');
-        // Ñ¡Ìî ¶àÓïÑÔ
+        // é€‰å¡« å¤šè¯­è¨€
         $meta_description   = Yii::$app->request->post('meta_description');
-        // ±ØÌî ¶àÓïÑÔ
-        $content            = Yii::$app->request->post('content');
-        $status             = Yii::$app->request->post('status');
-        if (!$title) {
-            $error[] = '[title] can not empty';
+       
+        if (!$parent_id && $parent_id !== '0') {
+            $error[] = '[parent_id] can not empty';
         }
-        if (!$content) {
-            $error[] = '[content] can not empty';
+        if (!$name) {
+            $error[] = '[name] can not empty';
         }
-        if(!Yii::$service->fecshoplang->getDefaultLangAttrVal($title, 'title')) {
-            $defaultLangAttrName = Yii::$service->fecshoplang->getDefaultLangAttrName('title');
-            $error[] = '[title.'.$defaultLangAttrName.'] can not empty';
-        }
-        if (!Yii::$service->fecshoplang->getDefaultLangAttrVal($content, 'content')) {
-            $defaultLangAttrName = Yii::$service->fecshoplang->getDefaultLangAttrName('content');
-            $error[] = '[content.'.$defaultLangAttrName.'] can not empty';
-        }
-        if ($meta_keywords && !is_array($meta_keywords)) {
-            $error[] = '[meta_keywords] must be array';
-        }
-        if ($meta_description && !is_array($meta_description)) {
-            $error[] = '[meta_description] must be array';
+        if(!Yii::$service->fecshoplang->getDefaultLangAttrVal($name, 'name')) {
+            $defaultLangAttrName = Yii::$service->fecshoplang->getDefaultLangAttrName('name');
+            $error[] = '[name.'.$defaultLangAttrName.'] can not empty';
         }
         if (!empty($error)) {
-            
             return [
                 'code'    => 400,
                 'message' => 'data param format error',
@@ -157,54 +162,105 @@ class CategoryController extends AppapiTokenController
         }
         $identity = Yii::$app->user->identity;
         $param = [
-            'url_key'           => $url_key,
-            'title'             => $title,
-            'meta_keywords'     => $meta_keywords,
-            'meta_description'  => $meta_description,
-            'content'           => $content,
-            'status'            => $status,
+            'parent_id'                     => $parent_id,
+            'name'                          => $name,
+            'status'                        => $status,
+            'url_key'                       => $url_key,
+            'description'                   => $description,
+            'menu_custom'                   => $menu_custom,
+            'filter_product_attr_selected'  => $filter_product_attr_selected,
+            'filter_product_attr_unselected'=> $filter_product_attr_unselected,
+            'thumbnail_image'               => $thumbnail_image,
+            'image'                         => $image,
+            'title'                         => $title,
+            'meta_keywords'                 => $meta_keywords,
+            'meta_description'              => $meta_description,
         ];
-        $saveData = Yii::$service->cms->article->save($param, 'cms/article/index');
-        return [
-            'code'    => 200,
-            'message' => 'add article success',
-            'data'    => [
-                'addData' => $saveData,
-            ]
-        ];
+        $originUrlKey   = 'catalog/category/index';
+        $saveData       = Yii::$service->category->save($param, $originUrlKey);
+        $errors         = Yii::$service->helper->errors->get();
+        if (!$errors) {
+            $saveData = $saveData->attributes;
+            if(isset($saveData['_id'])){
+                $saveData['id'] = (string)$saveData['_id'];
+                unset($saveData['_id']);
+            }
+            return [
+                'code'    => 200,
+                'message' => 'add article success',
+                'data'    => [
+                    'addData' => $saveData,
+                ]
+            ];
+        } else {
+            return [
+                'code'    => 400,
+                'message' => 'save category fail',
+                'data'    => [
+                    'error' => $errors,
+                ],
+            ];
+        }
     }
     /**
-     * Update One Api£º¸üÐÂÒ»Ìõ¼ÇÂ¼µÄapi
+     * Update One Apiï¼šæ›´æ–°ä¸€æ¡è®°å½•çš„api
      */
     public function actionUpdateone(){
-        $id            = Yii::$app->request->post('id');
-        // Ñ¡Ìî
-        $url_key            = Yii::$app->request->post('url_key');
-        // Ñ¡Ìî ¶àÓïÑÔ
-        $title              = Yii::$app->request->post('title');
-        // Ñ¡Ìî ¶àÓïÑÔ
-        $meta_keywords      = Yii::$app->request->post('meta_keywords');
-        // Ñ¡Ìî ¶àÓïÑÔ
-        $meta_description   = Yii::$app->request->post('meta_description');
-        // Ñ¡Ìî ¶àÓïÑÔ
-        $content            = Yii::$app->request->post('content');
+        //var_dump(Yii::$app->request->post());exit;
+        // å¿…å¡«
+        $id                 = Yii::$app->request->post('id');
+        // å¿…å¡«
+        $parent_id          = Yii::$app->request->post('parent_id');
+        // å¿…å¡«
+        $name               = Yii::$app->request->post('name');
+        // é€‰å¡«
+        $menu_show             = Yii::$app->request->post('menu_show');
+        
         $status             = Yii::$app->request->post('status');
+        // é€‰å¡«
+        $url_key            = Yii::$app->request->post('url_key');
+        // é€‰å¡«
+        $description        = Yii::$app->request->post('description');
+        // é€‰å¡«
+        $menu_custom        = Yii::$app->request->post('menu_custom');
+        // é€‰å¡«
+        $filter_product_attr_selected   = Yii::$app->request->post('filter_product_attr_selected');
+        // é€‰å¡«
+        $filter_product_attr_unselected = Yii::$app->request->post('filter_product_attr_unselected');
+        // é€‰å¡«
+        $thumbnail_image                = Yii::$app->request->post('thumbnail_image');
+        // é€‰å¡«
+        $image              = Yii::$app->request->post('image');
+        // é€‰å¡« å¤šè¯­è¨€
+        $title              = Yii::$app->request->post('title');
+        // é€‰å¡« å¤šè¯­è¨€
+        $meta_keywords      = Yii::$app->request->post('meta_keywords');
+        // é€‰å¡« å¤šè¯­è¨€
+        $meta_description   = Yii::$app->request->post('meta_description');
         if (!$id) {
             $error[] = '[id] can not empty';
         }
-        if ($title && !Yii::$service->fecshoplang->getDefaultLangAttrVal($title, 'title')) {
-            $defaultLangAttrName = Yii::$service->fecshoplang->getDefaultLangAttrName('title');
-            $error[] = '[title.'.$defaultLangAttrName.'] can not empty';
+        if (!$name) {
+            $error[] = '[name] can not empty';
         }
-        if ($content && !Yii::$service->fecshoplang->getDefaultLangAttrVal($content, 'content')) {
-            $defaultLangAttrName = Yii::$service->fecshoplang->getDefaultLangAttrName('content');
-            $error[] = '[content.'.$defaultLangAttrName.'] can not empty';
+        if (!$parent_id && $parent_id !== '0') {
+            $error[] = '[parent_id] can not empty';
+        }
+        if ($name && !Yii::$service->fecshoplang->getDefaultLangAttrVal($name, 'name')) {
+            $defaultLangAttrName = Yii::$service->fecshoplang->getDefaultLangAttrName('name');
+            $error[] = '[name.'.$defaultLangAttrName.'] can not empty';
         }
         if ($meta_keywords && !is_array($meta_keywords)) {
             $error[] = '[meta_keywords] must be array';
         }
         if ($meta_description && !is_array($meta_description)) {
             $error[] = '[meta_description] must be array';
+        }
+        if ($description && !is_array($description)) {
+            $error[] = '[description] must be array';
+        }
+        if ($title && !is_array($title)) {
+            $error[] = '[title] must be array';
         }
         if (!empty($error)) {
             return [
@@ -217,34 +273,44 @@ class CategoryController extends AppapiTokenController
         }
         $param = [];
         $identity = Yii::$app->user->identity;
+        $param['parent_id'] = $parent_id;
+        $param['name']      = $name;
         $url_key            ? ($param['url_key'] = $url_key)                    : '';
         $title              ? ($param['title'] = $title)                        : '';
         $meta_keywords      ? ($param['meta_keywords'] = $meta_keywords)        : '';
         $meta_description   ? ($param['meta_description'] = $meta_description)  : '';
-        $content            ? ($param['content'] = $content)                    : '';
         $status             ? ($param['status'] = $status)                      : '';
-        $primaryKey         = Yii::$service->cms->article->getPrimaryKey();
+        $menu_show          ? ($param['menu_show'] = $menu_show)                      : '';
+        
+        $description                ? ($param['description'] = $description)                    : '';
+        $menu_custom                ? ($param['menu_custom'] = $menu_custom)                    : '';
+        $filter_product_attr_selected               ? ($param['filter_product_attr_selected'] = $filter_product_attr_selected)     : '';
+        $filter_product_attr_unselected             ? ($param['filter_product_attr_unselected'] = $filter_product_attr_unselected) : '';
+        $thumbnail_image            ? ($param['thumbnail_image'] = $thumbnail_image)            : '';
+        $image                      ? ($param['image'] = $image)               : '';
+        $originUrlKey       = 'catalog/category/index';
+        $primaryKey         = Yii::$service->category->getPrimaryKey();
         $param[$primaryKey] = $id;
-        $saveData = Yii::$service->cms->article->save($param, 'cms/article/index');
+        $saveData = Yii::$service->category->save($param, $originUrlKey);
         return [
             'code'    => 200,
-            'message' => 'add article success',
+            'message' => 'update category success',
             'data'    => [
                 'updateData' => $saveData,
             ]
         ];
     }
     /**
-     * Delete One Api£ºÉ¾³ýÒ»Ìõ¼ÇÂ¼µÄapi
+     * Delete One Apiï¼šåˆ é™¤ä¸€æ¡è®°å½•çš„api
      */
     public function actionDeleteone(){
-        $ids            = Yii::$app->request->post('ids');
-        Yii::$service->cms->article->remove($ids);
+        $ids = Yii::$app->request->post('ids');
+        Yii::$service->category->remove($ids);
         $errors = Yii::$service->helper->errors->get();
         if (!empty($errors)) {
             return [
                 'code'    => 400,
-                'message' => 'remove article by ids fail',
+                'message' => 'remove Category by ids fail',
                 'data'    => [
                     'error' => $errors,
                 ],
@@ -252,7 +318,7 @@ class CategoryController extends AppapiTokenController
         } else {
             return [
                 'code'    => 200,
-                'message' => 'delete article success',
+                'message' => 'remove Category by ids success',
                 'data'    => []
             ];
         }
@@ -260,7 +326,7 @@ class CategoryController extends AppapiTokenController
     
     
     /**
-     * ÓÃÓÚ²âÊÔµÄaction
+     * ç”¨äºŽæµ‹è¯•çš„action
      */
     public function actionTest()
     {
