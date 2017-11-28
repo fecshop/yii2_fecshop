@@ -88,48 +88,48 @@
 			<ul>
 				<li class="item-content">
 					<div class="item-inner">
-						<div class="item-title"><a href="<?= Yii::$service->url->homeUrl();  ?>" external>Home</a></div>
+						<div class="item-title"><a href="<?= Yii::$service->url->homeUrl();  ?>" external><?= Yii::$service->page->translate->__(''); ?>Home</a></div>
 					</div>
 				</li>
 				<li class="item-content">
 					<div class="item-inner">
-						<div class="item-title"><a href="<?= Yii::$service->url->getUrl('customer/account/index'); ?>" external>Account</a></div>
+						<div class="item-title"><a href="<?= Yii::$service->url->getUrl('customer/account/index'); ?>" external><?= Yii::$service->page->translate->__('My Account'); ?></a></div>
 					</div>
 				</li>
 				<li class="item-content">
 					<div class="item-inner">
-						<div class="item-title"><a href="<?= Yii::$service->url->getUrl('checkout/cart'); ?>" external>Shopping Cart</a></div>
+						<div class="item-title"><a href="<?= Yii::$service->url->getUrl('checkout/cart'); ?>" external><?= Yii::$service->page->translate->__('Shopping Cart'); ?></a></div>
 					</div>
 				</li>
 				<li class="item-content">
 					<div class="item-inner">
-						<div class="item-title"><a href="<?= Yii::$service->url->getUrl('customer/order'); ?>" external>My Order</a></div>
+						<div class="item-title"><a href="<?= Yii::$service->url->getUrl('customer/order'); ?>" external><?= Yii::$service->page->translate->__('My Order'); ?></a></div>
 					</div>
 				</li>
 				<li class="item-content">
 					
 					<div class="item-inner">
-						<div class="item-title"><a href="<?= Yii::$service->url->getUrl('customer/productfavorite'); ?>" external>My Favorite</a></div>
+						<div class="item-title"><a href="<?= Yii::$service->url->getUrl('customer/productfavorite'); ?>" external><?= Yii::$service->page->translate->__('My Favorite'); ?></a></div>
 					</div>
 				</li>
 				<li class="item-content">
 					<div class="item-inner">
-						<div class="item-title"><a href="<?= Yii::$service->url->getUrl('about-us'); ?>" external>About Us</a></div>
+						<div class="item-title"><a href="<?= Yii::$service->url->getUrl('about-us'); ?>" external><?= Yii::$service->page->translate->__('About Us'); ?></a></div>
 					</div>
 				</li>
 				<li class="item-content">
 					<div class="item-inner">
-						<div class="item-title"><a href="<?= Yii::$service->url->getUrl('customer/contacts'); ?>" external>Contact us</a></div>
+						<div class="item-title"><a href="<?= Yii::$service->url->getUrl('customer/contacts'); ?>" external><?= Yii::$service->page->translate->__('Contact Us'); ?></a></div>
 					</div>
 				</li>
 				<li class="item-content">
 					<div class="item-inner">
-						<div class="item-title"><a href="<?= Yii::$service->url->getUrl('privacy-policy'); ?>" external>privacy policy</a></div>
+						<div class="item-title"><a href="<?= Yii::$service->url->getUrl('privacy-policy'); ?>" external><?= Yii::$service->page->translate->__('Privacy Policy'); ?></a></div>
 					</div>
 				</li>
 				<li class="item-content">
 					<div class="item-inner">
-						<div class="item-title"><a href="<?= Yii::$service->url->getUrl('return-policy'); ?>" external>Return Policy</a></div>
+						<div class="item-title"><a href="<?= Yii::$service->url->getUrl('return-policy'); ?>" external><?= Yii::$service->page->translate->__('Return Policy'); ?></a></div>
 					</div>
 				</li>
 			</ul>
