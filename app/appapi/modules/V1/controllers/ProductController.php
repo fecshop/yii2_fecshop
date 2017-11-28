@@ -114,42 +114,31 @@ class ProductController extends AppapiTokenController
         //var_dump(Yii::$app->request->post());exit;
         // 必填
         $id                 = Yii::$app->request->post('id');
-        // 必填
-        $parent_id          = Yii::$app->request->post('parent_id');
-        // 必填
         $name               = Yii::$app->request->post('name');
-        // 选填
-        $menu_show             = Yii::$app->request->post('menu_show');
-        
+        $weight             = Yii::$app->request->post('weight');
         $status             = Yii::$app->request->post('status');
-        // 选填
-        $url_key            = Yii::$app->request->post('url_key');
-        // 选填
-        $description        = Yii::$app->request->post('description');
-        // 选填
-        $menu_custom        = Yii::$app->request->post('menu_custom');
-        // 选填
-        $filter_product_attr_selected   = Yii::$app->request->post('filter_product_attr_selected');
-        // 选填
-        $filter_product_attr_unselected = Yii::$app->request->post('filter_product_attr_unselected');
-        // 选填
-        $thumbnail_image                = Yii::$app->request->post('thumbnail_image');
-        // 选填
-        $image              = Yii::$app->request->post('image');
-        // 选填 多语言
+        $qty                = Yii::$app->request->post('qty');
+        $is_in_stock        = Yii::$app->request->post('is_in_stock');
+        $category           = Yii::$app->request->post('category');
+        $price              = Yii::$app->request->post('price');
+        $special_price      = Yii::$app->request->post('special_price');
+        $special_from       = Yii::$app->request->post('special_from');
+        $special_to         = Yii::$app->request->post('special_to');
+        $cost_price         = Yii::$app->request->post('cost_price');
+        $tier_price         = Yii::$app->request->post('tier_price');
+        $new_product_from   = Yii::$app->request->post('new_product_from');
+        $new_product_to     = Yii::$app->request->post('new_product_to');
+        $short_description  = Yii::$app->request->post('short_description');
+        $remark             = Yii::$app->request->post('remark');
+        $relation_sku       = Yii::$app->request->post('relation_sku');
+        $buy_also_buy_sku   = Yii::$app->request->post('buy_also_buy_sku');
+        $see_also_see_sku   = Yii::$app->request->post('see_also_see_sku');
         $title              = Yii::$app->request->post('title');
-        // 选填 多语言
         $meta_keywords      = Yii::$app->request->post('meta_keywords');
-        // 选填 多语言
         $meta_description   = Yii::$app->request->post('meta_description');
+        $description        = Yii::$app->request->post('description');
         if (!$id) {
             $error[] = '[id] can not empty';
-        }
-        if (!$name) {
-            $error[] = '[name] can not empty';
-        }
-        if (!$parent_id && $parent_id !== '0') {
-            $error[] = '[parent_id] can not empty';
         }
         if ($name && !Yii::$service->fecshoplang->getDefaultLangAttrVal($name, 'name')) {
             $defaultLangAttrName = Yii::$service->fecshoplang->getDefaultLangAttrName('name');
@@ -164,6 +153,9 @@ class ProductController extends AppapiTokenController
         if ($description && !is_array($description)) {
             $error[] = '[description] must be array';
         }
+        if ($short_description && !is_array($short_description)) {
+            $error[] = '[short_description] must be array';
+        }
         if ($title && !is_array($title)) {
             $error[] = '[title] must be array';
         }
@@ -177,29 +169,41 @@ class ProductController extends AppapiTokenController
             ];
         }
         $param = [];
-        $identity = Yii::$app->user->identity;
-        $param['parent_id'] = $parent_id;
-        $param['name']      = $name;
-        $url_key            ? ($param['url_key'] = $url_key)                    : '';
+        
+        $name               ? ($param['name'] = $name)                    : '';
         $title              ? ($param['title'] = $title)                        : '';
         $meta_keywords      ? ($param['meta_keywords'] = $meta_keywords)        : '';
         $meta_description   ? ($param['meta_description'] = $meta_description)  : '';
         $status             ? ($param['status'] = $status)                      : '';
-        $menu_show          ? ($param['menu_show'] = $menu_show)                      : '';
         
-        $description                ? ($param['description'] = $description)                    : '';
-        $menu_custom                ? ($param['menu_custom'] = $menu_custom)                    : '';
-        $filter_product_attr_selected               ? ($param['filter_product_attr_selected'] = $filter_product_attr_selected)     : '';
-        $filter_product_attr_unselected             ? ($param['filter_product_attr_unselected'] = $filter_product_attr_unselected) : '';
-        $thumbnail_image            ? ($param['thumbnail_image'] = $thumbnail_image)            : '';
-        $image                      ? ($param['image'] = $image)               : '';
-        $originUrlKey       = 'catalog/category/index';
-        $primaryKey         = Yii::$service->category->getPrimaryKey();
+        $weight             ? ($param['weight'] = $weight)                      : '';
+        $qty                ? ($param['qty'] = $qty)                      : '';
+        $is_in_stock        ? ($param['is_in_stock'] = $is_in_stock)                      : '';
+        $category           ? ($param['category'] = $category)                      : '';
+        $price              ? ($param['price'] = $price)                      : '';
+        $special_price      ? ($param['special_price'] = $special_price)                      : '';
+        $special_from       ? ($param['special_from'] = $special_from)                      : '';
+        $special_to         ? ($param['special_to'] = $special_to)                      : '';
+        $cost_price         ? ($param['cost_price'] = $cost_price)                      : '';
+        
+        $tier_price         ? ($param['tier_price'] = $tier_price)                      : '';
+        $new_product_from   ? ($param['new_product_from'] = $new_product_from)                      : '';
+        $new_product_to     ? ($param['new_product_to'] = $new_product_to)                      : '';
+        $short_description  ? ($param['short_description'] = $short_description)                      : '';
+        $remark             ? ($param['remark'] = $remark)                      : '';
+        $relation_sku       ? ($param['relation_sku'] = $relation_sku)                      : '';
+        $buy_also_buy_sku   ? ($param['buy_also_buy_sku'] = $buy_also_buy_sku)                      : '';
+        $see_also_see_sku   ? ($param['see_also_see_sku'] = $see_also_see_sku)                      : '';
+        $cost_price         ? ($param['cost_price'] = $cost_price)                      : '';
+        $description        ? ($param['description'] = $description)                    : '';
+       
+        $primaryKey         = Yii::$service->product->getPrimaryKey();
         $param[$primaryKey] = $id;
-        $saveData = Yii::$service->category->save($param, $originUrlKey);
+        
+        $saveData = Yii::$service->product->save($param);
         return [
             'code'    => 200,
-            'message' => 'update category success',
+            'message' => 'update product success',
             'data'    => [
                 'updateData' => $saveData,
             ]
@@ -210,12 +214,12 @@ class ProductController extends AppapiTokenController
      */
     public function actionDeleteone(){
         $ids = Yii::$app->request->post('ids');
-        Yii::$service->category->remove($ids);
+        Yii::$service->product->remove($ids);
         $errors = Yii::$service->helper->errors->get();
         if (!empty($errors)) {
             return [
                 'code'    => 400,
-                'message' => 'remove Category by ids fail',
+                'message' => 'remove product by ids fail',
                 'data'    => [
                     'error' => $errors,
                 ],
@@ -223,7 +227,7 @@ class ProductController extends AppapiTokenController
         } else {
             return [
                 'code'    => 200,
-                'message' => 'remove Category by ids success',
+                'message' => 'remove product by ids success',
                 'data'    => []
             ];
         }
