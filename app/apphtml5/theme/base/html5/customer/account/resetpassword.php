@@ -47,7 +47,7 @@
 							</div>
 							<div class="item-inner">
 								<div class="item-input">
-									<input placeholder="<?= Yii::$service->page->translate->__('New password');?>" name="editForm[password]" id="password" title="Password" class="input-text required-entry validate-password" type="password">
+									<input placeholder="<?= Yii::$service->page->translate->__('New Password');?>" name="editForm[password]" id="password" title="Password" class="input-text required-entry validate-password" type="password">
 								
 								</div>
 							</div>

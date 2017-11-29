@@ -201,7 +201,7 @@ class Stock extends Service
                             'product_id' => $product_id
                         ])->one();
                         if($productFlatQty['qty'] < 0){
-                            Yii::$service->helper->errors->add('product: [ '.$product_name.' ] is stock out ');
+                            Yii::$service->helper->errors->add('product: [ {product_name} ] is stock out',['product_name' => $product_name]);
                             return false;
                         }
                     }else{
@@ -218,7 +218,7 @@ class Stock extends Service
                             'custom_option_sku' => $custom_option_sku,
                         ])->one();
                         if($productCustomOptionQty['qty'] < 0){
-                            Yii::$service->helper->errors->add('product: [ '.$product_name.' ] is stock out ');
+                            Yii::$service->helper->errors->add('product: [ {product_name} ] is stock out' ,['product_name' => $product_name]);
                             return false;
                         }
                     }
@@ -450,11 +450,11 @@ class Stock extends Service
                     if($productCustomOptionQty['qty'] >= $sale_qty){
                         return true;
                     }else{
-                        Yii::$service->helper->errors->add('product: [ '.$product_name.' ] is stock out ');
+                        Yii::$service->helper->errors->add('product: [ {product_name} ] is stock out',['product_name' => $product_name]);
                         //Yii::$service->helper->errors->add('Product Id:'.$product['_id'].' && customOptionSku:'.$custom_option_sku.' , Product inventory is less than '.$sale_qty);
                     }
                 }else{
-                    Yii::$service->helper->errors->add('product: [ '.$product_name.' ] is stock out ');
+                    Yii::$service->helper->errors->add('product: [ {product_name} ] is stock out',['product_name' => $product_name]);
                         
                     //Yii::$service->helper->errors->add('Product Id:'.$product['_id'].' && customOptionSku:'.$custom_option_sku.' , The product has no qty');
                 }

@@ -29,7 +29,7 @@
 					</div>
 					<div class="item-inner">
 						<div class="item-input">
-							<input class="input-text required-entry" maxlength="255" placeholder="Email" value="<?= $email ?>" name="address[email]" id="customer_email"   type="text">
+							<input class="input-text required-entry" maxlength="255" placeholder="<?= Yii::$service->page->translate->__('Email Address'); ?>" value="<?= $email ?>" name="address[email]" id="customer_email"   type="text">
 						</div>
 					</div>
 				</div>
@@ -42,7 +42,7 @@
 					</div>
 					<div class="item-inner">
 						<div class="item-input">
-							<input class="input-text required-entry" maxlength="255" placeholder="First Name" title="First Name" value="<?= $first_name ?>" name="address[first_name]" id="firstname" type="text">
+							<input class="input-text required-entry" maxlength="255" placeholder="<?= Yii::$service->page->translate->__('First Name'); ?>" title="First Name" value="<?= $first_name ?>" name="address[first_name]" id="firstname" type="text">
 						</div>
 					</div>
 				</div>
@@ -55,7 +55,7 @@
 					</div>
 					<div class="item-inner">
 						<div class="item-input">
-							<input class="input-text required-entry" maxlength="255" placeholder="Last Name"  title="Last Name" value="<?= $last_name ?>" name="address[last_name]" id="lastname" type="text">
+							<input class="input-text required-entry" maxlength="255" placeholder="<?= Yii::$service->page->translate->__('Last Name'); ?>"  title="Last Name" value="<?= $last_name ?>" name="address[last_name]" id="lastname" type="text">
 						</div>
 					</div>
 				</div>
@@ -68,7 +68,7 @@
 					</div>
 					<div class="item-inner">
 						<div class="item-input">
-							<input class="input-text required-entry" maxlength="255" placeholder="Telephone"  title="telephone" value="<?= $telephone ?>" name="address[telephone]" id="lastname" type="text">
+							<input class="input-text required-entry" maxlength="255" placeholder="<?= Yii::$service->page->translate->__('Telephone'); ?>"  title="telephone" value="<?= $telephone ?>" name="address[telephone]" id="lastname" type="text">
 						</div>
 					</div>
 				</div>
@@ -81,7 +81,7 @@
 					</div>
 					<div class="item-inner">
 						<div class="item-input">
-							<select id="address:country" class="address_country validate-select" placeholder="Country"   title="Country" name="address[country]">
+							<select id="address:country" class="address_country validate-select" placeholder="<?= Yii::$service->page->translate->__('Country'); ?>"   title="Country" name="address[country]">
 								<?= $countrySelect;  ?>
 							</select>
 						</div>
@@ -110,7 +110,7 @@
 					</div>
 					<div class="item-inner">
 						<div class="item-input">
-							<input class="input-text required-entry" maxlength="255" placeholder="City" title="City" value="<?= $city ?>" name="address[city]" id="city" type="text" />
+							<input class="input-text required-entry" maxlength="255" placeholder="<?= Yii::$service->page->translate->__('City'); ?>" title="City" value="<?= $city ?>" name="address[city]" id="city" type="text" />
 						</div>
 					</div>
 				</div>
@@ -124,7 +124,7 @@
 					</div>
 					<div class="item-inner">
 						<div class="item-input">
-							<input class="input-text required-entry" maxlength="255" placeholder="street1" value="<?= $street1 ?>" name="address[street1]" id="street1" type="text" />
+							<input class="input-text required-entry" maxlength="255" placeholder="<?= Yii::$service->page->translate->__('street1'); ?>" value="<?= $street1 ?>" name="address[street1]" id="street1" type="text" />
 						</div>
 					</div>
 				</div>
@@ -137,7 +137,7 @@
 					</div>
 					<div class="item-inner">
 						<div class="item-input">
-							<input class="input-text required-entry" maxlength="255" placeholder="street2" value="<?= $street2 ?>" name="address[street2]" id="street2" type="text" />
+							<input class="input-text required-entry" maxlength="255" placeholder="<?= Yii::$service->page->translate->__('street2'); ?>" value="<?= $street2 ?>" name="address[street2]" id="street2" type="text" />
 						</div>
 					</div>
 				</div>
@@ -151,7 +151,7 @@
 					</div>
 					<div class="item-inner">
 						<div class="item-input">
-							<input class="input-text required-entry" maxlength="255" placeholder="zip" value="<?= $zip ?>" name="address[zip]" id="zip" type="text">
+							<input class="input-text required-entry" maxlength="255" placeholder="<?= Yii::$service->page->translate->__('Zip Code'); ?>" value="<?= $zip ?>" name="address[zip]" id="zip" type="text">
 						</div>
 					</div>
 				</div>
@@ -228,7 +228,7 @@
 		if(i){
 			$(".addressedit").submit();
 		}else{
-			alert("You Must Fill All Field");
+			alert("<?= Yii::$service->page->translate->__('You Must Fill All Field'); ?>");
 		}
 	}
 	

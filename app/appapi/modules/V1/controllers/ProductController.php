@@ -201,13 +201,24 @@ class ProductController extends AppapiTokenController
         $param[$primaryKey] = $id;
         
         $saveData = Yii::$service->product->save($param);
-        return [
-            'code'    => 200,
-            'message' => 'update product success',
-            'data'    => [
-                'updateData' => $saveData,
-            ]
-        ];
+        if (!$saveData) {
+            $errors = Yii::$service->helper->errors->get();
+            return [
+                'code'    => 400,
+                'message' => 'update product fail',
+                'data'    => [
+                    'error' => $errors,
+                ],
+            ];
+        } else {
+            return [
+                'code'    => 200,
+                'message' => 'update product success',
+                'data'    => [
+                    'updateData' => $saveData,
+                ]
+            ];
+        }
     }
     /**
      * Delete One Api：删除一条记录的api
@@ -233,16 +244,5 @@ class ProductController extends AppapiTokenController
         }
     }
     
-    
-    /**
-     * 用于测试的action
-     */
-    public function actionTest()
-    {
-        $post = Yii::$app->request->post();
-        return $post;
-        //var_dump();exit;
-        //var_dump(get_class(Yii::$service->cms->article->getByPrimaryKey('')));
-    }
     
 }

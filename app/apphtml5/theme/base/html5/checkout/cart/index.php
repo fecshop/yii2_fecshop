@@ -20,7 +20,7 @@ use fecshop\app\apphtml5\helper\Format;
 			<div class="cart">
 				<div class="page-title title-buttons">
 					<div class="shopping-cart-img">
-						Shopping Cart
+						<?= Yii::$service->page->translate->__('Shopping Cart'); ?>
 					</div>
 				</div>
 				<div class="cart_info">
@@ -77,7 +77,11 @@ use fecshop\app\apphtml5\helper\Format;
 											<div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset"><input style="color:#777;" class="input-text" id="coupon_code" name="coupon_code" value=""></div>
 										</div>
 										<div class="buttons-coupon">
-											<a external data-role="button" href="javascript:void(0)" onclick="cartcouponsubmit()" class="submitbutton ui-link ui-btn ui-shadow ui-corner-all" role="button"><span><span>Add Coupon</span></span> </a>
+											<a external data-role="button" href="javascript:void(0)" onclick="cartcouponsubmit()" class="submitbutton ui-link ui-btn ui-shadow ui-corner-all" role="button">
+                                                <span>
+                                                    <span><?= Yii::$service->page->translate->__('Add Coupon'); ?></span>
+                                                </span>
+                                            </a>
 											
 										</div>
 									</div>

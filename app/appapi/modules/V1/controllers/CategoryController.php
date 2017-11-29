@@ -240,12 +240,12 @@ class CategoryController extends AppapiTokenController
         if (!$id) {
             $error[] = '[id] can not empty';
         }
-        if (!$name) {
-            $error[] = '[name] can not empty';
-        }
-        if (!$parent_id && $parent_id !== '0') {
-            $error[] = '[parent_id] can not empty';
-        }
+        //if (!$name) {
+        //    $error[] = '[name] can not empty';
+        //}
+        //if (!$parent_id && $parent_id !== '0') {
+        //    $error[] = '[parent_id] can not empty';
+        //}
         if ($name && !Yii::$service->fecshoplang->getDefaultLangAttrVal($name, 'name')) {
             $defaultLangAttrName = Yii::$service->fecshoplang->getDefaultLangAttrName('name');
             $error[] = '[name.'.$defaultLangAttrName.'] can not empty';

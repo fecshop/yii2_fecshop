@@ -88,7 +88,7 @@
 			<ul>
 				<li class="item-content">
 					<div class="item-inner">
-						<div class="item-title"><a href="<?= Yii::$service->url->homeUrl();  ?>" external><?= Yii::$service->page->translate->__(''); ?>Home</a></div>
+						<div class="item-title"><a href="<?= Yii::$service->url->homeUrl();  ?>" external><?= Yii::$service->page->translate->__('Home'); ?></a></div>
 					</div>
 				</li>
 				<li class="item-content">

@@ -44,7 +44,7 @@ class AppadminController extends FecadminbaseController
         /*
          *  set i18n translate category.
          */
-        Yii::$service->page->translate->category = 'appfront';
+        Yii::$service->page->translate->category = 'appadmin';
         /*
          * 自定义Yii::$classMap,用于重写
          */

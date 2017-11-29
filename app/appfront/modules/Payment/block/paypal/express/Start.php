@@ -61,7 +61,7 @@ class Start
                     if(is_array($outStockProducts) && !empty($outStockProducts)){
                         foreach($outStockProducts as $outStockProduct){
                             $product_name = Yii::$service->store->getStoreAttrVal($outStockProduct['product_name'], 'name');
-                            Yii::$service->helper->errors->add('product: ['.$product_name.'] is stock out.');
+                            Yii::$service->helper->errors->add('product: [ {product_name} ] is stock out',['product_name' => $product_name]);
                         }
                         Yii::$service->page->message->addByHelperErrors();
                         Yii::$service->url->redirectByUrlKey('checkout/cart');

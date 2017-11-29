@@ -40,7 +40,7 @@
 					</div>
 					<div class="item-inner">
 						<div class="item-input">
-							<input  placeholder="First name" id="firstname" name="editForm[firstname]" value="<?= $firstname ?>" title="First Name"  class="input-text required-entry" type="text"  />
+							<input  placeholder="<?= Yii::$service->page->translate->__('First Name'); ?>" id="firstname" name="editForm[firstname]" value="<?= $firstname ?>" title="First Name"  class="input-text required-entry" type="text"  />
 							<div class="validation-advice" id="required_current_firstname" style="display:none;"><?= Yii::$service->page->translate->__('This is a required field.');?></div>
 						</div>
 					</div>
@@ -53,7 +53,7 @@
 					</div>
 					<div class="item-inner">
 						<div class="item-input">
-							<input  type="text" placeholder="Last name" id="lastname" name="editForm[lastname]" value="<?= $lastname ?>" title="Last Name" maxlength="255" class="input-text required-entry" />
+							<input  type="text" placeholder="<?= Yii::$service->page->translate->__('Last Name'); ?>" id="lastname" name="editForm[lastname]" value="<?= $lastname ?>" title="Last Name" maxlength="255" class="input-text required-entry" />
 							<div class="validation-advice" id="required_current_lastname" style="display:none;"><?= Yii::$service->page->translate->__('This is a required field.');?></div>
 						</div>
 					</div>
@@ -74,7 +74,7 @@
 					</div>
 					<div class="item-inner">
 						<div class="item-input">
-							<input placeholder="current password" title="Current Password" class="input-text required-entry" name="editForm[current_password]" id="current_password" type="password" />
+							<input placeholder="<?= Yii::$service->page->translate->__('Current Password'); ?>" title="Current Password" class="input-text required-entry" name="editForm[current_password]" id="current_password" type="password" />
 							<div class="validation-advice" id="required_current_password" style="display:none;"><?= Yii::$service->page->translate->__('This is a required field.');?></div>
 								
 						</div>
@@ -89,7 +89,7 @@
 					</div>
 					<div class="item-inner">
 						<div class="item-input">
-							<input placeholder="New password" title="New Password" class="input-text validate-password required-entry" name="editForm[password]" id="password" type="password" />
+							<input placeholder="<?= Yii::$service->page->translate->__('New Password'); ?>" title="New Password" class="input-text validate-password required-entry" name="editForm[password]" id="password" type="password" />
 							<div class="validation-advice" id="required_new_password" style="display:none;"><?= Yii::$service->page->translate->__('This is a required field.');?></div>	
 						</div>
 					</div>
@@ -103,7 +103,7 @@
 					</div>
 					<div class="item-inner">
 						<div class="item-input">
-							<input placeholder="Confirm New Password"  title="Confirm New Password" class="input-text validate-cpassword required-entry" name="editForm[confirmation]" id="confirmation" type="password"  />
+							<input placeholder="<?= Yii::$service->page->translate->__('Confirm New Password'); ?>"  title="Confirm New Password" class="input-text validate-cpassword required-entry" name="editForm[confirmation]" id="confirmation" type="password"  />
 							<div class="validation-advice" id="required_confirm_password" style="display:none;"><?= Yii::$service->page->translate->__('This is a required field.');?></div>
 						</div>
 					</div>

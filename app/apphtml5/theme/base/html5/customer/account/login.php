@@ -20,7 +20,7 @@
 					<div class="item-media"><i class="icon icon-form-email"></i></div>
 					<div class="item-inner">
 						<div class="item-input">
-							<input name="editForm[email]" value="<?= $email; ?>" id="email" type="email" placeholder="E-mail">
+							<input name="editForm[email]" value="<?= $email; ?>" id="email" type="email" placeholder="<?= Yii::$service->page->translate->__('E-mail'); ?>">
 						</div>
 					</div>
 				</div>
@@ -30,7 +30,7 @@
 					<div class="item-media"><i class="icon icon-form-password"></i></div>
 					<div class="item-inner">
 						<div class="item-input">
-							<input type="password" placeholder="Password"  name="editForm[password]" class="input-text required-entry validate-password" id="pass" title="Password" >
+							<input type="password" placeholder="<?= Yii::$service->page->translate->__('Password'); ?>"  name="editForm[password]" class="input-text required-entry validate-password" id="pass" title="Password" >
 						</div>
 					</div>
 				</div>

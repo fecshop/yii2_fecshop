@@ -345,23 +345,38 @@ class ProductMongodb implements ProductInterface
      */
     protected function initSave(&$one)
     {
-        if (!isset($one['sku']) || empty($one['sku'])) {
+        $primaryKey = $this->getPrimaryKey();
+        $PrimaryVal = 1;
+        if (!isset($one[$primaryKey]) || !$one[$primaryKey] ) {
+            $PrimaryVal = 0;
+        }
+        if (!$PrimaryVal && (!isset($one['sku']) || empty($one['sku']))) {
             Yii::$service->helper->errors->add(' sku 必须存在 ');
 
             return false;
         }
-        if (!isset($one['spu']) || empty($one['spu'])) {
+        if (!$PrimaryVal && (!isset($one['spu']) || empty($one['spu']))) {
             Yii::$service->helper->errors->add(' spu 必须存在 ');
 
             return false;
         }
         $defaultLangName = \Yii::$service->fecshoplang->getDefaultLangAttrName('name');
+        if($PrimaryVal && $one['name'] && empty($one['name'][$defaultLangName])){
+            Yii::$service->helper->errors->add(' name '.$defaultLangName.' 不能为空 ');
+
+            return false;
+        }
         if (!isset($one['name'][$defaultLangName]) || empty($one['name'][$defaultLangName])) {
             Yii::$service->helper->errors->add(' name '.$defaultLangName.' 不能为空 ');
 
             return false;
         }
         $defaultLangDes = \Yii::$service->fecshoplang->getDefaultLangAttrName('description');
+        if($PrimaryVal && $one['description'] && empty($one['description'][$defaultLangDes])){
+            Yii::$service->helper->errors->add(' description '.$defaultLangDes.' 不能为空 ');
+
+            return false;
+        }
         if (!isset($one['description'][$defaultLangDes]) || empty($one['description'][$defaultLangDes])) {
             Yii::$service->helper->errors->add(' description '.$defaultLangDes.'不能为空 ');
 
@@ -392,6 +407,7 @@ class ProductMongodb implements ProductInterface
             return false;
         }
         if (is_array($ids)) {
+            $removeAll = 1;
             foreach ($ids as $id) {
                 $model = $this->_productModel->findOne($id);
                 if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
@@ -402,13 +418,15 @@ class ProductMongodb implements ProductInterface
                     Yii::$service->search->removeByProductId($id);
                     Yii::$service->product->stock->removeProductStock($id);
                     $model->delete();
-                    
                     //$this->removeChildCate($id);
                 } else {
                     Yii::$service->helper->errors->add("Product Remove Errors:ID:$id is not exist.");
-
-                    return false;
+                    $removeAll = 0;
                 }
+                
+            }
+            if (!$removeAll) {
+                return false;
             }
         } else {
             $id = $ids;

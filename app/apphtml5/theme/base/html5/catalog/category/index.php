@@ -22,8 +22,8 @@
 				<?=  $description ?>
 			</div>
 			<div class="sort_filter">
-				<a href="#" class="category-open open-sort">Sort &nbsp;<span class="icon icon-caret"></span></a>
-				<a href="#" class="category-open open-filter">Filter &nbsp;<span class="icon icon-caret"></span></a>
+				<a href="#" class="category-open open-sort"><?= Yii::$service->page->translate->__('Sort'); ?> &nbsp;<span class="icon icon-caret"></span></a>
+				<a href="#" class="category-open open-filter"><?= Yii::$service->page->translate->__('Filter'); ?> &nbsp;<span class="icon icon-caret"></span></a>
 				<div class="clear"></div>
 			</div>
 			<div > 

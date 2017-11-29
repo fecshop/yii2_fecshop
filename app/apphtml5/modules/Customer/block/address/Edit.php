@@ -118,7 +118,9 @@ class Edit
             $stateHtml = '<input id="state" name="address[state]" value="'.$state.'" title="State" class="input-text" style="" type="text">';
         } else {
             $stateHtml = '<select id="address:state" class="address_state validate-select" title="State" name="address[state]">
-							<option value="">Please select region, state or province</option>'
+							<option value="">'.
+                                Yii::$service->page->translate->__('Please select region, state or province')  
+                            .'</option>'
                         .$stateHtml.'</select>';
         }
         $this->_address['stateHtml'] = $stateHtml;

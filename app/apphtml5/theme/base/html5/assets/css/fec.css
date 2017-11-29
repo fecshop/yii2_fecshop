@@ -441,7 +441,7 @@ a.btn-remove {
 .cart_info .row{
 	position:relative;
 	border-bottom:1px solid #e5e5e5;
-	padding:0.5rem 0 1rem;
+	padding:0.5rem 1rem;
 }
 .cart{background:#fff;}
 .row .col-80{margin-left:2%}

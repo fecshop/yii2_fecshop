@@ -23,7 +23,17 @@ return [
             'identityClass' => 'fecadmin\models\AdminUser',
             'enableAutoLogin' => true,
         ],
-
+        'i18n' => [
+            'translations' => [
+                'appadmin' => [
+                    //'class' => 'yii\i18n\PhpMessageSource',
+                    'class' => 'fecshop\yii\i18n\PhpMessageSource',
+                    'basePaths' => [
+                        '@fecshop/app/appadmin/languages',
+                    ],
+                ],
+            ],
+        ],
         'errorHandler' => [
             'errorAction' => 'fecadmin/error',
         ],

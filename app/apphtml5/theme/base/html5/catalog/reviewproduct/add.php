@@ -69,9 +69,9 @@
 									</div>
 									<div class="item-inner">
 										<div class="item-title label">
-											<?= Yii::$service->page->translate->__('Summary');?><em class="product-description_em">*</em>
+											<?= Yii::$service->page->translate->__('Summary');?><em class="product-description_em">*</em> 
 										</div>
-										<input placeholder=" Summary of Your Review*" name="editForm[summary]" id="review_title_field" class="input-text  review-input-text required-entry" value="<?=  $editForm['summary'] ?>" type="text">
+										<input placeholder="<?= Yii::$service->page->translate->__('Summary of Your Review');?>" name="editForm[summary]" id="review_title_field" class="input-text  review-input-text required-entry" value="<?=  $editForm['summary'] ?>" type="text">
 									
 									</div>
 								</div>
@@ -107,7 +107,7 @@
 									</div>
 									<div class="item-inner">
 										<div class="item-title label"><?= Yii::$service->page->translate->__('Review');?></div>
-											<textarea placeholder="Your review content" name="editForm[review_content]" id="review_review_field"><?=  $editForm['review_content'] ?></textarea>
+											<textarea placeholder="<?= Yii::$service->page->translate->__('Your review content'); ?>" name="editForm[review_content]" id="review_review_field"><?=  $editForm['review_content'] ?></textarea>
 									</div>
 								</div>
 							</li>

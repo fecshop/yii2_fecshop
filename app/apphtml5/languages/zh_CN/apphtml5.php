@@ -10,25 +10,31 @@ return [
 
  'fecshop'                    => 'zh_CN app fecshop',
 // 页面底部条款部分
- 'Follow Us'                    => '关注我们',
- 'Follow us in social media'    => '在社交平台关注我们',
- 'Sign up for newsletter'        => '订阅邮件',
- 'General Links'                => '文字条款',
+// 'Follow Us'                    => '关注我们',
+// 'Follow us in social media'    => '在社交平台关注我们',
+// 'Sign up for newsletter'        => '订阅邮件',
+// 'General Links'                => '文字条款',
  'Enter your email adress'        =>'输入您的邮箱',
  'Contact Us'                    => '联系我们',
- 'FAQ'                            => '常见问题',
- 'Return Policy'                => '退款条约',
+ 'Shopping Cart'                 => '购物车',
+ 'Return Policy'                 => '退款条约',
  'Privacy Policy'                => '隐私条约',
- 'About Us'                        => '关于我们',
- 'My Favorite'                    => '我的收藏',
+ 'About Us'                      => '关于我们',
+ 'My Favorite'                   => '我的收藏',
  'My Reviews'                    => '我的评论',
- 'My Order'                        => '我的订单',
+ 'My Order'                      => '我的订单',
  'My Account'                    => '我的账户',
  'Site Map'                        => '网站地图',
- 'Follow'                        => '关注我们',
- 'Newsletter'                    => '订阅邮件',
- 'All rights reserved'            => '保留所有权利',
- 'Copyright Notice'                => '版权声明',
+// 'Follow'                        => '关注我们',
+// 'Newsletter'                    => '订阅邮件',
+// 'All rights reserved'            => '保留所有权利',
+ //'Copyright Notice'                => '版权声明',
+ 
+ 'Captcha can not empty'         => '验证码不能为空',
+ 
+ // 首页
+ 'Language'  => '语言',
+ 'Currency'  => '货币',
 
  // 顶部页面部分
  'Welcome!'                        => '欢迎您！',
@@ -52,7 +58,9 @@ return [
  'more'                            => '更多',
 
  // 分类页面翻译
- 'Sort By'                        => '排序',
+ 'Sort By'                          => '排序',
+ 'Sort'                             => '排序',
+ 'Filter'                           => '过滤',
  'Hot'                            => '销量',
  'Review'                        => '评论',
  'Favorite'                        => '收藏',
@@ -61,12 +69,21 @@ return [
  '$ High to Low'                => '￥ 价格由高到低',
  'Refine By'                    => '过滤选项',
  'clear all'                    => '清空所有过滤',
-
+ 
+ // 分类侧栏属性过滤
+ 'style'                    => '风格',
+ 'dresses-length'           => '裙长',
+ 'Sexy & Club'              => '性感＆俱乐部',
+ 
+ 
  // 用户登录页面
  'Login or Create an Account'    => '登录 创建用户',
  'New Customers'                => '新用户',
  'By creating an account with our store, you will be able to move through the checkout process faster, store multiple shipping addresses, view and track your orders in your account and more.' => '在我们的店铺里面注册账户，您可以快速的下单，保存您的货运地址，查看或追踪您的订单信息，等等',
- 'register'                        => '注册',
+ 'Register'                        => '注册',
+ 'Login'                        => '登录',
+ 'E-mail'                        => '邮箱地址',
+ 
  'Registered Customers'            => '已注册用户',
  'If you have an account with us, please log in.' => '如果您已经注册了一个用户，请直接登录',
  'Email Address'                => '邮箱地址',
@@ -121,7 +138,12 @@ return [
 
 // 账户中心密码找回
  'Forgot Password'                => '密码找回',
+  'Your Email Address'                => '您的邮箱地址',
  'Confirm your identity to reset password' => '确认您的身份',
+ 'Send Authorization Code' => '发送授权码',
+ 'Reset Password' => '重置密码',
+ 'Reset Password Success' => '重置密码成功',
+ 
  'Confirm your identity to reset password ,If you still can\'t find it, click {logUrlB} support center {logUrlE} for help' => '确认您的身份以重置密码，如果您仍旧没有发现邮件，点击{logUrlB}帮助中心{logUrlE}寻求帮助',
  'email is not exist'            => '该邮箱不存在',
  'We\'ve sent a message to the email address' => '我们已经发送了一封邮件给这个邮箱地址',
@@ -133,16 +155,17 @@ return [
  'Email address do not exist, please {logUrlB} click here {logUrlE} to re-enter!' => '邮件地址不存在，请{logUrlB}点击这里{logUrlE}重新进入',
  'Select your new password'        => '请填写您的新密码',
 
- 'reset you account success, you can {logUrlB} click here {logUrlE} to login .' => '重置密码成功，您可以{logUrlB}点击这里{logUrlE}进行登录',
+ 'Reset you account success, you can {logUrlB} click here {logUrlE} to login .' => '重置密码成功，您可以{logUrlB}点击这里{logUrlE}进行登录',
  'Your Reset Password Token is Expired, You can {logUrlB} click here {logUrlE} to retrieve it ' => '您重置密码的token已经过期，您可以{logUrlB}点击这里{logUrlE}重新发送',
 
  // 用户中心 - 账户信息 - 编辑
- 'Edit Account Information'        => '编辑账号信息',
+ 'Edit Account'        => '编辑账号',
  'Change Password'                => '更改密码',
  'Current Password'                => '当前密码',
  'New Password'                    => '新密码',
  'Confirm New Password'            => '确认新密码',
-
+ 'edit account info success'       => '编辑账号信息成功',
+ 
  // 用户中心 - 货运地址 - 编辑
  'Country'                        => '国家',
  'State'                        => '省',
@@ -151,8 +174,15 @@ return [
  'street2'                        => '街道2',
  'Zip Code'                        => '邮政编码',
  'Is Default'                    => '默认',
- 'Save'                            => '保存',
+ 'Save Address'                            => '保存地址',
+ 'You Must Fill All Field'     =>  '您必须需填写所有的字段',
+ 'Please select region, state or province' => '请选择地区，州或省',
+ 'Edit Address'   => '编辑收货地址',
+ 
+ 
  // 用户中心 - 货运地址 - 列表
+ 'Customer Address' => '客户地址',
+ 'Address'   => '地址',
  'Operation'                    => '操作',
  'Delete'                        => '删除',
  'Default'                        => '默认',
@@ -169,6 +199,12 @@ return [
  'Order Total'                    => '订单总额',
  'Order Status'                    => '订单状态',
  // 用户中心 - 我的订单 - 详细
+ 'Order#'                        => '订单编号',
+ 'Order Status'                        => '订单状态',
+ 'Order Date'                        => '订单日期',
+ 'pending'                        => '未付款',
+ 'pending'                        => '未付款',
+ 
  'pending'                        => '未付款',
  'suspected_fraud'                => '涉嫌欺诈',
  'processing'                    => '已付款',
@@ -186,6 +222,9 @@ return [
  'Shipping Cost'                => '运费',
  'Discount'                        => '折扣优惠',
  'Grand Total'                    => '总额',
+ 'Product Info'   => '产品信息',
+ 
+ 
  // 用户中心 - 我的产品评论
  'Your Review is accept.'        => '您的评论已通过',
  'Your Review is refused.'        => '您的评论已被拒绝',
@@ -264,8 +303,11 @@ return [
 
  // 产品评论部分
  'Rate'                            => '评分',
- 'Your Name'                    => '您的名字',
- 'Summary of Your Review'        => '您的产品评价内容',
+ 'Your Name'                      => '您的名字',
+ 'Review content can not empty'  => '评论内容不能为空',
+ 'Summary of Your Review'        => '您的产品评论概要', 
+ 'Your review content'           => '您的产品评论内容',
+ 'Summary can not empty'         => '评论概要不能为空',
  'Average rating :'                    => '平均评分',
  'Product Review'                => '产品评论',
  'By'                            => '由',
@@ -274,6 +316,8 @@ return [
  'View  All Review'                => '查看所有评论',
  'Wholesale Prices :'            => '批发价格：',
  'Price:'                        => '价格：',
+ 'Summary'                        => '概要',           
+ 
  // 产品搜索页面
  'Show Per Page:'                => '每页个数',
  'Search results for \'{searchText}\' returns no results'        => '搜索词 \'{searchText}\',找不到搜索结果',
@@ -292,6 +336,7 @@ return [
  'Dashboard'                    => '我的信息中心',
  'OR'                            => '或',
  'Proceed to Pay'                => '继续支付',
+ 'Add Coupon'                   => '添加优惠券',
 
  // 购物车优惠券
  'Coupon is not available or has expired'    => '优惠券不可用或已过期',
@@ -309,7 +354,7 @@ return [
  'Street'                        => '街道',
  'New Address'                    => '新地址',
  'Check / Money Order'            => '现金支付',
-
+ 'product: [ {product_name} ] is stock out'  => '产品：[ {product_name} ] 没有足够的库存',
  'Off-line Money Payments'        => '线下现金支付',
  'PayPal Website Payments Standard' => '贝宝标准支付',
  'You will be redirected to the PayPal website when you place an order. ' => '当您下订单时，您将被重定向到PayPal网站。',

@@ -155,7 +155,9 @@
                         <?php if(is_array($groupAttrArr)): ?>
                             <table>
                             <?php foreach($groupAttrArr as $k => $v): ?>
-                                <tr><td><?= $k ?></td><td><?= $v ?></td></tr>
+                                <tr>
+                                    <td><?= Yii::$service->page->translate->__($k); ?></td>
+                                    <td><?= Yii::$service->page->translate->__($v); ?></td></tr>
                             <?php endforeach; ?>
                             </table>
                             <br/>

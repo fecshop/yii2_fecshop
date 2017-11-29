@@ -28,16 +28,16 @@ use fecshop\app\apphtml5\helper\Format;
 				<div class="my_account_order">
 					<table class="page-title title-buttons">
 						<tbody>
-							<tr><td><?= Yii::$service->page->translate->__('Order# :');?></td><td><?=  $increment_id ?>	</td></tr>		
-							<tr><td><?= Yii::$service->page->translate->__('Order Status:');?></td><td><?= Yii::$service->page->translate->__($order_status);?></td></tr>		
-							<tr><td><?= Yii::$service->page->translate->__('Order Date:');?></td><td><?=  date('Y-m-d H:i:s',$created_at); ?></td></tr>								
+							<tr><td><?= Yii::$service->page->translate->__('Order#');?> :</td><td><?=  $increment_id ?>	</td></tr>		
+							<tr><td><?= Yii::$service->page->translate->__('Order Status');?>:</td><td><?= Yii::$service->page->translate->__($order_status);?></td></tr>		
+							<tr><td><?= Yii::$service->page->translate->__('Order Date');?>:</td><td><?=  date('Y-m-d H:i:s',$created_at); ?></td></tr>								
 						</tbody>
 					</table>
 					<div class="col2-set order-info-box">
 						<div class="col-1">
 							<div class="box">
 							<div class="box-title">
-								<h5><?= Yii::$service->page->translate->__('Shipping Address:');?></h5>
+								<h5><?= Yii::$service->page->translate->__('Shipping Address');?>:</h5>
 							</div>
 							<div class="box-content">
 								<table>
@@ -54,7 +54,7 @@ use fecshop\app\apphtml5\helper\Format;
 						<div class="col-2">
 							<div class="box">
 								<div class="box-title">
-									<h5><?= Yii::$service->page->translate->__('Shipping Method:');?></h5>
+									<h5><?= Yii::$service->page->translate->__('Shipping Method');?>:</h5>
 								</div>
 								<div class="box-content">
 									<table>
@@ -67,7 +67,7 @@ use fecshop\app\apphtml5\helper\Format;
 						<div class="col-2">
 							<div class="box box-payment">
 								<div class="box-title">
-									<h5><?= Yii::$service->page->translate->__('Payment Method:');?></h5>
+									<h5><?= Yii::$service->page->translate->__('Payment Method');?>:</h5>
 								</div>
 								<div class="box-content">
 									<table>
@@ -81,7 +81,7 @@ use fecshop\app\apphtml5\helper\Format;
 					</div>
 					
 					<div class="order-items order-details box-title">
-						<h5 class="table-caption"><?= Yii::$service->page->translate->__('Items Ordered:');?></h5>
+						<h5 class="table-caption"><?= Yii::$service->page->translate->__('Items Ordered');?>:</h5>
 
 						<table summary="Items Ordered" id="my-orders-table" class="data-table">
 							<colgroup>

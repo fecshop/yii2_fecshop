@@ -29,7 +29,7 @@
 						<tr class="first last">
 							<th><?= Yii::$service->page->translate->__('Order #');?> </th>
 							<th><?= Yii::$service->page->translate->__('Date');?></th>
-							<th>operate</th>
+							<th><?= Yii::$service->page->translate->__('Operation');?></th>
 						</tr>
 					</thead>
 					<tbody>

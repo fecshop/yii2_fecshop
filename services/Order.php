@@ -208,6 +208,28 @@ class Order extends Service
         return $order_info;
     }
 
+    
+    
+    protected function actionGetorderinfocoll($filter = '')
+    {
+        $primaryKey = $this->getPrimaryKey();
+        $query  = $this->_orderModel->find();
+        $query  = Yii::$service->helper->ar->getCollByFilter($query, $filter);
+        $coll   = $query->all();
+        foreach ($coll as $k => $order_info) {
+            $coll[$k]['customer_address_state_name']      = Yii::$service->helper->country->getStateByContryCode($order_info['customer_address_country'], $order_info['customer_address_state']);
+            $coll[$k]['customer_address_country_name']    = Yii::$service->helper->country->getCountryNameByKey($order_info['customer_address_country']);
+            $coll[$k]['currency_symbol']                  = Yii::$service->page->currency->getSymbol($order_info['order_currency_code']);
+            $coll[$k]['products']                         = Yii::$service->order->item->getByOrderId($order_info[$primaryKey]);
+        }
+        return [
+            'coll' => $coll,
+            'count'=> $query->limit(null)->offset(null)->count(),
+        ];
+    }
+    
+    
+    
     /**
      * @property $order_id | Int
      * @return array

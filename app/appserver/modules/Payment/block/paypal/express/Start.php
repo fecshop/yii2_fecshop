@@ -87,7 +87,7 @@ class Start
                     if(is_array($outStockProducts) && !empty($outStockProducts)){
                         foreach($outStockProducts as $outStockProduct){
                             $product_name = Yii::$service->store->getStoreAttrVal($outStockProduct['product_name'], 'name');
-                            $this->_errors .= 'product: ['.$product_name.'] is stock out.';
+                            $this->_errors .= Yii::$service->page->translate->__('product: [ {product_name} ] is stock out',['product_name' => $product_name]);
                         }
                         
                         return false;

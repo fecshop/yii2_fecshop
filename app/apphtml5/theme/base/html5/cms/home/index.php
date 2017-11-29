@@ -55,7 +55,7 @@
 
 <div class="footer_bar">
 	<div class="change-bar">
-		<div class="c_left">Language:</div>
+		<div class="c_left"><?= Yii::$service->page->translate->__('Language'); ?>: </div>
 		<div class="c_right">
 			<select class="lang" rel="">
 				<?php foreach($stores as $store=> $langName):   ?>
@@ -69,7 +69,7 @@
 	</div>
 	
 	<div class="change-bar">
-		<div class="c_left">Currency:</div>
+		<div class="c_left"><?= Yii::$service->page->translate->__('Currency'); ?>: </div>
 		<div class="c_right">
 			<select class="currency">
 				<?php foreach($currencys as $c):    ?>
