@@ -61,4 +61,14 @@ class ErrorHandler extends Service
         return (string)$model[$this->getPrimaryKey()];
         
     }
+    
+    /**
+     * 通过主键，得到errorHandler对象。
+     */
+    public function getByPrimaryKey($primaryKey)
+    {
+        if ($primaryKey) {
+            return $this->_errorHandlerModel->findOne($primaryKey);
+        }
+    }
 }
