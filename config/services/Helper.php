@@ -39,6 +39,9 @@ return [
             'errors' => [
                 'class' => 'fecshop\services\helper\Errors',
             ],
+            'errorHandler' => [
+                'class' => 'fecshop\services\helper\ErrorHandler',
+            ],
             'mobileDetect' => [
                 'class' => 'fecshop\services\helper\MobileDetect',
             ],
