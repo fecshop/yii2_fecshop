@@ -26,11 +26,12 @@ class AppserverErrorHandler extends ErrorHandler
         $traceString    = $exception->getTraceAsString();
         $time    = time();
         $ip      = Yii::$app->request->userIP;
+        $url     = Yii::$service->url->getCurrentUrl();
         
         $reponse = Yii::$app->response;
         Yii::$app->response->format = $reponse::FORMAT_JSON;
         if (YII_ENV == 'prod' || YII_DEBUG == false) {
-            $errorKey = $this->saveProdException($code, $message, $file, $line, $time, $ip, $name, $traceString);
+            $errorKey = $this->saveProdException($code, $message, $file, $line, $time, $ip, $name, $traceString, $url);
             Yii::$app->response->data = [
                 'code'      => $code,
                 'error_no'  => $errorKey,
@@ -55,10 +56,10 @@ class AppserverErrorHandler extends ErrorHandler
         }
     }
         
-    public function saveProdException($code, $message, $file, $line, $created_at, $ip, $name, $trace_string){
+    public function saveProdException($code, $message, $file, $line, $created_at, $ip, $name, $trace_string, $url){
         return Yii::$service->helper->errorHandler->saveByErrorHandler(
             $code, $message, $file, $line, $created_at,
-            $ip, $name, $trace_string
+            $ip, $name, $trace_string, $url
         );
         
     }

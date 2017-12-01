@@ -24,20 +24,41 @@ class Asset extends Service
 
     public $jsVersion = 1;   //?v=115
     public $cssVersion = 1;   //?v=115
-    // js 和 css 如果想用独立的域名，可以在这里设置相应的域名。
-    public $jsCssDomain;
+    // 【这个字段已经废弃，请使用$baseUrl，设置】js 和 css 如果想用独立的域名，可以在这里设置相应的域名。
+    //public $jsCssDomain;
     /**
      * 在模板路径下的相对文件夹。
      * 譬如模板路径为@fecshop/app/theme/base/front
      * 那么js,css路径默认为@fecshop/app/theme/base/front/assets.
      */
     public $defaultDir = 'assets';
-
+    
+    /**
+     * @var string the root directory storing the published asset files.
+     * 譬如设置为：'@appimage/assets'，也可以将 @appimage 换成绝对路径
+     */
+    public $basePath = '@webroot/assets';
+    /**
+     * @var string the base URL through which the published asset files can be accessed.
+     * 可以将 @web 换成域名 ， 譬如  `http:://www/fecshop.com/assets`
+     * 这样就可以将js和css文件使用独立的域名了【把域名对应的地址对应到$basePath】。
+     */
+    public $baseUrl = '@web/assets';
+    // 是否每次访问都强制复制css js img等文件到发布地址，true代表每次访问都发布
+    // 一般开发环境用true，线上用false。当线上更新jscss文件，可以清空assets发布路径下的文件的方式来更新
+    public $forceCopy = true;
     /**
      * 文件路径默认放到模板路径下面的assets里面.
      */
     protected function actionRegister($view)
     {
+        if ($this->basePath) {
+            $view->assetManager->basePath = Yii::getAlias($this->basePath);
+        }
+        if ($this->baseUrl) {
+            $view->assetManager->baseUrl = $this->baseUrl;
+        }
+        $view->assetManager->forceCopy = $this->forceCopy;
         $assetArr = [];
         $themeDir = Yii::$service->page->theme->getThemeDirArr();
         if (is_array($themeDir) && !empty($themeDir)) {
@@ -90,12 +111,15 @@ class Asset extends Service
                 $publishDir = $view->assetManager->publish($fileDir);
                 if (!empty($jsConfig) && is_array($jsConfig)) {
                     foreach ($jsConfig as $c) {
-                        $view->registerJsFile($this->jsCssDomain.$publishDir[1].'/'.$c['js'].$jsV, $c['options']);
+                        //$view->registerJsFile($this->jsCssDomain.$publishDir[1].'/'.$c['js'].$jsV, $c['options']);
+                        $view->registerJsFile($publishDir[1].'/'.$c['js'].$jsV, $c['options']);
                     }
                 }
                 if (!empty($cssConfig) && is_array($cssConfig)) {
                     foreach ($cssConfig as $c) {
-                        $view->registerCssFile($this->jsCssDomain.$publishDir[1].'/'.$c['css'].$cssV, $c['options']);
+                        //$view->registerCssFile($this->jsCssDomain.$publishDir[1].'/'.$c['css'].$cssV, $c['options']);
+                        $view->registerCssFile($publishDir[1].'/'.$c['css'].$cssV, $c['options']);
+                    
                     }
                 }
             }

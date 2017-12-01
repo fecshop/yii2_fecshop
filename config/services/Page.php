@@ -28,8 +28,23 @@ return [
                 'jsVersion'        => 1,
                 // /assets/dbdba3fa/css/owl.carousel.css?v=2
                 'cssVersion'    => 1,
-                // js和css的域名，如果不设置，则使用网站的域名。
-                // 'jsCssDomain'   => '',
+                /**
+                 * @var string the root directory string the published asset files.
+                 * 设置: js和css的发布路径
+                 * 譬如设置为：'@appimage/assets'，也可以将 @appimage 换成绝对路径
+                 */
+                'basePath' => '@webroot/assets',
+                /**
+                 * @var string the base URL through which the published asset files can be accessed.
+                 * 设置: js和css的URL路径
+                 * 可以将 @web 换成域名 ， 譬如  `http:://www/fecshop.com/assets`
+                 * 这样就可以将js和css文件使用独立的域名了【把域名对应的地址对应到$basePath】。
+                 */
+                'baseUrl' => '@web/assets',
+                // 是否每次访问都强制复制css js img等文件到发布地址，true代表每次访问都发布
+                // 一般开发环境用true，线上用false。当线上更新jscss文件，可以清空assets发布路径下的文件的方式来更新
+                'forceCopy' => true,
+                
                 /* js and css config example:
                 'jsOptions'	=> [
                     # js config 1

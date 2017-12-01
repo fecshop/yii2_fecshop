@@ -47,7 +47,7 @@ class ErrorHandlerLog extends ActiveRecord
             'ip',           // 访问人的ip
             'name',         // 错误的名字
             'trace_string', // 错误的追踪信息
-           
+            'url',          // 
        ];
     }
     /**
