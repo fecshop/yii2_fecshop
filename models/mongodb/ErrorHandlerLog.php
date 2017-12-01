@@ -48,6 +48,7 @@ class ErrorHandlerLog extends ActiveRecord
             'name',         // 错误的名字
             'trace_string', // 错误的追踪信息
             'url',          // 
+            'request_info', // request 信息
        ];
     }
     /**

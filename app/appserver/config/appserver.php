@@ -13,7 +13,7 @@ foreach (glob(__DIR__ . '/modules/*.php') as $filename) {
     $modules = array_merge($modules, require($filename));
 }
 // 此处也可以重写fecshop的组件。供调用。
-return [
+$config = [
     'modules'=>$modules,
     /* only config in front web */
     'bootstrap' => ['store'],
@@ -49,13 +49,6 @@ return [
             'identityClass'     => 'fecshop\models\mysqldb\customer\CustomerAccessToken',
             
         ],
-
-        
-        'errorHandler' => [
-            'class' => 'fecshop\components\AppserverErrorHandler',
-        ],
-
-
         'urlManager' => [
             'rules' => [
                 '' => 'cms/home/index',
@@ -79,3 +72,9 @@ return [
     ],
 
 ];
+// product 生产环境，errorHandler使用 AppserverErrorHandler
+if (YII_ENV_PROD) {
+    $config['components']['errorHandler']['class'] = 'fecshop\components\AppserverErrorHandler';
+}
+
+return $config;

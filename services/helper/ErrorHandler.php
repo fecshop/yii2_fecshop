@@ -44,7 +44,7 @@ class ErrorHandler extends Service
      */
     public function saveByErrorHandler(
         $code, $message, $file, $line, $created_at,
-        $ip, $name, $trace_string, $url
+        $ip, $name, $trace_string, $url, $req_info=[]
     ){
         $category = Yii::$service->helper->getAppName();
         $model = new $this->_errorHandlerModelName();
@@ -57,6 +57,7 @@ class ErrorHandler extends Service
         $model->ip           = $ip;
         $model->name         = $name;
         $model->url          = $url;
+        $model->request_info = $req_info;
         $model->trace_string = $trace_string;
         $model->save();
         return (string)$model[$this->getPrimaryKey()];

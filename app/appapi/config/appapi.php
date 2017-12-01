@@ -13,7 +13,7 @@ foreach (glob(__DIR__ . '/modules/*.php') as $filename) {
     $modules = array_merge($modules, require($filename));
 }
 // 此处也可以重写fecshop的组件。供调用。
-return [
+$config = [
     'modules'=>$modules,
     'params' => [
         'appName' => 'appapi',
@@ -118,3 +118,9 @@ return [
     ],
 
 ];
+// product 生产环境，errorHandler使用 AppserverErrorHandler
+if (YII_ENV_PROD) {
+    $config['components']['errorHandler']['class'] = 'fecshop\components\AppserverErrorHandler';
+}
+
+return $config;

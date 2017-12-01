@@ -16,7 +16,7 @@ foreach (glob(__DIR__ . '/modules/*.php') as $filename) {
 }
 $params = require __DIR__ .'/params.php';
 // 此处也可以重写fecshop的组件。供调用。
-return [
+$config = [
     'modules'=>$modules,
     /**
      * bootstrap指的是yii2中的初始化（注意，这个bootstrap不是css那个bootstrap），关于Yii2 bootstrap的功能描述可以
@@ -95,5 +95,10 @@ return [
             */
         ],
     ],
-
 ];
+// product 生产环境，errorHandler使用 AppfrontErrorHandler
+if (YII_ENV_PROD) {
+    $config['components']['errorHandler']['class'] = 'fecshop\components\AppfrontErrorHandler';
+}
+
+return $config;
