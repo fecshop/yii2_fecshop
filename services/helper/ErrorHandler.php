@@ -73,4 +73,37 @@ class ErrorHandler extends Service
             return $this->_errorHandlerModel->findOne($primaryKey);
         }
     }
+    
+    
+    /*
+     * example filter:
+     * [
+     * 		'numPerPage' 	=> 20,
+     * 		'pageNum'		=> 1,
+     * 		'orderBy'	=> ['_id' => SORT_DESC, 'sku' => SORT_ASC ],
+            'where'			=> [
+                ['>','price',1],
+                ['<=','price',10]
+     * 			['sku' => 'uk10001'],
+     * 		],
+     * 	'asArray' => true,
+     * ]
+     */
+    public function coll($filter = '')
+    {
+        $query = $this->_errorHandlerModel->find();
+        $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
+        $coll = $query->all();
+        if (!empty($coll)) {
+            foreach ($coll as $k => $one) {
+                $coll[$k] = $one;
+            }
+        }
+        return [
+            'coll' => $coll,
+            'count'=> $query->limit(null)->offset(null)->count(),
+        ];
+    }
+    
+    
 }

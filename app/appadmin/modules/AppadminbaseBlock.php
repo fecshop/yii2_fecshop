@@ -338,7 +338,13 @@ class AppadminbaseBlock extends Object
                             $langname = $name.'.'.\Yii::$service->fecshoplang->getDefaultLangAttrName($name);
                             $where[] = ['like', $langname, $this->_param[$name]];
                         } else {
-                            $where[] = ['like', $name, $this->_param[$name]];
+                            $val = $this->_param[$name];
+                            if($name == '_id'){
+                                $val = new \MongoDB\BSON\ObjectId($val);
+                                $where[] = [$name => $val];
+                            } else {
+                                $where[] = ['like', $name, $val];
+                            }
                         }
                     } elseif ($columns_type == 'int') {
                         $where[] = [$name => (int) $this->_param[$name]];
@@ -494,6 +500,7 @@ class AppadminbaseBlock extends Object
         if (is_array($searchArr) && !empty($searchArr)) {
             $where = $this->initDataWhere($searchArr);
         }
+        //var_dump($where);
         $filter = [
             'numPerPage'    => $this->_param['numPerPage'],
             'pageNum'        => $this->_param['pageNum'],
