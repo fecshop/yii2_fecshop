@@ -238,6 +238,7 @@ class CategoryController extends AppserverController
                 }else{
                     $selected = false;
                 }
+                $label = Yii::$service->page->translate->__($label);
                 $frontSort[] = [
                     'label'     => $label,
                     'value'     => $np,
@@ -289,7 +290,7 @@ class CategoryController extends AppserverController
             foreach ($chosenAttrArr as $attr=>$val) {
                 $refineInfo[] = [
                     'attr' =>  $attr,
-                    'val'  =>  $val,
+                    'val'  =>  Yii::$service->page->translate->__($val),
                 ];
             }
         }
@@ -304,7 +305,7 @@ class CategoryController extends AppserverController
         if (!empty($refineInfo)) {
             $arr[] = [
                 'attr'   => 'clearAll',
-                'val'    => 'clear all',
+                'val'    => Yii::$service->page->translate->__('clear all'),
             ];
             $refineInfo = array_merge($arr, $refineInfo);
         }
@@ -333,10 +334,12 @@ class CategoryController extends AppserverController
                         } else {
                             $items[$k]['selected'] = false;
                         }
-                        
+                        if (isset($items[$k]['_id'])) {
+                            $items[$k]['label'] = Yii::$service->page->translate->__($items[$k]['_id']);
+                        }
                     }
                 }
-                
+                $label = Yii::$service->page->translate->__($label);
                 $filter_info[$attr] = [
                     'label' => $label,
                     'items' => $items,

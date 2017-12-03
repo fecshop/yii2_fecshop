@@ -29,6 +29,7 @@ class AppserverController extends Controller
 
     public function init()
     {
+        Yii::$service->page->translate->category = 'appserver';
         parent::init();
         // 如果用户登录，会在header中传递access-token，这个函数就会登录用户。
         Yii::$service->customer->loginByAccessToken();

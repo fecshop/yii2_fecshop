@@ -217,7 +217,7 @@ class ProductController extends AppserverController
         $tier_price = $this->_product['tier_price'];
         if(is_array($tier_price) && !empty($tier_price)){
             $tier_price_arr = \fec\helpers\CFunc::array_sort($tier_price,'qty');
-            $arr = ['Qty:'];
+            $arr = [Yii::$service->page->translate->__('Qty').':'];
             foreach($tier_price_arr as $one){
                 if($i != 1){
                     $arr[] = $pre_qty.'-'.$one['qty'];
@@ -228,7 +228,7 @@ class ProductController extends AppserverController
             $arr[] = '>='.$pre_qty;
             $t_arr[] = $arr;
             
-            $arr = ['Price:'];
+            $arr = [Yii::$service->page->translate->__('Price').':'];
             foreach($tier_price as $one){
                 $arr[] = Yii::$service->product->price->formatSamplePrice($one['price']);
             }
@@ -457,18 +457,20 @@ class ProductController extends AppserverController
             $attr_coll = [];
             foreach ($attrValArr as $attrVal) {
                 $attr_info = $this->getSpuAttrInfo($spuAttr, $attrVal, $reverse_val_spu);
+                
+                
+                $attr_info['attr_val'] = Yii::$service->page->translate->__($attr_info['attr_val']);
                 $attr_coll[] = $attr_info;
-
                 //[
                 //    'attr_val' => $attr,
                 //];
             }
             $spuShowArr[] = [
-                'label' => $spuAttr,
+                'label' =>  Yii::$service->page->translate->__($spuAttr),
                 'value' => $attr_coll,
             ];
         }
-
+        //var_dump($spuShowArr);exit;
         return $spuShowArr;
     }
     // spu属性部分

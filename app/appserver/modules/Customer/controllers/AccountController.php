@@ -45,7 +45,12 @@ class AccountController extends AppserverTokenController
     {
         $leftMenu = \Yii::$app->getModule('customer')->params['leftMenu'];
         if (is_array($leftMenu) && !empty($leftMenu)) {
-            return $leftMenu;
+            $arr = [];
+            foreach ($leftMenu as $name => $url) {
+                $name = Yii::$service->page->translate->__($name);
+                $arr[$name] = $url;
+            }
+            return $arr;
         }else{
             return [];
         }

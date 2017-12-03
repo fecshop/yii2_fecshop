@@ -37,7 +37,6 @@ $config = [
                     'class' => 'fecshop\yii\i18n\PhpMessageSource',
                     'basePaths' => [
                         '@fecshop/app/appserver/languages',
-                        '@appserver/languages',
                     ],
                     'sourceLanguage' => 'en_US', // 如果 en_US 也想翻译，那么可以改成en_XX。
                 ],

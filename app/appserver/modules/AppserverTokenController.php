@@ -32,6 +32,7 @@ class AppserverTokenController extends Controller
     
     public function init()
     {
+        Yii::$service->page->translate->category = 'appserver';
         parent::init();
         // \Yii::$app->user->enableSession = false;
     }

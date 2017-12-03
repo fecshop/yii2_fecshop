@@ -28,6 +28,7 @@ class BaseController extends AppserverController
         $displayHome = Yii::$service->page->menu->displayHome;
         if($displayHome['enable']){
             $home = $displayHome['display'] ? $displayHome['display'] : 'Home';
+            $home = Yii::$service->page->translate->__($home);
             $arr['home'] = [
                 '_id'   => 'home',
                 'level' => 1,
@@ -35,8 +36,8 @@ class BaseController extends AppserverController
                 'url'   => '/'
             ];
         }
-        
-        $treeArr = Yii::$service->category->getTreeArr('','',true);
+        $currentLangCode = Yii::$service->store->currentLangCode;
+        $treeArr = Yii::$service->category->getTreeArr('',$currentLangCode,true);
         if (is_array($treeArr)) {
             foreach ($treeArr as $k=>$v) {
                 $arr[$k] = $v ;
