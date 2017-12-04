@@ -109,7 +109,7 @@ class OrderController extends AppserverTokenController
         $orderInfo['customer_address_state_name'] = $order['customer_address_state_name'];
         $orderInfo['customer_address_country_name'] = $order['customer_address_country_name'];
         $orderInfo['currency_symbol'] = $order['currency_symbol'];
-        
+        $orderInfo['products'] = $order['products'];
         
         
         
@@ -130,6 +130,7 @@ class OrderController extends AppserverTokenController
                 if ($order_info['customer_id'] == $customer_id) {
                     $order_info = $this->getOrderArr($order_info);
                     $productArr = [];
+                    //var_dump($order_info);exit;
                     if(is_array($order_info['products'])){
                         foreach($order_info['products'] as $product){
                             $productArr[] = [

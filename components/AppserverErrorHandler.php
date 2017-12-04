@@ -2,7 +2,7 @@
 namespace fecshop\components;
 
 use Yii;
-use yii\base\ErrorHandler;
+use yii\web\ErrorHandler;
 use yii\base\Exception;
 
 /**
