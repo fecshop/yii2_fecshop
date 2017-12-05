@@ -690,6 +690,7 @@ class Order extends Service
      */
     protected function actionReturnPendingStock()
     {
+        $logMessage = [];
         $minute     = $this->minuteBeforeThatReturnPendingStock;
         $begin_time = strtotime(date('Y-m-d H:i:s'). ' -'.$minute.' minutes ');
 
@@ -702,8 +703,9 @@ class Order extends Service
             ['order_status' => $this->payment_status_pending],
             ['if_is_return_stock' => 2],
         ];
-        if ($noRelasePaymentMethod) {
-            $where[] = ['<>', 'payment_method', $noRelasePaymentMethod];
+        $logMessage[] = 'order_updated_at: '.$begin_time;
+        if (is_array($noRelasePaymentMethod) && !empty($noRelasePaymentMethod)) {
+            $where[] = ['not in', 'payment_method', $noRelasePaymentMethod];
         }
 
         $filter = [
@@ -716,17 +718,54 @@ class Order extends Service
         $data   = $this->coll($filter);
         $coll   = $data['coll'];
         $count  = $data['count'];
-
+        $logMessage[] = 'order count: '.$count;
         if ($count > 0) {
             foreach ($coll as $one) {
-                $order_id = $one['order_id'];
-                $product_items = Yii::$service->order->item->getByOrderId($order_id, true);
-                Yii::$service->product->stock->returnQty($product_items);
-                $one->if_is_return_stock = 1;
-                // 将订单取消掉。取消后的订单不能再次支付。
-                $one->order_status = $this->payment_status_canceled;
-                $one->save();
+                /**
+                 * service严格上是不允许使用事务的，该方法特殊，是命令行执行的操作。
+                 * 每一个循环是一个事务。
+                 */
+                $innerTransaction = Yii::$app->db->beginTransaction();    
+                try {
+                    $logMessage[] = 'cancel order[begin] increment_id: '.$one['increment_id'];
+                    $order_id = $one['order_id'];
+                    
+                    $updateComules = $one::updateAll(
+                        [
+                            'if_is_return_stock' => 1,
+                            'order_status' => $this->payment_status_canceled,
+                        ]
+                        ,
+                        [
+                            'order_id'  => $one['order_id'],
+                            'order_status' => $this->payment_status_pending,
+                            'if_is_return_stock' => 2
+                        ]
+                    );
+                    /**
+                     * 取消订单，只能操作一次，因此，我们在更新条件里面加上了order_id， order_status，if_is_return_stock
+                     * 因为在上面查询和当前执行的时间之间，订单可能被进行其他操作，
+                     * 如果被其他操作，更改了order_status，那么上面的更新行数就是0行。
+                     * 那么事务直接回滚。
+                     */
+                    if (empty($updateComules)) { 
+                        $innerTransaction->rollBack();
+                        continue;
+                    } else {
+                        $product_items = Yii::$service->order->item->getByOrderId($order_id, true);
+                        Yii::$service->product->stock->returnQty($product_items);
+                    }
+                    //$one->if_is_return_stock = 1;
+                    // 将订单取消掉。取消后的订单不能再次支付。
+                    //$one->order_status = $this->payment_status_canceled;
+                    //$one->save();
+                    $innerTransaction->commit();
+                    $logMessage[] = 'cancel order[end] increment_id: '.$one['increment_id'];
+                } catch (Exception $e) {
+                    $innerTransaction->rollBack();
+                }
             }
         }
+        return $logMessage;
     }
 }

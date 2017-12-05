@@ -231,6 +231,7 @@ class Alipay extends Service
      */
     protected function paymentSuccess($increment_id,$trade_no,$sendEmail = true)
     {
+        Yii::$service->store->currentLangCode = 'zh';
         if (!$this->_order) {
             $this->_order = Yii::$service->order->getByIncrementId($increment_id);
             Yii::$service->payment->setPaymentMethod($this->_order['payment_method']);

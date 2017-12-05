@@ -20,6 +20,9 @@ class ProductController extends Controller
 {
     public function actionReturnpendingstock()
     {
-        Yii::$service->order->returnPendingStock();
+        $logMessage = Yii::$service->order->returnPendingStock();
+        foreach ($logMessage as $msg) {
+            echo $msg."\n";
+        }
     }
 }

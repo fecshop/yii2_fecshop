@@ -5,7 +5,7 @@ $Cur_Dir/../../../../yii  product/search/initindex
 # get now update timestamp.
 nowtime=`$Cur_Dir/../../../../yii  helper/urlrewrite/nowtime`
 
-###### 1.Sync Section : Sync Product  Serach Collection
+# 1.Product 遍历所有产品，把product的url_key 写入到url rewrite
 # get product all count.
 count=`$Cur_Dir/../../../../yii helper/urlrewrite/productcount`
 pagenum=`$Cur_Dir/../../../../yii helper/urlrewrite/productpagenum`
@@ -21,7 +21,7 @@ do
 done
 
 
-#Category
+# 2.Category 遍历所有的分类，把category的url_key 写入到 url rewrite
 
 count=`$Cur_Dir/../../../../yii helper/urlrewrite/categorycount`
 pagenum=`$Cur_Dir/../../../../yii helper/urlrewrite/categorypagenum`
@@ -37,8 +37,8 @@ do
 done
 
 
-#delete all search data that sync_updated_at $gt $nowtime.
-$Cur_Dir/../../../../yii  helper/urlrewrite/clearnoactive $nowtime
+# delete all search data that sync_updated_at $gt $nowtime.
+# $Cur_Dir/../../../../yii  helper/urlrewrite/clearnoactive $nowtime
 
 ###### 1.Sync Section End
 
