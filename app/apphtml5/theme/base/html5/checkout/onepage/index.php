@@ -79,6 +79,11 @@
 							<div class="coupon_add_log"></div>
 						</div>
 						
+                        <div class="onestepcheckout-coupons">
+							<div class="op_block_title"><?= Yii::$service->page->translate->__('Order Remark (optional)');?></div>
+							<label for="id_couponcode"><?= Yii::$service->page->translate->__('You can fill in the order remark information below');?></label>
+							<textarea class="order_remark" name="order_remark" style="width:100%;height:100px;padding:10px;"></textarea>
+						</div>
 						
 					</div>
 

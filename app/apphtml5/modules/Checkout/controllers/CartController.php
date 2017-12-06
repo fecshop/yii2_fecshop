@@ -93,6 +93,7 @@ class CartController extends AppfrontController
             ]);
             exit;
         }
+        
         $coupon_code = trim(Yii::$app->request->post('coupon_code'));
         $coupon_code = \Yii::$service->helper->htmlEncode($coupon_code);
         if ($coupon_code) {
@@ -106,7 +107,8 @@ class CartController extends AppfrontController
             } catch (Exception $e) {
                 $innerTransaction->rollBack();
             }
-            $error_arr = Yii::$service->helper->errors->get(true);
+            
+            $error_arr = Yii::$service->helper->errors->get();
             if (!empty($error_arr)) {
                 $error_str = implode(',', $error_arr);
                 echo json_encode([

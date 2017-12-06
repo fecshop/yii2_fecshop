@@ -284,11 +284,17 @@ use fecshop\app\appfront\helper\Format;
 					</div>
 				</fieldset>
 				
+                <fieldset id="fieldset_table_qbe">
+					<legend style="color:#cc0000">订单买家备注信息</legend>
+					<div>
+                        <textarea style="width:98%;height:100px;"><?= $order['order_remark'] ?></textarea>
+                    </div>
+                </fieldset>   
 				
 				<fieldset id="fieldset_table_qbe">
 					<legend style="color:#cc0000">订单产品信息</legend>
 					<div>
-						<table summary="Items Ordered" id="my-orders-table" class="data-table list" style="">
+						<table summary="Items Ordered" id="my-orders-table" class="data-table list" style="width:100%;table-layout: auto;">
 							<colgroup><col>
 							<col width="1">
 							<col width="1">

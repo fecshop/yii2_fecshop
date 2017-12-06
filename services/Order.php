@@ -33,6 +33,9 @@ class Order extends Service
     public $minuteBeforeThatReturnPendingStock  = 60;
     // 每次处理未支付的pending订单的个数限制。
     public $orderCountThatReturnPendingStock    = 30;
+    // 订单备注字符的最大数
+    public $orderRemarkStrMaxLen = 1500;
+    
     // 支付类型，目前只有standard 和 express 两种，express 指的是在购物车点击支付按钮的方式，譬如paypal的express
     // standard类型指的是填写完货运地址后生成订单跳转到第三方支付平台的支付类型。
     protected $checkout_type;
@@ -432,12 +435,12 @@ class Order extends Service
      * @property $shipping_method | String 货运快递方式
      * @property $payment_method | Array 支付方式、
      * @property $clearCartAndDeductStock | boolean 是否清空购物车，并扣除库存，这种情况是先 生成订单，在支付的情况下失败的处理方式。
-     
      * @property $token | string 代表 通过payment_token得到order，然后更新order信息的方式生成order，这个是paypal购物车express支付对应的功能
+     * @property $order_remark | string , 订单备注
      * @return bool 通过购物车的数据生成订单是否成功
      *              通过购物车中的产品信息，以及传递的货运地址，货运快递方式，支付方式生成订单。
      */
-    protected function actionGenerateOrderByCart($address, $shipping_method, $payment_method, $clearCart = true , $token = '')
+    protected function actionGenerateOrderByCart($address, $shipping_method, $payment_method, $clearCart = true , $token = '', $order_remark = '')
     {
         $cart = Yii::$service->cart->quote->getCurrentCart();
         if (!$cart) {
@@ -485,7 +488,9 @@ class Order extends Service
             $myOrder = new $this->_orderModelName();
         }
         $myOrder['order_status']        = $this->payment_status_pending;
-        $myOrder['store']               = $cartInfo['store'];
+        $currentStore = Yii::$service->store->currentStore;
+        $currentStore || $currentStore = $cartInfo['store'];
+        $myOrder['store']               = $currentStore;
         $myOrder['created_at']          = time();
         $myOrder['updated_at']          = time();
         $myOrder['items_count']         = $cartInfo['items_count'];
@@ -501,6 +506,7 @@ class Order extends Service
         $myOrder['shipping_total']      = $cartInfo['shipping_cost'];
         $myOrder['base_shipping_total'] = $cartInfo['base_shipping_cost'];
         $myOrder['checkout_method']     = $this->getCheckoutType();
+        !$order_remark || $myOrder['order_remark'] = \yii\helpers\Html::encode($order_remark);
         if ($address['customer_id']) {
             $is_guest = 2;
         } else {
