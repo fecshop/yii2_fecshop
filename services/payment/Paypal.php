@@ -257,53 +257,53 @@ class Paypal extends Service
 
             return;
         }
+        $updateArr = [];
         if ($this->_postData['txn_type']) {
-            $this->_order->txn_type = $this->_postData['txn_type'];
+            $updateArr['txn_type'] = $this->_postData['txn_type'];
         }
         if ($this->_postData['txn_id']) {
-            $this->_order->txn_id = $this->_postData['txn_id'];
+            $updateArr['txn_id'] = $this->_postData['txn_id'];
         }
         if ($this->_postData['payer_id']) {
-            $this->_order->payer_id = $this->_postData['payer_id'];
+            $updateArr['payer_id'] = $this->_postData['payer_id'];
         }
         if ($this->_postData['ipn_track_id']) {
-            $this->_order->ipn_track_id = $this->_postData['ipn_track_id'];
+            $updateArr['ipn_track_id'] = $this->_postData['ipn_track_id'];
         }
         if ($this->_postData['receiver_id']) {
-            $this->_order->receiver_id = $this->_postData['receiver_id'];
+            $updateArr['receiver_id'] = $this->_postData['receiver_id'];
         }
         if ($this->_postData['verify_sign']) {
-            $this->_order->verify_sign = $this->_postData['verify_sign'];
+            $updateArr['verify_sign'] = $this->_postData['verify_sign'];
         }
         if ($this->_postData['charset']) {
-            $this->_order->charset = $this->_postData['charset'];
+            $updateArr['charset'] = $this->_postData['charset'];
         }
         if ($this->_postData['mc_fee']) {
-            $this->_order->payment_fee = $this->_postData['mc_fee'];
+            $updateArr['payment_fee'] = $this->_postData['mc_fee'];
             $currency = $this->_postData['mc_currency'];
-            $this->_order->base_payment_fee = Yii::$service->page->currency->getBaseCurrencyPrice($this->_postData['mc_fee'], $currency);
+            $updateArr['base_payment_fee'] = Yii::$service->page->currency->getBaseCurrencyPrice($this->_postData['mc_fee'], $currency);
         }
         if ($this->_postData['payment_type']) {
-            $this->_order->payment_type = $this->_postData['payment_type'];
+            $updateArr['payment_type'] = $this->_postData['payment_type'];
         }
         if ($this->_postData['payment_date']) {
-            $this->_order->paypal_order_datetime = date('Y-m-d H:i:s', $this->_postData['payment_date']);
+            $updateArr['paypal_order_datetime'] = date('Y-m-d H:i:s', $this->_postData['payment_date']);
         }
         if ($this->_postData['protection_eligibility']) {
-            $this->_order->protection_eligibility = $this->_postData['protection_eligibility'];
+            $updateArr['protection_eligibility'] = $this->_postData['protection_eligibility'];
         }
-        $this->_order->updated_at = time();
+        $updateArr['updated_at'] = time();
+        //$this->_order->updated_at = time();
         // 在service中不要出现事务代码，如果添加事务，请在调用层使用。
         //$innerTransaction = Yii::$app->db->beginTransaction();
         //try {
             // 可以更改的订单状态
             
             if ($orderstatus) {
+                $updateArr['order_status'] = $orderstatus;
                 $this->_order::updateAll(
-                    [
-                        'order_status' => $orderstatus,
-                        'updated_at'   => time(),
-                    ],
+                    $updateArr,
                     [
                         'and',
                         ['order_id' => $this->_order['order_id']],
@@ -321,11 +321,9 @@ class Paypal extends Service
                     // paypal支付完成，将订单状态改成：收款已确认。
                     // 只有存在于 $this->_allowChangOrderStatus 数组的状态，才允许更改，按照目前的设置，取消了的订单是不允许更改的
                     $orderstatus = Yii::$service->order->payment_status_confirmed;
+                    $updateArr['order_status'] = $orderstatus;
                     $updateColumn = $this->_order::updateAll(
-                        [
-                            'order_status' => $orderstatus,
-                            'updated_at'   => time(),
-                        ],
+                        $updateArr,
                         [
                             'and',
                             ['order_id' => $this->_order['order_id']],
@@ -345,11 +343,9 @@ class Paypal extends Service
                 } elseif ($payment_status == $this->payment_status_pending) {    
                     // pending 代表信用卡预付方式，需要等待paypal从信用卡中把钱扣除，因此订单状态是processing
                     $orderstatus = Yii::$service->order->payment_status_processing;
+                    $updateArr['order_status'] = $orderstatus;
                     $updateColumn = $this->_order::updateAll(
-                        [
-                            'order_status' => $orderstatus,
-                            'updated_at'   => time(),
-                        ],
+                        $updateArr,
                         [
                             'and',
                             ['order_id' => $this->_order['order_id']],
@@ -745,26 +741,27 @@ class Paypal extends Service
 
                 return false;
             }
+            $updateArr = [];
             if ($order['increment_id']) {
                 //echo 'bbb';
-                $order['txn_id'] = $DoExpressCheckoutReturn['PAYMENTINFO_0_TRANSACTIONID'];
-                $order['txn_type'] = $DoExpressCheckoutReturn['PAYMENTINFO_0_TRANSACTIONTYPE'];
+                $updateArr['txn_id'] = $DoExpressCheckoutReturn['PAYMENTINFO_0_TRANSACTIONID'];
+                $updateArr['txn_type'] = $DoExpressCheckoutReturn['PAYMENTINFO_0_TRANSACTIONTYPE'];
                 $PAYMENTINFO_0_AMT = $DoExpressCheckoutReturn['PAYMENTINFO_0_AMT'];
-                $order['payment_fee'] = $DoExpressCheckoutReturn['PAYMENTINFO_0_FEEAMT'];
+                $updateArr['payment_fee'] = $DoExpressCheckoutReturn['PAYMENTINFO_0_FEEAMT'];
 
                 $currency = $DoExpressCheckoutReturn['PAYMENTINFO_0_CURRENCYCODE'];
-                $order['base_payment_fee'] = Yii::$service->page->currency->getBaseCurrencyPrice($order['payment_fee'], $currency);
-                $order['payer_id'] = $this->getExpressPayerID();
+                $updateArr['base_payment_fee'] = Yii::$service->page->currency->getBaseCurrencyPrice($updateArr['payment_fee'], $currency);
+                $updateArr['payer_id'] = $this->getExpressPayerID();
 
-                $order['correlation_id'] = $DoExpressCheckoutReturn['CORRELATIONID'];
-                $order['protection_eligibility'] = $DoExpressCheckoutReturn['PAYMENTINFO_0_PROTECTIONELIGIBILITY'];
-                $order['protection_eligibility_type'] = $DoExpressCheckoutReturn['PAYMENTINFO_0_PROTECTIONELIGIBILITYTYPE'];
-                $order['secure_merchant_account_id'] = $DoExpressCheckoutReturn['PAYMENTINFO_0_SECUREMERCHANTACCOUNTID'];
-                $order['build'] = $DoExpressCheckoutReturn['BUILD'];
-                $order['payment_type'] = $DoExpressCheckoutReturn['PAYMENTINFO_0_PAYMENTTYPE'];
-                $order['paypal_order_datetime'] = date('Y-m-d H:i:s', $DoExpressCheckoutReturn['PAYMENTINFO_0_ORDERTIME']);
+                $updateArr['correlation_id'] = $DoExpressCheckoutReturn['CORRELATIONID'];
+                $updateArr['protection_eligibility'] = $DoExpressCheckoutReturn['PAYMENTINFO_0_PROTECTIONELIGIBILITY'];
+                $updateArr['protection_eligibility_type'] = $DoExpressCheckoutReturn['PAYMENTINFO_0_PROTECTIONELIGIBILITYTYPE'];
+                $updateArr['secure_merchant_account_id'] = $DoExpressCheckoutReturn['PAYMENTINFO_0_SECUREMERCHANTACCOUNTID'];
+                $updateArr['build'] = $DoExpressCheckoutReturn['BUILD'];
+                $updateArr['payment_type'] = $DoExpressCheckoutReturn['PAYMENTINFO_0_PAYMENTTYPE'];
+                $updateArr['paypal_order_datetime'] = date('Y-m-d H:i:s', $DoExpressCheckoutReturn['PAYMENTINFO_0_ORDERTIME']);
                 $PAYMENTINFO_0_PAYMENTSTATUS = $DoExpressCheckoutReturn['PAYMENTINFO_0_PAYMENTSTATUS'];
-                //$order['updated_at'] = time();
+                $updateArr['updated_at'] = time(); 
                 if (
                     strtolower($PAYMENTINFO_0_PAYMENTSTATUS) == $this->payment_status_completed
                     || 
@@ -772,12 +769,9 @@ class Paypal extends Service
                 ) {
                     $order_status = Yii::$service->order->payment_status_confirmed;
                     if ($currency == $order['order_currency_code'] && $PAYMENTINFO_0_AMT == $order['grand_total']) {
-                        
+                        $updateArr['order_status'] = $order_status;          
                         $updateColumn = $order::updateAll(
-                            [
-                                'order_status' => $order_status,
-                                'updated_at'   => time(),
-                            ],
+                            $updateArr,
                             [
                                 'and',
                                 ['order_id' => $order['order_id']],
@@ -796,11 +790,9 @@ class Paypal extends Service
                         // 金额不一致，判定为欺诈
                         Yii::$service->helper->errors->add('The amount of payment is inconsistent with the amount of the order');
                         $order_status = Yii::$service->order->payment_status_suspected_fraud;
+                        $updateArr['order_status'] = $order_status;  
                         $updateColumn = $order::updateAll(
-                            [
-                                'order_status' => $order_status,
-                                'updated_at'   => time(),
-                            ],
+                            $updateArr,
                             [
                                 'and',
                                 ['order_id' => $order['order_id']],
@@ -813,11 +805,9 @@ class Paypal extends Service
                     // 这种情况代表paypal 信用卡预售，需要等待一段时间才知道是否收到钱
                     $order_status = Yii::$service->order->payment_status_processing;
                     if ($currency == $order['order_currency_code'] && $PAYMENTINFO_0_AMT == $order['grand_total']) {
+                        $updateArr['order_status'] = $order_status;   
                         $updateColumn = $order::updateAll(
-                            [
-                                'order_status' => $order_status,
-                                'updated_at'   => time(),
-                            ],
+                            $updateArr,
                             [
                                 'and',
                                 ['order_id' => $order['order_id']],
@@ -830,11 +820,9 @@ class Paypal extends Service
                         // 金额不一致，判定为欺诈
                         Yii::$service->helper->errors->add('The amount of payment is inconsistent with the amount of the order');
                         $order_status = Yii::$service->order->payment_status_suspected_fraud;
+                        $updateArr['order_status'] = $order_status;   
                         $updateColumn = $order::updateAll(
-                            [
-                                'order_status' => $order_status,
-                                'updated_at'   => time(),
-                            ],
+                            $updateArr,
                             [
                                 'and',
                                 ['order_id' => $order['order_id']],
