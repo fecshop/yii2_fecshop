@@ -285,7 +285,7 @@ use fecshop\app\appfront\helper\Format;
 				</fieldset>
 				
                 <fieldset id="fieldset_table_qbe">
-					<legend style="color:#cc0000">订单买家备注信息</legend>
+					<legend style="color:#cc0000">订单买家留言信息</legend>
 					<div>
                         <textarea style="width:98%;height:100px;"><?= $order['order_remark'] ?></textarea>
                     </div>

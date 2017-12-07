@@ -149,11 +149,12 @@ class Payment extends Service
         }
     }
 
-    /**
+    /** 废弃
      * @property $payment_method | String 支付方式。
      * @return string 得到跳转到第三方支付的url。
      *                #从配置信息中获取
      */
+    /*
     public function getStandardPaymentUrl($payment_method = '')
     {
         if (!$payment_method) {
@@ -168,6 +169,7 @@ class Payment extends Service
             }
         }
     }
+    */
 
     /**
      * @property $payment_method | String 支付方式。

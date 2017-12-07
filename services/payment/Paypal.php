@@ -20,7 +20,10 @@ use Yii;
  */
 class Paypal extends Service
 {
-    // paypal支付状态
+    /**
+     * paypal支付状态 详细参看：https://developer.paypal.com/docs/classic/api/merchant/DoExpressCheckoutPayment_API_Operation_NVP/
+     * 打开url后，浏览器查找：PAYMENTINFO_n_PAYMENTSTATUS  ， 即可找到下面各个状态对应的含义
+     */
     public $payment_status_none         = 'none';
     public $payment_status_completed    = 'completed';
     public $payment_status_denied       = 'denied';
@@ -52,12 +55,18 @@ class Paypal extends Service
     
     protected $expressPayerID;
     protected $expressToken;
+    // 允许更改的订单状态，不存在这里面的订单状态不允许修改
+    protected $_allowChangOrderStatus;
     
     protected $_ipnMessageModelName = '\fecshop\models\mysqldb\IpnMessage';
     protected $_ipnMessageModel;
     
     public function __construct(){
         list($this->_ipnMessageModelName,$this->_ipnMessageModel) = \Yii::mapGet($this->_ipnMessageModelName);  
+        $this->_allowChangOrderStatus = [
+            Yii::$service->order->payment_status_pending,
+            Yii::$service->order->payment_status_processing,
+        ];
     }
     /**
      * @property $domain | string
@@ -77,19 +86,22 @@ class Paypal extends Service
      */
     public function receiveIpn($post)
     {
+         \Yii::info('receiveIpn', 'fecshop_debug');
         if ($this->verifySecurity($post)) {
+            \Yii::info('verifySecurity', 'fecshop_debug');
             // 验证数据是否已经发送
-            if ($this->isNotDuplicate()) {
+            //if ($this->isNotDuplicate()) {
                 // 验证数据是否被篡改。
                 if ($this->isNotDistort()) {
-                    $this->updateStandardOrderPayment();
+                    \Yii::info('updateOrderStatusByIpn', 'fecshop_debug');
+                    $this->updateOrderStatusByIpn();
                 } else {
                     // 如果数据和订单数据不一致，而且，支付状态为成功，则此订单
                     // 标记为可疑的。
                     $suspected_fraud = Yii::$service->order->payment_status_suspected_fraud;
-                    $this->updateStandardOrderPayment($suspected_fraud);
+                    $this->updateOrderStatusByIpn($suspected_fraud);
                 }
-            }
+           // }
         }
     }
 
@@ -102,9 +114,11 @@ class Paypal extends Service
     protected function verifySecurity($post)
     {
         $this->_postData = $post;
-        Yii::$service->payment->setPaymentMethod('paypal_standard');
+        //Yii::$service->payment->setPaymentMethod('paypal_express');
         $verifyUrl = $this->getVerifyUrl();
+        \Yii::info('verifyUrl:'.$verifyUrl, 'fecshop_debug');
         $verifyReturn = $this->curlGet($verifyUrl);
+        \Yii::info('verifyReturn:'.$verifyReturn, 'fecshop_debug');
         if ($verifyReturn == 'VERIFIED') {
             return true;
         }
@@ -124,7 +138,7 @@ class Paypal extends Service
         }
         $urlParamStr   .= '&cmd=_notify-validate';
         $urlParamStr    = substr($urlParamStr, 1);
-        $verifyUrl      = Yii::$service->payment->getStandardPaymentUrl();
+        $verifyUrl      = Yii::$service->payment->getStandardApiUrl('paypal_standard');
         $verifyUrl      = $verifyUrl.'?'.$urlParamStr;
 
         return $verifyUrl;
@@ -175,6 +189,7 @@ class Paypal extends Service
      * paypal 可能发送多次IPN消息
      * 判断是否重复，如果不重复，把当前的插入。
      */
+    /*
     protected function isNotDuplicate()
     {
         $ipn = $this->_ipnMessageModel->find()
@@ -196,6 +211,7 @@ class Paypal extends Service
             return true;
         }
     }
+    */
 
     /**
      * 验证订单数据是否被篡改。
@@ -229,10 +245,10 @@ class Paypal extends Service
     }
 
     /**
-     * @property $orderstatus | String 退款状态
-     * 更新订单状态。这是express 支付方式使用的。
+     * @property $orderstatus | String 订单状态
+     * 根据接收的ipn消息，更改订单状态。
      */
-    protected function updateStandardOrderPayment($orderstatus = '')
+    protected function updateOrderStatusByIpn($orderstatus = '')
     {
         $order_cancel_status = Yii::$service->order->payment_status_canceled;
         // 如果订单状态被取消，那么不能进行支付。
@@ -280,32 +296,73 @@ class Paypal extends Service
         // 在service中不要出现事务代码，如果添加事务，请在调用层使用。
         //$innerTransaction = Yii::$app->db->beginTransaction();
         //try {
+            // 可以更改的订单状态
+            
             if ($orderstatus) {
+                $this->_order::updateAll(
+                    [
+                        'order_status' => $orderstatus,
+                        'updated_at'   => time(),
+                    ],
+                    [
+                        'and',
+                        ['order_id' => $this->_order['order_id']],
+                        ['in','order_status',$this->_allowChangOrderStatus]
+                    ]
+                );
                 // 指定了订单状态
-                $this->_order->order_status = $orderstatus;
-                $this->_order->save();
-                $payment_status = strtolower($this->_postData['payment_status']);
-                //Yii::$app->mylog->log('save_'.$orderstatus);
+                // $this->_order->order_status = $orderstatus;
+                // $this->_order->save();
+                // $payment_status = strtolower($this->_postData['payment_status']);
+                // Yii::$app->mylog->log('save_'.$orderstatus);
             } else {
                 $payment_status = strtolower($this->_postData['payment_status']);
                 if ($payment_status == $this->payment_status_completed) {
-                    $this->_order->order_status = Yii::$service->order->payment_status_processing;
+                    // paypal支付完成，将订单状态改成：收款已确认。
+                    // 只有存在于 $this->_allowChangOrderStatus 数组的状态，才允许更改，按照目前的设置，取消了的订单是不允许更改的
+                    $orderstatus = Yii::$service->order->payment_status_confirmed;
+                    $updateColumn = $this->_order::updateAll(
+                        [
+                            'order_status' => $orderstatus,
+                            'updated_at'   => time(),
+                        ],
+                        [
+                            'and',
+                            ['order_id' => $this->_order['order_id']],
+                            ['in','order_status',$this->_allowChangOrderStatus]
+                        ]
+                    );
+                    //$this->_order->order_status = Yii::$service->order->payment_status_processing;
                     // 更新订单信息
-                    $this->_order->save();
-                    // 得到当前的订单信息
-                    $orderInfo = Yii::$service->order->getOrderInfoByIncrementId($this->_order['increment_id']);
-                    // 发送新订单邮件
-                    Yii::$service->email->order->sendCreateEmail($orderInfo);
-                } elseif ($payment_status == $this->payment_status_failed) {
-                    # 因为涉及到扣库存，因此，先不更改订单状态。
-                    //$this->_order->order_status = Yii::$service->order->payment_status_canceled;
                     //$this->_order->save();
-                } elseif ($payment_status == $this->payment_status_refunded) {
-                    # 因为涉及到扣库存，因此，先不更改订单状态。
-                    //$this->_order->order_status = Yii::$service->order->payment_status_canceled;
-                    //$this->_order->save();
-                } else {
+                    // 因为IPN消息可能不止发送一次，但是这里只允许一次，
+                    // 如果重复发送，$updateColumn 的更新返回值将为0
+                    if (!empty($updateColumn)) {
+                        $orderInfo = Yii::$service->order->getOrderInfoByIncrementId($this->_order['increment_id']);
+                        // 发送新订单邮件
+                        Yii::$service->email->order->sendCreateEmail($orderInfo);
+                    }
+                } elseif ($payment_status == $this->payment_status_pending) {    
+                    // pending 代表信用卡预付方式，需要等待paypal从信用卡中把钱扣除，因此订单状态是processing
+                    $orderstatus = Yii::$service->order->payment_status_processing;
+                    $updateColumn = $this->_order::updateAll(
+                        [
+                            'order_status' => $orderstatus,
+                            'updated_at'   => time(),
+                        ],
+                        [
+                            'and',
+                            ['order_id' => $this->_order['order_id']],
+                            ['order_status' => Yii::$service->order->payment_status_pending]
+                        ]
+                    );
                     
+                } elseif ($payment_status == $this->payment_status_failed) {
+                    // 暂不处理
+                } elseif ($payment_status == $this->payment_status_refunded) {
+                    // 暂不处理
+                } else {
+                    // 暂不处理
                 }
             }
             //$innerTransaction->commit();
@@ -680,11 +737,6 @@ class Paypal extends Service
     public function updateExpressOrderPayment($DoExpressCheckoutReturn,$token)
     {
         if ($DoExpressCheckoutReturn) {
-            //echo 'aaa';
-            //$increment_id = Yii::$service->order->getSessionIncrementId();
-            //echo "\n $increment_id \n\n";
-            //$order = Yii::$service->order->getByIncrementId($increment_id);
-            //echo '########'.$token.'#####';
             $order = Yii::$service->order->getByPaymentToken($token);
             $order_cancel_status = Yii::$service->order->payment_status_canceled;
             // 如果订单状态被取消，那么不能进行支付。
@@ -712,28 +764,83 @@ class Paypal extends Service
                 $order['payment_type'] = $DoExpressCheckoutReturn['PAYMENTINFO_0_PAYMENTTYPE'];
                 $order['paypal_order_datetime'] = date('Y-m-d H:i:s', $DoExpressCheckoutReturn['PAYMENTINFO_0_ORDERTIME']);
                 $PAYMENTINFO_0_PAYMENTSTATUS = $DoExpressCheckoutReturn['PAYMENTINFO_0_PAYMENTSTATUS'];
-                
-                //echo $this->payment_status_completed.'##'.$PAYMENTINFO_0_PAYMENTSTATUS."<br>";
-                if (strtolower($PAYMENTINFO_0_PAYMENTSTATUS) == $this->payment_status_completed) {
-                    //echo 222;
-                    // 判断金额是否相符
-                    //echo $currency."<br/>";
-                    //echo $order['order_currency_code']."<br/>";
-                    //echo $PAYMENTINFO_0_AMT."<br/>";
-                    //echo $order['grand_total']."<br/>";
+                //$order['updated_at'] = time();
+                if (
+                    strtolower($PAYMENTINFO_0_PAYMENTSTATUS) == $this->payment_status_completed
+                    || 
+                    strtolower($PAYMENTINFO_0_PAYMENTSTATUS) == $this->payment_status_processed
+                ) {
+                    $order_status = Yii::$service->order->payment_status_confirmed;
                     if ($currency == $order['order_currency_code'] && $PAYMENTINFO_0_AMT == $order['grand_total']) {
-                        //echo 222;
-                        $order->order_status = Yii::$service->order->payment_status_processing;
-                        $order->save();
-                        // 支付成功，发送新订单邮件
-                        $orderInfo = Yii::$service->order->getCurrentOrderInfo();
-                        Yii::$service->email->order->sendCreateEmail($orderInfo);
-
+                        
+                        $updateColumn = $order::updateAll(
+                            [
+                                'order_status' => $order_status,
+                                'updated_at'   => time(),
+                            ],
+                            [
+                                'and',
+                                ['order_id' => $order['order_id']],
+                                ['in','order_status',$this->_allowChangOrderStatus]
+                            ]
+                        );
+                        // 因为IPN消息可能不止发送一次，但是这里只允许一次，
+                        // 如果重复发送，$updateColumn 的更新返回值将为0
+                        if (!empty($updateColumn)) {
+                            $orderInfo = Yii::$service->order->getOrderInfoByIncrementId($order['increment_id']);
+                            // 发送新订单邮件
+                            Yii::$service->email->order->sendCreateEmail($orderInfo);
+                        }
                         return true;
                     } else {
+                        // 金额不一致，判定为欺诈
                         Yii::$service->helper->errors->add('The amount of payment is inconsistent with the amount of the order');
-                        $order->order_status = Yii::$service->order->payment_status_suspected_fraud;
-                        $order->save();
+                        $order_status = Yii::$service->order->payment_status_suspected_fraud;
+                        $updateColumn = $order::updateAll(
+                            [
+                                'order_status' => $order_status,
+                                'updated_at'   => time(),
+                            ],
+                            [
+                                'and',
+                                ['order_id' => $order['order_id']],
+                                ['in','order_status',$this->_allowChangOrderStatus]
+                            ]
+                        );
+                    }
+                    
+                } else if (strtolower($PAYMENTINFO_0_PAYMENTSTATUS) == $this->payment_status_pending) {   
+                    // 这种情况代表paypal 信用卡预售，需要等待一段时间才知道是否收到钱
+                    $order_status = Yii::$service->order->payment_status_processing;
+                    if ($currency == $order['order_currency_code'] && $PAYMENTINFO_0_AMT == $order['grand_total']) {
+                        $updateColumn = $order::updateAll(
+                            [
+                                'order_status' => $order_status,
+                                'updated_at'   => time(),
+                            ],
+                            [
+                                'and',
+                                ['order_id' => $order['order_id']],
+                                ['order_status' => Yii::$service->order->payment_status_pending]
+                            ]
+                        );
+                        // 这种情况不发送订单。
+                        return true;
+                    } else {
+                        // 金额不一致，判定为欺诈
+                        Yii::$service->helper->errors->add('The amount of payment is inconsistent with the amount of the order');
+                        $order_status = Yii::$service->order->payment_status_suspected_fraud;
+                        $updateColumn = $order::updateAll(
+                            [
+                                'order_status' => $order_status,
+                                'updated_at'   => time(),
+                            ],
+                            [
+                                'and',
+                                ['order_id' => $order['order_id']],
+                                ['in','order_status',$this->_allowChangOrderStatus]
+                            ]
+                        );
                     }
                 } else {
                     Yii::$service->helper->errors->add('paypal express payment is not complete , current payment status is '.$PAYMENTINFO_0_PAYMENTSTATUS);

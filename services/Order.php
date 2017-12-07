@@ -21,11 +21,19 @@ class Order extends Service
 {
     public $requiredAddressAttr; // 必填的订单字段。
     // 下面是订单支付状态
+    // 等待支付状态
     public $payment_status_pending          = 'pending';
+    // 支付处理中，因为信用卡有预售，因此需要等IPN消息来确认是否支付成功
     public $payment_status_processing       = 'processing';
+    // 支付状态已确认，代表已经收到钱了
+    public $payment_status_confirmed        = 'confirmed';
+    // 订单已取消
     public $payment_status_canceled         = 'canceled';
+    // 订单已完成，暂时没有用这个
     public $payment_status_complete         = 'complete';
+    // 订单被挂起
     public $payment_status_holded           = 'holded';
+    // 欺诈
     public $payment_status_suspected_fraud  = 'suspected_fraud';
     // 订单号格式。
     public $increment_id = 1000000000;

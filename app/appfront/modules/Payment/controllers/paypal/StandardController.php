@@ -19,7 +19,7 @@ use Yii;
 class StandardController extends AppfrontController
 {
     
-    public $enableCsrfValidation = true;
+    public $enableCsrfValidation = false;
 
     public function actionStart()
     {
@@ -45,7 +45,7 @@ class StandardController extends AppfrontController
             var_dump($post);
             $post_log = ob_get_clean();
             \Yii::info($post_log, 'fecshop_debug');
-            //Yii::$service->payment->paypal->receiveIpn($post);
+            Yii::$service->payment->paypal->receiveIpn($post);
         }
     }
     
