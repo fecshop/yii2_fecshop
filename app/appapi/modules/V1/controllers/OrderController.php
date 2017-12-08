@@ -120,11 +120,18 @@ class OrderController extends AppapiTokenController
         $orderStatusAllowArr = [
             $orderService->payment_status_pending,
             $orderService->payment_status_processing,
+            $orderService->payment_status_confirmed,
             $orderService->payment_status_canceled,
-            $orderService->payment_status_complete,
-            $orderService->payment_status_holded,
+            $orderService->status_holded,
             $orderService->payment_status_suspected_fraud,
+            
+            $orderService->status_processing,
+            $orderService->status_dispatched,
+            $orderService->status_refunded,
+            $orderService->status_complete,
         ];
+         
+            
         if (!in_array($order_status, $orderStatusAllowArr)) {
             $error[] = '[order_status] value must be in array ['.implode(',',$orderStatusAllowArr).']';
         }

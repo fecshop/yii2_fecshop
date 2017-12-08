@@ -28,6 +28,8 @@ class StandardController extends AppserverController
         if(Yii::$app->request->getMethod() === 'OPTIONS'){
             return [];
         }
+        $payment_method = Yii::$service->payment->paypal->standard_payment_method;
+        Yii::$service->payment->setPaymentMethod($payment_method);
         return $this->getBlock()->startExpress();
     }
     /**
@@ -38,6 +40,8 @@ class StandardController extends AppserverController
         if(Yii::$app->request->getMethod() === 'OPTIONS'){
             return [];
         }
+        $payment_method = Yii::$service->payment->paypal->standard_payment_method;
+        Yii::$service->payment->setPaymentMethod($payment_method);
         return $this->getBlock('placeorder')->getLastData();
     }
     /**
@@ -49,7 +53,8 @@ class StandardController extends AppserverController
             return [];
         }
         \Yii::info('paypal ipn begin', 'fecshop_debug');
-       
+        $payment_method = Yii::$service->payment->paypal->standard_payment_method;
+        Yii::$service->payment->setPaymentMethod($payment_method);
         $post = Yii::$app->request->post();
         if (is_array($post) && !empty($post)) {
             $post = \Yii::$service->helper->htmlEncode($post);

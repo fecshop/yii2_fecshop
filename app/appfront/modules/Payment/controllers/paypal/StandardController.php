@@ -23,20 +23,27 @@ class StandardController extends AppfrontController
 
     public function actionStart()
     {
+        $payment_method = Yii::$service->payment->paypal->standard_payment_method;
+        Yii::$service->payment->setPaymentMethod($payment_method);
+        
         return $this->getBlock()->startExpress();
     }
 
     // 2.Review  从paypal确认后返回
     public function actionReview()
     {
+        $payment_method = Yii::$service->payment->paypal->standard_payment_method;
+        Yii::$service->payment->setPaymentMethod($payment_method);
+        
         $this->getBlock('placeorder')->getLastData();
     }
     
     
     public function actionIpn()
     {
-        \Yii::info('paypal ipn begin', 'fecshop_debug');
-       
+        \Yii::info('paypal ipn begin standard', 'fecshop_debug');
+        $payment_method = Yii::$service->payment->paypal->standard_payment_method;
+        Yii::$service->payment->setPaymentMethod($payment_method);
         $post = Yii::$app->request->post();
         if (is_array($post) && !empty($post)) {
             $post = \Yii::$service->helper->htmlEncode($post);

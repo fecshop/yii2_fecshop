@@ -95,7 +95,9 @@ class Placeorder
             }
         }else{
             $code = Yii::$service->helper->appserver->order_paypal_standard_payment_fail;
-            $data = [ ];
+            $data = [
+                'error' => Yii::$service->helper->errors->get(','),
+            ];
             $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
             
             return $reponseData;

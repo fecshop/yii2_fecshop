@@ -138,12 +138,17 @@ class Paypal extends Service
         }
         $urlParamStr   .= '&cmd=_notify-validate';
         $urlParamStr    = substr($urlParamStr, 1);
-        $verifyUrl      = Yii::$service->payment->getStandardApiUrl('paypal_standard');
+        $current_payment_method = Yii::$service->payment->getPaymentMethod();
+        if ($current_payment_method == $this->standard_payment_method) {
+            $verifyUrl = Yii::$service->payment->getStandardApiUrl($this->standard_payment_method);
+        } else {
+            $verifyUrl = Yii::$service->payment->getExpressApiUrl($this->express_payment_method);
+        }
         $verifyUrl      = $verifyUrl.'?'.$urlParamStr;
 
         return $verifyUrl;
     }
-
+    
     /**
      * @property $url | string, 请求的url
      * @property $i | 请求的次数，因为curl可能存在失败的可能，当
@@ -412,12 +417,20 @@ class Paypal extends Service
      */
     public function PPHttpPost5($methodName_, $nvpStr_, $i = 1)
     {
-        $API_NvpUrl = Yii::$service->payment->getExpressNvpUrl($this->express_payment_method);
-        $API_Signature  = Yii::$service->payment->getExpressSignature($this->express_payment_method);
-        $API_UserName   = Yii::$service->payment->getExpressAccount($this->express_payment_method);
-        $API_Password   = Yii::$service->payment->getExpressPassword($this->express_payment_method);
-        $ipn_url        = Yii::$service->payment->getExpressIpnUrl($this->express_payment_method);
-        
+        $current_payment_method = Yii::$service->payment->getPaymentMethod();
+        if ($current_payment_method == $this->standard_payment_method) {
+            $API_NvpUrl     = Yii::$service->payment->getStandardNvpUrl($this->standard_payment_method);
+            $API_Signature  = Yii::$service->payment->getStandardSignature($this->standard_payment_method);
+            $API_UserName   = Yii::$service->payment->getStandardAccount($this->standard_payment_method);
+            $API_Password   = Yii::$service->payment->getStandardPassword($this->standard_payment_method);
+            $ipn_url        = Yii::$service->payment->getStandardIpnUrl($this->standard_payment_method);
+        } else {
+            $API_NvpUrl = Yii::$service->payment->getExpressNvpUrl($this->express_payment_method);
+            $API_Signature  = Yii::$service->payment->getExpressSignature($this->express_payment_method);
+            $API_UserName   = Yii::$service->payment->getExpressAccount($this->express_payment_method);
+            $API_Password   = Yii::$service->payment->getExpressPassword($this->express_payment_method);
+            $ipn_url        = Yii::$service->payment->getExpressIpnUrl($this->express_payment_method);
+        }
         // Set the API operation, version, and API signature in the request.
         $nvpreq  =  "METHOD=$methodName_&PWD=$API_Password&USER=$API_UserName&SIGNATURE=$API_Signature$nvpStr_";
         $nvpreq .=  "&PAYMENTREQUEST_0_NOTIFYURL=".urlencode($ipn_url);
@@ -508,7 +521,6 @@ class Paypal extends Service
     public function getExpressCheckoutPaymentNvpStr($token)
     {
         $nvp_array = [];
-
         $nvp_array['PAYERID'] = $this->getExpressPayerID();
         $nvp_array['TOKEN']   = $this->getExpressToken();
         $nvp_array['PAYMENTREQUEST_0_PAYMENTACTION'] = 'Sale';

@@ -22,12 +22,16 @@ class ExpressController extends AppfrontController
 
     public function actionStart()
     {
+        $payment_method = Yii::$service->payment->paypal->express_payment_method;
+        Yii::$service->payment->setPaymentMethod($payment_method);
         $data = $this->getBlock()->startExpress();
     }
 
     // 2.Review  从paypal确认后返回
     public function actionReview()
     {
+        $payment_method = Yii::$service->payment->paypal->express_payment_method;
+        Yii::$service->payment->setPaymentMethod($payment_method);
         $_csrf = Yii::$app->request->post('_csrf');
         if ($_csrf) {
             $status = $this->getBlock('placeorder')->getLastData();
@@ -46,7 +50,8 @@ class ExpressController extends AppfrontController
     public function actionIpn()
     {
         \Yii::info('paypal ipn begin', 'fecshop_debug');
-       
+        $payment_method = Yii::$service->payment->paypal->express_payment_method;
+        Yii::$service->payment->setPaymentMethod($payment_method);
         $post = Yii::$app->request->post();
         if (is_array($post) && !empty($post)) {
             $post = \Yii::$service->helper->htmlEncode($post);
@@ -57,5 +62,10 @@ class ExpressController extends AppfrontController
             \Yii::info($post_log, 'fecshop_debug');
             Yii::$service->payment->paypal->receiveIpn($post);
         }
+    }
+    
+    public function actionCancel()
+    {
+        return Yii::$service->url->redirectByUrlKey('checkout/onepage');
     }
 }

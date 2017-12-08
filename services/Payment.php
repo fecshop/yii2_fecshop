@@ -149,28 +149,6 @@ class Payment extends Service
         }
     }
 
-    /** 废弃
-     * @property $payment_method | String 支付方式。
-     * @return string 得到跳转到第三方支付的url。
-     *                #从配置信息中获取
-     */
-    /*
-    public function getStandardPaymentUrl($payment_method = '')
-    {
-        if (!$payment_method) {
-            $payment_method = $this->getPaymentMethod();
-        }
-        if ($payment_method) {
-            $paymentConfig = $this->paymentConfig;
-            if (isset($paymentConfig['standard'][$payment_method]['payment_url'])) {
-                if (!empty($paymentConfig['standard'][$payment_method]['payment_url'])) {
-                    return $paymentConfig['standard'][$payment_method]['payment_url'];
-                }
-            }
-        }
-    }
-    */
-
     /**
      * @property $payment_method | String 支付方式。
      * @return string 用户名
@@ -297,6 +275,60 @@ class Payment extends Service
             return false;
         }
     }
+    
+    public function getStandardNvpUrl($payment_method = '')
+    {
+        if (!$payment_method) {
+            $payment_method = $this->getPaymentMethod();
+        }
+        if ($payment_method) {
+            $paymentConfig = $this->paymentConfig;
+            if (isset($paymentConfig['standard'][$payment_method]['nvp_url'])) {
+                if (!empty($paymentConfig['standard'][$payment_method]['nvp_url'])) {
+                    return $paymentConfig['standard'][$payment_method]['nvp_url'];
+                }
+            }
+        }
+    }
+    
+    /**
+     * @property $payment_method | String 支付方式。
+     * @return 返回进行数据交互的express的label。
+     */
+    public function getStandardLabel($payment_method = '')
+    {
+        if (!$payment_method) {
+            $payment_method = $this->getPaymentMethod();
+        }
+        if ($payment_method) {
+            $paymentConfig = $this->paymentConfig;
+            if (isset($paymentConfig['standard'][$payment_method]['label'])) {
+                if (!empty($paymentConfig['standard'][$payment_method]['label'])) {
+                    return $paymentConfig['standard'][$payment_method]['label'];
+                }
+            }
+        }
+    }
+    
+    
+    /**
+     * @property $payment_method | String 支付方式。
+     * @return 返回进行数据交互的express的signature。
+     */
+    public function getStandardReturnUrl($payment_method = '')
+    {
+        if (!$payment_method) {
+            $payment_method = $this->getPaymentMethod();
+        }
+        if ($payment_method) {
+            $paymentConfig = $this->paymentConfig;
+            if (isset($paymentConfig['standard'][$payment_method]['return_url'])) {
+                if (!empty($paymentConfig['standard'][$payment_method]['return_url'])) {
+                    return $this->getUrl($paymentConfig['standard'][$payment_method]['return_url']);
+                }
+            }
+        }
+    }
 
     //###################
     //# Express 部分   ##
@@ -394,6 +426,8 @@ class Payment extends Service
             }
         }
     }
+    
+    
 
     /**
      * @property $payment_method | String 支付方式。
@@ -434,24 +468,7 @@ class Payment extends Service
     }
     
     
-    /**
-     * @property $payment_method | String 支付方式。
-     * @return 返回进行数据交互的express的signature。
-     */
-    public function getStandardReturnUrl($payment_method = '')
-    {
-        if (!$payment_method) {
-            $payment_method = $this->getPaymentMethod();
-        }
-        if ($payment_method) {
-            $paymentConfig = $this->paymentConfig;
-            if (isset($paymentConfig['standard'][$payment_method]['return_url'])) {
-                if (!empty($paymentConfig['standard'][$payment_method]['return_url'])) {
-                    return $this->getUrl($paymentConfig['standard'][$payment_method]['return_url']);
-                }
-            }
-        }
-    }
+    
 
     /**
      * @property $payment_method | String 支付方式。
