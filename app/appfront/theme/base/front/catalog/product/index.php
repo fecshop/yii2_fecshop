@@ -29,7 +29,6 @@
 						</div>
 					</div>
 					<div class="item_code"><?= Yii::$service->page->translate->__('Item Code:'); ?> <?= $sku; ?></div>
-					
 					<div class="price_info">
 						<?php # 价格部分
 							$priceView = [
