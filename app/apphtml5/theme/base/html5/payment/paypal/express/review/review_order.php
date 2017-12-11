@@ -61,25 +61,25 @@ use fecshop\app\apphtml5\helper\Format;
 	<table class="onestepcheckout-totals">
 		<tbody>
 			<tr>
-				<td class="title"><?= Yii::$service->page->translate->__('Subtotal') ?></td>
+				<td class="totals"><?= Yii::$service->page->translate->__('Subtotal') ?></td>
 				<td class="value">
 					<span class="price"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['product_total']); ?></span>       
 				</td>
 			</tr>
 			<tr>
-				<td class="title"><?= Yii::$service->page->translate->__('Shipping Cost') ?></td>
+				<td class="totals"><?= Yii::$service->page->translate->__('Shipping Cost') ?></td>
 				<td class="value">
 					<span class="price"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['shipping_cost']); ?></span> 
 				</td>
 			</tr>
 			<tr>
-				<td class="title"><?= Yii::$service->page->translate->__('Discount') ?></td>
+				<td class="totals"><?= Yii::$service->page->translate->__('Discount') ?></td>
 				<td class="value">
 					<span class="price">-<?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['coupon_cost']); ?></span> 
 				</td>
 			</tr>
 			<tr class="grand-total">
-				<td class="title"><?= Yii::$service->page->translate->__('Grand Total') ?></td>
+				<td class="totals"><?= Yii::$service->page->translate->__('Grand Total') ?></td>
 				<td class="value">
 					<span class="price"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['grand_total']) ?></span>   
 				</td>

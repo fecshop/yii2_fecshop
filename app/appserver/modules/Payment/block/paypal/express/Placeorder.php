@@ -31,7 +31,9 @@ class Placeorder
      * 用户的支付方式.
      */
     public $_payment_method;
-
+    
+    public $_order_remark;
+    
     public function getLastData()
     {
         $post = Yii::$app->request->post();
@@ -66,7 +68,7 @@ class Placeorder
             // 将购物车数据，生成订单,生成订单后，不清空购物车，不扣除库存，在支付成功后在清空购物车。
             $innerTransaction = Yii::$app->db->beginTransaction();
             try {
-                $genarateStatus = Yii::$service->order->generateOrderByCart($this->_billing, $this->_shipping_method, $this->_payment_method, false,$token);
+                $genarateStatus = Yii::$service->order->generateOrderByCart($this->_billing, $this->_shipping_method, $this->_payment_method, false, $token, $this->_order_remark);
                 if ($genarateStatus) {
                     $innerTransaction->commit();
                 } else {
@@ -266,7 +268,20 @@ class Placeorder
             }
             
         }
-
+        // 订单备注信息不能超过1500字符
+        $orderRemarkStrMaxLen = Yii::$service->order->orderRemarkStrMaxLen;
+        $order_remark = isset($post['order_remark']) ? $post['order_remark'] : '';
+        if ($order_remark && $orderRemarkStrMaxLen) {
+            $order_remark_strlen = strlen($order_remark);
+            if ($order_remark_strlen > $orderRemarkStrMaxLen) {
+                Yii::$service->helper->errors->add('order remark string length can not gt '.$orderRemarkStrMaxLen);
+                
+                return false;
+            } else {
+                // 去掉xss攻击字符，关于防止xss攻击的yii文档参看：http://www.yiichina.com/doc/guide/2.0/security-best-practices#fang-zhi-xss-gong-ji
+                $this->_order_remark = $order_remark;
+            }
+        }
         $this->_shipping_method = $shipping_method;
         $this->_payment_method = $payment_method;
         Yii::$service->payment->setPaymentMethod($this->_payment_method);
