@@ -30,7 +30,8 @@ class StandardController extends AppserverController
         }
         $payment_method = Yii::$service->payment->paypal->standard_payment_method;
         Yii::$service->payment->setPaymentMethod($payment_method);
-        return $this->getBlock()->startExpress();
+        
+        return $this->getBlock()->startPayment();
     }
     /**
      * 2.Review  从paypal确认后返回的部分
@@ -42,6 +43,7 @@ class StandardController extends AppserverController
         }
         $payment_method = Yii::$service->payment->paypal->standard_payment_method;
         Yii::$service->payment->setPaymentMethod($payment_method);
+        
         return $this->getBlock('placeorder')->getLastData();
     }
     /**
@@ -52,7 +54,7 @@ class StandardController extends AppserverController
         if(Yii::$app->request->getMethod() === 'OPTIONS'){
             return [];
         }
-        \Yii::info('paypal ipn begin', 'fecshop_debug');
+        \Yii::info('paypal ipn begin standard', 'fecshop_debug');
         $payment_method = Yii::$service->payment->paypal->standard_payment_method;
         Yii::$service->payment->setPaymentMethod($payment_method);
         $post = Yii::$app->request->post();

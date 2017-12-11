@@ -109,25 +109,7 @@ class Payment extends Service
         }
     }
 
-    /**
-     * @property $payment_method | String 支付方式。
-     * @return 第三方网站发送ipn消息，告诉网站支付成功的url。
-     *                                                                            #从配置信息中获取
-     */
-    public function getStandardIpnUrl($payment_method = '')
-    {
-        if (!$payment_method) {
-            $payment_method = $this->getPaymentMethod();
-        }
-        if ($payment_method) {
-            $paymentConfig = $this->paymentConfig;
-            if (isset($paymentConfig['standard'][$payment_method]['ipn_url'])) {
-                if (!empty($paymentConfig['standard'][$payment_method]['ipn_url'])) {
-                    return $this->getUrl($paymentConfig['standard'][$payment_method]['ipn_url']);
-                }
-            }
-        }
-    }
+   
 
     /**
      * @property $payment_method | String 支付方式。
@@ -213,16 +195,16 @@ class Payment extends Service
      * @property $payment_method | String 支付方式。
      * @return 返回进行数据交互的express的api地址。
      */
-    public function getStandardApiUrl($payment_method = '')
+    public function getStandardWebscrUrl($payment_method = '')
     {
         if (!$payment_method) {
             $payment_method = $this->getPaymentMethod();
         }
         if ($payment_method) {
             $paymentConfig = $this->paymentConfig;
-            if (isset($paymentConfig['standard'][$payment_method]['api_url'])) {
-                if (!empty($paymentConfig['standard'][$payment_method]['api_url'])) {
-                    return $paymentConfig['standard'][$payment_method]['api_url'];
+            if (isset($paymentConfig['standard'][$payment_method]['webscr_url'])) {
+                if (!empty($paymentConfig['standard'][$payment_method]['webscr_url'])) {
+                    return $paymentConfig['standard'][$payment_method]['webscr_url'];
                 }
             }
         }
@@ -310,6 +292,24 @@ class Payment extends Service
         }
     }
     
+    /**
+     * @property $payment_method | String 支付方式。
+     * @return 返回进行数据交互的express的signature。
+     */
+    public function getStandardIpnUrl($payment_method = '')
+    {
+        if (!$payment_method) {
+            $payment_method = $this->getPaymentMethod();
+        }
+        if ($payment_method) {
+            $paymentConfig = $this->paymentConfig;
+            if (isset($paymentConfig['standard'][$payment_method]['ipn_url'])) {
+                if (!empty($paymentConfig['standard'][$payment_method]['ipn_url'])) {
+                    return $this->getUrl($paymentConfig['standard'][$payment_method]['ipn_url']);
+                }
+            }
+        }
+    }
     
     /**
      * @property $payment_method | String 支付方式。
@@ -356,16 +356,16 @@ class Payment extends Service
      * @property $payment_method | String 支付方式。
      * @return 返回进行数据交互的express的api地址。
      */
-    public function getExpressApiUrl($payment_method = '')
+    public function getExpressWebscrUrl($payment_method = '')
     {
         if (!$payment_method) {
             $payment_method = $this->getPaymentMethod();
         }
         if ($payment_method) {
             $paymentConfig = $this->paymentConfig;
-            if (isset($paymentConfig['express'][$payment_method]['api_url'])) {
-                if (!empty($paymentConfig['express'][$payment_method]['api_url'])) {
-                    return $paymentConfig['express'][$payment_method]['api_url'];
+            if (isset($paymentConfig['express'][$payment_method]['webscr_url'])) {
+                if (!empty($paymentConfig['express'][$payment_method]['webscr_url'])) {
+                    return $paymentConfig['express'][$payment_method]['webscr_url'];
                 }
             }
         }
@@ -512,7 +512,7 @@ class Payment extends Service
     
     
     
-     /**
+    /**
      * @property $payment_method | String 支付方式。
      * @return 返回进行数据交互的express的signature。
      */

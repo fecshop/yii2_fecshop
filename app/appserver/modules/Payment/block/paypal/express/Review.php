@@ -425,8 +425,8 @@ class Review
 
     public function expressReview()
     {
-        $getToken = Yii::$service->payment->paypal->getExpressToken();
-        $getPayerID = Yii::$service->payment->paypal->getExpressPayerID();
+        $getToken = Yii::$service->payment->paypal->getToken();
+        $getPayerID = Yii::$service->payment->paypal->getPayerID();
         if (!$getToken) {
             
             $code = Yii::$service->helper->appserver->order_paypal_express_get_token_fail;
@@ -466,25 +466,6 @@ class Review
      */
     public function setValue($getExpressCheckoutReturn)
     {
-        //var_dump($getExpressCheckoutReturn);
-        /*
-        $this->_paypal_email 			= $GetExpressCheckoutReturn['EMAIL'];
-        $this->_payer_id 				= $GetExpressCheckoutReturn['PAYERID'];
-        $this->_payer_status 			= $GetExpressCheckoutReturn['PAYERSTATUS'];
-        $this->_paypal_first_name 		= $GetExpressCheckoutReturn['FIRSTNAME'];
-        $this->_paypal_last_name 		= $GetExpressCheckoutReturn['LASTNAME'];
-        $this->_paypal_country_code 	= $GetExpressCheckoutReturn['COUNTRYCODE'];
-        //$this->_ship_to_name 			= $GetExpressCheckoutReturn['SHIPTONAME'];
-        $this->_ship_to_street 			= $GetExpressCheckoutReturn['SHIPTOSTREET'];
-        $this->_ship_to_street2 		= $GetExpressCheckoutReturn['SHIPTOSTREET2'];
-        $this->_ship_to_city 			= $GetExpressCheckoutReturn['SHIPTOCITY'];
-        $this->_ship_to_state 			= $GetExpressCheckoutReturn['SHIPTOSTATE'];
-        $this->_ship_to_zip 			= $GetExpressCheckoutReturn['SHIPTOZIP'];
-        $this->_ship_to_country_code 	= $GetExpressCheckoutReturn['SHIPTOCOUNTRYCODE'];
-        $this->_ship_to_country_name 	= $GetExpressCheckoutReturn['SHIPTOCOUNTRYNAME'];
-        $this->_address_status 			= $GetExpressCheckoutReturn['ADDRESSSTATUS'];
-        $this->_currency_code 			= $GetExpressCheckoutReturn['CURRENCYCODE'];
-        */
         if ($getExpressCheckoutReturn['FIRSTNAME']) {
             $this->_address['first_name'] = $getExpressCheckoutReturn['FIRSTNAME'];
         }

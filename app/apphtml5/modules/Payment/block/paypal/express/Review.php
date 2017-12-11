@@ -17,28 +17,6 @@ use Yii;
  */
 class Review
 {
-    ///public $_paypal_email;
-    //public $_payer_id;
-    //public $_payer_status;
-    //public $_paypal_first_name;
-    //public $_paypal_last_name;
-    //public $_paypal_country_code;
-    //public $_ship_to_name;
-    //public $_ship_to_street;
-    //public $_ship_to_street2;
-    //public $_ship_to_city;
-    //public $_ship_to_state;
-    //public $_ship_to_zip;
-    //public $_ship_to_country_code;
-    //public $_ship_to_country_name;
-    //public $_address_status;
-    //public $_currency_code;
-
-    //public $_shipping_method;
-
-    //public $_symbols;
-
-    //protected $_address;
     protected $_payment_method;
     protected $_shipping_method;
     protected $_address_view_file;
@@ -424,8 +402,8 @@ class Review
 
     public function expressReview()
     {
-        $getToken = Yii::$service->payment->paypal->getExpressToken();
-        $getPayerID = Yii::$service->payment->paypal->getExpressPayerID();
+        $getToken = Yii::$service->payment->paypal->getToken();
+        $getPayerID = Yii::$service->payment->paypal->getPayerID();
         if (!$getToken) {
             Yii::$service->page->message->AddError('paypal express token is empty');
 
@@ -451,25 +429,6 @@ class Review
      */
     public function setValue($getExpressCheckoutReturn)
     {
-        //var_dump($getExpressCheckoutReturn);
-        /*
-        $this->_paypal_email 			= $GetExpressCheckoutReturn['EMAIL'];
-        $this->_payer_id 				= $GetExpressCheckoutReturn['PAYERID'];
-        $this->_payer_status 			= $GetExpressCheckoutReturn['PAYERSTATUS'];
-        $this->_paypal_first_name 		= $GetExpressCheckoutReturn['FIRSTNAME'];
-        $this->_paypal_last_name 		= $GetExpressCheckoutReturn['LASTNAME'];
-        $this->_paypal_country_code 	= $GetExpressCheckoutReturn['COUNTRYCODE'];
-        //$this->_ship_to_name 			= $GetExpressCheckoutReturn['SHIPTONAME'];
-        $this->_ship_to_street 			= $GetExpressCheckoutReturn['SHIPTOSTREET'];
-        $this->_ship_to_street2 		= $GetExpressCheckoutReturn['SHIPTOSTREET2'];
-        $this->_ship_to_city 			= $GetExpressCheckoutReturn['SHIPTOCITY'];
-        $this->_ship_to_state 			= $GetExpressCheckoutReturn['SHIPTOSTATE'];
-        $this->_ship_to_zip 			= $GetExpressCheckoutReturn['SHIPTOZIP'];
-        $this->_ship_to_country_code 	= $GetExpressCheckoutReturn['SHIPTOCOUNTRYCODE'];
-        $this->_ship_to_country_name 	= $GetExpressCheckoutReturn['SHIPTOCOUNTRYNAME'];
-        $this->_address_status 			= $GetExpressCheckoutReturn['ADDRESSSTATUS'];
-        $this->_currency_code 			= $GetExpressCheckoutReturn['CURRENCYCODE'];
-        */
         if ($getExpressCheckoutReturn['FIRSTNAME']) {
             $this->_address['first_name'] = $getExpressCheckoutReturn['FIRSTNAME'];
         }

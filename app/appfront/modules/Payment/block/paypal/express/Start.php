@@ -19,7 +19,7 @@ class Start
 {
     
     
-    public function startExpress()
+    public function startPayment()
     {
         $checkStatus = $this->checkStockQty();
         if(!$checkStatus){
@@ -28,22 +28,22 @@ class Start
         $methodName_ = 'SetExpressCheckout';
         $nvpStr_ = Yii::$service->payment->paypal->getExpressTokenNvpStr();
         //echo $nvpStr_;exit;
-        $SetExpressCheckoutReturn = Yii::$service->payment->paypal->PPHttpPost5($methodName_, $nvpStr_);
-        //var_dump($SetExpressCheckoutReturn);
-        if (strtolower($SetExpressCheckoutReturn['ACK']) == 'success') {
-            $token = $SetExpressCheckoutReturn['TOKEN'];
+        $checkoutReturn = Yii::$service->payment->paypal->PPHttpPost5($methodName_, $nvpStr_);
+        //var_dump($checkoutReturn);
+        if (strtolower($checkoutReturn['ACK']) == 'success') {
+            $token = $checkoutReturn['TOKEN'];
             # 生成订单，订单中只有id,increment_id,token 三个字段有值。
             if($token){
                 if(!Yii::$service->order->generatePPExpressOrder($token)){
                     return false;
                 }
-                $redirectUrl = Yii::$service->payment->paypal->getSetExpressCheckoutUrl($token);
+                $redirectUrl = Yii::$service->payment->paypal->getExpressCheckoutUrl($token);
                 return Yii::$service->url->redirect($redirectUrl);
             }
-        } elseif (strtolower($SetExpressCheckoutReturn['ACK']) == 'failure') {
-            echo $SetExpressCheckoutReturn['L_LONGMESSAGE0'];
+        } elseif (strtolower($checkoutReturn['ACK']) == 'failure') {
+            echo $checkoutReturn['L_LONGMESSAGE0'];
         } else {
-            var_dump($SetExpressCheckoutReturn);
+            var_dump($checkoutReturn);
         }
     }
     // 检查购物车中产品的库存。此步只是初步检查，在快捷支付完成返回网站的时候，生成订单的时候，还要进一步检查产品库存，

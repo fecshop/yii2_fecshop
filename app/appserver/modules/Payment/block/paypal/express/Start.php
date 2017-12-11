@@ -20,7 +20,7 @@ class Start
     
     public $_errors;
     
-    public function startExpress()
+    public function startPayment()
     {
         $checkStatus = $this->checkStockQty();
         if(!$checkStatus){
@@ -37,10 +37,10 @@ class Start
         $cancel_url = Yii::$app->request->post('cancel_url');
         $nvpStr_ = Yii::$service->payment->paypal->getExpressTokenNvpStr('Login',$return_url,$cancel_url);
         //echo $nvpStr_;exit;
-        $SetExpressCheckoutReturn = Yii::$service->payment->paypal->PPHttpPost5($methodName_, $nvpStr_);
-        //var_dump($SetExpressCheckoutReturn);
-        if (strtolower($SetExpressCheckoutReturn['ACK']) == 'success') {
-            $token = $SetExpressCheckoutReturn['TOKEN'];
+        $checkoutReturn = Yii::$service->payment->paypal->PPHttpPost5($methodName_, $nvpStr_);
+        //var_dump($checkoutReturn);
+        if (strtolower($checkoutReturn['ACK']) == 'success') {
+            $token = $checkoutReturn['TOKEN'];
             # 生成订单，订单中只有id,increment_id,token 三个字段有值。
             if($token){
                 if(!Yii::$service->order->generatePPExpressOrder($token)){
@@ -50,7 +50,7 @@ class Start
                     
                     return $reponseData;
                 }
-                $redirectUrl = Yii::$service->payment->paypal->getSetExpressCheckoutUrl($token);
+                $redirectUrl = Yii::$service->payment->paypal->getExpressCheckoutUrl($token);
                 $code = Yii::$service->helper->appserver->status_success;
                 $data = [
                     'redirectUrl' => $redirectUrl,
@@ -62,7 +62,7 @@ class Start
         } else {
             $code = Yii::$service->helper->appserver->order_paypal_express_get_token_fail;
             $data = [
-                 'error' => isset($SetExpressCheckoutReturn['L_LONGMESSAGE0']) ? $SetExpressCheckoutReturn['L_LONGMESSAGE0'] : '',
+                 'error' => isset($checkoutReturn['L_LONGMESSAGE0']) ? $checkoutReturn['L_LONGMESSAGE0'] : '',
             ];
             $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
             

@@ -53,8 +53,8 @@ class Paypal extends Service
     const EXPRESS_TOKEN     = 'paypal_express_token';
     const EXPRESS_PAYER_ID  = 'paypal_express_payer_id';
     
-    protected $expressPayerID;
-    protected $expressToken;
+    protected $payerID;
+    protected $token;
     // 允许更改的订单状态，不存在这里面的订单状态不允许修改
     protected $_allowChangOrderStatus;
     
@@ -114,7 +114,6 @@ class Paypal extends Service
     protected function verifySecurity($post)
     {
         $this->_postData = $post;
-        //Yii::$service->payment->setPaymentMethod('paypal_express');
         $verifyUrl = $this->getVerifyUrl();
         \Yii::info('verifyUrl:'.$verifyUrl, 'fecshop_debug');
         $verifyReturn = $this->curlGet($verifyUrl);
@@ -140,9 +139,9 @@ class Paypal extends Service
         $urlParamStr    = substr($urlParamStr, 1);
         $current_payment_method = Yii::$service->payment->getPaymentMethod();
         if ($current_payment_method == $this->standard_payment_method) {
-            $verifyUrl = Yii::$service->payment->getStandardApiUrl($this->standard_payment_method);
+            $verifyUrl = Yii::$service->payment->getStandardWebscrUrl($this->standard_payment_method);
         } else {
-            $verifyUrl = Yii::$service->payment->getExpressApiUrl($this->express_payment_method);
+            $verifyUrl = Yii::$service->payment->getExpressWebscrUrl($this->express_payment_method);
         }
         $verifyUrl      = $verifyUrl.'?'.$urlParamStr;
 
@@ -378,32 +377,28 @@ class Paypal extends Service
 
     /**
      * @property $token | String , 通过 下面的 PPHttpPost5 方法返回的paypal express的token
-     * @return String，通过token得到跳转的 paypal url，
-     *                                             得到上面的url后，进行跳转到paypal，然后确认，然后返回到fecshop，paypal会传递货运地址等信息
-     *                                             到fecshop，这样用户不需要手动填写货运地址等信息。因此，这种方式为快捷支付。
+     * @return String，通过token得到跳转的 paypal url，通过这个url跳转到paypal登录页面，进行支付的开始
      */
-    public function getSetExpressCheckoutUrl($token)
+    public function getExpressCheckoutUrl($token)
     {
         if ($token) {
-            $ApiUrl = Yii::$service->payment->getExpressApiUrl($this->express_payment_method);
+            $webscrUrl = Yii::$service->payment->getExpressWebscrUrl($this->express_payment_method);
 
-            return $ApiUrl.'?cmd=_express-checkout&token='.urlencode($token);
+            return $webscrUrl.'?cmd=_express-checkout&token='.urlencode($token);
         }
     }
     
     
     /**
-     * @property $token | String , 通过 下面的 PPHttpPost5 方法返回的paypal express的token
-     * @return String，通过token得到跳转的 paypal url，
-     *                                             得到上面的url后，进行跳转到paypal，然后确认，然后返回到fecshop，paypal会传递货运地址等信息
-     *                                             到fecshop，这样用户不需要手动填写货运地址等信息。因此，这种方式为快捷支付。
+     * @property $token | String , 通过 下面的 PPHttpPost5 方法返回的paypal standard的token
+     * @return String，通过token得到跳转的 paypal url，通过这个url跳转到paypal登录页面，进行支付的开始
      */
-    public function getSetStandardCheckoutUrl($token)
+    public function getStandardCheckoutUrl($token)
     {
         if ($token) {
-            $ApiUrl = Yii::$service->payment->getStandardApiUrl($this->standard_payment_method);
+            $webscrUrl = Yii::$service->payment->getStandardWebscrUrl($this->standard_payment_method);
 
-            return $ApiUrl.'?useraction=commit&cmd=_express-checkout&token='.urlencode($token);
+            return $webscrUrl.'?useraction=commit&cmd=_express-checkout&token='.urlencode($token);
         }
     }
 
@@ -515,14 +510,14 @@ class Paypal extends Service
     }
 
     /**
-     * 【paypal快捷支付部分】api发送付款
-     *  通过该函数，将参数组合成字符串，通过api发送给paypal进行付款。
+     * 【paypal支付部分】api发送付款请求的参数部分
+     *  通过该函数，将参数组合成字符串，为下一步api发送给paypal进行付款做准备
      */
-    public function getExpressCheckoutPaymentNvpStr($token)
+    public function getCheckoutPaymentNvpStr($token)
     {
         $nvp_array = [];
-        $nvp_array['PAYERID'] = $this->getExpressPayerID();
-        $nvp_array['TOKEN']   = $this->getExpressToken();
+        $nvp_array['PAYERID'] = $this->getPayerID();
+        $nvp_array['TOKEN']   = $this->getToken();
         $nvp_array['PAYMENTREQUEST_0_PAYMENTACTION'] = 'Sale';
         $nvp_array['VERSION'] = $this->version;
         // https://developer.paypal.com/docs/classic/api/merchant/SetExpressCheckout_API_Operation_NVP/
@@ -580,7 +575,7 @@ class Paypal extends Service
     {
         $nvp_array = [];
         $nvp_array['VERSION'] = Yii::$service->payment->paypal->version;
-        $nvp_array['token'] = Yii::$service->payment->paypal->getExpressToken();
+        $nvp_array['token'] = Yii::$service->payment->paypal->getToken();
 
         return $this->getRequestUrlStrByArray($nvp_array);
     }
@@ -589,7 +584,8 @@ class Paypal extends Service
      * @property $landingPage | String ，访问api的类型，譬如login
      * 【paypal快捷支付部分】通过购物车中的数据，组合成访问paypal express api的url
      * 这里返回的的字符串，是快捷支付部分获取token和payerId的参数。
-     * 通过这些参数最终得到paypal express的token和payerId
+     * 将返回的参数，传递给Yii::$service->payment->paypal->PPHttpPost5($methodName_, $nvpStr_)
+     * 最终得到paypal express的token和payerId
      */
     public function getExpressTokenNvpStr($landingPage = 'Login',$return_url='',$cancel_url='')
     {
@@ -646,9 +642,10 @@ class Paypal extends Service
     
     /**
      * @property $landingPage | String ，访问api的类型，譬如login
-     * 【paypal快捷支付部分】通过购物车中的数据，组合成访问paypal express api的url
-     * 这里返回的的字符串，是快捷支付部分获取token和payerId的参数。
-     * 通过这些参数最终得到paypal express的token和payerId
+     * 【paypal标准支付部分】通过订单中的数据，组合成访问paypal api的url
+     * 这里返回的的字符串，是标准支付部分获取token和payerId的参数。
+     *  通过 $checkoutReturn = Yii::$service->payment->paypal->PPHttpPost5($methodName_, $nvpStr_);
+     *  获取token和payerId的参数。（$nvpStr_ 就是本函数的返回值）
      */
     public function getStandardTokenNvpStr($landingPage = 'Login',$return_url='',$cancel_url='')
     {
@@ -703,48 +700,48 @@ class Paypal extends Service
     }
 
     /**
-     * 从get参数里得到express支付的token
+     * 从get参数里得到paypal支付的token
      */
-    public function getExpressToken()
+    public function getToken()
     {
-        if(!$this->expressToken){
+        if(!$this->token){
             $token = Yii::$app->request->get('token');
             if(!$token){
                 $token = Yii::$app->request->post('token');
             }
             $token = \Yii::$service->helper->htmlEncode($token);
             if ($token) {
-                $this->expressToken = $token;
+                $this->token = $token;
             }
         }
-        return $this->expressToken;
+        return $this->token;
     }
 
     /**
-     * 从get参数里得到express支付的PayerID
+     * 从get参数里得到paypal支付的PayerID
      */
-    public function getExpressPayerID()
+    public function getPayerID()
     {
-        if(!$this->expressPayerID){
-            $PayerID = Yii::$app->request->get('PayerID');
-            if(!$PayerID){
-                $PayerID = Yii::$app->request->post('PayerID');
+        if(!$this->payerID){
+            $payerID = Yii::$app->request->get('PayerID');
+            if(!$payerID){
+                $payerID = Yii::$app->request->post('PayerID');
             }
-            $PayerID = \Yii::$service->helper->htmlEncode($PayerID);
-            if ($PayerID) {
-                $this->expressPayerID = $PayerID;
+            $payerID = \Yii::$service->helper->htmlEncode($payerID);
+            if ($payerID) {
+                $this->payerID = $payerID;
             }
         }
-        return $this->expressPayerID;
+        return $this->payerID;
     }
 
     /**
-     * @property $doExpressCheckoutReturn | Array ， 上面的 函数 doExpressCheckoutPayment 返回的数据
-     * 快捷支付付款状态提交后，更新订单的支付部分的信息。
+     * @property $doCheckoutReturn | Array ， 
+     * paypal付款状态提交后，更新订单的支付部分的信息。
      */
-    public function updateExpressOrderPayment($DoExpressCheckoutReturn,$token)
+    public function updateOrderPayment($doCheckoutReturn,$token)
     {
-        if ($DoExpressCheckoutReturn) {
+        if ($doCheckoutReturn) {
             $order = Yii::$service->order->getByPaymentToken($token);
             $order_cancel_status = Yii::$service->order->payment_status_canceled;
             // 如果订单状态被取消，那么不能进行支付。
@@ -756,23 +753,23 @@ class Paypal extends Service
             $updateArr = [];
             if ($order['increment_id']) {
                 //echo 'bbb';
-                $updateArr['txn_id'] = $DoExpressCheckoutReturn['PAYMENTINFO_0_TRANSACTIONID'];
-                $updateArr['txn_type'] = $DoExpressCheckoutReturn['PAYMENTINFO_0_TRANSACTIONTYPE'];
-                $PAYMENTINFO_0_AMT = $DoExpressCheckoutReturn['PAYMENTINFO_0_AMT'];
-                $updateArr['payment_fee'] = $DoExpressCheckoutReturn['PAYMENTINFO_0_FEEAMT'];
+                $updateArr['txn_id'] = $doCheckoutReturn['PAYMENTINFO_0_TRANSACTIONID'];
+                $updateArr['txn_type'] = $doCheckoutReturn['PAYMENTINFO_0_TRANSACTIONTYPE'];
+                $PAYMENTINFO_0_AMT = $doCheckoutReturn['PAYMENTINFO_0_AMT'];
+                $updateArr['payment_fee'] = $doCheckoutReturn['PAYMENTINFO_0_FEEAMT'];
 
-                $currency = $DoExpressCheckoutReturn['PAYMENTINFO_0_CURRENCYCODE'];
+                $currency = $doCheckoutReturn['PAYMENTINFO_0_CURRENCYCODE'];
                 $updateArr['base_payment_fee'] = Yii::$service->page->currency->getBaseCurrencyPrice($updateArr['payment_fee'], $currency);
-                $updateArr['payer_id'] = $this->getExpressPayerID();
+                $updateArr['payer_id'] = $this->getPayerID();
 
-                $updateArr['correlation_id'] = $DoExpressCheckoutReturn['CORRELATIONID'];
-                $updateArr['protection_eligibility'] = $DoExpressCheckoutReturn['PAYMENTINFO_0_PROTECTIONELIGIBILITY'];
-                $updateArr['protection_eligibility_type'] = $DoExpressCheckoutReturn['PAYMENTINFO_0_PROTECTIONELIGIBILITYTYPE'];
-                $updateArr['secure_merchant_account_id'] = $DoExpressCheckoutReturn['PAYMENTINFO_0_SECUREMERCHANTACCOUNTID'];
-                $updateArr['build'] = $DoExpressCheckoutReturn['BUILD'];
-                $updateArr['payment_type'] = $DoExpressCheckoutReturn['PAYMENTINFO_0_PAYMENTTYPE'];
-                $updateArr['paypal_order_datetime'] = date('Y-m-d H:i:s', $DoExpressCheckoutReturn['PAYMENTINFO_0_ORDERTIME']);
-                $PAYMENTINFO_0_PAYMENTSTATUS = $DoExpressCheckoutReturn['PAYMENTINFO_0_PAYMENTSTATUS'];
+                $updateArr['correlation_id'] = $doCheckoutReturn['CORRELATIONID'];
+                $updateArr['protection_eligibility'] = $doCheckoutReturn['PAYMENTINFO_0_PROTECTIONELIGIBILITY'];
+                $updateArr['protection_eligibility_type'] = $doCheckoutReturn['PAYMENTINFO_0_PROTECTIONELIGIBILITYTYPE'];
+                $updateArr['secure_merchant_account_id'] = $doCheckoutReturn['PAYMENTINFO_0_SECUREMERCHANTACCOUNTID'];
+                $updateArr['build'] = $doCheckoutReturn['BUILD'];
+                $updateArr['payment_type'] = $doCheckoutReturn['PAYMENTINFO_0_PAYMENTTYPE'];
+                $updateArr['paypal_order_datetime'] = date('Y-m-d H:i:s', $doCheckoutReturn['PAYMENTINFO_0_ORDERTIME']);
+                $PAYMENTINFO_0_PAYMENTSTATUS = $doCheckoutReturn['PAYMENTINFO_0_PAYMENTSTATUS'];
                 $updateArr['updated_at'] = time(); 
                 if (
                     strtolower($PAYMENTINFO_0_PAYMENTSTATUS) == $this->payment_status_completed
@@ -843,13 +840,13 @@ class Paypal extends Service
                         );
                     }
                 } else {
-                    Yii::$service->helper->errors->add('paypal express payment is not complete , current payment status is '.$PAYMENTINFO_0_PAYMENTSTATUS);
+                    Yii::$service->helper->errors->add('paypal payment is not complete , current payment status is '.$PAYMENTINFO_0_PAYMENTSTATUS);
                 }
             } else {
                 Yii::$service->helper->errors->add('current order is not exist');
             }
         } else {
-            Yii::$service->helper->errors->add('ExpressCheckoutReturn is empty');
+            Yii::$service->helper->errors->add('CheckoutReturn is empty');
         }
 
         return false;

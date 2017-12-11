@@ -26,7 +26,7 @@ class StandardController extends AppfrontController
         $payment_method = Yii::$service->payment->paypal->standard_payment_method;
         Yii::$service->payment->setPaymentMethod($payment_method);
         
-        return $this->getBlock()->startExpress();
+        return $this->getBlock()->startPayment();
     }
 
     // 2.Review  从paypal确认后返回

@@ -24,7 +24,7 @@ class ExpressController extends AppfrontController
     {
         $payment_method = Yii::$service->payment->paypal->express_payment_method;
         Yii::$service->payment->setPaymentMethod($payment_method);
-        $data = $this->getBlock()->startExpress();
+        $data = $this->getBlock()->startPayment();
     }
 
     // 2.Review  从paypal确认后返回
@@ -47,9 +47,10 @@ class ExpressController extends AppfrontController
         }
     }
     
+    
     public function actionIpn()
     {
-        \Yii::info('paypal ipn begin', 'fecshop_debug');
+        \Yii::info('paypal ipn begin express', 'fecshop_debug');
         $payment_method = Yii::$service->payment->paypal->express_payment_method;
         Yii::$service->payment->setPaymentMethod($payment_method);
         $post = Yii::$app->request->post();

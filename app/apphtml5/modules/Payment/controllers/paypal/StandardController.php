@@ -19,31 +19,28 @@ use Yii;
 class StandardController extends AppfrontController
 {
     public $enableCsrfValidation = false;
-    
-    /**
-     * 1.start部分，跳转到paypal前的部分
-     */
+
     public function actionStart()
     {
         $payment_method = Yii::$service->payment->paypal->standard_payment_method;
         Yii::$service->payment->setPaymentMethod($payment_method);
-        return $this->getBlock()->startExpress();
+        
+        return $this->getBlock()->startPayment();
     }
-    /**
-     * 2.Review  从paypal确认后返回的部分
-     */
+
+    // 2.Review  从paypal确认后返回
     public function actionReview()
     {
         $payment_method = Yii::$service->payment->paypal->standard_payment_method;
         Yii::$service->payment->setPaymentMethod($payment_method);
+        
         $this->getBlock('placeorder')->getLastData();
     }
-    /**
-     * IPN，paypal消息接收部分
-     */
+    
+    
     public function actionIpn()
     {
-        \Yii::info('paypal ipn begin', 'fecshop_debug');
+        \Yii::info('paypal ipn begin standard', 'fecshop_debug');
         $payment_method = Yii::$service->payment->paypal->standard_payment_method;
         Yii::$service->payment->setPaymentMethod($payment_method);
         $post = Yii::$app->request->post();
@@ -57,21 +54,20 @@ class StandardController extends AppfrontController
             Yii::$service->payment->paypal->receiveIpn($post);
         }
     }
-    /**
-     * paypal 取消后的部分。
-     */
+    
+    
     public function actionCancel()
     {
         $innerTransaction = Yii::$app->db->beginTransaction();
-        try {
+		try {
             if(Yii::$service->order->cancel()){
                 $innerTransaction->commit();
             }else{
                 $innerTransaction->rollBack();
             }
-        } catch (Exception $e) {
-            $innerTransaction->rollBack();
-        }
+		} catch (Exception $e) {
+			$innerTransaction->rollBack();
+		}
         return Yii::$service->url->redirectByUrlKey('checkout/onepage');
     }
 }

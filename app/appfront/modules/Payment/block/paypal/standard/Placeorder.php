@@ -39,18 +39,16 @@ class Placeorder
             Yii::$service->helper->errors->add('token can not empty');
             return false;
         }
-        
-        //echo '33'.'<br>';
-        echo $token.'<br>';
+        //echo $token.'<br>';
         // 得到当前的订单信息
-        $doExpressCheckoutReturn = $this->doExpressCheckoutPayment($token);
-        if ($doExpressCheckoutReturn) {
-            //var_dump($doExpressCheckoutReturn);
-            $ExpressOrderPayment = Yii::$service->payment->paypal->updateExpressOrderPayment($doExpressCheckoutReturn,$token);
+        $doCheckoutReturn = $this->doCheckoutPayment($token);
+        if ($doCheckoutReturn) {
+            //var_dump($doCheckoutReturn);
+            $orderPayment = Yii::$service->payment->paypal->updateOrderPayment($doCheckoutReturn,$token);
             // 如果支付成功，并把信息更新到了订单数据中，则进行下面的操作。
             //echo 444;
-            //var_dump($ExpressOrderPayment);
-            if ($ExpressOrderPayment) {
+            //var_dump($orderPayment);
+            if ($orderPayment) {
                 //echo 55;
                 // 支付成功后，在清空购物车数据。而不是在生成订单的时候。
                 Yii::$service->cart->clearCartProductAndCoupon();
@@ -77,7 +75,7 @@ class Placeorder
             Yii::$service->url->redirectByUrlKey('checkout/onepage');
         }
         // 如果订单支付过程中失败，将订单取消掉
-        if (!$doExpressCheckoutReturn || !$ExpressOrderPayment) {
+        if (!$doCheckoutReturn || !$orderPayment) {
             $innerTransaction = Yii::$app->db->beginTransaction();
             try {
                 if(Yii::$service->order->cancel()){
@@ -97,21 +95,21 @@ class Placeorder
      * @property $token | String 
      * 通过paypal的api接口，进行支付下单
      */
-    public function doExpressCheckoutPayment($token)
+    public function doCheckoutPayment($token)
     {
         $methodName_ = 'DoExpressCheckoutPayment';
-        $nvpStr_ = Yii::$service->payment->paypal->getExpressCheckoutPaymentNvpStr($token);
+        $nvpStr_ = Yii::$service->payment->paypal->getCheckoutPaymentNvpStr($token);
         //echo '<br/>nvpStr_:<br/>"'.$nvpStr_.'<br/><br/>';
-        $DoExpressCheckoutReturn = Yii::$service->payment->paypal->PPHttpPost5($methodName_, $nvpStr_);
-        //echo '<br/>DoExpressCheckoutReturn <br/><br/>';
-        //var_dump($DoExpressCheckoutReturn);
-        //echo '<br/>DoExpressCheckoutReturn <br/><br/>';
+        $doCheckoutReturn = Yii::$service->payment->paypal->PPHttpPost5($methodName_, $nvpStr_);
+        //echo '<br/>doCheckoutReturn <br/><br/>';
+        //var_dump($doCheckoutReturn);
+        //echo '<br/>doCheckoutReturn <br/><br/>';
         //exit;
-        if (strstr(strtolower($DoExpressCheckoutReturn['ACK']), 'success')) {
-            return $DoExpressCheckoutReturn;
+        if (strstr(strtolower($doCheckoutReturn['ACK']), 'success')) {
+            return $doCheckoutReturn;
         } else {
-            if ($DoExpressCheckoutReturn['ACK'] == 'Failure') {
-                $message = $DoExpressCheckoutReturn['L_LONGMESSAGE0'];
+            if ($doCheckoutReturn['ACK'] == 'Failure') {
+                $message = $doCheckoutReturn['L_LONGMESSAGE0'];
                 // 添加报错信息。
                 //Message::error($message);
                 Yii::$service->helper->errors->add($message);

@@ -71,10 +71,10 @@ class Placeorder
                     //echo 22;
                     if ($genarateStatus) {
                         // 得到当前的订单信息
-                        $doExpressCheckoutReturn = $this->doExpressCheckoutPayment($token);
-                        //echo $doExpressCheckoutReturn;exit;
+                        $doCheckoutReturn = $this->doCheckoutPayment($token);
+                        //echo $doCheckoutReturn;exit;
                         //echo 333;
-                        if ($doExpressCheckoutReturn) {
+                        if ($doCheckoutReturn) {
                             $increment_id = Yii::$service->order->getSessionIncrementId();
                             $innerTransaction = Yii::$app->db->beginTransaction();
                             try {
@@ -83,10 +83,10 @@ class Placeorder
                                     $innerTransaction->rollBack();
                                     return false;
                                 }
-                                $ExpressOrderPayment = Yii::$service->payment->paypal->updateExpressOrderPayment($doExpressCheckoutReturn,$token);
+                                $orderPayment = Yii::$service->payment->paypal->updateOrderPayment($doCheckoutReturn,$token);
                                 // 如果支付成功，并把信息更新到了订单数据中，则进行下面的操作。
                                 //echo 444;
-                                if ($ExpressOrderPayment) {
+                                if ($orderPayment) {
                                     // 查看订单是否被多次支付，如果被多次支付，则回滚
                                     
                                     // 支付成功后，在清空购物车数据。而不是在生成订单的时候。
@@ -118,7 +118,7 @@ class Placeorder
                         }
                         // 如果订单支付过程中失败，将订单取消掉
                         /* 2017-09-12修改，认为没有必要取消订单，如果取消掉，在支付页面就无法继续下单，因此注释掉下面的代码
-                        if (!$doExpressCheckoutReturn || !$ExpressOrderPayment) {
+                        if (!$doCheckoutReturn || !$orderPayment) {
                             $innerTransaction = Yii::$app->db->beginTransaction();
                             try {
                                 if(Yii::$service->order->cancel()){
@@ -146,19 +146,19 @@ class Placeorder
      * @property $token | String 
      * 通过paypal的api接口，进行支付下单
      */
-    public function doExpressCheckoutPayment($token)
+    public function doCheckoutPayment($token)
     {
         $methodName_ = 'DoExpressCheckoutPayment';
-        $nvpStr_ = Yii::$service->payment->paypal->getExpressCheckoutPaymentNvpStr($token);
+        $nvpStr_ = Yii::$service->payment->paypal->getCheckoutPaymentNvpStr($token);
         //echo $nvpStr_;exit;
-        $DoExpressCheckoutReturn = Yii::$service->payment->paypal->PPHttpPost5($methodName_, $nvpStr_);
-        //var_dump($DoExpressCheckoutReturn);
+        $doCheckoutReturn = Yii::$service->payment->paypal->PPHttpPost5($methodName_, $nvpStr_);
+        //var_dump($doCheckoutReturn);
         //exit;
-        if (strstr(strtolower($DoExpressCheckoutReturn['ACK']), 'success')) {
-            return $DoExpressCheckoutReturn;
+        if (strstr(strtolower($doCheckoutReturn['ACK']), 'success')) {
+            return $doCheckoutReturn;
         } else {
-            if ($DoExpressCheckoutReturn['ACK'] == 'Failure') {
-                $message = $DoExpressCheckoutReturn['L_LONGMESSAGE0'];
+            if ($doCheckoutReturn['ACK'] == 'Failure') {
+                $message = $doCheckoutReturn['L_LONGMESSAGE0'];
                 // 添加报错信息。
                 //Message::error($message);
                 Yii::$service->helper->errors->add($message);
