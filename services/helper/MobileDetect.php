@@ -27,7 +27,9 @@
 
 namespace fecshop\services\helper;
 
-class MobileDetect
+use fecshop\services\Service;
+
+class MobileDetect extends Service
 {
     /**
      * Mobile detection type.

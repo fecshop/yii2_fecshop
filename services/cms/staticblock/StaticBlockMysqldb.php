@@ -11,12 +11,13 @@ namespace fecshop\services\cms\staticblock;
 
 //use fecshop\models\mysqldb\cms\StaticBlock;
 use Yii;
+use fecshop\services\Service;
 
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class StaticBlockMysqldb implements StaticBlockInterface
+class StaticBlockMysqldb extends Service implements StaticBlockInterface
 {
     public $numPerPage = 20;
     protected $_staticBlockModelName = '\fecshop\models\mysqldb\cms\StaticBlock';
@@ -29,7 +30,8 @@ class StaticBlockMysqldb implements StaticBlockInterface
             'content',
         ];
     
-    public function __construct(){
+    public function init(){
+        parent::init();
         list($this->_staticBlockModelName,$this->_staticBlockModel) = Yii::mapGet($this->_staticBlockModelName);  
     }
     

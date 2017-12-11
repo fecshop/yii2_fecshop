@@ -52,6 +52,7 @@ class Session extends Service
      */
     public function init()
     {
+        parent::init();
         if(\Yii::$app->user->enableSession == true){
             $this->_session = new SessionPhp; // phpsession
         }else {

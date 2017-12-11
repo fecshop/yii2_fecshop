@@ -23,7 +23,8 @@ class AdminUser extends Service
     protected $_adminUserLoginModel;
     
     
-     public function __construct(){
+     public function init(){
+        parent::init();
         list($this->_adminUserLoginModelName,$this->_adminUserLoginModel) = \Yii::mapGet($this->_adminUserLoginModelName);  
          
     }

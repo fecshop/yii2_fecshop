@@ -9,21 +9,22 @@
 
 namespace fecshop\services\category;
 
-//use fecshop\models\mongodb\Category;
+use fecshop\services\Service;
 use Yii;
 
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class CategoryMongodb implements CategoryInterface
+class CategoryMongodb extends Service implements CategoryInterface
 {
     public $numPerPage = 20;
     
     protected $_categoryModelName = '\fecshop\models\mongodb\Category';
     protected $_categoryModel;
     
-    public function __construct(){
+    public function init(){
+        parent::init();
         list($this->_categoryModelName,$this->_categoryModel) = Yii::mapGet($this->_categoryModelName);  
     }
     

@@ -12,18 +12,20 @@ namespace fecshop\services\cms\article;
 //use fecshop\models\mongodb\cms\Article;
 use Yii;
 use yii\base\InvalidValueException;
+use fecshop\services\Service;
 
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class ArticleMongodb implements ArticleInterface
+class ArticleMongodb extends Service implements ArticleInterface
 {
     public $numPerPage = 20;
     protected $_articleModelName = '\fecshop\models\mongodb\cms\Article';
     protected $_articleModel;
     
-    public function __construct(){
+    public function init(){
+        parent::init();
         list($this->_articleModelName,$this->_articleModel) = Yii::mapGet($this->_articleModelName);  
     }
     

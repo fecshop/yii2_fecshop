@@ -27,6 +27,7 @@ class Breadcrumbs extends Service
 
     public function init()
     {
+        parent::init();
         if ($this->active) {
             if ($this->homeName) {
                 $items['name'] = $this->homeName;

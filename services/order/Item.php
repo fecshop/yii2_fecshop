@@ -23,7 +23,8 @@ class Item extends Service
     protected $_itemModelName = '\fecshop\models\mysqldb\order\Item';
     protected $_itemModel;
     
-    public function __construct(){
+    public function init(){
+        parent::init();
         list($this->_itemModelName,$this->_itemModel) = \Yii::mapGet($this->_itemModelName);  
     }
     /**

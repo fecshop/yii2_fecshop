@@ -25,7 +25,8 @@ class Address extends Service
     protected $_addressModelName = '\fecshop\models\mysqldb\customer\Address';
     protected $_addressModel;
     
-    public function __construct(){
+    public function init(){
+        parent::init();
         list($this->_addressModelName,$this->_addressModel) = \Yii::mapGet($this->_addressModelName);  
     }
     

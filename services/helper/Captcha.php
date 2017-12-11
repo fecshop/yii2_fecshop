@@ -34,8 +34,9 @@ class Captcha extends Service
      *  1. 生成图片，.
      */
     //构造方法初始化
-    public function __construct()
+    public function init()
     {
+        parent::init();
         $this->font = dirname(__FILE__).'/captcha/Elephant.ttf'; //注意字体路径要写对，否则显示不了图片
     }
 

@@ -22,7 +22,8 @@ class Newsletter extends Service
     protected $_newsletterModelName = '\fecshop\models\mongodb\customer\Newsletter';
     protected $_newsletterModel;
     
-    public function __construct(){
+    public function init(){
+        parent::init();
         list($this->_newsletterModelName,$this->_newsletterModel) = \Yii::mapGet($this->_newsletterModelName);  
     }
     /**

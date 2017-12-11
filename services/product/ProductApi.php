@@ -26,7 +26,8 @@ class ProductApi
     protected $_productModelName = '\fecshop\models\mongodb\Product';
     protected $_productModel;
     
-    public function __construct(){
+    public function init(){
+        parent::init();
         list($this->_productModelName,$this->_productModel) = \Yii::mapGet($this->_productModelName);  
     }
     

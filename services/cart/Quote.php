@@ -32,7 +32,8 @@ class Quote extends Service
      */
     protected $cartInfo;
     
-    public function __construct(){
+    public function init(){
+        parent::init();
         list($this->_cartModelName,$this->_cartModel) = Yii::mapGet($this->_cartModelName);  
     }
     /**

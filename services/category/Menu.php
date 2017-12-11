@@ -23,7 +23,8 @@ class Menu extends Service
     protected $_categoryModelName = '\fecshop\models\mongodb\Category';
     protected $_categoryModel;
     
-    public function __construct(){
+    public function init(){
+        parent::init();
         list($this->_categoryModelName,$this->_categoryModel) = Yii::mapGet($this->_categoryModelName);  
     }
     /**

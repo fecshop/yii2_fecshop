@@ -61,7 +61,8 @@ class Paypal extends Service
     protected $_ipnMessageModelName = '\fecshop\models\mysqldb\IpnMessage';
     protected $_ipnMessageModel;
     
-    public function __construct(){
+    public function init(){
+        parent::init();
         list($this->_ipnMessageModelName,$this->_ipnMessageModel) = \Yii::mapGet($this->_ipnMessageModelName);  
         $this->_allowChangOrderStatus = [
             Yii::$service->order->payment_status_pending,
@@ -306,7 +307,7 @@ class Paypal extends Service
             
             if ($orderstatus) {
                 $updateArr['order_status'] = $orderstatus;
-                $this->_order::updateAll(
+                $this->_order->updateAll(
                     $updateArr,
                     [
                         'and',
@@ -326,7 +327,7 @@ class Paypal extends Service
                     // 只有存在于 $this->_allowChangOrderStatus 数组的状态，才允许更改，按照目前的设置，取消了的订单是不允许更改的
                     $orderstatus = Yii::$service->order->payment_status_confirmed;
                     $updateArr['order_status'] = $orderstatus;
-                    $updateColumn = $this->_order::updateAll(
+                    $updateColumn = $this->_order->updateAll(
                         $updateArr,
                         [
                             'and',
@@ -348,7 +349,7 @@ class Paypal extends Service
                     // pending 代表信用卡预付方式，需要等待paypal从信用卡中把钱扣除，因此订单状态是processing
                     $orderstatus = Yii::$service->order->payment_status_processing;
                     $updateArr['order_status'] = $orderstatus;
-                    $updateColumn = $this->_order::updateAll(
+                    $updateColumn = $this->_order->updateAll(
                         $updateArr,
                         [
                             'and',
@@ -779,7 +780,7 @@ class Paypal extends Service
                     $order_status = Yii::$service->order->payment_status_confirmed;
                     if ($currency == $order['order_currency_code'] && $PAYMENTINFO_0_AMT == $order['grand_total']) {
                         $updateArr['order_status'] = $order_status;          
-                        $updateColumn = $order::updateAll(
+                        $updateColumn = $order->updateAll(
                             $updateArr,
                             [
                                 'and',
@@ -800,7 +801,7 @@ class Paypal extends Service
                         Yii::$service->helper->errors->add('The amount of payment is inconsistent with the amount of the order');
                         $order_status = Yii::$service->order->payment_status_suspected_fraud;
                         $updateArr['order_status'] = $order_status;  
-                        $updateColumn = $order::updateAll(
+                        $updateColumn = $order->updateAll(
                             $updateArr,
                             [
                                 'and',
@@ -815,7 +816,7 @@ class Paypal extends Service
                     $order_status = Yii::$service->order->payment_status_processing;
                     if ($currency == $order['order_currency_code'] && $PAYMENTINFO_0_AMT == $order['grand_total']) {
                         $updateArr['order_status'] = $order_status;   
-                        $updateColumn = $order::updateAll(
+                        $updateColumn = $order->updateAll(
                             $updateArr,
                             [
                                 'and',
@@ -830,7 +831,7 @@ class Paypal extends Service
                         Yii::$service->helper->errors->add('The amount of payment is inconsistent with the amount of the order');
                         $order_status = Yii::$service->order->payment_status_suspected_fraud;
                         $updateArr['order_status'] = $order_status;   
-                        $updateColumn = $order::updateAll(
+                        $updateColumn = $order->updateAll(
                             $updateArr,
                             [
                                 'and',

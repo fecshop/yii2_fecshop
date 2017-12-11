@@ -37,7 +37,8 @@ class Stock extends Service
     protected $_COQtyModelName = '\fecshop\models\mysqldb\product\ProductCustomOptionQty';
     protected $_COQtyModel;
     
-    public function __construct(){
+    public function init(){
+        parent::init();
         list($this->_flatQtyModelName,$this->_flatQtyModel) = \Yii::mapGet($this->_flatQtyModelName);  
         list($this->_COQtyModelName,$this->_COQtyModel) = \Yii::mapGet($this->_COQtyModelName);  
     }
@@ -209,7 +210,7 @@ class Stock extends Service
                          * } 
                          *
                          **/
-                        $updateColumns = $this->_flatQtyModel::updateAllCounters(
+                        $updateColumns = $this->_flatQtyModel->updateAllCounters(
                             ['qty' => $sale_qty],
                             ['and', ['product_id' => $product_id], ['>=', 'qty', $sale_qty]]
                         );
@@ -237,7 +238,7 @@ class Stock extends Service
                          *     return false;
                          * }
                          **/
-                        $updateColumns = $this->_COQtyModel::updateAllCounters(
+                        $updateColumns = $this->_COQtyModel->updateAllCounters(
                             ['qty' => $sale_qty]
                             ,
                             [
@@ -436,7 +437,7 @@ class Stock extends Service
                          * ];
                          * $result = $this->_flatQtyModel->getDb()->createCommand($sql,$data)->execute();
                          **/
-                        $updateColumns = $this->_flatQtyModel::updateAllCounters(['qty' => $sale_qty], ['product_id' => $product_id]);
+                        $updateColumns = $this->_flatQtyModel->updateAllCounters(['qty' => $sale_qty], ['product_id' => $product_id]);
                      
                     }else{
                         // 对于custom option（淘宝模式）的库存扣除
@@ -450,7 +451,7 @@ class Stock extends Service
                          * ];
                          * $result = $this->_COQtyModel->getDb()->createCommand($sql,$data)->execute();
                          **/
-                        $updateColumns = $this->_COQtyModel::updateAllCounters(['qty' => $sale_qty], ['product_id' => $product_id,'custom_option_sku' => $custom_option_sku]);
+                        $updateColumns = $this->_COQtyModel->updateAllCounters(['qty' => $sale_qty], ['product_id' => $product_id,'custom_option_sku' => $custom_option_sku]);
                     }
                 }
             }

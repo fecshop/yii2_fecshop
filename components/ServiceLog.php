@@ -30,7 +30,8 @@ class ServiceLog extends Component
     protected $_logModelName = '\fecshop\models\mongodb\FecshopServiceLog';
     protected $_logModel;
     
-    public function __construct(){
+    public function init(){
+	parent::init();
         list($this->_logModelName,$this->_logModel) = Yii::mapGet($this->_logModelName);  
     }
     /**

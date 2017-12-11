@@ -10,6 +10,7 @@
 namespace fecshop\services\product;
 
 use fecshop\models\mongodb\Product;
+use fecshop\services\Service;
 use Yii;
 
 /**
@@ -17,7 +18,7 @@ use Yii;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class ProductMongodb implements ProductInterface
+class ProductMongodb extends Service implements ProductInterface
 {
     public $numPerPage = 20;
     
@@ -25,7 +26,8 @@ class ProductMongodb implements ProductInterface
     protected $_productModelName = '\fecshop\models\mongodb\Product';
     protected $_productModel;
     
-    public function __construct(){
+    public function init(){
+        parent::init();
         list($this->_productModelName,$this->_productModel) = \Yii::mapGet($this->_productModelName);  
     }
     

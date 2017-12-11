@@ -25,7 +25,8 @@ class Review extends Service
     protected $_reviewModelName = '\fecshop\models\mongodb\product\Review';
     protected $_reviewModel;
     
-    public function __construct(){
+    public function init(){
+        parent::init();
         list($this->_reviewModelName,$this->_reviewModel) = \Yii::mapGet($this->_reviewModelName);  
     }
     /**

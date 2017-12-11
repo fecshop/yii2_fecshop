@@ -27,7 +27,8 @@ class Request extends \yii\web\Request
     protected $_urlRewriteModelName = '\fecshop\models\mongodb\UrlRewrite';
     protected $_urlRewriteModel;
     
-    public function __construct(){
+    public function init(){
+        parent::init();
         list($this->_urlRewriteModelName,$this->_urlRewriteModel) = \Yii::mapGet($this->_urlRewriteModelName);  
     }
     /**

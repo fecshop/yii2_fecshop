@@ -35,6 +35,7 @@ class Rewrite extends Service
 
     public function init()
     {
+        parent::init();
         $currentService = $this->getStorageService($this);
         $this->_urlRewrite = new $currentService();
         /*

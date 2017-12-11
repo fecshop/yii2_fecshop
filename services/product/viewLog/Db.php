@@ -30,6 +30,7 @@ class Db extends Service
     // init function
     public function init()
     {
+        parent::init();
         list($this->_logModelName,$this->_logModel) = \Yii::mapGet($this->_logModelName);  
         if (!$this->table) {
             $this->table = $this->_defaultTable;

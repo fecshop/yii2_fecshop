@@ -11,6 +11,7 @@ namespace fecshop\services\url\rewrite;
 
 //use fecshop\models\mongodb\url\UrlRewrite;
 use Yii;
+use fecshop\services\Service;
 use yii\base\InvalidValueException;
 
 /**
@@ -18,13 +19,14 @@ use yii\base\InvalidValueException;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class RewriteMongodb implements RewriteInterface
+class RewriteMongodb extends Service implements RewriteInterface
 {
     public $numPerPage = 20;
     protected $_urlRewriteModelName = '\fecshop\models\mongodb\url\UrlRewrite';
     protected $_urlRewriteModel;
     
-    public function __construct(){
+    public function init(){
+        parent::init();
         list($this->_urlRewriteModelName,$this->_urlRewriteModel) = \Yii::mapGet($this->_urlRewriteModelName);  
     }
     

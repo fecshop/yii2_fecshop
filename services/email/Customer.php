@@ -10,13 +10,13 @@
 namespace fecshop\services\email;
 
 use Yii;
-
+use fecshop\services\Service;
 /**
  * customer email services
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Customer
+class Customer extends Service
 {
     /**
      * 邮件模板部分配置.

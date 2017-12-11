@@ -65,7 +65,8 @@ class Order extends Service
     protected $_orderModelName = '\fecshop\models\mysqldb\Order';
     protected $_orderModel;
     
-    public function __construct(){
+    public function init(){
+        parent::init();
         list($this->_orderModelName,$this->_orderModel) = \Yii::mapGet($this->_orderModelName);  
     }
     
@@ -753,7 +754,7 @@ class Order extends Service
                     $logMessage[] = 'cancel order[begin] increment_id: '.$one['increment_id'];
                     $order_id = $one['order_id'];
                     
-                    $updateComules = $one::updateAll(
+                    $updateComules = $one->updateAll(
                         [
                             'if_is_return_stock' => 1,
                             'order_status' => $this->payment_status_canceled,

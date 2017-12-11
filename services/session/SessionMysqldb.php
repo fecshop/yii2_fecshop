@@ -10,6 +10,7 @@
 namespace fecshop\services\session;
 
 use Yii;
+use fecshop\services\Service;
 //use fecshop\models\mysqldb\SessionStorage;
 
 /**
@@ -17,12 +18,13 @@ use Yii;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class SessionMysqldb implements SessionInterface
+class SessionMysqldb extends Service implements SessionInterface
 {
     protected $_sessionModelName = '\fecshop\models\mysqldb\SessionStorage';
     protected $_sessionModel;
     
-    public function __construct(){
+    public function init(){
+        parent::init();
         list($this->_sessionModelName,$this->_sessionModel) = \Yii::mapGet($this->_sessionModelName);  
     }
     

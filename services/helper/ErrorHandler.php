@@ -22,7 +22,8 @@ class ErrorHandler extends Service
     protected $_errorHandlerModelName = '\fecshop\models\mongodb\ErrorHandlerLog';
     protected $_errorHandlerModel;
     
-    public function __construct(){
+    public function init(){
+        parent::init();
         list($this->_errorHandlerModelName,$this->_errorHandlerModel) = \Yii::mapGet($this->_errorHandlerModelName);  
     }
     

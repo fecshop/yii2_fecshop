@@ -36,6 +36,7 @@ class Article extends Service
 
     public function init()
     {
+        parent::init();
         $currentService = $this->getStorageService($this);
         $this->_article = new $currentService();
         /*

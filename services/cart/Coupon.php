@@ -32,7 +32,8 @@ class Coupon extends Service
     protected $_couponUsageModelName = '\fecshop\models\mysqldb\cart\CouponUsage';
     protected $_couponUsageModel;
     
-    public function __construct(){
+    public function init(){
+        parent::init();
         list($this->_couponModelName,$this->_couponModel) = Yii::mapGet($this->_couponModelName);  
         list($this->_couponUsageModelName,$this->_couponUsageModel) = Yii::mapGet($this->_couponUsageModelName);  
     }

@@ -11,19 +11,21 @@ namespace fecshop\services\cms\staticblock;
 
 //use fecshop\models\mongodb\cms\StaticBlock;
 use Yii;
+use fecshop\services\Service;
 
 /** 
  * staticBlock部分，mongodb的实现部分。
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class StaticBlockMongodb implements StaticBlockInterface
+class StaticBlockMongodb extends Service implements StaticBlockInterface
 {
     public $numPerPage = 20;
     protected $_staticBlockModelName = '\fecshop\models\mongodb\cms\StaticBlock';
     protected $_staticBlockModel;
     
-    public function __construct(){
+    public function init(){
+        parent::init();
         list($this->_staticBlockModelName,$this->_staticBlockModel) = Yii::mapGet($this->_staticBlockModelName);  
     }
     public function getPrimaryKey()

@@ -10,6 +10,7 @@
 namespace fecshop\services\session;
 
 use Yii;
+use fecshop\services\Service;
 use fecshop\models\mysqldb\SessionStorage;
 
 /**
@@ -17,11 +18,12 @@ use fecshop\models\mysqldb\SessionStorage;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class SessionPhp implements SessionInterface
+class SessionPhp extends Service implements SessionInterface
 {
     public $timeout;
     
-    public function __construct(){
+    public function init(){
+        parent::init();
         $this->timeout = Yii::$app->session->timeout;
     }
     

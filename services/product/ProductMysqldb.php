@@ -8,6 +8,7 @@
  */
 
 namespace fecshop\services\product;
+use fecshop\services\Service;
 
 use Yii;
 
@@ -16,7 +17,7 @@ use Yii;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class ProductMysqldb implements ProductInterface
+class ProductMysqldb extends Service implements ProductInterface
 {
     
     

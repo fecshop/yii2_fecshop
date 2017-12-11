@@ -31,7 +31,7 @@ class MongoSearch extends Service implements SearchInterface
     
     public function init()
     {
-        
+        parent::init();
         list($this->_productModelName,$this->_productModel) = \Yii::mapGet($this->_productModelName); 
         list($this->_searchModelName,$this->_searchModel) = \Yii::mapGet($this->_searchModelName); 
         $sModel = $this->_searchModel;

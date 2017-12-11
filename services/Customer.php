@@ -32,7 +32,8 @@ class Customer extends Service
     protected $_customerRegisterModelName = '\fecshop\models\mysqldb\customer\CustomerRegister';
     protected $_customerRegisterModel;
     
-    public function __construct(){
+    public function init(){
+        parent::init();
         list($this->_customerModelName,$this->_customerModel) = \Yii::mapGet($this->_customerModelName); 
         list($this->_customerLoginModelName,$this->_customerLoginModel) = \Yii::mapGet($this->_customerLoginModelName);  
         list($this->_customerRegisterModelName,$this->_customerRegisterModel) = \Yii::mapGet($this->_customerRegisterModelName);  

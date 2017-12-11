@@ -39,6 +39,7 @@ class Category extends Service
      */
     public function init()
     {
+        parent::init();
         $currentService = $this->getStorageService($this);
         $this->_category = new $currentService();
         /*
