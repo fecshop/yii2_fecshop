@@ -176,7 +176,7 @@ class Price extends Service
     /**
      * @property $qty | Int
      * @property $price | Float 一个产品的单价(如果有特价，那么这个值是一个产品的特价)
-     * @property $tier_price | Array  , example:
+     * @property $tier_price_arr | Array  , example:
      * $tier_price = [
      *		['qty'=>2,'price'=>33],
      *		['qty'=>4,'price'=>30],
@@ -194,7 +194,7 @@ class Price extends Service
                 $t_qty = $one['qty'];
                 $t_price = $one['price'];
 
-                if ($t_qty < $qty) {
+                if ($t_qty <= $qty) {
                     $parent_price = $t_price;
                     continue;
                 } else {

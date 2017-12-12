@@ -220,7 +220,12 @@ class ProductController extends AppserverController
             $arr = [Yii::$service->page->translate->__('Qty').':'];
             foreach($tier_price_arr as $one){
                 if($i != 1){
-                    $arr[] = $pre_qty.'-'.$one['qty'];
+                    $end_qty = $one['qty'] - 1;
+                    if ($end_qty > $pre_qty) {
+                        $arr[] = $pre_qty.'-'.$end_qty;
+                    } else {
+                        $arr[] = $pre_qty;
+                    } 
                 }
                 $i++;
                 $pre_qty = $one['qty'];

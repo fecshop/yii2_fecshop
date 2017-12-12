@@ -17,7 +17,12 @@
 		<?php  foreach($tier_price as $one):  ?>
 			<?php if($i != 1):  ?>
 				<td>
-					<?php echo $pre_qty.'-'.$one['qty']; ?>
+                    <?php $end_qty = $one['qty'] - 1; ?>
+                    <?php if ($end_qty > $pre_qty):  ?>
+                        <?php echo $pre_qty.'-'.$end_qty; ?>
+                    <?php else: ?>
+                        <?php echo $pre_qty ?>
+                    <?php endif; ?>
 				</td>
 			<?php endif; ?>
 			<?php
