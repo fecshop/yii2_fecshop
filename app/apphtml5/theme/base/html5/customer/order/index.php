@@ -58,8 +58,10 @@
 					</tbody>
 				</table>
 				<?php if($pageToolBar): ?>
-					<div class="pageToolbar">
-						<label class="title"><?= Yii::$service->page->translate->__('Page:');?></label><?= $pageToolBar ?>
+					<div class="pageToolbar customer_order">
+						<label class=""><?= Yii::$service->page->translate->__('Page:');?></label>
+                        <?= $pageToolBar ?>
+                        <div class="clear"></div>
 					</div>
 				<?php endif; ?>
 			</div>

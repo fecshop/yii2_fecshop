@@ -23,7 +23,7 @@ class Lists
     public $filterBySpu = true;
     public $filterOrderBy = 'review_date';
     public $_page = 'p';
-    public $numPerPage = 20;
+    public $numPerPage = 10;
     public $pageNum;
     /**
      * 为了可以使用rewriteMap，use 引入的文件统一采用下面的方式，通过Yii::mapGet()得到className和Object
@@ -48,6 +48,7 @@ class Lists
     protected function getProductPage($countTotal)
     {
         if ($countTotal <= $this->numPerPage) {
+            echo "$countTotal <= $this->numPerPage";
             return '';
         }
         $config = [

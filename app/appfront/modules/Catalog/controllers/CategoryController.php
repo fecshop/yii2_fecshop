@@ -27,6 +27,7 @@ class CategoryController extends AppfrontController
     // 分类页面。
     public function actionIndex()
     {
+        echo date('Y-m-d H:i:s');
         $data = $this->getBlock()->getLastData();
         if(is_array($data)){
             return $this->render($this->action->id, $data);

@@ -1042,8 +1042,11 @@ ul#billing_address_list  li input , ul#billing_address_list  li select{
     text-decoration: line-through; 
 }
 
+.pageToolbar {margin: 10px auto;
+width: 80%;}
+.pageToolbar label{font-size:0.6rem;float:left;}
 
-
+.pageToolbar .tb_rg{float:left;}
 
 
 

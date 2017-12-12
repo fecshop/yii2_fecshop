@@ -70,7 +70,9 @@ use fecshop\app\apphtml5\helper\Format;
 							</table>	
 							<?php if($pageToolBar): ?>
 							<div class="pageToolbar">
-								<label class="title"><?= Yii::$service->page->translate->__('Page:');?></label><?= $pageToolBar ?>
+								<label class=""><?= Yii::$service->page->translate->__('Page:');?></label>
+                                <?= $pageToolBar ?>
+                                <div class="clear"></div>
 							</div>
 							<?php endif; ?>
 						</div>
