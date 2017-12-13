@@ -26,7 +26,7 @@ class Lists
     public $numPerPage = 20;
     public $pageNum;
     /**
-     * ÎªÁË¿ÉÒÔÊ¹ÓÃrewriteMap£¬use ÒıÈëµÄÎÄ¼şÍ³Ò»²ÉÓÃÏÂÃæµÄ·½Ê½£¬Í¨¹ıYii::mapGet()µÃµ½classNameºÍObject
+     * ä¸ºäº†å¯ä»¥ä½¿ç”¨rewriteMapï¼Œuse å¼•å…¥çš„æ–‡ä»¶ç»Ÿä¸€é‡‡ç”¨ä¸‹é¢çš„æ–¹å¼ï¼Œé€šè¿‡Yii::mapGet()å¾—åˆ°classNameå’ŒObject
      */
     protected $_reviewHelperName = '\fecshop\app\apphtml5\modules\Catalog\helpers\Review';
     protected $_reviewHelper;
@@ -34,16 +34,16 @@ class Lists
     public function __construct()
     {
         /**
-         * Í¨¹ıYii::mapGet() µÃµ½ÖØĞ´ºóµÄclassÀàÃûÒÔ¼°¶ÔÏó¡£Yii::mapGetÊÇÔÚÎÄ¼ş@fecshop\yii\Yii.phpÖĞ
+         * é€šè¿‡Yii::mapGet() å¾—åˆ°é‡å†™åçš„classç±»åä»¥åŠå¯¹è±¡ã€‚Yii::mapGetæ˜¯åœ¨æ–‡ä»¶@fecshop\yii\Yii.phpä¸­
          */
         list($this->_reviewHelperName,$this->_reviewHelper) = Yii::mapGet($this->_reviewHelperName);  
-        // ³õÊ¼»¯·şÎñ
+        // åˆå§‹åŒ–æœåŠ¡
         $reviewHelper = $this->_reviewHelper;
         $reviewHelper::initReviewConfig();
     }
     /**
      * @property $countTotal | Int
-     * µÃµ½toolbarµÄ·ÖÒ³²¿·Ö
+     * å¾—åˆ°toolbarçš„åˆ†é¡µéƒ¨åˆ†
      */
     protected function getProductPage($countTotal)
     {
@@ -61,7 +61,7 @@ class Lists
 
         return Yii::$service->page->widget->renderContent('category_product_page', $config);
     }
-    // ³õÊ¼»¯²ÎÊı
+    // åˆå§‹åŒ–å‚æ•°
     public function initParam()
     {
         $this->pageNum = Yii::$app->request->get($this->_page);
@@ -130,7 +130,7 @@ class Lists
     }
     /**
      * @property $spu  | String
-     * Í¨¹ıspuµÃµ½²úÆ·ÆÀÂÛ
+     * é€šè¿‡spuå¾—åˆ°äº§å“è¯„è®º
      */
     public function getReviewsBySpu($spu)
     {
@@ -158,7 +158,7 @@ class Lists
 
         return Yii::$service->product->review->getListBySpu($filter);
     }
-    // ²úÆ·¼Û¸ñĞÅÏ¢
+    // äº§å“ä»·æ ¼ä¿¡æ¯
     protected function getProductPriceInfo($product)
     {
         $price = $product['price'];

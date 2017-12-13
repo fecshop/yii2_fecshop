@@ -360,7 +360,7 @@ class Review extends Service
             }
         }
     }
-
+    
     /**
      * @property $spu | String
      * 当评论保存，更新评论的总数，平均评分信息到产品表的所有spu
@@ -369,6 +369,8 @@ class Review extends Service
     {
         $reviewModel = $this->_reviewModel;
         $filter = [
+            'numPerPage' 	=> 10000,  // mongodb 查询，numPerPage必须设置，如果不设置，默认为20
+      		'pageNum'		=> 1,
             'where'            => [
                 ['product_spu' => $spu],
                 ['status' => $reviewModel->getActiveStatus()],

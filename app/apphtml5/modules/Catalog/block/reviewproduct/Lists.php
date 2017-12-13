@@ -48,16 +48,16 @@ class Lists
     protected function getProductPage($countTotal)
     {
         if ($countTotal <= $this->numPerPage) {
-            echo "$countTotal <= $this->numPerPage";
+            //echo "$countTotal <= $this->numPerPage";
             return '';
         }
         $config = [
-            'class'        => 'fecshop\app\apphtml5\widgets\Page',
-            'view'        => 'widgets/page.php',
-            'pageNum'        => $this->pageNum,
-            'numPerPage'    => $this->numPerPage,
-            'countTotal'    => $countTotal,
-            'page'            => $this->_page,
+            'class'      => 'fecshop\app\apphtml5\widgets\Page',
+            'view'       => 'widgets/page.php',
+            'pageNum'    => $this->pageNum,
+            'numPerPage' => $this->numPerPage,
+            'countTotal' => $countTotal,
+            'page'       => $this->_page,
         ];
 
         return Yii::$service->page->widget->renderContent('category_product_page', $config);
@@ -106,17 +106,17 @@ class Lists
             return [
                 '_id' => $this->product_id,
                 'spu' => $this->spu,
-                'review_count'                => $review_count,
-                'reviw_rate_star_average'    => $reviw_rate_star_average,
-                'pageToolBar'    => $pageToolBar,
-                'coll'            => $coll,
-                'noActiveStatus'=> Yii::$service->product->review->noActiveStatus(),
-                'addReviewUrl'    => $addReviewUrl,
-                'name'            => $name,
-                'price_info'    => $price_info,
-                'main_img'        => $main_img,
-                'editForm'        => $editForm,
-                'url'        => Yii::$service->url->getUrl($url_key),
+                'review_count'             => $review_count,
+                'reviw_rate_star_average'  => $reviw_rate_star_average,
+                'pageToolBar'       => $pageToolBar,
+                'coll'              => $coll,
+                'noActiveStatus'    => Yii::$service->product->review->noActiveStatus(),
+                'addReviewUrl'      => $addReviewUrl,
+                'name'              => $name,
+                'price_info'        => $price_info,
+                'main_img'          => $main_img,
+                'editForm'          => $editForm,
+                'url'               => Yii::$service->url->getUrl($url_key),
             ];
         }
     }
@@ -127,21 +127,24 @@ class Lists
     public function getReviewsBySpu($spu)
     {
         $currentIp = \fec\helpers\CFunc::get_real_ip();
+        $lang_code = Yii::$service->store->currentLangCode;
         $filter = [
-            'numPerPage'    => $this->numPerPage,
-            'pageNum'        => $this->pageNum,
+            'numPerPage' => $this->numPerPage,
+            'pageNum'    => $this->pageNum,
             'orderBy'    => [$this->filterOrderBy => SORT_DESC],
-            'where'            => [
+            'where'      => [
                 [
                     '$or' => [
                         [
                             'status' => Yii::$service->product->review->activeStatus(),
                             'product_spu' => $spu,
+                            'lang_code' => $lang_code
                         ],
                         [
                             'status' => Yii::$service->product->review->noActiveStatus(),
                             'product_spu' => $spu,
                             'ip' => $currentIp,
+                            'lang_code' => $lang_code
                         ],
                     ],
                 ],
