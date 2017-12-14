@@ -53,7 +53,7 @@ class Index
         $reviewHelper = $this->_reviewHelper;
         $productImgSize = Yii::$app->controller->module->params['productImgSize'];
         $productImgMagnifier = Yii::$app->controller->module->params['productImgMagnifier'];
-        if(!$this->initProduct()){
+        if (!$this->initProduct()) {
             Yii::$service->url->redirect404();
             return;
         }
@@ -61,8 +61,8 @@ class Index
         $ReviewAndStarCount = $reviewHelper::getReviewAndStarCount($this->_product);
         list($review_count, $reviw_rate_star_average) = $ReviewAndStarCount;
         $this->filterProductImg($this->_product['image']);
-        $groupAttr = Yii::$service->product->getGroupAttr($this->_product['attr_group']);
-        $groupAttrArr = $this->getGroupAttrArr($groupAttr);
+        $groupAttrInfo = Yii::$service->product->getGroupAttrInfo($this->_product['attr_group']);
+        $groupAttrArr = $this->getGroupAttrArr($groupAttrInfo);
         return [
             'groupAttrArr'              => $groupAttrArr,
             'name'                      => Yii::$service->store->getStoreAttrVal($this->_product['name'], 'name'),
@@ -88,12 +88,20 @@ class Index
             'buy_also_buy'              => $this->getProductBySkus($skus),
         ];
     }
-    public function getGroupAttrArr($groupAttr){
+    public function getGroupAttrArr($groupAttrInfo){
         $gArr = [];
-        if(is_array($groupAttr)){
-            foreach($groupAttr as $attr){
-                if(isset($this->_product[$attr]) && $this->_product[$attr]){
-                    $gArr[$attr] = $this->_product[$attr];
+        if (is_array($groupAttrInfo)) {
+            foreach ($groupAttrInfo as $attr => $info) {
+                //var_dump($attr);
+                //var_dump($info);
+                if (isset($this->_product[$attr]) && $this->_product[$attr]) {
+                    $attrVal = $this->_product[$attr];
+                    if (isset($info['display']['lang']) && $info['display']['lang'] && is_array($attrVal)) {
+                        $attrVal = Yii::$service->store->getStoreAttrVal($attrVal, $attr);
+                    }
+                    if ($attrVal && !is_array($attrVal)) {
+                        $gArr[$attr] = $attrVal;
+                    }
                 }
             }
         }
@@ -109,10 +117,10 @@ class Index
     public function filterProductImg($product_images){
         $this->_image_thumbnails        = $product_images;
         //$this->_image_detail['gallery'] = $product_images['gallery'];
-        if(isset($product_images['gallery']) && is_array($product_images['gallery'])){
+        if (isset($product_images['gallery']) && is_array($product_images['gallery'])) {
             $thumbnails_arr = [];
             $detail_arr     = [];
-            foreach($product_images['gallery'] as $one){
+            foreach ($product_images['gallery'] as $one) {
                 $is_thumbnails  = $one['is_thumbnails'];
                 $is_detail      = $one['is_detail'];
                 if($is_thumbnails == 1){
@@ -125,7 +133,7 @@ class Index
             $this->_image_thumbnails['gallery'] = $thumbnails_arr;
             $this->_image_detail     = $detail_arr;
         }
-        if(isset($product_images['main']['is_detail']) && $product_images['main']['is_detail'] == 1 ){
+        if (isset($product_images['main']['is_detail']) && $product_images['main']['is_detail'] == 1 ) {
             $this->_image_detail[] = $product_images['main'];
         }
         
@@ -148,49 +156,50 @@ class Index
         $attr1_2_attr2 = [];
         $attr2_2_attr1 = [];
         //var_dump($data);
-        foreach ($data as $one) {
-            $attr1_val = isset($one[$attr1]) ? $one[$attr1] : '';
-            $attr2_val = isset($one[$attr2]) ? $one[$attr2] : '';
-            //echo $attr1_val;
-            //echo $size;
-            //echo '##';
-            $image = $one['image'];
-            $name = $one['name'];
-            $url_key = $one['url_key'];
-            if ($attr1_val || $attr2_val) {
-                if ($attr1_val) {
-                    $all_attr1[$attr1_val] = [
-                        'name'        => $name,
-                        'image'    => $image,
-                        'url_key'    => $url_key,
-                    ];
-                }
-                if ($attr2_val) {
-                    $all_attr2[$attr2_val] = [
-                        'name'        => $name,
-                        'image'    => $image,
-                        'url_key'    => $url_key,
-                    ];
-                }
-                //echo $attr2_val.'#'.$current_attr2;
-                //echo '<br/>';
-                if ($attr2_val && $current_attr2 == $attr2_val) {
-                    $attr1_2_attr2[$attr1_val] = [
-                        'name'        => $name,
-                        'image'    => $image,
-                        'url_key'    => $url_key,
-                    ];
-                }
-                if ($attr1_val && $current_attr1 == $attr1_val) {
-                    $attr2_2_attr1[$attr2_val] = [
-                        'name'        => $name,
-                        'image'    => $image,
-                        'url_key'    => $url_key,
-                    ];
+        if (is_array($data)) {
+            foreach ($data as $one) {
+                $attr1_val = isset($one[$attr1]) ? $one[$attr1] : '';
+                $attr2_val = isset($one[$attr2]) ? $one[$attr2] : '';
+                //echo $attr1_val;
+                //echo $size;
+                //echo '##';
+                $image = $one['image'];
+                $name = $one['name'];
+                $url_key = $one['url_key'];
+                if ($attr1_val || $attr2_val) {
+                    if ($attr1_val) {
+                        $all_attr1[$attr1_val] = [
+                            'name'        => $name,
+                            'image'    => $image,
+                            'url_key'    => $url_key,
+                        ];
+                    }
+                    if ($attr2_val) {
+                        $all_attr2[$attr2_val] = [
+                            'name'        => $name,
+                            'image'    => $image,
+                            'url_key'    => $url_key,
+                        ];
+                    }
+                    //echo $attr2_val.'#'.$current_attr2;
+                    //echo '<br/>';
+                    if ($attr2_val && $current_attr2 == $attr2_val) {
+                        $attr1_2_attr2[$attr1_val] = [
+                            'name'        => $name,
+                            'image'    => $image,
+                            'url_key'    => $url_key,
+                        ];
+                    }
+                    if ($attr1_val && $current_attr1 == $attr1_val) {
+                        $attr2_2_attr1[$attr2_val] = [
+                            'name'        => $name,
+                            'image'    => $image,
+                            'url_key'    => $url_key,
+                        ];
+                    }
                 }
             }
         }
-
         return [$all_attr1, $all_attr2, $attr1_2_attr2, $attr2_2_attr1];
     }
 
@@ -345,9 +354,11 @@ class Index
     protected function generateSpuReverseKey($one)
     {
         $reverse_key = '';
-        foreach ($this->_productSpuAttrArr as $spuAttr) {
-            $spuValColl[$spuAttr][] = $one[$spuAttr];
-            $reverse_key .= $one[$spuAttr];
+        if (is_array($this->_productSpuAttrArr)) {
+            foreach ($this->_productSpuAttrArr as $spuAttr) {
+                $spuValColl[$spuAttr][] = $one[$spuAttr];
+                $reverse_key .= $one[$spuAttr];
+            }
         }
 
         return  $reverse_key;

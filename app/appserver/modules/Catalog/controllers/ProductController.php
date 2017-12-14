@@ -152,8 +152,8 @@ class ProductController extends AppserverController
         $ReviewAndStarCount = $reviewHelper::getReviewAndStarCount($this->_product);
         list($review_count, $reviw_rate_star_average) = $ReviewAndStarCount;
         $this->filterProductImg($this->_product['image']);
-        $groupAttr = Yii::$service->product->getGroupAttr($this->_product['attr_group']);
-        $groupAttrArr = $this->getGroupAttrArr($groupAttr);
+        $groupAttrInfo = Yii::$service->product->getGroupAttrInfo($this->_product['attr_group']);
+        $groupAttrArr = $this->getGroupAttrArr($groupAttrInfo);
         $custom_option_attr_info = Yii::$service->product->getCustomOptionAttrInfo($this->_product['attr_group']);
         //var_dump($custom_option_attr_info);exit;
         $custom_option_showImg_attr = $this->getCustomOptionShowImgAttr($custom_option_attr_info);
@@ -186,6 +186,7 @@ class ProductController extends AppserverController
         $code = Yii::$service->helper->appserver->status_success;
         $data = [
             'product' => [
+                'groupAttrArr'              => $groupAttrArr,
                 'name'                      => Yii::$service->store->getStoreAttrVal($this->_product['name'], 'name'),
                 'sku'                       => $this->_product['sku'],
                 'spu'                       => $this->_product['spu'],
@@ -243,12 +244,13 @@ class ProductController extends AppserverController
     }
     
     public function getCustomOptionShowImgAttr($custom_option_attr_info){
-        foreach($custom_option_attr_info as $attr => $one){
-            if($one['showAsImg']){
-                return $attr;
+        if (is_array($custom_option_attr_info) && !empty($custom_option_attr_info)) {
+            foreach($custom_option_attr_info as $attr => $one){
+                if($one['showAsImg']){
+                    return $attr;
+                }
             }
         }
-        
     }
     
     public function getCustomOption($custom_option,$middle_img_width){
@@ -267,18 +269,27 @@ class ProductController extends AppserverController
         return $arr;
     }
     
-    public function getGroupAttrArr($groupAttr){
+    public function getGroupAttrArr($groupAttrInfo){
         $gArr = [];
-        if(is_array($groupAttr)){
-            foreach($groupAttr as $attr){
-                if(isset($this->_product[$attr]) && $this->_product[$attr]){
-                    $gArr[$attr] = $this->_product[$attr];
+        if (is_array($groupAttrInfo)) {
+            foreach ($groupAttrInfo as $attr => $info) {
+                //var_dump($attr);
+                //var_dump($info);
+                if (isset($this->_product[$attr]) && $this->_product[$attr]) {
+                    $attrVal = $this->_product[$attr];
+                    if (isset($info['display']['lang']) && $info['display']['lang'] && is_array($attrVal)) {
+                        $attrVal = Yii::$service->store->getStoreAttrVal($attrVal, $attr);
+                    }
+                    if ($attrVal && !is_array($attrVal)) {
+                        $gArr[$attr] = $attrVal;
+                    }
                 }
             }
         }
         //var_dump($gArr);
         return $gArr;
     }
+    
     /**
      * @property $product_images | Array ，产品的图片属性
      * 根据图片数组，得到橱窗图，和描述图
