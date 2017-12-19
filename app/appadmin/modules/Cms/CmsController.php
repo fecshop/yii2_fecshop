@@ -19,8 +19,8 @@ use fecshop\app\appadmin\modules\AppadminController;
 
 class CmsController extends AppadminController
 {
-    public function getViewPath()
-    {
-        return Yii::getAlias('@fecshop/app/appadmin/modules/Cms/views') . DIRECTORY_SEPARATOR . $this->id;
-    }
+    //public function getViewPath()
+    //{
+    //    return Yii::getAlias('@fecshop/app/appadmin/modules/Cms/views') . DIRECTORY_SEPARATOR . $this->id;
+    //}
 }

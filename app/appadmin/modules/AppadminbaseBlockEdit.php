@@ -90,10 +90,11 @@ EOF;
 
                         $tabLangTitle .= '<li><a href="javascript:;"><span>'.$lang.'</span></a></li>';
                         $langAttrName = Yii::$service->fecshoplang->getLangAttrName($name, $lang);
+                        $t_val = isset($value[$langAttrName]) ? $value[$langAttrName] : '';
                         $tabLangInput .= '<div>
 								<p class="edit_p">
 									<label>'.$label.'['.$lang.']：</label>
-									<input type="text"  value="'.$value[$langAttrName].'" size="30" name="'.$this->_editFormData.'['.$name.']['.$langAttrName.']" class="textInput '.$inputStringLangRequire.' ">
+									<input type="text"  value="'.$t_val.'" size="30" name="'.$this->_editFormData.'['.$name.']['.$langAttrName.']" class="textInput '.$inputStringLangRequire.' ">
 								</p>
 
 							</div>';
