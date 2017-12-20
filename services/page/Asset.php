@@ -19,8 +19,8 @@ use Yii;
  */
 class Asset extends Service
 {
-    public $cssOptions;
-    public $jsOptions;
+    public $cssOptions = [];
+    public $jsOptions = [];
 
     public $jsVersion = 1;   //?v=115
     public $cssVersion = 1;   //?v=115
