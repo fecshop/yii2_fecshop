@@ -79,7 +79,6 @@ class AppadminController extends FecadminbaseController
                 $file = $dir.'/'.$relativeFile;
                 if (file_exists($file)) {
                     $layoutFile = $file;
-
                     return $layoutFile;
                 }
             }

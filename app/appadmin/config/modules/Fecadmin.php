@@ -13,6 +13,9 @@ return [
         	'cache' => [
         		'class' => 'fecshop\app\appadmin\modules\Fecadmin\controllers\CacheController',
         	],
+            'index' => [
+        		'class' => 'fecshop\app\appadmin\modules\Fecadmin\controllers\IndexController',
+        	],
         ],
         'params' => [
             /**
