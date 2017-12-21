@@ -74,9 +74,6 @@ class Review extends ActiveRecord
             'audit_user',        // 审核账号
             'audit_date',        // 审核时间
         ];
-        if ($origin) { // 取原始的数据
-            return $origin;
-        }
         if (is_array(self::$_customAttrs) && !empty(self::$_customAttrs)) {
             $origin = array_merge($origin, self::$_customAttrs);
         }

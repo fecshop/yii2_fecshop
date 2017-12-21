@@ -31,7 +31,7 @@ return [
                 'cssVersion'    => 1,
                 /**
                  * @var string the root directory string the published asset files.
-                 * 设置: js和css的发布路径
+                 * 设置: js和css的发布路径，默认在web路径下的assets文件夹下，您可以放到其他的文件路径，然后用独立的jscss域名做指向
                  * 譬如设置为：'@appimage/assets'，也可以将 @appimage 换成绝对路径
                  */
                 'basePath' => '@webroot/assets',
