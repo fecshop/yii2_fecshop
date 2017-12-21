@@ -40,9 +40,8 @@ Fecshop支持多语言，多货币，架构上支持pc，手机web，手机app�
 
 [Fecshop](http://www.fecshop.com) QQ群：186604851 ，入群验证：fecshop
 
-[Fecshop](http://www.fecshop.com) 作者QQ：2358269014
 
-FecShop Email：2358269014@qq.com
+作者, Terry QQ Email：2358269014@qq.com
 
 [Fecshop](http://www.fecshop.com) Github地址: https://github.com/fancyecommerce/yii2_fecshop
 
@@ -68,10 +67,10 @@ FecShop Email：2358269014@qq.com
 从基础linux一步一步的配置的方式，详细参看文档： [Fecshop 安装](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-hand-install.html)
 
 
-4、fecshop 配置：
+4、Fecshop 配置：
 ----------------
 
-配置详细参看：[fecshop 配置](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-config.html)
+配置详细参看：[Fecshop 配置](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-config.html)
 
 如果您使用vagrant box的安装方式，上面的这些步骤，在box都配置好了。
 
