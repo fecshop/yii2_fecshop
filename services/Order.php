@@ -40,7 +40,10 @@ class Order extends Service
     // 订单已退款【已收款订单因为某些原因进行退款，譬如：仓库无货，用户收到货后发现破损退款等】
     public $status_refunded                     = 'refunded';
     // 订单已完成，【用户收到货物xx时间后，未发起纠纷争端，订单状态标记为已完成】
-    public $status_complete                 = 'completed';
+    public $status_completed                 = 'completed';
+    // 订单已取消，【用户付款后，因为纠纷进行取消订单后的状态】
+    public $status_canceled                 = 'canceled';
+    
     // 订单号格式。
     public $increment_id = 1000000000;
     // 将xx分钟内未支付的pending订单取消掉，并释放产品库存的设置
