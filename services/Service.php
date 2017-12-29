@@ -67,7 +67,7 @@ class Service extends Object
             $childService = $this->childService;
             if (isset($childService[$childServiceName])) {
                 $service = $childService[$childServiceName];
-                if(!isset($service['enableService']) || $service['enableService']){
+                if ($service['enableService'] !== false) {
                     $this->_childService[$childServiceName] = Yii::createObject($service);  
                 }else{
                     throw new InvalidConfigException('Child Service ['.$childServiceName.'] is disable in '.get_called_class().', you must config it! ');
@@ -81,7 +81,7 @@ class Service extends Object
     }
     /**
      * 得到所有的子服务
-     * 如果子服务含有enable字段，并且设置成false，则该子服务会被判定为关闭
+     * 如果子服务含有enableService字段，并且设置成false，则该子服务会被判定为关闭
      */
     public function getAllChildServiceName()
     {
@@ -89,7 +89,7 @@ class Service extends Object
         $arr = [];
         if(is_array($childService) && !empty($childService)){
             foreach($childService as $childName => $service){
-                if(!isset($service['enable']) || $service['enable']){
+                if ($service['enableService'] !== false) {
                     $arr[] = $childName;
                 }
             }
