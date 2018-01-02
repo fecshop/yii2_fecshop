@@ -12,13 +12,13 @@ namespace fecshop\services;
 use Yii;
 use yii\base\InvalidCallException;
 use yii\base\InvalidConfigException;
-use yii\base\Object;
+use yii\base\BaseObject;
 
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Service extends Object
+class Service extends BaseObject
 {
     public $childService;
     public $enableService = true; /* 该服务是否可用  */

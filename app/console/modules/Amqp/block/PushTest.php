@@ -1,9 +1,9 @@
 <?php
 namespace fecshop\app\console\modules\Amqp\block;
 
-use yii\base\Object;
+use yii\base\BaseObject;
 
-class PushTest extends Object implements \zhuravljov\yii\queue\Job
+class PushTest extends BaseObject implements \zhuravljov\yii\queue\Job
 {
     public $name;
     public $age;

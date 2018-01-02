@@ -12,13 +12,13 @@ namespace fecshop\app\appadmin\modules;
 use fec\helpers\CUrl;
 use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockInterface;
 use Yii;
-use yii\base\Object;
+use yii\base\BaseObject;
 
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class AppadminbaseBlock extends Object
+class AppadminbaseBlock extends BaseObject
 {
     /**
      * parameter storage front passed.

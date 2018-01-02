@@ -604,6 +604,7 @@ class ProductMongodb extends Service implements ProductInterface
                 '$limit'    => Yii::$service->product->categoryAggregateMaxCount,
             ],
         ];
+        // ['cursor' => ['batchSize' => 2]]
         $product_data = $this->_productModel->getCollection()->aggregate($pipelines);
         $product_total_count = count($product_data);
         $pageOffset = ($pageNum - 1) * $numPerPage;

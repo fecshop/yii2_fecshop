@@ -13,13 +13,13 @@ use fec\helpers\CRequest;
 use fec\helpers\CUrl;
 use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockEditInterface;
 use Yii;
-use yii\base\Object;
+use yii\base\BaseObject;
 
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class AppadminbaseBlockEdit extends Object
+class AppadminbaseBlockEdit extends BaseObject
 {
     public $_param;
     public $_primaryKey;
