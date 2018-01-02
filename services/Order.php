@@ -99,7 +99,7 @@ class Order extends Service
             $this->status_processing        => $this->status_processing,
             $this->status_dispatched        => $this->status_dispatched,
             $this->status_refunded        => $this->status_refunded,
-            $this->status_complete        => $this->status_complete,
+            $this->status_completed        => $this->status_completed,
         ];
         
     }

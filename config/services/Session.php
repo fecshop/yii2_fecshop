@@ -18,7 +18,7 @@ return [
         'updateTimeLimit' => 600,
         // 【不可以设置phpsession】默认为php session，只有当 \Yii::$app->user->enableSession == false时，下面的设置才有效。
         // 存储引擎  mongodb mysqldb redis
-        'storage' => 'SessionMysqldb',
+        'storage' => 'SessionRedis',  //'SessionMysqldb',
         
         
         //'childService' => [
