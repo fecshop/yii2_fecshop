@@ -184,17 +184,19 @@ class Store extends Service
         $condition = isset($store['mobile']['condition']) ? $store['mobile']['condition'] : false;
         $redirectDomain = isset($store['mobile']['redirectDomain']) ? $store['mobile']['redirectDomain'] : false;
         if (is_array($condition) && !empty($condition) && !empty($redirectDomain)) {
+            
+            $mobile_https = (isset($store['mobile']['https']) && $store['mobile']['https']) ? true : false;
             if (in_array('phone', $condition) && in_array('tablet', $condition)) {
                 if ($mobileDetect->isMobile()) {
-                    $this->redirectMobile($store_code, $redirectDomain);
+                    $this->redirectMobile($store_code, $redirectDomain, $mobile_https);
                 }
             } elseif (in_array('phone', $condition)) {
                 if ($mobileDetect->isMobile() && !$mobileDetect->isTablet()) {
-                    $this->redirectMobile($store_code, $redirectDomain);
+                    $this->redirectMobile($store_code, $redirectDomain, $mobile_https);
                 }
             } elseif (in_array('tablet', $condition)) {
                 if ($mobileDetect->isTablet()) {
-                    $this->redirectMobile($store_code, $redirectDomain);
+                    $this->redirectMobile($store_code, $redirectDomain, $mobile_https);
                 }
             }
         }
@@ -205,10 +207,24 @@ class Store extends Service
      * @property $redirectDomain | String
      * 设备满足什么条件的时候进行跳转。
      */
-    protected function redirectMobile($store_code, $redirectDomain)
+    protected function redirectMobile($store_code, $redirectDomain, $mobile_https)
     {
         $currentUrl = Yii::$service->url->getCurrentUrl();
         $redirectUrl = str_replace($store_code, $redirectDomain, $currentUrl);
+        // pc端跳转到html5，可能一个是https，一个是http，因此需要下面的代码进行转换。
+        if ($mobile_https) {
+            if (strstr($redirectUrl,'https://') || strstr($redirectUrl,'http://')) {
+                $redirectUrl = str_replace('http://','https://',$redirectUrl);
+            } else {
+                $redirectUrl = 'https:'.$redirectUrl;
+            }
+        } else {
+            if (strstr($redirectUrl,'https://') || strstr($redirectUrl,'http://')) {
+                $redirectUrl = str_replace('https://','http://',$redirectUrl);
+            } else {
+                $redirectUrl = 'http:'.$redirectUrl;
+            }
+        }
         header('Location:'.$redirectUrl);
     }
 
