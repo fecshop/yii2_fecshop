@@ -21,7 +21,7 @@
       "email": "zqy234@126.com"
     }
   ],  
-  "minimum-stability": "stable",  
+  "minimum-stability": "dev",  
   "require": {  
     "php": ">=5.4.0",
     "yiisoft/yii2": ">=2.0.12" ,
