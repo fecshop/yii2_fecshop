@@ -62,12 +62,10 @@ class Request extends \yii\web\Request
         if ($baseUrl) {
             $requestUriRelative = substr($requestUriRelative, strlen($baseUrl));
         }
-
-        //echo $requestUriRelative;exit;
         $urlKey = '';
         $urlParam = '';
         $urlParamSuffix = '';
-
+        // 从url中解析出来 urlKey部分，参数部分，已经#后面的部分
         if (strstr($requestUriRelative, '#')) {
             list($urlNoSuffix, $urlParamSuffix) = explode('#', $requestUriRelative);
             if (strstr($urlNoSuffix, '?')) {
@@ -81,7 +79,8 @@ class Request extends \yii\web\Request
         if ($urlParamSuffix) {
             $urlParamSuffix = '#'.$urlParamSuffix;
         }
-        //echo $urlKey;exit;
+        // 通过上面解析的urlKey，传入到：Yii::$service->url->getOriginUrl($urlKey)
+        // 得到原来的url key，这样，我们将自定义的url key，通过查询的方式，找到Yii2框架的url key
         if (Yii::$service->url->showScriptName) {
             $urlKey = str_replace('/index.php', '', $urlKey);
             $originUrlPath = Yii::$service->url->getOriginUrl($urlKey);
