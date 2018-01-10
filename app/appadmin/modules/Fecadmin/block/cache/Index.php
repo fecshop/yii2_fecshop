@@ -155,18 +155,27 @@ class Index extends FecadminbaseBlock{
             }
             $file = Yii::getAlias($arr[$this->commonConfigKey]);
             $config = require($file);
-            if (!isset($config['components']['redis']) || !$config['components']['redis']) {
-                $this->errors = 'can not find  $config[\'components\'][\'redis\'] in '.$file;
+            if (!isset($config['components']['cache']['redis']) || !$config['components']['cache']['redis']) {
+                $this->errors = 'can not find  $config[\'components\'][\'cache\'][\'redis\'] in '.$file;
                 
                 return false;
             }
-            $baseConfig = isset($config['components']['redis']) ? $config['components']['redis'] : [];
+            
+            if (!isset($config['components']['redis']['class']) || !$config['components']['redis']['class']) {
+                $this->errors = 'can not find  $config[\'components\'][\'redis\'][\'class\'] in '.$file;
+                
+                return false;
+            }
+            
+            $baseConfig = isset($config['components']['cache']['redis']) ? $config['components']['cache']['redis'] : [];
+            $redisClass = $config['components']['redis']['class'];
+            $baseConfig['class'] = $redisClass;
             // 加载各个入口的redis配置
             foreach ($arr as $app => $appFile) {
                 if ($app != $this->commonConfigKey) {
                     $file = Yii::getAlias($appFile);
                     $config = require($file);
-                    $appRedisConfig = isset($config['components']['redis']) ? $config['components']['redis'] : [];
+                    $appRedisConfig = isset($config['components']['cache']['redis']) ? $config['components']['cache']['redis'] : [];
                     if (!empty($appRedisConfig)) {
                         $this->appRedisCache[$app] = \yii\helpers\ArrayHelper::merge($baseConfig, $appRedisConfig);
                     }
