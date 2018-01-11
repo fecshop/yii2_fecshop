@@ -16,6 +16,12 @@ return [
             'index' => [
         		'class' => 'fecshop\app\appadmin\modules\Fecadmin\controllers\IndexController',
         	],
+            'error' => [
+        		'class' => 'fecshop\app\appadmin\modules\Fecadmin\controllers\ErrorController',
+        	],
+            'systemlog' => [
+        		'class' => 'fecshop\app\appadmin\modules\Fecadmin\controllers\SystemlogController',
+        	],
         ],
         'params' => [
             /**

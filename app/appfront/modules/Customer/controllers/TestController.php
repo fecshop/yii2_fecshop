@@ -16,18 +16,28 @@ use Yii;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class AccountController extends AppfrontController
+class TestController extends AppfrontController
 {
     //protected $_registerSuccessRedirectUrlKey = 'customer/account';
 
     public $enableCsrfValidation = false;
 
     /**
-     * ÕË»§ÖÐÐÄ.
+     * Ðâ•¦â•—Ð”Ð¾Ð»Ð»â”€.
      */
     public function actionIndex()
     {
-        44444
+        echo json_encode([
+            'data' => 
+            [
+                ['terry','1','2','3'],
+                ['water','11','22','33'],
+                ['xxx','111','222','333'],
+            ]
+        ]);
+        
+        
+        exit;
     }
 
 }
