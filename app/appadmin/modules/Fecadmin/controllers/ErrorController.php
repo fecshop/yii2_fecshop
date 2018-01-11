@@ -21,7 +21,7 @@ class ErrorController extends AppadminController
 	# 刷新缓存
     public function actionIndex()
     {
-        echo "<br><b>找不到:".Yii::$app->request->getUrl().",，请先建立相应的module/controller/action
+        echo "<br><b> Page: 404 !!!! ,页面找不到 ".Yii::$app->request->getUrl().",，请先建立相应的module/controller/action
         ，再访问该URL
         </b>";
 	}
