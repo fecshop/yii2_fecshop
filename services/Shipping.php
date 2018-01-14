@@ -10,6 +10,7 @@
 namespace fecshop\services;
 
 use Yii;
+use yii\base\InvalidConfigException;
 
 /**
  * Shipping services.
@@ -21,7 +22,10 @@ class Shipping extends Service
     public $shippingConfig;
     public $shippingCsvDir; // 存放运费csv表格的文件路径。
     public $defaultShippingMethod;
-
+    
+    protected $_shippingCsvArr = [];
+    //public $cache_shipping_csv = 0;
+    //const CACHE_SHIPPING_CSV = 'cache_shipping_csv_table_config';
     /**
      * @property $method | String ，shipping_method key
      * @return array ，得到配置
@@ -35,15 +39,39 @@ class Shipping extends Service
             return $allmethod;
         }
     }
+    /**
+     * @property $country | String 国家
+     * @property $region | String 省市
+     * @property $shipping_method | String 货运方式
+     * 根据国家，省市，得到符合地址条件的shipping method
+     * 不符合条件的被剔除
+     */
+    protected function actionGetActiveShippingMethods($country,$region,$shipping_method = ''){
+        $allmethod = $this->shippingConfig;
+        $active_methods = [];
+        if (is_array($allmethod ) && !empty($allmethod )) {
+            foreach ($allmethod  as $method => $v) {
+                if( $shipping = $this->getShippingByTableCsv($method) ) {
+                    if( isset($shipping[$country]))
+                    $active_methods[$method] = $v;
+                }
+            }
+        }
+        if ($shipping_method) {
+            return isset($active_methods[$shipping_method]) ? $active_methods[$shipping_method] : [];
+        } else {
+            return $active_methods;
+        }
+    }
 
     /**
      * @property $shipping_method | String
      * @return bool 发货方式
      */
-    protected function actionIfIsCorrect($shipping_method)
+    protected function actionIfIsCorrect($country, $region, $shipping_method)
     {
-        $allmethod = $this->shippingConfig;
-        if (isset($allmethod[$shipping_method]) && !empty($allmethod[$shipping_method])) {
+        $active_method = $this->getActiveShippingMethods($country,$region,$shipping_method);
+        if (isset($active_method[$shipping_method]) && !empty($active_method[$shipping_method])) {
             return true;
         } else {
             return false;
@@ -84,7 +112,19 @@ class Shipping extends Service
             return Yii::$service->shipping->getDefaultShippingMethod();
         }
     }
-
+    
+    public function shippingIsActive($shippingConfig, $country, $region){
+        if (isset($shippingArr[$country][$region])) {
+            $priceData = $shippingArr[$country][$region];
+        } else if (isset($shippingArr[$country]['*'])) {
+            $priceData = $shippingArr[$country]['*'];
+        } else if(isset($shippingArr['*']['*'])) {
+            $priceData = $shippingArr['*']['*'];
+        } else {
+            return false;
+        }
+        
+    }
     // 通过方法，重量，国家，省，得到美元状态的运费金额
 
     /**
@@ -100,13 +140,18 @@ class Shipping extends Service
             return 0;
         }
         $shippingArr = $this->getShippingByTableCsv($shipping_method);
+        if (empty($shippingArr) || !is_array($shippingArr)) {
+            throw new InvalidConfigException('shipping method is not config in table csv');
+        }
         $priceData = [];
         if (isset($shippingArr[$country][$region])) {
             $priceData = $shippingArr[$country][$region];
-        } elseif (isset($shippingArr[$country]['*'])) {
+        } else if (isset($shippingArr[$country]['*'])) {
             $priceData = $shippingArr[$country]['*'];
-        } else {
+        } else if(isset($shippingArr['*']['*'])) {
             $priceData = $shippingArr['*']['*'];
+        } else {
+            throw new InvalidConfigException('error,this country is config in csv table');
         }
         //var_dump($priceData);
         $prev_weight = 0;
@@ -143,7 +188,7 @@ class Shipping extends Service
      */
     protected function actionGetShippingCost($shipping_method, $weight, $country = '', $region = '*')
     {
-        $allmethod = $this->getShippingMethod();
+        $allmethod = $this->getActiveShippingMethods($country, $region);
         $m = $allmethod[$shipping_method];
         //var_dump($m );exit;
         if (!empty($m) && is_array($m)) {
@@ -180,18 +225,25 @@ class Shipping extends Service
 
         return $s['label'];
     }
-
+    
+    
     /**
      * @property $shipping_method | String 货运方式的key
      * @return array ，通过csv表格，得到对应的运费数组信息
      */
     protected function getShippingByTableCsv($shipping_method)
     {
-        //$shippingCsvDir = '@common/config/shipping';
+        // 类变量，如果已经赋值，直接返回
+        if (isset($this->_shippingCsvArr[$shipping_method]) && !empty($this->_shippingCsvArr[$shipping_method])) {
+            return $this->_shippingCsvArr[$shipping_method];
+        }
+        // 从csv文件中读取shipping信息。
         $commonDir = Yii::getAlias($this->shippingCsvDir);
         $csv = $commonDir.'/'.$shipping_method.'.csv';
+        if (!file_exists($csv)) {
+            return false;
+        }
         $fp = fopen($csv, 'r');
-        $shippingArr = [];
         $i = 0;
         while (!feof($fp)) {
             if ($i) {
@@ -201,12 +253,17 @@ class Shipping extends Service
                 $Region = $arr[1];
                 $Weight = $arr[3];
                 $ShippingPrice = $arr[4];
-                $shippingArr[$country][$Region][] = [$Weight, $ShippingPrice];
+                $this->_shippingCsvArr[$shipping_method][$country][$Region][] = [$Weight, $ShippingPrice];
             }
             $i++;
         }
         fclose($fp);
-
-        return $shippingArr;
+        if (isset($this->_shippingCsvArr[$shipping_method]) && !empty($this->_shippingCsvArr[$shipping_method])) {
+            
+            return  $this->_shippingCsvArr[$shipping_method];
+        } else {
+            return  false;
+        }
+        
     }
 }

@@ -422,11 +422,11 @@ class Index
      */
     public function getShippingArr($weight, $current_shipping_method, $country, $region = '*')
     {
-        $allshipping = Yii::$service->shipping->getShippingMethod();
+        $allshipping = Yii::$service->shipping->getActiveShippingMethods($country,$region);
         $sr = '';
         $shipping_i = 1;
         $arr = [];
-        if (is_array($allshipping)) {
+        if (is_array($allshipping) && !empty($allshipping)) {
             foreach ($allshipping as $method=>$shipping) {
                 $label = $shipping['label'];
                 $name = $shipping['name'];
