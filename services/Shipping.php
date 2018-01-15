@@ -22,128 +22,69 @@ class Shipping extends Service
     public $shippingConfig;
     public $shippingCsvDir; // 存放运费csv表格的文件路径。
     public $defaultShippingMethod;
+    // 是否缓存shipping method 配置数据（因为csv部分需要读取csv文件，稍微耗时一些，可以选择放到缓存里面）
+    protected $_cache_shipping_methods_config = 0;
+    // 缓存key
+    const  CACHE_SHIPPING_METHODS_CONFIG = 'cache_shipping_methods_config';
     
-    protected $_shippingCsvArr = [];
-    //public $cache_shipping_csv = 0;
-    //const CACHE_SHIPPING_CSV = 'cache_shipping_csv_table_config';
+    protected $_shipping_methods ;
     /**
-     * @property $method | String ，shipping_method key
-     * @return array ，得到配置
+     * 1.从配置中取出来所有的shipping method
+     * 2.对于公式为csv的shipping method，将对应的csv文件中的配置信息取出来
+     * 3.如果开启了数据缓存，那么直接从缓存中读取。
+     * 最后合并成一个整体的配置文件。赋值与-> $this->_shipping_methods
      */
-    protected function actionGetShippingMethod($shipping_method = '')
-    {
-        $allmethod = $this->shippingConfig;
-        if ($shipping_method) {
-            return isset($allmethod[$shipping_method]) ? $allmethod[$shipping_method] : '';
-        } else {
-            return $allmethod;
-        }
-    }
-    /**
-     * @property $country | String 国家
-     * @property $region | String 省市
-     * @property $shipping_method | String 货运方式
-     * 根据国家，省市，得到符合地址条件的shipping method
-     * 不符合条件的被剔除
-     */
-    protected function actionGetActiveShippingMethods($country,$region,$shipping_method = ''){
-        $allmethod = $this->shippingConfig;
-        $active_methods = [];
-        if (is_array($allmethod ) && !empty($allmethod )) {
-            foreach ($allmethod  as $method => $v) {
-                if( $shipping = $this->getShippingByTableCsv($method) ) {
-                    if( isset($shipping[$country]))
-                    $active_methods[$method] = $v;
+    public function init(){
+        parent::init();
+        if (!$this->_shipping_methods) {
+            // 是否开启缓存，如果开启，则从缓存中直接读取
+            if ($this->_cache_shipping_methods_config) {
+                $cache = Yii::$app->cache->get(self::CACHE_SHIPPING_METHODS_CONFIG);
+                if (is_array($cache) && !empty($cache)) {
+                    $this->_shipping_methods = $cache;
                 }
             }
-        }
-        if ($shipping_method) {
-            return isset($active_methods[$shipping_method]) ? $active_methods[$shipping_method] : [];
-        } else {
-            return $active_methods;
-        }
-    }
-
-    /**
-     * @property $shipping_method | String
-     * @return bool 发货方式
-     */
-    protected function actionIfIsCorrect($country, $region, $shipping_method)
-    {
-        $active_method = $this->getActiveShippingMethods($country,$region,$shipping_method);
-        if (isset($active_method[$shipping_method]) && !empty($active_method[$shipping_method])) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * @return string ,得到默认的运费方法 shipping_method key
-     *                配置中$this->shippingConfig 第一个参数就是默认
-     */
-    protected function actionGetDefaultShippingMethod()
-    {
-        if ($shippingMethod = $this->defaultShippingMethod) {
-            if (isset($shippingMethod['enable']) && $shippingMethod['enable']) {
-                $shipping = isset($shippingMethod['shipping']) ? $shippingMethod['shipping'] : '';
-                if ($shipping && $this->getShippingMethod($shipping)) {
-                    return $shipping;
+            $allmethod = $this->shippingConfig;
+            $this->_shipping_methods = [];
+            if (is_array($allmethod) && !empty($allmethod) ) {
+                foreach ($allmethod as $s_method => $v) {
+                    $formula = $v['formula'];
+                    if ($formula == 'csv') {
+                        $csv_content = $this->getShippingByTableCsv($s_method);
+                        if ($csv_content) {
+                            $this->_shipping_methods[$s_method] = $v;
+                            $this->_shipping_methods[$s_method]['csv_content'] = $csv_content;
+                        }
+                    } else {
+                        $this->_shipping_methods[$s_method] = $v;
+                    }
                 }
             }
+            if ($this->_cache_shipping_methods_config) {
+                Yii::$app->cache->set(self::CACHE_SHIPPING_METHODS_CONFIG, $this->_shipping_methods);
+            }
         }
-
-        return '';
-    }
-
-    /**
-     * @proeprty $customShippingMethod 自定义的货运方式，这个一般是通过前端传递过来的shippingMethod
-     * @proeprty $cartShippingMethod   购物车中的货运方式，这个是从购物车表中取出来的。
-     * @return string 返回当前的货运方式。
-     */
-    protected function actionGetCurrentShippingMethod($customShippingMethod = '', $cartShippingMethod = '')
-    {
-        if ($customShippingMethod) {
-            return $customShippingMethod;
-        }
-        if ($cartShippingMethod) {
-            return $cartShippingMethod;
-        } else {
-            return Yii::$service->shipping->getDefaultShippingMethod();
-        }
+        return $this->_shipping_methods;
     }
     
-    public function shippingIsActive($shippingConfig, $country, $region){
-        if (isset($shippingArr[$country][$region])) {
-            $priceData = $shippingArr[$country][$region];
-        } else if (isset($shippingArr[$country]['*'])) {
-            $priceData = $shippingArr[$country]['*'];
-        } else if(isset($shippingArr['*']['*'])) {
-            $priceData = $shippingArr['*']['*'];
-        } else {
-            return false;
-        }
-        
-    }
-    // 通过方法，重量，国家，省，得到美元状态的运费金额
-
     /**
      * @proeprty $shipping_method 货运方式的key
+     * @property $shippingConfig Array （MIX），配置信息。
      * @proeprty $weight 产品的总重量
      * @proeprty $country 货运国家
      * @proeprty $region  货运省份
-     * @return float 通过计算，得到在默认货币下的运费金额。
+     * @return float 通过计算，得到在【基础货币】下的运费金额。
+     * 本部分只针对csv类型的shipping进行计算。
      */
-    protected function actionGetShippingCostByCsvWeight($shipping_method, $weight, $country, $region = '*')
+    protected function actionGetShippingCostByCsv($shipping_method, $shippingConfig, $weight, $country, $region)
     {
         if (!$weight) {
             return 0;
         }
-        $shippingArr = $this->getShippingByTableCsv($shipping_method);
-        if (empty($shippingArr) || !is_array($shippingArr)) {
-            throw new InvalidConfigException('shipping method is not config in table csv');
-        }
-        $priceData = [];
+        // 从配置中读取出来csv表格的数组信息（处理后的）。
+        $shippingArr = $shippingConfig['csv_content'];
+        $country = $country ? $country : '*';
+        $region  = $region ? $region : '*';
         if (isset($shippingArr[$country][$region])) {
             $priceData = $shippingArr[$country][$region];
         } else if (isset($shippingArr[$country]['*'])) {
@@ -153,7 +94,7 @@ class Shipping extends Service
         } else {
             throw new InvalidConfigException('error,this country is config in csv table');
         }
-        //var_dump($priceData);
+        // 找到相应的配置后，是各个区间值，根据区间值，得到相应的运费。
         $prev_weight = 0;
         $prev_price  = 0;
         $last_price  = 0;
@@ -173,70 +114,192 @@ class Shipping extends Service
             if (!$last_price) {
                 $last_price = $csv_price;
             }
-
             return $last_price;
+        } else {
+            throw new InvalidConfigException('error,shipping info config is error');
         }
     }
-
     /**
      * @proeprty $shipping_method 货运方式的key
      * @proeprty $weight 产品的总重量
      * @proeprty $country 货运国家
      * @return array 当前货币下的运费的金额。
-     *               运费是通过csv表格内容计算而来，如果cost==0，那么代表免邮的方式。
-     *               该方法为：当前重量下，所有的运费方式对应的运费都计算出来，展示在下单页面，让用户选择。
+     * 此处只做运费计算，不管该shipping是否可用。
+     * 结果数据示例：
+     * [
+     *  'currCost'   => 66,
+     *  'baseCost'   => 11,
+     * ]
      */
-    protected function actionGetShippingCost($shipping_method, $weight, $country = '', $region = '*')
+    protected function actionGetShippingCost($method, $shippingInfo, $weight, $country, $region)
     {
-        $allmethod = $this->getActiveShippingMethods($country, $region);
-        $m = $allmethod[$shipping_method];
-        //var_dump($m );exit;
-        if (!empty($m) && is_array($m)) {
-            $cost = $m['cost'];
-            // csv方式
-            if ($cost === 'csv') {
-
-                //通过 运费方式，重量，国家，得到美元的运费
-                $usdCost = $this->getShippingCostByCsvWeight($shipping_method, $weight, $country, $region);
-                //echo $usdCost;
-                $currentCost = Yii::$service->page->currency->getCurrentCurrencyPrice($usdCost);
-
-                return [
-                    'currCost'   => $currentCost,
-                    'baseCost'     => $usdCost,
-                ];
-            // $cost = 0 代表为free shipping方式
-            } elseif ($cost == 0) {
-                return [
-                    'currCost'  => number_format(0, 2),
-                    'baseCost'    => number_format(0, 2),
-                ];
-            }
+        // 得到shipping计算的字符串公式
+        $formula = $shippingInfo['formula'];
+        // 如果公式的值为`csv`
+        if ($formula === 'csv') {
+            // 通过csv表格的配置，得到运费（基础货币）
+            $usdCost = $this->getShippingCostByCsv($method, $shippingInfo, $weight, $country, $region);
+            // 当前货币
+            $currentCost = Yii::$service->page->currency->getCurrentCurrencyPrice($usdCost);
+            
+            return [
+                'currCost'   => $currentCost,
+                'baseCost'     => $usdCost,
+            ];
+        } else {  // 通过公式计算得到运费。
+            $formula = str_replace('[weight]',$weight,$formula);
+            $currentCost = eval("return $formula;");
+            
+            return [
+                'currCost'  => number_format($currentCost, 2),
+                'baseCost'    => number_format($currentCost, 2),
+            ];
         }
     }
-
+    
+    /**
+     * @proeprty $customShippingMethod 自定义的货运方式，这个一般是通过前端传递过来的shippingMethod
+     * @proeprty $cartShippingMethod   购物车中的货运方式，这个是从购物车表中取出来的。
+     * @return string 返回当前的货运方式。
+     */
+    protected function actionGetCurrentShippingMethod($customShippingMethod, $cartShippingMethod, $country, $region, $weight)
+    {
+        $available_method = $this->getAvailableShippingMethods($country, $region, $weight);
+        if ($customShippingMethod) {
+            if (isset($available_method[$customShippingMethod])) {
+                return $customShippingMethod;
+            }
+        }
+        if ($cartShippingMethod) {
+            if (isset($available_method[$cartShippingMethod])) {
+                return $cartShippingMethod;
+            }
+        }
+        // 如果都不存在，则将可用物流中的第一个取出来$available_method
+        foreach ($available_method as $method => $v) {
+            return $method;
+        }
+    }
+    
     /**
      * @property $shipping_method | String
      * @return 得到货运方式的名字
      */
     protected function actionGetShippingLabelByMethod($shipping_method)
     {
-        $s = $this->getShippingMethod($shipping_method);
+        $s = $this->_shipping_methods[$shipping_method];
 
-        return $s['label'];
+        return isset($s['label']) ? $s['label'] : '';
     }
+    
+    /**
+     * @property $shipping_method | String
+     * @return bool 发货方式
+     * 判断前端传递的shipping method是否有效（做安全性验证）
+     */
+    protected function actionIfIsCorrect($country, $region, $shipping_method, $weight)
+    {
+        $available_method = $this->getAvailableShippingMethods($country, $region, $weight);
+        if (isset($available_method[$shipping_method]) && !empty($available_method[$shipping_method])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * @property $countryCode | String 
+     * @property $region | String 
+     * @property weight | Float
+     * 将可用的shipping method数组的第一个取出来作为默认的shipping。
+     */
+    public function getDefaultShippingMethod($countryCode,$region,$weight){
+        $available_method = $this->getAvailableShippingMethods($countryCode,$region,$weight);
+        foreach ($available_method as $method => $v) {
+            return $method;
+        }
+    }
+    
+    protected $_available_shipping;
+    /**
+     * @property $country | String 国家 如果没有国家，则传递空字符串
+     * @property $region | String 省市 如果没有省市，则传递空字符串
+     * @property $shipping_method | String 货运方式
+     * @property $weight | Float ，重量，如果某些物流存在重量限制，那么，重量不满足的将会被剔除
+     * @return   $availableShipping | Array ，可用的shipping method
+     * 在全部的shipping method，存在1.国家省市限制，2.重量限制
+     * 不符合条件的被剔除，剩下的就是可用的shipping method
+     * 该函数调用的地方比较多，因此将结果存储到类变量中，节省计算。
+     */
+    public function getAvailableShippingMethods($countryCode,$region,$weight = 0){
+        
+        $c_key = $countryCode ? $countryCode : 'noKey';
+        $r_key = $region ? $region : 'noKey';
+        $w_key = $weight ? $weight : 'noKey';
+        // 通过类变量记录，只计算一次。
+        if (!isset($this->_available_shipping[$c_key][$r_key][$w_key])) {
+            $this->_available_shipping[$c_key][$r_key][$w_key] = [];
+            //var_dump($this->_shipping_methods);
+            $availableShipping = [];
+            if (!$countryCode && !$region) {
+                $availableShipping = $this->_shipping_methods;
+            } else {
+                foreach ($this->_shipping_methods as $shipping_method => $v) {
+                    $countryLimit = isset($v['country']) ? $v['country'] : '';
+                    if ($this->isCountryLimit($countryLimit,$countryCode)) {
+                        continue;
+                    }
+                    // 如果是csv类型，查看在csv中是否存在
+                    $formula = isset($v['formula']) ? $v['formula'] : '';
+                    if ($formula === ''){
+                        continue; // 代表shipping配置有问题，不可用
+                    } else if ($formula === 'csv') {
+                        if($this->isCsvCountryReginLimit($v, $countryCode, $region)) {
+                            continue;
+                        }
+                    }
+                    $availableShipping[$shipping_method] = $v;
+                }
+            }
+            // 重量限制
+            if ($weight) {
+                $availableShipping = $this->wegihtAllowedShipping($availableShipping, $weight);
+            }
+            $this->_available_shipping[$c_key][$r_key][$w_key] = $availableShipping;
+        }
+        return $this->_available_shipping[$c_key][$r_key][$w_key];
+    }
+    
+    
     
     
     /**
      * @property $shipping_method | String 货运方式的key
      * @return array ，通过csv表格，得到对应的运费数组信息
+     * 内部函数，将csv表格中的shipping数据读出来
+     * 返回的数据格式为：
+        [
+            'fast_shipping' => [
+                'US' => [
+                    '*' => [
+                        [0.5100, 22.9],
+                        [1.0100, 25.9],
+                        [2.5100, 34.9],
+                    ]
+                ],
+                'DE' => [
+                    '*' => [
+                        [0.5100, 22.9],
+                        [1.0100, 25.9],
+                        [2.5100, 34.9],
+                    ]
+                ],
+            ]
+        ]
      */
     protected function getShippingByTableCsv($shipping_method)
     {
-        // 类变量，如果已经赋值，直接返回
-        if (isset($this->_shippingCsvArr[$shipping_method]) && !empty($this->_shippingCsvArr[$shipping_method])) {
-            return $this->_shippingCsvArr[$shipping_method];
-        }
+        $shippingCsvArr = [];
         // 从csv文件中读取shipping信息。
         $commonDir = Yii::getAlias($this->shippingCsvDir);
         $csv = $commonDir.'/'.$shipping_method.'.csv';
@@ -253,17 +316,86 @@ class Shipping extends Service
                 $Region = $arr[1];
                 $Weight = $arr[3];
                 $ShippingPrice = $arr[4];
-                $this->_shippingCsvArr[$shipping_method][$country][$Region][] = [$Weight, $ShippingPrice];
+                $shippingCsvArr[$country][$Region][] = [$Weight, $ShippingPrice];
             }
             $i++;
         }
         fclose($fp);
-        if (isset($this->_shippingCsvArr[$shipping_method]) && !empty($this->_shippingCsvArr[$shipping_method])) {
-            
-            return  $this->_shippingCsvArr[$shipping_method];
-        } else {
-            return  false;
+        return $shippingCsvArr;
+    }
+    
+    
+    /**
+     * @property $countryLimit | Array 配置中的国家限制数组
+     * @property $countryCode | String 判断的国家code
+     * 判断 $countryCode 是否存在国家方面的限制
+     */
+    protected function isCountryLimit($countryLimit,$countryCode){
+        // 如果存在国家方面的限制
+        if (is_array($countryLimit) && !empty($countryLimit)) {      
+            $type = isset($countryLimit['type']) ?  $countryLimit['type'] : '';
+            $code = isset($countryLimit['code']) ?  $countryLimit['code'] : '';
+            if ($type == 'allow') {
+                // 如果不存在于数组，则代表不允许
+                if (!in_array($countryCode, $code)) {
+                    return true;
+                }
+            } else if ($type == 'not_allow') {
+                if (in_array($countryCode, $code)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * @property $shippingConfig | Array ， shipping method对应的配置
+     * @property $countryCode | String 国家简码
+     * @property $region | String 省市
+     * 根据csv content里面的配置，判断是否存在国家 省市限制
+     */
+    protected function isCsvCountryReginLimit($shippingConfig, $countryCode, $region){
+        $csv_content = isset($shippingConfig['csv_content']) ? $shippingConfig['csv_content'] : '';
+        // 如果不存在全局国家，省市 的通用配置
+        if (!isset($csv_content['*']['*'])) {
+            // 如果当前的国家对应的配置不存在，则不可用
+            if (!isset($csv_content[$countryCode])) {
+                return true;
+            } else if( $region){ // 如果参数传递的$region不为空
+                // 国家可用，如果不存在省市的通用配置
+                if (!isset($csv_content[$countryCode]['*'])) {
+                    // 如果不存在相应省市的配置，则不可用
+                    if (!isset($csv_content[$countryCode][$region])) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * @property $availableShipping | Array  ，shipping method 数组
+     * @property $weight | Float 重量
+     * @return Array
+     * 返回满足重量限制的shipping method
+     */
+    protected function wegihtAllowedShipping($availableShipping, $weight){
+        $available_shipping = [];
+        // 查看是否存在重量限制,如果存在，则不可用
+        foreach ($availableShipping as $method => $v) {
+            $weightLimit = isset($v['weight']) ? $v['weight'] : '';
+            if (isset($weightLimit['min']) && $weightLimit['min'] > $weight){
+                continue;
+            } 
+            if (isset($weightLimit['max']) && $weightLimit['max'] < $weight){
+                continue;
+            } 
+            $available_shipping[$method] = $v;
         }
         
+        return $available_shipping;
     }
+    
 }

@@ -268,11 +268,11 @@ class Placeorder
 
             return false;
         } else {
-            if (!Yii::$service->shipping->ifIsCorrect($shipping_method)) {
-                Yii::$service->helper->errors->add('shipping method is not correct');
-
-                return false;
-            }
+            //if (!Yii::$service->shipping->ifIsCorrect($shipping_method)) {
+            //    Yii::$service->helper->errors->add('shipping method is not correct');
+            //    
+            //    return false;
+            //}
         }
         // 验证支付方式
         if (!$payment_method) {

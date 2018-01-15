@@ -243,9 +243,9 @@ class Quote extends Service
         }
         $myCart->remote_ip  = \fec\helpers\CFunc::get_real_ip();
         $myCart->app_name   = Yii::$service->helper->getAppName();
-        if ($defaultShippingMethod = Yii::$service->shipping->getDefaultShippingMethod()) {
-            $myCart->shipping_method = $defaultShippingMethod;
-        }
+        //if ($defaultShippingMethod = Yii::$service->shipping->getDefaultShippingMethod()) {
+        //    $myCart->shipping_method = $defaultShippingMethod;
+        //}
         $myCart->save();
         $cart_id = $myCart['cart_id'];
         $this->setCartId($cart_id);
@@ -338,12 +338,7 @@ class Quote extends Service
             if ($items_qty <= 0) {
                 return false;
             }
-            //var_dump($cart);
-            //echo "########".$cart['shipping_method'];
             $coupon_code = $cart['coupon_code'];
-            if (!$shipping_method) {
-                $shipping_method = $cart['shipping_method'];
-            }
             $cart_product_info = Yii::$service->cart->quoteItem->getCartProductInfo();
             if (is_array($cart_product_info)) {
                 $product_weight = $cart_product_info['product_weight'];
@@ -351,10 +346,13 @@ class Quote extends Service
                 $products = $cart_product_info['products'];
                 $product_total = $cart_product_info['product_total'];
                 $base_product_total = $cart_product_info['base_product_total'];
+                //if (!$shipping_method) {
+                //    $shipping_method = Yii::$service->shipping->getDefaultShippingMethod($country,$region,$product_weight);
+                //}
                 if ($products && $product_total) {
                     $currShippingCost = 0;
                     $baseShippingCost = 0;
-                    if ($shipping_method && $product_weight && $country) {
+                    if ($shipping_method && $product_weight) {
                         $shippingCost = $this->getShippingCost($shipping_method, $product_weight, $country, $region);
                         $currShippingCost = $shippingCost['currCost'];
                         $baseShippingCost = $shippingCost['baseCost'];
@@ -420,11 +418,11 @@ class Quote extends Service
      */
     public function getShippingCost($shipping_method = '', $weight = '', $country = '', $region = '')
     {
-        if (!$region) {
-            $region = '*';
-        }
+        
         if (!$this->_shipping_cost) {
-            $shippingCost = Yii::$service->shipping->getShippingCost($shipping_method, $weight, $country, $region);
+            $available_method = Yii::$service->shipping->getAvailableShippingMethods($country,$region,$weight);
+            $shippingInfo = $available_method[$shipping_method];
+            $shippingCost = Yii::$service->shipping->getShippingCost($shipping_method, $shippingInfo, $weight, $country, $region);
             $this->_shipping_cost = $shippingCost;
         }
 
