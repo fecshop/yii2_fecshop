@@ -21,7 +21,7 @@ class Shipping extends Service
 {
     public $shippingConfig;
     public $shippingCsvDir; // 存放运费csv表格的文件路径。
-    public $defaultShippingMethod;
+    //public $defaultShippingMethod;
     // 是否缓存shipping method 配置数据（因为csv部分需要读取csv文件，稍微耗时一些，可以选择放到缓存里面）
     protected $_cache_shipping_methods_config = 0;
     // 缓存key
@@ -44,28 +44,34 @@ class Shipping extends Service
                     $this->_shipping_methods = $cache;
                 }
             }
-            $allmethod = $this->shippingConfig;
-            $this->_shipping_methods = [];
-            if (is_array($allmethod) && !empty($allmethod) ) {
-                foreach ($allmethod as $s_method => $v) {
-                    $formula = $v['formula'];
-                    if ($formula == 'csv') {
-                        $csv_content = $this->getShippingByTableCsv($s_method);
-                        if ($csv_content) {
+            // 如果无法从缓存中读取
+            if (!$this->_shipping_methods) {
+                $allmethod = $this->shippingConfig;
+                $this->_shipping_methods = [];
+                // 从配置中读取shipping method的配置信息
+                if (is_array($allmethod) && !empty($allmethod) ) {
+                    foreach ($allmethod as $s_method => $v) {
+                        $formula = $v['formula'];
+                        if ($formula == 'csv') {
+                            $csv_content = $this->getShippingByTableCsv($s_method);
+                            if ($csv_content) {
+                                $this->_shipping_methods[$s_method] = $v;
+                                $this->_shipping_methods[$s_method]['csv_content'] = $csv_content;
+                            }
+                        } else {
                             $this->_shipping_methods[$s_method] = $v;
-                            $this->_shipping_methods[$s_method]['csv_content'] = $csv_content;
                         }
-                    } else {
-                        $this->_shipping_methods[$s_method] = $v;
                     }
                 }
-            }
-            if ($this->_cache_shipping_methods_config) {
-                Yii::$app->cache->set(self::CACHE_SHIPPING_METHODS_CONFIG, $this->_shipping_methods);
+                if ($this->_cache_shipping_methods_config) {
+                    Yii::$app->cache->set(self::CACHE_SHIPPING_METHODS_CONFIG, $this->_shipping_methods);
+                    
+                }
             }
         }
         return $this->_shipping_methods;
     }
+    
     
     /**
      * @proeprty $shipping_method 货运方式的key

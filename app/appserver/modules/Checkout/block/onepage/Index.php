@@ -33,9 +33,7 @@ class Index
     public function getLastData()
     {
         $cartInfo = Yii::$service->cart->getCartInfo();
-
         if (!isset($cartInfo['products']) || !is_array($cartInfo['products']) || empty($cartInfo['products'])) {
-            
             $code = Yii::$service->helper->appserver->order_generate_cart_product_empty;
             $data = [];
             $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
@@ -363,15 +361,15 @@ class Index
     /**
      * @property $current_shipping_method | String  当前选择的货运方式
      * @return Array，数据格式为：
-     *                                    [
-     *                                    'method'=> $method,
-     *                                    'label' => $label,
-     *                                    'name'  => $name,
-     *                                    'cost'  => $symbol.$currentCurrencyCost,
-     *                                    'check' => $check,
-     *                                    'shipping_i' => $shipping_i,
-     *                                    ]
-     *                                    根据选择的货运方式，得到费用等信息。
+     * [
+     *      'method'=> $method,
+     *      'label' => $label,
+     *      'name'  => $name,
+     *      'cost'  => $symbol.$currentCurrencyCost,
+     *      'check' => $check,
+     *      'shipping_i' => $shipping_i,
+     * ]
+     * 得到所有的，有效shipping method数组。
      */
     public function getShippings($custom_shipping_method = '')
     {
@@ -382,18 +380,14 @@ class Index
             $region = $this->_state;
         }
         $cartProductInfo = Yii::$service->cart->quoteItem->getCartProductInfo();
-        //echo $country ;
         $product_weight = $cartProductInfo['product_weight'];
-        // 传递当前的货运方式，这个需要从cart中选取，
-        // 如果cart中没有shipping_method，那么该值为空
-        //var_dump($this->_cart_info);
         $cartShippingMethod = $this->_cart_info['shipping_method'];
-        //echo "$custom_shipping_method,$cartShippingMethod";
-        $current_shipping_method = Yii::$service->shipping->getCurrentShippingMethod($custom_shipping_method, $cartShippingMethod);
-
+        // 当前的货运方式
+        $current_shipping_method = Yii::$service->shipping->getCurrentShippingMethod($custom_shipping_method, $cartShippingMethod, $country, $region, $product_weight);
         $this->_shipping_method = $current_shipping_method;
-        $shippingArr = $this->getShippingArr($product_weight, $current_shipping_method, $country, $region);
-
+        // 得到所有，有效的shipping method
+        $shippingArr = $this->getShippingArr($product_weight, $current_shipping_method, $country, $region = '*');
+        
         return $shippingArr;
     }
 
@@ -450,22 +444,18 @@ class Index
      * @property $country | String  国家
      * @return array ， 通过上面的三个参数，得到各个运费方式对应的运费等信息。
      */
-    public function getShippingArr($weight, $current_shipping_method, $country, $region = '*')
+    public function getShippingArr($weight, $current_shipping_method, $country, $region)
     {
-        $allshipping = Yii::$service->shipping->getShippingMethod();
+        $available_shipping = Yii::$service->shipping->getAvailableShippingMethods($country, $region, $weight);
         $sr = '';
         $shipping_i = 1;
         $arr = [];
-        if (is_array($allshipping)) {
-            foreach ($allshipping as $method=>$shipping) {
+        if (is_array($available_shipping) && !empty($available_shipping)) {
+            foreach ($available_shipping as $method=>$shipping) {
                 $label = $shipping['label'];
                 $name = $shipping['name'];
                 // 得到运费的金额
-                //echo "$method,$weight,$country,$region";
-                // getShippingCostWithSymbols
-                $cost = Yii::$service->shipping->getShippingCost($method, $weight, $country, $region);
-                //var_dump($cost);
-                //echo "##"
+                $cost = Yii::$service->shipping->getShippingCost($method, $shipping, $weight, $country, $region);
                 $currentCurrencyCost = $cost['currCost'];
                 $symbol = Yii::$service->page->currency->getCurrentSymbol();
                 if ($current_shipping_method == $method) {
@@ -486,7 +476,6 @@ class Index
                 $shipping_i++;
             }
         }
-
         return $arr;
     }
 
@@ -542,7 +531,10 @@ class Index
             
             $quoteItem = Yii::$service->cart->quoteItem->getCartProductInfo();
             $product_weight = $quoteItem['product_weight'];
-            $shippingCost = Yii::$service->shipping->getShippingCost($shipping_method, $product_weight, $country, $state);
+            // 计算运费。
+            $avaiable_method = Yii::$service->shipping->getAvailableShippingMethods($country,$region,$product_weight);
+            $shippingInfo = $avaiable_method[$shipping_method];
+            $shippingCost = Yii::$service->shipping->getShippingCost($shipping_method, $shippingInfo, $product_weight, $country, $state);
             Yii::$service->cart->quote->setShippingCost($shippingCost);
 
             $last_cart_info = $this->getCartInfo($shipping_method, $this->_country, $this->_state);

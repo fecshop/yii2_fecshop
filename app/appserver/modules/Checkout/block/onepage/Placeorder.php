@@ -287,9 +287,9 @@ class Placeorder
         if (!$shipping_method) {
             return 'shipping method can not empty';
         } else {
-            if (!Yii::$service->shipping->ifIsCorrect($shipping_method)) {
-                return 'shipping method is not correct';
-            }
+            // if (!Yii::$service->shipping->ifIsCorrect($shipping_method)) {
+            //     return 'shipping method is not correct';
+            // }
         }
         // 验证支付方式
         if (!$payment_method) {
