@@ -22,12 +22,15 @@ class Shipping extends Service
     public $shippingConfig;
     public $shippingCsvDir; // 存放运费csv表格的文件路径。
     //public $defaultShippingMethod;
+    
+    // 在init函数初始化，将shipping method的配置值加载到这个变量
+    protected $_shipping_methods ;
     // 是否缓存shipping method 配置数据（因为csv部分需要读取csv文件，稍微耗时一些，可以选择放到缓存里面）
     protected $_cache_shipping_methods_config = 0;
+    // 可用的shipping method，计算出来的值保存到这个类变量中。
+    protected $_available_shipping;
     // 缓存key
     const  CACHE_SHIPPING_METHODS_CONFIG = 'cache_shipping_methods_config';
-    
-    protected $_shipping_methods ;
     /**
      * 1.从配置中取出来所有的shipping method
      * 2.对于公式为csv的shipping method，将对应的csv文件中的配置信息取出来
@@ -71,7 +74,6 @@ class Shipping extends Service
         }
         return $this->_shipping_methods;
     }
-    
     
     /**
      * @proeprty $shipping_method 货运方式的key
@@ -226,7 +228,6 @@ class Shipping extends Service
         }
     }
     
-    protected $_available_shipping;
     /**
      * @property $country | String 国家 如果没有国家，则传递空字符串
      * @property $region | String 省市 如果没有省市，则传递空字符串
