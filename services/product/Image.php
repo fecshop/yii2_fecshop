@@ -161,7 +161,7 @@ class Image extends Service
         $imageArr = explode('/', $imageVal);
         $dirArr = ['cache', $this->_md5WaterImgPath, $width, $height];
         foreach ($imageArr as $igf) {
-            if ($igf && !strstr($igf, '.')) {
+            if ($igf !== '' && !strstr($igf, '.')) {
                 $dirArr[] = $igf;
             }
         }
