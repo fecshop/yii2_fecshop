@@ -338,7 +338,7 @@ class Coupon extends Service
                         $cu_model = new $this->_couponUsageModelName;
                         $cu_model->times_used = 1;
                         $cu_model->customer_id = $this->_customer_id;
-                        $cu_model->coupon_id = $c_model['id'];
+                        $cu_model->coupon_id = $c_model['coupon_id'];
                         $cu_model->save();
                     } else {
                         // 通过update函数 将times_used +1
