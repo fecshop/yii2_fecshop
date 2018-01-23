@@ -64,8 +64,13 @@ Fecshop支持多语言，多货币，架构上支持pc，手机web，手机app�
 
 > 请务必按照说明安装，自己来配置环境安装吧.
 
-从基础linux一步一步的配置的方式，详细参看文档： [Fecshop 安装](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-hand-install.html)
+3.1标准安装方式：从基础linux一步一步的配置的方式，详细参看文档： [Fecshop 安装](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-hand-install.html)
 
+3.2docker compose快速部署 
+
+由于上面的安装操作需要安装的东西比较多，过程比较繁杂，
+建议使用docker compose，参看：
+[docker compose快速部署Fecshop](https://github.com/fecshop/yii2_fecshop_docker)
 
 4、Fecshop 配置：
 ----------------
@@ -163,6 +168,8 @@ appserver（手机app服务），appapi（erp，或者其他接口对接），
 
 | 捐赠人        | 金额      |  时间            |  方式           | 账户                  | 捐助者留言      |
 | --------------| ----------| -------------    | -----------     | ----------------------| ----------|
+| 剑清          | ￥99.99   | 2018-01-03       |   支付宝        | 262***@qq.com         | 很好的项目，祝越做越好，长久发展|
+| （*）         | ￥2.00    | 2017-12-28       |   微信          | -                     | -     |
 | （*）         | ￥6.60    | 2017-12-21       |   微信          | -                     | -     |
 | 水哥          | ￥99.99   | 2017-12-20       |   支付宝        | dd_***@sohu.com       | 祝fecshop发展永久|
 | （*）         | ￥9.90    | 2017-12-11       |   微信          | -                     | 希望长久！|
