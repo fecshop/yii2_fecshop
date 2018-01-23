@@ -71,12 +71,16 @@ Fecshop支持多语言，多货币，架构上支持pc，手机web，手机app�
 建议使用docker compose，参看：
 [docker compose快速部署Fecshop](https://github.com/fecshop/yii2_fecshop_docker)
 
+3.3、vagrant box的方式（不建议）：2017.6月做的box，以后不再维护vagrant box，
+推荐使用docker compose安装，如果您想使用vagrant box可以参看：
+[Fecshop vagrant安装](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-vagrantinstall.html)
+
 4、Fecshop 配置：
 ----------------
 
 配置详细参看：[Fecshop 配置](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-config.html)
 
-如果您使用vagrant box的安装方式，上面的这些步骤，在box都配置好了。
+如果您使用docker compose或者 vagrant box的安装方式，不需要执行这个操作。
 
 5、架构特色
 -----------
