@@ -62,13 +62,12 @@ Fecshop支持多语言，多货币，架构上支持pc，手机web，手机app�
 3、安装Fecshop
 ------------
 
-> 请务必按照说明安装，自己来配置环境安装吧.
+> 请务必按照说明安装。
 
-3.1标准安装方式：从基础linux一步一步的配置的方式，详细参看文档： [Fecshop 安装](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-hand-install.html)
+3.1、标准安装方式：从基础linux一步一步的配置的方式，详细参看文档： [Fecshop 安装](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-hand-install.html)
 
-3.2docker compose快速部署 
-
-由于上面的安装操作需要安装的东西比较多，过程比较繁杂，
+3.2、docker compose快速部署 
+：由于上面的安装操作需要安装的东西比较多，过程比较繁杂，
 建议使用docker compose，参看：
 [docker compose快速部署Fecshop](https://github.com/fecshop/yii2_fecshop_docker)
 
