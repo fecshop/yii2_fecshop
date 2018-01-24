@@ -41,8 +41,9 @@ class Cart extends Service
 
                     return false;
                 }
+                $item['custom_option_sku'] = $custom_option_sku;
             }
-            $item['custom_option_sku'] = $custom_option_sku;
+            
         }
         // 检查产品满足加入购物车的条件
         $productValidate = Yii::$service->cart->info->checkProductBeforeAdd($item, $product);
