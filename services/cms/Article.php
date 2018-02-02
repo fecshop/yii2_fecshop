@@ -38,7 +38,9 @@ class Article extends Service
     {
         parent::init();
         $currentService = $this->getStorageService($this);
+         
         $this->_article = new $currentService();
+       
         /*
         if ($this->storage == 'mongodb') {
             $this->_article = new ArticleMongodb();
@@ -47,6 +49,8 @@ class Article extends Service
         }
         */
     }
+    
+    
 
     /**
      * Get Url by article's url key.

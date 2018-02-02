@@ -29,6 +29,8 @@ class Index
             $message = Yii::$service->page->translate->__('Your subscribed email was successful, You can {urlB} click Here to Home Page {urlE}, Thank You.', $arr);
             $param['email'] = $email;
             Yii::$service->email->customer->sendNewsletterSubscribeEmail($param);
+        } else if (is_array($message)) {
+            $message = implode(',', $message);
         }
 
         return [

@@ -23,7 +23,7 @@
   ],  
   "minimum-stability": "stable",  
   "require": {  
-    "php": ">=5.4.0",
+    "php": ">=7.0",
     "yiisoft/yii2-swiftmailer": "2.0.7",
     "yiisoft/yii2": ">=2.0.12" ,
     "fancyecommerce/fec":">=1.1.3.4",

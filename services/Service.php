@@ -224,7 +224,7 @@ class Service extends BaseObject
             return false;
         }
         if ($object->storagePath) {
-            $storagePath = '\\'.trim($object->storagePath.'\\').'\\';
+            $storagePath = '\\'.trim($object->storagePath, '\\').'\\';
         } else {
             $storagePath = '\\'.strtolower($className).'\\';
         }

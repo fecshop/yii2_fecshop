@@ -11,6 +11,7 @@ namespace fecshop\app\appfront\modules\Customer\controllers;
 
 use fecshop\app\appfront\modules\AppfrontController;
 use Yii;
+use fecshop\queue\job\SendEmailJob;
 
 /**
  * @author Terry Zhao <2358269014@qq.com>
@@ -23,21 +24,11 @@ class TestController extends AppfrontController
     public $enableCsrfValidation = false;
 
     /**
-     * Н╦╗Долл─.
+     * 
      */
     public function actionIndex()
     {
-        echo json_encode([
-            'data' => 
-            [
-                ['terry','1','2','3'],
-                ['water','11','22','33'],
-                ['xxx','111','222','333'],
-            ]
-        ]);
         
-        
-        exit;
     }
 
 }
