@@ -30,7 +30,7 @@ class Index
             $param['email'] = $email;
             Yii::$service->email->customer->sendNewsletterSubscribeEmail($param);
         } else if (is_array($message)) {
-            $message = implode(',', $message);
+            $message = implode(',', $message); 
         }
 
         return [
