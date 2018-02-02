@@ -510,6 +510,17 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         $this->_param['special_to'] = $this->_param['special_to'] ? (float) (strtotime($this->_param['special_to'])) : 0;
         //weight
         $this->_param['weight'] = $this->_param['weight'] ? (float) ($this->_param['weight']) : 0;
+        //长
+        $this->_param['long'] = $this->_param['long'] ? (float) ($this->_param['long']) : 0;
+        //宽
+        $this->_param['width'] = $this->_param['width'] ? (float) ($this->_param['width']) : 0;
+        //高
+        $this->_param['high'] = $this->_param['high'] ? (float) ($this->_param['high']) : 0;
+        //体积重
+        $this->_param['volume_weight'] = $this->_param['volume_weight'] ? (float) ($this->_param['volume_weight']) : 0;
+        
+        
+        
         $this->_param['score'] = $this->_param['score'] ? (int) ($this->_param['score']) : 0;
         //status
         $this->_param['status'] = $this->_param['status'] ? (float) ($this->_param['status']) : 0;

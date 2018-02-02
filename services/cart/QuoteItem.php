@@ -157,6 +157,7 @@ class QuoteItem extends Service
         $products       = [];
         $product_total  = 0;
         $product_weight = 0;
+        $product_volume_weight = 0;
         if ($cart_id) {
             if (!isset($this->_cart_product_info[$cart_id])) {
                 $data = $this->_itemModel->find()->where([
@@ -179,9 +180,13 @@ class QuoteItem extends Service
 
                             $base_product_row_price = $base_product_price * $qty;
                             $base_product_total     += $base_product_row_price;
-
+                            $volume = $product_one['long'] * $product_one['width'] * $product_one['high'];
+                            $p_pv               = $volume * $qty;
                             $p_wt               = $product_one['weight'] * $qty;
-                            $product_weight     += $p_wt;
+                            $p_vwt              = $product_one['volume_weight'] * $qty;
+                            $product_weight         += $p_wt;
+                            $product_volume_weight  += $p_vwt;
+                            $product_volume         += $p_pv;
                             $productSpuOptions  = $this->getProductSpuOptions($product_one);
                             $products[] = [
                                 'item_id'           => $one['item_id'],
@@ -199,6 +204,10 @@ class QuoteItem extends Service
                                 'product_name'      => $product_one['name'],
                                 'product_weight'    => $product_one['weight'],
                                 'product_row_weight'=> $p_wt,
+                                'product_volume_weight'     => $product_one['volume_weight'],
+                                'product_row_volume_weight' => $p_vwt,
+                                'product_volume'        => $volume,
+                                'product_row_volume'    => $p_pv,
                                 'product_url'       => $product_one['url_key'],
                                 'product_image'     => $product_one['image'],
                                 'custom_option'     => $product_one['custom_option'],
@@ -211,6 +220,9 @@ class QuoteItem extends Service
                         'product_total'     => $product_total,
                         'base_product_total'=> $base_product_total,
                         'product_weight'    => $product_weight,
+                        'product_volume_weight'    => $product_volume_weight,
+                        'product_volume'    => $product_volume,
+                        
                     ];
                 }
             }

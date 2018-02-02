@@ -150,6 +150,50 @@ class Attr
                 ],
                 'require' => 1,
             ],
+            
+            [
+                'label'=>'长(CM)',
+                'name'=>'long',
+                'display'=>[
+                    'type' => 'inputString',
+                    'lang' => false,
+
+                ],
+                'require' => 0,
+            ],
+            
+            [
+                'label'=>'宽(CM)',
+                'name'=>'width',
+                'display'=>[
+                    'type' => 'inputString',
+                    'lang' => false,
+
+                ],
+                'require' => 0,
+            ],
+            
+            [
+                'label'=>'高(CM)',
+                'name'=>'high',
+                'display'=>[
+                    'type' => 'inputString',
+                    'lang' => false,
+
+                ],
+                'require' => 0,
+            ],
+            
+            [
+                'label'=>'体积重(KG)',
+                'name'=>'volume_weight',
+                'display'=>[
+                    'type' => 'inputString',
+                    'lang' => false,
+
+                ],
+                'require' => 0,
+            ],
             [
                 'label'=>'重量(KG)',
                 'name'=>'weight',

@@ -21,7 +21,7 @@ class Index
     {
         $this->initHead();
         $currency_info = Yii::$service->page->currency->getCurrencyInfo();
-
+        //var_dump($this->getCartInfo());
         return [
             'cart_info' => $this->getCartInfo(),
             'currency_info' => $currency_info,

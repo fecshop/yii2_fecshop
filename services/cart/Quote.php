@@ -340,9 +340,12 @@ class Quote extends Service
             }
             $coupon_code = $cart['coupon_code'];
             $cart_product_info = Yii::$service->cart->quoteItem->getCartProductInfo();
+            //var_dump($cart_product_info);
             if (is_array($cart_product_info)) {
                 $product_weight = $cart_product_info['product_weight'];
-
+                $product_volume_weight = $cart_product_info['product_volume_weight'];
+                $product_volume = $cart_product_info['product_volume'];
+                $product_final_weight = max($product_weight, $product_volume_weight);
                 $products = $cart_product_info['products'];
                 $product_total = $cart_product_info['product_total'];
                 $base_product_total = $cart_product_info['base_product_total'];
@@ -352,8 +355,8 @@ class Quote extends Service
                 if ($products && $product_total) {
                     $currShippingCost = 0;
                     $baseShippingCost = 0;
-                    if ($shipping_method && $product_weight) {
-                        $shippingCost = $this->getShippingCost($shipping_method, $product_weight, $country, $region);
+                    if ($shipping_method && $product_final_weight) {
+                        $shippingCost = $this->getShippingCost($shipping_method, $product_final_weight, $country, $region);
                         $currShippingCost = $shippingCost['currCost'];
                         $baseShippingCost = $shippingCost['baseCost'];
                     }
@@ -383,6 +386,8 @@ class Quote extends Service
 
                         'products'          => $products,               //产品信息。
                         'product_weight'    => $product_weight,         //产品的总重量。
+                        'product_volume_weight'    => $product_volume_weight, 
+                        'product_volume'    => $product_volume, 
                     ];
                 }
             }

@@ -50,7 +50,7 @@ class Product extends ActiveRecord
             'name',
             'spu',
             'sku',
-            'weight',
+            
             'score',
             'status',
             'qty',
@@ -83,6 +83,13 @@ class Product extends ActiveRecord
             'short_description',
             'custom_option',
             'remark',
+            
+            'long',            // 长
+            'width',           // 宽
+            'high',            // 高
+            'weight',          // 重量
+            'volume_weight',   // 体积重
+
             'created_at',
             'updated_at',
             'created_user_id',

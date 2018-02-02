@@ -33,21 +33,28 @@ use fecshop\app\appfront\helper\Format;
 							<colgroup>
 								<col width="1">
 								<col width="">
+								<col width="6">
+								<col width="76">
+								<col width="76">
+								<col width="91">
+                                <col width="76">
+								<col width="106">
+								<col width="106">
+                                <col width="26">
 								<col width="1">
-								<col width="10">
-								<col width="1">
-								<col width="1">
-								<col width="1">
-
 							</colgroup>
 							<thead>
 								<tr class="first last">
 									<th rowspan="1">&nbsp;</th>
-									<th rowspan="1"><span class="nobr"><?= Yii::$service->page->translate->__('Product Name');?></span></th>
+									<th rowspan="5"><span class="nobr"><?= Yii::$service->page->translate->__('Product Name');?></span></th>
 									<th class="a-center" colspan="1"><span class="nobr"><?= Yii::$service->page->translate->__('Unit Price');?></span></th>
+                                    <th class="a-center" colspan="1"><span class="nobr"><?= Yii::$service->page->translate->__('Weight');?></span></th>
+                                    <th class="a-center" colspan="1"><span class="nobr"><?= Yii::$service->page->translate->__('Volume');?></span></th>
 									<th rowspan="1" class="a-center"><?= Yii::$service->page->translate->__('Qty');?></th>
-									<th class="a-center" colspan="1"><?= Yii::$service->page->translate->__('Subtotal');?></th>
-									<th rowspan="1" class="a-center">&nbsp;</th>
+									<th class="a-center" colspan="1"><?= Yii::$service->page->translate->__('Sub Price');?></th>
+                                    <th class="a-center" colspan="1"><?= Yii::$service->page->translate->__('Sub Weight');?></th>
+                                    <th class="a-center" colspan="1"><?= Yii::$service->page->translate->__('Sub Volume');?></th>
+									<th rowspan="1" class="a-right">&nbsp;</th>
 								</tr>
 												</thead>
 							<tfoot>
@@ -85,9 +92,22 @@ use fecshop\app\appfront\helper\Format;
 										</span>
 
 									</td>
+                                    
+                                    <td class="a-right">
+										<span class="cart-price">
+											<span class="price"><?= Format::price($product_one['product_weight']); ?>Kg</span>                
+										</span>
+									</td>
+                                    
+                                    <td class="a-right">
+										<span class="cart-price">
+											<span class="price"><?= Format::price($product_one['product_volume']); ?>㎡</span>                
+										</span>
+									</td>
+                                
 				   
 									<td class="a-center">
-										<div style="width:80px;">
+										<div style="width:60px;margin:auto">
 											<a href="javascript:void(0)" class="cartqtydown changeitemqty" rel="<?= $product_one['item_id']; ?>" num="<?= $product_one['qty']; ?>"></a>
 											<input name="cart[qty]" size="4" title="Qty" class="input-text qty" rel="<?= $product_one['item_id']; ?>" maxlength="12" value="<?= $product_one['qty']; ?>">
 											<a href="javascript:void(0)" class="cartqtyup changeitemqty" rel="<?= $product_one['item_id']; ?>" num="<?= $product_one['qty']; ?>"></a>
@@ -101,8 +121,23 @@ use fecshop\app\appfront\helper\Format;
 											<span class="price"><?=  $currency_info['symbol'];  ?><?= Format::price($product_one['product_row_price']); ?></span>                            
 										</span>
 									</td>
-									<td class="a-center last">
-										<a href="javascript:void(0)"  rel="<?= $product_one['item_id']; ?>" title="Remove item" class="btn-remove btn-remove2"><?= Yii::$service->page->translate->__('Remove item');?></a>
+                                    
+                                    <td class="a-right">
+										<span class="cart-price">
+											<span class="price"><?= Format::price($product_one['product_row_weight']); ?>Kg</span>                            
+										</span>
+									</td>
+                                    
+                                    
+                                    <td class="a-right">
+										<span class="cart-price">
+											<span class="price"><?=  $currency_info['symbol'];  ?><?= Format::price($product_one['product_row_volume']); ?>㎡</span>                            
+										</span>
+									</td>
+                                    
+                                    
+									<td class="a-right last">
+										<a style="margin-right: 15px;float: right;" href="javascript:void(0)"  rel="<?= $product_one['item_id']; ?>" title="Remove item" class="btn-remove btn-remove2"><?= Yii::$service->page->translate->__('Remove item');?></a>
 									</td>
 								</tr>
 								<?php  endforeach;  ?>
@@ -151,15 +186,35 @@ use fecshop\app\appfront\helper\Format;
 								<tbody>
 									<tr>
 										<td style="" class="a-left" colspan="1">
-											<?= Yii::$service->page->translate->__('Subtotal');?> :   </td>
+											<?= Yii::$service->page->translate->__('Sub Price');?> : 
+                                        </td>
 										<td style="" class="a-right">
-											<span class="price"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['product_total']); ?></span>    </td>
-									</tr><tr>
+											<span class="price">
+                                                <?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['product_total']); ?>
+                                            </span>    
+                                        </td>
+									</tr>
+                                    <tr>
 										<td style="" class="a-left" colspan="1">
-											<?= Yii::$service->page->translate->__('Shipping Cost');?>    </td>
+											<?= Yii::$service->page->translate->__('Sub Weight');?> : 
+                                        </td>
 										<td style="" class="a-right">
-											<span class="price"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['shipping_cost']); ?></span>    </td>
-									</tr><tr>
+											<span class="price">
+                                                <?= Format::price($cart_info['product_weight']); ?>Kg
+                                            </span>    
+                                        </td>
+									</tr>
+                                    <tr>
+										<td style="" class="a-left" colspan="1">
+											<?= Yii::$service->page->translate->__('Sub Volume');?> : 
+                                        </td>
+										<td style="" class="a-right">
+											<span class="price">
+                                                <?= Format::price($cart_info['product_volume']); ?>㎡
+                                            </span>    
+                                        </td>
+									</tr>
+                                    <tr>
 										<td style="" class="a-left" colspan="1">
 											<?= Yii::$service->page->translate->__('Discount');?> :    </td>
 										<td style="" class="a-right">
