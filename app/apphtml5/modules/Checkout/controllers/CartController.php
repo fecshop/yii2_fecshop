@@ -162,7 +162,11 @@ class CartController extends AppfrontController
                 }
                 $error_arr = Yii::$service->helper->errors->get(true);
                 if (!empty($error_arr)) {
-                    $error_str = implode(',', $error_arr);
+                    if (is_array($error_arr)) {
+                        $error_str = implode(',', $error_arr);
+                    } else {
+                        $error_str = $error_arr;
+                    }
                     echo json_encode([
                         'status' => 'fail',
                         'content'=> $error_str,

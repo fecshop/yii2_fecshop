@@ -304,6 +304,8 @@ class Review
         $cartProductInfo = Yii::$service->cart->quoteItem->getCartProductInfo();
         //echo $country ;
         $product_weight = $cartProductInfo['product_weight'];
+        $product_volume_weight = $cartProductInfo['product_volume_weight'];
+        $product_final_weight = max($product_weight, $product_volume_weight);
         // 传递当前的货运方式，这个需要从cart中选取，
         // 如果cart中没有shipping_method，那么该值为空
         //var_dump($this->_cart_info);
@@ -312,7 +314,7 @@ class Review
         $current_shipping_method = Yii::$service->shipping->getCurrentShippingMethod($custom_shipping_method, $cartShippingMethod);
 
         $this->_shipping_method = $current_shipping_method;
-        $shippingArr = $this->getShippingArr($product_weight, $current_shipping_method, $country, $region);
+        $shippingArr = $this->getShippingArr($product_final_weight, $current_shipping_method, $country, $region);
 
         return $shippingArr;
     }

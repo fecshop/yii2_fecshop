@@ -280,7 +280,11 @@ class CartController extends AppserverController
                 }
                 $error_arr = Yii::$service->helper->errors->get(true);
                 if (!empty($error_arr)) {
-                    $error_str = implode(',', $error_arr);
+                    if (is_array($error_arr)) {
+                        $error_str = implode(',', $error_arr);
+                    } else {
+                        $error_str = $error_arr;
+                    }
                     $innerTransaction->rollBack();
                     $code = Yii::$service->helper->appserver->cart_coupon_invalid;
                     $data = [

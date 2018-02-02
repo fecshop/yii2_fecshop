@@ -352,13 +352,15 @@ class Index
         $cartProductInfo = Yii::$service->cart->quoteItem->getCartProductInfo();
         //echo $country ;
         $product_weight = $cartProductInfo['product_weight'];
+        $product_volume_weight = $cartProductInfo['product_volume_weight'];
+        $product_final_weight = max($product_weight, $product_volume_weight);
         $cartShippingMethod = $this->_cart_info['shipping_method'];
         //echo "$custom_shipping_method,$cartShippingMethod";
-        $current_shipping_method = Yii::$service->shipping->getCurrentShippingMethod($custom_shipping_method, $cartShippingMethod, $country, $region, $product_weight);
+        $current_shipping_method = Yii::$service->shipping->getCurrentShippingMethod($custom_shipping_method, $cartShippingMethod, $country, $region, $product_final_weight);
 
         $this->_shipping_method = $current_shipping_method;
         // 得到所有，有效的shipping method
-        $shippingArr = $this->getShippingArr($product_weight, $current_shipping_method, $country, $region);
+        $shippingArr = $this->getShippingArr($product_final_weight, $current_shipping_method, $country, $region);
 
         return $shippingArr;
     }
