@@ -90,6 +90,27 @@ class Index
     }
     public function getGroupAttrArr($groupAttrInfo){
         $gArr = [];
+        // 增加重量，长宽高，体积重等信息
+        if ($this->_product['weight']) {
+            $weightName = Yii::$service->page->translate->__('weight');
+            $gArr[$weightName] = $this->_product['weight'].' Kg';
+        }
+        if ($this->_product['long']) {
+            $longName = Yii::$service->page->translate->__('long');
+            $gArr[$longName] = $this->_product['long'].' Cm';
+        }
+        if ($this->_product['width']) {
+            $widthName = Yii::$service->page->translate->__('width');
+            $gArr[$widthName] = $this->_product['width'].' Cm';
+        }
+        if ($this->_product['high']) {
+            $highName = Yii::$service->page->translate->__('high');
+            $gArr[$highName] = $this->_product['high'].' Cm';
+        }
+        if ($this->_product['volume_weight']) {
+            $volumeWeightName = Yii::$service->page->translate->__('volume weight');
+            $gArr[$volumeWeightName] = $this->_product['volume_weight'].' Kg';
+        }
         if (is_array($groupAttrInfo)) {
             foreach ($groupAttrInfo as $attr => $info) {
                 //var_dump($attr);
@@ -100,11 +121,16 @@ class Index
                         $attrVal = Yii::$service->store->getStoreAttrVal($attrVal, $attr);
                     }
                     if ($attrVal && !is_array($attrVal)) {
+                        $attr = str_replace('_', ' ', $attr);
+                        $attr = str_replace('-', ' ', $attr);
+                        $attr = Yii::$service->page->translate->__($attr);
+                        $attrVal = Yii::$service->page->translate->__($attrVal);
                         $gArr[$attr] = $attrVal;
                     }
                 }
             }
         }
+        
         //var_dump($gArr);
         return $gArr;
     }
