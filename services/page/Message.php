@@ -58,6 +58,9 @@ class Message extends Service
         if (is_array($error) && is_array($message)) {
             $message = array_merge($error, $message);
         }
+        if (is_array($message)) {
+            $message = implode(',', $message);
+        }
 
         return Yii::$service->session->setFlash($this->_errorName, $message);
     }

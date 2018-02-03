@@ -109,6 +109,7 @@ class Appserver extends Service
     public $order_not_exist                                = 1500018;           // Order: 下订单，订单不存在
     public $order_alipay_payment_fail                      = 1500019;           // Order: 下订单，支付宝支付订单失败
     
+    public $order_payment_paypal_express_error             = 1500020;
     /**
      * cms
      */

@@ -138,6 +138,18 @@ class Placeorder
                     } catch (Exception $e) {
                         $innerTransaction->rollBack();
                     }
+                } else {
+                    $code = Yii::$service->helper->appserver->order_payment_paypal_express_error;
+                    $errorInfo = Yii::$service->helper->errors->get(',');
+                    $data = [
+                        'error' => $errorInfo,
+                    ];
+                    
+                    return [
+                        'code'    => $code,
+                        'message' => $errorInfo,
+                        'data'    => $data,
+                    ];
                 }
                 // 如果订单支付过程中失败，将订单取消掉
                 /* 2017-09-12修改，认为没有必要取消订单，如果取消掉，在支付页面就无法继续下单，因此注释掉下面的代码
@@ -257,16 +269,15 @@ class Placeorder
             
             return $reponseData;
         } else {
-            if (!Yii::$service->shipping->ifIsCorrect($shipping_method)) {
-                $code = Yii::$service->helper->appserver->order_generate_request_post_param_invaild;
-                $data = [
-                    'error' => 'shipping method is not correct',
-                ];
-                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
-                
-                return $reponseData;
-            }
-            
+            //if (!Yii::$service->shipping->ifIsCorrect($shipping_method)) {
+            //    $code = Yii::$service->helper->appserver->order_generate_request_post_param_invaild;
+            //    $data = [
+            //        'error' => 'shipping method is not correct',
+            //    ];
+            //    $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            //    
+            //    return $reponseData;
+            //}
         }
         // 订单备注信息不能超过1500字符
         $orderRemarkStrMaxLen = Yii::$service->order->orderRemarkStrMaxLen;
