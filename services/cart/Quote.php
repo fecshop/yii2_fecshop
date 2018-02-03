@@ -385,9 +385,9 @@ class Quote extends Service
                         'base_product_total'=> Yii::$service->helper->format->number_format($base_product_total),     // 基础货币，购物车中产品的总金额
 
                         'products'          => $products,               //产品信息。
-                        'product_weight'    => $product_weight,         //产品的总重量。
-                        'product_volume_weight'    => $product_volume_weight, 
-                        'product_volume'    => $product_volume, 
+                        'product_weight'            => Yii::$service->helper->format->number_format($product_weight),         //产品的总重量。
+                        'product_volume_weight'     => Yii::$service->helper->format->number_format($product_volume_weight), 
+                        'product_volume'            => Yii::$service->helper->format->number_format($product_volume), 
                     ];
                 }
             }

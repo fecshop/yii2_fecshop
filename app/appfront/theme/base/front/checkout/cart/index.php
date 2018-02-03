@@ -186,7 +186,7 @@ use fecshop\app\appfront\helper\Format;
 								<tbody>
 									<tr>
 										<td style="" class="a-left" colspan="1">
-											<?= Yii::$service->page->translate->__('Sub Price');?> : 
+											<?= Yii::$service->page->translate->__('Sub Totla');?> : 
                                         </td>
 										<td style="" class="a-right">
 											<span class="price">
@@ -200,7 +200,7 @@ use fecshop\app\appfront\helper\Format;
                                         </td>
 										<td style="" class="a-right">
 											<span class="price">
-                                                <?= Format::price($cart_info['product_weight']); ?>Kg
+                                                <?= Format::price($cart_info['product_weight']); ?> Kg
                                             </span>    
                                         </td>
 									</tr>
@@ -210,7 +210,7 @@ use fecshop\app\appfront\helper\Format;
                                         </td>
 										<td style="" class="a-right">
 											<span class="price">
-                                                <?= Format::price($cart_info['product_volume']); ?>c㎡
+                                                <?= Format::price($cart_info['product_volume']); ?> c㎡
                                             </span>    
                                         </td>
 									</tr>

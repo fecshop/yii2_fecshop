@@ -95,9 +95,20 @@ use fecshop\app\apphtml5\helper\Format;
 					</div>
 					<div class="cart_cost">
 						<div class="row no-gutter">
-							<div class="col-80"><?= Yii::$service->page->translate->__('Subtotal');?> :  </div>
+							<div class="col-80"><?= Yii::$service->page->translate->__('Sub Total');?> :  </div>
 							<div class="col-20"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['product_total']); ?></div>
 						</div>
+                        
+                        <div class="row no-gutter">
+							<div class="col-80"><?= Yii::$service->page->translate->__('Sub Weight');?> :  </div>
+							<div class="col-20"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['product_weight']); ?> Kg</div>
+						</div>
+                        
+                        <div class="row no-gutter">
+							<div class="col-80"><?= Yii::$service->page->translate->__('Sub Volume');?> :  </div>
+							<div class="col-20"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['product_volume']); ?> c㎡</div>
+						</div>
+                        
 						
 						<div class="row no-gutter">
 							<div class="col-80"><?= Yii::$service->page->translate->__('Shipping Cost');?>  : </div>
