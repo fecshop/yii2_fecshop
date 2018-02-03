@@ -287,7 +287,13 @@ return [
  'Reviews'                        => '评论',
  'Shipping & Payment'            => '货运 & 支付',
  'Customers Who Bought This Item Also Bought' => '买个这个产品的用户还买的产品',
-// 产品详细页面 - 支付描述部分
+ 'weight'                           => '重量',
+ 'long'                             => '长',
+ 'width'                            => '宽',
+ 'high'                             => '高',
+ 'volume weight'                    => '体积重',
+ 
+ // 产品详细页面 - 支付描述部分
  'Payment Methods:'                => '支付方式：',
  'FECSHOP.com accepts PayPal, Credit Card, Western Union and Wire Transfer as secure payment methods:' => 'FECSHOP.com接受 贝宝，信用卡，西联汇款和电汇作为安全支付方式：',
  'Global:'                        => '全部：',
