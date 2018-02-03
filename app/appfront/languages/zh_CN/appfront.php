@@ -65,7 +65,7 @@ return [
  'style'            => '样式',
  'pattern-type'     => '风格',
  'sleeve-length'    => '袖长',
- 'collar'           => '领口'
+ 'collar'           => '领口',
  
  // 用户登录页面
  'Login or Create an Account'     => '登录 创建用户',

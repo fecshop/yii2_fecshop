@@ -220,11 +220,11 @@ class Placeorder
 
             return false;
         } else {
-            if (!Yii::$service->shipping->ifIsCorrect($shipping_method)) {
-                Yii::$service->helper->errors->add('shipping method is not correct');
-
-                return false;
-            }
+            //if (!Yii::$service->shipping->ifIsCorrect($shipping_method)) {
+            //    Yii::$service->helper->errors->add('shipping method is not correct');
+            ////
+            //    return false;
+            //}
         }
         // 订单备注信息不能超过1500字符
         $orderRemarkStrMaxLen = Yii::$service->order->orderRemarkStrMaxLen;
