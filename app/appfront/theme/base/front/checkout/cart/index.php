@@ -101,7 +101,7 @@ use fecshop\app\appfront\helper\Format;
                                     
                                     <td class="a-right">
 										<span class="cart-price">
-											<span class="price"><?= Format::price($product_one['product_volume']); ?>㎡</span>                
+											<span class="price"><?= Format::price($product_one['product_volume']); ?>c㎡</span>                
 										</span>
 									</td>
                                 
@@ -131,7 +131,7 @@ use fecshop\app\appfront\helper\Format;
                                     
                                     <td class="a-right">
 										<span class="cart-price">
-											<span class="price"><?=  $currency_info['symbol'];  ?><?= Format::price($product_one['product_row_volume']); ?>㎡</span>                            
+											<span class="price"><?= Format::price($product_one['product_row_volume']); ?>c㎡</span>                            
 										</span>
 									</td>
                                     
@@ -210,7 +210,7 @@ use fecshop\app\appfront\helper\Format;
                                         </td>
 										<td style="" class="a-right">
 											<span class="price">
-                                                <?= Format::price($cart_info['product_volume']); ?>㎡
+                                                <?= Format::price($cart_info['product_volume']); ?>c㎡
                                             </span>    
                                         </td>
 									</tr>

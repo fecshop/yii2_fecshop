@@ -180,7 +180,7 @@ class QuoteItem extends Service
 
                             $base_product_row_price = $base_product_price * $qty;
                             $base_product_total     += $base_product_row_price;
-                            $volume = $product_one['long'] * $product_one['width'] * $product_one['high'];
+                            $volume = Yii::$service->shipping->getVolume($product_one['long'], $product_one['width'], $product_one['high']);
                             $p_pv               = $volume * $qty;
                             $p_wt               = $product_one['weight'] * $qty;
                             $p_vwt              = $product_one['volume_weight'] * $qty;

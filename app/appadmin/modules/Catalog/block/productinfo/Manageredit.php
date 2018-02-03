@@ -517,7 +517,7 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         //高
         $this->_param['high'] = $this->_param['high'] ? (float) ($this->_param['high']) : 0;
         //体积重
-        $this->_param['volume_weight'] = $this->_param['volume_weight'] ? (float) ($this->_param['volume_weight']) : 0;
+        $this->_param['volume_weight'] = Yii::$service->shipping->getVolumeWeight($this->_param['long'], $this->_param['width'], $this->_param['high']) ;
         
         
         

@@ -185,7 +185,7 @@ class Attr
             ],
             
             [
-                'label'=>'体积重(KG)',
+                'label'=>'<span >体积重(Kg)<a  target="_blank" href="http://www.fecshop.com/topic/659">公式</a></span>',
                 'name'=>'volume_weight',
                 'display'=>[
                     'type' => 'inputString',

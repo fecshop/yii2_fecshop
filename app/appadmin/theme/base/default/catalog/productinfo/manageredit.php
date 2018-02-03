@@ -219,7 +219,7 @@ function thissubmit(thiss){
 					<input type="hidden"  value="<?=  $product_id; ?>" size="30" name="product_id" class="textInput ">
 				
 					<fieldset id="fieldset_table_qbe">
-						<legend style="color:#cc0000">产品属性组</legend>
+						<legend style="color:#cc0000">产品属性组切换：编辑前请先切换相应的产品属性组</legend>
 						<div>
 							<p class="edit_p">
 								<?= $attrGroup ?>
