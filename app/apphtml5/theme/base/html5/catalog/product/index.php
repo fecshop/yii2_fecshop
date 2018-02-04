@@ -57,7 +57,7 @@
 					];
 				?>
 				<?= Yii::$service->page->widget->render($priceView,$priceParam); ?>
-			
+                
 			</div>
 			<div class="product_info_section" id="product_info_section">
 				<div class="product_options">
@@ -111,7 +111,10 @@
 							<option value="18">18</option>
 							<option value="19">19</option>
 							<option value="20">20</option>
-						  </select>
+						</select>
+                        <?php if ($package_number >= 2) { ?>
+                            X <?= $package_number ?> items
+                        <?php } ?>
 					</div>
 					<div class="clear"></div>
 				</div>

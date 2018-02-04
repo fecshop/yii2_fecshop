@@ -189,6 +189,7 @@ class ProductController extends AppserverController
                 'groupAttrArr'              => $groupAttrArr,
                 'name'                      => Yii::$service->store->getStoreAttrVal($this->_product['name'], 'name'),
                 'sku'                       => $this->_product['sku'],
+                'package_number'            => $this->_product['package_number'],
                 'spu'                       => $this->_product['spu'],
                 'thumbnail_img'             => $thumbnail_img,
                 'productReview'             => $productReview,
