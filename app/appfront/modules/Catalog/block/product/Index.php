@@ -69,6 +69,7 @@ class Index
             'image_thumbnails'          => $this->_image_thumbnails,
             'image_detail'              => $this->_image_detail,
             'sku'                       => $this->_product['sku'],
+            'package_number'            => $this->_product['package_number'],
             'spu'                       => $this->_product['spu'],
             'attr_group'                => $this->_product['attr_group'],
             'review_count'              => $review_count,

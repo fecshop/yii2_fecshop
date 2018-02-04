@@ -497,6 +497,7 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         }
         //qty
         $this->_param['qty'] = $this->_param['qty'] ? (float) ($this->_param['qty']) : 0;
+        $this->_param['package_number'] = (int)abs($this->_param['package_number']);
         //is_in_stock
         $this->_param['is_in_stock'] = $this->_param['is_in_stock'] ? (int) ($this->_param['is_in_stock']) : 0;
         //price

@@ -45,6 +45,8 @@ class Cart extends Service
             }
             
         }
+        $item['qty'] = $this->getCartQty($product['package_number'], $item['qty']);
+        
         // 检查产品满足加入购物车的条件
         $productValidate = Yii::$service->cart->info->checkProductBeforeAdd($item, $product);
         if (!$productValidate) {
@@ -62,6 +64,19 @@ class Cart extends Service
         Yii::$service->cart->quoteItem->addItem($item);
         Yii::$service->event->trigger($afterEventName, $item);  // 触发事件 - 加购物车后事件
         return true;
+    }
+    
+    /**
+     * @property $package_number | int , 打包销售的个数，这个是产品编辑的时候，如果某个商品想打包作为销售单位，填写的值
+     * @property $addQty |int , 加入购物车的产品个数。
+     * @return 得到在购物车个数变动数，根据产品的打包销售数进行改变
+     */
+    public function getCartQty($package_number, $addQty){
+        if ($package_number >= 2) {
+            return (int)($addQty * $package_number);
+        } else {
+            return $addQty;
+        }
     }
 
     /**

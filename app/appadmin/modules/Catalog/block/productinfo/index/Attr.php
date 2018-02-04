@@ -262,6 +262,15 @@ class Attr
             ],
             
             [
+                'label'=>'打包销售个数',
+                'name'=>'package_number',
+                'display'=>[
+                    'type' => 'inputString',
+                ],
+                'require' => 0,
+            ],
+            
+            [
                 'label'=>'最小购买数',
                 'name'=>'min_sales_qty',
                 'display'=>[

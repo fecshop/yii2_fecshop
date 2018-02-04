@@ -2634,6 +2634,9 @@ h2 {
     font-size: 25px;
 }
 
+.product_info .pg .rg {
+    width: 440px;
+}
 
 
 .coupon_add_log{font-size:11px;margin:5px 0 0;color:#cc0000}

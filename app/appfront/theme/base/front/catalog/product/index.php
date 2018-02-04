@@ -79,6 +79,9 @@
 							<div class="label"><?= Yii::$service->page->translate->__('Qty:'); ?></div>
 							<div class="rg">
 								<input type="text" name="qty" class="qty" value="1" />
+                                <?php if ($package_number >= 2) { ?>
+                                X <?= $package_number ?> items
+                                <?php } ?>
 							</div>
 							<div class="clear"></div>
 						</div>

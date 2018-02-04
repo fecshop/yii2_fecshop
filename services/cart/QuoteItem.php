@@ -271,8 +271,11 @@ class QuoteItem extends Service
                 'cart_id' => $cart_id,
                 'item_id' => $item_id,
             ])->one();
-            if ($one['item_id']) {
-                $one['qty'] = $one['qty'] + 1;
+            $product_id = $one['product_id'];
+            if ($one['item_id'] && $product_id) {
+                $product = Yii::$service->product->getByPrimaryKey($product_id);
+                $changeQty = Yii::$service->cart->getCartQty($product['package_number'], 1);
+                $one['qty'] = $one['qty'] + $changeQty;
                 $one->save();
                 // 重新计算购物车的数量
                 Yii::$service->cart->quote->computeCartInfo();
@@ -297,16 +300,20 @@ class QuoteItem extends Service
                 'cart_id' => $cart_id,
                 'item_id' => $item_id,
             ])->one();
-            $lessedQty = $one['qty'] - 1;
-            
+            $product_id = $one['product_id'];
             $product = Yii::$service->product->getByPrimaryKey($one['product_id']);
-            if(isset($product['min_sales_qty']) && $product['min_sales_qty'] > 1){
-                if($lessedQty < $product['min_sales_qty']){
-                    Yii::$service->helper->errors->add('product less buy qty is '.$product['min_sales_qty']);
-                    
-                    return false;
-                }
+            $changeQty = Yii::$service->cart->getCartQty($product['package_number'], 1);
+            $lessedQty = $one['qty'] - $changeQty;
+            $min_sales_qty = 1;
+            if ($product['min_sales_qty'] && $product['min_sales_qty'] >= 2) {
+                $min_sales_qty = $product['min_sales_qty'];
             }
+            if($lessedQty < $min_sales_qty){
+                Yii::$service->helper->errors->add('product less buy qty is '.$product['min_sales_qty']);
+                
+                return false;
+            }
+            
             if ($one['item_id']) {
                 if ($one['qty'] > 1) {
                     $one['qty'] = $lessedQty;

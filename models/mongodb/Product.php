@@ -89,6 +89,8 @@ class Product extends ActiveRecord
             'high',            // 高
             'weight',          // 重量
             'volume_weight',   // 体积重
+            
+            'package_number',  // 打包销售个数，譬如，值为5，则加入购物车的个数都是5的倍数。
 
             'created_at',
             'updated_at',
