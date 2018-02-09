@@ -15,8 +15,9 @@
 
 项目状态：
 
-> 正式版本已经出来，后台（appadmin）和pc端（appfront）,wap端（apphtml5）
-，vue端（appserver）已经完成，完成了一些基本的api。
+> 截止2017-10月，各个入口全部完成，pc端（appfront）,wap端（apphtml5），后台（appadmin）和
+，vue端（appserver），第三方系统对接端（appapi），后台脚本端（console），
+都全部开发完毕。
 
 
 
@@ -47,7 +48,7 @@ Fecshop支持多语言，多货币，架构上支持pc，手机web，手机app�
 
 开源协议：[Fecshop 授权协议](http://www.fecshop.com/license)
 
-2、Fecshop文档和视频
+2、Fecshop文档，视频，扩展库
 ------------
 
 **二开以及安装文档：** [Fecshop 安装开发文档](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-README.html)【撰写完成】
@@ -58,20 +59,22 @@ Fecshop支持多语言，多货币，架构上支持pc，手机web，手机app�
 
 **前后端分离模式Api:** [Appserver VUE Api文档](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-server.html)【撰写完成】
 
+**Fecshop 扩展:** [Fecshop 官方扩展列表](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-pkg-list.html)
+
 
 3、安装Fecshop
 ------------
 
-> 请务必按照说明安装。
+> 请务必按照说明安装，Fecshop是基于composer在线安装，直接git clone下载下来是不行的，请按照下面的说明操作
 
-3.1、标准安装方式：从基础linux一步一步的配置的方式，详细参看文档： [Fecshop 安装](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-hand-install.html)
+3.1、【标准方式】标准安装方式：从基础linux一步一步的配置的方式，详细参看文档： [Fecshop 安装](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-hand-install.html)
 
-3.2、docker compose快速部署 
+3.2、【强烈推荐】docker compose快速部署 
 ：由于上面的安装操作需要安装的东西比较多，过程比较繁杂，
 建议使用docker compose，参看：
 [docker compose快速部署Fecshop](https://github.com/fecshop/yii2_fecshop_docker)
 
-3.3、vagrant box的方式（不建议）：2017.6月做的box，以后不再维护vagrant box，
+3.3、【不推荐】vagrant box的方式：2017.6月做的box，以后不再维护vagrant box，
 推荐使用docker compose安装，如果您想使用vagrant box可以参看：
 [Fecshop vagrant安装](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-vagrantinstall.html)
 
