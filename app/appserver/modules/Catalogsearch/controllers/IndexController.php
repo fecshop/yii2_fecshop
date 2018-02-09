@@ -307,8 +307,8 @@ class IndexController extends AppserverController
         $numPerPage = $this->getNumPerPage();
         
         $product_search_max_count = Yii::$app->controller->module->params['product_search_max_count'];
-
-        $productList = Yii::$service->search->getSearchProductColl($select, $where, $pageNum, $numPerPage, $product_search_max_count);
+        $filterAttr = $this->getFilterAttr();
+        $productList = Yii::$service->search->getSearchProductColl($select, $where, $pageNum, $numPerPage, $product_search_max_count, $filterAttr);
     
         $i = 1;
         $product_return = [];

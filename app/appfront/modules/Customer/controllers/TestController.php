@@ -12,6 +12,7 @@ namespace fecshop\app\appfront\modules\Customer\controllers;
 use fecshop\app\appfront\modules\AppfrontController;
 use Yii;
 use fecshop\queue\job\SendEmailJob;
+use fecshop\elasticsearch\models\elasticSearch\Product;
 
 /**
  * @author Terry Zhao <2358269014@qq.com>
@@ -28,6 +29,24 @@ class TestController extends AppfrontController
      */
     public function actionIndex()
     {
+        Product::initLang('en');
+        //Product::updateMapping();
+        //Product::initLang('zh');
+        //Product::updateMapping();
+        /*
+        $one = Product::findOne(5);
+        var_dump($one->attributes);
+        $one->_id = 'yyyy';
+        $one->save(); 
+        var_dump($one->getPrimaryKey());exit;
+        */
+        $p = new Product;
+        $p->_id = 5;
+        $p->sku = 'xxxx';
+        $p->save(); 
+        
+        $dd = Product::find()->all();
+        var_dump($dd);
         
     }
 

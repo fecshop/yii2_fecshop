@@ -101,7 +101,7 @@ class Search extends Service
      * ]
      * 得到搜索的产品列表.
      */
-    protected function actionGetSearchProductColl($select, $where, $pageNum, $numPerPage, $product_search_max_count)
+    protected function actionGetSearchProductColl($select, $where, $pageNum, $numPerPage, $product_search_max_count, $filterAttr = [])
     {
         $currentLangCode = Yii::$service->store->currentLangCode;
 
@@ -118,7 +118,8 @@ class Search extends Service
                     // 如果当前store的语言，在当前的搜索引擎中支持，则会使用这个搜索，作为支持。
 
                     if (in_array($currentLangCode, $searchLangCode)) {
-                        return $service->getSearchProductColl($select, $where, $pageNum, $numPerPage, $product_search_max_count);
+                        
+                        return $service->getSearchProductColl($select, $where, $pageNum, $numPerPage, $product_search_max_count, $filterAttr);
                     }
                 }
             }

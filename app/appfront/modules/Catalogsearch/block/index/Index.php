@@ -327,8 +327,8 @@ class Index
         $pageNum = $this->getPageNum();
         $numPerPage = $this->getNumPerPage();
         $product_search_max_count = Yii::$app->controller->module->params['product_search_max_count'];
-
-        return Yii::$service->search->getSearchProductColl($select, $where, $pageNum, $numPerPage, $product_search_max_count);
+        $filterAttr = $this->getFilterAttr();
+        return Yii::$service->search->getSearchProductColl($select, $where, $pageNum, $numPerPage, $product_search_max_count, $filterAttr);
     }
     /**
      * 初始化where
