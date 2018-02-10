@@ -70,11 +70,10 @@ $cssOptions = [
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
-	<script src="/ZeroClipboard.min.js"></script>
 	<!--
 	<script src="http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js"></script>
     -->
-	<script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+	<script src="//echarts.baidu.com/build/dist/echarts.js"></script>
    
 	<!-- 3.0 -->
     <script type="text/javascript">
