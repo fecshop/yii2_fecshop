@@ -30,6 +30,7 @@ $jsOptions = [
 		'js'	=>[
 			'js/appadmin.js',
 		],
+        // js 放到尾部
         'options' => [
 			'position' => \yii\web\View::POS_END,  //POS_HEAD,
 		],
@@ -53,9 +54,13 @@ $cssOptions = [
 		'css'	=>[
 			'css/appadmin.css',
 		],
+        // 将css放到最后面
+        'options' => [
+            'depends'=>['fecadmin\myassets\CustomAsset'],
+        ]
 	],
 ];
-\Yii::$service->page->asset->jsOptions 	= \yii\helpers\ArrayHelper::merge($jsOptions,  \Yii::$service->page->asset->jsOptions);
+\Yii::$service->page->asset->jsOptions 	= \yii\helpers\ArrayHelper::merge($jsOptions, \Yii::$service->page->asset->jsOptions);
 \Yii::$service->page->asset->cssOptions = \yii\helpers\ArrayHelper::merge($cssOptions, \Yii::$service->page->asset->cssOptions);				
 \Yii::$service->page->asset->register($this);
 ?>
