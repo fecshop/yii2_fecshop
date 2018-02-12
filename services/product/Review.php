@@ -22,6 +22,10 @@ use yii\base\InvalidValueException;
 class Review extends Service
 {
     public $filterByLang;
+    // 用户购物过的产品才能评论。
+    public $reviewOnlyOrderedProduct = true;
+    // 订单创建后，多久内可以进行评论，超过这个期限将不能评论产品（单位为月）
+    public $reviewMonth = 6;
     protected $_reviewModelName = '\fecshop\models\mongodb\product\Review';
     protected $_reviewModel;
     
@@ -29,6 +33,24 @@ class Review extends Service
         parent::init();
         list($this->_reviewModelName,$this->_reviewModel) = \Yii::mapGet($this->_reviewModelName);  
     }
+    
+    /**
+     * @property $product_id | String, 产品id
+     * 是否有评论的权限，如果有，则返回true
+     */
+    public function isReviewRole($product_id){
+        if (!$this->reviewOnlyOrderedProduct) {
+            return true;
+        }
+        $itmes = Yii::$service->order->item->getByProductIdAndCustomerId($product_id, $this->reviewMonth);
+        //var_dump($itmes);exit;
+        if ($itmes) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
     /**
      * 得到review noactive status，默认状态
      */

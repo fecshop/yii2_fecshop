@@ -93,7 +93,12 @@ class Message extends Service
      */
     protected function actionGetCorrects()
     {
-        return Yii::$service->session->getFlash($this->_correctName);
+        $corrects =  Yii::$service->session->getFlash($this->_correctName);
+        if ($corrects && !is_array($corrects)) {
+            return [$corrects];
+        } else {
+            return $corrects;
+        }
     }
 
     /**
@@ -102,6 +107,11 @@ class Message extends Service
      */
     protected function actionGetErrors()
     {
-        return Yii::$service->session->getFlash($this->_errorName);
+        $errors = Yii::$service->session->getFlash($this->_errorName);
+        if ($errors && !is_array($errors)) {
+            return [$errors];
+        } else {
+            return $errors;
+        }
     }
 }

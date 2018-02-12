@@ -67,6 +67,7 @@ class Order extends Service
     
     protected $_orderModelName = '\fecshop\models\mysqldb\Order';
     protected $_orderModel;
+   
     
     public function init(){
         parent::init();
@@ -82,6 +83,18 @@ class Order extends Service
             self::CHECKOUT_TYPE_ADMIN_CREATE => self::CHECKOUT_TYPE_ADMIN_CREATE,
             self::CHECKOUT_TYPE_STANDARD     => self::CHECKOUT_TYPE_STANDARD,
             self::CHECKOUT_TYPE_EXPRESS      => self::CHECKOUT_TYPE_EXPRESS,
+        ];
+    }
+     /**
+     * 付款成功，而且订单付款状态正常的订单状态
+     *
+     */
+    public function getOrderPaymentedStatusArr(){
+        return [
+            $this->payment_status_confirmed,
+            $this->status_holded,
+            $this->status_processing,
+            $this->status_completed,
         ];
     }
     /**

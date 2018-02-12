@@ -28,6 +28,54 @@ class Item extends Service
         list($this->_itemModelName,$this->_itemModel) = \Yii::mapGet($this->_itemModelName);  
     }
     /**
+     * @property $product_id | string , 产品的id
+     * @property  $customer_id | int， 用户的id
+     * @property $month | int, 几个月内的订单
+     * 通过product_id和customerId，得到$month个月内下单支付成功的产品
+     */
+    protected function actionGetByProductIdAndCustomerId($product_id, $month, $customer_id = 0){
+        if (!$customer_id) {
+            if (Yii::$app->user->isGuest) {
+                return false;
+            } else {
+                $customer_id = Yii::$app->user->identity->id;
+            }
+        }
+        // 得到产品
+        $time_gt = strtotime("-0 year -$month month -0 day");
+        $orderStatusArr = Yii::$service->order->getOrderPaymentedStatusArr();
+        $orders = Yii::$service->order->coll([
+            'select' => ['order_id'],
+            'where' => [
+                ['customer_id' => $customer_id],
+                ['>', 'created_at', $time_gt],
+                ['in', 'order_status',  $orderStatusArr]
+            ],
+            'asArray' => true,
+            'numPerPage' 	=> 500,
+        ]);
+        $order_ids = [];
+        if (isset($orders['coll']) && !empty($orders['coll'])) {
+            foreach ($orders['coll'] as $order) {
+                $order_ids[] = $order['order_id'];
+            }
+        }
+        if (empty($order_ids)) {
+            return false;
+        }
+        $items = $this->_itemModel->find()->asArray()->where([
+                'product_id' => $product_id,
+            ])->andWhere([
+                'in', 'order_id', $order_ids
+            ])
+            ->all();
+        if (!empty($items)) {
+            return $items;
+        } else {
+            return false;
+        }
+    }
+    /**
      * @property $order_id | Int
      * @property $onlyFromTable | 从数据库取出不做处理
      * @return array

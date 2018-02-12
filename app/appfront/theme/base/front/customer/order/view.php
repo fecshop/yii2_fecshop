@@ -59,11 +59,12 @@ use fecshop\app\appfront\helper\Format;
 						<h2 class="table-caption"><?= Yii::$service->page->translate->__('Items Ordered');?></h2>
 
 						<table summary="Items Ordered" id="my-orders-table" class="data-table">
-							<colgroup><col>
-							<col width="1">
-							<col width="1">
-							<col width="1">
-							<col width="1">
+							<colgroup>
+                                <col>
+                                <col width="1">
+                                <col width="1">
+                                <col width="1">
+                                <col width="1">
 							</colgroup>
 							<thead>
 								<tr class="first last">
@@ -72,31 +73,32 @@ use fecshop\app\appfront\helper\Format;
 									<th><?= Yii::$service->page->translate->__('Sku');?></th>
 									<th class="a-right"><?= Yii::$service->page->translate->__('Price');?></th>
 									<th class="a-center"><?= Yii::$service->page->translate->__('Qty');?></th>
-									<th class="a-right"><?= Yii::$service->page->translate->__('Subtotal');?></th>
+                                    <th class="a-center"><?= Yii::$service->page->translate->__('Review');?></th>
+									<th class="a-center"><?= Yii::$service->page->translate->__('Subtotal');?></th>
 								</tr>
 							</thead>
 							<tfoot>
 								<tr class="subtotal first">
-									<td class="a-right" colspan="5"><?= Yii::$service->page->translate->__('Subtotal');?></td>
-									<td class="last a-right"><span class="price"><?= $currency_symbol ?><?=  Format::price($subtotal); ?></span></td>
+									<td class="a-right" colspan="6"><?= Yii::$service->page->translate->__('Subtotal');?></td>
+									<td class="last a-center"><span class="price"><?= $currency_symbol ?><?=  Format::price($subtotal); ?></span></td>
 								</tr>
 								<tr class="shipping">
-									<td class="a-right" colspan="5"><?= Yii::$service->page->translate->__('Shipping Cost');?></td>
-									<td class="last a-right">
+									<td class="a-right" colspan="6"><?= Yii::$service->page->translate->__('Shipping Cost');?></td>
+									<td class="last a-center">
 										<span class="price"><?= $currency_symbol ?><?=  Format::price($shipping_total); ?></span>    
 									</td>
 								</tr>
 								<tr class="discount">
-									<td class="a-right" colspan="5"><?= Yii::$service->page->translate->__('Discount');?></td>
-									<td class="last a-right">
+									<td class="a-right" colspan="6"><?= Yii::$service->page->translate->__('Discount');?></td>
+									<td class="last a-center">
 										<span class="price"><?= $currency_symbol ?><?=  Format::price($subtotal_with_discount); ?></span>    
 									</td>
 								</tr>
 								<tr class="grand_total last">
-									<td class="a-right" colspan="5">
+									<td class="a-right" colspan="6">
 										<strong><?= Yii::$service->page->translate->__('Grand Total');?></strong>
 									</td>
-									<td class="last a-right">
+									<td class="last a-center">
 										<strong><span class="price"><?= $currency_symbol ?><?=  Format::price($grand_total); ?></span></strong>
 									</td>
 								</tr>
@@ -139,11 +141,21 @@ use fecshop\app\appfront\helper\Format;
 											</span>
 											<br>
 										</td>
-										<td class="a-right">
-											<span class="nobr" ><strong><?= $product['qty'] ?></strong><br>
+										<td class="a-center">
+											<span class="nobr" >
+                                                <strong><?= $product['qty'] ?></strong>
+                                                <br>
 											</span>
 										</td>
-										<td class="a-right last">
+                                        <td class="a-center">
+											<a href="<?= Yii::$service->url->getUrl('/catalog/reviewproduct/add',['_id' => $product['product_id']])  ?>">
+                                                <span class="" >
+                                                    Review 
+                                                    <br>
+                                                </span>
+                                            </a>
+										</td>
+										<td class="a-center last">
 											<span class="price-excl-tax">
 												<span class="cart-price">
 													<span class="price"><?= $currency_symbol ?><?= Format::price($product['row_total']); ?></span>                    
