@@ -140,6 +140,16 @@ class ReviewproductController extends AppserverController
             
             return $reponseData;
         }
+        // 用户是否有添加这个产品的权限
+        if (!Yii::$service->product->review->isReviewRole($product_id)) {
+            $code = Yii::$service->helper->appserver->status_miss_param;
+            $data = [];
+            $message = 'product _id:'.$product_id.'  , you review this product only after ordered it';
+            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data, $message);
+            
+            return $reponseData;
+        }
+
         $editForm = [
             'product_id' => $product_id,
             'rate_star'  => $selectStar,
