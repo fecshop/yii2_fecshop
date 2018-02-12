@@ -37,6 +37,10 @@ return [
             'review' => [
                 'class' => 'fecshop\services\product\Review',
                 'filterByLang'    => false,    // 是否通过语言进行评论过滤？
+                // true：代表用户购物过的产品才能评论，false：代表用户没有购买的产品也可以评论
+                'reviewOnlyOrderedProduct' => true,
+                // 订单创建后，多久内可以进行评论，超过这个期限将不能评论产品（单位为月）, 当 reviewOnlyOrderedProduct 设置为true时有效。
+                'reviewMonth' => 6,
             ],
             'favorite' => [
                 'class' => 'fecshop\services\product\Favorite',

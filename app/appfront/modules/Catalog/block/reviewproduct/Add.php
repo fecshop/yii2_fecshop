@@ -100,54 +100,54 @@ class Add
         if (!$product_id) {
             Yii::$service->page->message->addError(['Product id can not empty']);
 
-            return;
+            return false;
         }
         $rate_star = isset($editForm['rate_star']) ? $editForm['rate_star'] : '';
         if (!$rate_star) {
             Yii::$service->page->message->addError(['Rate Star can not empty']);
 
-            return;
+            return false;
         }
         $name = isset($editForm['name']) ? $editForm['name'] : '';
         if (!$name) {
             Yii::$service->page->message->addError(['Your Name can not empty']);
 
-            return;
+            return false;
         }
         $summary = isset($editForm['summary']) ? $editForm['summary'] : '';
         if (!$summary) {
             Yii::$service->page->message->addError(['Summary can not empty']);
 
-            return;
+            return false;
         }
         $review_content = isset($editForm['review_content']) ? $editForm['review_content'] : '';
         if (!$review_content) {
             Yii::$service->page->message->addError(['Review content can not empty']);
 
-            return;
+            return false;
         }
         // captcha validate
         $captcha = isset($editForm['captcha']) ? $editForm['captcha'] : '';
         if ($add_captcha && !$captcha) {
             Yii::$service->page->message->addError(['Captcha can not empty']);
 
-            return;
+            return false;
         } elseif ($captcha && $add_captcha && !\Yii::$service->helper->captcha->validateCaptcha($captcha)) {
             Yii::$service->page->message->addError(['Captcha is not right']);
 
-            return;
+            return false;
         }
         $product = Yii::$service->product->getByPrimaryKey($product_id);
         if (!$product['spu']) {
             Yii::$service->page->message->addError('product _id:'.$product_id.'  is not exist in product collection');
 
-            return;
+            return false;
         }
         // 用户是否有添加这个产品的权限
         if (!Yii::$service->product->review->isReviewRole($product_id)) {
             Yii::$service->page->message->addError('product _id:'.$product_id.'  , you review this product only after ordered it');
             
-            return;
+            return false;
         }
         $editForm['spu'] = $product['spu'];
         $editForm['status'] = $product['spu'];

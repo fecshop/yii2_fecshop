@@ -85,38 +85,40 @@ use fecshop\app\apphtml5\helper\Format;
 
 						<table summary="Items Ordered" id="my-orders-table" class="data-table">
 							<colgroup>
-							<col width="1">
-							<col width="1">
-							<col width="1">
-							<col width="1">
-							</colgroup>
+                                <col>
+                                <col width="1">
+                                <col width="1">
+                                <col width="1">
+                                <col width="1">
+ 							</colgroup>
 							<thead>
 								<tr class="first last">
 									<th><?= Yii::$service->page->translate->__('Product Image');?></th>
 									<th><?= Yii::$service->page->translate->__('Product Info');?></th>
 									<th class="a-center"><?= Yii::$service->page->translate->__('Qty');?></th>
+                                    <th class="a-center"><?= Yii::$service->page->translate->__('Review');?></th>
 									<th class="a-right"><?= Yii::$service->page->translate->__('Subtotal');?></th>
 								</tr>
 							</thead>
 							<tfoot>
 								<tr class="subtotal first">
-									<td class="a-right" colspan="3"><?= Yii::$service->page->translate->__('Subtotal');?></td>
-									<td class="last a-right"><span class="price"><?= $currency_symbol ?><?=  Format::price($subtotal); ?></span></td>
+									<td class="a-right" colspan="4"><?= Yii::$service->page->translate->__('Subtotal');?></td>
+									<td class="last a-center"><span class="price"><?= $currency_symbol ?><?=  Format::price($subtotal); ?></span></td>
 								</tr>
 								<tr class="shipping">
-									<td class="a-right" colspan="3"><?= Yii::$service->page->translate->__('Shipping Cost');?></td>
-									<td class="last a-right">
+									<td class="a-right" colspan="4"><?= Yii::$service->page->translate->__('Shipping Cost');?></td>
+									<td class="last a-center">
 										<span class="price"><?= $currency_symbol ?><?=  Format::price($shipping_total); ?></span>    
 									</td>
 								</tr>
 								<tr class="discount">
-									<td class="a-right" colspan="3"><?= Yii::$service->page->translate->__('Discount');?></td>
-									<td class="last a-right">
+									<td class="a-right" colspan="4"><?= Yii::$service->page->translate->__('Discount');?></td>
+									<td class="last a-center">
 										<span class="price"><?= $currency_symbol ?><?=  Format::price($subtotal_with_discount); ?></span>    
 									</td>
 								</tr>
 								<tr class="grand_total last">
-									<td class="a-right" colspan="3">
+									<td class="a-center" colspan="4">
 										<strong><?= Yii::$service->page->translate->__('Grand Total');?></strong>
 									</td>
 									<td class="last a-right">
@@ -149,9 +151,17 @@ use fecshop\app\apphtml5\helper\Format;
 											</dl>
 										</td>
 										
-										<td class="a-right">
+										<td class="a-center">
 											<span class="nobr" ><strong><?= $product['qty'] ?></strong><br>
 											</span>
+										</td>
+                                        <td class="a-center">
+											<a style="font-size:1em" href="<?= Yii::$service->url->getUrl('/catalog/reviewproduct/add',['_id' => $product['product_id']])  ?>">
+                                                <span class="" >
+                                                    Review 
+                                                    <br>
+                                                </span>
+                                            </a>
 										</td>
 										<td class="a-right last">
 											<span class="price-excl-tax">

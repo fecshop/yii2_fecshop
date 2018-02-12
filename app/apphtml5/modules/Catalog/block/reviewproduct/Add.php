@@ -144,6 +144,12 @@ class Add
 
             return false;
         }
+        // 用户是否有添加这个产品的权限
+        if (!Yii::$service->product->review->isReviewRole($product_id)) {
+            Yii::$service->page->message->addError('product _id:'.$product_id.'  , you review this product only after ordered it');
+            
+            return false;
+        }
         $editForm['spu'] = $product['spu'];
         $editForm['status'] = $product['spu'];
         Yii::$service->product->review->addReview($editForm);
