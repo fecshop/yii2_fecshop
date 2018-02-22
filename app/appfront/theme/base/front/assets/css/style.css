@@ -2790,10 +2790,67 @@ a.icon-google:hover{
 
 
 
+.averageWarp{
+    margin-top: 10px;
+}
+.averageWarp span, .averageWarp b{float:left;display:block;margin-right:20px;}
+.averageWarp a{float:left;margin-right:10px;}
 
 
+.lbBox {
+    font-size: 0;
+    *word-spacing: -1px;
+}
 
-
-
-
-
+.lineBlock {
+    display: inline-block;
+    zoom: 1;
+    *display: inline;
+    font-size: 13px;
+    letter-spacing: normal;
+    word-spacing: normal;
+    vertical-align: top;
+}
+ .pro_commit .writeRiviewTitle, .writeLeft .writeRiviewTitle {
+    margin: 15px 0;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e2e2e2;
+}
+.pro_commit .writeRiviewTitle .proportionStars li, .writeLeft .writeRiviewTitle .proportionStars li {
+ margin-bottom: 10px;
+}
+.fz_blue, .link {
+    color: #4d82b8;
+}
+.pro_commit .writeRiviewTitle .proportionStars .proportionBox, .writeLeft .writeRiviewTitle .proportionStars .proportionBox {
+    background-color: #e6e6e6;
+    width: 145px;
+    height: 15px;
+    position: relative;
+    margin-left: 10px;
+    margin-right: 10px;
+    border: 1px solid #c4c4c4;
+}
+ .pro_commit .writeRiviewTitle .proportionStars .proportionBox > div::before, .writeLeft .writeRiviewTitle .proportionStars .proportionBox > div::before {
+    background-color: rgba(255,255,255,.25);
+    content: "";
+    display: block;
+    font-size: 0;
+    height: 1px;
+    margin: 1px;
+}
+ .pro_commit .writeRiviewTitle .proportionStars .proportionBox > div, .writeLeft .writeRiviewTitle .proportionStars .proportionBox > div {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 15px;
+    background-color: #f90;
+    font-size: 0;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.25) inset,0 -1px 0 rgba(0,0,0,.05) inset;
+    width: 0;
+    transition: width .5s ease 0s;
+}
+.pro_commit .writeRiviewTitle .writeRiviewBtn, .writeLeft .writeRiviewTitle .writeRiviewBtn {
+    width: 770px;
+    margin-left:150px;
+}

@@ -387,8 +387,8 @@ class QuoteItem extends Service
     {
         if ($cart_id && $new_cart_id) {
             $this->_itemModel->updateAll(
-                ['cart_id'=>$new_cart_id],  // $attributes
-                'cart_id = '.$cart_id       // $condition
+                ['cart_id' => $new_cart_id],  // $attributes
+                ['cart_id' => $cart_id]       // $condition
             );
             // 重新计算购物车的数量
             //Yii::$service->cart->quote->computeCartInfo();

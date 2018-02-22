@@ -20,7 +20,7 @@
 						<div class="rbc_cold">
 							<span>
 								<span class="average_rating"><?= Yii::$service->page->translate->__('Average rating'); ?> :</span>
-								<span class="review_star review_star_<?= $reviw_rate_star_average ?>" style="font-weight:bold;" itemprop="average"></span>  
+								<span class="review_star review_star_<?= round($reviw_rate_star_average) ?>" style="font-weight:bold;" itemprop="average"></span>  
 								
 								<a rel="nofollow" href="#text-reviews">
 									(<span itemprop="count"><?= $review_count ?> <?= Yii::$service->page->translate->__('reviews'); ?></span>)
@@ -183,7 +183,9 @@
 								'product_id' 	=> $_id,
 								'spu'			=> $spu,
 							];
-							
+							$reviewParam['reviw_rate_star_info'] = $reviw_rate_star_info;
+                            $reviewParam['review_count'] = $review_count;
+                            $reviewParam['reviw_rate_star_average'] = $reviw_rate_star_average;
 						?>
 						<?= Yii::$service->page->widget->render($reviewView,$reviewParam); ?>
 					</div>  

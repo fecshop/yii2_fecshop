@@ -7,13 +7,76 @@
  * @license http://www.fecshop.com/license/
  */
 ?>
+
+<?php
+    $reviw_rate_star_info = $parentThis['reviw_rate_star_info'];
+    $review_count = $parentThis['review_count'];
+    $reviw_rate_star_average = $parentThis['reviw_rate_star_average'];
+    //var_dump($reviw_rate_star_info);
+?>
 <div class="product-Reviews">
 	<div id="pic_list_2" class="scroll_horizontal">
 		<div class="scroll_left">
 			<a href=""><?= Yii::$service->page->translate->__('Product Review'); ?></a>
 		</div>
 		<div class="clear"></div>
-		<div class="box">
+		<div class="box pro_commit">
+            
+            
+            <div class="averageWarp">
+				<span class="lineBlock fon14">Average Rating:</span>
+				<a  lehref="#" class="review_star review_star_<?= round($reviw_rate_star_average) ?>" onclick="javascript:return false;"></a>
+				<b class="lineBlock fon18"><?= $reviw_rate_star_average ?></b>
+				<span class="lineBlock">based on <?= $review_count ?> Customer Reviews</span>
+			</div>
+            <div class="clear"></div>
+            <div class="lbBox writeRiviewTitle">
+				<ul class="lineBlock proportionStars">
+										<li class="lbBox">
+						<span class="lineBlock fz_blue">5 stars</span>
+						<div class="lineBlock proportionBox">
+							<div style="width: <?=  $reviw_rate_star_info['star_5'] ?>%"> </div>
+						</div>
+													<span class="lineBlock"><?=  $reviw_rate_star_info['star_5'] ?>%</span>
+											</li>
+										<li class="lbBox">
+						<span class="lineBlock fz_blue">4 stars</span>
+						<div class="lineBlock proportionBox">
+							<div style="width: <?=  $reviw_rate_star_info['star_4'] ?>%"> </div>
+						</div>
+													<span class="lineBlock"><?=  $reviw_rate_star_info['star_4'] ?>%</span>
+											</li>
+										<li class="lbBox">
+						<span class="lineBlock fz_blue">3 stars</span>
+						<div class="lineBlock proportionBox">
+							<div style="width: <?=  $reviw_rate_star_info['star_3'] ?>%"> </div>
+						</div>
+                            <span class="lineBlock"><?=  $reviw_rate_star_info['star_3'] ?>%</span>
+											
+											</li>
+										<li class="lbBox">
+						<span class="lineBlock fz_blue">2 stars</span>
+						<div class="lineBlock proportionBox">
+							<div style="width: <?=  $reviw_rate_star_info['star_2'] ?>%"> </div>
+						</div>
+													<span class="lineBlock"><?=  $reviw_rate_star_info['star_2'] ?>%</span>
+											</li>
+										<li class="lbBox">
+						<span class="lineBlock fz_blue">1 stars</span>
+						<div class="lineBlock proportionBox">
+							<div style="width: <?=  $reviw_rate_star_info['star_1'] ?>%"> </div>
+						</div>
+                        		<span class="lineBlock"><?=  $reviw_rate_star_info['star_1'] ?>%</span>
+											
+											</li>
+									</ul>
+				<div class="lineBlock writeRiviewBtn">
+					
+					<button type="submit" title="Save" class="button btn btn-primary addreview" onclick="javascrtpt:window.location.href='<?= Yii::$service->url->getUrl('catalog/reviewproduct/add',['spu'=>$spu,'_id'=>$_id]); ?>'"><span><span><?= Yii::$service->page->translate->__('Write a Customer Review'); ?></span></span></button>
+                    
+				</div>
+			</div>
+            
 			<div class="product-Reviews_top">
 				<?php  if(is_array($coll) && !empty($coll)):  ?>
 				<ul id="review_description">
@@ -47,9 +110,7 @@
 				<?php endif; ?>
 			</div>
 			<div class="clear"></div>
-			<a class="submitbutton" href="<?= Yii::$service->url->getUrl('catalog/reviewproduct/add',['spu'=>$spu,'_id'=>$_id]); ?>" >
-				<?= Yii::$service->page->translate->__('Add Review'); ?>
-			</a>
+			
 			<div class="clear"></div>
 			<div class="view_all_review">
 				<a href="<?= Yii::$service->url->getUrl('catalog/reviewproduct/lists',['spu'=>$spu,'_id'=>$_id]); ?>" >

@@ -48,6 +48,8 @@ class Index
         
     }
     
+    
+    
     public function getLastData()
     {
         $reviewHelper = $this->_reviewHelper;
@@ -58,8 +60,8 @@ class Index
             return;
         }
         $reviewHelper::initReviewConfig();
-        $ReviewAndStarCount = $reviewHelper::getReviewAndStarCount($this->_product);
-        list($review_count, $reviw_rate_star_average) = $ReviewAndStarCount;
+        list($review_count, $reviw_rate_star_average, $reviw_rate_star_info) = $reviewHelper::getReviewAndStarCount($this->_product);
+        
         $this->filterProductImg($this->_product['image']);
         $groupAttrInfo = Yii::$service->product->getGroupAttrInfo($this->_product['attr_group']);
         $groupAttrArr = $this->getGroupAttrArr($groupAttrInfo);
@@ -74,6 +76,7 @@ class Index
             'attr_group'                => $this->_product['attr_group'],
             'review_count'              => $review_count,
             'reviw_rate_star_average'   => $reviw_rate_star_average,
+            'reviw_rate_star_info'      => $reviw_rate_star_info,
             'price_info'                => $this->getProductPriceInfo(),
             'tier_price'                => $this->_product['tier_price'],
             'media_size' => [

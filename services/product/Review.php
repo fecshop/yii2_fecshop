@@ -401,30 +401,50 @@ class Review extends Service
         $coll = $this->coll($filter);
         $count = $coll['count'];
         $data = $coll['coll'];
-        $rate_total = 0;
+        $rate_total = 0; 
+        $rate_total_arr['star_0'] = 0;
+        $rate_total_arr['star_1'] = 0;
+        $rate_total_arr['star_2'] = 0;
+        $rate_total_arr['star_3'] = 0;
+        $rate_total_arr['star_4'] = 0;
+        $rate_total_arr['star_5'] = 0;
+        
         $rate_lang_total = 0;
+        $rate_lang_total_arr['star_0'] = 0;
+        $rate_lang_total_arr['star_1'] = 0;
+        $rate_lang_total_arr['star_2'] = 0;
+        $rate_lang_total_arr['star_3'] = 0;
+        $rate_lang_total_arr['star_4'] = 0;
+        $rate_lang_total_arr['star_5'] = 0;
+        
+        
+        
         $lang_count = 0;
         if (!empty($data) && is_array($data)) {
             foreach ($data as $one) {
                 $rate_total += $one['rate_star'];
+                $rs = 'star_'.$one['rate_star'];
+                $rate_total_arr[$rs] += 1;
                 if ($lang_code == $one['lang_code']) {
                     $rate_lang_total += $one['rate_star'];
                     $lang_count++;
+                    
+                    $rate_lang_total_arr[$rs] += 1;
                 }
             }
         }
         if ($count == 0) {
             $avag_rate = 0;
         } else {
-            $avag_rate = ceil($rate_total / $count);
+            $avag_rate = ceil($rate_total / $count *10) / 10;
         }
         if ($lang_count == 0) {
             $avag_lang_rate = 0;
         } else {
-            $avag_lang_rate = ceil($rate_lang_total / $lang_count);
+            $avag_lang_rate = ceil($rate_lang_total / $lang_count *10) / 10;
         }
 
-        Yii::$service->product->updateProductReviewInfo($spu, $avag_rate, $count, $lang_code, $avag_lang_rate, $lang_count);
+        Yii::$service->product->updateProductReviewInfo($spu, $avag_rate, $count, $lang_code, $avag_lang_rate, $lang_count, $rate_total_arr, $rate_lang_total_arr);
 
         return true;
     }

@@ -475,8 +475,8 @@ class Product extends Service
      * @property $avag_lang_rate | 当前语言的总平均得分
      * @property $lang_count | 当前语言的总评论数
      */
-    protected function actionUpdateProductReviewInfo($spu, $avag_rate, $count, $lang_code, $avag_lang_rate, $lang_count)
+    protected function actionUpdateProductReviewInfo($spu, $avag_rate, $count, $lang_code, $avag_lang_rate, $lang_count, $rate_total_arr, $rate_lang_total_arr)
     {
-        return $this->_product->updateProductReviewInfo($spu, $avag_rate, $count, $lang_code, $avag_lang_rate, $lang_count);
+        return $this->_product->updateProductReviewInfo($spu, $avag_rate, $count, $lang_code, $avag_lang_rate, $lang_count, $rate_total_arr, $rate_lang_total_arr);
     }
 }

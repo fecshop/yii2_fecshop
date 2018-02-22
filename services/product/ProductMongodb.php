@@ -656,8 +656,10 @@ class ProductMongodb extends Service implements ProductInterface
      * @property $lang_code | String ，语言简码
      * @property $avag_lang_rate | Int ，语言下平均评星
      * @property $lang_count | Int ， 语言下评论次数。
-     */
-    public function updateProductReviewInfo($spu, $avag_rate, $count, $lang_code, $avag_lang_rate, $lang_count)
+     * @property $rate_total_arr | Array, 各个评星对应的个数
+     * @property $rate_lang_total_arr | Array, 该语言下各个评星对应的个数
+     */ 
+    public function updateProductReviewInfo($spu, $avag_rate, $count, $lang_code, $avag_lang_rate, $lang_count, $rate_total_arr, $rate_lang_total_arr)
     {
         $data = $this->_productModel->find()->where([
             'spu' => $spu,
@@ -667,6 +669,7 @@ class ProductMongodb extends Service implements ProductInterface
             $review_star_lang = Yii::$service->fecshoplang->getLangAttrName($attrName, $lang_code);
             $attrName = 'review_count_lang';
             $review_count_lang = Yii::$service->fecshoplang->getLangAttrName($attrName, $lang_code);
+            $reviw_rate_star_info_lang = Yii::$service->fecshoplang->getLangAttrName('reviw_rate_star_info_lang', $lang_code);
             foreach ($data as $one) {
                 $one['reviw_rate_star_average'] = $avag_rate;
                 $one['review_count']            = $count;
@@ -675,7 +678,11 @@ class ProductMongodb extends Service implements ProductInterface
                 $b                              = $one['review_count_lang'];
                 $b[$review_count_lang]          = $lang_count;
                 $one['reviw_rate_star_average_lang'] = $a;
-                $one['review_count_lang']       = $b;
+                $one['review_count_lang']           = $b;
+                $one['reviw_rate_star_info']        = $rate_total_arr;
+                $c                                  = $one['reviw_rate_star_info_lang'];
+                $c[$reviw_rate_star_info_lang]      = $rate_lang_total_arr;
+                $one['reviw_rate_star_info_lang']   = $c;
                 $one->save();
             }
         }

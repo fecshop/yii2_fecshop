@@ -96,10 +96,13 @@ class Product extends ActiveRecord
             'updated_at',
             'created_user_id',
             'attr_group',
-            'reviw_rate_star_average',    //评论平均评分
-            'review_count',                    //评论总数
-            'reviw_rate_star_average_lang', //（语言）评论平均评分
-            'review_count_lang',            //（语言）评论总数
+            'reviw_rate_star_average',       //评论平均评分
+            'review_count',                  //评论总数
+            'reviw_rate_star_average_lang',  //（语言）评论平均评分
+            'review_count_lang',             //（语言）评论总数
+            'reviw_rate_star_info',          // 评星详细，各个评星的个数
+            'reviw_rate_star_info_lang',     // （语言）评星详细，各个评星的个数
+            
             'favorite_count',                // 产品被收藏的次数。
             'relation_sku',            // 相关产品
             'buy_also_buy_sku',        // 买了的还买了什么
