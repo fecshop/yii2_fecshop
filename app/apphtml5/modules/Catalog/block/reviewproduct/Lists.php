@@ -101,13 +101,14 @@ class Lists
             $coll = $data['coll'];
             $reviewHelper = $this->_reviewHelper;
             $ReviewAndStarCount = $reviewHelper::getReviewAndStarCount($product);
-            list($review_count, $reviw_rate_star_average) = $ReviewAndStarCount;
+            list($review_count, $reviw_rate_star_average, $reviw_rate_star_info)  = $ReviewAndStarCount;
 
             return [
                 '_id' => $this->product_id,
                 'spu' => $this->spu,
                 'review_count'             => $review_count,
                 'reviw_rate_star_average'  => $reviw_rate_star_average,
+                'reviw_rate_star_info'     => $reviw_rate_star_info,
                 'pageToolBar'       => $pageToolBar,
                 'coll'              => $coll,
                 'noActiveStatus'    => Yii::$service->product->review->noActiveStatus(),

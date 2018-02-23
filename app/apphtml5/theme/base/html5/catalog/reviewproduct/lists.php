@@ -49,7 +49,7 @@
 							<div class="rbc_cold">
 								<span>
 									<span class="average_rating"><?= Yii::$service->page->translate->__('Average rating :');?></span>
-									<span class="review_star review_star_<?= $reviw_rate_star_average ?>" style="font-weight:bold;" itemprop="average"></span>  
+									<span class="review_star review_star_<?= round($reviw_rate_star_average) ?>" style="font-weight:bold;" itemprop="average"></span>  
 									
 									<a external rel="nofollow" href="<?= Yii::$service->url->getUrl('catalog/reviewproduct/lists',['spu'=>$spu,'_id'=>$_id]); ?>">
 										(<span itemprop="count"><?= $review_count ?> <?= Yii::$service->page->translate->__('reviews');?></span>)
@@ -76,44 +76,89 @@
 					</div>
 					<div class="clear"></div>
 				</div>
-				<div class="product-reviews"> 
+                
+				<div class="product-reviews pro_commit"> 
 					<div class="clear"></div>
-					<div class="review_title">
-						<a external href="#"><?= Yii::$service->page->translate->__('Product Review');?></a>
-					</div>
-						<?php  if(is_array($coll) && !empty($coll)):  ?>
-						
-							<?php foreach($coll as $one):  ?>
-								<div class="card">
-									<div class="fec-card-header">
-										<?= $one['summary'] ?>
-									</div>
-									<div class="fec-card-content">
-										<div class="fec-card-content-inner">
-											<div class="review-content">
-												<?= $one['review_content'] ?>
-											</div>
-												
-											<div class="moderation">
-											<?php if($one['status'] == $noActiveStatus): ?>  
-												<?= Yii::$service->page->translate->__('Your Review is awaiting moderation...');?>
-											<?php elseif($one['status'] == $refuseStatus): ?>
-												<?= Yii::$service->page->translate->__('Your Review is refused.');?>
-											<?php endif; ?>
-											</div>
-											<div class="review_list_remark">
-												<p><?= Yii::$service->page->translate->__('By');?> <?= $one['name'] ?></p>
-												<span><?= $one['review_date'] ? date('Y-m-d H:i:s',$one['review_date']) : '' ?></span>
-											</div>
-										</div>
-									</div>
-									<div class="fec-card-footer">
-										<a href="#" class="review_star review_star_<?= $one['rate_star'] ?>" onclick="javascript:return false;"></a>
-									</div>
-								</div>
-							<?php  endforeach; ?>
-						
-						<?php endif; ?>
+					
+                    
+                    <div class="averageWarp">
+                        <span class="lineBlock fon14"><?= Yii::$service->page->translate->__('Average Rating'); ?>: </span>
+                        <b class="lineBlock fon18"><?= $reviw_rate_star_average ?></b>
+                        </div>
+                    <div class="clear"></div>
+                    <div class="lbBox writeRiviewTitle">
+                        <ul class="lineBlock proportionStars">
+                            <li class="lbBox">
+                                <span class="lineBlock fz_blue"><?= Yii::$service->page->translate->__('5 stars'); ?></span>
+                                <div class="lineBlock proportionBox">
+                                    <div style="width: <?=  $reviw_rate_star_info['star_5'] ?>%"> </div>
+                                </div>
+                                <span class="lineBlock"><?=  $reviw_rate_star_info['star_5'] ?>%</span>
+                            </li>
+                            <li class="lbBox">
+                                <span class="lineBlock fz_blue"><?= Yii::$service->page->translate->__('4 stars'); ?></span>
+                                <div class="lineBlock proportionBox">
+                                    <div style="width: <?=  $reviw_rate_star_info['star_4'] ?>%"> </div>
+                                </div>
+                                <span class="lineBlock"><?=  $reviw_rate_star_info['star_4'] ?>%</span>
+                            </li>
+                            <li class="lbBox">
+                                <span class="lineBlock fz_blue"><?= Yii::$service->page->translate->__('3 stars'); ?></span>
+                                <div class="lineBlock proportionBox">
+                                    <div style="width: <?=  $reviw_rate_star_info['star_3'] ?>%"> </div>
+                                </div>
+                                <span class="lineBlock"><?=  $reviw_rate_star_info['star_3'] ?>%</span>				
+                            </li>
+                            <li class="lbBox">
+                                <span class="lineBlock fz_blue"><?= Yii::$service->page->translate->__('2 stars'); ?></span>
+                                <div class="lineBlock proportionBox">
+                                    <div style="width: <?=  $reviw_rate_star_info['star_2'] ?>%"> </div>
+                                </div>
+                                <span class="lineBlock"><?=  $reviw_rate_star_info['star_2'] ?>%</span>
+                            </li>
+                            <li class="lbBox">
+                                <span class="lineBlock fz_blue"><?= Yii::$service->page->translate->__('1 stars'); ?></span>
+                                <div class="lineBlock proportionBox">
+                                    <div style="width: <?=  $reviw_rate_star_info['star_1'] ?>%"> </div>
+                                </div>
+                                <span class="lineBlock"><?=  $reviw_rate_star_info['star_1'] ?>%</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <?php  if(is_array($coll) && !empty($coll)):  ?>
+                    
+                        <?php foreach($coll as $one):  ?>
+                            <div class="card">
+                                <div class="fec-card-header">
+                                    <?= $one['summary'] ?>
+                                </div>
+                                <div class="fec-card-content">
+                                    <div class="fec-card-content-inner">
+                                        <div class="review-content">
+                                            <?= $one['review_content'] ?>
+                                        </div>
+                                            
+                                        <div class="moderation">
+                                        <?php if($one['status'] == $noActiveStatus): ?>  
+                                            <?= Yii::$service->page->translate->__('Your Review is awaiting moderation...');?>
+                                        <?php elseif($one['status'] == $refuseStatus): ?>
+                                            <?= Yii::$service->page->translate->__('Your Review is refused.');?>
+                                        <?php endif; ?>
+                                        </div>
+                                        <div class="review_list_remark">
+                                            <p><?= Yii::$service->page->translate->__('By');?> <?= $one['name'] ?></p>
+                                            <span><?= $one['review_date'] ? date('Y-m-d H:i:s',$one['review_date']) : '' ?></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="fec-card-footer">
+                                    <a href="#" class="review_star review_star_<?= $one['rate_star'] ?>" onclick="javascript:return false;"></a>
+                                </div>
+                            </div>
+                        <?php  endforeach; ?>
+                    
+                    <?php endif; ?>
 					
 					<?php if($pageToolBar): ?>
 					<div class="pageToolbar">

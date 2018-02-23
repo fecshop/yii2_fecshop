@@ -462,4 +462,14 @@ return [
  'Please contact us if you think this is a server error, Thank you.' => '如果您认为这是服务器错误，请与我们联系，谢谢。',
  'Bring me back Home'                        => '带我去首页',
 
+ 
+ 'Average Rating' => '平均评分',
+ 'based on {review_count} Customer Reviews' => '基于{review_count}条客户评论',
+ '5 stars' => '5星',
+ '4 stars' => '4星',
+ '3 stars' => '3星',
+ '2 stars' => '2星',
+ '1 stars' => '1星',
+ 'Write a Customer Review' => '填写用户评论',
+
 ];
