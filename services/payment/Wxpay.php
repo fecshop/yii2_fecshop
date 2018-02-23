@@ -28,6 +28,7 @@ class Wxpay extends Service
     public $tradeType;
     public $scanCodeBody = '微信支付';
     public $deviceInfo = 'WEB';
+    public $expireTime = 600;
     protected $_order;
     
     public function init()
@@ -138,9 +139,10 @@ class Wxpay extends Service
         $trade_info = $this->getStartBizContentAndSetPaymentMethod();
         if(!$trade_info){
             Yii::$service->helper->errors->add('generate wxpay bizContent error');
-            
+           
             return false;
         }
+         
         $notify_url = Yii::$service->payment->getStandardIpnUrl();    ////获取支付配置中的返回ipn url
         $notify = new \NativePay();
         $input  = new \WxPayUnifiedOrder();
@@ -155,7 +157,8 @@ class Wxpay extends Service
         $orderTotal = $trade_info['total_amount'] * 100; //微信支付的单位为分,所以要乘以100
         $input->SetTotal_fee($orderTotal ); 
         $input->SetTime_start(date("YmdHis"));
-        $input->SetTime_expire(date("YmdHis", time() + 600));
+        
+        $input->SetTime_expire($this->getShangHaiExpireTime($this->expireTime));
         $input->SetNotify_url($notify_url); //通知地址 改成自己接口通知的接口，要有公网域名,测试时直接行动此接口会产生日志
         $input->SetTrade_type($this->tradeType);
         $input->SetProduct_id($trade_info['product_ids']); //此为二维码中包含的商品ID 
@@ -178,6 +181,7 @@ class Wxpay extends Service
          * } 
          **/
         //商户根据实际情况处理流程
+        //var_dump($result);exit;
         if ($result['return_code'] == "FAIL"){
             Yii::$service->helper->errors->add('api error:' . $result['return_msg'] );
             
@@ -204,6 +208,15 @@ class Wxpay extends Service
         ];
     }
     
+    
+    public function getShangHaiExpireTime($expire_time) {
+        $timezone_out = date_default_timezone_get();
+        date_default_timezone_set('Asia/Shanghai');
+        $r_time = date("YmdHis", time() + $expire_time);
+        date_default_timezone_set($timezone_out);
+        
+        return $r_time;
+    }
     
     
     public function scanCodeCheckTradeIsSuccess($out_trade_no){

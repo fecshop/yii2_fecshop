@@ -35,7 +35,7 @@
         <div class="order clearfix order-init order-init-oldUser-noQrcode">
             <div class="o-left">
                 <h3 class="o-title">
-                    订单提交成功，请尽快付款！订单号：用户的订单号
+                    订单提交成功，请尽快付款！订单号：<?= $increment_id  ?>
                 </h3>
                 <p class="o-tips">
                     <span class="o-tips-time" id="deleteOrderTip">
@@ -72,7 +72,8 @@
                 <div class="p-w-hd">微信扫码支付</div>
                 <div class="p-w-bd" style="position:relative">
                     <div class="j_weixinInfo" style="position:absolute; top: -36px; left: 130px;">
-                        请在一小时内扫码支付
+                        请在<?= ceil($expireTime / 60) ?>分钟内完成扫码支付（这里需要使用真实的微信账户，测试后不能退款，因此，建议您
+                        使用该产品测试支付：<a href="https://fecshop.appfront.fancyecommerce.com/cn/3232-86679774" target="_blank">微信支付测试产品</a>）
                         <span class="j_qrCodeCountdown font-bold font-red"></span>
                     </div>
                     <div class="p-w-box">

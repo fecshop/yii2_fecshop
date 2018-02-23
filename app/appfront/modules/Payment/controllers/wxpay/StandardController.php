@@ -38,7 +38,7 @@ class StandardController extends AppfrontController
          *];
          */
         $startData = Yii::$service->payment->wxpay->getScanCodeStart();
-        
+        //echo $startData;exit;
         if(!$startData){
             //Yii::$service->url->redirectByUrlKey('/checkout/onepage');
             return;
@@ -47,6 +47,7 @@ class StandardController extends AppfrontController
             $startData['customer_email'] = Yii::$app->user->identity->email;
         }
         $startData['trace_success_url'] = Yii::$service->url->getUrl('/payment/wxpay/standard/tradesuccess',['out_trade_no' => $startData['increment_id']]);
+        $startData['expireTime'] =  Yii::$service->payment->wxpay->expireTime;
         return $this->render($this->action->id, $startData);
     }
     
