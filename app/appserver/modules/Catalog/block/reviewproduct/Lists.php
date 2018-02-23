@@ -107,7 +107,7 @@ class Lists
             $coll = $data['coll'];
             $reviewHelper = $this->_reviewHelper;
             $ReviewAndStarCount = $reviewHelper::getReviewAndStarCount($product);
-            list($review_count, $reviw_rate_star_average) = $ReviewAndStarCount;
+            list($review_count, $reviw_rate_star_average, $reviw_rate_star_info) = $ReviewAndStarCount;
             $product = [
                 'product_id' => $this->product_id,
                 'spu' => $this->spu,
@@ -122,6 +122,7 @@ class Lists
                 'reviewList'    => $coll,
                 'review_count'              => $review_count,
                 'reviw_rate_star_average'   => $reviw_rate_star_average,
+                'reviw_rate_star_info'      => $reviw_rate_star_info,
             ];
             $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
             
