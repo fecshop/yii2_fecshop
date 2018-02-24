@@ -32,7 +32,7 @@ class Review
 
     public function getLastData()
     {
-        $cartInfo = Yii::$service->cart->getCartInfo();
+        $cartInfo = Yii::$service->cart->getCartInfo(true);
 
         if (!isset($cartInfo['products']) || !is_array($cartInfo['products']) || empty($cartInfo['products'])) {
             
@@ -51,7 +51,7 @@ class Review
         $this->initCountry();
         $this->initState();
         $shippings = $this->getShippings();
-        $last_cart_info = $this->getCartInfo($this->_shipping_method, $this->_country, $this->_state);
+        $last_cart_info = $this->getCartInfo(true, $this->_shipping_method, $this->_country, $this->_state);
         $isGuest = 1;
         if(!Yii::$app->user->isGuest){
             $isGuest = 0;
@@ -244,7 +244,7 @@ class Review
     public function getCartInfo($shipping_method, $country, $state)
     {
         if (!$this->_cart_info) {
-            $cart_info = Yii::$service->cart->getCartInfo($shipping_method, $country, $state);
+            $cart_info = Yii::$service->cart->getCartInfo(true, $shipping_method, $country, $state);
             if (isset($cart_info['products']) && is_array($cart_info['products'])) {
                 foreach ($cart_info['products'] as $k=>$product_one) {
                     // 设置名字，得到当前store的语言名字。

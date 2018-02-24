@@ -210,11 +210,14 @@ class Quote extends Service
     }
 
     /**
-     * 完全与当前购物车脱节，如果产品添加购物车，会创建新的cart_id.
+     * 删除掉active状态的购物车产品
+     * 对于active的产品，在支付成功后，这些产品从购物车清楚
+     * 而对于noActive产品，这些产品并没有支付，因而在购物车中保留。
      */
     protected function actionClearCart()
     {
-        Yii::$service->session->remove(self::SESSION_CART_ID);
+        //Yii::$service->session->remove(self::SESSION_CART_ID);
+        Yii::$service->cart->quoteItem->removeNoActiveItems();
     }
 
     /**
@@ -314,6 +317,7 @@ class Quote extends Service
     */
 
     /**
+     * @property $activeProduct | boolean , 是否只要active的产品
      * @property $shipping_method | String  传递的货运方式
      * @property $country | String 货运国家
      * @property $region | String 省市
@@ -323,7 +327,7 @@ class Quote extends Service
      *              对于填写了参数，返回的是填写参数后的数据，这个一般是用户选择了了货运方式，国家等，然后
      *              实时的计算出来数据反馈给用户，但是，用户选择的数据并没有进入cart表
      */
-    public function getCartInfo($shipping_method = '', $country = '', $region = '*')
+    public function getCartInfo($activeProduct = true, $shipping_method = '', $country = '', $region = '*')
     {
         // 根据传递的参数的不同，购物车数据计算一次后，第二次调用，不会重新计算数据。
         $cartInfoKey = $shipping_method.'-shipping-'.$country.'-country-'.$region.'-region';
@@ -339,7 +343,7 @@ class Quote extends Service
                 return false;
             }
             $coupon_code = $cart['coupon_code'];
-            $cart_product_info = Yii::$service->cart->quoteItem->getCartProductInfo();
+            $cart_product_info = Yii::$service->cart->quoteItem->getCartProductInfo($activeProduct);
             //var_dump($cart_product_info);
             if (is_array($cart_product_info)) {
                 $product_weight = $cart_product_info['product_weight'];
@@ -352,7 +356,7 @@ class Quote extends Service
                 //if (!$shipping_method) {
                 //    $shipping_method = Yii::$service->shipping->getDefaultShippingMethod($country,$region,$product_weight);
                 //}
-                if ($products && $product_total) {
+                if (is_array($products) && !empty($products)) {
                     $currShippingCost = 0;
                     $baseShippingCost = 0;
                     if ($shipping_method && $product_final_weight) {

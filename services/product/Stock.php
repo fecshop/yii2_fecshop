@@ -170,7 +170,7 @@ class Stock extends Service
     protected function actionDeduct($items = '')
     {
         if (!$items) { //如果$items为空，则去购物车取数据。
-            $cartInfo = Yii::$service->cart->getCartInfo();
+            $cartInfo = Yii::$service->cart->getCartInfo(true);
             $items = isset($cartInfo['products']) ? $cartInfo['products'] : '';
             
         }
@@ -307,7 +307,7 @@ class Stock extends Service
      */
     protected function actionCheckItemsQty()
     {
-        $cartInfo = Yii::$service->cart->getCartInfo();
+        $cartInfo = Yii::$service->cart->getCartInfo(true);
         $items = isset($cartInfo['products']) ? $cartInfo['products'] : '';
         
         /**

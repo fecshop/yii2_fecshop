@@ -23,7 +23,7 @@ class Index
         $currency_info = Yii::$service->page->currency->getCurrencyInfo();
         //var_dump($this->getCartInfo());
         return [
-            'cart_info' => $this->getCartInfo(),
+            'cart_info' => $this->getCartInfo(false),
             'currency_info' => $currency_info,
         ];
     }
@@ -54,7 +54,7 @@ class Index
      */
     public function getCartInfo()
     {
-        $cart_info = Yii::$service->cart->getCartInfo();
+        $cart_info = Yii::$service->cart->getCartInfo(false);
 
         if (isset($cart_info['products']) && is_array($cart_info['products'])) {
             foreach ($cart_info['products'] as $k=>$product_one) {

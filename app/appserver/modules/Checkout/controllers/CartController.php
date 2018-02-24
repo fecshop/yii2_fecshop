@@ -25,7 +25,7 @@ class CartController extends AppserverController
         $currency_info = Yii::$service->page->currency->getCurrencyInfo();
         $code = Yii::$service->helper->appserver->status_success;
         $data = [
-            'cart_info' => $this->getCartInfo(),
+            'cart_info' => $this->getCartInfo(false),
             'currency'  => $currency_info,
         ];
         $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
@@ -59,7 +59,7 @@ class CartController extends AppserverController
      */
     public function getCartInfo()
     {
-        $cart_info = Yii::$service->cart->getCartInfo();
+        $cart_info = Yii::$service->cart->getCartInfo(false);
 
         if (isset($cart_info['products']) && is_array($cart_info['products'])) {
             foreach ($cart_info['products'] as $k=>$product_one) {

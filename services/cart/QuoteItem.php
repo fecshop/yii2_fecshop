@@ -20,6 +20,10 @@ use Yii;
  */
 class QuoteItem extends Service
 {
+    public $itemDefaultActiveStatus = 1;
+    public $activeStatus = 1;
+    public $noActiveStatus = 2;
+    
     protected $_my_cart_item;    // 购物车cart item 对象
     protected $_cart_product_info;
     
@@ -63,6 +67,7 @@ class QuoteItem extends Service
         }
         $item_one = $this->_itemModel->find()->where($where)->one();
         if ($item_one['cart_id']) {
+            $item_one->active       = $this->itemDefaultActiveStatus;
             $item_one->qty = $item['qty'] + $item_one['qty'];
             $item_one->save();
             // 重新计算购物车的数量
@@ -75,6 +80,7 @@ class QuoteItem extends Service
             $item_one->updated_at   = time();
             $item_one->product_id   = $item['product_id'];
             $item_one->qty          = $item['qty'];
+            $item_one->active       = $this->itemDefaultActiveStatus;
             $item_one->custom_option_sku = ($item['custom_option_sku'] ? $item['custom_option_sku'] : '');
             $item_one->save();
             // 重新计算购物车的数量,并写入sales_flat_cart表存储
@@ -142,6 +148,7 @@ class QuoteItem extends Service
     }
 
     /**
+     * @property $activeProduct | boolean , 是否只要active的产品
      * @return array ， foramt：
      *               [
      *               'products' 		=> $products, 				# 产品详细信息，详情参看代码中的$products。
@@ -151,7 +158,7 @@ class QuoteItem extends Service
      *               ]
      *               得到当前购物车的产品信息，具体参看上面的example array。
      */
-    public function getCartProductInfo()
+    public function getCartProductInfo($activeProduct = true)
     {
         $cart_id        = Yii::$service->cart->quote->getCartId();
         $products       = [];
@@ -165,10 +172,15 @@ class QuoteItem extends Service
                 ])->all();
                 if (is_array($data) && !empty($data)) {
                     foreach ($data as $one) {
+                        $active             = $one['active'];
+                        if ($activeProduct && ($active != $this->activeStatus)) {
+                            continue;
+                        }
                         $product_id     = $one['product_id'];
                         $product_one    = Yii::$service->product->getByPrimaryKey($product_id);
                         if ($product_one['_id']) {
                             $qty                = $one['qty'];
+                            
                             $custom_option_sku  = $one['custom_option_sku'];
                             $product_price_arr  = Yii::$service->product->price->getCartPriceByProductId($product_id, $qty, $custom_option_sku, 2);
                             $curr_product_price = isset($product_price_arr['curr_price']) ? $product_price_arr['curr_price'] : 0;
@@ -176,20 +188,24 @@ class QuoteItem extends Service
                             $product_price      = isset($curr_product_price['value']) ? $curr_product_price['value'] : 0;
 
                             $product_row_price  = $product_price * $qty;
-                            $product_total      += $product_row_price;
-
                             $base_product_row_price = $base_product_price * $qty;
-                            $base_product_total     += $base_product_row_price;
+                            
                             $volume = Yii::$service->shipping->getVolume($product_one['long'], $product_one['width'], $product_one['high']);
                             $p_pv               = $volume * $qty;
                             $p_wt               = $product_one['weight'] * $qty;
                             $p_vwt              = $product_one['volume_weight'] * $qty;
-                            $product_weight         += $p_wt;
-                            $product_volume_weight  += $p_vwt;
-                            $product_volume         += $p_pv;
+                            
+                            if ($active == $this->activeStatus) {
+                                $product_total      += $product_row_price;
+                                $base_product_total     += $base_product_row_price;
+                                $product_weight         += $p_wt;
+                                $product_volume_weight  += $p_vwt;
+                                $product_volume         += $p_pv;
+                            }
                             $productSpuOptions  = $this->getProductSpuOptions($product_one);
                             $products[] = [
                                 'item_id'           => $one['item_id'],
+                                'active'            => $active,
                                 'product_id'        => $product_id,
                                 'sku'               => $product_one['sku'],
                                 'name'              => Yii::$service->store->getStoreAttrVal($product_one['name'], 'name'),
@@ -353,8 +369,35 @@ class QuoteItem extends Service
 
         return false;
     }
+    /** 
+     * @property $cart_id | int 购物车id
+     * 删除购物车中的所有的active产品。对于noActive产品保留
+     * 注意：清空购物车并不是清空所有信息，仅仅是清空用户购物车中的产品。
+     * 另外，购物车的数目更改后，需要更新cart中产品个数的信息。
+     */
+    public function removeNoActiveItemsByCartId($cart_id = '')
+    {
+        if (!$cart_id) {
+            $cart_id = Yii::$service->cart->quote->getCartId();
+        }
+        echo 2;
+        echo $cart_id;
+        if ($cart_id) {
+            $columns = $this->_itemModel->deleteAll([
+                'cart_id' => $cart_id,
+                'active'  => $this->activeStatus,
+            ]);
+            if ($columns > 0) {
+                // 重新计算购物车的数量
+                Yii::$service->cart->quote->computeCartInfo();
 
-    /**
+                return true;
+            }
+        }
+        
+    }
+
+    /** 废弃，改为 removeNoActiveItemsByCartId()，因为购物车改为勾选下单方式。
      * @property $cart_id | int 购物车id
      * 删除购物车中的所有产品。
      * 注意：清空购物车并不是清空所有信息，仅仅是清空用户购物车中的产品。

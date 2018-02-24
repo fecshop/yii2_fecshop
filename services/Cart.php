@@ -93,9 +93,9 @@ class Cart extends Service
      * @property $region | String 省市code
      * 得到购物车中的信息。详情参看调用的函数注释
      */
-    protected function actionGetCartInfo($shipping_method = '', $country = '', $region = '*')
+    protected function actionGetCartInfo($activeProduct = true, $shipping_method = '', $country = '', $region = '*')
     {
-        return Yii::$service->cart->quote->getCartInfo($shipping_method, $country, $region);
+        return Yii::$service->cart->quote->getCartInfo($activeProduct, $shipping_method, $country, $region);
     }
 
     /**
@@ -179,10 +179,11 @@ class Cart extends Service
     /**
      * 清空购物车中的产品和优惠券
      * 在生成订单的时候被调用.
+     * 清空cart item active的产品，而对于noActive的购物车产品保留
      */
     protected function actionClearCartProductAndCoupon()
     {
-        Yii::$service->cart->quoteItem->removeItemByCartId();
+        Yii::$service->cart->quoteItem->removeNoActiveItemsByCartId();
 
         // 清空cart中的优惠券
         $cart = Yii::$service->cart->quote->getCurrentCart();

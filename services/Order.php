@@ -486,7 +486,7 @@ class Order extends Service
         $country        = $address['country'];
         $state          = $address['state'];
         //echo "$shipping_method,$country,$state";exit;
-        $cartInfo       = Yii::$service->cart->getCartInfo($shipping_method, $country, $state);
+        $cartInfo       = Yii::$service->cart->getCartInfo(true, $shipping_method, $country, $state);
         // 检查cartInfo中是否存在产品
         if (!is_array($cartInfo) && empty($cartInfo)) {
             Yii::$service->helper->errors->add('current cart product is empty');

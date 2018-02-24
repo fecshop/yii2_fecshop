@@ -31,6 +31,7 @@ use fecshop\app\appfront\helper\Format;
 						</div>
 						<table id="shopping-cart-table" class="data-table cart-table">
 							<colgroup>
+                                <col width="1">
 								<col width="1">
 								<col width="">
 								<col width="6">
@@ -45,6 +46,7 @@ use fecshop\app\appfront\helper\Format;
 							</colgroup>
 							<thead>
 								<tr class="first last">
+                                    <th rowspan="1"><input type="checkbox" name="cart_select_all" class="cart_select cart_select_all">&nbsp;All</th>
 									<th rowspan="1">&nbsp;</th>
 									<th rowspan="5"><span class="nobr"><?= Yii::$service->page->translate->__('Product Name');?></span></th>
 									<th class="a-center" colspan="1"><span class="nobr"><?= Yii::$service->page->translate->__('Unit Price');?></span></th>
@@ -64,6 +66,12 @@ use fecshop\app\appfront\helper\Format;
 								<?php foreach($cart_info['products'] as $product_one): ?>
 								
 								<tr class="first last odd">
+                                
+                                    <td>
+                                        <input <?=  ($product_one['active'] == Yii::$service->cart->quoteItem->activeStatus ) ?  'checked="checked"' : '' ?> type="checkbox" name="cart_select_item" class="cart_select cart_select_item">
+                                    </td>
+									
+                                    
 									<td>
 										<a href="<?= $product_one['url'] ?>" title="<?= $product_one['name'] ?>" class="product-image">
 										<img src="<?= Yii::$service->product->image->getResize($product_one['image'],[100,100],false) ?>" alt="<?= $product_one['name'] ?>" width="75" height="75">
