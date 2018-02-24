@@ -25,8 +25,9 @@ use fecshop\app\apphtml5\helper\Format;
 				</div>
 				<div class="cart_info">
                     <div class="cart_select_div">
-                        <input type="checkbox" name="cart_select_all" class="cart_select cart_select_all">
-                        &nbsp;Select All Product
+                        <input id="cart_select_all" type="checkbox" name="cart_select_all" class="cart_select cart_select_all">
+                        &nbsp;
+                        <label for="cart_select_all">Select All Product</label>
                     </div>
 					<?php if(is_array($cart_info['products']) && (!empty($cart_info['products']))): ?>
 						<?php foreach($cart_info['products'] as $product_one): ?>

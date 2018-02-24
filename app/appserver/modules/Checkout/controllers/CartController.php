@@ -24,8 +24,10 @@ class CartController extends AppserverController
         }
         $currency_info = Yii::$service->page->currency->getCurrencyInfo();
         $code = Yii::$service->helper->appserver->status_success;
+        $cart_info = $this->getCartInfo(false);
+        
         $data = [
-            'cart_info' => $this->getCartInfo(false),
+            'cart_info' => $cart_info,
             'currency'  => $currency_info,
         ];
         $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
@@ -85,6 +87,8 @@ class CartController extends AppserverController
                 if ($custom_option_image) {
                     $cart_info['products'][$k]['img_url'] = Yii::$service->product->image->getResize($custom_option_image,[150,150],false);
                 }
+                $activeStatus = Yii::$service->cart->quoteItem->activeStatus;
+                $cart_info['products'][$k]['active'] = ($product_one['active'] == $activeStatus) ? 1 : 0;
             }
         }
 
