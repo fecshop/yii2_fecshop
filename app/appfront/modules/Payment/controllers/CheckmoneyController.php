@@ -33,6 +33,8 @@ class CheckmoneyController extends PaymentController
                 //if(!Yii::$app->user->isGuest){
                 //	Yii::$service->cart->clearCartProductAndCoupon();
                 //}
+                // 清空购物车
+                Yii::$service->cart->clearCartProductAndCoupon();
                 Yii::$service->url->redirect($complateUrl);
                 exit;
             }
@@ -42,7 +44,7 @@ class CheckmoneyController extends PaymentController
         Yii::$service->url->redirect($homeUrl);
     }
 
-    /**
+    /**废弃
      * 成功支付页面.
      */
     public function actionSuccess()

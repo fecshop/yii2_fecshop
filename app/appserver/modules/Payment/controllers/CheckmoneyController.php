@@ -34,6 +34,8 @@ class CheckmoneyController extends PaymentController
         
         $payment_method = isset($this->_order_model['payment_method']) ? $this->_order_model['payment_method'] : '';
         if ($payment_method) {
+            // 清空购物车
+            Yii::$service->cart->clearCartProductAndCoupon();
             $code = Yii::$service->helper->appserver->status_success;
             $data = [];
             $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
