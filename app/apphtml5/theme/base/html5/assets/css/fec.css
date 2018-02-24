@@ -1121,9 +1121,13 @@ width: 80%;}
 .buttons-row{padding:0 0.6rem;}
 
 
+.cart_select_div{
+    padding:0 1rem 0.5rem 1rem;
+    border-bottom: 1px solid #ddd;
 
+}
 
-
+.shopping-cart-img{border:none;margin-bottom:0}
 
 
 

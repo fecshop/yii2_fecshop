@@ -24,10 +24,15 @@ use fecshop\app\apphtml5\helper\Format;
 					</div>
 				</div>
 				<div class="cart_info">
+                    <div class="cart_select_div">
+                        <input type="checkbox" name="cart_select_all" class="cart_select cart_select_all">
+                        &nbsp;Select All Product
+                    </div>
 					<?php if(is_array($cart_info['products']) && (!empty($cart_info['products']))): ?>
 						<?php foreach($cart_info['products'] as $product_one): ?>
 							<div class="row">
 								<div class="col-20">
+                                    <input <?=  ($product_one['active'] == Yii::$service->cart->quoteItem->activeStatus ) ?  'checked="checked"' : '' ?> type="checkbox" name="cart_select_item" class="cart_select cart_select_item">
 									<a external href="<?= $product_one['url'] ?>" title="<?= $product_one['name'] ?>" class="product-image">
 										<img src="<?= Yii::$service->product->image->getResize($product_one['image'],[150,150],false) ?>" alt="<?= $product_one['name'] ?>" width="75" height="75">
 									</a>
