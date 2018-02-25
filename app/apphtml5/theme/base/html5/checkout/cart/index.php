@@ -33,7 +33,7 @@ use fecshop\app\apphtml5\helper\Format;
 						<?php foreach($cart_info['products'] as $product_one): ?>
 							<div class="row">
 								<div class="col-20">
-                                    <input <?=  ($product_one['active'] == Yii::$service->cart->quoteItem->activeStatus ) ?  'checked="checked"' : '' ?> type="checkbox" name="cart_select_item" class="cart_select cart_select_item">
+                                    <input rel="<?= $product_one['item_id']; ?>" <?=  ($product_one['active'] == Yii::$service->cart->quoteItem->activeStatus ) ?  'checked="checked"' : '' ?> type="checkbox" name="cart_select_item" class="cart_select cart_select_item">
 									<a external href="<?= $product_one['url'] ?>" title="<?= $product_one['name'] ?>" class="product-image">
 										<img src="<?= Yii::$service->product->image->getResize($product_one['image'],[150,150],false) ?>" alt="<?= $product_one['name'] ?>" width="75" height="75">
 									</a>
@@ -179,8 +179,32 @@ use fecshop\app\apphtml5\helper\Format;
 	// add to cart js	
 <?php $this->beginBlock('changeCartInfo') ?>
 $(document).ready(function(){
-	currentUrl = "<?= Yii::$service->url->getUrl('checkout/cart') ?>"
-	updateCartInfoUrl = "<?= Yii::$service->url->getUrl('checkout/cart/updateinfo') ?>"
+	// set select all checkbox
+    selectall = "<?= Yii::$app->request->get('selectall') ?>";
+    selectAllChecked = false;
+    if (selectall == 1) {
+        selectAllChecked = true;
+    } else {
+        item_select_all = 1;
+        $(".cart_select_item").each(function(){
+            checked = $(this).is(':checked');
+            if (checked == false) {
+                item_select_all = 0;
+            }
+        });
+        if (item_select_all == 1) {
+            selectAllChecked = true;
+        }
+    }
+    if (selectAllChecked) {
+        $(".cart_select_all").attr("checked",selectAllChecked);
+    } else {
+        $(".cart_select_all").removeAttr("checked");
+    }
+	currentUrl = "<?= Yii::$service->url->getUrl('checkout/cart') ?>";
+	updateCartInfoUrl = "<?= Yii::$service->url->getUrl('checkout/cart/updateinfo') ?>";
+    selectOneProductUrl = "<?= Yii::$service->url->getUrl('checkout/cart/selectone') ?>";
+    selectAllProductUrl = "<?= Yii::$service->url->getUrl('checkout/cart/selectall') ?>";
 	$(".cartqtydown").click(function(){
 		$item_id = $(this).attr("rel");
 		num = $(this).attr("num");
@@ -251,8 +275,56 @@ $(document).ready(function(){
 			error:function (XMLHttpRequest, textStatus, errorThrown){}
 		});
 		
-	});
+	}); 
 	
+    $(".cart_select_item").click(function(){
+		$item_id = $(this).attr("rel");
+		checked = $(this).is(':checked');
+        checked = checked ? 1 : 0;
+		$data = {
+			item_id:$item_id,
+			checked:checked
+		};
+		$.ajax({
+			async:true,
+			timeout: 6000,
+			dataType: 'json', 
+			type:'get',
+			data: $data,
+			url:selectOneProductUrl,
+			success:function(data, textStatus){ 
+				if(data.status == 'success'){
+					window.location.href = currentUrl;
+				}
+			},
+			error:function (XMLHttpRequest, textStatus, errorThrown){}
+		});
+	});
+    
+    
+    $(".cart_select_all").click(function(){
+		checked = $(this).is(':checked');
+        checked = checked ? 1 : 0;
+		$data = {
+			checked:checked
+		};
+        selectCurrentUrl = currentUrl + '?selectall=' + checked;
+		$.ajax({
+			async:true,
+			timeout: 6000,
+			dataType: 'json', 
+			type:'get',
+			data: $data,
+			url:selectAllProductUrl,
+			success:function(data, textStatus){ 
+				if(data.status == 'success'){
+					window.location.href = selectCurrentUrl;
+				}
+			},
+			error:function (XMLHttpRequest, textStatus, errorThrown){}
+		});
+	});
+    
 	$(".add_coupon_submit").click(function(){
 		coupon_code = $("#coupon_code").val();
 		coupon_type = $(".couponType").val();

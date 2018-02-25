@@ -362,4 +362,54 @@ class CartController extends AppserverController
         
         return $reponseData;
     }
+    
+    public function actionSelectone()
+    {
+        $item_id = Yii::$app->request->get('item_id');
+        $checked = Yii::$app->request->get('checked');
+        $checked = $checked == 1 ? true : false; 
+        $innerTransaction = Yii::$app->db->beginTransaction();
+        try {
+            $status = Yii::$service->cart->selectOneItem($item_id, $checked);
+            if ($status) {
+                echo json_encode([
+                    'status' => 'success',
+                ]);
+                $innerTransaction->commit();
+            } else {
+                echo json_encode([
+                    'status' => 'fail',
+                    'content' => Yii::$service->helper->errors->get(',')
+                ]);
+                $innerTransaction->rollBack();
+            }
+        } catch (Exception $e) {
+            $innerTransaction->rollBack();
+        }
+    }
+    
+    public function actionSelectall()
+    {
+        $checked = Yii::$app->request->get('checked');
+        $checked = $checked == 1 ? true : false; 
+        $innerTransaction = Yii::$app->db->beginTransaction();
+        try {
+            $status = Yii::$service->cart->selectAllItem($checked);
+            if ($status) {
+                echo json_encode([
+                    'status' => 'success',
+                ]);
+                $innerTransaction->commit();
+            } else {
+                echo json_encode([
+                    'status' => 'fail',
+                    'content' => Yii::$service->helper->errors->get(',')
+                ]);
+                $innerTransaction->rollBack();
+            }
+        } catch (Exception $e) {
+            $innerTransaction->rollBack();
+        }
+    }
+    
 }

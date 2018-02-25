@@ -303,9 +303,6 @@ $(document).ready(function(){
         }
     }
     $(".cart_select_all").attr("checked",selectAllChecked);
-    
-    
-    
 	currentUrl = "<?= Yii::$service->url->getUrl('checkout/cart') ?>";
 	updateCartInfoUrl = "<?= Yii::$service->url->getUrl('checkout/cart/updateinfo') ?>";
     selectOneProductUrl = "<?= Yii::$service->url->getUrl('checkout/cart/selectone') ?>";
@@ -341,7 +338,7 @@ $(document).ready(function(){
 			item_id:$item_id,
 			up_type:"add_one"
 		};
-		jQuery.ajax({
+		$.ajax({
 			async:true,
 			timeout: 6000,
 			dataType: 'json', 
@@ -365,7 +362,7 @@ $(document).ready(function(){
 			item_id:$item_id,
 			up_type:"remove"
 		};
-		jQuery.ajax({
+		$.ajax({
 			async:true,
 			timeout: 6000,
 			dataType: 'json', 
@@ -390,7 +387,7 @@ $(document).ready(function(){
 			item_id:$item_id,
 			checked:checked
 		};
-		jQuery.ajax({
+		$.ajax({
 			async:true,
 			timeout: 6000,
 			dataType: 'json', 
@@ -414,7 +411,7 @@ $(document).ready(function(){
 			checked:checked
 		};
         selectCurrentUrl = currentUrl + '?selectall=' + checked;
-		jQuery.ajax({
+		$.ajax({
 			async:true,
 			timeout: 6000,
 			dataType: 'json', 
@@ -443,7 +440,7 @@ $(document).ready(function(){
 			alert("coupon can not empty!");
 		}
 		//coupon_url = $("#discount-coupon-form").attr("action");
-		jQuery.ajax({
+		$.ajax({
 			async:true,
 			timeout: 6000,
 			dataType: 'json', 
