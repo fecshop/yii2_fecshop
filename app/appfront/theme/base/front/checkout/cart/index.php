@@ -46,7 +46,7 @@ use fecshop\app\appfront\helper\Format;
 							</colgroup>
 							<thead>
 								<tr class="first last">
-                                    <th rowspan="1"><input type="checkbox" name="cart_select_all" class="cart_select cart_select_all">&nbsp;All</th>
+                                    <th rowspan="1"><input type="checkbox" name="cart_select_all" class="cart_select cart_select_all" id="cart_select_all">&nbsp;<label for="cart_select_all">All</label></th>
 									<th rowspan="1">&nbsp;</th>
 									<th rowspan="5"><span class="nobr"><?= Yii::$service->page->translate->__('Product Name');?></span></th>
 									<th class="a-center" colspan="1"><span class="nobr"><?= Yii::$service->page->translate->__('Unit Price');?></span></th>
