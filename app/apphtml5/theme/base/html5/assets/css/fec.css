@@ -519,7 +519,7 @@ a.btn-remove {
 #discount-coupon-form h2{font-size:0.6rem;}
 .cart-collaterals{padding:0.2rem 0.4rem;min-height:17.5rem;}
 .cart_cost{margin-top:1rem;}
-.cart_cost .row.no-gutter .col-80{text-align:right;padding-right:1rem;}
+.cart_cost .row.no-gutter .col-66{text-align:right;padding-right:1rem;}
 .cart_cost .row.no-gutter{
 padding-top: 0.2rem;
 }
@@ -1130,7 +1130,15 @@ width: 80%;}
 .shopping-cart-img{border:none;margin-bottom:0}
 
 
+.cart_select_item{
+    float:left;
+}
 
+.cart_info .product-image{
+    margin-top:0;
+    float:left;
+    max-width: 85%;
+}
 
 
 

@@ -32,13 +32,13 @@ use fecshop\app\apphtml5\helper\Format;
 					<?php if(is_array($cart_info['products']) && (!empty($cart_info['products']))): ?>
 						<?php foreach($cart_info['products'] as $product_one): ?>
 							<div class="row">
-								<div class="col-20">
+								<div class="col-33">
                                     <input rel="<?= $product_one['item_id']; ?>" <?=  ($product_one['active'] == Yii::$service->cart->quoteItem->activeStatus ) ?  'checked="checked"' : '' ?> type="checkbox" name="cart_select_item" class="cart_select cart_select_item">
 									<a external href="<?= $product_one['url'] ?>" title="<?= $product_one['name'] ?>" class="product-image">
 										<img src="<?= Yii::$service->product->image->getResize($product_one['image'],[150,150],false) ?>" alt="<?= $product_one['name'] ?>" width="75" height="75">
 									</a>
 								</div>
-								<div class="col-80">
+								<div class="col-66">
 									<h2 class="product-name">
 										<a external href="<?= $product_one['url'] ?>"><?= $product_one['name'] ?></a>
 									</h2>
@@ -101,35 +101,35 @@ use fecshop\app\apphtml5\helper\Format;
 					</div>
 					<div class="cart_cost">
 						<div class="row no-gutter">
-							<div class="col-80"><?= Yii::$service->page->translate->__('Sub Total');?> :  </div>
-							<div class="col-20"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['product_total']); ?></div>
+							<div class="col-66"><?= Yii::$service->page->translate->__('Sub Total');?> :  </div>
+							<div class="col-33"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['product_total']); ?></div>
 						</div>
                         
                         <div class="row no-gutter">
-							<div class="col-80"><?= Yii::$service->page->translate->__('Sub Weight');?> :  </div>
-							<div class="col-20"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['product_weight']); ?> Kg</div>
+							<div class="col-66"><?= Yii::$service->page->translate->__('Sub Weight');?> :  </div>
+							<div class="col-33"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['product_weight']); ?> Kg</div>
 						</div>
                         
                         <div class="row no-gutter">
-							<div class="col-80"><?= Yii::$service->page->translate->__('Sub Volume');?> :  </div>
-							<div class="col-20"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['product_volume']); ?> c㎡</div>
+							<div class="col-66"><?= Yii::$service->page->translate->__('Sub Volume');?> :  </div>
+							<div class="col-33"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['product_volume']); ?> c㎡</div>
 						</div>
                         
 						
 						<div class="row no-gutter">
-							<div class="col-80"><?= Yii::$service->page->translate->__('Shipping Cost');?>  : </div>
-							<div class="col-20"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['shipping_cost']); ?></div>
+							<div class="col-66"><?= Yii::$service->page->translate->__('Shipping Cost');?>  : </div>
+							<div class="col-33"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['shipping_cost']); ?></div>
 						</div>
 						
 						
 						<div class="row no-gutter">
-							<div class="col-80"><?= Yii::$service->page->translate->__('Discount');?>  :</div>
-							<div class="col-20">-<?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['coupon_cost']); ?>%</div>
+							<div class="col-66"><?= Yii::$service->page->translate->__('Discount');?>  :</div>
+							<div class="col-33">-<?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['coupon_cost']); ?>%</div>
 						</div>
 						
 						<div class="row no-gutter">
-							<div class="col-80"><?= Yii::$service->page->translate->__('Grand Total');?>  :</div>
-							<div class="col-20"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['grand_total']) ?></div>
+							<div class="col-66"><?= Yii::$service->page->translate->__('Grand Total');?>  :</div>
+							<div class="col-33"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['grand_total']) ?></div>
 						</div>
 					</div>
 					<div class="totals cart-totals">
