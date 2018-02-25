@@ -372,20 +372,21 @@ class CartController extends AppserverController
         try {
             $status = Yii::$service->cart->selectOneItem($item_id, $checked);
             if ($status) {
-                echo json_encode([
-                    'status' => 'success',
-                ]);
                 $innerTransaction->commit();
+                $code = Yii::$service->helper->appserver->status_success;
+                $data = [];
+                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
             } else {
-                echo json_encode([
-                    'status' => 'fail',
-                    'content' => Yii::$service->helper->errors->get(',')
-                ]);
                 $innerTransaction->rollBack();
+                $code = Yii::$service->helper->appserver->cart_product_select_fail;
+                $data = [];
+                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
             }
         } catch (Exception $e) {
             $innerTransaction->rollBack();
         }
+        
+        return $reponseData;
     }
     
     public function actionSelectall()
@@ -396,20 +397,21 @@ class CartController extends AppserverController
         try {
             $status = Yii::$service->cart->selectAllItem($checked);
             if ($status) {
-                echo json_encode([
-                    'status' => 'success',
-                ]);
                 $innerTransaction->commit();
+                $code = Yii::$service->helper->appserver->status_success;
+                $data = [];
+                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
             } else {
-                echo json_encode([
-                    'status' => 'fail',
-                    'content' => Yii::$service->helper->errors->get(',')
-                ]);
                 $innerTransaction->rollBack();
+                $code = Yii::$service->helper->appserver->cart_product_select_fail;
+                $data = [];
+                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
             }
         } catch (Exception $e) {
             $innerTransaction->rollBack();
         }
+        
+        return $reponseData;
     }
     
 }

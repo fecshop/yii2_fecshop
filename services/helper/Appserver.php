@@ -82,6 +82,7 @@ class Appserver extends Service
     public $cart_product_add_param_invaild                 = 1400002; // Cart：产品加入购物车传递参数无效
     public $cart_product_update_qty_fail                   = 1400003; // Cart：更改cart中product的个数失败
     public $cart_coupon_invalid                            = 1400004; // Cart：coupon不可用
+    public $cart_product_select_fail                       = 1400005; // Cart：product 勾选出错
     
     
     /**
@@ -314,6 +315,10 @@ class Appserver extends Service
             $this->cart_coupon_invalid => [
                 'message' => 'coupon code is invalid',
             ],
+            $this->cart_product_select_fail => [
+                'message' => 'cart product select fail',
+            ],
+            
             
             
             /**

@@ -373,6 +373,7 @@ class Quote extends Service
                     $base_grand_total = $base_product_total + $baseShippingCost - $baseDiscountCost;
 
                     $this->cartInfo[$cartInfoKey] = [
+                        'cart_id'           => $cart_id,
                         'store'             => $cart['store'],          // store nme
                         'items_count'       => $cart['items_count'],    // 购物车中的产品总数
                         'coupon_code'       => $coupon_code,            // coupon卷码
