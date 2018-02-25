@@ -141,6 +141,34 @@ class Cart extends Service
         return true;
         
     }
+    
+    /**
+     * @property $item_id | Int 购物车产品表的id字段
+     * 通过item id 将购物车中的某个产品的个数加一
+     */
+    protected function actionSelectOneItem($item_id, $checked)
+    {
+        $status = Yii::$service->cart->quoteItem->selectOneItem($item_id, $checked);
+        if (!$status) {
+            return false;
+        }
+        Yii::$service->cart->quote->computeCartInfo();
+        return true;
+    }
+    
+    /**
+     * @property $item_id | Int 购物车产品表的id字段
+     * 通过item id 将购物车中的某个产品的个数加一
+     */
+    protected function actionSelectAllItem($checked)
+    {
+        $status = Yii::$service->cart->quoteItem->selectAllItem($checked);
+        if (!$status) {
+            return false;
+        }
+        Yii::$service->cart->quote->computeCartInfo();
+        return true;
+    }
 
     /**
      * 购物车合并：对应的是用户登录前后购物车的合并

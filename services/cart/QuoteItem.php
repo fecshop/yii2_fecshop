@@ -369,6 +369,70 @@ class QuoteItem extends Service
 
         return false;
     }
+    
+    /**
+     * @property $item_id | Int ， quoteItem表的id
+     * @return bool
+     *              将这个item_id对应的产品个数+1.
+     */
+    public function selectOneItem($item_id, $checked)
+    {
+        $cart_id = Yii::$service->cart->quote->getCartId();
+        if ($cart_id) {
+            $one = $this->_itemModel->find()->where([
+                'cart_id' => $cart_id,
+                'item_id' => $item_id,
+            ])->one();
+            $product_id = $one['product_id'];
+            if ($one['item_id'] && $product_id) {
+                //$product = Yii::$service->product->getByPrimaryKey($product_id);
+                //$changeQty = Yii::$service->cart->getCartQty($product['package_number'], 1);
+                //$one['qty'] = $one['qty'] + $changeQty;
+                if ($checked == true) {
+                    $one->active = $this->activeStatus;
+                } else {
+                    $one->active = $this->noActiveStatus;
+                }
+                $one->save();
+                // 重新计算购物车的数量
+                Yii::$service->cart->quote->computeCartInfo();
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
+    /**
+     * @property $item_id | Int ， quoteItem表的id
+     * @return bool
+     *              将这个item_id对应的产品个数+1.
+     */
+    public function selectAllItem($checked)
+    {
+        $cart_id = Yii::$service->cart->quote->getCartId();
+        if ($cart_id) {
+            $active = $this->noActiveStatus;
+            if ($checked == true) {
+                $active = $this->activeStatus;
+            }
+            $updateCount = $this->_itemModel->updateAll(
+                
+                ['active'  => $active],
+                ['cart_id' => $cart_id]
+            ); 
+            if ($updateCount > 0) {
+                Yii::$service->cart->quote->computeCartInfo();
+            }
+            
+            return true;
+        }
+
+        return false;
+    }
+    
+    
     /** 
      * @property $cart_id | int 购物车id
      * 删除购物车中的所有的active产品。对于noActive产品保留
