@@ -42,6 +42,9 @@
 						<ul>
 						<?php  endif; ?>
 							<li>
+                                <div style="display:none">
+                                    <?= $currentOff = Yii::$service->product->price->currentOff; // 通过这个函数也可以得到特价折扣值  OFF ?>
+                                </div>
 								<div class="c_img">
 									<a href="<?= $product['url'] ?>">
 										<img class="js_lazy" src="<?= Yii::$service->image->getImgUrl('images/lazyload.gif');   ?>" data-original="<?= Yii::$service->product->image->getResize($product['image'],[230,230],false) ?>"  />

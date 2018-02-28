@@ -39,7 +39,7 @@ $(document).ready(function(){
 			logoutStr = $('.logoutStr').val();
 			if(data.loginStatus){
 				customer_name = data.customer_name;
-				str = '<span id="welcome">'+welcome+' '+customer_name+',</span>';
+				str = '<span id="welcome">'+welcome+' '+customer_name+'</span>';
 				str += '<span id="js_isNotLogin">';
 				str += '<a href="'+logoutUrl+'" rel="nofollow">'+logoutStr+'</a>';
 				str += '</span>';

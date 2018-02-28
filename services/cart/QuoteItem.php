@@ -418,7 +418,6 @@ class QuoteItem extends Service
                 $active = $this->activeStatus;
             }
             $updateCount = $this->_itemModel->updateAll(
-                
                 ['active'  => $active],
                 ['cart_id' => $cart_id]
             ); 
@@ -444,8 +443,6 @@ class QuoteItem extends Service
         if (!$cart_id) {
             $cart_id = Yii::$service->cart->quote->getCartId();
         }
-        echo 2;
-        echo $cart_id;
         if ($cart_id) {
             $columns = $this->_itemModel->deleteAll([
                 'cart_id' => $cart_id,

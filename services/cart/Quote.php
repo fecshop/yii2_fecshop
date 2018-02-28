@@ -217,7 +217,7 @@ class Quote extends Service
     protected function actionClearCart()
     {
         //Yii::$service->session->remove(self::SESSION_CART_ID);
-        Yii::$service->cart->quoteItem->removeNoActiveItems();
+        Yii::$service->cart->quoteItem->removeNoActiveItemsByCartId();
     }
 
     /**

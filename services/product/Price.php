@@ -27,7 +27,11 @@ class Price extends Service
     public $ifSpecialPriceGtPriceFinalPriceEqPrice;
 
     protected $_currencyInfo;
-
+    
+    // 执行函数 getCurrentCurrencyProductPriceInfo，会将折扣数保存到 currentOff 中，
+    // 您可以通过 Yii::$service->product->price->currentOff 直接获取。
+    public $currentOff = 0;
+    
     /**
      * @property  $price 		 | Float  产品的价格
      * 得到当前货币状态下的产品的价格信息。
@@ -268,6 +272,7 @@ class Price extends Service
      */
     protected function actionGetCurrentCurrencyProductPriceInfo($price, $special_price, $special_from, $special_to)
     {
+        $this->currentOff = 0;
         $price_info = $this->formatPrice($price);
         $return['price'] = [
             'symbol'    => $price_info['symbol'],
@@ -278,12 +283,16 @@ class Price extends Service
         if ($specialIsActive) {
             $special_price_info = Yii::$service->product->price->formatPrice($special_price);
             $return['special_price'] = [
-                'symbol'    => $special_price_info['symbol'],
-                'value'    => $special_price_info['value'],
-                'code'        => $special_price_info['code'],
+                'symbol'        => $special_price_info['symbol'],
+                'value'         => $special_price_info['value'],
+                'code'          => $special_price_info['code'],
             ];
+            $off = ($price_info['value'] - $special_price_info['value'] ) / $price_info['value'];
+            $this->currentOff = round($off * 100);
         }
 
         return $return;
     }
+    
+    
 }
