@@ -40,7 +40,7 @@ class OrderinfoController extends SalesController
             'status' => 'success',
             'content'=> $stateOption,
         ]);
-        return;
+        exit;
     }
 
     

@@ -220,6 +220,7 @@ class CartController extends AppfrontController
         } catch (Exception $e) {
             $innerTransaction->rollBack();
         }
+        exit;
     }
     
     public function actionSelectone()
@@ -245,6 +246,7 @@ class CartController extends AppfrontController
         } catch (Exception $e) {
             $innerTransaction->rollBack();
         }
+        exit;
     }
     
     public function actionSelectall()
@@ -269,6 +271,7 @@ class CartController extends AppfrontController
         } catch (Exception $e) {
             $innerTransaction->rollBack();
         }
+        exit;
     }
     
 }

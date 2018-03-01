@@ -210,12 +210,12 @@ class Index extends FecadminbaseBlock{
         }
 		# 刷新 配置 缓存
 		// \fecadmin\helpers\CConfig::flushCacheConfig();
-		echo  json_encode([
+        echo  json_encode([
             "statusCode"=>"200",
             "message"=>"reflush cache success, appName:".implode(',',$successReflushAppNameArr),
         ]);
         exit;
-	}
+    }
 }
 
 

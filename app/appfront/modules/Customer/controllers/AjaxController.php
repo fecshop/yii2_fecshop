@@ -68,5 +68,6 @@ class AjaxController extends AppfrontController
                 'registered' => 2,
             ]);
         }
+	exit;
     }
 }

@@ -767,7 +767,7 @@ class ProductController extends AppserverController
             'price_info' => $price_info,
         ];
 
-        echo  json_encode([
+        echo json_encode([
             'price' =>Yii::$service->page->widget->render($priceView, $priceParam),
         ]);
         exit;

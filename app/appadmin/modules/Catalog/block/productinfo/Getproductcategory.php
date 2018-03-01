@@ -28,6 +28,7 @@ class Getproductcategory
             'menu'=>$menuStr,
             'return_status'=>'success',
         ]);
+        exit;
     }
 
     public function getMenuStrChild($categorys, $category_ids)

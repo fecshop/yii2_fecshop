@@ -63,10 +63,12 @@ class AjaxController extends AppfrontController
             echo json_encode([
                 'registered' => 1,
             ]);
+            exit;
         } else {
             echo json_encode([
                 'registered' => 2,
             ]);
+            exit;
         }
     }
 }

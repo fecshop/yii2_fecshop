@@ -63,5 +63,6 @@ class Imageupload
             'return_status' => 'success',
             'img_str'=>$img_str,
         ]);
+        exit;
     }
 }
