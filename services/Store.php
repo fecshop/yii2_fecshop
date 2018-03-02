@@ -226,6 +226,7 @@ class Store extends Service
             }
         }
         header('Location:'.$redirectUrl);
+        exit;
     }
 
     /**
