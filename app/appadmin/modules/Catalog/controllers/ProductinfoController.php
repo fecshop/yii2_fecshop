@@ -33,6 +33,19 @@ class ProductinfoController extends CatalogController
         return $this->render($this->action->id, $data);
     }
 
+    public function actionManagerbatch()
+    {
+        $data = $this->getBlock()->getLastData();
+
+        return $this->render($this->action->id, $data);
+    }
+
+    public function actionManagerbatchimport()
+    {
+        return $this->getBlock()->import();
+
+    }
+
     // catalog
     public function actionImageupload()
     {
