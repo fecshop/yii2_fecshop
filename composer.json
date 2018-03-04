@@ -31,7 +31,8 @@
     "yiisoft/yii2-mongodb": "~2.1.0",
     "ramsey/uuid": "*",
     "facebook/graph-sdk": "*",
-    "hightman/xunsearch": "*@beta"
+    "hightman/xunsearch": "*@beta",
+    "phpoffice/phpexcel": "^1.8"
   }, 
   "autoload": {  
     "psr-4": {

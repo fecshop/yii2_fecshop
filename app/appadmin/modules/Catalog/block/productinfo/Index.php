@@ -44,6 +44,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
          * edit data url
          */
         $this->_editUrl = CUrl::getUrl('catalog/productinfo/manageredit');
+        $this->_batchUrl = CUrl::getUrl('catalog/productinfo/managerbatch');
         /*
          * delete data url
          */

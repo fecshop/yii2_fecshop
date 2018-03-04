@@ -63,6 +63,7 @@ class AppadminbaseBlock extends BaseObject
      * data edit url, if you not set value ,it will be equal to current url.
      */
     public $_editUrl;
+    public $_batchUrl;
     /**
      * data delete url, if you not set value ,it will be equal to current url.
      */
@@ -409,9 +410,11 @@ class AppadminbaseBlock extends BaseObject
         */
         return '<ul class="toolBar">
 					<li><a class="add"   href="'.$this->_editUrl.'"  target="dialog" height="580" width="1000" drawable="true" mask="true"><span>添加</span></a></li>
-
+					
 					<li><a target="dialog" height="580" width="1000" drawable="true" mask="true" class="edit" href="'.$this->_editUrl.'?'.$this->_primaryKey.'={sid_user}" ><span>修改</span></a></li>
 					<li><a title="确实要删除这些记录吗?" target="selectedTodo" rel="'.$this->_primaryKey.'s" postType="string" href="'.$this->_deleteUrl.'" class="delete"><span>批量删除</span></a></li>
+				    <li><a class="add"   href="'.$this->_batchUrl.'"  target="dialog" height="580" width="1000" drawable="true" mask="true"><span>批量导入</span></a></li>
+
 				</ul>';
     }
 
