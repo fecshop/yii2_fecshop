@@ -51,13 +51,20 @@ $(document).ready(function(){
 	$(".product_custom_options ul li a").click(function(){
 		if(!$(this).hasClass('no_active')){
 			$chosen_custom_option_arr = [];
-			$(this).parent().parent().find("a").removeClass("current");
-			$(this).parent().parent().find("li").removeClass("current");
-			$(this).addClass("current");
-			$(this).parent().addClass("current");
-			$(this).parent().parent().removeClass("no_chosen_ul");
-			$(this).parent().parent().addClass("chosen_ul");
-			$chosen_attr = [];
+            $chosen_attr = [];
+            if ($(this).hasClass("current")) {
+                $(this).removeClass("current");
+                $(this).parent().removeClass("current");
+                $(this).parent().parent().removeClass("chosen_ul");
+                $(this).parent().parent().addClass("no_chosen_ul");
+            } else {
+                $(this).parent().parent().find("a").removeClass("current");
+                $(this).parent().parent().find("li").removeClass("current");
+                $(this).addClass("current");
+                $(this).parent().addClass("current");
+                $(this).parent().parent().removeClass("no_chosen_ul");
+                $(this).parent().parent().addClass("chosen_ul");
+            }   
 			// custom option 被选择的部分的处理 - 开始
 			$c_arr = [];
 			$c_chosen_custom_option_arr = new Object();;
