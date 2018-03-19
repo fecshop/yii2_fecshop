@@ -32,6 +32,9 @@ class Coupon extends Service
     protected $_couponUsageModelName = '\fecshop\models\mysqldb\cart\CouponUsage';
     protected $_couponUsageModel;
     
+    public $coupon_type_percent = 1;
+    public $coupon_type_direct  = 2;
+    
     public function init(){
         parent::init();
         list($this->_couponModelName,$this->_couponModel) = Yii::mapGet($this->_couponModelName);  
@@ -307,9 +310,9 @@ class Coupon extends Service
             $discount = $couponModel['discount'];
             //echo $conditions.'##'.$dc_price;;exit;
             if ($conditions <= $dc_price) {
-                if ($type == 1) { // 百分比
+                if ($type == $this->coupon_type_percent) { // 百分比
                     $base_discount_cost = $discount / 100 * $dc_price;
-                } elseif ($type == 2) { // 直接折扣
+                } elseif ($type == $this->coupon_type_direct) { // 直接折扣
                     $base_discount_cost = $dc_price - $discount;
                 }
                 $curr_discount_cost = Yii::$service->page->currency->getCurrentCurrencyPrice($base_discount_cost);
