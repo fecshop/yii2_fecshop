@@ -63,9 +63,9 @@ class Image extends Service
     }
 
     /**
-     * 通过产品图片的相对路径得到产品图片的绝对路径.
+     * 通过分类图片的相对路径得到分类图片的绝对路径.
      */
-    protected function actionGetDir()
+    protected function actionGetDir($str)
     {
         return Yii::$service->image->GetImgDir($this->imageFloder.$str, 'common');
     }
