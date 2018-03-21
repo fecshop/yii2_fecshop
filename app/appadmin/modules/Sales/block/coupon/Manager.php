@@ -21,6 +21,8 @@ use Yii;
  */
 class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
 {
+    protected $_type_percent;
+    protected $_type_direct;
     /**
      * init param function ,execute in construct.
      */
@@ -38,6 +40,8 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
          * service component, data provider
          */
         $this->_service = Yii::$service->cart->coupon;
+        $this->_type_percent = Yii::$service->cart->coupon->coupon_type_percent;
+        $this->_type_direct = Yii::$service->cart->coupon->coupon_type_direct;
         parent::init();
     }
 
@@ -136,6 +140,10 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
                 'label'            => '类型',
                 'width'            => '50',
                 'align'        => 'left',
+                'display'    => [
+                    $this->_type_percent => '百分比',
+                    $this->_type_direct  => '直接减',
+                ]
                 //'lang'			=> true,
             ],
 

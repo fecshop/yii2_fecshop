@@ -23,10 +23,14 @@ use Yii;
 class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInterface
 {
     public $_saveUrl;
-
+    protected $_type_percent;
+    protected $_type_direct;
+    
     public function init()
     {
         $this->_saveUrl = CUrl::getUrl('sales/coupon/managereditsave');
+        $this->_type_percent = Yii::$service->cart->coupon->coupon_type_percent;
+        $this->_type_direct = Yii::$service->cart->coupon->coupon_type_direct;
         parent::init();
     }
 
@@ -74,8 +78,8 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
                 'display'=>[
                     'type' => 'select',
                     'data' => [
-                        1    => '百分比优惠',
-                        2    => '金额优惠',
+                        $this->_type_percent => '百分比',
+                        $this->_type_direct  => '直接减',
                     ],
                 ],
                 'require' => 1,
