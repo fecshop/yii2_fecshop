@@ -18,7 +18,7 @@ use fecshop\app\appadmin\modules\AppadminController;
 class CacheController extends AppadminController
 {
 	public $blockIndexFile = '\fecshop\app\appadmin\modules\Fecadmin\block\cache\Index';
-   
+    public $enableCsrfValidation = false;
 	# 刷新缓存
     public function actionIndex()
     {
