@@ -311,9 +311,11 @@ class Coupon extends Service
             //echo $conditions.'##'.$dc_price;;exit;
             if ($conditions <= $dc_price) {
                 if ($type == $this->coupon_type_percent) { // 百分比
-                    $base_discount_cost = $discount / 100 * $dc_price;
+//                    $base_discount_cost = $discount / 100 * $dc_price;
+                    $base_discount_cost = (1-$discount / 100) * $dc_price;
                 } elseif ($type == $this->coupon_type_direct) { // 直接折扣
-                    $base_discount_cost = $dc_price - $discount;
+//                    $base_discount_cost = $dc_price - $discount;
+                    $base_discount_cost = $discount;
                 }
                 $curr_discount_cost = Yii::$service->page->currency->getCurrentCurrencyPrice($base_discount_cost);
             }
