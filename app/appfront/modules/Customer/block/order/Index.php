@@ -20,7 +20,6 @@ class Index
     protected $numPerPage = 10;
     protected $pageNum;
     protected $orderBy;
-    protected $customer_id;
     protected $_page = 'p';
 
     /**
@@ -28,10 +27,6 @@ class Index
      */
     public function initParam()
     {
-        if (!Yii::$app->user->isGuest) {
-            $identity = Yii::$app->user->identity;
-            $this->customer_id = $identity;
-        }
         $this->pageNum = (int) Yii::$app->request->get('p');
         $this->pageNum = ($this->pageNum >= 1) ? $this->pageNum : 1;
         $this->orderBy = ['created_at' => SORT_DESC];
@@ -41,13 +36,15 @@ class Index
     {
         $this->initParam();
         $return_arr = [];
-        if ($this->customer_id) {
+        if (!Yii::$app->user->isGuest) {
+            $identity = Yii::$app->user->identity;
+            $customer_id = $identity->id;
             $filter = [
                 'numPerPage'    => $this->numPerPage,
                 'pageNum'        => $this->pageNum,
                 'orderBy'        => $this->orderBy,
                 'where'            => [
-                    ['customer_id' => $this->customer_id],
+                    ['customer_id' => $customer_id],
                 ],
                 'asArray' => true,
             ];

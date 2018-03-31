@@ -28,9 +28,8 @@ class StandardController extends AppfrontController
     {
         //$AopSdkFile = Yii::getAlias('@fecshop/lib/alipay/AopSdk.php');
         //require($AopSdkFile);
-        echo '支付宝支付跳转中...';
-        return Yii::$service->payment->alipay->start();
-        
+        // echo '支付宝支付跳转中...';
+        return '支付宝支付跳转中...'.Yii::$service->payment->alipay->start();
     }
     /**
      * 从支付宝支付成功后，跳转返回 fec-shop 的部分
