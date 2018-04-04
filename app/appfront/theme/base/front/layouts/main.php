@@ -76,6 +76,7 @@ $cssOptions = [
 	<div class="footer-container">
 		<?= Yii::$service->page->widget->render('footer',$this); ?>
 	</div>
+    <?= Yii::$service->page->widget->render('trace',$this); ?>
 	<?= Yii::$service->page->widget->render('scroll',$this); ?>
 <?php $this->endBody() ?>
 </body>

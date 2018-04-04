@@ -7,4 +7,4 @@
  * @license http://www.fecshop.com/license/
  */
 ?>
-	
+<?= Yii::$service->page->trace->getTraceCommonJsCode()  ?>

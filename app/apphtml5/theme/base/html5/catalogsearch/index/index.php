@@ -196,3 +196,4 @@ $.init();
 <?php $this->endBlock(); ?>  
 </script>  
 <?php $this->registerJs($this->blocks['category_product_filter'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
+<?= Yii::$service->page->trace->getTraceSearchJsCode($traceSearchData)  ?>

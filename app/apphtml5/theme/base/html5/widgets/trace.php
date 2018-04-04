@@ -1,0 +1,1 @@
+<?= Yii::$service->page->trace->getTraceCommonJsCode()  ?>

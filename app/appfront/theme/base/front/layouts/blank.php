@@ -7,4 +7,5 @@
  * @license http://www.fecshop.com/license/
  */
 ?><?= $content; ?>
+<?= Yii::$service->page->widget->render('trace',$this); ?>
 	

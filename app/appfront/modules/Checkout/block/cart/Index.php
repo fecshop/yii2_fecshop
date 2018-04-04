@@ -36,16 +36,12 @@ class Index
             {
                 "sku":"grxjy56002622",
                 "qty":1,
-                "price":35.52,
-                "currency":"RMB",
-                "currency_rate":6.2
+                "price":35.52
             },
             {
                 "sku":"grxjy5606622",
                 "qty":4,
-                "price":75.11,
-                "currency":"RMB",
-                "currency_rate":6.2
+                "price":75.11
             }
         ]
      * @return string ， json数组字符串
