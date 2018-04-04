@@ -53,17 +53,30 @@ class Index
         //echo $this->_productCount;
         return [
             'searchText'        => $this->_searchText,
-            'title'        => $this->_title,
-            'name'            => Yii::$service->store->getStoreAttrVal($this->_category['name'], 'name'),
-            'image'            => $this->_category['image'] ? Yii::$service->category->image->getUrl($this->_category['image']) : '',
-            'description'    => Yii::$service->store->getStoreAttrVal($this->_category['description'], 'description'),
-            'products'        => $products,
-            'query_item'    => $this->getQueryItem(),
-            'product_page'    => $this->getProductPage(),
-            'refine_by_info'=> $this->getRefineByInfo(),
-            'filter_info'    => $this->getFilterInfo(),
-            'filter_price'    => $this->getFilterPrice(),
+            'title'             => $this->_title,
+            'name'              => Yii::$service->store->getStoreAttrVal($this->_category['name'], 'name'),
+            'image'             => $this->_category['image'] ? Yii::$service->category->image->getUrl($this->_category['image']) : '',
+            'description'       => Yii::$service->store->getStoreAttrVal($this->_category['description'], 'description'),
+            'products'          => $products,
+            'query_item'        => $this->getQueryItem(),
+            'product_page'      => $this->getProductPage(),
+            'refine_by_info'    => $this->getRefineByInfo(),
+            'filter_info'       => $this->getFilterInfo(),
+            'filter_price'      => $this->getFilterPrice(),
+            'traceSearchData'   => $this->getTraceSearchData(),
         ];
+    }
+    
+    protected function getTraceSearchData(){
+        if (Yii::$service->page->trace->traceJsEnable && $this->_searchText && $this->_productCount){
+            $arr = [
+                'text'       => $this->_searchText,
+                'result_qty' => $this->_productCount,
+            ];
+            return json_encode($arr);
+        } else {
+            return '';
+        }
     }
     /**
      * 得到toolbar的分页部分

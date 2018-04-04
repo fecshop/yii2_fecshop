@@ -37,5 +37,6 @@
 	<div class="footer-bottom">
 		<?=  Yii::$service->cms->staticblock->getStoreContentByIdentify('copy_right','appfront') ?>
 	</div>
+    <?= Yii::$service->page->trace->getTraceCommonJsCode()  ?>
 </footer>
 	

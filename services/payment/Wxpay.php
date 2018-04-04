@@ -381,10 +381,11 @@ class Wxpay extends Service
             $order->txn_id = $trade_no; // 微信的交易号
             // 更新订单信息
             $order->save();
+            Yii::$service->order->orderPaymentCompleteEvent($order['increment_id']);
             // 得到当前的订单信息
-            $orderInfo = Yii::$service->order->getOrderInfoByIncrementId($order['increment_id']);
+            // $orderInfo = Yii::$service->order->getOrderInfoByIncrementId($order['increment_id']);
             // 发送新订单邮件
-        	Yii::$service->email->order->sendCreateEmail($orderInfo);
+        	// Yii::$service->email->order->sendCreateEmail($orderInfo);
             return true;
         }
     }

@@ -21,12 +21,55 @@ class Index
     {
         $this->initHead();
         $currency_info = Yii::$service->page->currency->getCurrencyInfo();
-        //var_dump($this->getCartInfo());
+        $cart_info = $this->getCartInfo(false);
+        //var_dump($cart_info );
         return [
-            'cart_info' => $this->getCartInfo(false),
-            'currency_info' => $currency_info,
+            'cart_info'         => $cart_info,
+            'currency_info'     => $currency_info,
+            'trace_cart_info'   => $this->getTraceCartInfo($cart_info),
         ];
     }
+    
+    /**
+     * @property $cart_info | Array, example data:
+        [
+            {
+                "sku":"grxjy56002622",
+                "qty":1,
+                "price":35.52,
+                "currency":"RMB",
+                "currency_rate":6.2
+            },
+            {
+                "sku":"grxjy5606622",
+                "qty":4,
+                "price":75.11,
+                "currency":"RMB",
+                "currency_rate":6.2
+            }
+        ]
+     * @return string ， json数组字符串
+     * 通过$cart_info，得到用于追踪的字符串。
+     */
+    public function getTraceCartInfo($cart_info){
+        if (Yii::$service->page->trace->traceJsEnable) {
+            if (is_array($cart_info['products']) && !empty($cart_info['products'])) {
+                $arr = [];
+                foreach ($cart_info['products'] as $product) {
+                    $arr[] = [
+                        'sku'   => $product['sku'],
+                        'qty'   => (int)$product['qty'],
+                        'price' => $product['base_product_price'],
+                    ];
+                }
+                if (!empty($arr)) {
+                    return json_encode($arr);
+                }
+            }
+        }
+        return '';
+    }
+
 
     /** @return data example
      *	[

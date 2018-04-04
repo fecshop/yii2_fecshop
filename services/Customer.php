@@ -93,6 +93,8 @@ class Customer extends Service
         if (empty($errors)) {
             // 合并购物车数据
             Yii::$service->cart->mergeCartAfterUserLogin();
+            // 发送登录信息到trace系统
+            Yii::$service->page->trace->sendTraceLoginInfoByApi($data['email']);
         } else {
             Yii::$service->helper->errors->addByModelErrors($errors);
         }
@@ -119,6 +121,8 @@ class Customer extends Service
             $model->updated_at = time();
 
             $model->save();
+            // 发送注册信息到trace系统
+            Yii::$service->page->trace->sendTraceRegisterInfoByApi($model->email);
             return true;
         } else {
             $errors = $model->errors;
@@ -602,6 +606,7 @@ class Customer extends Service
                         $identity->access_token_created_at = time();
                         $identity->save();
                     }
+                    
                     return $identity;
                 }else{
                     $this->logoutByAccessToken();

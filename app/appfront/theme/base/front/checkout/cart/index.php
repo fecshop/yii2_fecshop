@@ -469,3 +469,5 @@ $(document).ready(function(){
 <?php $this->endBlock(); ?> 
 <?php $this->registerJs($this->blocks['changeCartInfo'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
 </script>
+<?= Yii::$service->page->trace->getTraceCartJsCode($trace_cart_info)  ?>
+

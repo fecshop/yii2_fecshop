@@ -341,9 +341,11 @@ class Paypal extends Service
                     // 因为IPN消息可能不止发送一次，但是这里只允许一次，
                     // 如果重复发送，$updateColumn 的更新返回值将为0
                     if (!empty($updateColumn)) {
-                        $orderInfo = Yii::$service->order->getOrderInfoByIncrementId($this->_order['increment_id']);
+                        Yii::$service->order->orderPaymentCompleteEvent($this->_order['increment_id']);
+                        // 上面的函数已经执行下面的代码，因此注释掉。
+                        // $orderInfo = Yii::$service->order->getOrderInfoByIncrementId($this->_order['increment_id']);
                         // 发送新订单邮件
-                        Yii::$service->email->order->sendCreateEmail($orderInfo);
+                        // Yii::$service->email->order->sendCreateEmail($orderInfo);
                     }
                 } elseif ($payment_status == $this->payment_status_pending) {    
                     // pending 代表信用卡预付方式，需要等待paypal从信用卡中把钱扣除，因此订单状态是processing
@@ -791,9 +793,11 @@ class Paypal extends Service
                         // 因为IPN消息可能不止发送一次，但是这里只允许一次，
                         // 如果重复发送，$updateColumn 的更新返回值将为0
                         if (!empty($updateColumn)) {
-                            $orderInfo = Yii::$service->order->getOrderInfoByIncrementId($order['increment_id']);
-                            // 发送新订单邮件
-                            Yii::$service->email->order->sendCreateEmail($orderInfo);
+                            // 执行订单支付成功后的事情。
+                            Yii::$service->order->orderPaymentCompleteEvent($order['increment_id']);
+                            // 上面的函数已经执行下面的代码，因此注释掉。
+                            // $orderInfo = Yii::$service->order->getOrderInfoByIncrementId($order['increment_id']);
+                            // Yii::$service->email->order->sendCreateEmail($orderInfo);
                         }
                         return true;
                     } else {
@@ -824,7 +828,8 @@ class Paypal extends Service
                                 ['order_status' => Yii::$service->order->payment_status_pending]
                             ]
                         );
-                        // 这种情况不发送订单。
+                        // 这种情况并没有接收到paypal的钱，只是一种支付等待状态，
+                        // 因此，对于这种支付状态，视为正常订单，但是没有支付成功，需要延迟等待，如果支付成功，paypal会继续发送IPN消息。
                         return true;
                     } else {
                         // 金额不一致，判定为欺诈

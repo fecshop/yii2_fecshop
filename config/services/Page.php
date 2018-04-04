@@ -202,6 +202,10 @@ return [
                 'class' => 'fecshop\services\page\Message',
 
             ],
+            'trace' => [
+                'class' => 'fecshop\services\page\Trace',
+
+            ],
 
         ],
     ],
