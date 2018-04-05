@@ -576,7 +576,8 @@ class Order extends Service
         Yii::$service->event->trigger($afterEventName, $myOrder);
         if ($myOrder[$this->getPrimaryKey()]) {
             Yii::$service->order->item->saveOrderItems($cartInfo['products'], $order_id, $cartInfo['store']);
-            
+            // 订单生成成功，通过api传递数据给trace系统
+            $this->sendTracePaymentPendingOrder($myOrder, $cartInfo['products']);
             // 有token的，代表是更新类型，譬如购物车点击paypal express支付的方式
             // 这种类型要进行检查，不能多次执行。该函数必须在订单操作完成的情况下执行。
             /*
@@ -604,6 +605,126 @@ class Order extends Service
             return false;
         }
     }
+    /**
+     * @property $order_increment_id | string，订单编号 increment_id
+     * 订单支付成功后，执行的代码，该代码只会在接收到支付成功信息后，才会执行。
+     * 在调用该函数前，会对IPN支付成功消息做验证，一次，无论发送多少次ipn消息，该函数只会执行一次。
+     * 您可以把订单支付成功需要做的事情都在这个函数里面完成。
+     **/
+    public function orderPaymentCompleteEvent($order_increment_id){
+        if (!$order_increment_id) {
+            Yii::$service->helper->errors->add('order increment id is empty');
+            return false;
+        }
+        $orderInfo = Yii::$service->order->getOrderInfoByIncrementId($order_increment_id);
+        if ($orderInfo['increment_id']) {
+            Yii::$service->helper->errors->add('get order by increment_id:'.$order_increment_id.' fail, order is not exist ');
+            return false;
+        }
+        // 发送订单支付成功邮件
+        Yii::$service->email->order->sendCreateEmail($orderInfo);
+        Yii::$service->order->sendTracePaymentSuccessOrder($orderInfo);
+    }
+    
+    /**
+     * @property $orderInfo | Object, 订单对象
+     * @property $cartInfo | Object，购物车对象
+     * 根据传递的参数，得出trace系统的要求的order参数格式数组
+     * 执行page trace services，将支付完成订单的数据传递给trace系统
+     */
+    protected function sendTracePaymentSuccessOrder($orderInfo){
+        if (Yii::$service->page->trace->traceJsEnable) {
+            $arr = [];
+            $arr['invoice']             = $orderInfo['increment_id'];
+            $arr['order_type']          = $orderInfo['checkout_method'];
+            $arr['payment_status']      = $orderInfo['order_status'];
+            $arr['payment_type']        = $orderInfo['payment_method'];
+            $arr['amount']              = $orderInfo['base_grand_total'];
+            $arr['shipping']            = $orderInfo['base_shipping_total'];
+            $arr['discount_amount']     = $orderInfo['base_subtotal_with_discount'];
+            $arr['coupon']              = $orderInfo['coupon_code'];
+            $arr['city']                = $orderInfo['customer_address_city'];
+            $arr['email']               = $orderInfo['customer_email'];
+            $arr['first_name']          = $orderInfo['customer_firstname'];
+            $arr['last_name']           = $orderInfo['customer_lastname'];
+            $arr['zip']                 = $orderInfo['customer_address_zip'];
+            $arr['address1']            = $orderInfo['customer_address_street1'];
+            $arr['address2']            = $orderInfo['customer_address_street2'];
+            
+            $arr['country_code']        = $orderInfo['customer_address_country'];
+            $arr['state_code']          = $orderInfo['customer_address_state'];
+            $arr['state_name']   = Yii::$service->helper->country->getStateByContryCode($orderInfo['customer_address_country'], $orderInfo['customer_address_state']);
+            $arr['country_name'] = Yii::$service->helper->country->getCountryNameByKey($orderInfo['customer_address_country']);
+            
+            $product_arr = [];
+            $products = $orderInfo['products'];
+            if (is_array($products)) {
+                foreach ($products as $product) {
+                    $product_arr[] = [
+                        'sku'   => $product['sku'],
+                        'name'  => $product['name'],
+                        'qty'   => $product['qty'],
+                        'price' => $product['base_product_price'],
+                    ];
+                }
+            }   
+            $arr['products'] =  $product_arr;
+            Yii::$service->page->trace->sendTracePaymentSuccessOrderByApi($arr);
+            
+            return true;
+        } 
+        return false;
+    }
+    /**
+     * @property $myOrder | Object, 订单对象
+     * @property $products | Array，购物车产品数组
+     * 根据传递的参数，得出trace系统的要求的order参数格式数组，
+     * 执行page trace services，将等待支付订单（刚刚生成的订单）的数据传递给trace系统
+     */
+    protected function sendTracePaymentPendingOrder($myOrder, $products){
+        if (Yii::$service->page->trace->traceJsEnable) {
+            $arr = [];
+            $arr['invoice']             = $myOrder['increment_id'];
+            $arr['order_type']          = $myOrder['checkout_method'];
+            $arr['payment_status']      = $myOrder['order_status'];
+            $arr['payment_type']        = $myOrder['payment_method'];
+            $arr['amount']              = $myOrder['base_grand_total'];
+            $arr['shipping']            = $myOrder['base_shipping_total'];
+            $arr['discount_amount']     = $myOrder['base_subtotal_with_discount'];
+            $arr['coupon']              = $myOrder['coupon_code'];
+            $arr['city']                = $myOrder['customer_address_city'];
+            $arr['email']               = $myOrder['customer_email'];
+            $arr['first_name']          = $myOrder['customer_firstname'];
+            $arr['last_name']           = $myOrder['customer_lastname'];
+            $arr['zip']                 = $myOrder['customer_address_zip'];
+            
+            $arr['address1']            = $myOrder['customer_address_street1'];
+            $arr['address2']            = $myOrder['customer_address_street2'];
+            
+            $arr['country_code']        = $myOrder['customer_address_country'];
+            $arr['state_code']          = $myOrder['customer_address_state'];
+            $arr['state_name']   = Yii::$service->helper->country->getStateByContryCode($myOrder['customer_address_country'], $myOrder['customer_address_state']);
+            $arr['country_name'] = Yii::$service->helper->country->getCountryNameByKey($myOrder['customer_address_country']);
+            
+            $product_arr = [];
+            // $products = $cartInfo['products'];
+            if (is_array($products)) {
+                foreach ($products as $product) {
+                    $product_arr[] = [
+                        'sku'   => $product['sku'],
+                        'name'  => $product['name'],
+                        'qty'   => $product['qty'],
+                        'price' => $product['base_product_price'],
+                    ];
+                }
+            }   
+            $arr['products'] =  $product_arr;
+            Yii::$service->page->trace->sendTracePaymentPendingOrderByApi($arr);
+            
+            return true;
+        } 
+        return false;
+    }
     
     /**
      * @property $increment_id | String 每执行一次，version都会+1 （version默认为0）
@@ -620,13 +741,13 @@ class Order extends Service
             'increment_id'  => $increment_id,
         ])->one();
         # 如果版本号不等于1，则回滚
-        if($myOrder['version'] > 1){
+        if ($myOrder['version'] > 1) {
             Yii::$service->helper->errors->add('Your order has been paid');
             return false;
-        }else if($myOrder['version'] < 1){
+        } else if($myOrder['version'] < 1) {
             Yii::$service->helper->errors->add('Your order is error');
             return false;
-        }else{
+        } else {
             return true;
         }
     }
@@ -654,7 +775,7 @@ class Order extends Service
      */
     protected function actionUpdateTokenByIncrementId($increment_id,$token){
         $myOrder = Yii::$service->order->getByIncrementId($increment_id);
-        if($myOrder){
+        if ($myOrder) {
             $myOrder->payment_token = $token;
             $myOrder->save();
         }

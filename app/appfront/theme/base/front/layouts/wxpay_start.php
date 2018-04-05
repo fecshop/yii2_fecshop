@@ -43,6 +43,7 @@ $cssOptions = [];
 <body>
 <?php $this->beginBody() ?>
 	<?= $content; ?>
+    <?= Yii::$service->page->widget->render('trace',$this); ?>
 <?php $this->endBody() ?>
 </body>
 </html>

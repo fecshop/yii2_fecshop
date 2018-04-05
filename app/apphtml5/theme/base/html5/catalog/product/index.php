@@ -358,5 +358,6 @@
 	<?php $this->endBlock(); ?> 
 	<?php $this->registerJs($this->blocks['add_to_cart'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
 </script> 
+<?= Yii::$service->page->trace->getTraceProductJsCode($sku)  ?>
   
  

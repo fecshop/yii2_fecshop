@@ -58,6 +58,7 @@ $cssOptions = [
 			</div>
 		</div>
 		<?= Yii::$service->page->widget->render('menu',$this); ?>
+        <?= Yii::$service->page->widget->render('trace',$this); ?>
 	</div>
 <?php $this->endBody() ?>
 </body>

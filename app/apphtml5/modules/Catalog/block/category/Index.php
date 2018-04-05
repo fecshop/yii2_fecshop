@@ -74,6 +74,7 @@ class Index
         return [
             'title'             => $this->_title,
             'name'              => Yii::$service->store->getStoreAttrVal($this->_category['name'], 'name'),
+            'name_default_lang' => Yii::$service->fecshoplang->getDefaultLangAttrVal($this->_category['name'], 'name'),
             'image'             => $this->_category['image'] ? Yii::$service->category->image->getUrl($this->_category['image']) : '',
             'description'       => Yii::$service->store->getStoreAttrVal($this->_category['description'], 'description'),
             'products'          => $products,

@@ -248,10 +248,12 @@ class Alipay extends Service
             $order->txn_id = $trade_no; // 支付宝的交易号
             // 更新订单信息
             $order->save();
+            Yii::$service->order->orderPaymentCompleteEvent($order['increment_id']);
+            // 上面的函数已经执行下面的代码，因此注释掉。
             // 得到当前的订单信息
-            $orderInfo = Yii::$service->order->getOrderInfoByIncrementId($order['increment_id']);
+            //$orderInfo = Yii::$service->order->getOrderInfoByIncrementId($order['increment_id']);
             // 发送新订单邮件
-            Yii::$service->email->order->sendCreateEmail($orderInfo);
+            //Yii::$service->email->order->sendCreateEmail($orderInfo);
         
             return true;
         }
