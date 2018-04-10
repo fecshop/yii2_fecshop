@@ -146,35 +146,41 @@ class Trace extends Service
     }
     
     public function initCookie(){
+        // 判断当前是否是appserver端，如果是，则从 Yii::$app->request->post('cookies') 中获取
+        if (Yii::$service->helper->isApiApp()) {
+            $cookies = Yii::$app->request->post('cookies');
+        } else {
+            $cookies = $_COOKIE;
+        }
         // params.uuid
-        $this->_fta               = $_COOKIE['_fta'];
+        $this->_fta               = $cookies['_fta'];
         // params.cl_activity
-        $this->_ftactivity        = $_COOKIE['_ftactivity'];
+        $this->_ftactivity        = $cookies['_ftactivity'];
         // params.cl_activity_child
-        $this->_ftactivity_child  = $_COOKIE['_ftactivity_child'];
+        $this->_ftactivity_child  = $cookies['_ftactivity_child'];
         // params.first_page  if(_fto){ first_page = 0 } else { first_page = 1 }
-        $this->_fto               = $_COOKIE['_fto'];
+        $this->_fto               = $cookies['_fto'];
         // params.first_referrer_domain
-        $this->_ftreferdomain     = $_COOKIE['_ftreferdomain'];
+        $this->_ftreferdomain     = $cookies['_ftreferdomain'];
         // params.first_referrer_url
-        $this->_ftreferurl        = $_COOKIE['_ftreferurl'];
+        $this->_ftreferurl        = $cookies['_ftreferurl'];
         // params.is_return
-        $this->_ftreturn          = $_COOKIE['_ftreturn'];
+        $this->_ftreturn          = $cookies['_ftreturn'];
         // params.website_id
-        $this->_fta_site_id       = $_COOKIE['_fta_site_id'];
+        $this->_fta_site_id       = $cookies['_fta_site_id'];
         
         // params.fid
-        $this->_fid               = $_COOKIE['fid'];
+        $this->_fid               = $cookies['fid'];
         // params.fec_medium
-        $this->_fec_medium        = $_COOKIE['fec_medium'];
+        $this->_fec_medium        = $cookies['fec_medium'];
         // params.fec_source
-        $this->_fec_source        = $_COOKIE['fec_source'];
+        $this->_fec_source        = $cookies['fec_source'];
         // params.fec_campaign
-        $this->_fec_campaign      = $_COOKIE['fec_campaign'];
+        $this->_fec_campaign      = $cookies['fec_campaign'];
         // params.fec_content
-        $this->_fec_content       = $_COOKIE['fec_content'];
+        $this->_fec_content       = $cookies['fec_content'];
         // params.fec_design
-        $this->_fec_design        = $_COOKIE['fec_design'];
+        $this->_fec_design        = $cookies['fec_design'];
     }
     
     // 登录账户，通过api传递数据给trace系统 【已经部署到customer service login函数里面】

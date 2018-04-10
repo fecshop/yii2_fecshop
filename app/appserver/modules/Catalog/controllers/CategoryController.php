@@ -130,6 +130,7 @@ class CategoryController extends AppserverController
         $code = Yii::$service->helper->appserver->status_success;
         $data = [
             'name'              => $this->category_name ,
+            'name_default_lang' => Yii::$service->fecshoplang->getDefaultLangAttrVal($this->_category['name'], 'name'),
             'title'             => $this->_title,
             'image'             => $this->_category['image'] ? Yii::$service->category->image->getUrl($this->_category['image']) : '',
             'products'          => $products,
