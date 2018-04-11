@@ -57,6 +57,12 @@ class Trace extends Service
             return "<script type=\"text/javascript\">
 	var _maq = _maq || [];
 	_maq.push(['website_id', '" . $this->website_id . "']);
+    _maq.push(['fec_store', '" . Yii::$service->store->currentStore . "']);
+    _maq.push(['fec_lang', '" . Yii::$service->store->currentLangCode . "']);
+    _maq.push(['fec_app', '" . Yii::$service->store->getCurrentAppName() . "']);
+    _maq.push(['fec_currency', '" . Yii::$service->page->currency->getCurrentCurrency() . "']);
+    
+        
 	(function() {
 		var ma = document.createElement('script'); ma.type = 'text/javascript'; ma.async = true;
 		ma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + '".$this->trace_url."';
@@ -168,7 +174,10 @@ class Trace extends Service
         $this->_ftreturn          = $cookies['_ftreturn'];
         // params.website_id
         $this->_fta_site_id       = $cookies['_fta_site_id'];
-        
+        if (!$this->_fta_site_id){
+            // 对于paypal ipn修改订单状态，website_id的值从配置中读取
+            $this->_fta_site_id = $this->website_id;
+        }
         // params.fid
         $this->_fid               = $cookies['fid'];
         // params.fec_medium
@@ -181,6 +190,7 @@ class Trace extends Service
         $this->_fec_content       = $cookies['fec_content'];
         // params.fec_design
         $this->_fec_design        = $cookies['fec_design'];
+        
     }
     
     // 登录账户，通过api传递数据给trace系统 【已经部署到customer service login函数里面】
@@ -221,11 +231,27 @@ class Trace extends Service
      *
      */
     public function apiSendTrace($data){
+        \Yii::info('apiSendTrace-data', 'fecshop_debug');
+        ob_start();
+        ob_implicit_flush(false);
+        var_dump($data);
+        $post_log = ob_get_clean();
+        \Yii::info($post_log, 'fecshop_debug');
+        
         // 发送的数据
         $this->initCookie();
+        \Yii::info('apiSendTrace', 'fecshop_debug');
         
+        // 对于paypal ipn请求，website_id 从配置中读取。
+        // params.website_id
+        $data['website_id'] = $this->_fta_site_id;
+        $data['fec_store'] = Yii::$service->store->currentStore;
+        $data['fec_lang'] = Yii::$service->store->currentLangCode;
+        $data['fec_app'] = Yii::$service->store->getCurrentAppName();
+        $data['fec_currency'] = Yii::$service->page->currency->getCurrentCurrency();
         // 进行条件判断
         if ($this->_fta) {
+            \Yii::info('_fta', 'fecshop_debug');
             // params.uuid
             $data['uuid'] = $this->_fta;
             // params.cl_activity
@@ -244,8 +270,6 @@ class Trace extends Service
             $data['first_referrer_url'] = $this->_ftreferurl;
             // params.is_return
             $data['is_return'] = $this->_ftreturn;
-            // params.website_id
-            $data['website_id'] = $this->_fta_site_id;
             
             // params.fid
             $data['fid'] = $this->_fid;
@@ -260,8 +284,6 @@ class Trace extends Service
             // params.fec_design
             $data['fec_design'] = $this->_fec_design;
             
-            // 加入验证access_token  header中加入：Access-Token
-            $this->access_token;
             
             //var_dump($data);
             ////var_dump($_COOKIE);
@@ -269,6 +291,11 @@ class Trace extends Service
             // curl 发送数据
             $this->apiSend($data);
             // 完成
+            return true;
+        // 如果是paypal ipn发送订单支付成功信息，则使用下面的方式发送数据给trace系统，用于更新订单状态
+        } else if (isset($data[self::PAYMENT_SUCCESS_ORDER]) && $data[self::PAYMENT_SUCCESS_ORDER]) {
+            \Yii::info(self::PAYMENT_SUCCESS_ORDER, 'fecshop_debug');
+            $this->apiSend($data);
             return true;
         }
     }
@@ -308,6 +335,8 @@ class Trace extends Service
         // var_dump($output) ;exit;
         //释放curl句柄
         curl_close($ch);
+        \Yii::info('#################', 'fecshop_debug');
+        \Yii::info($output, 'fecshop_debug');
         //var_dump($output);exit;
         return $output;
         

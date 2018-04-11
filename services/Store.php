@@ -57,7 +57,7 @@ class Store extends Service
     public $serverLangs;
     
     public $apiAppNameArr = ['appserver','appapi'];
-    
+    // 是否是api入口
     public function isApiStore(){
         $appName = Yii::$app->params['appName'];
         if($appName && in_array($appName,$this->apiAppNameArr)){
@@ -65,6 +65,10 @@ class Store extends Service
         }else{
             return false;
         }
+    }
+    // 得到当前入口的名字
+    public function getCurrentAppName(){
+        return Yii::$app->params['appName'];
     }
     
     /**

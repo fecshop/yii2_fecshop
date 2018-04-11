@@ -621,9 +621,10 @@ class Order extends Service
             Yii::$service->helper->errors->add('get order by increment_id:'.$order_increment_id.' fail, order is not exist ');
             return false;
         }
+        // 追踪信息
+        Yii::$service->order->sendTracePaymentSuccessOrder($orderInfo);
         // 发送订单支付成功邮件
         Yii::$service->email->order->sendCreateEmail($orderInfo);
-        Yii::$service->order->sendTracePaymentSuccessOrder($orderInfo);
     }
     
     /**
@@ -633,6 +634,7 @@ class Order extends Service
      * 执行page trace services，将支付完成订单的数据传递给trace系统
      */
     protected function sendTracePaymentSuccessOrder($orderInfo){
+        \Yii::info('sendTracePaymentSuccessOrder', 'fecshop_debug');
         if (Yii::$service->page->trace->traceJsEnable) {
             $arr = [];
             $arr['invoice']             = (string)$orderInfo['increment_id'];
@@ -669,6 +671,7 @@ class Order extends Service
                 }
             }   
             $arr['products'] =  $product_arr;
+            \Yii::info('sendTracePaymentSuccessOrderByApi', 'fecshop_debug');
             Yii::$service->page->trace->sendTracePaymentSuccessOrderByApi($arr);
             
             return true;

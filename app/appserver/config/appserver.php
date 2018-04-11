@@ -44,8 +44,11 @@ $config = [
         ],
 
         'user' => [
-            //'class'            => 'fecshop\yii\web\User',
-            'identityClass'     => 'fecshop\models\mysqldb\customer\CustomerAccessToken',
+            // 'class'            => 'fecshop\yii\web\User',
+            // 【默认】不开启速度限制的 User Model
+            'identityClass'     => 'fecshop\models\mysqldb\Customer',
+            // 开启速度限制的 User Model
+            // 'identityClass'     => 'fecshop\models\mysqldb\customer\CustomerAccessToken',
             
         ],
         'urlManager' => [
