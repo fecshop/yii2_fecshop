@@ -74,10 +74,10 @@ class Helper extends Service
      * 
      */
     public function isApiApp(){
-        if(\Yii::$service->storestore->isApiStore() == true){
-            return false;
-        } else {
+        if(\Yii::$service->store->isApiStore() == true){
             return true;
+        } else {
+            return false;
         }
     }
 }

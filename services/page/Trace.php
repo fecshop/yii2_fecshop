@@ -154,8 +154,10 @@ class Trace extends Service
     public function initCookie(){
         // 判断当前是否是appserver端，如果是，则从 Yii::$app->request->post('cookies') 中获取
         if (Yii::$service->helper->isApiApp()) {
+            \Yii::info('is ApiApp', 'fecshop_debug');
             $cookies = Yii::$app->request->post('cookies');
         } else {
+            \Yii::info('is not ApiApp', 'fecshop_debug');
             $cookies = $_COOKIE;
         }
         // params.uuid
@@ -249,6 +251,7 @@ class Trace extends Service
         $data['fec_lang'] = Yii::$service->store->currentLangCode;
         $data['fec_app'] = Yii::$service->store->getCurrentAppName();
         $data['fec_currency'] = Yii::$service->page->currency->getCurrentCurrency();
+        \Yii::info('begin apiSendTrace data', 'fecshop_debug');
         // 进行条件判断
         if ($this->_fta) {
             \Yii::info('_fta', 'fecshop_debug');
@@ -259,11 +262,12 @@ class Trace extends Service
             // params.cl_activity_child
             $data['cl_activity_child'] = $this->_ftactivity_child;
             // params.first_page  if(_fto){ first_page = 0 } else { first_page = 1 }
-            if ($this->_fto) {
-                $data['first_page'] = '0';
-            } else {
-                $data['first_page'] = '1';
-            }
+            // if ($this->_fto) {
+            //    $data['first_page'] = '0';
+            //} else {
+            //    $data['first_page'] = '1';
+            //}
+            $data['first_page'] = '0';
             // params.first_referrer_domain
             $data['first_referrer_domain'] = $this->_ftreferdomain;
             // params.first_referrer_url
