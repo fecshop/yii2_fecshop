@@ -74,7 +74,7 @@ class Helper extends Service
      * 
      */
     public function isApiApp(){
-        if(\Yii::$app->user->enableSession == true){
+        if(\Yii::$server->store->isApiStore() == true){
             return false;
         } else {
             return true;

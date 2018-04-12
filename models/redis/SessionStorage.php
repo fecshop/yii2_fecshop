@@ -17,6 +17,11 @@ use yii\redis\ActiveRecord;
  */
 class SessionStorage extends ActiveRecord
 {
+    public static function primaryKey()
+    {
+        return ['id'];
+    }
+    
     public function attributes()
     {
         return [

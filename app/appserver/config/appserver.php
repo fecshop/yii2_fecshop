@@ -49,7 +49,8 @@ $config = [
             'identityClass'     => 'fecshop\models\mysqldb\Customer',
             // 开启速度限制的 User Model
             // 'identityClass'     => 'fecshop\models\mysqldb\customer\CustomerAccessToken',
-            
+            // 关闭session
+            'enableSession'     => false,
         ],
         'urlManager' => [
             'rules' => [

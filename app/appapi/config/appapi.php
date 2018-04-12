@@ -111,6 +111,8 @@ $config = [
             //'identityClass' => 'fecshop\models\mysqldb\adminUser\AdminUserAccessToken',
             
             //'enableAutoLogin' => true,
+            // 关闭session
+            'enableSession'     => false,
         ],
 
         'errorHandler' => [

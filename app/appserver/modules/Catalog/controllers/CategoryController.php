@@ -51,7 +51,7 @@ class CategoryController extends AppserverController
     protected $category_name;
     protected $sp = '---';
     
-     public function behaviors()
+    public function behaviors()
     {
         $behaviors = parent::behaviors();
         //$primaryKey = Yii::$service->category->getPrimaryKey();
@@ -101,6 +101,7 @@ class CategoryController extends AppserverController
     }
     
     public function actionIndex(){
+        
         if(Yii::$app->request->getMethod() === 'OPTIONS'){
             return [];
         }
@@ -115,7 +116,7 @@ class CategoryController extends AppserverController
             
             return $reponseData;
         }
-
+        
         // change current layout File.
         //Yii::$service->page->theme->layoutFile = 'home.php';
 

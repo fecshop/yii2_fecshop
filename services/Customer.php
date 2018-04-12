@@ -33,6 +33,11 @@ class Customer extends Service
     protected $_customerRegisterModel;
     
     public function init(){
+        // 对于 api端口，设置Yii::$app->user->enableSession = false;
+        // 下面的代码注释掉，对于使用到user组件的，在相应的模块部分设置 Yii::$app->user->enableSession = false;
+        // if(Yii::$service->store->isApiStore()){
+        //    Yii::$app->user->enableSession = false;
+        //}
         parent::init();
         list($this->_customerModelName,$this->_customerModel) = \Yii::mapGet($this->_customerModelName); 
         list($this->_customerLoginModelName,$this->_customerLoginModel) = \Yii::mapGet($this->_customerLoginModelName);  
