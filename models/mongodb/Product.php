@@ -36,7 +36,7 @@ class Product extends ActiveRecord
     /**
      * get custom product attrs.
      */
-    public static function addCustomProductAttrs($attrs)
+    public function addCustomProductAttrs($attrs)
     {
         self::$_customProductAttrs = $attrs;
         // 设置为空后，在执行方法attributes()的时候，就会重新计算 $this->_product_attributes 的值
