@@ -54,6 +54,18 @@ class Yii extends \yii\BaseYii
         }
         return $absoluteClassName;
     }
+    /**
+     * @property $className | String , block等className，前面没有`\`, like: 'fecshop\app\appfront\modules\Catalog\block\product\CustomOption'
+     * 通过$rewriteMap，查找是否存在重写，如果存在，则返回重写的className
+     */
+    public static function mapGetClassName($className){
+        $absoluteClassName = '\\'.$className;
+        if(isset(self::$rewriteMap[$absoluteClassName]) && self::$rewriteMap[$absoluteClassName]){
+            $absoluteClassName = self::$rewriteMap[$absoluteClassName];
+            return substr($absoluteClassName,1);
+        }
+        return $className;
+    }
 }
 
 spl_autoload_register(['Yii', 'autoload'], true, true);
