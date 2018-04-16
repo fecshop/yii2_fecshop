@@ -11,7 +11,6 @@ namespace fecshop\components;
 use Yii;
 use yii\base\BootstrapInterface;
 use yii\base\Component;
-use fec\helpers\CRequest;
 
 /**
  * @author Terry Zhao <2358269014@qq.com>
@@ -35,7 +34,7 @@ class ServiceLog extends Component
         list($this->_logModelName,$this->_logModel) = Yii::mapGet($this->_logModelName);  
     }
     /**
-     * Log£∫get log uuid .
+     * LogÔºöget log uuid .
      */
     public function getLogUid()
     {
@@ -47,7 +46,7 @@ class ServiceLog extends Component
     }
 
     /**
-     * ServiceLog£∫ «∑Òø™∆Ùservice log.
+     * ServiceLogÔºöÊòØÂê¶ÂºÄÂêØservice log.
      */
     public function isServiceLogEnable()
     {
@@ -64,9 +63,10 @@ class ServiceLog extends Component
 
         return $this->_isServiceLog;
     }
-
+    
+    public $serviceLogHtmlPrintStr;
     /**
-     * ServiceLog£∫±£¥ÊserviceLog.
+     * ServiceLogÔºö‰øùÂ≠òserviceLog.
      */
     public function printServiceLog($log_info)
     {
@@ -88,12 +88,20 @@ class ServiceLog extends Component
                 }
             }
             $str .= '</table><br>#################################<br><br>';
-            echo $str;
+            $this->serviceLogHtmlPrintStr .= $str;
+        }
+    }
+    // Áõ¥Êé•Âú®ÂâçÁ´ØÊâìÂç∞service Log
+    public function getServiceLogHtmlPrintStr(){
+        if ($this->isServiceLogEnable()) {
+            return $this->serviceLogHtmlPrintStr;
+        } else {
+            return '';
         }
     }
 
     /**
-     * ServiceLog£∫if service log db print is enable.
+     * ServiceLogÔºöif service log db print is enable.
      */
     protected function isServiceLogDbPrint()
     {
@@ -114,7 +122,7 @@ class ServiceLog extends Component
     }
 
     /**
-     * ServiceLog£∫‘⁄«∞Ã®¥Ú”°servicelog «∑Òø™∆Ù.
+     * ServiceLogÔºöÂú®ÂâçÂè∞ÊâìÂç∞servicelogÊòØÂê¶ÂºÄÂêØ.
      */
     protected function isServiceLogHtmlPrint()
     {
@@ -135,7 +143,7 @@ class ServiceLog extends Component
     }
 
     /**
-     * ServiceLog£∫Õ®π˝≤Œ ˝£¨‘⁄«∞Ã®¥Ú”°servicelog «∑Òø™∆Ù.
+     * ServiceLogÔºöÈÄöËøáÂèÇÊï∞ÔºåÂú®ÂâçÂè∞ÊâìÂç∞servicelogÊòØÂê¶ÂºÄÂêØ.
      */
     protected function isServiceLogDbPrintByParam()
     {
@@ -143,16 +151,15 @@ class ServiceLog extends Component
             $this->_isServiceLogDbPrintByParam = false;
             if (
                 isset($this->log_config['services']['enable'])
-            && $this->log_config['services']['enable']
-            && isset($this->log_config['services']['htmlprintbyparam']['enable'])
-            && $this->log_config['services']['htmlprintbyparam']['enable']
-            && isset($this->log_config['services']['htmlprintbyparam']['paramVal'])
+            &&  $this->log_config['services']['enable']
+            &&  isset($this->log_config['services']['htmlprintbyparam']['enable'])
+            &&  $this->log_config['services']['htmlprintbyparam']['enable']
+            &&  isset($this->log_config['services']['htmlprintbyparam']['paramVal'])
             && ($paramVal = $this->log_config['services']['htmlprintbyparam']['paramVal'])
-            && isset($this->log_config['services']['htmlprintbyparam']['paramKey'])
+            &&  isset($this->log_config['services']['htmlprintbyparam']['paramKey'])
             && ($paramKey = $this->log_config['services']['htmlprintbyparam']['paramKey'])
-
             ) {
-                if (CRequest::param($paramKey) == $paramVal) {
+                if (Yii::$app->request->get($paramKey) == $paramVal) {
                     $this->_isServiceLogDbPrintByParam = true;
                 }
             }

@@ -41,6 +41,7 @@ $cssOptions = [];
     <?php $this->head() ?>
 </head>
 <body>
+<?= Yii::$service->page->widget->render('beforeContent',$this); ?>
 <?php $this->beginBody() ?>
 	<?= $content; ?>
     <?= Yii::$service->page->widget->render('trace',$this); ?>
