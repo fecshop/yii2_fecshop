@@ -39,6 +39,8 @@ class Product extends ActiveRecord
     public static function addCustomProductAttrs($attrs)
     {
         self::$_customProductAttrs = $attrs;
+        // 设置为空后，在执行方法attributes()的时候，就会重新计算 $this->_product_attributes 的值
+        $this->_product_attributes = [];
     }
     /**
      * mongodb是没有表结构的，因此不能像mysql那样取出来表结构的字段作为model的属性
@@ -46,7 +48,7 @@ class Product extends ActiveRecord
      */
     public function attributes()
     {
-        if (!$this->_product_attributes) {
+        if (empty($this->_product_attributes)) {
             $origin = [
                 '_id',
                 'name',
