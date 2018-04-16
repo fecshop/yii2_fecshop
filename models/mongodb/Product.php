@@ -17,7 +17,7 @@ use yii\mongodb\ActiveRecord;
  */
 class Product extends ActiveRecord
 {
-    public static $_customProductAttrs;
+    public $_customProductAttrs;
     
     const STATUS_ENABLE  = 1;
     const STATUS_DISABLE = 2;
@@ -35,9 +35,9 @@ class Product extends ActiveRecord
     /**
      * get custom product attrs.
      */
-    public static function addCustomProductAttrs($attrs)
+    public function addCustomProductAttrs($attrs)
     {
-        self::$_customProductAttrs = $attrs;
+        $this->_customProductAttrs = $attrs;
     }
     /**
      * mongodb是没有表结构的，因此不能像mysql那样取出来表结构的字段作为model的属性
@@ -109,8 +109,8 @@ class Product extends ActiveRecord
             'see_also_see_sku',        // 看了的还看了什么
 
         ];
-        if (is_array(self::$_customProductAttrs) && !empty(self::$_customProductAttrs)) {
-            $origin = array_merge($origin, self::$_customProductAttrs);
+        if (is_array($this->_customProductAttrs) && !empty($this->_customProductAttrs)) {
+            $origin = array_merge($origin, $this->_customProductAttrs);
         }
 
         return $origin;

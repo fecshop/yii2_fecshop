@@ -172,12 +172,6 @@ class Item extends Service
         if (isset($productOb['attr_group']) && !empty($productOb['attr_group'])) {
             $productAttrGroup = $productOb['attr_group'];
             Yii::$service->product->addGroupAttrs($productAttrGroup);
-
-            //$attrInfo = Yii::$service->product->getGroupAttrInfo($productAttrGroup);
-            //if(is_array($attrInfo) && !empty($attrInfo)){
-            //	$attrs = array_keys($attrInfo);
-            //	\fecshop\models\mongodb\Product::addCustomProductAttrs($attrs);
-            //}
             $productOb = Yii::$service->product->getByPrimaryKey((string) $productOb['_id']);
             $spuArr = Yii::$service->product->getSpuAttr($productAttrGroup);
             if (is_array($spuArr) && !empty($spuArr)) {
