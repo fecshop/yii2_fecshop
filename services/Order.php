@@ -652,7 +652,7 @@ class Order extends Service
             $arr['zip']                 = $orderInfo['customer_address_zip'];
             $arr['address1']            = $orderInfo['customer_address_street1'];
             $arr['address2']            = $orderInfo['customer_address_street2'];
-            
+            $arr['created_at']          = $orderInfo['created_at'];
             $arr['country_code']        = $orderInfo['customer_address_country'];
             $arr['state_code']          = $orderInfo['customer_address_state'];
             $arr['state_name']   = Yii::$service->helper->country->getStateByContryCode($orderInfo['customer_address_country'], $orderInfo['customer_address_state']);
@@ -696,6 +696,7 @@ class Order extends Service
             $arr['discount_amount']     = (float)$myOrder['base_subtotal_with_discount'];
             $arr['coupon']              = $myOrder['coupon_code'];
             $arr['city']                = $myOrder['customer_address_city'];
+            $arr['created_at']          = $myOrder['created_at'];
             $arr['email']               = $myOrder['customer_email'];
             $arr['first_name']          = $myOrder['customer_firstname'];
             $arr['last_name']           = $myOrder['customer_lastname'];

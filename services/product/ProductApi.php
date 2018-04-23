@@ -10,6 +10,7 @@
 namespace fecshop\services\product;
 
 use fecshop\models\mongodb\Product;
+use fecshop\services\Service;
 use Yii;
 
 /**
@@ -18,7 +19,7 @@ use Yii;
  * @since 1.0
  * 由于产品部分的api导入操作比较复杂，因此单独一个services文件来处理产品导入。
  */
-class ProductApi 
+class ProductApi extends Service
 {
     protected $_error = []; // $this->_error
     protected $_param = []; // $this->_param
