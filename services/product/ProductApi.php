@@ -86,7 +86,7 @@ class ProductApi extends Service
         }
         // 产品重量Kg：【必填】强制转换成float类型
         $weight     = (float)$post['weight'];
-        if (!$weight) {
+        if (!$weight && $weight !== 0) {
             $this->_error[] = '[weight] can not empty';
         } else {
             $this->_param['weight'] = $weight;

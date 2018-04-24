@@ -73,7 +73,7 @@ EOF;
                 $display = ['type' => 'inputString'];
             }
             //var_dump($this->_one['id']);
-            $value = $this->_one[$name] ? $this->_one[$name] : $column['default'];
+            $value = ($this->_one[$name] || $this->_one[$name] === 0) ? $this->_one[$name] : $column['default'];
             $display_type = isset($display['type']) ? $display['type'] : 'inputString';
             if ($display_type == 'inputString') {
                 $isLang = isset($display['lang']) ? $display['lang'] : false;
