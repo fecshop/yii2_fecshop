@@ -103,16 +103,16 @@ class Order extends Service
      */
     protected function actionGetStatusArr(){
         return [
-            $this->payment_status_pending         => $this->payment_status_pending,
-            $this->payment_status_processing      => $this->payment_status_processing,
-            $this->payment_status_confirmed        => $this->payment_status_confirmed,
-            $this->payment_status_canceled        => $this->payment_status_canceled,
-            $this->payment_status_suspected_fraud => $this->payment_status_suspected_fraud,
-            $this->status_holded        => $this->status_holded,
-            $this->status_processing        => $this->status_processing,
-            $this->status_dispatched        => $this->status_dispatched,
-            $this->status_refunded        => $this->status_refunded,
-            $this->status_completed        => $this->status_completed,
+            $this->payment_status_pending           => $this->payment_status_pending,
+            $this->payment_status_processing        => $this->payment_status_processing,
+            $this->payment_status_confirmed         => $this->payment_status_confirmed,
+            $this->payment_status_canceled          => $this->payment_status_canceled,
+            $this->payment_status_suspected_fraud   => $this->payment_status_suspected_fraud,
+            $this->status_holded                    => $this->status_holded,
+            $this->status_processing                => $this->status_processing,
+            $this->status_dispatched                => $this->status_dispatched,
+            $this->status_refunded                  => $this->status_refunded,
+            $this->status_completed                 => $this->status_completed,
         ];
         
     }
