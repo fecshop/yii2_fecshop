@@ -419,6 +419,9 @@ class Wxpay extends Service
         return true;
     }
     
-    
+    // 支付宝的 标示
+    public function getWxpayHandle(){
+        return 'wxpay_standard';
+    }  
     
 }
