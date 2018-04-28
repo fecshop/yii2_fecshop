@@ -58,6 +58,7 @@ class IndexController extends AppserverController
         //echo $this->_productCount;
         $data = [
             'searchText'       => $this->_searchText,
+            'searchCount'       => $this->_productCount,
             'products'         => $products,
             //'query_item'       => $this->getQueryItem(),
             'refine_by_info'   => $this->getRefineByInfo(),
@@ -69,6 +70,7 @@ class IndexController extends AppserverController
         
         return $reponseData;
     }
+    
     
     public function actionProduct()
     {

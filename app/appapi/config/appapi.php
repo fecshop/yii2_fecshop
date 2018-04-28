@@ -104,11 +104,15 @@ $config = [
             ],
         ],
         
-
-
         'user' => [
-            'identityClass' => 'fecshop\models\mysqldb\adminUser\AdminUserAccessToken',
+            // 【默认】不开启速度限制的 User Model
+            'identityClass' => 'fecshop\models\mysqldb\AdminUser',
+            // 开启速度限制的 User Model
+            //'identityClass' => 'fecshop\models\mysqldb\adminUser\AdminUserAccessToken',
+            
             //'enableAutoLogin' => true,
+            // 关闭session
+            'enableSession'     => false,
         ],
 
         'errorHandler' => [

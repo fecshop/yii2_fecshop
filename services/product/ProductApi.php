@@ -10,6 +10,7 @@
 namespace fecshop\services\product;
 
 use fecshop\models\mongodb\Product;
+use fecshop\services\Service;
 use Yii;
 
 /**
@@ -18,7 +19,7 @@ use Yii;
  * @since 1.0
  * 由于产品部分的api导入操作比较复杂，因此单独一个services文件来处理产品导入。
  */
-class ProductApi 
+class ProductApi extends Service
 {
     protected $_error = []; // $this->_error
     protected $_param = []; // $this->_param
@@ -85,7 +86,7 @@ class ProductApi
         }
         // 产品重量Kg：【必填】强制转换成float类型
         $weight     = (float)$post['weight'];
-        if (!$weight) {
+        if (!$weight && $weight !== 0) {
             $this->_error[] = '[weight] can not empty';
         } else {
             $this->_param['weight'] = $weight;

@@ -57,7 +57,7 @@ class Store extends Service
     public $serverLangs;
     
     public $apiAppNameArr = ['appserver','appapi'];
-    
+    // 是否是api入口
     public function isApiStore(){
         $appName = Yii::$app->params['appName'];
         if($appName && in_array($appName,$this->apiAppNameArr)){
@@ -65,6 +65,10 @@ class Store extends Service
         }else{
             return false;
         }
+    }
+    // 得到当前入口的名字
+    public function getCurrentAppName(){
+        return Yii::$app->params['appName'];
     }
     
     /**
@@ -75,11 +79,6 @@ class Store extends Service
      */
     protected function actionBootstrap($app)
     {
-        // 对于 api端口，设置Yii::$app->user->enableSession = false;
-        if($this->isApiStore()){
-            Yii::$app->user->enableSession = false;
-        }
-        
         $host = explode('//', $app->getHomeUrl());
         $stores = $this->stores;
         $init_compelte = 0;
@@ -146,17 +145,12 @@ class Store extends Service
                             }
                         }
                     }
-                    
                     if(isset($headers['fecshop-currency']) && $headers['fecshop-currency']){
                         $currentC = Yii::$service->page->currency->getCurrentCurrency();
                         if($currentC != $headers['fecshop-currency']){
                             Yii::$service->page->currency->setCurrentCurrency($headers['fecshop-currency']);
                         }
                     }
-                    
-                    
-                    
-                    
                     break;
                 }
             }
@@ -164,6 +158,7 @@ class Store extends Service
         if (!$init_compelte) {
             throw new InvalidValueException('this domain is not config in store component');
         }
+        
     }
 
     /**

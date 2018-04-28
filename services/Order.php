@@ -103,16 +103,16 @@ class Order extends Service
      */
     protected function actionGetStatusArr(){
         return [
-            $this->payment_status_pending         => $this->payment_status_pending,
-            $this->payment_status_processing      => $this->payment_status_processing,
-            $this->payment_status_confirmed        => $this->payment_status_confirmed,
-            $this->payment_status_canceled        => $this->payment_status_canceled,
-            $this->payment_status_suspected_fraud => $this->payment_status_suspected_fraud,
-            $this->status_holded        => $this->status_holded,
-            $this->status_processing        => $this->status_processing,
-            $this->status_dispatched        => $this->status_dispatched,
-            $this->status_refunded        => $this->status_refunded,
-            $this->status_completed        => $this->status_completed,
+            $this->payment_status_pending           => $this->payment_status_pending,
+            $this->payment_status_processing        => $this->payment_status_processing,
+            $this->payment_status_confirmed         => $this->payment_status_confirmed,
+            $this->payment_status_canceled          => $this->payment_status_canceled,
+            $this->payment_status_suspected_fraud   => $this->payment_status_suspected_fraud,
+            $this->status_holded                    => $this->status_holded,
+            $this->status_processing                => $this->status_processing,
+            $this->status_dispatched                => $this->status_dispatched,
+            $this->status_refunded                  => $this->status_refunded,
+            $this->status_completed                 => $this->status_completed,
         ];
         
     }
@@ -617,13 +617,14 @@ class Order extends Service
             return false;
         }
         $orderInfo = Yii::$service->order->getOrderInfoByIncrementId($order_increment_id);
-        if ($orderInfo['increment_id']) {
+        if (!$orderInfo['increment_id']) {
             Yii::$service->helper->errors->add('get order by increment_id:'.$order_increment_id.' fail, order is not exist ');
             return false;
         }
+        // 追踪信息
+        Yii::$service->order->sendTracePaymentSuccessOrder($orderInfo);
         // 发送订单支付成功邮件
         Yii::$service->email->order->sendCreateEmail($orderInfo);
-        Yii::$service->order->sendTracePaymentSuccessOrder($orderInfo);
     }
     
     /**
@@ -633,15 +634,16 @@ class Order extends Service
      * 执行page trace services，将支付完成订单的数据传递给trace系统
      */
     protected function sendTracePaymentSuccessOrder($orderInfo){
+        \Yii::info('sendTracePaymentSuccessOrder', 'fecshop_debug');
         if (Yii::$service->page->trace->traceJsEnable) {
             $arr = [];
-            $arr['invoice']             = $orderInfo['increment_id'];
+            $arr['invoice']             = (string)$orderInfo['increment_id'];
             $arr['order_type']          = $orderInfo['checkout_method'];
             $arr['payment_status']      = $orderInfo['order_status'];
             $arr['payment_type']        = $orderInfo['payment_method'];
-            $arr['amount']              = $orderInfo['base_grand_total'];
-            $arr['shipping']            = $orderInfo['base_shipping_total'];
-            $arr['discount_amount']     = $orderInfo['base_subtotal_with_discount'];
+            $arr['amount']              = (float)$orderInfo['base_grand_total'];
+            $arr['shipping']            = (float)$orderInfo['base_shipping_total'];
+            $arr['discount_amount']     = (float)$orderInfo['base_subtotal_with_discount'];
             $arr['coupon']              = $orderInfo['coupon_code'];
             $arr['city']                = $orderInfo['customer_address_city'];
             $arr['email']               = $orderInfo['customer_email'];
@@ -650,7 +652,7 @@ class Order extends Service
             $arr['zip']                 = $orderInfo['customer_address_zip'];
             $arr['address1']            = $orderInfo['customer_address_street1'];
             $arr['address2']            = $orderInfo['customer_address_street2'];
-            
+            $arr['created_at']          = $orderInfo['created_at'];
             $arr['country_code']        = $orderInfo['customer_address_country'];
             $arr['state_code']          = $orderInfo['customer_address_state'];
             $arr['state_name']   = Yii::$service->helper->country->getStateByContryCode($orderInfo['customer_address_country'], $orderInfo['customer_address_state']);
@@ -663,12 +665,13 @@ class Order extends Service
                     $product_arr[] = [
                         'sku'   => $product['sku'],
                         'name'  => $product['name'],
-                        'qty'   => $product['qty'],
-                        'price' => $product['base_product_price'],
+                        'qty'   => (int)$product['qty'],
+                        'price' => (float)$product['base_product_price'],
                     ];
                 }
             }   
             $arr['products'] =  $product_arr;
+            \Yii::info('sendTracePaymentSuccessOrderByApi', 'fecshop_debug');
             Yii::$service->page->trace->sendTracePaymentSuccessOrderByApi($arr);
             
             return true;
@@ -684,15 +687,16 @@ class Order extends Service
     protected function sendTracePaymentPendingOrder($myOrder, $products){
         if (Yii::$service->page->trace->traceJsEnable) {
             $arr = [];
-            $arr['invoice']             = $myOrder['increment_id'];
+            $arr['invoice']             = (string)$myOrder['increment_id'];
             $arr['order_type']          = $myOrder['checkout_method'];
             $arr['payment_status']      = $myOrder['order_status'];
             $arr['payment_type']        = $myOrder['payment_method'];
-            $arr['amount']              = $myOrder['base_grand_total'];
-            $arr['shipping']            = $myOrder['base_shipping_total'];
-            $arr['discount_amount']     = $myOrder['base_subtotal_with_discount'];
+            $arr['amount']              = (float)$myOrder['base_grand_total'];
+            $arr['shipping']            = (float)$myOrder['base_shipping_total'];
+            $arr['discount_amount']     = (float)$myOrder['base_subtotal_with_discount'];
             $arr['coupon']              = $myOrder['coupon_code'];
             $arr['city']                = $myOrder['customer_address_city'];
+            $arr['created_at']          = $myOrder['created_at'];
             $arr['email']               = $myOrder['customer_email'];
             $arr['first_name']          = $myOrder['customer_firstname'];
             $arr['last_name']           = $myOrder['customer_lastname'];
@@ -713,8 +717,8 @@ class Order extends Service
                     $product_arr[] = [
                         'sku'   => $product['sku'],
                         'name'  => $product['name'],
-                        'qty'   => $product['qty'],
-                        'price' => $product['base_product_price'],
+                        'qty'   => (int)$product['qty'],
+                        'price' => (float)$product['base_product_price'],
                     ];
                 }
             }   

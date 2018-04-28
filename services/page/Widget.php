@@ -130,6 +130,8 @@ class Widget extends Service
                 }
             }
         }
+        // 查看 $config['class'] 是否在YiiRewriteMap重写中存在配置，如果存在，则替换
+        $config['class'] = Yii::mapGetClassName($config['class']);
         $content = $this->renderContentHtml($configKey, $config, $parentThis);
 
         return $content;

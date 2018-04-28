@@ -112,7 +112,7 @@ class Url extends Service
     /**
      * get current url.
      */
-    protected function actionGetCurrentUrl()
+    public function getCurrentUrl()
     {
         if (!$this->_currentUrl) {
             $pageURL = '//';
@@ -122,6 +122,7 @@ class Url extends Service
 
         return $this->_currentUrl;
     }
+    
 
     protected function actionGetCurrentUrlNoParam()
     {
@@ -239,10 +240,12 @@ class Url extends Service
     /**
      * get current home url , is was generate by 'http://'.store_code.
      */
-    protected function actionHomeUrl()
+    public function homeUrl()
     {
         return Yii::$app->getHomeUrl();
     }
+    
+    
 
     /**
      * get  base url.

@@ -81,15 +81,16 @@
 						<div class="item-media"><i class="icon icon-form-password"></i></div>
 						<div class="item-inner">
 							<div class="item-input">
-								<input placeholder="captcha" type="text" name="editForm[captcha]" value="" size=10 class="login-captcha-input"><img class="login-captcha-img"  title="<?= Yii::$service->page->translate->__('click refresh'); ?>" src="<?= Yii::$service->url->getUrl('site/helper/captcha'); ?>" align="absbottom" onclick="this.src='<?= Yii::$service->url->getUrl('site/helper/captcha'); ?>?'+Math.random();"></img>
-								 <span class="icon icon-refresh"></span>
+								<input placeholder="captcha" type="text" name="editForm[captcha]" value="" size=10 class="login-captcha-input">
+                                <img class="login-captcha-img"  title="<?= Yii::$service->page->translate->__('click refresh'); ?>" src="<?= Yii::$service->url->getUrl('site/helper/captcha'); ?>" align="absbottom" onclick="this.src='<?= Yii::$service->url->getUrl('site/helper/captcha'); ?>?'+Math.random();"></img>
+								<span class="icon icon-refresh"></span>
 							</div>
 						</div>
 					</div>
 				<script>
 					<?php $this->beginBlock('register_captcha_onclick_refulsh') ?>  
 					$(document).ready(function(){
-						$(".refresh-icon").click(function(){
+						$(".icon-refresh").click(function(){
 							$(this).parent().find("img").click();
 						});
 					});
@@ -214,7 +215,6 @@ $(document).ready(function(){
 				validate = 0;		
 			}
 		}
-		
 		
 		if(validate){
 		//	alert("validate success");

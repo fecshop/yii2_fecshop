@@ -30,14 +30,15 @@ class SessionRedis extends Service implements SessionInterface
     
     public function set($key,$val,$timeout){
         $uuid = Yii::$service->session->getUUID();
+        $r_id = $this->getUuidKey($uuid, $key);
         $one = $this->_sessionModel->find()->where([
-            'session_uuid' => $uuid,
-            'session_key'  => $key,
+            'id' => $r_id,
         ])->one();
         if(!$one['id']){
             $one = new $this->_sessionModelName();
             $one['session_uuid'] = $uuid;
             $one['session_key']  = $key;
+            $one['id']  = $r_id;
         }
         $one['session_value']       = $val;
         $one['session_timeout']     = $timeout;
@@ -48,9 +49,9 @@ class SessionRedis extends Service implements SessionInterface
 
     public function get($key,$reflush){
         $uuid = Yii::$service->session->getUUID();
+        $r_id = $this->getUuidKey($uuid, $key);
         $one = $this->_sessionModel->find()->where([
-            'session_uuid' => $uuid,
-            'session_key'  => $key,
+            'id' => $r_id,
         ])->one();
         if($one['id']){
             $timeout = $one['session_timeout'];
@@ -67,16 +68,20 @@ class SessionRedis extends Service implements SessionInterface
 
     public function remove($key){
         $uuid = Yii::$service->session->getUUID();
+        $r_id = $this->getUuidKey($uuid, $key);
         $one = $this->_sessionModel->find()->where([
-            'session_uuid' => $uuid,
-            'session_key'  => $key,
+            'id' => $r_id,
         ])->one();
         if($one['id']){
             $one->delete();
             return true;
         }
-        
     }
+    
+    public function getUuidKey($uuid, $key){
+        return $uuid.'###^^###'.$key;
+    }
+    
     /**
      * Ïú»ÙËùÓÐ
      */
@@ -106,9 +111,9 @@ class SessionRedis extends Service implements SessionInterface
     
     public function getFlash($key){
         $uuid = Yii::$service->session->getUUID();
+        $r_id = $this->getUuidKey($uuid, $key);
         $one = $this->_sessionModel->find()->where([
-            'session_uuid' => $uuid,
-            'session_key'  => $key,
+            'id' => $r_id,
         ])->one();
         if($one['id']){
             $timeout = $one['session_timeout'];

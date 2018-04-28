@@ -50,6 +50,11 @@ class Placeorder
             if($post['payment_method'] == $alipay_payment_key){
                 Yii::$service->page->currency->setCurrentCurrency2CNY(); 
             }
+            // 如果是微信支付，那么更改货币为人民币（目前只有pc扫码支持微信支付）
+            $wxpay_payment_key = Yii::$service->payment->wxpay->getWxpayHandle();
+            if($post['payment_method'] == $wxpay_payment_key){
+                Yii::$service->page->currency->setCurrentCurrency2CNY(); 
+            }
 	    // 检查前台传递的数据的完整
             if ($this->checkOrderInfoAndInit($post)) {
                 

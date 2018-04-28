@@ -47,6 +47,7 @@ $cssOptions = [
 <?= Yii::$service->page->widget->render('head',$this); ?>
 </head>
 <body>
+<?= Yii::$service->page->widget->render('beforeContent',$this); ?>
 <?php $this->beginBody() ?>
 	<header id="header">
 		<?= Yii::$service->page->widget->render('header',$this); ?>

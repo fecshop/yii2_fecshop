@@ -183,8 +183,8 @@ class Shipping extends Service
             $currentCost = eval("return $formula;");
             
             return [
-                'currCost'  => number_format($currentCost, 2),
-                'baseCost'    => number_format($currentCost, 2),
+                'currCost'  => Yii::$service->helper->format->number_format($currentCost, 2),
+                'baseCost'  => Yii::$service->helper->format->number_format($currentCost, 2),
             ];
         }
     }

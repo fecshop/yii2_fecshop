@@ -54,6 +54,9 @@ class Alipay extends Service
     protected $_ipnMessageModelName = '\fecshop\models\mysqldb\IpnMessage';
     protected $_ipnMessageModel;
     
+    // 允许更改的订单状态，不存在这里面的订单状态不允许修改
+    protected $_allowChangOrderStatus;
+    
     /**
      * 引入 支付宝支付的SDK文件。
      */
@@ -63,6 +66,10 @@ class Alipay extends Service
         $AopSdkFile = Yii::getAlias('@fecshop/lib/alipay/AopSdk.php');
         require($AopSdkFile);
         list($this->_ipnMessageModelName,$this->_ipnMessageModel) = \Yii::mapGet($this->_ipnMessageModelName);  
+        $this->_allowChangOrderStatus = [
+            Yii::$service->order->payment_status_pending,
+            Yii::$service->order->payment_status_processing,
+        ];
     }
     /**
      * 初始化 $this->_AopClient
@@ -236,15 +243,34 @@ class Alipay extends Service
             $this->_order = Yii::$service->order->getByIncrementId($increment_id);
             Yii::$service->payment->setPaymentMethod($this->_order['payment_method']);
         }
+        // 【优化后的代码 ##】
+        $orderstatus = Yii::$service->order->payment_status_confirmed;
+        $updateArr['order_status']  = $orderstatus;
+        $updateArr['txn_id']        = $trade_no; // 支付宝的交易号
+        $updateColumn = $this->_order->updateAll(
+            $updateArr,
+            [
+                'and',
+                ['order_id' => $this->_order['order_id']],
+                ['in','order_status',$this->_allowChangOrderStatus]
+            ]
+        );
+        if (!empty($updateColumn)) {
+            // 发送邮件，以及其他的一些操作（订单支付成功后的操作）
+            Yii::$service->order->orderPaymentCompleteEvent($this->_order['increment_id']);
+        }
+         // 【优化后的代码 ##】
+        
+        /* 注释掉的原来代码，上面进行了优化，保证更改只有一次，这样发邮件也就只有一次了
         // 如果订单状态已经是processing，那么，不需要更改订单状态了。
-        if ($this->_order['order_status'] == Yii::$service->order->payment_status_processing){
+        if ($this->_order['order_status'] == Yii::$service->order->payment_status_confirmed){
             
             return true;
         }
         $order = $this->_order;        
         if (isset($order['increment_id']) && $order['increment_id']) {
             // 如果支付成功，则更改订单状态为支付成功
-            $order->order_status = Yii::$service->order->payment_status_processing;
+            $order->order_status = Yii::$service->order->payment_status_confirmed;
             $order->txn_id = $trade_no; // 支付宝的交易号
             // 更新订单信息
             $order->save();
@@ -257,6 +283,8 @@ class Alipay extends Service
         
             return true;
         }
+        */
+        return true;
     }
 
     

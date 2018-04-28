@@ -45,12 +45,6 @@ class Attr
         }
 
         Yii::$service->product->addGroupAttrs($this->_currentAttrGroup);
-
-        //$this->_attrInfo = Yii::$service->product->getGroupAttrInfo($this->_currentAttrGroup);
-        //if(is_array($this->_attrInfo) && !empty($this->_attrInfo)){
-        //	$attrs = array_keys($this->_attrInfo);
-        //	\fecshop\models\mongodb\Product::addCustomProductAttrs($attrs);
-        //}
     }
 
     public function getGroupAttr()
