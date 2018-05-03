@@ -262,6 +262,9 @@ class MongoSearch extends Service implements SearchInterface
     {
         $sModel = $this->_searchModel;
         $where = $filter['where'];
+        if (!isset($where['status'])) {
+            $where['status'] = Yii::$service->product->getEnableStatus();
+        }
         $product_search_max_count = $filter['product_search_max_count'] ? $filter['product_search_max_count'] : 1000;
 
         $select = $filter['select'];
