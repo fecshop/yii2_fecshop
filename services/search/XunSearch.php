@@ -133,7 +133,7 @@ class XunSearch extends Service implements SearchInterface
 
     protected function fullTearchText($select, $where, $pageNum, $numPerPage, $product_search_max_count)
     {
-        
+        var_dump($where);
         $searchText = $where['$text']['$search'];
         $productM = Yii::$service->product->getBySku($searchText);
         $productIds = [];
@@ -182,7 +182,10 @@ class XunSearch extends Service implements SearchInterface
         if (!empty($productIds)) {
             $query = $this->_productModel->find()->asArray()
                     ->select($select)
-                    ->where(['_id'=> ['$in'=>$productIds]]);
+                    ->where([
+                        '_id'       => ['$in'=>$productIds],
+                        'status'    => Yii::$service->product->getEnableStatus(),
+                    ]);
             $data = $query->all();
             /**
              * 下面的代码的作用：将结果按照上面in查询的顺序进行数组的排序，使结果和上面的搜索结果排序一致（_id）。
