@@ -133,11 +133,12 @@ class XunSearch extends Service implements SearchInterface
 
     protected function fullTearchText($select, $where, $pageNum, $numPerPage, $product_search_max_count)
     {
-        var_dump($where);
+        // var_dump($where);
+        $enableStatus = Yii::$service->product->getEnableStatus();
         $searchText = $where['$text']['$search'];
         $productM = Yii::$service->product->getBySku($searchText);
         $productIds = [];
-        if ($productM) {
+        if ($productM && $enableStatus == $productM['status']) {
             $productIds[] = $productM['_id'];
         } else {
             $XunSearchQuery = $this->_searchModel->find()->asArray();

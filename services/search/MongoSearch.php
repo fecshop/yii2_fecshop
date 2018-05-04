@@ -221,10 +221,10 @@ class MongoSearch extends Service implements SearchInterface
     protected function actionGetSearchProductColl($select, $where, $pageNum, $numPerPage, $product_search_max_count)
     {
         // 先进行sku搜索，如果有结果，说明是针对sku的搜索
-        
+        $enableStatus = Yii::$service->product->getEnableStatus();
         $searchText = $where['$text']['$search'];
         $productM = Yii::$service->product->getBySku($searchText);
-        if ($productM) {
+        if ($productM && $enableStatus == $productM['status']) {
             $collection['coll'][] = $productM;
             $collection['count'] = 1;
         } else {
