@@ -115,6 +115,29 @@ class Image extends Service
      */
     protected function actionGetResize($imageVal, $imgResize, $isWatered = false)
     {
+        list($newPath, $newUrl) = $this->getNewPathAndUrl($imageVal, $imgResize, $isWatered);
+        
+        return $newUrl;
+    }
+    /**
+     * 和上面的方法 actionGetResize 功能类似, actionGetResize是得到按照图片尺寸resize后的图片的url。
+     * 本函数是得到resize后图片的 完整文件路径 （绝对文件地址）
+     */
+    protected function actionGetResizeDir($imageVal, $imgResize, $isWatered = false)
+    {
+        list($newPath, $newUrl) = $this->getNewPathAndUrl($imageVal, $imgResize, $isWatered);
+        
+        return $newPath;
+    }
+    /**
+     * @property $imageVal | String ，图片相对路径字符串。
+     * @property $imgResize | Array or Int ， 数组 [230,230] 代表生成的图片为230*230，如果宽度或者高度不够，则会用白色填充
+     *                  如果 $imgResize设置为 230， 则宽度不变，高度按照原始图的比例计算出来。
+     * @property $isWatered | Boolean ， 产品图片是否打水印。
+     * 获取相应尺寸的产品图片。
+     */
+    protected function actionGetNewPathAndUrl($imageVal, $imgResize, $isWatered = false)
+    {
         
         $originImgPath = $this->getDir($imageVal);
         if (!file_exists($originImgPath)) {
@@ -130,7 +153,7 @@ class Image extends Service
                 \fec\helpers\CImage::saveResizeMiddleWaterImg($originImgPath, $newPath, $imgResize, $waterImgPath);
             }
 
-            return $newUrl;
+            return [$newPath, $newUrl];
         }
     }
     /**

@@ -115,4 +115,26 @@ class ProductController extends AppfrontController
         ]);
         exit;
     }
+    
+    public function actionImage(){
+        $sku = Yii::$app->request->get('sku');
+        if ($sku) {
+            $product = Yii::$service->product->getBySku($sku);
+            if (isset($product['image']['main']['image'])) {
+                $main_img = $product['image']['main']['image'];
+                $img_type = substr($main_img, strpos($main_img,'.') + 1);
+                $imgDir = Yii::$service->product->image->getResizeDir($main_img, [230, 230]);
+                if (file_exists($imgDir)) {
+                    header('content-type: image/'.$img_type);
+                    echo file_get_contents($imgDir);
+                }
+            }
+        }
+        
+    }
+    
+    
+    
+    
+    
 }
