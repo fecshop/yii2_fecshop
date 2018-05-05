@@ -561,6 +561,9 @@ class ProductMongodb extends Service implements ProductInterface
         if (empty($where)) {
             return [];
         }
+        if (!isset($where['status'])) {
+            $where['status'] = $this->getEnableStatus();
+        }
         $orderBy = $filter['orderBy'];
         $pageNum = $filter['pageNum'];
         $numPerPage = $filter['numPerPage'];
@@ -626,6 +629,9 @@ class ProductMongodb extends Service implements ProductInterface
     {
         if (empty($where)) {
             return [];
+        }
+        if (!isset($where['status'])) {
+            $where['status'] = $this->getEnableStatus();
         }
         $group['_id'] = '$'.$filter_attr;
         $group['count'] = ['$sum'=> 1];
