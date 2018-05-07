@@ -43,8 +43,8 @@ class Cart extends Service
                 }
                 $item['custom_option_sku'] = $custom_option_sku;
             }
-            
         }
+        $item['sku'] = $product['sku'];
         $item['qty'] = $this->getCartQty($product['package_number'], $item['qty']);
         
         // 检查产品满足加入购物车的条件

@@ -46,6 +46,7 @@ class Trace extends Service
     
     const LOGIN_EMAIL = 'login_email';
     const REGISTER_EMAIL = 'register_email';
+    const CART = 'cart';
     const PAYMENT_PENDING_ORDER = 'payment_pending_order';
     const PAYMENT_SUCCESS_ORDER = 'payment_success_order';
     
@@ -210,7 +211,17 @@ class Trace extends Service
                 self::REGISTER_EMAIL => $register_email,
             ]);
         }
-    }
+    } 
+    // 产品加入购物车，通过api传递数据给trace系统 sku, qty, price
+    public function sendTraceAddToCartInfoByApi($cart_info){
+        if ($this->traceJsEnable && $cart_info) {
+            $this->apiSendTrace([
+                self::CART => $cart_info,
+            ]);
+        }
+    } 
+    
+    
     // 订单生成成功，通过api传递数据给trace系统
     public function sendTracePaymentPendingOrderByApi($order){
         if ($this->traceJsEnable && $order) {

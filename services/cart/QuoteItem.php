@@ -41,6 +41,7 @@ class QuoteItem extends Service
      *		'product_id' 		=> 22222,
      *		'custom_option_sku' => red-xxl,
      *		'qty' 				=> 22,
+     *      'sku' 				=> 'xxxx',
      * ];
      * 将某个产品加入到购物车中。在添加到cart_item表后，更新
      * 购物车中产品的总数。
@@ -85,6 +86,33 @@ class QuoteItem extends Service
             $item_one->save();
             // 重新计算购物车的数量,并写入sales_flat_cart表存储
             Yii::$service->cart->quote->computeCartInfo();
+        }
+        $his->sendTraceAddToCartInfoByApi($item);
+        
+    }
+    /**
+     * @property $item | Array, example:
+     * $item = [
+     *		'product_id' 		=> 22222,
+     *		'custom_option_sku' => red-xxl,
+     *		'qty' 				=> 22,
+     *      'sku' 				=> 'xxxx',
+     * ];
+     * 将加入购物车的操作，加入trace 
+     */
+    public function sendTraceAddToCartInfoByApi($item){
+        if (Yii::$service->page->trace->traceJsEnable) {
+            $product_price_arr  = Yii::$service->product->price->getCartPriceByProductId($item['product_id'], $item['qty'], $item['custom_option_sku'], 2);
+            $base_product_price = isset($product_price_arr['base_price']) ? $product_price_arr['base_price'] : 0;
+            $price = $base_product_price * $item['qty'];
+            $trace_cart_info = [
+                [
+                    'sku'   => $item['sku'],
+                    'price' => $price,
+                    'qty'   => $item['qty'],
+                ]
+            ];
+            Yii::$service->page->trace->sendTraceAddToCartInfoByApi($trace_cart_info);
         }
     }
 
@@ -295,7 +323,14 @@ class QuoteItem extends Service
                 $one->save();
                 // 重新计算购物车的数量
                 Yii::$service->cart->quote->computeCartInfo();
-
+                $item = [
+                    'product_id' 		=> $product_id,
+                    'custom_option_sku' => $one['custom_option_sku'],
+                    'qty' 				=> $changeQty,
+                    'sku' 				=> $product['sku'],
+                ];
+                // 购物车数据加1
+                $his->sendTraceAddToCartInfoByApi($item);
                 return true;
             }
         }

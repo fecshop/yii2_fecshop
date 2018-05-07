@@ -386,6 +386,7 @@ class CategoryMongodb extends Service implements CategoryInterface
         $url_key = $category['url_key'];
         $cate = $this->_categoryModel->find()->asArray()->where([
             'parent_id' => $_id,
+            'status' => $this->getCategoryEnableStatus(),
         ])->all();
         if (is_array($cate) && !empty($cate)) {
             foreach ($cate as $one) {
@@ -414,6 +415,7 @@ class CategoryMongodb extends Service implements CategoryInterface
                 if ($parent_id) {
                     $cate = $this->_categoryModel->find()->asArray()->where([
                         'parent_id' => $parent_id,
+                        'status' => $this->getCategoryEnableStatus(),
                     ])->all();
                     //var_dump($cate);
                     //echo '$$$$$$$$$$';
@@ -453,6 +455,7 @@ class CategoryMongodb extends Service implements CategoryInterface
         //echo $category_id;
         $data = $this->_categoryModel->find()->asArray()->where([
                         'parent_id' => $category_id,
+                        'status' => $this->getCategoryEnableStatus(),
                     ])->all();
         $arr = [];
         if (is_array($data) && !empty($data)) {
