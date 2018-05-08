@@ -70,9 +70,8 @@ Fecshop支持多语言，多货币，架构上支持pc，手机web，手机app�
 
 > 请务必按照说明安装，Fecshop是基于composer在线安装，直接git clone下载下来是不行的，请按照下面的说明操作
 
-> 请务必按照说明安装，Fecshop是基于composer在线安装，直接git clone下载下来是不行的，请按照下面的说明操作
 
-请务必按照说明安装，Fecshop是基于composer在线安装，直接git clone下载下来是不行的，请按照下面的说明操作
+在强调一遍：！！请务必按照说明安装，**Fecshop是基于composer在线安装，直接git clone下载下来是不行的**，请按照安装文档操作
 
 
 3.1、【标准方式】标准安装方式：从基础linux一步一步的配置的方式，详细参看文档： [Fecshop 安装](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-hand-install.html)
