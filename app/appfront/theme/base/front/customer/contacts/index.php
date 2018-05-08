@@ -58,7 +58,7 @@
 							<label for="pass" class="required customertitle"><em>*</em><?= Yii::$service->page->translate->__('Captcha'); ?></label>
 							<div class="input-box login_box">
 								<input class="verification_code_input" maxlength="4" name="sercrity_code" value="" type="text">
-									<img class="login-captcha-img"  title="click refresh" src="<?= Yii::$service->url->getUrl('site/helper/captcha'); ?>" align="absbottom" onclick="this.src='<?= Yii::$service->url->getUrl('site/helper/captcha'); ?>?'+Math.random();"></img>
+									<img class="login-captcha-img"  title="click refresh" src="<?= Yii::$service->url->getUrl('site/helper/captcha'); ?>?<?php echo md5(time() . mt_rand(1,10000));?>" align="absbottom" onclick="this.src='<?= Yii::$service->url->getUrl('site/helper/captcha'); ?>?'+Math.random();"></img>
 									<i class="refresh-icon"></i>
 								<br>
 								<script>
