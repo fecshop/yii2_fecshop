@@ -17,6 +17,8 @@ use fecshop\app\appadmin\modules\System\SystemController;
  */
 class ErrorController extends SystemController
 {
+    public $enableCsrfValidation = false;
+    
     public function actionIndex()
     {
         $data = $this->getBlock()->getLastData();

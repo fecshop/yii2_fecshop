@@ -17,6 +17,8 @@ use fecshop\app\appadmin\modules\Cms\CmsController;
  */
 class ArticleController extends CmsController
 {
+    public $enableCsrfValidation = false;
+    
     public function actionIndex()
     {
         $data = $this->getBlock()->getLastData();

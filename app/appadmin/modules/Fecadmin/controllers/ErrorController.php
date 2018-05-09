@@ -17,7 +17,8 @@ use fecshop\app\appadmin\modules\AppadminController;
  */
 class ErrorController extends AppadminController
 {
-	
+	public $enableCsrfValidation = false;
+    
 	# 刷新缓存
     public function actionIndex()
     {

@@ -19,6 +19,8 @@ use fecshop\app\appadmin\modules\AppadminController;
 
 class SystemController extends AppadminController
 {
+    public $enableCsrfValidation = false;
+    
     //public function getViewPath()
     //{
     //    return Yii::getAlias('@fecshop/app/appadmin/modules/System/views') . DIRECTORY_SEPARATOR . $this->id;

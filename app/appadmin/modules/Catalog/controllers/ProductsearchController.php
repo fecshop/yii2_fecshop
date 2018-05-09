@@ -17,6 +17,8 @@ use fecshop\app\appadmin\modules\Catalog\CatalogController;
  */
 class ProductsearchController extends CatalogController
 {
+    public $enableCsrfValidation = false;
+    
     public function actionIndex()
     {
         echo '未开发';

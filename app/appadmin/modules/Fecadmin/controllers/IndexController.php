@@ -17,7 +17,9 @@ use fecshop\app\appadmin\modules\AppadminController;
  */
 class IndexController extends AppadminController
 {
-	public function init()
+	public $enableCsrfValidation = false;
+    
+    public function init()
     {
         Yii::$service->page->theme->layoutFile = 'dashboard.php';
         parent::init(); 

@@ -17,7 +17,8 @@ use fecshop\app\appadmin\modules\AppadminController;
  */
 class SystemlogController extends AppadminController
 {
-	
+	public $enableCsrfValidation = false;
+    
 	# 刷新缓存
     public function actionManager()
     {

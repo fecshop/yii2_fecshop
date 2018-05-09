@@ -30,7 +30,6 @@ class Register
             'firstname'        => $firstname,
             'lastname'        => $lastname,
             'email'            => $email,
-            'is_subscribed'    => $is_subscribed,
             'minNameLength' => Yii::$service->customer->getRegisterNameMinLength(),
             'maxNameLength' => Yii::$service->customer->getRegisterNameMaxLength(),
             'minPassLength' => Yii::$service->customer->getRegisterPassMinLength(),
@@ -55,6 +54,7 @@ class Register
             return;
         }
         Yii::$service->customer->register($param);
+        
         $errors = Yii::$service->page->message->addByHelperErrors();
         if (!$errors) {
             // 发送注册邮件

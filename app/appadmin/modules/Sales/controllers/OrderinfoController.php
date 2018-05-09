@@ -17,6 +17,8 @@ use Yii;
  */
 class OrderinfoController extends SalesController
 {
+    public $enableCsrfValidation = false;
+    
     public function actionManager()
     {
         $data = $this->getBlock()->getLastData();

@@ -17,7 +17,7 @@ use fecshop\app\appadmin\modules\Catalog\CatalogController;
  */
 class ProductfavoriteController extends CatalogController
 {
-    //public $enableCsrfValidation = false;
+    public $enableCsrfValidation = false;
 
     public function actionIndex()
     {
