@@ -28,7 +28,7 @@ class Register
 
         return [
             'firstname'        => $firstname,
-            'lastname'        => $lastname,
+            'lastname'         => $lastname,
             'email'            => $email,
             'minNameLength' => Yii::$service->customer->getRegisterNameMinLength(),
             'maxNameLength' => Yii::$service->customer->getRegisterNameMaxLength(),

@@ -126,6 +126,11 @@ class Customer extends Service
             $model->updated_at = time();
 
             $model->save();
+            // 如果用户勾选了订阅邮件，那么添加到订阅
+            if ($param['is_subscribed'] == 1) {
+                Yii::$service->customer->newsletter->subscribe($param['email'], true);
+            }
+            
             // 发送注册信息到trace系统
             Yii::$service->page->trace->sendTraceRegisterInfoByApi($model->email);
             return true;

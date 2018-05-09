@@ -48,7 +48,7 @@ class Newsletter extends Service
      * @return bool
      *              订阅邮件
      */
-    protected function actionSubscribe($emailAddress)
+    protected function actionSubscribe($emailAddress, $isRegister = false)
     {
         if (!$emailAddress) {
             Yii::$service->helper->errors->add('newsletter email address is empty');
@@ -59,9 +59,13 @@ class Newsletter extends Service
 
             return;
         } elseif ($this->emailIsExist($emailAddress)) {
-            Yii::$service->helper->errors->add('ERROR,Your email address has subscribe , Please do not repeat the subscription');
+            if ($isRegister) {
+                return true;
+            } else {
+                Yii::$service->helper->errors->add('ERROR,Your email address has subscribe , Please do not repeat the subscription');
 
-            return;
+                return;
+            }
         }
         $model = $this->_newsletterModel;
         $newsletterModel = new $this->_newsletterModelName();

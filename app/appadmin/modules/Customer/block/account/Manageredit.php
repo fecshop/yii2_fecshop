@@ -102,20 +102,6 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
                 'require' => 1,
                 'default' => 1,
             ],
-
-            [
-                'label'=>'订阅邮件',
-                'name'=>'is_subscribed',
-                'display'=>[
-                    'type' => 'select',
-                    'data' => [
-                        1    => '是',
-                        2    => '否',
-                    ],
-                ],
-                'require' => 1,
-                'default' => 1,
-            ],
         ];
     }
 
