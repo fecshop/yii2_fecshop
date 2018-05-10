@@ -31,7 +31,7 @@
     "yiisoft/yii2-mongodb": "~2.1.7",
     "ramsey/uuid": "*",
     "facebook/graph-sdk": "*",
-    "hightman/xunsearch": "1.4.12-beta1"
+    "hightman/xunsearch": "*@beta"
   }, 
   "autoload": {  
     "psr-4": {
