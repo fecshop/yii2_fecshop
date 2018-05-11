@@ -13,7 +13,7 @@
   "type": "yii2-extension",  
   "license": "BSD-3-Clause",  
   "support": {  
-	  "source": "https://github.com/fancyecommerce/yii2_fecshop"
+	"source": "https://github.com/fancyecommerce/yii2_fecshop"
   },  
   "authors": [  
     {
