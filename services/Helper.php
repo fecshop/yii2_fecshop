@@ -41,7 +41,7 @@ class Helper extends Service
                 } elseif (empty($v)) {
                     $var[$k] = $v;
                 } else {
-                    if (is_string($var)) {
+                    if (is_string($v)) {
                         $var[$k] = \yii\helpers\Html::encode($v);
                     }
                 }
