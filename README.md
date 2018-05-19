@@ -35,7 +35,7 @@ Fecshop支持多语言，多货币，架构上支持pc，手机web，手机app�
 
 [Fecshop](http://www.fecshop.com) 官网：http://www.fecshop.com ，您可以在这里提交bug，问题咨询等等。
 
-[Fecshop](http://www.fecshop.com) 【已完成】PC Web Demo ：[http://fecshop.appfront.fancyecommerce.com](http://fecshop.appfront.fancyecommerce.com?fec_campaign=xxxx&fec_content=94&fec_design=96&fec_medium=Adwords&fec_source=Facebook&fid=100000005)
+[Fecshop](http://www.fecshop.com) 【已完成】PC Web Demo ：[http://fecshop.appfront.fancyecommerce.com](http://fecshop.appfront.fancyecommerce.com/men?fec_campaign=xxx&fec_content=94&fec_design=96&fec_medium=Share&fec_source=Facebook&fid=7a77a6ba-2d90-4ad5-bf75-fdf920de41f7)
 
 [Fecshop](http://www.fecshop.com) 【已完成】Mobile Web Demo（WAP）：[http://fecshop.apphtml5.fancyecommerce.com](http://fecshop.apphtml5.fancyecommerce.com?fec_campaign=xxxx&fec_content=94&fec_design=96&fec_medium=Adwords&fec_source=Facebook&fid=100000005)
 
@@ -182,6 +182,7 @@ appserver（手机app服务），appapi（erp，或者其他接口对接），
 
 | 捐赠人        | 金额      |  时间            |  方式           | 账户                  | 捐助者留言      |
 | --------------| ----------| -------------    | -----------     | ----------------------| ----------|
+| （*）         | ￥1.00    | 2018-05-17       |   微信          | -                     | 搞的不错  |
 | （*）         | ￥13.14   | 2018-05-11       |   微信          | -                     | 北京智翔财务为你加油  |
 | （*）         | ￥10.00   | 2018-05-04       |   微信          | -                     | 希望fecshop越做越好  |
 | （*）         | ￥16.66   | 2018-04-20       |   微信          | -                     | 为你们打call  |
