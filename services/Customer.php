@@ -381,6 +381,7 @@ class Customer extends Service
             Yii::$service->session->remove($this::USER_LOGIN_SUCCESS_REDIRECT_URL_KEY);
             //echo Yii::$service->session->get($this::USER_LOGIN_SUCCESS_REDIRECT_URL_KEY);
             //exit;
+            $url = urldecode($url);
             return Yii::$service->url->redirect($url);
         } else if($urlKey) {
             return Yii::$service->url->redirectByUrlKey($urlKey);

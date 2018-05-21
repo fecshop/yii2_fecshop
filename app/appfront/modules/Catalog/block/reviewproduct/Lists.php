@@ -76,7 +76,8 @@ class Lists
     {
         $this->initParam();
         if (!$this->spu || !$this->product_id) {
-            return;
+            Yii::$service->page->message->addError('param spu and _id is require');
+            return [];
         }
         $product = Yii::$service->product->getByPrimaryKey($this->product_id);
         if (!$product['spu']) {
@@ -118,6 +119,7 @@ class Lists
                 'url'               => Yii::$service->url->getUrl($url_key),
             ];
         }
+        return [];
     }
     /**
      * @property $spu  | String

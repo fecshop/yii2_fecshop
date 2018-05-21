@@ -113,8 +113,6 @@ class AccountController extends AppfrontController
         }
         if ($rt) {
             $redirectUrl = base64_decode($rt);
-            $redirectUrl = \Yii::$service->helper->htmlEncode($redirectUrl);
-            //exit;
             Yii::$service->url->redirect($redirectUrl);
         } else {
             Yii::$service->url->redirect(Yii::$service->url->HomeUrl());
