@@ -115,8 +115,7 @@ class Url extends Service
     public function getCurrentUrl()
     {
         if (!$this->_currentUrl) {
-            $pageURL = '//';
-            $pageURL .= $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+            $pageURL = $this->getBaseUrl() . $_SERVER['REQUEST_URI'];
             $this->_currentUrl = $pageURL;
         }
 
