@@ -264,15 +264,21 @@ class Coupon extends Service
     }
 
     /**
+     * @property $isGetDiscount | boolean, 是否是获取折扣信息，
+     *      1.如果值为true，说明该操作是获取cart 中的coupon的折扣操作步骤中的active判断，则只进行优惠券存在和是否过期判断，不对使用次数判断
+     *      2.如果值为false，则是add coupon操作，除了优惠券是否存在， 是否过期判断，还需要对使用次数进行判断。
      * 查看coupon是否是可用的，如果可用，返回true，如果不可用，返回false
      */
-    protected function couponIsActive()
+    protected function couponIsActive($isGetDiscount = false)
     {
         if ($this->_customer_id) {
             if ($couponModel = $this->getCouponModel()) {
                 $expiration_date = $couponModel['expiration_date'];
                 // 未过期
                 if ($expiration_date > time()) {
+                    if ($isGetDiscount) {
+                        return true;
+                    }
                     $couponUsageModel = $this->getCouponUsageModel();
                     $times_used = 0;
                     if ($couponUsageModel['times_used']) {
@@ -303,7 +309,7 @@ class Coupon extends Service
     {
         $discount_cost = 0;
         $this->useCouponInit($coupon_code);
-        if ($this->couponIsActive()) {
+        if ($this->couponIsActive(true)) {
             $couponModel = $this->getCouponModel();
             $type = $couponModel['type'];
             $conditions = $couponModel['conditions'];
