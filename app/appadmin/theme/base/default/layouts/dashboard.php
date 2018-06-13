@@ -36,6 +36,16 @@ $jsOptions = [
 		],
         
 	],
+    [
+		'js'	=>[
+            'js/echarts.min.js',
+		],
+        // js 放到尾部
+        'options' => [
+			'position' => \yii\web\View::POS_HEAD,  //POS_HEAD,
+		],
+        
+	],
 	# js config 2
 	//[
 	//	'options' => [
@@ -74,23 +84,7 @@ $cssOptions = [
 
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
-    <?php $this->head() ?>
-	<!--
-	<script src="http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js"></script>
-    -->
-	<script src="//echarts.baidu.com/build/dist/echarts.js"></script>
-   
-	<!-- 3.0 -->
-    <script type="text/javascript">
-        // 路径配置
-        require.config({
-            paths: {
-               // echarts: 'http://echarts.baidu.com/gallery/vendors/echarts'
-				echarts: 'http://echarts.baidu.com/build/dist'
-            }
-        });
-    </script>
-	  
+    <?php $this->head() ?>  
 <script> 
 
 　$(function(){
@@ -150,11 +144,40 @@ $cssOptions = [
 					<div class="page unitBox">
 						<div class="accountInfo">
 							<p><span>您好：<?= \fec\helpers\CUser::getCurrentUsername();   ?></span></p>
-							</div>
+                        </div>
+                        
+                        <!DOCTYPE html>
+
+                        
+                        <?php
+                            $data = [
+                                '最高气温' => [
+                                    '周1' => 11,
+                                    '周2' => 3,
+                                    '周3' => 15,
+                                    '周4' => 55,
+                                    '周5' => 43,
+                                    '周6' => 77,
+                                    '周7' => 11,
+                                ],
+                                '最低气温' => [
+                                    '周1' => 1,
+                                    '周2' => 3,
+                                    '周3' => 5,
+                                    '周4' => 5,
+                                    '周5' => 3,
+                                    '周6' => 7,
+                                    '周7' => 1,
+                                ],
+                            
+                            ];
+                        ?>
+                        <?= Yii::$service->helper->echart->getLine($data) ?>
+
 						<div class="pageFormContent" layoutH="80" style="margin-right:230px">	
                             <ul style="line-height:30px;text-align:center;margin-top:30px;">
                                 <li>
-                                    <h1 style="font-size:36px;"> Fecshop后台管理系统</h1>
+                                    <h1 style="font-size:36px;"><a style="font-size:36px;text-decoration:none" target="_blank" href="http://www.fecshop.com"> Fecshop</a>后台管理系统</h1>
                                     
                                 </li>
                                 <li>
