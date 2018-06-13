@@ -111,7 +111,7 @@ use fecshop\app\appfront\helper\Format;
 						<?php  if($order['subtotal_with_discount']){  ?>
 						<p class="edit_p">
 							<label>优惠券：</label>
-							<span><?= $symbol.$order['coupon_code'] ?></span>
+							<span><?= $symbol ?><?= $order['coupon_code'] ? $order['coupon_code'] : '0.00' ?></span>
 						</p>
 						<?php }  ?>
 						
