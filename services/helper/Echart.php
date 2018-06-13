@@ -16,12 +16,23 @@ use fecshop\services\Service;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-// use \fecshop\services\helper\Format;
+
+/**
+ * 二次开发说明：
+ * 本文件是对echart的封装，将数据传递进函数，出来echart的html 格式，可以很方便的使用。
+ * 使用方法：Yii::$service->helper->echart->xxx()，  xxx代表该类下的方法。
+ * 使用该方法前，您需要加载echart js，对于appadmin已经加载，可以参看文件：@fecshop/app/appadmin/theme/base/default/layouts/dashboard.php 41行处
+ * echart3 下载地址：http://echarts.baidu.com/download3.html
+ * appadmin因为是后台，在上面下载的是完整的
+ * 如果您想在前台入口，譬如appfront, apphtml5使用，可以选择比较小的js文件下载
+ * 目前只有appadmin是默认加载了js，如果您想在前天入口，譬如appfront, apphtml5使用，您可以自行加载
+ * 自行加载：进入到模板路径，将下载的js文件放到./assets/js下面，在layouts文件夹找到相应的layouts文件，添加设置即可，具体的方式您可以参考：@fecshop/app/appadmin/theme/base/default/layouts/dashboard.php 
+ */
 class Echart extends Service
 {
     protected $i = 0;
     /**
-     *  @property $data | Array, 用来展示图标的数据。
+     *  @property $data | Array, 用来展示图标的数据。 - 折线
      *  $data = [
             '最高气温' => [
                 '周1' => 11,
@@ -43,6 +54,7 @@ class Echart extends Service
             ],
         
      *  ];
+     * @property $yPrex | String, 在Y轴的值加一个后缀，譬如问题加 °C
      * @property $legend | boolean, 是否显示 legend
      * @property $title | String，标题
      * @property $width | Int，图表的长度
@@ -50,28 +62,26 @@ class Echart extends Service
      * @return String，返回X-Y线性图表
      * 
      */
-    public function getLine($data, $legend = false, $title = '', $width = 600, $height = 400)
+    public function getLine($data, $legend = false, $yPrex = '', $width = 1100, $height = 400, $title = '')
     {
         $this->i++;
         $div_id = "main_".$this->i;
         
-        $legend = [];
+        $legendArr = [];
         $xAxis = [];
         $series = [];
         $legendStr = '';
         if (is_array($data)) {
             foreach ($data as $key => $info) {
-                $legend[] = '\''.$key.'\'';
+                $legendArr[] = '\''.$key.'\'';
                 if (is_array($info)) {
                     foreach ($info as $x => $y) {
                         $xAxis[] = $x;
                     }
-                    
                 }
-                
             }
         }
-        $legendStr = implode(',', $legend);
+        $legendStr = implode(',', $legendArr);
         $xAxis = array_unique($xAxis);
         sort($xAxis);
         $xAxisArr = [];
@@ -162,7 +172,7 @@ class Echart extends Service
                 yAxis: {
                     type: 'value',
                     axisLabel: {
-                        formatter: '{value} °C'
+                        formatter: '{value} ".$yPrex."'
                     }
                 },
                 series: [

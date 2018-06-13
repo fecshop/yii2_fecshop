@@ -933,4 +933,59 @@ class Order extends Service
         }
         return $logMessage;
     }
+    /**
+     * @property $days | Int 天数
+     * 得到最近1个月的订单数据，包括：日期，订单支付状态，订单金额
+     * 下面的数据是为了后台的订单统计
+     */
+    public function getPreMonthOrder($days){
+        // 得到一个月前的时间戳
+        $preMonthTime = strtotime("-$days days");
+        $filter = [
+            'select' => ['created_at', 'increment_id', 'order_status', 'base_grand_total' ],
+            'numPerPage' 	=> 10000000,
+            'pageNum'		=> 1,
+            'where'			=> [
+                ['>=', 'created_at', $preMonthTime]
+            ],
+            'asArray' => true,
+        ];
+        $orderPaymentStatusArr = $this->getOrderPaymentedStatusArr();
+        $data = $this->coll($filter);
+        $coll = $data['coll'];
+        $dateArr = Yii::$service->helper->format->getPreDayDateArr($days);
+        $orderAmountArr = $dateArr;
+        $paymentOrderAmountArr = $dateArr;
+        $orderCountArr = $dateArr;
+        $paymentOrderCountArr = $dateArr;
+        
+        if (is_array($coll) && !empty($coll)) {
+            foreach ($coll as $order) {
+                $created_at = $order['created_at'];
+                $created_at_str = date("Y-m-d", $created_at);
+                $order_status = $order['order_status'];
+                $base_grand_total = $order['base_grand_total'];
+                if (isset($orderAmountArr[$created_at_str])) {
+                    $orderAmountArr[$created_at_str] += $base_grand_total;
+                    $orderCountArr[$created_at_str] += 1;
+                    if (in_array($order_status, $orderPaymentStatusArr)) {
+                        $paymentOrderAmountArr[$created_at_str] += $base_grand_total;
+                        $paymentOrderCountArr[$created_at_str] += 1;
+                    }
+                }
+            }
+        }
+        
+        return [
+            [
+                '订单总额' => $orderAmountArr,
+                '支付订单总额' => $paymentOrderAmountArr,
+            ],
+            [
+                '订单总数' => $orderCountArr,
+                '支付订单总数' => $paymentOrderCountArr,
+            ],
+        ];   
+    }
+    
 }

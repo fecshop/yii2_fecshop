@@ -146,47 +146,31 @@ $cssOptions = [
 							<p><span>您好：<?= \fec\helpers\CUser::getCurrentUsername();   ?></span></p>
                         </div>
                         
-                        <!DOCTYPE html>
-
+                        <?php $day = 31;  // 获取三个月的数据?>
                         
-                        <?php
-                            $data = [
-                                '最高气温' => [
-                                    '周1' => 11,
-                                    '周2' => 3,
-                                    '周3' => 15,
-                                    '周4' => 55,
-                                    '周5' => 43,
-                                    '周6' => 77,
-                                    '周7' => 11,
-                                ],
-                                '最低气温' => [
-                                    '周1' => 1,
-                                    '周2' => 3,
-                                    '周3' => 5,
-                                    '周4' => 5,
-                                    '周5' => 3,
-                                    '周6' => 7,
-                                    '周7' => 1,
-                                ],
-                            
-                            ];
-                        ?>
-                        <?= Yii::$service->helper->echart->getLine($data) ?>
-
-						<div class="pageFormContent" layoutH="80" style="margin-right:230px">	
-                            <ul style="line-height:30px;text-align:center;margin-top:30px;">
-                                <li>
-                                    <h1 style="font-size:36px;"><a style="font-size:36px;text-decoration:none" target="_blank" href="http://www.fecshop.com"> Fecshop</a>后台管理系统</h1>
-                                    
-                                </li>
-                                <li>
-                                    <div style="padding-top:150px;">
-                                    注：如果权限不够，请联系管理员开通权限。
-                                    </div>
-                                </li>
-                            </ul>
-						</div>
+                        <br/><br/><br/><br/>
+                        
+                        <?php list($orderAmount, $orderCount) = Yii::$service->order->getPreMonthOrder($day); ?>
+                        <div style="padding-left:100px;font-size:16px;">
+                            最近1个月的订单金额趋势(基础货币)
+                        </div>
+                        <?= Yii::$service->helper->echart->getLine($orderAmount, true); ?>
+                        
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                        <div style="padding-left:100px;font-size:16px;">
+                            最近1个月的订单个数趋势
+                        </div>
+                        <?= Yii::$service->helper->echart->getLine($orderCount, true); ?>
+                        
+						<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                        
+                        <div style="padding-left:100px;font-size:16px;">
+                            最近1个月的注册用户个数
+                        </div>
+                        <?php $customerRegisterCount = Yii::$service->customer->getPreMonthCustomer($day); ?>
+                        <?= Yii::$service->helper->echart->getLine($customerRegisterCount, false); ?>
+                        
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 					</div>
 				</div>
 			</div>
