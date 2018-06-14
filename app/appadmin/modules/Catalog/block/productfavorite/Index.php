@@ -234,4 +234,12 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 
         return $str;
     }
+    
+    /**
+     * get edit html bar, it contains  add ,eidt ,delete  button.
+     */
+    public function getEditBar()
+    {
+        return '';
+    }
 }
