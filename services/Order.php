@@ -67,7 +67,7 @@ class Order extends Service
     
     protected $_orderModelName = '\fecshop\models\mysqldb\Order';
     protected $_orderModel;
-   
+    
     
     public function init(){
         parent::init();
@@ -115,6 +115,25 @@ class Order extends Service
             $this->status_completed                 => $this->status_completed,
         ];
         
+    }
+    
+    /**
+     * @return array 
+     * 将订单所有的状态，组合成一个数组，进行返回。
+     */
+    protected function actionGetSelectStatusArr(){
+        return [
+            $this->payment_status_pending           => '等待支付('.$this->payment_status_pending.')',
+            $this->payment_status_processing        => '支付处理中('.$this->payment_status_processing.')',
+            $this->payment_status_confirmed         => '支付成功('.$this->payment_status_confirmed.')',
+            $this->payment_status_canceled          => '支付取消('.$this->payment_status_canceled.')',
+            $this->payment_status_suspected_fraud   => '欺诈订单('.$this->payment_status_suspected_fraud.')',
+            $this->status_holded                    => '审核订单('.$this->status_holded.')',
+            $this->status_processing                => '备货中订单('.$this->status_processing.')',
+            $this->status_dispatched                => '已发货订单('.$this->status_dispatched.')',
+            $this->status_refunded                  => '已退款订单('.$this->status_refunded.')',
+            $this->status_completed                 => '已完成订单('.$this->status_completed.')',
+        ];
     }
     
     /**

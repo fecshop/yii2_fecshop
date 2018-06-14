@@ -83,6 +83,15 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
                 'name'=>'increment_id',
                 'columns_type' =>'string',
             ],
+            
+            [    // selecit的Int 类型
+                'type'=>'select',
+                'title'=>'订单状态',
+                'name'=>'order_status',
+                'columns_type' =>'string',  // int使用标准匹配， string使用模糊查询
+                'value'=> Yii::$service->order->getSelectStatusArr(),
+            ],
+            
             [    // 时间区间类型搜索
                 'type'=>'inputdatefilter',
                 'name'=> 'created_at',
