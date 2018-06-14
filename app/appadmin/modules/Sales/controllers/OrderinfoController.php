@@ -56,4 +56,10 @@ class OrderinfoController extends SalesController
         $this->getBlock("manageredit")->delete();
     }
     */
+    
+    public function actionManagerexport()
+    {
+        $data = $this->getBlock("manageredit")->exportExcel();
+        
+    }
 }

@@ -245,4 +245,34 @@ class Item extends Service
             }
         }
     }
+    
+    /**
+     * @property $filter|array
+     * @return Array;
+     *              通过过滤条件，得到coupon的集合。
+     *              example filter:
+     *              [
+     *                  'numPerPage' 	=> 20,
+     *                  'pageNum'		=> 1,
+     *                  'orderBy'	    => ['_id' => SORT_DESC, 'sku' => SORT_ASC ],
+     *                  'where'			=> [
+     *                      ['>','price',1],
+     *                      ['<=','price',10]
+     * 			            ['sku' => 'uk10001'],
+     * 		            ],
+     * 	                'asArray' => true,
+     *              ]
+     * 根据$filter 搜索参数数组，返回满足条件的订单数据。
+     */
+    protected function actionColl($filter = '')
+    {
+        $query  = $this->_itemModel->find();
+        $query  = Yii::$service->helper->ar->getCollByFilter($query, $filter);
+        $coll   = $query->all();
+        
+        return [
+            'coll' => $coll,
+            'count'=> $query->limit(null)->offset(null)->count(),
+        ];
+    }
 }

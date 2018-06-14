@@ -109,7 +109,88 @@ class Manageredit
         exit;
     }
     
+    public function exportExcel(){
+        $order_ids = Yii::$app->request->get('order_ids');
+        $order_arr = explode(',', $order_ids);
+        $excelArr[] = [
+            '订单Id(order_id)', '订单编号(increment_id)', '订单状态(order_status)',
+            'Store(store)', '创建时间(created_at)', '更新时间(updated_at)',
+            '订单总金额(base_grand_total)', '用户Id(customer_id)', '订单Email(customer_email)',
+            '订单用户-名(customer_firstname)', '订单用户-姓(customer_lastname)', '是否游客(customer_is_guest)',
+            '优惠券(coupon_code)', '支付方式(payment_method)', '货运方式(shipping_method)',
+            '订单运费(base_shipping_total)', '订单电话(customer_telephone)', '订单国家(customer_address_country)',
+            '订单省/市(customer_address_state)', '订单城市(customer_address_city)', '订单邮编(customer_address_zip)',
+            '订单街道地址1(customer_address_street1)', '订单街道地址2(customer_address_street2)', '订单备注(order_remark)',
+            
+            '产品Id(product_id)', '产品Sku(sku)', '产品名称(name)',
+            '产品自定义选项Sku(custom_option_sku)',
+            '产品单重(weight)', '产品数量(qty)', '产品单价(base_price)',
+        ];
+        if (!empty($order_arr)) {
+            $orderFilter = [
+               'numPerPage' 	=> 1000,
+               'pageNum'		=> 1,
+               'where'			=> [
+                   ['in', 'order_id', $order_arr],
+                ],
+                'asArray' => true,
+            ];
+            $orderData = Yii::$service->order->coll($orderFilter);
+            $orderColl = $orderData['coll'];
+            // 订单数据
+            $orderCollArr = [];
+            if (!empty($orderColl) && is_array($orderColl)) {
+                foreach ($orderColl as $order) {
+                    $orderCollArr[$order['order_id']] = $order;
+                }
+            }
+            // 查找订单产品
+            $orderFilter = [
+               'numPerPage' 	=> 1000,
+               'pageNum'		=> 1,
+               'orderBy'	    => ['order_id' => SORT_DESC ],
+               'where'			=> [
+                   ['in', 'order_id', $order_arr],
+                ],
+                'asArray' => true,
+            ];
+            $orderItemData = Yii::$service->order->item->coll($orderFilter);
+            $orderItemColl = $orderItemData['coll'];
+            if (!empty($orderItemColl) && is_array($orderItemColl)) {
+                foreach ($orderItemColl as $orderItem) {
+                    $order_id = $orderItem['order_id'];
+                    if (isset($orderCollArr[$order_id])) {
+                        $order = $orderCollArr[$order_id];
+                        $excelArr[] = [
+                            $order['order_id'], $order['increment_id'], $order['order_status'], 
+                            $order['store'], date('Y-m-d H:i:s', $order['created_at']), date('Y-m-d H:i:s', $order['updated_at']), 
+                            $order['base_grand_total'], $order['customer_id'], $order['customer_email'], 
+                            $order['customer_firstname'], $order['customer_lastname'], $order['customer_is_guest'] == 1 ? '是' : '否', 
+                            $order['coupon_code'], $order['payment_method'], $order['shipping_method'], 
+                            $order['base_shipping_total'], $order['customer_telephone'], $order['customer_address_country'], 
+                            $order['customer_address_state'], $order['customer_address_city'], $order['customer_address_zip'], 
+                            $order['customer_address_street1'], $order['customer_address_street2'], $order['order_remark'], 
+                            
+                            $orderItem['product_id'], $orderItem['sku'], $orderItem['name'], 
+                            $orderItem['custom_option_sku'], $orderItem['weight'], 
+                            $orderItem['qty'], $orderItem['base_price']
+                            
+                        ];
+                        
+                    }
+                }
+            }
+            
+        }
+        
+        
+        
+        \fec\helpers\CExcel::downloadExcelFileByArray($excelArr);
+        
+    }
     
+    
+        
     
     
     
