@@ -204,7 +204,7 @@ class ProductMongodb extends Service implements ProductInterface
      * ]
      * 得到总数。
      */
-    public function collCount($filter = '')
+    public function collCount($filter = [])
     {
         $query = $this->_productModel->find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);

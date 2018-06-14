@@ -314,12 +314,12 @@ class Product extends Service
      * ]
      * 根据传入的查询条件，得到产品的列表
      */
-    protected function actionColl($filter = '')
+    protected function actionColl($filter = [])
     {
         return $this->_product->coll($filter);
     }
 
-    protected function actionCollCount($filter = '')
+    protected function actionCollCount($filter = [])
     {
         return $this->_product->collCount($filter);
     }

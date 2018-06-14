@@ -554,7 +554,7 @@ class Stock extends Service
      * @property $onlySku | boolean  返回数组是否只有 $custom_option_sku
      * 得到产品的custom option 部分的库存
      */
-    public function getProductCustomOptionQty($product_id,$onlySku=false){
+    public function getProductCustomOptionQty($product_id, $onlySku=false){
         $arr = $this->_COQtyModel->find()->asArray()
             ->where([
                 'product_id' => $product_id
