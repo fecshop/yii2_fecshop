@@ -79,25 +79,17 @@ class Stock extends Service
      *  由于存在淘宝和京东模式，因此库存有两种，对于单个产品，只有一种是有效的，
      *  对于产品的淘宝和京东模式，可以参看文档：http://www.fecshop.com/doc/fecshop-guide/instructions/cn-1.0/guide-fecshop_product.html#
      */
-    public function saveProductStock($product_id,$one){
+    public function saveProductStock($product_id, $one){
         if(!$product_id){
             Yii::$service->helper->errors->add('save product qty error: product is empty');
         }
         if(!isset($one['qty'])){
             Yii::$service->helper->errors->add('save product qty error: product qty is empty');
         }
-        // 保存产品flat qty
-        $productFlatQty = $this->_flatQtyModel->find()
-            ->where(['product_id' => $product_id])
-            ->one();
-        if(!$productFlatQty['product_id']){
-            $productFlatQty = new $this->_flatQtyModelName;
-            $productFlatQty->product_id = $product_id;
-        }
-        $productFlatQty->qty = $one['qty'];
-        $productFlatQty->save();
+        
         // 保存自定义部分的qty
         if(is_array($one['custom_option']) && !empty($one['custom_option'])){
+            $custom_option_qty = 0;
             //得到所有的产品custom option qty数据
             $co_sku_arr = $this->getProductCustomOptionSkuArr($product_id);
             $product_sku_arr = [];
@@ -115,8 +107,11 @@ class Stock extends Service
                     $productCustomOptionQty->custom_option_sku = $custom_option_sku;
                 }
                 $productCustomOptionQty->qty = $c_one['qty'];
+                $custom_option_qty += $c_one['qty'];
                 $productCustomOptionQty->save();
             }
+            // 如果是custom option，主库存 = 各个custom option 的库存的相加和
+            $one['qty'] = $custom_option_qty;
             $delete_sku_arr = array_diff($co_sku_arr,$product_sku_arr);
             //var_dump($delete_sku_arr);
             // 删除掉产品中不存在customOptionSku对应的库存、
@@ -128,6 +123,16 @@ class Stock extends Service
                 ]);
             }
         }
+        // 保存产品flat qty
+        $productFlatQty = $this->_flatQtyModel->find()
+            ->where(['product_id' => $product_id])
+            ->one();
+        if(!$productFlatQty['product_id']){
+            $productFlatQty = new $this->_flatQtyModelName;
+            $productFlatQty->product_id = $product_id;
+        }
+        $productFlatQty->qty = $one['qty'];
+        $productFlatQty->save();
         return true;
     }
     /**
@@ -191,53 +196,18 @@ class Stock extends Service
                 $custom_option_sku  = $item['custom_option_sku'];
                 if ($product_id && $sale_qty) {
                     $sale_qty = 0 - $sale_qty;
-                    if(!$custom_option_sku){
-                        // 应对高并发库存超卖的控制，更新后在查询产品的库存，如果库存小于则回滚。
-                        
-                        /** 废弃，采用下面更好的方式来处理库存
-                         * $sql = 'update '.$this->_flatQtyModel->tableName().' set qty = qty - :sale_qty where product_id = :product_id';
-                         * $data = [
-                         *     'sale_qty'  => $sale_qty,
-                         *     'product_id'=> $product_id,
-                         * ];
-                         * $result = $this->_flatQtyModel->getDb()->createCommand($sql,$data)->execute();
-                         * $productFlatQty = $this->_flatQtyModel->find()->where([
-                         *     'product_id' => $product_id
-                         * ])->one();
-                         * if($productFlatQty['qty'] < 0){
-                         *     Yii::$service->helper->errors->add('product: [ {product_name} ] is stock out',['product_name' => $product_name]);
-                         *     return false;
-                         * } 
-                         *
-                         **/
-                        $updateColumns = $this->_flatQtyModel->updateAllCounters(
-                            ['qty' => $sale_qty],
-                            ['and', ['product_id' => $product_id], ['>=', 'qty', $sale_qty]]
-                        );
-                        if (empty($updateColumns)) {// 上面更新sql返回的更新行数如果为0，则说明更新失败，产品不存在，或者产品库存不够
-                            Yii::$service->helper->errors->add('product: [ {product_name} ] is stock out',['product_name' => $product_name]);
-                            return false;
-                        }
-                    }else{
-                        // 对于custom option（淘宝模式）的库存扣除
-                        
-                        /** 废弃，采用下面更好的方式来处理库存
-                         * $sql = 'update '.$this->_COQtyModel->tableName().' set qty = qty - :sale_qty where product_id = :product_id and custom_option_sku = :custom_option_sku';
-                         * $data = [
-                         *     'sale_qty'  => $sale_qty,
-                         *     'product_id'=> $product_id,
-                         *     'custom_option_sku' => $custom_option_sku
-                         * ];
-                         * $result = $this->_COQtyModel->getDb()->createCommand($sql,$data)->execute();
-                         * $productCustomOptionQty = $this->_COQtyModel->find()->where([
-                         *     'product_id' => $product_id,
-                         *     'custom_option_sku' => $custom_option_sku,
-                         * ])->one();
-                         * if($productCustomOptionQty['qty'] < 0){
-                         *     Yii::$service->helper->errors->add('product: [ {product_name} ] is stock out' ,['product_name' => $product_name]);
-                         *     return false;
-                         * }
-                         **/
+                    // 应对高并发库存超卖的控制，更新后在查询产品的库存，如果库存小于则回滚。
+                    $updateColumns = $this->_flatQtyModel->updateAllCounters(
+                        ['qty' => $sale_qty],
+                        ['and', ['product_id' => $product_id], ['>=', 'qty', $sale_qty]]
+                    );
+                    if (empty($updateColumns)) {// 上面更新sql返回的更新行数如果为0，则说明更新失败，产品不存在，或者产品库存不够
+                        Yii::$service->helper->errors->add('product: [ {product_name} ] is stock out',['product_name' => $product_name]);
+                        return false;
+                    }
+                
+                    // 对于custom option（淘宝模式）的库存扣除
+                    if($custom_option_sku){
                         $updateColumns = $this->_COQtyModel->updateAllCounters(
                             ['qty' => $sale_qty]
                             ,
@@ -255,6 +225,7 @@ class Stock extends Service
                             return false;
                         }
                     }
+                    
                 }
             }
             
@@ -428,29 +399,9 @@ class Stock extends Service
                 $sale_qty           = $item['qty'];
                 $custom_option_sku  = $item['custom_option_sku'];
                 if ($product_id && $sale_qty) {
-                    if(!$custom_option_sku){
-                        /** 废弃，采用下面更好的方式更新产品库存
-                         * $sql = 'update '.$this->_flatQtyModel->tableName().' set qty = qty + :sale_qty where product_id = :product_id';
-                         * $data = [
-                         *     'sale_qty'  => $sale_qty,
-                         *     'product_id'=> $product_id,
-                         * ];
-                         * $result = $this->_flatQtyModel->getDb()->createCommand($sql,$data)->execute();
-                         **/
-                        $updateColumns = $this->_flatQtyModel->updateAllCounters(['qty' => $sale_qty], ['product_id' => $product_id]);
-                     
-                    }else{
+                    $updateColumns = $this->_flatQtyModel->updateAllCounters(['qty' => $sale_qty], ['product_id' => $product_id]);
+                    if($custom_option_sku){
                         // 对于custom option（淘宝模式）的库存扣除
-                        
-                        /** 废弃，采用下面更好的方式更新产品库存
-                         * $sql = 'update '.$this->_COQtyModel->tableName().' set qty = qty + :sale_qty where product_id = :product_id and custom_option_sku = :custom_option_sku';
-                         * $data = [
-                         *     'sale_qty'  => $sale_qty,
-                         *     'product_id'=> $product_id,
-                         *     'custom_option_sku' => $custom_option_sku
-                         * ];
-                         * $result = $this->_COQtyModel->getDb()->createCommand($sql,$data)->execute();
-                         **/
                         $updateColumns = $this->_COQtyModel->updateAllCounters(['qty' => $sale_qty], ['product_id' => $product_id,'custom_option_sku' => $custom_option_sku]);
                     }
                 }
@@ -480,7 +431,6 @@ class Stock extends Service
         $product_name       = Yii::$service->store->getStoreAttrVal($product['name'], 'name');
         if ($this->checkOnShelfStatus($is_in_stock)) {
             if ($custom_option_sku) {
-                
                 $productCustomOptionQty = $this->_COQtyModel->find()->where([
                         'product_id'        => $product_id,
                         'custom_option_sku' => $custom_option_sku

@@ -28,7 +28,6 @@ class QtyController extends Controller
      * mongodb的库存只是用来一些范围查询搜索，而对于获取产品库存用于下单等操作，请使用mysql表的库存。
      * 2.同步那些数据
      * 2.1将mysql表 product_flat_qty 的库存数据，同步到 mongodb product_flat表的qty字段
-     * 2.2对于淘宝模式的产品，将mysql 表product_custom_option_qty的各个自定义选项产品累加起来，作为总库存数，同步到 mongodb product_flat表的qty字段
      */
     public function actionSync($pageNum = 1)
     {
@@ -42,22 +41,7 @@ class QtyController extends Controller
         $coll = $data['coll'];
         foreach ($coll as $product) {
             $product_id = (string)$product['_id'];
-            $custom_option = $product['custom_option'];
-            $product_qty = 0;
-            if (is_array($custom_option) && !empty($custom_option)) {
-                // 自定义类型的产品
-                $custom_option_arr = Yii::$service->product->stock->getProductCustomOptionQty($product_id);
-                if (is_array($custom_option_arr)) {
-                    foreach ($custom_option_arr as $qty) {
-                        $product_qty += $qty;
-                    }
-                }
-                // mysql表的产品总库存数进行更新
-                Yii::$service->product->stock->saveProductStock($product_id, [ 'qty' => $product_qty ]);
-            } else {
-                // 常规产品
-                $product_qty = Yii::$service->product->stock->getProductFlatQty($product_id);
-            }
+            $product_qty = Yii::$service->product->stock->getProductFlatQty($product_id);
             // 保存产品
             $product->qty = (int)$product_qty;
             $product->save();
