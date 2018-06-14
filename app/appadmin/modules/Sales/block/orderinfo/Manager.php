@@ -92,6 +92,13 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
                 'value'=> Yii::$service->order->getSelectStatusArr(),
             ],
             
+            [    // 字符串类型
+                'type'=>'inputtext',
+                'title'=>'订单Email',
+                'name'=>'customer_email',
+                'columns_type' =>'string',
+            ],
+            
             [    // 时间区间类型搜索
                 'type'=>'inputdatefilter',
                 'name'=> 'created_at',
