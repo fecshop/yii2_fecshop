@@ -56,15 +56,22 @@ class Alipay extends Service
     
     // 允许更改的订单状态，不存在这里面的订单状态不允许修改
     protected $_allowChangOrderStatus;
-    
+    protected $_initAlipayLib = 0;
     /**
-     * 引入 支付宝支付的SDK文件。
+     * 支付宝：SDK工作目录
+     * 存放日志，AOP缓存数据
      */
+    public $alipay_aop_sdk_work_dir = '/tmp/';
+    /**
+     * 是否处于开发模式
+     * 在你自己电脑上开发程序的时候千万不要设为false，以免缓存造成你的代码修改了不生效
+     * 部署到生产环境正式运营后，如果性能压力大，可以把此常量设定为false，能提高运行速度（对应的代价就是你下次升级程序时要清一下缓存）
+     */
+    public $alipay_aop_sdk_dev_mode = true;
+    
     public function init()
     {
         parent::init();
-        $AopSdkFile = Yii::getAlias('@fecshop/lib/alipay/AopSdk.php');
-        require($AopSdkFile);
         list($this->_ipnMessageModelName,$this->_ipnMessageModel) = \Yii::mapGet($this->_ipnMessageModelName);  
         $this->_allowChangOrderStatus = [
             Yii::$service->order->payment_status_pending,
@@ -76,6 +83,16 @@ class Alipay extends Service
      */
     protected function initParam()
     {
+        /**
+         * 引入 支付宝支付的SDK文件。
+         */
+        if (!$this->_initAlipayLib) {
+            define("AOP_SDK_WORK_DIR", $this->alipay_aop_sdk_work_dir);
+            define("AOP_SDK_DEV_MODE", $this->alipay_aop_sdk_dev_mode);
+            $AopSdkFile = Yii::getAlias('@fecshop/lib/alipay/AopSdk.php');
+            require($AopSdkFile);
+            $this->_initAlipayLib = 1;
+        }
         if(!$this->_AopClient){
             $this->_AopClient = new \AopClient;
             $this->_AopClient->gatewayUrl        = $this->gatewayUrl;
