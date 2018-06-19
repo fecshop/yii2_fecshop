@@ -45,12 +45,10 @@ class AccountController extends AppfrontController
      */
     public function actionLogin()
     {
-        /*
-        $toEmail = 'zqy234@126.com';
-        // \fecshop\app\appfront\modules\Mailer\Email::sendLoginEmail($toEmail);
-        \fecshop\app\appfront\modules\Mailer\Email::sendRegisterEmail($toEmail);
-        exit;
-        */
+        if (Yii::$service->store->isAppServerMobile()) {
+            $urlPath = 'customer/account/login';
+            Yii::$service->store->redirectAppServerMobile($urlPath);
+        }
         if (!Yii::$app->user->isGuest) {
             return Yii::$service->url->redirectByUrlKey('customer/account');
         }
@@ -71,6 +69,10 @@ class AccountController extends AppfrontController
      */
     public function actionRegister()
     {
+        if (Yii::$service->store->isAppServerMobile()) {
+            $urlPath = 'customer/account/register';
+            Yii::$service->store->redirectAppServerMobile($urlPath);
+        }
         if (!Yii::$app->user->isGuest) {
             return Yii::$service->url->redirectByUrlKey('customer/account');
         }

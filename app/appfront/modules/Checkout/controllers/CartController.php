@@ -22,6 +22,10 @@ class CartController extends AppfrontController
 
     public function actionIndex()
     {
+        if (Yii::$service->store->isAppServerMobile()) {
+            $urlPath = 'checkout/cart';
+            Yii::$service->store->redirectAppServerMobile($urlPath);
+        }
         $data = $this->getBlock()->getLastData();
 
         return $this->render($this->action->id, $data);

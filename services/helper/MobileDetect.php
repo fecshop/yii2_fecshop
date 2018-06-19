@@ -1040,6 +1040,8 @@ class MobileDetect extends Service
 
         return $this->cache[$key];
     }
+    
+    public $_is_mobile;
 
     /**
      * Check if the device is mobile.
@@ -1050,6 +1052,9 @@ class MobileDetect extends Service
      */
     public function isMobile($userAgent = null, $httpHeaders = null)
     {
+        if ($this->_is_mobile || $this->_is_mobile === false) {
+            return $this->_is_mobile;
+        }
         if ($httpHeaders) {
             $this->setHttpHeaders($httpHeaders);
         }
@@ -1061,12 +1066,15 @@ class MobileDetect extends Service
         $this->setDetectionType(self::DETECTION_TYPE_MOBILE);
 
         if ($this->checkHttpHeadersForMobile()) {
-            return true;
+            $this->_is_mobile = true;
         } else {
-            return $this->matchDetectionRulesAgainstUA();
+            $this->_is_mobile = $this->matchDetectionRulesAgainstUA();
         }
+        
+        return $this->_is_mobile;
     }
-
+    // 全局变量，判断是否是平板
+    public $is_tablet;
     /**
      * Check if the device is a tablet.
      * Return true if any type of tablet device is detected.
@@ -1077,15 +1085,19 @@ class MobileDetect extends Service
      */
     public function isTablet($userAgent = null, $httpHeaders = null)
     {
+        if ($this->is_tablet || $this->is_tablet === false) {
+            return $this->is_tablet;
+        }
         $this->setDetectionType(self::DETECTION_TYPE_MOBILE);
 
         foreach (self::$tabletDevices as $_regex) {
             if ($this->match($_regex, $userAgent)) {
-                return true;
+                $this->is_tablet = true;
             }
         }
 
-        return false;
+        $this->is_tablet = false;
+        return $this->is_tablet;
     }
 
     /**

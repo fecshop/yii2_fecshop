@@ -302,7 +302,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
                         $val = $one['image']['main']['image'];
                     }
                     $imgUrl = Yii::$service->product->image->getUrl($val);
-                    $str .= '<td><span title="'.$imgUrl.'"><img style="width:100px;height:100px;" src="'.$imgUrl.'" /></span></td>';
+                    $str .= '<td><span title="'.$imgUrl.'"><img style="margin:auto;display:block;max-width:100px;max-height:100px;" src="'.$imgUrl.'" /></span></td>';
                     continue;
                 }
                 if ($val) {
@@ -350,7 +350,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
                                     $t_width = isset($field['img_width']) ? $field['img_width'] : '100';
                                     $t_height = isset($field['img_height']) ? $field['img_height'] : '100';
                                     $display_title = $val;
-                                    $val = '<img style="width:'.$t_width.'px;height:'.$t_height.'px" src="'.$val.'" />';
+                                    $val = '<img style="margin:auto;display:block;max-width:'.$t_width.'px;max-height:'.$t_height.'px" src="'.$val.'" />';
                                 }
                             }
                         }

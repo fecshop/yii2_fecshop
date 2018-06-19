@@ -60,6 +60,11 @@ class ReviewproductController extends AppfrontController
 
     public function actionLists()
     {
+        if (Yii::$service->store->isAppServerMobile()) {
+            $product_id = Yii::$app->request->get('_id');
+            $urlPath = 'product/review/lists/'.$product_id;
+            Yii::$service->store->redirectAppServerMobile($urlPath);
+        }
         $data = $this->getBlock()->getLastData($editForm);
 
         return $this->render($this->action->id, $data);
