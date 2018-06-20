@@ -10,6 +10,9 @@ return [
     'fecadmin' => [
         'class' => '\fecadmin\Module',
         'controllerMap' => [
+            'login' => [
+        		'class' => 'fecshop\app\appadmin\modules\Fecadmin\controllers\LoginController',
+        	],
         	'cache' => [
         		'class' => 'fecshop\app\appadmin\modules\Fecadmin\controllers\CacheController',
         	],
