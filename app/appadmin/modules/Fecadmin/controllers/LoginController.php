@@ -51,7 +51,7 @@ class LoginController extends \fecadmin\controllers\LoginController
                 $errors = CModel::getErrorStr($AdminUserLogin->errors);
             }
         }
-        Yii::$service->page->theme->layoutFile = 'login.php';  
+        
         return $this->render('index',['error' => $errors]);
     }
     
@@ -78,9 +78,7 @@ class LoginController extends \fecadmin\controllers\LoginController
          *  set i18n translate category.
          */
         Yii::$service->page->translate->category = 'appadmin';
-        /*
-         * 自定义Yii::$classMap,用于重写
-         */
+        Yii::$service->page->theme->layoutFile = 'login.php';  
     }
 
     
