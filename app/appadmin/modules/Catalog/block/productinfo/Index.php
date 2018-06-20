@@ -160,7 +160,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
             [
                 'orderField'    => 'image_main',
                 'label'            => '图片',
-                'width'            => '50',
+                'width'            => '150',
                 'align'        => 'left',
                 'lang'            => true,
             ],
@@ -302,7 +302,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
                         $val = $one['image']['main']['image'];
                     }
                     $imgUrl = Yii::$service->product->image->getUrl($val);
-                    $str .= '<td><span title="'.$imgUrl.'"><img style="margin:auto;display:block;max-width:100px;max-height:100px;" src="'.$imgUrl.'" /></span></td>';
+                    $str .= '<td><span style="display:block;" title="'.$imgUrl.'"><img style="margin:auto;display:block;max-width:100px;max-height:100px;" src="'.$imgUrl.'" /></span></td>';
                     continue;
                 }
                 if ($val) {
