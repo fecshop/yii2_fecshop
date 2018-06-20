@@ -264,6 +264,12 @@ class Store extends Service
         $mobile_https = (isset($store['mobile']['https']) && $store['mobile']['https']) ? 'https://' : 'http://';
         $host = $mobile_https.$redirectDomain.'/#/';
         $urlParam = $_SERVER["QUERY_STRING"];
+        // 得到当前的语言
+        if ($urlParam) {
+            $urlParam .= '&lang='.$this->currentLangCode;
+        } else {
+            $urlParam .= 'lang='.$this->currentLangCode;
+        }
         $redirectUrl = $host.$urlPath.'?'.$urlParam;
         header('Location:'.$redirectUrl);
         exit;
