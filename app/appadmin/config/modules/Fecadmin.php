@@ -13,6 +13,9 @@ return [
             'login' => [
         		'class' => 'fecshop\app\appadmin\modules\Fecadmin\controllers\LoginController',
         	],
+            'logout' => [
+        		'class' => 'fecshop\app\appadmin\modules\Fecadmin\controllers\LogoutController',
+        	],
         	'cache' => [
         		'class' => 'fecshop\app\appadmin\modules\Fecadmin\controllers\CacheController',
         	],

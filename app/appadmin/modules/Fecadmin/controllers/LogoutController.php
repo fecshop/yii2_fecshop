@@ -1,0 +1,146 @@
+<?php
+/**
+ * FecShop file.
+ *
+ * @link http://www.fecshop.com/
+ * @copyright Copyright (c) 2016 FecShop Software LLC
+ * @license http://www.fecshop.com/license/
+ */
+namespace fecshop\app\appadmin\modules\Fecadmin\controllers;
+use Yii;
+use fec\helpers\CConfig;
+use fecadmin\FecadminbaseController;
+use fecshop\app\appadmin\modules\AppadminController;
+
+use yii\helpers\Url;
+use fec\helpers\CModel;
+use fec\helpers\CDate;
+use fecadmin\models\AdminUser\AdminUserLogin;
+
+/**
+ * @author Terry Zhao <2358269014@qq.com>
+ * @since 1.0
+ */
+class LogoutController extends \fecadmin\controllers\LogoutController
+{
+	public $enableCsrfValidation = false;
+    public $blockNamespace;
+    
+    public function actionIndex()
+    {
+        $isGuest = Yii::$app->user->isGuest;
+        //echo $isGuest;exit;
+        if($isGuest){
+            
+        }else{
+            Yii::$app->user->logout();
+        }    
+        \fecadmin\helpers\CSystemlog::saveSystemLog();
+        Yii::$app->getResponse()->redirect("/fecadmin/login/index")->send();   
+        //$this->redirect("/fecadmin/login/index",200)->send();
+    }
+    
+    
+    /**
+     * init theme component property : $fecshopThemeDir and $layoutFile
+     * $fecshopThemeDir is appfront base theme directory.
+     * layoutFile is current layout relative path.
+     */
+    public function init()
+    {
+        if (!Yii::$service->page->theme->fecshopThemeDir) {
+            Yii::$service->page->theme->fecshopThemeDir = Yii::getAlias(CConfig::param('appadminBaseTheme'));
+        }
+        if (!Yii::$service->page->theme->layoutFile) {
+            Yii::$service->page->theme->layoutFile = CConfig::param('appadminBaseLayoutName');
+        }
+        // 设置本地模板路径
+        $localThemeDir = Yii::$app->params['localThemeDir'];
+        if($localThemeDir){
+            Yii::$service->page->theme->setLocalThemeDir($localThemeDir);
+        }
+        /*
+         *  set i18n translate category.
+         */
+        Yii::$service->page->translate->category = 'appadmin';
+        /*
+         * 自定义Yii::$classMap,用于重写
+         */
+    }
+
+    
+
+    /**
+     * @property $view|string , (only) view file name ,by this module id, this controller id , generate view relative path.
+     * @property $params|Array,
+     * 1.get exist view file from mutil theme by theme protity.
+     * 2.get content by yii view compontent  function renderFile()  ,
+     */
+    public function render($view, $params = [])
+    {
+        $viewFile = Yii::$service->page->theme->getViewFile($view);
+        $content = Yii::$app->view->renderFile($viewFile, $params, $this);
+
+        return $this->renderContent($content);
+    }
+
+    /**
+     * Get current layoutFile absolute path from mutil theme dir by protity.
+     */
+    public function findLayoutFile($view)
+    {
+        $layoutFile = '';
+        $relativeFile = 'layouts/'.Yii::$service->page->theme->layoutFile;
+        $absoluteDir = Yii::$service->page->theme->getThemeDirArr();
+        foreach ($absoluteDir as $dir) {
+            if ($dir) {
+                $file = $dir.'/'.$relativeFile;
+                if (file_exists($file)) {
+                    $layoutFile = $file;
+                    return $layoutFile;
+                }
+            }
+        }
+        throw new InvalidValueException('layout file is not exist!');
+    }
+    
+    public function getBlock($blockname=''){
+	    $_currentNameSpace = \fec\helpers\CModule::param("_currentNameSpace");
+		//echo $_currentNameSpace;exit;
+        if(empty($_currentNameSpace)){
+			$message = "Modules Param '_currentNameSpace'  is not set , you can set like fecadmin\\Module";
+			throw new \yii\web\HttpException(406,$message);
+		}
+		$modulesDir = "\\".$_currentNameSpace."\\block\\";
+		$url_key = \fec\helpers\CUrl::getUrlKey();
+		$url_key = trim($url_key,"/");
+		$url_key = substr($url_key,strpos($url_key,"/")+1 );
+		$url_key_arr = explode("/",$url_key);
+		if(!isset($url_key_arr[1])) $url_key_arr[1] = 'index';
+		if($blockname){
+			$url_key_arr[count($url_key_arr)-1] = ucfirst($blockname);
+		}else{
+			$url_key_arr[count($url_key_arr)-1] = ucfirst($url_key_arr[count($url_key_arr)-1]);
+		}
+		
+		$block_space = implode("\\",$url_key_arr);
+		$blockFile = $modulesDir.$block_space;
+		//查找是否在rewriteMap中存在重写
+        //$relativeFile = Yii::mapGetName($relativeFile);
+        $blockFile = Yii::mapGetName($blockFile);
+        //echo $blockFile;exit;
+        
+		return new $blockFile;
+		
+    }
+	
+	
+}
+
+
+
+
+
+
+
+
