@@ -123,7 +123,9 @@ class Url extends Service
     public function getCurrentUrl()
     {
         if (!$this->_currentUrl) {
-            $this->_currentUrl = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+            $secure = Yii::$app->getRequest()->getIsSecureConnection();
+            $http = $secure ? 'https' : 'http';
+            $this->_currentUrl = $http . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         }
         
         return $this->_currentUrl;
