@@ -43,10 +43,8 @@ Fecshop支持多语言，多货币，架构上支持pc，手机web，手机app�
 
 [Fecshop](http://www.fecshop.com) 后台演示地址：加QQ群，在群公告里面有后台演示地址，账号密码等信息
 
-[Fecshop](http://www.fecshop.com) QQ群：186604851 ，入群验证：fecshop
 
-
-作者, Terry QQ Email：2358269014@qq.com
+作者, Terry Email：2358269014@qq.com
 
 [Fecshop](http://www.fecshop.com) Github地址: https://github.com/fancyecommerce/yii2_fecshop
 
