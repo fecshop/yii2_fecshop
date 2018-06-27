@@ -1,32 +1,38 @@
-The Yii framework is free software. It is released under the terms of
-the following BSD License.
+Fecshop 授权协议
+=================
 
-Copyright © 2008 by Fecshop Software LLC (http://www.fecshop.com)
-All rights reserved.
 
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions
-are met:
 
- * Redistributions of source code must retain the above copyright
-   notice, this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright
-   notice, this list of conditions and the following disclaimer in
-   the documentation and/or other materials provided with the
-   distribution.
- * Neither the name of Yii Software LLC nor the names of its
-   contributors may be used to endorse or promote products derived
-   from this software without specific prior written permission.
+在遵循<b>BSD-3-Clause协议</b>的基础上，进行了如下的附加协议：
+<br><br>
+1.允许个人和公司使用fecshop，在电商项目使用fecshop做二次开发，供自己的公司
+业务需求，不需要付费授权，
+<b>也不需要</b>在网站底部加上fecshop的链接。
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
-ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGE.
+<br>
+2.任何基于fecshop做的新产品，必须以fecshop开头命令，譬如fecshop 衣服模板， fecshop facebook登录插件，fecshop fashion theme。
+
+<br>
+3.使用fecshop包装成新产品并重新命名是不允许的，任何基于fecshop开发的产品命名必须以fecshop开头，否则就是严重的剽窃行为。
+<br><br>
+<b>譬如下面是不允许的：</b>
+<br><br>
+基于fecshop开发了一个电商团购系统，然后命名为 handleShop（后面会说完全自主研发等一堆销售包装话语），并进行包装出售，这种行为是剽窃行为，是不允许的，
+<br><br>
+<b>正确的做法为：</b>
+<br><br>
+命名为 Fecshop handleShop。
+<br><br>
+
+4.任何基于fecshop二开的新产品以及所有的衍生产品，也必须以fecshop开头命名，
+并在官网明显位置注明基于fecshop开发，并加上fecshop官网地址，让用户有知情权。
+
+
+总结：上面的附加，是为了更好的保护fecshop的发展，尊重fecshop的版权，防止不良商家恶搞，包装成各种xx产品说自主研发，剽窃乱搞。
+
+<br><br>
+Copyright © 2015 - 2018 Fecshop. All Rights Reserved. 
+
+<br><br>
+</div>
+
