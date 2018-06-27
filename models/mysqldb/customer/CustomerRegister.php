@@ -30,31 +30,21 @@ class CustomerRegister extends Customer
     {
         $parent_rules = parent::rules();
         $current_rules = [
-
             ['email', 'filter', 'filter' => 'trim'],
             ['email', 'email'],
             ['email', 'validateEmail'],
 
             ['password', 'filter', 'filter' => 'trim'],
+            ['password', 'string', 'min' => 6],
+            ['password', 'required'],
 
             ['firstname', 'filter', 'filter' => 'trim'],
+            ['firstname', 'string', 'length' => [1, 50]],
+            
             ['lastname', 'filter', 'filter' => 'trim'],
+            ['lastname', 'string', 'length' => [1, 50]],
+            
             ['is_subscribed', 'validateIsSubscribed'],
-        //    ['email', 'required'],
-        //    ['email', 'email'],
-        //    ['email', 'string', 'max' => 255],
-        //	['email', 'validateEmail'],
-        //	['code', 'string', 'min' => 5, 'max' => 5],
-
-        //	['role', 'required'],
-
-        //	['person', 'required'],
-
-        //    ['email', 'unique', 'targetClass' => '\fecadmin\models\AdminUser', 'message' => 'This email address has already been taken.'],
-
-        //	['password', 'required'],
-         //   ['password', 'string', 'min' => 6],
-
         ];
 
         $rules = array_merge($parent_rules, $current_rules);

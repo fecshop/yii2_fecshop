@@ -176,22 +176,42 @@ class Address extends Service
             if (!$model) {
                 Yii::$service->helper->errors->add('address '.$this->getPrimaryKey().' is not exist');
 
-                return;
+                return false;
             }
         } else {
             $model = new $this->_addressModelName();
             $model->created_at = time();
         }
-        $model->updated_at = time();
-        $model      = Yii::$service->helper->ar->save($model, $one);
+        $model->attributes = $one;
+        // 规则验证
+        if ($model->validate()) {
+            $model->updated_at = time();
+            // 保存地址。
+            $saveStatus = $model->save();
+            if (!$saveStatus) {
+                return false;
+            }
+        } else {
+            $errors = $model->errors;
+            Yii::$service->helper->errors->addByModelErrors($errors);
+
+            return false;
+        }
+        // $model      = Yii::$service->helper->ar->save($model, $one);
         $primaryVal = $model[$primaryKey];
         if ($one['is_default'] == 1) {
             $customer_id = $one['customer_id'];
-            $this->_addressModel->updateAll(
-                ['is_default'=>2],  // $attributes
-                'customer_id = '.$customer_id.' and  '.$primaryKey.' != ' .$primaryVal      // $condition
-                //[':customer_id' => $customer_id]
-            );
+            if ($customer_id && $primaryVal) {
+                $this->_addressModel->updateAll(
+                    ['is_default'=>2],  // $attributes
+                    'customer_id = :customer_id and  :primaryKey != :primaryVal ',      // $condition
+                    [
+                        'customer_id' => $customer_id, 
+                        'primaryKey'  => $primaryKey,
+                        'primaryVal'  => $primaryVal,
+                    ]
+                );
+            }
         }
 
         return $primaryVal;
