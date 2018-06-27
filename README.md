@@ -50,6 +50,8 @@ Fecshop支持多语言，多货币，架构上支持pc，手机web，手机app�
 
 开源协议：[Fecshop 授权协议](http://www.fecshop.com/license)
 
+Fecshop线上项目案例：http://www.fecshop.com/topic/55
+
 2、Fecshop文档，视频，扩展库
 ------------
 
