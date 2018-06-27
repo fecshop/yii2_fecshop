@@ -23,30 +23,6 @@ class Shipping extends Service
     public $shippingCsvDir; // 存放运费csv表格的文件路径。
     // 体积重系数，新体积重计算 = 长(cm) * 宽(cm) * 高(cm) / 体积重系数 ， 因此一立方的体积的商品，体积重为200Kg
     public $volumeWeightCoefficient = 5000;
-    
-    /**
-     * @property $long | Float ,长度，单位cm
-     * @property $width | Float ,宽度，单位cm
-     * @property $high | Float ,高度，单位cm
-     * @return 体积重，单位Kg
-     */
-    public function getVolumeWeight($long, $width, $high){
-        $volume_weight = ($long * $width * $high) / $this->volumeWeightCoefficient;
-        return Yii::$service->helper->format->number_format($volume_weight);
-    }
-     /**
-     * @property $long | Float ,长度，单位cm
-     * @property $width | Float ,宽度，单位cm
-     * @property $high | Float ,高度，单位cm
-     * @return 体积体积，单位cm
-     */
-    public function getVolume($long, $width, $high){
-        return Yii::$service->helper->format->number_format($long * $width * $high);
-    }
-	
-
-    //public $defaultShippingMethod;
-    
     // 在init函数初始化，将shipping method的配置值加载到这个变量
     protected $_shipping_methods ;
     // 是否缓存shipping method 配置数据（因为csv部分需要读取csv文件，稍微耗时一些，可以选择放到缓存里面）
@@ -97,6 +73,25 @@ class Shipping extends Service
             }
         }
         return $this->_shipping_methods;
+    }
+    /**
+     * @property $long | Float ,长度，单位cm
+     * @property $width | Float ,宽度，单位cm
+     * @property $high | Float ,高度，单位cm
+     * @return 体积重，单位Kg
+     */
+    public function getVolumeWeight($long, $width, $high){
+        $volume_weight = ($long * $width * $high) / $this->volumeWeightCoefficient;
+        return Yii::$service->helper->format->number_format($volume_weight);
+    }
+     /**
+     * @property $long | Float ,长度，单位cm
+     * @property $width | Float ,宽度，单位cm
+     * @property $high | Float ,高度，单位cm
+     * @return 体积体积，单位cm
+     */
+    public function getVolume($long, $width, $high){
+        return Yii::$service->helper->format->number_format($long * $width * $high);
     }
     
     /**

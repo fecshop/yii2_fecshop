@@ -84,12 +84,12 @@ use fecshop\app\appfront\helper\Format;
 						</p>
                         -->
                         <p class="edit_p">
-							<label>支付方式：</label>
+							<label>支付类型：</label>
 							<span><?= $order['checkout_method'] ?></span>
 						</p>
 						<p class="edit_p">
 							<label>支付方式：</label>
-							<span><?= $order['payment_method'] ?></span>
+							<span><?= $order['payment_method_label'] ?></span>
 						</p>
 						
 						<?php  if($order['remote_ip']){  ?>
@@ -182,7 +182,7 @@ use fecshop\app\appfront\helper\Format;
 				
 						<p class="edit_p">
 							<label>货运方式：</label>
-							<span><?= $order['shipping_method'] ?></span>
+							<span><?= $order['shipping_method_label'] ?></span>
 						</p>
 						<p class="edit_p">
 							<label>订单运费：</label>

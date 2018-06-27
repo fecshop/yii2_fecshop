@@ -272,6 +272,21 @@ class Payment extends Service
             }
         }
     }
+    /**
+     * @property $payment_method | String 支付方式。
+     * @return 返回支付方式的label
+     */
+    public function getPaymentLabelByMethod($payment_method = ''){
+        $payment_method_label = $this->getStandardLabel($payment_method);
+        if (!$payment_method_label) {
+            $payment_method_label = $this->getExpressLabel($payment_method);
+        }
+        if ($payment_method_label) {
+            return $payment_method_label;
+        } else {
+            return $payment_method;
+        }
+    }
     
     /**
      * @property $payment_method | String 支付方式。
