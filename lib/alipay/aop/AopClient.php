@@ -410,13 +410,18 @@ class AopClient {
 	protected function buildRequestForm($para_temp) {
 		
 		$sHtml = "<form id='alipaysubmit' name='alipaysubmit' action='".$this->gatewayUrl."?charset=".trim($this->postCharset)."' method='POST'>";
-		while (list ($key, $val) = each ($para_temp)) {
-			if (false === $this->checkEmpty($val)) {
-				//$val = $this->characet($val, $this->postCharset);
-				$val = str_replace("'","&apos;",$val);
-				//$val = str_replace("\"","&quot;",$val);
-				$sHtml.= "<input type='hidden' name='".$key."' value='".$val."'/>";
-			}
+		// while (list ($key, $val) = each ($para_temp)) {
+        // 更改原因：PHP 7.2 Deprecated: The each() function is deprecated
+        // https://github.com/sebastianbergmann/phpunit/issues/2887
+        if (is_array($para_temp) && !empty($para_temp)){
+            foreach($para_temp as $key => $val){
+                if (false === $this->checkEmpty($val)) {
+                    //$val = $this->characet($val, $this->postCharset);
+                    $val = str_replace("'","&apos;",$val);
+                    //$val = str_replace("\"","&quot;",$val);
+                    $sHtml.= "<input type='hidden' name='".$key."' value='".$val."'/>";
+                }
+            }
         }
 
 		//submit按钮控件请不要含有name属性
