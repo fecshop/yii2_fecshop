@@ -30,9 +30,11 @@ class Item extends ActiveRecord
             ['store', 'string', 'length' => [1, 100]],
             
             ['product_id', 'filter', 'filter' => 'trim'],
+            ['product_id', 'required'],
             ['product_id', 'string', 'length' => [1, 100]],
             
             ['sku', 'filter', 'filter' => 'trim'],
+            ['sku', 'required'],
             ['sku', 'string', 'length' => [1, 100]],
             
             ['name', 'filter', 'filter' => 'trim'],
