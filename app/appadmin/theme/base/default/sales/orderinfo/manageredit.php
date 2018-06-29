@@ -188,7 +188,13 @@ use fecshop\app\appfront\helper\Format;
 							<label>订单运费：</label>
 							<span><?= $symbol.$order['shipping_total'] ?></span>
 						</p>
-						
+						<p class="edit_p">
+							<label>货运追踪号：</label>
+                            <span>
+                                <input type="text" name="editForm[tracking_number]" value="<?= $order['tracking_number'] ?>" />
+                            </span>
+						</p>
+                        
 						<p class="edit_p">
 							<label>电话：</label>
 							<span>
