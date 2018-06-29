@@ -57,7 +57,7 @@ class Order extends ActiveRecord
             
             ['customer_address_zip', 'filter', 'filter' => 'trim'],
             ['customer_address_zip', 'required'],
-            ['customer_address_zip', 'string', 'length' => [1, 50]],
+            ['customer_address_zip', 'string', 'length' => [1, 20]],
             
             ['customer_address_street1', 'filter', 'filter' => 'trim'],
             ['customer_address_street1', 'required'],
@@ -70,7 +70,7 @@ class Order extends ActiveRecord
             ['order_remark', 'string', 'length' => [1, 1000]],
             
             ['coupon_code', 'filter', 'filter' => 'trim'],
-            ['coupon_code','string','length' =>[1, 20]],
+            ['coupon_code','string','length' =>[1, 100]],
         ];
 
         return $rules;

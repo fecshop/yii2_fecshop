@@ -46,7 +46,6 @@ class Address extends ActiveRecord
             ['telephone', 'required'],
             ['telephone', 'string', 'length' => [1, 50]],
             
-            
             ['street1', 'filter', 'filter' => 'trim'],
             ['street1', 'required'],
             ['street1', 'string', 'length' => [1, 500]],
@@ -64,7 +63,7 @@ class Address extends ActiveRecord
             
             ['zip', 'filter', 'filter' => 'trim'],
             ['zip', 'required'],
-            ['zip', 'string', 'length' => [1, 50]],
+            ['zip', 'string', 'length' => [1, 20]],
             
             ['country', 'filter', 'filter' => 'trim'],
             ['country', 'required'],
