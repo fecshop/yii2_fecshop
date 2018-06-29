@@ -13,7 +13,7 @@ table.list .hover{
 .pageHeader form table tr td input{margin-left:4px;}
 
 
-.pageFormContent span{
+.pageFormContent p.edit_p span{
     padding: 0 5px;
     line-height: 21px;
     color:#333;
@@ -23,13 +23,13 @@ table.list .hover{
     margin:3px 0
     
 }
-.pageFormContent label{
+.pageFormContent p.edit_p label{
     color:#333;
 }
 .pageFormContent p.edit_p span input{
     width:200px;
 }
-.pageFormContent select, .pageFormContent input {
+.pageFormContent p.edit_p select, .pageFormContent p.edit_p input {
     color:#333;
     margin-left:5px;
 }

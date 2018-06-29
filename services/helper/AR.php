@@ -83,7 +83,7 @@ class AR extends Service
         if (!$model) {
             Yii::$service->helper->errors->add('ActiveRecord Save Error: $model is empty');
 
-            return;
+            return false;
         }
         $attributes = $model->attributes();
         if (is_array($attributes) && !empty($attributes)) {
@@ -96,9 +96,14 @@ class AR extends Service
                     }
                 }
             }
-            $model->save();
-            
-            return $model;
+            if ($model->save()) {
+                
+                return $model;
+            } else {
+                Yii::$service->helper->errors->add('model save fail');
+
+                return false;
+            }
         } else {
             Yii::$service->helper->errors->add('$attribute is empty or is not array');
 

@@ -187,8 +187,8 @@ class Address extends Service
         if ($model->validate()) {
             $model->updated_at = time();
             // 保存地址。
-            $saveStatus = $model->save();
-            if (!$saveStatus) {
+            $model = Yii::$service->helper->ar->save($model, $one);
+            if (!$model) {
                 return false;
             }
         } else {
@@ -197,17 +197,16 @@ class Address extends Service
 
             return false;
         }
-        // $model      = Yii::$service->helper->ar->save($model, $one);
         $primaryVal = $model[$primaryKey];
         if ($one['is_default'] == 1) {
             $customer_id = $one['customer_id'];
             if ($customer_id && $primaryVal) {
+                
                 $this->_addressModel->updateAll(
                     ['is_default'=>2],  // $attributes
-                    'customer_id = :customer_id and  :primaryKey != :primaryVal ',      // $condition
+                    'customer_id = :customer_id and  '.$primaryKey.' != :primaryVal ',      // $condition
                     [
                         'customer_id' => $customer_id, 
-                        'primaryKey'  => $primaryKey,
                         'primaryVal'  => $primaryVal,
                     ]
                 );

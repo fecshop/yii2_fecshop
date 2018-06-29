@@ -57,9 +57,6 @@ class Address extends ActiveRecord
             ['zip', 'filter', 'filter' => 'trim'],
             ['zip', 'string', 'length' => [1, 50]],
             
-            ['country', 'filter', 'filter' => 'trim'],
-            ['country', 'string', 'length' => [1, 50]],
-            
         ];
 
         return $rules;
