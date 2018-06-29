@@ -45,14 +45,16 @@ Fecshop支持多语言，多货币，架构上支持pc，手机web，手机app�
 
 
 作者, Terry Email：2358269014@qq.com
-
+ 
 [Fecshop](http://www.fecshop.com) Github地址: https://github.com/fancyecommerce/yii2_fecshop
 
-开源协议：[Fecshop 授权协议](http://www.fecshop.com/license)
+Fecshop开源协议：[Fecshop 授权协议](http://www.fecshop.com/license)
 
 Fecshop线上项目案例：http://www.fecshop.com/topic/55
 
 Fecshop问题咨询，Bug提交等参看：[Fecshop论坛](http://www.fecshop.com/topic)
+
+Fecshop开源项目历程：[Fecshop时间线](http://www.fecshop.com/site/timeline)
 
 2、Fecshop文档，视频，扩展库
 ------------
