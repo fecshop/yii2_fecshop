@@ -35,9 +35,8 @@ class CustomerRegister extends Customer
             ['email', 'validateEmail'],
 
             ['password', 'filter', 'filter' => 'trim'],
-            ['password', 'string', 'min' => 6],
-            ['password', 'required'],
-
+            ['password', 'string', 'length' => [6, 30]],
+            
             ['firstname', 'filter', 'filter' => 'trim'],
             ['firstname', 'string', 'length' => [1, 50]],
             
@@ -92,7 +91,10 @@ class CustomerRegister extends Customer
     // 重写保存方法
     public function save($runValidation = true, $attributeNames = null)
     {
-
+        // 如果password为空，则return
+        if (!$this->password) {
+            return false;
+        }
         // 如果auth_key为空，则重置
         if (!$this->auth_key) {
             $this->generateAuthKey();
@@ -101,8 +103,9 @@ class CustomerRegister extends Customer
         if (!$this->access_token) {
             $this->generateAccessToken();
         }
+        
         // 设置password
         $this->setPassword($this->password);
-        parent::save($runValidation, $attributeNames);
+        return parent::save($runValidation, $attributeNames);
     }
 }
