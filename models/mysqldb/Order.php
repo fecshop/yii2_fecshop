@@ -28,30 +28,39 @@ class Order extends ActiveRecord
             
             ['customer_email', 'filter', 'filter' => 'trim'],
             ['customer_email', 'email'],
+            ['customer_email', 'required'],
             ['customer_email', 'string', 'length' => [4, 90]],
             
             ['customer_firstname', 'filter', 'filter' => 'trim'],
+            ['customer_firstname', 'required'],
             ['customer_firstname', 'string', 'length' => [1, 50]],
             
             ['customer_lastname', 'filter', 'filter' => 'trim'],
+            ['customer_lastname', 'required'],
             ['customer_lastname', 'string', 'length' => [1, 50]],
             
             ['customer_telephone', 'filter', 'filter' => 'trim'],
+            ['customer_telephone', 'required'],
             ['customer_telephone', 'string', 'length' => [1, 50]],
             
             ['customer_address_country', 'filter', 'filter' => 'trim'],
+            ['customer_address_country', 'required'],
             ['customer_address_country', 'string', 'length' => [1, 50]],
             
             ['customer_address_state', 'filter', 'filter' => 'trim'],
+            ['customer_address_state', 'required'],
             ['customer_address_state', 'string', 'length' => [1, 50]],
             
             ['customer_address_city', 'filter', 'filter' => 'trim'],
+            ['customer_address_city', 'required'],
             ['customer_address_city', 'string', 'length' => [1, 50]],
             
             ['customer_address_zip', 'filter', 'filter' => 'trim'],
+            ['customer_address_zip', 'required'],
             ['customer_address_zip', 'string', 'length' => [1, 50]],
             
             ['customer_address_street1', 'filter', 'filter' => 'trim'],
+            ['customer_address_street1', 'required'],
             ['customer_address_street1', 'string', 'length' => [1, 500]],
             
             ['customer_address_street2', 'filter', 'filter' => 'trim'],
