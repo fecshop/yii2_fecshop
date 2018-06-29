@@ -31,31 +31,44 @@ class Address extends ActiveRecord
             
             ['email', 'filter', 'filter' => 'trim'],
             ['email', 'email'],
+            ['email', 'required'],
             ['email', 'string', 'length' => [4, 90]],
             
             ['first_name', 'filter', 'filter' => 'trim'],
+            ['first_name', 'required'],
             ['first_name', 'string', 'length' => [1, 50]],
             
             ['last_name', 'filter', 'filter' => 'trim'],
+            ['last_name', 'required'],
             ['last_name', 'string', 'length' => [1, 50]],
             
             ['telephone', 'filter', 'filter' => 'trim'],
-            ['telephone', 'string', 'length' => [0, 50]],
+            ['telephone', 'required'],
+            ['telephone', 'string', 'length' => [1, 50]],
+            
             
             ['street1', 'filter', 'filter' => 'trim'],
+            ['street1', 'required'],
             ['street1', 'string', 'length' => [1, 500]],
             
             ['street2', 'filter', 'filter' => 'trim'],
             ['street2', 'string', 'length' => [1, 500]],
             
             ['city', 'filter', 'filter' => 'trim'],
+            ['city', 'required'],
             ['city', 'string', 'length' => [1, 50]],
             
             ['state', 'filter', 'filter' => 'trim'],
+            ['state', 'required'],
             ['state', 'string', 'length' => [1, 50]],
             
             ['zip', 'filter', 'filter' => 'trim'],
+            ['zip', 'required'],
             ['zip', 'string', 'length' => [1, 50]],
+            
+            ['country', 'filter', 'filter' => 'trim'],
+            ['country', 'required'],
+            ['country', 'string', 'length' => [1, 50]],
             
         ];
 

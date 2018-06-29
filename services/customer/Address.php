@@ -168,7 +168,11 @@ class Address extends Service
      */
     protected function actionSave($one)
     {
-        $time = time();
+        if (!is_array($one) || empty($one)) {
+            Yii::$service->helper->errors->add('address data is empty');
+
+            return false;
+        }
         $primaryKey = $this->getPrimaryKey();
         $primaryVal = isset($one[$primaryKey]) ? $one[$primaryKey] : '';
         if ($primaryVal) {
