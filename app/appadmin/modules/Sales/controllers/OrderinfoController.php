@@ -17,6 +17,8 @@ use Yii;
  */
 class OrderinfoController extends SalesController
 {
+    public $enableCsrfValidation = false;
+    
     public function actionManager()
     {
         $data = $this->getBlock()->getLastData();
@@ -54,4 +56,10 @@ class OrderinfoController extends SalesController
         $this->getBlock("manageredit")->delete();
     }
     */
+    
+    public function actionManagerexport()
+    {
+        $data = $this->getBlock("manageredit")->exportExcel();
+        
+    }
 }

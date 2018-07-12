@@ -1,0 +1,37 @@
+#header .headerNav a:hover{text-decoration:none;color:#ddd}
+
+table.list .selected{background-color:#eee}
+table.list .hover{
+    background-color:#fafafa
+}
+.gird .gridTbody .hover{
+    background-color:#fafafa
+}
+
+.productimg tr td input{width:100px;}
+
+.pageHeader form table tr td input{margin-left:4px;}
+
+
+.pageFormContent p.edit_p span{
+    padding: 0 5px;
+    line-height: 21px;
+    color:#333;
+}
+
+.pageFormContent p.edit_p{
+    margin:3px 0
+    
+}
+.pageFormContent p.edit_p label{
+    color:#333;
+}
+.pageFormContent p.edit_p span input{
+    width:200px;
+}
+.pageFormContent p.edit_p select, .pageFormContent p.edit_p input {
+    color:#333;
+    margin-left:5px;
+}
+
+

@@ -147,6 +147,7 @@ div.onestepcheckout-threecolumns div.onestepcheckout-column-left {
         right top;
     padding-top: 15px;
     min-width: 260px;
+    min-height:460px;
 }
 
 div.onestepcheckout-threecolumns div.onestepcheckout-column-middle {

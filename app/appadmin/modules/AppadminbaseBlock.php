@@ -331,7 +331,7 @@ class AppadminbaseBlock extends BaseObject
             $lang = $field['lang'];
 
             $columns_type = isset($field['columns_type']) ? $field['columns_type'] : '';
-            if ($this->_param[$name] || $this->_param[$name.'_get'] || $this->_param[$name.'_lt']) {
+            if ($this->_param[$name] || $this->_param[$name.'_gte'] || $this->_param[$name.'_lt']) {
                 if ($type == 'inputtext' || $type == 'select' || $type == 'chosen_select') {
                     if ($columns_type == 'string') {
                         if ($lang) {

@@ -125,7 +125,16 @@ class Customer extends Service
             $model->created_at = time();
             $model->updated_at = time();
 
-            $model->save();
+            $saveStatus = $model->save();
+            if (!$saveStatus) {
+                Yii::$service->helper->errors->add('identity is not right');
+                return false;
+            }
+            // 如果用户勾选了订阅邮件，那么添加到订阅
+            if ($param['is_subscribed'] == 1) {
+                Yii::$service->customer->newsletter->subscribe($param['email'], true);
+            }
+            
             // 发送注册信息到trace系统
             Yii::$service->page->trace->sendTraceRegisterInfoByApi($model->email);
             return true;
@@ -135,6 +144,7 @@ class Customer extends Service
 
             return false;
         }
+        return false;
     }
     /**
      * @property $email | String , email字符串
@@ -646,4 +656,42 @@ class Customer extends Service
             return true;
         }
     }
+    
+    /**
+     * @property $days | Int 天数
+     * 得到最近X天的注册用户
+     * 下面的数据是为了后台的customer 注册数统计
+     */
+    public function getPreMonthCustomer($days){
+        // 得到一个月前的时间戳
+        $preMonthTime = strtotime("-$days days");
+        $filter = [
+            'select' => ['created_at', 'email' ],
+            'numPerPage' 	=> 10000000,
+            'pageNum'		=> 1,
+            'where'			=> [
+                ['>=', 'created_at', $preMonthTime]
+            ],
+            'asArray' => true,
+        ];
+        $data = $this->coll($filter);
+        $coll = $data['coll'];
+        $dateArr = Yii::$service->helper->format->getPreDayDateArr($days);
+        $customerArr = $dateArr;
+        if (is_array($coll) && !empty($coll)) {
+            foreach ($coll as $order) {
+                $created_at = $order['created_at'];
+                $created_at_str = date("Y-m-d", $created_at);
+                if (isset($customerArr[$created_at_str])) {
+                    $customerArr[$created_at_str] += 1;
+                }
+            }
+        }
+        
+        return [
+            '用户注册数' => $customerArr,
+        ];   
+    }
+    
+    
 }

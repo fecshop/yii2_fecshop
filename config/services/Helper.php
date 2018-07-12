@@ -69,6 +69,9 @@ return [
             'appapi' => [
                 'class' => 'fecshop\services\helper\Appapi',
             ],
+            'echart' => [
+                'class' => 'fecshop\services\helper\Echart',
+            ],
         ],
     ],
 ];

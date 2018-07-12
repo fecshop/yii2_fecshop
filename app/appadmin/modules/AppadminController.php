@@ -22,7 +22,8 @@ use fecadmin\FecadminbaseController;
 class AppadminController extends FecadminbaseController
 {
     public $blockNamespace;
-
+    public $enableCsrfValidation = false;
+    
     /**
      * init theme component property : $fecshopThemeDir and $layoutFile
      * $fecshopThemeDir is appfront base theme directory.

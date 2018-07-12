@@ -110,16 +110,24 @@ class Url extends Service
     }
 
     /**
-     * get current url.
+     * 得到当前的url，使用的是php的方式，而不是Yii2的函数
+     * 对于Yii框架得到当前的url使用：\yii\helpers\BaseUrl::current([],true)
+     * 这里没有使用的原因是，因为fecshop存在url rewrite，在初始化的时候，会将当前的url转换成yii2框架的url
+     * 当前函数返回的url，是浏览器地址栏中的当前url，而\yii\helpers\BaseUrl::current([],true) 返回的yii2框架中的url
+     * 这个要分清楚使用
+     * 譬如分类页面的url，进行了url rewrite：http://fecshop.appfront.fancyecommerce.com/men
+     * 1.函数`\yii\helpers\BaseUrl::current([],true)`的输出为：http://fecshop.appfront.fancyecommerce.com/catalog/category/index?_id=57b6ac42f656f246653bf576
+     * 2.而当前函数`getCurrentUrl()`的输出为：http://fecshop.appfront.fancyecommerce.com/men
+     * 3.关于fecshop url rewrite，详细参看：http://www.fecshop.com/doc/fecshop-guide/instructions/cn-1.0/guide-fecshop_url_rewrite.html
      */
     public function getCurrentUrl()
     {
         if (!$this->_currentUrl) {
-            $pageURL = '//';
-            $pageURL .= $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
-            $this->_currentUrl = $pageURL;
+            $secure = Yii::$app->getRequest()->getIsSecureConnection();
+            $http = $secure ? 'https' : 'http';
+            $this->_currentUrl = $http . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         }
-
+        
         return $this->_currentUrl;
     }
     

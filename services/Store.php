@@ -87,7 +87,7 @@ class Store extends Service
                 if ($host[1] == $store_code) {
                     $this->html5DevideCheckAndRedirect($store_code, $store);
                     Yii::$service->store->currentStore = $store_code;
-                    Yii::$service->store->store = $store;
+                    $this->store = $store;
                     if (isset($store['language']) && !empty($store['language'])) {
                         Yii::$service->store->currentLang = $store['language'];
                         Yii::$service->store->currentLangCode = Yii::$service->fecshoplang->getLangCodeByLanguage($store['language']);
@@ -165,33 +165,34 @@ class Store extends Service
      * @property $store_code | String 
      * @property $store | Array
      * mobile devide url redirect.
+     * pc端自动跳转到html5端的检测
      */
     protected function html5DevideCheckAndRedirect($store_code, $store)
     {
         if (!isset($store['mobile'])) {
             return;
         }
-        $mobileDetect = Yii::$service->helper->mobileDetect;
         $enable = isset($store['mobile']['enable']) ? $store['mobile']['enable'] : false;
         if (!$enable) {
             return;
         }
         $condition = isset($store['mobile']['condition']) ? $store['mobile']['condition'] : false;
         $redirectDomain = isset($store['mobile']['redirectDomain']) ? $store['mobile']['redirectDomain'] : false;
-        if (is_array($condition) && !empty($condition) && !empty($redirectDomain)) {
-            
+        $redirectType = isset($store['mobile']['type']) ? $store['mobile']['type'] : false;
+        if (is_array($condition) && !empty($condition) && !empty($redirectDomain) && $redirectType === 'apphtml5') {
+            $mobileDetect = Yii::$service->helper->mobileDetect;
             $mobile_https = (isset($store['mobile']['https']) && $store['mobile']['https']) ? true : false;
             if (in_array('phone', $condition) && in_array('tablet', $condition)) {
                 if ($mobileDetect->isMobile()) {
-                    $this->redirectMobile($store_code, $redirectDomain, $mobile_https);
+                    $this->redirectAppHtml5Mobile($store_code, $redirectDomain, $mobile_https);
                 }
             } elseif (in_array('phone', $condition)) {
                 if ($mobileDetect->isMobile() && !$mobileDetect->isTablet()) {
-                    $this->redirectMobile($store_code, $redirectDomain, $mobile_https);
+                    $this->redirectAppHtml5Mobile($store_code, $redirectDomain, $mobile_https);
                 }
             } elseif (in_array('tablet', $condition)) {
                 if ($mobileDetect->isTablet()) {
-                    $this->redirectMobile($store_code, $redirectDomain, $mobile_https);
+                    $this->redirectAppHtml5Mobile($store_code, $redirectDomain, $mobile_https);
                 }
             }
         }
@@ -200,9 +201,9 @@ class Store extends Service
     /**
      * @property $store_code | String
      * @property $redirectDomain | String
-     * 设备满足什么条件的时候进行跳转。
+     * 检测，html5端跳转检测
      */
-    protected function redirectMobile($store_code, $redirectDomain, $mobile_https)
+    protected function redirectAppHtml5Mobile($store_code, $redirectDomain, $mobile_https)
     {
         $currentUrl = Yii::$service->url->getCurrentUrl();
         $redirectUrl = str_replace($store_code, $redirectDomain, $currentUrl);
@@ -220,6 +221,56 @@ class Store extends Service
                 $redirectUrl = 'http:'.$redirectUrl;
             }
         }
+        header('Location:'.$redirectUrl);
+        exit;
+    }
+    /**
+     * @return boolean, 检测是否属于满足跳转到appserver的条件
+     */
+    public function isAppServerMobile(){
+        $store = $this->store;
+        $condition = isset($store['mobile']['condition']) ? $store['mobile']['condition'] : false;
+        $redirectDomain = isset($store['mobile']['redirectDomain']) ? $store['mobile']['redirectDomain'] : false;
+        $redirectType = isset($store['mobile']['type']) ? $store['mobile']['type'] : false;
+        if (is_array($condition) && !empty($condition) && !empty($redirectDomain) && $redirectType === 'appserver') {
+            $mobileDetect = Yii::$service->helper->mobileDetect;
+            if (in_array('phone', $condition) && in_array('tablet', $condition)) {
+                if ($mobileDetect->isMobile()) {
+                    
+                    return true;
+                }
+            } elseif (in_array('phone', $condition)) {
+                if ($mobileDetect->isMobile() && !$mobileDetect->isTablet()) {
+                    
+                    return true;
+                }
+            } elseif (in_array('tablet', $condition)) {
+                if ($mobileDetect->isTablet()) {
+                    
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    }
+    /**
+     * @property $urlPath | String，跳转到vue端的url Path
+     * @return boolean, 生成vue端的url，然后进行跳转。
+     */
+    public function redirectAppServerMobile($urlPath){
+        $store = $this->store;
+        $redirectDomain = isset($store['mobile']['redirectDomain']) ? $store['mobile']['redirectDomain'] : false;
+        $mobile_https = (isset($store['mobile']['https']) && $store['mobile']['https']) ? 'https://' : 'http://';
+        $host = $mobile_https.$redirectDomain.'/#/';
+        $urlParam = $_SERVER["QUERY_STRING"];
+        // 得到当前的语言
+        if ($urlParam) {
+            $urlParam .= '&lang='.$this->currentLangCode;
+        } else {
+            $urlParam .= 'lang='.$this->currentLangCode;
+        }
+        $redirectUrl = $host.$urlPath.'?'.$urlParam;
         header('Location:'.$redirectUrl);
         exit;
     }

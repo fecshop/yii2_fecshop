@@ -63,7 +63,22 @@ use fecshop\app\apphtml5\helper\Format;
 										</tbody>
 									</table>
 								</div>
-							</div>				</div>
+							</div>				
+                        </div>
+                        <div class="col-2">
+							<div class="box">
+								<div class="box-title">
+									<h5><?= Yii::$service->page->translate->__('Tracking Number');?>:</h5>
+								</div>
+								<div class="box-content">
+									<table>
+										<tbody>
+											<tr><td><?=  $tracking_number ? $tracking_number : Yii::$service->page->translate->__('null') ?></td></tr>  
+										</tbody>
+									</table>
+								</div>
+							</div>				
+                        </div>
 						<div class="col-2">
 							<div class="box box-payment">
 								<div class="box-title">

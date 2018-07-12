@@ -204,7 +204,7 @@ class ProductMongodb extends Service implements ProductInterface
      * ]
      * 得到总数。
      */
-    public function collCount($filter = '')
+    public function collCount($filter = [])
     {
         $query = $this->_productModel->find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
@@ -315,7 +315,17 @@ class ProductMongodb extends Service implements ProductInterface
          * 保存产品
          */
         $saveStatus = Yii::$service->helper->ar->save($model, $one);
-        
+        /**
+         * 如果 $one['custom_option'] 不为空，则计算出来库存总数，填写到qty
+         */
+        if (is_array($one['custom_option']) && !empty($one['custom_option'])) {
+            $custom_option_qty = 0;
+            foreach ($one['custom_option'] as $co_one) {
+                $custom_option_qty += $co_one['qty'];
+            }
+            $model->qty = $custom_option_qty;
+        }
+        $saveStatus = Yii::$service->helper->ar->save($model, $one);
         /*
          * 自定义url部分
          */

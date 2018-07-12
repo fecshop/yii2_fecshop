@@ -282,8 +282,8 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
             
             $str .= '<tr class="p_img" rel="1" style="border-bottom:1px solid #ccc;">
 						<td style="width:120px;text-align:center;"><img  rel="'.$main_image['image'].'" style="width:100px;height:100px;" src="'.Yii::$service->product->image->getUrl($main_image['image']).'"></td>
-						<td style="width:220px;text-align:center;"><input style="height:18px;width:200px;" type="text" class="image_label" name="image_label"  value="'.$main_image['label'].'" /></td>
-						<td style="width:220px;text-align:center;"><input style="height:18px;width:200px;" type="text" class="sort_order"  name="sort_order" value="'.$main_image['sort_order'].'"  /></td>
+						<td style="width:220px;text-align:center;"><input  type="text" class="image_label" name="image_label"  value="'.$main_image['label'].'" /></td>
+						<td style="width:220px;text-align:center;"><input  type="text" class="sort_order"  name="sort_order" value="'.$main_image['sort_order'].'"  /></td>
 						<td style="width:30px;text-align:center;"><input type="radio" name="image" checked  value="'.$main_image['image'].'" /></td>
 						
                         <td style="width:220px;text-align:center;">
@@ -309,8 +309,8 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
             
                 $str .= '<tr class="p_img" rel="'.$i.'" style="border-bottom:1px solid #ccc;">
 									<td style="width:120px;text-align:center;"><img  rel="'.$gallery['image'].'" style="width:100px;height:100px;" src="'.Yii::$service->product->image->getUrl($gallery['image']).'"></td>
-									<td style="width:220px;text-align:center;"><input style="height:18px;width:200px;" type="text" class="image_label" name="image_label"  value="'.$gallery['label'].'" /></td>
-									<td style="width:220px;text-align:center;"><input style="height:18px;width:200px;" type="text" class="sort_order"  name="sort_order" value="'.$gallery['sort_order'].'"  /></td>
+									<td style="width:220px;text-align:center;"><input  type="text" class="image_label" name="image_label"  value="'.$gallery['label'].'" /></td>
+									<td style="width:220px;text-align:center;"><input  type="text" class="sort_order"  name="sort_order" value="'.$gallery['sort_order'].'"  /></td>
 									<td style="width:30px;text-align:center;"><input type="radio" name="image"   value="'.$gallery['image'].'" /></td>
                                    <td style="width:220px;text-align:center;">
                                         <select name="is_thumbnails" class="is_thumbnails">

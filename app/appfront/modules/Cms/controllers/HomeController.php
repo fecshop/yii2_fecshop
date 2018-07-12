@@ -23,6 +23,10 @@ class HomeController extends AppfrontController
 
     public function behaviors()
     {
+        if (Yii::$service->store->isAppServerMobile()) {
+            $urlPath = '';
+            Yii::$service->store->redirectAppServerMobile($urlPath);
+        }
         $behaviors = parent::behaviors();
         $cacheName = 'home';
         if (Yii::$service->cache->isEnable($cacheName)) {

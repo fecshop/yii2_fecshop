@@ -279,7 +279,10 @@ function thissubmit(thiss){
 										str +="</tr>";
 										$(".tier_price table tbody").append(str);
 									});
-									
+									$(".dialog").off("click").on("click",".tier_price table tbody tr td img",function(){
+                                        $(this).parent().parent().remove();
+                                    });
+                                    
 								});
 							</script>
 						</div>

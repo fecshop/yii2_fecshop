@@ -21,6 +21,7 @@ use Yii;
  */
 class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
 {
+    protected $_exportExcelUrl;
     /**
      * init param function ,execute in construct.
      */
@@ -34,6 +35,8 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
          * delete data url
          */
         $this->_deleteUrl = CUrl::getUrl('sales/orderinfo/managerdelete');
+        
+        $this->_exportExcelUrl = CUrl::getUrl('sales/orderinfo/managerexport');
         /*
          * service component, data provider
          */
@@ -80,6 +83,22 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
                 'name'=>'increment_id',
                 'columns_type' =>'string',
             ],
+            
+            [    // selecit的Int 类型
+                'type'=>'select',
+                'title'=>'订单状态',
+                'name'=>'order_status',
+                'columns_type' =>'string',  // int使用标准匹配， string使用模糊查询
+                'value'=> Yii::$service->order->getSelectStatusArr(),
+            ],
+            
+            [    // 字符串类型
+                'type'=>'inputtext',
+                'title'=>'订单Email',
+                'name'=>'customer_email',
+                'columns_type' =>'string',
+            ],
+            
             [    // 时间区间类型搜索
                 'type'=>'inputdatefilter',
                 'name'=> 'created_at',
@@ -289,4 +308,65 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
 
         return $str;
     }
+    
+    
+    /**
+     * get edit html bar, it contains  add ,eidt ,delete  button.
+     */
+    public function getEditBar()
+    {
+        /*
+        if(!strstr($this->_currentParamUrl,"?")){
+            $csvUrl = $this->_currentParamUrl."?type=export";
+        }else{
+            $csvUrl = $this->_currentParamUrl."&type=export";
+        }
+        target="dwzExport" targetType="navTab"  rel="'.$this->_primaryKey.'s"
+        <li class="line">line</li>
+        <li><a class="icon csvdownload"   href="'.$csvUrl.'" target="dwzExport" targetType="navTab" title="实要导出这些记录吗?"><span>导出EXCEL</span></a></li>
+        */
+        return '<ul class="toolBar">
+					<li class="line">line</li>
+                    <li><a class="icon exportOrderExcel" href="javascript:void()"  postType="string"  target="_blank" title="确定要导出选中订单吗?"><span>导出EXCEL</span></a></li>
+				</ul>
+                <script>
+                    $(document).ready(function(){
+                        $(".exportOrderExcel").click(function(){
+                            var selectOrderIds = \'\';
+                            $(\'.grid input:checkbox[name=order_ids]:checked\').each(function(k){
+                                if(k == 0){
+                                    selectOrderIds = $(this).val();
+                                }else{
+                                    selectOrderIds += \',\'+$(this).val();
+                                }
+                            });
+                            if (!selectOrderIds) {
+                                var message = "至少选择一个订单";
+                                alertMsg.error(message);
+                            } else {
+                                url = "'.$this->_exportExcelUrl.'?order_ids="+selectOrderIds;
+                                window.location.href = url;
+                            }
+                        });
+                    });
+                </script>
+                
+        ';
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

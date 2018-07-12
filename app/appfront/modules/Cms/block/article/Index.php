@@ -31,7 +31,7 @@ class Index
     public function initHead()
     {
         $primaryKey = Yii::$service->cms->article->getPrimaryKey();
-        $primaryVal = CRequest::param($primaryKey);
+        $primaryVal = Yii::$app->request->get($primaryKey);
         $article = Yii::$service->cms->article->getByPrimaryKey($primaryVal);
         $this->_artile = $article;
 

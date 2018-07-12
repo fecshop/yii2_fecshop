@@ -17,6 +17,8 @@ use fecshop\app\appadmin\modules\Catalog\CatalogController;
  */
 class UrlrewriteController extends CatalogController
 {
+    public $enableCsrfValidation = false;
+    
     public function actionIndex()
     {
         $data = $this->getBlock()->getLastData();

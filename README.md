@@ -27,6 +27,7 @@
 1、Fecshop介绍
 ------------
 
+
 [Fecshop](http://www.fecshop.com) 全称为Fancy ECommerce Shop，是基于php Yii2框架之上开发的一款优秀的开源电商系统，
 Fecshop支持多语言，多货币，架构上支持pc，手机web，手机app，和erp对接等入口，您可以免费快速的定制和部署属于您的电商系统。
 
@@ -34,22 +35,26 @@ Fecshop支持多语言，多货币，架构上支持pc，手机web，手机app�
 
 [Fecshop](http://www.fecshop.com) 官网：http://www.fecshop.com ，您可以在这里提交bug，问题咨询等等。
 
-[Fecshop](http://www.fecshop.com) 【已完成】PC Web Demo ：http://fecshop.appfront.fancyecommerce.com/
+[Fecshop](http://www.fecshop.com) 【已完成】PC Web Demo ：[http://fecshop.appfront.fancyecommerce.com](http://fecshop.appfront.fancyecommerce.com/men?fec_campaign=xxx&fec_content=94&fec_design=96&fec_medium=Share&fec_source=Facebook&fid=7a77a6ba-2d90-4ad5-bf75-fdf920de41f7)
 
-[Fecshop](http://www.fecshop.com) 【已完成】Mobile Web Demo（WAP）：http://fecshop.apphtml5.fancyecommerce.com
+[Fecshop](http://www.fecshop.com) 【已完成】Mobile Web Demo（WAP）：[http://fecshop.apphtml5.fancyecommerce.com](http://fecshop.apphtml5.fancyecommerce.com?fec_campaign=xxxx&fec_content=94&fec_design=96&fec_medium=Adwords&fec_source=Facebook&fid=100000005)
 
-[Fecshop](http://www.fecshop.com) 【已完成】Mobile VUE Demo(Appserver,前后端彻底分离模式)：http://demo.fancyecommerce.com/#/
+[Fecshop](http://www.fecshop.com) 【已完成】Mobile VUE Demo(Appserver,前后端彻底分离模式)：[http://demo.fancyecommerce.com/#/](http://demo.fancyecommerce.com/#/?fec_campaign=xxxx&fec_content=94&fec_design=96&fec_medium=Adwords&fec_source=Facebook&fid=100000005)
 
 [Fecshop](http://www.fecshop.com) 后台演示地址：加QQ群，在群公告里面有后台演示地址，账号密码等信息
 
-[Fecshop](http://www.fecshop.com) QQ群：186604851 ，入群验证：fecshop
 
-
-作者, Terry QQ Email：2358269014@qq.com
-
+作者, Terry Email：2358269014@qq.com
+ 
 [Fecshop](http://www.fecshop.com) Github地址: https://github.com/fancyecommerce/yii2_fecshop
 
-开源协议：[Fecshop 授权协议](http://www.fecshop.com/license)
+Fecshop开源协议：[Fecshop 授权协议](http://www.fecshop.com/license)
+
+Fecshop线上项目案例：http://www.fecshop.com/topic/55
+
+Fecshop问题咨询，Bug提交等参看：[Fecshop论坛](http://www.fecshop.com/topic)
+
+Fecshop开源项目历程：[Fecshop时间线](http://www.fecshop.com/site/timeline)
 
 2、Fecshop文档，视频，扩展库
 ------------
@@ -69,6 +74,10 @@ Fecshop支持多语言，多货币，架构上支持pc，手机web，手机app�
 ------------
 
 > 请务必按照说明安装，Fecshop是基于composer在线安装，直接git clone下载下来是不行的，请按照下面的说明操作
+
+
+在强调一遍：**Fecshop是基于composer在线安装，直接git clone下载下来是不行的**，请按照安装文档操作
+
 
 3.1、【标准方式】标准安装方式：从基础linux一步一步的配置的方式，详细参看文档： [Fecshop 安装](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-hand-install.html)
 
@@ -177,6 +186,15 @@ appserver（手机app服务），appapi（erp，或者其他接口对接），
 
 | 捐赠人        | 金额      |  时间            |  方式           | 账户                  | 捐助者留言      |
 | --------------| ----------| -------------    | -----------     | ----------------------| ----------|
+| *雷雷         | ￥800.00  | 2018-06-27       |   支付宝        | 134******22           | 支持作者，支持fecshop   |
+| （*）         | ￥1.00    | 2018-06-22       |   微信          | -                     |  |
+| *建欣         | ￥50.00   | 2018-06-15       |   支付宝        | 593***@qq.com         | 小小心意，支持fecshop的发展   |
+| *宁           | ￥5.00    | 2018-06-08       |   支付宝        | pay***@itoumao.com    | 感谢作者的开源精神，同为程序猿的我做不到   |
+| （*）         | ￥10.00   | 2018-06-06       |   微信          | -                     | 感谢作者，感谢开源  |
+| *庆飞         | ￥188.00  | 2018-06-05       |   支付宝        | lin***@aliyun.com     | 逛v2看到的，支持开源，为你点赞！   |
+| *桦           | ￥10.00   | 2018-05-24       |   支付宝        | -                     | 真心做得不错    |
+| （*）         | ￥1.00    | 2018-05-17       |   微信          | -                     | 搞的不错  |
+| （*）         | ￥13.14   | 2018-05-11       |   微信          | -                     | 北京智翔财务为你加油  |
 | （*）         | ￥10.00   | 2018-05-04       |   微信          | -                     | 希望fecshop越做越好  |
 | （*）         | ￥16.66   | 2018-04-20       |   微信          | -                     | 为你们打call  |
 | （*）         | ￥6.60    | 2018-04-16       |   微信          | -                     | 不会用一yii，为开源  |

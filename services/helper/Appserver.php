@@ -58,7 +58,7 @@ class Appserver extends Service
     public $account_favorite_id_not_exist                 = 1100015; // custome favorite: favorite id is not exit
     public $account_facebook_login_error                  = 1100016; // 使用fb账户登录fecshop出错
     public $account_google_login_error                    = 1100017; // 使用google账户登录fecshop出错
-    
+    public $account_address_save_fail                     = 1100018;
     
     /**
      * category状态码
@@ -256,6 +256,11 @@ class Appserver extends Service
             $this->account_address_is_not_exist => [
                 'message' => 'account address id is not exist',
             ],
+            
+            $this->account_address_save_fail => [
+                'message' => 'account address save fail',
+            ],
+            
             $this->account_address_edit_param_invaild => [
                 'message' => 'account address edit param is invalid',
             ],

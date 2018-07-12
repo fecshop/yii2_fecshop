@@ -27,6 +27,10 @@ class OnepageController extends AppfrontController
 
     public function actionIndex()
     {
+        if (Yii::$service->store->isAppServerMobile()) {
+            $urlPath = 'checkout/onepage';
+            Yii::$service->store->redirectAppServerMobile($urlPath);
+        }
         $guestOrder = Yii::$app->controller->module->params['guestOrder'];
         if(!$guestOrder && Yii::$app->user->isGuest){
             $checkoutOrderUrl = Yii::$service->url->getUrl('checkout/onepage/index');

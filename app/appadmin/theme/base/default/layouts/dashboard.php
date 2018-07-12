@@ -36,6 +36,16 @@ $jsOptions = [
 		],
         
 	],
+    [
+		'js'	=>[
+            'js/echarts.min.js',
+		],
+        // js 放到尾部
+        'options' => [
+			'position' => \yii\web\View::POS_HEAD,  //POS_HEAD,
+		],
+        
+	],
 	# js config 2
 	//[
 	//	'options' => [
@@ -73,24 +83,8 @@ $cssOptions = [
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <?= Html::csrfMetaTags() ?>
-    <title><?= Html::encode($this->title) ?></title>
-    <?php $this->head() ?>
-	<!--
-	<script src="http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js"></script>
-    -->
-	<script src="//echarts.baidu.com/build/dist/echarts.js"></script>
-   
-	<!-- 3.0 -->
-    <script type="text/javascript">
-        // 路径配置
-        require.config({
-            paths: {
-               // echarts: 'http://echarts.baidu.com/gallery/vendors/echarts'
-				echarts: 'http://echarts.baidu.com/build/dist'
-            }
-        });
-    </script>
-	  
+    <title><?= $this->title ? Html::encode($this->title) : 'Fecshop 后台管理系统' ?></title>
+    <?php $this->head() ?>  
 <script> 
 
 　$(function(){
@@ -150,20 +144,33 @@ $cssOptions = [
 					<div class="page unitBox">
 						<div class="accountInfo">
 							<p><span>您好：<?= \fec\helpers\CUser::getCurrentUsername();   ?></span></p>
-							</div>
-						<div class="pageFormContent" layoutH="80" style="margin-right:230px">	
-                            <ul style="line-height:30px;text-align:center;margin-top:30px;">
-                                <li>
-                                    <h1 style="font-size:36px;"> Fecshop后台管理系统</h1>
-                                    
-                                </li>
-                                <li>
-                                    <div style="padding-top:150px;">
-                                    注：如果权限不够，请联系管理员开通权限。
-                                    </div>
-                                </li>
-                            </ul>
-						</div>
+                        </div>
+                        
+                        <?php $day = 31;  // 获取三个月的数据?>
+                        
+                        <br/><br/><br/><br/>
+                        
+                        <?php list($orderAmount, $orderCount) = Yii::$service->order->getPreMonthOrder($day); ?>
+                        <div style="padding-left:100px;font-size:16px;">
+                            最近1个月的订单金额趋势(基础货币)
+                        </div>
+                        <?= Yii::$service->helper->echart->getLine($orderAmount, true); ?>
+                        
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                        <div style="padding-left:100px;font-size:16px;">
+                            最近1个月的订单个数趋势
+                        </div>
+                        <?= Yii::$service->helper->echart->getLine($orderCount, true); ?>
+                        
+						<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                        
+                        <div style="padding-left:100px;font-size:16px;">
+                            最近1个月的注册用户个数
+                        </div>
+                        <?php $customerRegisterCount = Yii::$service->customer->getPreMonthCustomer($day); ?>
+                        <?= Yii::$service->helper->echart->getLine($customerRegisterCount, false); ?>
+                        
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 					</div>
 				</div>
 			</div>

@@ -28,6 +28,18 @@ class ArticleController extends AppfrontController
 
     public function behaviors()
     {
+        if (Yii::$service->store->isAppServerMobile()) {
+            $primaryKey = Yii::$service->cms->article->getPrimaryKey();
+            $primaryVal = Yii::$app->request->get($primaryKey);
+            //echo $primaryVal;
+            $article = Yii::$service->cms->article->getByPrimaryKey($primaryVal);
+            //var_dump($article);
+            if (is_object($article) && $article['url_key']) {
+                $url_key = $article['url_key'];
+                $urlPath = 'cms/page'.$url_key;
+                Yii::$service->store->redirectAppServerMobile($urlPath);
+            }
+        }
         $behaviors = parent::behaviors();
         $primaryKey = Yii::$service->cms->article->getPrimaryKey();
         $article_id = Yii::$app->request->get($primaryKey);

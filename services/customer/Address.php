@@ -168,7 +168,11 @@ class Address extends Service
      */
     protected function actionSave($one)
     {
-        $time = time();
+        if (!is_array($one) || empty($one)) {
+            Yii::$service->helper->errors->add('address data is empty');
+
+            return false;
+        }
         $primaryKey = $this->getPrimaryKey();
         $primaryVal = isset($one[$primaryKey]) ? $one[$primaryKey] : '';
         if ($primaryVal) {
@@ -176,22 +180,41 @@ class Address extends Service
             if (!$model) {
                 Yii::$service->helper->errors->add('address '.$this->getPrimaryKey().' is not exist');
 
-                return;
+                return false;
             }
         } else {
             $model = new $this->_addressModelName();
             $model->created_at = time();
         }
-        $model->updated_at = time();
-        $model      = Yii::$service->helper->ar->save($model, $one);
+        $model->attributes = $one;
+        // 规则验证
+        if ($model->validate()) {
+            $model->updated_at = time();
+            // 保存地址。
+            $model = Yii::$service->helper->ar->save($model, $one);
+            if (!$model) {
+                return false;
+            }
+        } else {
+            $errors = $model->errors;
+            Yii::$service->helper->errors->addByModelErrors($errors);
+
+            return false;
+        }
         $primaryVal = $model[$primaryKey];
         if ($one['is_default'] == 1) {
             $customer_id = $one['customer_id'];
-            $this->_addressModel->updateAll(
-                ['is_default'=>2],  // $attributes
-                'customer_id = '.$customer_id.' and  '.$primaryKey.' != ' .$primaryVal      // $condition
-                //[':customer_id' => $customer_id]
-            );
+            if ($customer_id && $primaryVal) {
+                
+                $this->_addressModel->updateAll(
+                    ['is_default'=>2],  // $attributes
+                    'customer_id = :customer_id and  '.$primaryKey.' != :primaryVal ',      // $condition
+                    [
+                        'customer_id' => $customer_id, 
+                        'primaryVal'  => $primaryVal,
+                    ]
+                );
+            }
         }
 
         return $primaryVal;

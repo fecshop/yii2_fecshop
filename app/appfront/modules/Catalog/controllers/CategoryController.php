@@ -38,6 +38,13 @@ class CategoryController extends AppfrontController
      */
     public function behaviors()
     {
+        // 检测手机设备，vue跳转
+        if (Yii::$service->store->isAppServerMobile()) {
+            $primaryKey = Yii::$service->category->getPrimaryKey();
+            $primaryVal = Yii::$app->request->get($primaryKey);
+            $urlPath = 'catalog/category/'.$primaryVal;
+            Yii::$service->store->redirectAppServerMobile($urlPath);
+        }
         $behaviors = parent::behaviors();
         $primaryKey = Yii::$service->category->getPrimaryKey();
         $category_id = Yii::$app->request->get($primaryKey);

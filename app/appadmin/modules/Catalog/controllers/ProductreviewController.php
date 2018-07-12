@@ -17,7 +17,7 @@ use fecshop\app\appadmin\modules\Catalog\CatalogController;
  */
 class ProductreviewController extends CatalogController
 {
-    //public $enableCsrfValidation = false;
+    public $enableCsrfValidation = false;
 
      public function actionIndex()
      {

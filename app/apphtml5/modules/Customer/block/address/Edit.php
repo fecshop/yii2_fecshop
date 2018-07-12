@@ -138,91 +138,16 @@ class Edit
         exit;
     }
 
-    public function save($address)
+    public function save($addressInfo)
     {
-        $arr = [];
-        $email = isset($address['email']) ? $address['email'] : '';
-        $first_name = isset($address['first_name']) ? $address['first_name'] : '';
-        $last_name = isset($address['last_name']) ? $address['last_name'] : '';
-        $telephone = isset($address['telephone']) ? $address['telephone'] : '';
-        $country = isset($address['country']) ? $address['country'] : '';
-        $state = isset($address['state']) ? $address['state'] : '';
-        //$company = isset($address['company']) ? $address['company'] : '';
-        //$fax = isset($address['fax']) ? $address['fax'] : '';
-        $street1 = isset($address['street1']) ? $address['street1'] : '';
-        $street2 = isset($address['street2']) ? $address['street2'] : '';
-
-        $city = isset($address['city']) ? $address['city'] : '';
-        $zip = isset($address['zip']) ? $address['zip'] : '';
-        $is_default = isset($address['is_default']) ? $address['is_default'] : '';
-        if (!$email) {
-            $error[] = ['email'];
-        } else {
-            $arr['email'] = $email;
-        }
-        if (!$first_name) {
-            $error[] = ['first_name'];
-        } else {
-            $arr['first_name'] = $first_name;
-        }
-        if (!$last_name) {
-            $error[] = ['last_name'];
-        } else {
-            $arr['last_name'] = $last_name;
-        }
-        if (!$telephone) {
-            $error[] = ['telephone'];
-        } else {
-            $arr['telephone'] = $telephone;
-        }
-        if (!$country) {
-            $error[] = ['country'];
-        } else {
-            $arr['country'] = $country;
-        }
-        if (!$state) {
-            $error[] = ['state'];
-        } else {
-            $arr['state'] = $state;
-        }
-        if (!$street1) {
-            $error[] = ['street1'];
-        } else {
-            $arr['street1'] = $street1;
-        }
-        if (!$city) {
-            $error[] = ['city'];
-        } else {
-            $arr['city'] = $city;
-        }
-        if (!$zip) {
-            $error[] = ['zip'];
-        } else {
-            $arr['zip'] = $zip;
-        }
-        if (!empty($error)) {
-            $str = implode(',', $error).' can not empty';
-            Yii::$service->page->message->addError($str);
-
-            return;
-        }
-        if ($street2) {
-            $arr['street2'] = $street2;
-        }
-        if ($is_default) {
-            $arr['is_default'] = $is_default;
-        }
-        if ($is_default) {
-            $arr['is_default'] = $is_default;
-        }
-        if (isset($address['address_id'])) {
-            $arr['address_id'] = $address['address_id'];
-        }
-        //var_dump($address);exit;
         $identity = Yii::$app->user->identity;
-        $arr['customer_id'] = $identity['id'];
-        Yii::$service->customer->address->save($arr);
-
-        return Yii::$service->url->redirectByUrlKey('customer/address');
+        $addressInfo['customer_id'] = $identity['id'];
+        $saveStatus = Yii::$service->customer->address->save($addressInfo);
+        if (!$saveStatus) {
+            Yii::$service->page->message->addByHelperErrors();
+            return false;
+        }
+        Yii::$service->url->redirectByUrlKey('customer/address');
+        return true;
     }
 }

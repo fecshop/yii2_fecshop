@@ -97,6 +97,8 @@ class OrderController extends AppserverTokenController
         $orderInfo['coupon_code'] = $order['coupon_code'];
         $orderInfo['payment_method'] = $order['payment_method'];
         $orderInfo['shipping_method'] = $order['shipping_method'];
+        $orderInfo['tracking_number'] = $order['tracking_number'];
+        
         $orderInfo['shipping_total'] = $order['shipping_total'];
         $orderInfo['base_shipping_total'] = $order['base_shipping_total'];
         $orderInfo['customer_telephone'] = $order['customer_telephone'];

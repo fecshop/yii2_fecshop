@@ -75,10 +75,10 @@ class Index
         ];
     }
     protected function getTraceSearchData(){
-        if (Yii::$service->page->trace->traceJsEnable && $this->_searchText && $this->_productCount){
+        if (Yii::$service->page->trace->traceJsEnable && $this->_searchText){
             $arr = [
                 'text'       => $this->_searchText,
-                'result_qty' => $this->_productCount,
+                'result_qty' => $this->_productCount ? $this->_productCount : 0,
             ];
             return json_encode($arr);
         } else {

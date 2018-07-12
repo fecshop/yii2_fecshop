@@ -84,12 +84,12 @@ use fecshop\app\appfront\helper\Format;
 						</p>
                         -->
                         <p class="edit_p">
-							<label>支付方式：</label>
+							<label>支付类型：</label>
 							<span><?= $order['checkout_method'] ?></span>
 						</p>
 						<p class="edit_p">
 							<label>支付方式：</label>
-							<span><?= $order['payment_method'] ?></span>
+							<span><?= $order['payment_method_label'] ?></span>
 						</p>
 						
 						<?php  if($order['remote_ip']){  ?>
@@ -111,7 +111,7 @@ use fecshop\app\appfront\helper\Format;
 						<?php  if($order['subtotal_with_discount']){  ?>
 						<p class="edit_p">
 							<label>优惠券：</label>
-							<span><?= $symbol.$order['coupon_code'] ?></span>
+							<span><?= $symbol ?><?= $order['coupon_code'] ? $order['coupon_code'] : '0.00' ?></span>
 						</p>
 						<?php }  ?>
 						
@@ -182,13 +182,19 @@ use fecshop\app\appfront\helper\Format;
 				
 						<p class="edit_p">
 							<label>货运方式：</label>
-							<span><?= $order['shipping_method'] ?></span>
+							<span><?= $order['shipping_method_label'] ?></span>
 						</p>
 						<p class="edit_p">
 							<label>订单运费：</label>
 							<span><?= $symbol.$order['shipping_total'] ?></span>
 						</p>
-						
+						<p class="edit_p">
+							<label>货运追踪号：</label>
+                            <span>
+                                <input type="text" name="editForm[tracking_number]" value="<?= $order['tracking_number'] ?>" />
+                            </span>
+						</p>
+                        
 						<p class="edit_p">
 							<label>电话：</label>
 							<span>

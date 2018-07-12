@@ -38,6 +38,12 @@ class ProductController extends AppfrontController
      */
     public function behaviors()
     {
+        if (Yii::$service->store->isAppServerMobile()) {
+            $primaryKey = Yii::$service->product->getPrimaryKey();
+            $primaryVal = Yii::$app->request->get($primaryKey);
+            $urlPath = 'catalog/product/'.$primaryVal;
+            Yii::$service->store->redirectAppServerMobile($urlPath);
+        }
         $behaviors = parent::behaviors();
         $primaryKey = Yii::$service->product->getPrimaryKey();
         $product_id = Yii::$app->request->get($primaryKey);

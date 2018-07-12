@@ -33,4 +33,16 @@ class Format extends Service
         //$number = number_format();
         //return $number;
     }
+    /**
+     * @property $day | Int 多少天之前
+     * 返回最近xx天的日期数组
+     */
+    public function getPreDayDateArr($day){
+        $arr = [];
+        for ($i=$day; $i>=0; $i--) {
+            $str = date("Y-m-d",strtotime("-$i day"));
+            $arr[$str] = 0;
+        }
+        return $arr;
+    }
 }

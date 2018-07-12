@@ -93,17 +93,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
                 'name'=>'email',
                 'columns_type' =>'string',
             ],
-            [    // selecit的Int 类型
-                'type'=>'select',
-                'title'=>'订阅',
-                'name'=>'is_subscribed',
-                'columns_type' =>'int',  // int使用标准匹配， string使用模糊查询
-                'value'=> [                    // select 类型的值
-                    1 =>'订阅',
-                    2 =>'不订阅',
-                ],
-            ],
-
+            
             [    // 字符串类型
                 'type'=>'inputtext',
                 'title'=>'密码重置token',
@@ -165,29 +155,12 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
             ],
             [
                 'orderField'    => 'favorite_product_count',
-                'label'            => '收藏个数',
-                'width'            => '50',
+                'label'            => '收藏产品数',
+                'width'            => '60',
                 'align'        => 'left',
 
             ],
-            [
-                'orderField'    => 'password_reset_token',
-                'label'            => '重置密码token',
-                'width'            => '50',
-                'align'        => 'left',
-
-            ],
-            [
-                'orderField'    => 'is_subscribed',
-                'label'            => '订阅邮件',
-                'width'            => '50',
-                'align'        => 'center',
-                'display'        => [
-                    1 =>'是',
-                    2 =>'否',
-                ],
-            ],
-
+            
             [
                 'orderField'    => 'status',
                 'label'            => '状态',
@@ -217,5 +190,13 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
         ];
 
         return $table_th_bar;
+    }
+    
+    /**
+     * get edit html bar, it contains  add ,eidt ,delete  button.
+     */
+    public function getEditBar()
+    {
+        return '';
     }
 }

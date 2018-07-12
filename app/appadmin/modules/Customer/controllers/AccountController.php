@@ -17,6 +17,8 @@ use fecshop\app\appadmin\modules\Customer\CustomerController;
  */
 class AccountController extends CustomerController
 {
+    public $enableCsrfValidation = false;
+    
     public function actionIndex()
     {
         $data = $this->getBlock()->getLastData();

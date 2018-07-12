@@ -67,7 +67,7 @@ class Order extends Service
     
     protected $_orderModelName = '\fecshop\models\mysqldb\Order';
     protected $_orderModel;
-   
+    
     
     public function init(){
         parent::init();
@@ -115,6 +115,25 @@ class Order extends Service
             $this->status_completed                 => $this->status_completed,
         ];
         
+    }
+    
+    /**
+     * @return array 
+     * 将订单所有的状态，组合成一个数组，进行返回。
+     */
+    protected function actionGetSelectStatusArr(){
+        return [
+            $this->payment_status_pending           => '等待支付('.$this->payment_status_pending.')',
+            $this->payment_status_processing        => '支付处理中('.$this->payment_status_processing.')',
+            $this->payment_status_confirmed         => '支付成功('.$this->payment_status_confirmed.')',
+            $this->payment_status_canceled          => '支付取消('.$this->payment_status_canceled.')',
+            $this->payment_status_suspected_fraud   => '欺诈订单('.$this->payment_status_suspected_fraud.')',
+            $this->status_holded                    => '审核订单('.$this->status_holded.')',
+            $this->status_processing                => '备货中订单('.$this->status_processing.')',
+            $this->status_dispatched                => '已发货订单('.$this->status_dispatched.')',
+            $this->status_refunded                  => '已退款订单('.$this->status_refunded.')',
+            $this->status_completed                 => '已完成订单('.$this->status_completed.')',
+        ];
     }
     
     /**
@@ -459,11 +478,7 @@ class Order extends Service
         $orderModel = $this->getByPaymentToken($token);
         $increment_id = isset($orderModel['increment_id']) ? $orderModel['increment_id'] : '';
         return Yii::$service->order->getOrderInfoByIncrementId($increment_id);
-        
     }
-    
-    
-
     /**
      * @property $address | Array 货运地址
      * @property $shipping_method | String 货运快递方式
@@ -493,14 +508,9 @@ class Order extends Service
 
             return false;
         }
-        // 检查产品是否有库存，如果没有库存则返回false
-        //$deductStatus = Yii::$service->product->stock->checkItemsStock($cartInfo['products']);
-        //if (!$deductStatus) {
-        //    return false;
-        //}
         // 扣除库存。（订单生成后，库存产品库存。）
-        //     （备注）需要另起一个脚本，用来处理半个小时后，还没有支付的订单，将订单取消，然后将订单里面的产品库存返还。
-        // 			如果是无限库存（没有库存就去采购的方式），那么不需要跑这个脚本，将库存设置的非常大即可。
+        // 备注）需要另起一个脚本，用来处理半个小时后，还没有支付的订单，将订单取消，然后将订单里面的产品库存返还。
+        // 如果是无限库存（没有库存就去采购的方式），那么不需要跑这个脚本，将库存设置的非常大即可。
         $deductStatus = Yii::$service->product->stock->deduct($cartInfo['products']);
         if(!$deductStatus){
             // 库存不足则返回
@@ -566,32 +576,37 @@ class Order extends Service
         $myOrder['coupon_code']             = $cartInfo['coupon_code'];
         $myOrder['payment_method']          = $payment_method;
         $myOrder['shipping_method']         = $shipping_method;
-        $myOrder->save();
+        // 进行model验证。
+        if (!$myOrder->validate()) {
+            $errors = $myOrder->errors;
+            Yii::$service->helper->errors->addByModelErrors($errors);
+
+            return false;
+        }
+        // 保存订单
+        $saveOrderStatus = $myOrder->save();
+        if (!$saveOrderStatus) {
+            return false;
+        }
         $order_id = $myOrder['order_id'];
         if(!$increment_id){
             $increment_id = $this->generateIncrementIdByOrderId($order_id);
             $myOrder['increment_id'] = $increment_id;
-            $myOrder->save();
+            // 保存订单
+            $saveOrderStatus = $myOrder->save();
+            if (!$saveOrderStatus) {
+                return false;
+            }
         }
         Yii::$service->event->trigger($afterEventName, $myOrder);
         if ($myOrder[$this->getPrimaryKey()]) {
-            Yii::$service->order->item->saveOrderItems($cartInfo['products'], $order_id, $cartInfo['store']);
+            // 保存订单产品
+            $saveItemStatus = Yii::$service->order->item->saveOrderItems($cartInfo['products'], $order_id, $cartInfo['store']);
+            if (!$saveItemStatus) {
+                return false;
+            }
             // 订单生成成功，通过api传递数据给trace系统
             $this->sendTracePaymentPendingOrder($myOrder, $cartInfo['products']);
-            // 有token的，代表是更新类型，譬如购物车点击paypal express支付的方式
-            // 这种类型要进行检查，不能多次执行。该函数必须在订单操作完成的情况下执行。
-            /*
-            if($token){
-                if(!$this->checkOrderVersion($increment_id)){
-                    return false;
-                }
-            }
-            */
-            // 优惠券
-            // 优惠券是在购物车页面添加的，添加后，优惠券的使用次数会被+1，
-            // 因此在生成订单部分，是没有优惠券使用次数操作的（在购物车添加优惠券已经被执行该操作）
-            // 生成订单后，购物车的数据会被清空，其中包括优惠券信息的清空。
-
             // 如果是登录用户，那么，在生成订单后，需要清空购物车中的产品和coupon。
             if (!Yii::$app->user->isGuest && $clearCart) {
                 Yii::$service->cart->clearCartProductAndCoupon();
@@ -933,4 +948,59 @@ class Order extends Service
         }
         return $logMessage;
     }
+    /**
+     * @property $days | Int 天数
+     * 得到最近1个月的订单数据，包括：日期，订单支付状态，订单金额
+     * 下面的数据是为了后台的订单统计
+     */
+    public function getPreMonthOrder($days){
+        // 得到一个月前的时间戳
+        $preMonthTime = strtotime("-$days days");
+        $filter = [
+            'select' => ['created_at', 'increment_id', 'order_status', 'base_grand_total' ],
+            'numPerPage' 	=> 10000000,
+            'pageNum'		=> 1,
+            'where'			=> [
+                ['>=', 'created_at', $preMonthTime]
+            ],
+            'asArray' => true,
+        ];
+        $orderPaymentStatusArr = $this->getOrderPaymentedStatusArr();
+        $data = $this->coll($filter);
+        $coll = $data['coll'];
+        $dateArr = Yii::$service->helper->format->getPreDayDateArr($days);
+        $orderAmountArr = $dateArr;
+        $paymentOrderAmountArr = $dateArr;
+        $orderCountArr = $dateArr;
+        $paymentOrderCountArr = $dateArr;
+        
+        if (is_array($coll) && !empty($coll)) {
+            foreach ($coll as $order) {
+                $created_at = $order['created_at'];
+                $created_at_str = date("Y-m-d", $created_at);
+                $order_status = $order['order_status'];
+                $base_grand_total = $order['base_grand_total'];
+                if (isset($orderAmountArr[$created_at_str])) {
+                    $orderAmountArr[$created_at_str] += $base_grand_total;
+                    $orderCountArr[$created_at_str] += 1;
+                    if (in_array($order_status, $orderPaymentStatusArr)) {
+                        $paymentOrderAmountArr[$created_at_str] += $base_grand_total;
+                        $paymentOrderCountArr[$created_at_str] += 1;
+                    }
+                }
+            }
+        }
+        
+        return [
+            [
+                '订单总额' => $orderAmountArr,
+                '支付订单总额' => $paymentOrderAmountArr,
+            ],
+            [
+                '订单总数' => $orderCountArr,
+                '支付订单总数' => $paymentOrderCountArr,
+            ],
+        ];   
+    }
+    
 }
