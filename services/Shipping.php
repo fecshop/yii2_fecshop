@@ -82,7 +82,7 @@ class Shipping extends Service
      */
     public function getVolumeWeight($long, $width, $high){
         $volume_weight = ($long * $width * $high) / $this->volumeWeightCoefficient;
-        return Yii::$service->helper->format->number_format($volume_weight);
+        return (float)$volume_weight;
     }
      /**
      * @property $long | Float ,长度，单位cm

@@ -183,7 +183,7 @@ class m170228_072156_fecshop_tables extends Migration
 			', '
 			INSERT INTO `admin_user_role` (`id`, `user_id`, `role_id`) VALUES
 			(1, 2, 4),
-			(2, 2, 12),
+			(2, 2, 12);
 			', "
 			CREATE TABLE IF NOT EXISTS `admin_visit_log` (
 			  `id` int(15) NOT NULL AUTO_INCREMENT,
