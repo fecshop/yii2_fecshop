@@ -106,7 +106,7 @@ QQ: 2358269014
 
 Email: 2358269014@qq.com
 
-扫一扫添加微信：
+扫一扫添加Terry微信咨询定制开发：
 
 ![weixin](http://www.fecshop.com/weixinlogo.png)
 
