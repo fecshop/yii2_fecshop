@@ -106,6 +106,10 @@ QQ: 2358269014
 
 Email: 2358269014@qq.com
 
+扫一扫添加微信：
+
+![weixin](http://www.fecshop.com/weixinlogo.png)
+
 6、架构特色
 -----------
 
