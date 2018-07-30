@@ -97,16 +97,10 @@ Fecshop开源项目历程：[Fecshop时间线](http://www.fecshop.com/site/timel
 
 如果您使用docker compose或者 vagrant box的安装方式，不需要执行这个操作。
 
-5、定制开发：
+5、联系Terry：
 ----------------
 
-如果您想进行个性化定制开发，可以联系Terry个人工作室
-
-QQ: 2358269014
-
-Email: 2358269014@qq.com
-
-扫一扫添加Terry微信咨询定制开发：
+扫一扫添加Terry微信：
 
 ![weixin](http://www.fecshop.com/weixinlogo.png)
 
