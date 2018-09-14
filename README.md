@@ -59,10 +59,14 @@ Fecshop问题咨询，Bug提交等参看：[Fecshop论坛](http://www.fecshop.co
 Fecshop开源项目历程：[Fecshop时间线](http://www.fecshop.com/site/timeline)
 
 
-Fecshop 用户行为分析系统
+Fecshop Trace 用户行为分析系统
 ----------------------
 
-参看： https://github.com/fecshop/trace_fecshop ， readme部分有演示地址，进入后不要修改代码
+> 这是用golang + mongodb + elasticSearch 做的一套用户行为分析系统， 已经完成并且开源
+
+用户行为分析系统文档： http://www.fecshop.com/doc/fec-go-guide/develop/cn-1.0/guide-README.html
+
+详细参看github地址： https://github.com/fecshop/trace_fecshop ， readme部分有演示地址，进入后不要修改代码
 
 Fecshop Trace Demo: http://trace.fecshop.com
 
