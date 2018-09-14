@@ -58,6 +58,12 @@ Fecshop问题咨询，Bug提交等参看：[Fecshop论坛](http://www.fecshop.co
 
 Fecshop开源项目历程：[Fecshop时间线](http://www.fecshop.com/site/timeline)
 
+
+Fecshop 用户行为分析系统
+----------------------
+
+参看： https://github.com/fecshop/trace_fecshop ， readme部分有演示地址，进入后不要修改代码
+
 2、Fecshop文档，视频，扩展库
 ------------
 
