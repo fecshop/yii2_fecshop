@@ -64,6 +64,11 @@ Fecshop 用户行为分析系统
 
 参看： https://github.com/fecshop/trace_fecshop ， readme部分有演示地址，进入后不要修改代码
 
+Fecshop Trace Demo: http://trace.fecshop.com
+
+测试账户： test test123 （清不要修改密码）
+
+
 2、Fecshop文档，视频，扩展库
 ------------
 
