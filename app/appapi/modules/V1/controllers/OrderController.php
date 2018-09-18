@@ -18,12 +18,12 @@ use Yii;
 class OrderController extends AppapiTokenController
 {
     public $numPerPage = 5;
-    
+
     /**
      * Get Lsit Api：得到Category 列表的api
      */
     public function actionList(){
-        
+
         $page = Yii::$app->request->get('page');
         $page = $page ? $page : 1;
         $filter = [
@@ -69,7 +69,7 @@ class OrderController extends AppapiTokenController
         $increment_id  = Yii::$app->request->get('increment_id');
         $data          = [];
         if (!$increment_id) {
-            
+
             return [
                 'code'    => 400,
                 'message' => 'request param [increment_id] can not empty',
@@ -82,7 +82,7 @@ class OrderController extends AppapiTokenController
             }
         }
         if (empty($data)) {
-            
+
             return [
                 'code'    => 400,
                 'message' => 'can not find order by id or url_key',
@@ -100,9 +100,9 @@ class OrderController extends AppapiTokenController
                 'message' => 'fetch order success',
                 'data'    => $data,
             ];
-        } 
+        }
     }
-    
+
     /**
      * Update One Api：更新一条记录的api
      */
@@ -124,18 +124,18 @@ class OrderController extends AppapiTokenController
             $orderService->payment_status_canceled,
             $orderService->status_holded,
             $orderService->payment_status_suspected_fraud,
-            
+
             $orderService->status_processing,
             $orderService->status_dispatched,
             $orderService->status_refunded,
-            $orderService->status_complete,
+            $orderService->status_completed,
         ];
-         
-            
+
+
         if (!in_array($order_status, $orderStatusAllowArr)) {
             $error[] = '[order_status] value must be in array ['.implode(',',$orderStatusAllowArr).']';
         }
-        
+
         if (!empty($error)) {
             return [
                 'code'    => 400,
@@ -145,7 +145,7 @@ class OrderController extends AppapiTokenController
                 ],
             ];
         }
-        
+
         $order = Yii::$service->order->getByIncrementId($increment_id);
         if (isset($order['increment_id']) && $order['increment_id']) {
             $order['order_status'] = $order_status;
