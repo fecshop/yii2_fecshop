@@ -58,6 +58,21 @@ Fecshop问题咨询，Bug提交等参看：[Fecshop论坛](http://www.fecshop.co
 
 Fecshop开源项目历程：[Fecshop时间线](http://www.fecshop.com/site/timeline)
 
+
+Fecshop Trace 用户行为分析系统
+----------------------
+
+> 这是用golang + mongodb + elasticSearch 做的一套用户行为分析系统， 已经完成并且开源
+
+用户行为分析系统文档： http://www.fecshop.com/doc/fec-go-guide/develop/cn-1.0/guide-README.html
+
+详细参看github地址： https://github.com/fecshop/trace_fecshop ， readme部分有演示地址，进入后不要修改代码
+
+Fecshop Trace Demo: http://trace.fecshop.com
+
+测试账户： test test123 （清不要修改密码）
+
+
 2、Fecshop文档，视频，扩展库
 ------------
 
@@ -78,7 +93,7 @@ Fecshop开源项目历程：[Fecshop时间线](http://www.fecshop.com/site/timel
 > 请务必按照说明安装，Fecshop是基于composer在线安装，直接git clone下载下来是不行的，请按照下面的说明操作
 
 
-在强调一遍：**Fecshop是基于composer在线安装，直接git clone下载下来是不行的**，请按照安装文档操作
+再强调一遍：**Fecshop是基于composer在线安装，直接git clone下载下来是不行的**，请按照安装文档操作
 
 
 3.1、【标准方式】标准安装方式：从基础linux一步一步的配置的方式，详细参看文档： [Fecshop 安装](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-hand-install.html)
