@@ -46,9 +46,9 @@ class AdminUser extends Service
     }
 
     /** AppServer 部分使用的函数
-     * @property $email | String
+     * @property $username | String
      * @property $password | String
-     * 无状态登录，通过email 和password进行登录
+     * 无状态登录，通过 username 和 password 进行登录
      * 登录成功后，合并购物车，返回accessToken
      * ** 该函数是未登录用户，通过参数进行登录需要执行的函数。
      */
