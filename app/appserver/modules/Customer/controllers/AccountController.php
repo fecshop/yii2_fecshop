@@ -25,18 +25,18 @@ class AccountController extends AppserverTokenController
         if (Yii::$app->user->isGuest) {
             $code = Yii::$service->helper->appserver->account_no_login_or_login_token_timeout;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         $leftMenu = $this->getLeftMenu();
         $code = Yii::$service->helper->appserver->status_success;
         $data = [
             'menuList' => $leftMenu,
         ];
-        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
         
-        return $reponseData;
+        return $responseData;
     }
     
     
@@ -69,17 +69,17 @@ class AccountController extends AppserverTokenController
         if (Yii::$app->user->isGuest) {
             $code = Yii::$service->helper->appserver->account_no_login_or_login_token_timeout;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         Yii::$service->customer->logoutByAccessToken();
         Yii::$service->cart->clearCart();
         $code = Yii::$service->helper->appserver->status_success;
         $data = [];
-        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
         
-        return $reponseData;
+        return $responseData;
        
         
     }
@@ -97,9 +97,9 @@ class AccountController extends AppserverTokenController
         $data = [
             'forgotCaptchaActive' => $forgotCaptcha,
         ];
-        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
         
-        return $reponseData;
+        return $responseData;
         
     }
     

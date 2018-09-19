@@ -92,9 +92,9 @@ class RegisterController extends AppserverController
         if($identity){
             $code = Yii::$service->helper->appserver->account_is_logined;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         $email      = Yii::$app->request->post('email');
         $password   = Yii::$app->request->post('password');
@@ -109,9 +109,9 @@ class RegisterController extends AppserverController
             $data = [
                 'error' => $errorInfo,
             ];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         
         $param['email']         = $email;
@@ -138,18 +138,18 @@ class RegisterController extends AppserverController
                     'content' => 'register success',
                     //'redirect' => $redirect,
                 ];
-                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
                 
-                return $reponseData;
+                return $responseData;
             
             }else{
                 $code = Yii::$service->helper->appserver->account_register_fail;
                 $data = [
                     'error' => implode(',',$this->_errors),
                 ];
-                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
                 
-                return $reponseData;
+                return $responseData;
             }
         }
         
@@ -168,9 +168,9 @@ class RegisterController extends AppserverController
             // 用户已经登录
             $code = Yii::$service->helper->appserver->account_is_logined;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         $registerParam = \Yii::$app->getModule('customer')->params['register'];
         $registerPageCaptcha = isset($registerParam['registerPageCaptcha']) ? $registerParam['registerPageCaptcha'] : false;
@@ -183,9 +183,9 @@ class RegisterController extends AppserverController
             'maxPassLength' => Yii::$service->customer->getRegisterPassMaxLength(),
             'registerCaptchaActive' => $registerPageCaptcha,
         ];
-        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
         
-        return $reponseData;
+        return $responseData;
     }
     
 }

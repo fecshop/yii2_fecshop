@@ -56,18 +56,18 @@ class Add
             
             $code = Yii::$service->helper->appserver->product_id_not_exist;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         
         $product = Yii::$service->product->getByPrimaryKey($product_id);
         if (!$product['spu']) {
             $code = Yii::$service->helper->appserver->product_not_active;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
 
         $price_info = $this->getProductPriceInfo($product);
@@ -96,9 +96,9 @@ class Add
             'customer_name'  => $customer_name,
             'reviewCaptchaActive'    => $this->getAddCaptcha(),
         ];
-        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
         
-        return $reponseData;
+        return $responseData;
     }
     /**
      * @property $editForm | Array
@@ -109,15 +109,15 @@ class Add
         if(Yii::$service->product->review->addReview($editForm)){
             $code = Yii::$service->helper->appserver->status_success;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
         
-            return $reponseData;
+            return $responseData;
         }else{
             $code = Yii::$service->helper->appserver->product_save_review_fail;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
         
-            return $reponseData;
+            return $responseData;
         }
     }
     /**

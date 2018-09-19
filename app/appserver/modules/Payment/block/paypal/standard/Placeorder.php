@@ -38,9 +38,9 @@ class Placeorder
         if(!$token){
             $code = Yii::$service->helper->appserver->order_paypal_standard_get_token_fail;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         
         // 得到当前的订单信息
@@ -69,9 +69,9 @@ class Placeorder
                 //return true;
                 $code = Yii::$service->helper->appserver->status_success;
                 $data = [ ];
-                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
                 
-                return $reponseData;
+                return $responseData;
                 
             }else{
                 
@@ -88,18 +88,18 @@ class Placeorder
                 }
                 $code = Yii::$service->helper->appserver->order_paypal_standard_updateorderinfoafterpayment_fail;
                 $data = [ ];
-                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
                 
-                return $reponseData;
+                return $responseData;
             }
         }else{
             $code = Yii::$service->helper->appserver->order_paypal_standard_payment_fail;
             $data = [
                 'error' => Yii::$service->helper->errors->get(','),
             ];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         
     }

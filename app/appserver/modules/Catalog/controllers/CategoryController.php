@@ -112,9 +112,9 @@ class CategoryController extends AppserverController
         if(!$this->initCategory()){
             $code = Yii::$service->helper->appserver->category_not_exist;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         
         // change current layout File.
@@ -142,9 +142,9 @@ class CategoryController extends AppserverController
             'filter_category'   => $this->getFilterCategory(),
             'page_count'        => $page_count,
         ];
-        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
         
-        return $reponseData;
+        return $responseData;
     }
     
     public function actionProduct()
@@ -158,9 +158,9 @@ class CategoryController extends AppserverController
         if(!$this->initCategory()){
             $code = Yii::$service->helper->appserver->category_not_exist;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         $productCollInfo = $this->getCategoryProductColl();
         $products = $productCollInfo['coll'];
@@ -168,9 +168,9 @@ class CategoryController extends AppserverController
         $data = [
             'products' => $products
         ];
-        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
         
-        return $reponseData;
+        return $responseData;
         
     }
     /**

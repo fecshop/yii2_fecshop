@@ -53,9 +53,9 @@ class Placeorder
                 $code = Yii::$service->helper->appserver->order_generate_request_post_param_invaild;
                 $data = [];
                 $message = $checkInfo;
-                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data, $message);
+                $responseData = Yii::$service->helper->appserver->getResponseData($code, $data, $message);
                 
-                return $reponseData;
+                return $responseData;
             }
             // 如果游客用户勾选了注册账号，则注册，登录，并把地址写入到用户的address中
             $guestInfo = $this->guestCreateAndLoginAccount($post);
@@ -63,9 +63,9 @@ class Placeorder
                 $code = Yii::$service->helper->appserver->order_generate_create_account_fail;
                 $data = [];
                 $message = $guestInfo;
-                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data, $message);
+                $responseData = Yii::$service->helper->appserver->getResponseData($code, $data, $message);
                 
-                return $reponseData;
+                return $responseData;
             }
             
             $save_address_info = $this->updateAddress($post);
@@ -73,9 +73,9 @@ class Placeorder
                 $code = Yii::$service->helper->appserver->order_generate_save_address_fail;
                 $data = [];
                 $message = $save_address_info;
-                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data, $message);
+                $responseData = Yii::$service->helper->appserver->getResponseData($code, $data, $message);
                 
-                return $reponseData;
+                return $responseData;
             }
             
             // 更新Cart信息
@@ -101,9 +101,9 @@ class Placeorder
                     $data = [
                             'redirectUrl' => $startUrl,
                     ];
-                    $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                    $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
                     
-                    return $reponseData;
+                    return $responseData;
                 } else {
                     
                     $innerTransaction->rollBack();
@@ -112,9 +112,9 @@ class Placeorder
                     $data = [
                         'error' => $error,
                     ];
-                    $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                    $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
                     
-                    return $reponseData;
+                    return $responseData;
                 }
             } catch (Exception $e) {
                 $innerTransaction->rollBack();

@@ -64,9 +64,9 @@ class OrderController extends AppserverTokenController
                 'orderList'     => $orderArr,
                 'count'         => $count,
             ];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
     }
     
@@ -152,9 +152,9 @@ class OrderController extends AppserverTokenController
                     $data = [
                         'order'=> $order_info,
                     ];
-                    $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                    $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
                     
-                    return $reponseData;
+                    return $responseData;
                     
                 }
             }
@@ -181,17 +181,17 @@ class OrderController extends AppserverTokenController
         if(!empty($errorArr)){
             $code = Yii::$service->helper->appserver->account_reorder_order_id_invalid;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         $this->addOrderProductToCart($order_id);
 
         $code = Yii::$service->helper->appserver->status_success;
         $data = [];
-        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
         
-        return $reponseData;
+        return $responseData;
     }
     
     

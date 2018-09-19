@@ -36,9 +36,9 @@ class Index
         if (!isset($cartInfo['products']) || !is_array($cartInfo['products']) || empty($cartInfo['products'])) {
             $code = Yii::$service->helper->appserver->order_generate_cart_product_empty;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         $currency_info = Yii::$service->page->currency->getCurrencyInfo();
         $this->initAddress();
@@ -68,9 +68,9 @@ class Index
             'countryArr'                => $this->_countrySelect,
             'country'                   => $this->_country,
         ];
-        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
         
-        return $reponseData;
+        return $responseData;
     }
 
     /**
@@ -284,9 +284,9 @@ class Index
         $data = [
             'stateArr' => $this->stateArr,
         ];
-        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
         
-        return $reponseData;
+        return $responseData;
     }
 
     /**
@@ -546,15 +546,15 @@ class Index
                 'cart_info'                 => $last_cart_info,
                 'shippings'                 => $shippings,
             ];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         } else {
             $code = Yii::$service->helper->appserver->order_shipping_country_empty;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
             
         }
     }

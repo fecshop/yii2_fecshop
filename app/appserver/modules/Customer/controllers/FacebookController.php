@@ -53,9 +53,9 @@ class FacebookController extends AppserverController
             $data = [
                 'content' => $content,
             ];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         if (! isset($accessToken)) {
             if ($helper->getError()) {
@@ -74,9 +74,9 @@ class FacebookController extends AppserverController
             $data = [
                 'content' => $content,
             ];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         $fb->setDefaultAccessToken($accessToken->getValue());
         $response = $fb->get('/me?locale=en_US&fields=name,email');
@@ -89,17 +89,17 @@ class FacebookController extends AppserverController
             $this->accountLogin($fbid,$name,$email);
             $code = Yii::$service->helper->appserver->status_success;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         } else {
             $code = Yii::$service->helper->appserver->account_facebook_login_error;
             $data = [
                 'content' => 'no email find from fb',
             ];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         
             //$loginUrl = $helper->getLoginUrl();
             //header('Location: '.$loginUrl);

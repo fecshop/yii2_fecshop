@@ -80,17 +80,17 @@ class Lists
             
             $code = Yii::$service->helper->appserver->product_id_not_exist;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         $product = Yii::$service->product->getByPrimaryKey($this->product_id);
         if (!$product['spu']) {
             $code = Yii::$service->helper->appserver->product_not_active;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         $this->spu = $product['spu'];
         $price_info = $this->getProductPriceInfo($product);
@@ -124,9 +124,9 @@ class Lists
                 'reviw_rate_star_average'   => $reviw_rate_star_average,
                 'reviw_rate_star_info'      => $reviw_rate_star_info,
             ];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
     }
     /**

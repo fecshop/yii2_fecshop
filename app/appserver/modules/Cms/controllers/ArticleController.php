@@ -31,15 +31,15 @@ class ArticleController extends AppserverController
             ];
             
             $code = Yii::$service->helper->appserver->status_success;
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         } else {
             $code = Yii::$service->helper->appserver->cms_article_not_exist;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
             
         }
         
