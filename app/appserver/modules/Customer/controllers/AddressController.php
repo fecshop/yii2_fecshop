@@ -31,9 +31,9 @@ class AddressController extends AppserverTokenController
         $data = [
             'addressList' => $this->coll(),
         ];
-        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        $responseData = Yii::$service->helper->appserver->getReponseData($code, $data);
         
-        return $reponseData;
+        return $responseData;
         
     }
     
@@ -81,9 +81,9 @@ class AddressController extends AppserverTokenController
         $data = [
             'address' => $address,
         ];
-        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        $responseData = Yii::$service->helper->appserver->getReponseData($code, $data);
         
-        return $reponseData;
+        return $responseData;
         
     }
     
@@ -99,13 +99,13 @@ class AddressController extends AppserverTokenController
             
             $code = Yii::$service->helper->appserver->status_success;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getReponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }else{
             $code = Yii::$service->helper->appserver->account_address_is_not_exist;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getReponseData($code, $data);
             
         }
     }
@@ -160,9 +160,9 @@ class AddressController extends AppserverTokenController
                 'stateIsSelect' => $stateIsSelect,
                 'stateArr' => $stateArr,
             ];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getReponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
     }
     
@@ -189,9 +189,9 @@ class AddressController extends AppserverTokenController
             if ($customer_id != $addressModel['customer_id']) {
                 $code = Yii::$service->helper->appserver->account_address_is_not_exist;
                 $data = [];
-                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                $responseData = Yii::$service->helper->appserver->getReponseData($code, $data);
                 
-                return $reponseData;
+                return $responseData;
             }
         }
         // 地址信息
@@ -216,15 +216,15 @@ class AddressController extends AppserverTokenController
         if (!$saveStatus) {
             $code = Yii::$service->helper->appserver->account_address_save_fail;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getReponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         $code = Yii::$service->helper->appserver->status_success;
         $data = [ ];
-        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        $responseData = Yii::$service->helper->appserver->getReponseData($code, $data);
         
-        return $reponseData;
+        return $responseData;
     }
     
    
