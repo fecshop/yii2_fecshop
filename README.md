@@ -66,7 +66,7 @@ Fecshop Trace 网站流量广告分析系统
 
 
 对于google analysis，百度统计等统计系统，收集的数据太少，譬如购物车数据，搜索数据，用户email，另外还有订单支付状态不准确的问题等等，另外，对于广告数据也不能满足要求，因此terry开发了一套网站流量广告系统来完善周围，
-更加详细的介绍，为什么开发这套系统的原因，参看：http://www.fecshop.com/doc/fec-go-guide/develop/cn-1.0/guide-trace-changjing.html
+更加详细的介绍，为什么开发这套系统的原因： http://www.fecshop.com/doc/fec-go-guide/develop/cn-1.0/guide-trace-about.html
 
 
 **备注：因为之前想吧这个做成saas的方式做点创收，后面想直接开源了，因此需要把三层用户换成2层，去掉权限控制等等，来回折腾了一番基本完成，fecshop中已经默认打点，pc端，wap端，vue端都已经打通，通过配置开启就行，有兴趣的可以看看下面demo（不要修改密码）。目前文档和功能需要进一步梳理，近期个人时间太少，2018.10月中旬的时候在整理该功能**
