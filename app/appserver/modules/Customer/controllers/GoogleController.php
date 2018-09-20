@@ -50,9 +50,9 @@ class GoogleController extends AppserverController
         }
         $code = Yii::$service->helper->appserver->account_google_login_error;
         $data = [];
-        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
         
-        return $reponseData;
+        return $responseData;
     }
 
     /**
@@ -71,9 +71,9 @@ class GoogleController extends AppserverController
         Yii::$service->customer->registerThirdPartyAccountAndLogin($user, 'google');
         $code = Yii::$service->helper->appserver->status_success;
         $data = [];
-        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
         
-        return $reponseData;
+        return $responseData;
         //echo '<script>
 		//			window.close();
 		//			window.opener.location.reload();

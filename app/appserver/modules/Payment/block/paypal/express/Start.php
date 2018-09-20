@@ -28,9 +28,9 @@ class Start
             $data = [
                 'error' => $this->_errors,
             ];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         $methodName_ = 'SetExpressCheckout';
         $return_url = Yii::$app->request->post('return_url');
@@ -46,27 +46,27 @@ class Start
                 if(!Yii::$service->order->generatePPExpressOrder($token)){
                     $code = Yii::$service->helper->appserver->order_generate_fail;
                     $data = [];
-                    $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                    $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
                     
-                    return $reponseData;
+                    return $responseData;
                 }
                 $redirectUrl = Yii::$service->payment->paypal->getExpressCheckoutUrl($token);
                 $code = Yii::$service->helper->appserver->status_success;
                 $data = [
                     'redirectUrl' => $redirectUrl,
                 ];
-                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
                 
-                return $reponseData;
+                return $responseData;
             }
         } else {
             $code = Yii::$service->helper->appserver->order_paypal_express_get_token_fail;
             $data = [
                  'error' => isset($checkoutReturn['L_LONGMESSAGE0']) ? $checkoutReturn['L_LONGMESSAGE0'] : '',
             ];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
     }
 

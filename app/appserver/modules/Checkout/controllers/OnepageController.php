@@ -34,9 +34,9 @@ class OnepageController extends AppserverController
         if(!$guestOrder && Yii::$app->user->isGuest){
             $code = Yii::$service->helper->appserver->account_no_login_or_login_token_timeout;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         } 
 
         return $this->getBlock()->getLastData();
@@ -50,9 +50,9 @@ class OnepageController extends AppserverController
         if(!$guestOrder && Yii::$app->user->isGuest){
             $code = Yii::$service->helper->appserver->account_no_login_or_login_token_timeout;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         } 
         
         return $this->getBlock('placeorder')->getLastData();

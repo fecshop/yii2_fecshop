@@ -49,9 +49,9 @@ class ProductController extends AppserverController
         if(Yii::$app->user->isGuest){
             $code = Yii::$service->helper->appserver->account_no_login_or_login_token_timeout;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         $product_id = Yii::$app->request->get('product_id');
         $identity   = Yii::$app->user->identity;
@@ -61,17 +61,17 @@ class ProductController extends AppserverController
             $code = Yii::$service->helper->appserver->product_favorite_fail;
             $data = [];
             $message = Yii::$service->helper->errors->get(true);
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data,$message);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data,$message);
             
-            return $reponseData;
+            return $responseData;
         }else{
             $code = Yii::$service->helper->appserver->status_success;
             $data = [
                 'content' => 'success',
             ];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         // 收藏失败，需要登录
         
@@ -143,9 +143,9 @@ class ProductController extends AppserverController
         if(!$this->initProduct()){
             $code = Yii::$service->helper->appserver->product_not_active;
             $data = '';
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data,$message);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data,$message);
             
-            return $reponseData;
+            return $responseData;
         }
         $reviewHelper = $this->_reviewHelper;
         $reviewHelper::initReviewConfig();
@@ -209,9 +209,9 @@ class ProductController extends AppserverController
                 'buy_also_buy'              => $this->getProductBySkus(),
             ]
         ];
-        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data,$message);
+        $responseData = Yii::$service->helper->appserver->getResponseData($code, $data,$message);
         
-        return $reponseData;
+        return $responseData;
     }
     
     public function getTierPrice(){

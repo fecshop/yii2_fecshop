@@ -38,9 +38,9 @@ class CheckmoneyController extends PaymentController
             Yii::$service->cart->clearCartProductAndCoupon();
             $code = Yii::$service->helper->appserver->status_success;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
     }
 

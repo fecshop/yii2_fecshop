@@ -41,9 +41,9 @@ class Placeorder
         if(!$token){
             $code = Yii::$service->helper->appserver->order_paypal_express_get_token_fail;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         if (is_array($post) && !empty($post)) {
             $post = \Yii::$service->helper->htmlEncode($post);
@@ -95,9 +95,9 @@ class Placeorder
                             $data = [
                                 'error' => 'the order has been paid',
                             ];
-                            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
                             
-                            return $reponseData;
+                            return $responseData;
                         }
                         $orderPayment = Yii::$service->payment->paypal->updateOrderPayment($doCheckoutReturn,$token);
                         // 如果支付成功，并把信息更新到了订单数据中，则进行下面的操作。
@@ -123,17 +123,17 @@ class Placeorder
                             
                             $code = Yii::$service->helper->appserver->status_success;
                             $data = [];
-                            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
                             
-                            return $reponseData;
+                            return $responseData;
                         }else{
                             
                             $innerTransaction->rollBack();
                             $code = Yii::$service->helper->appserver->order_paypal_express_payment_fail;
                             $data = [];
-                            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
                             
-                            return $reponseData;
+                            return $responseData;
                         }
                     } catch (Exception $e) {
                         $innerTransaction->rollBack();
@@ -170,9 +170,9 @@ class Placeorder
             }else{
                 $code = Yii::$service->helper->appserver->order_generate_fail;
                 $data = [];
-                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
                 
-                return $reponseData;
+                return $responseData;
             }
             
         }
@@ -249,9 +249,9 @@ class Placeorder
             $data = [
                 'error' => Yii::$service->helper->errors->get(','),
             ];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
             
             
         }
@@ -265,18 +265,18 @@ class Placeorder
             $data = [
                 'error' => 'shipping method can not empty',
             ];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         } else {
             //if (!Yii::$service->shipping->ifIsCorrect($shipping_method)) {
             //    $code = Yii::$service->helper->appserver->order_generate_request_post_param_invaild;
             //    $data = [
             //        'error' => 'shipping method is not correct',
             //    ];
-            //    $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            //    $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             //    
-            //    return $reponseData;
+            //    return $responseData;
             //}
         }
         // 订单备注信息不能超过1500字符

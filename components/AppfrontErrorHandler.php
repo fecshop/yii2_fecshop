@@ -31,8 +31,8 @@ class AppfrontErrorHandler extends ErrorHandler
             $ip       = Yii::$app->request->userIP;
             $url      = Yii::$service->url->getCurrentUrl();
             $req_info = $this->getRequestInfo();
-            $reponse = Yii::$app->response;
-            Yii::$app->response->format = $reponse::FORMAT_JSON;
+            $response = Yii::$app->response;
+            Yii::$app->response->format = $response::FORMAT_JSON;
             if (YII_ENV_PROD) {
                 
                 $errorKey = $this->saveProdException($code, $message, $file, $line, $time, $ip, $name, $traceString, $url, $req_info);

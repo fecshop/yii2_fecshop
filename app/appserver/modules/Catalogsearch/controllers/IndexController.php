@@ -66,9 +66,9 @@ class IndexController extends AppserverController
             'filter_price'     => $this->getFilterPrice(),
         ];
         $code = Yii::$service->helper->appserver->status_success;
-        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
         
-        return $reponseData;
+        return $responseData;
     }
     
     
@@ -85,9 +85,9 @@ class IndexController extends AppserverController
                 'content' => 'disable',
             ];
             $code = Yii::$service->helper->appserver->status_attack;
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
             
         }
         $productCollInfo = $this->getSearchProductColl();
@@ -97,9 +97,9 @@ class IndexController extends AppserverController
             'products' => $products
         ];
         $code = Yii::$service->helper->appserver->status_success;
-        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
         
-        return $reponseData;
+        return $responseData;
         
     }
     

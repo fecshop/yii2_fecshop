@@ -32,9 +32,9 @@ class SiteController extends AppserverController
         $data = [
             'image'  => $base64Img,
         ];
-        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
         
-        return $reponseData;
+        return $responseData;
     }
     
 }

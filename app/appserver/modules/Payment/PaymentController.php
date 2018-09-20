@@ -31,9 +31,9 @@ class PaymentController extends AppserverController
             $data = [
                 'error' => 'can not find order increment id from db session',
             ];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
 
         $this->_order_model = Yii::$service->order->GetByIncrementId($this->_increment_id);
@@ -42,9 +42,9 @@ class PaymentController extends AppserverController
             $data = [
                 'error' => 'order is not exist',
             ];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         return true;
     }

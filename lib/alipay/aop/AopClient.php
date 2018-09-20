@@ -228,7 +228,7 @@ class AopClient {
 
 
 
-		$reponse = curl_exec($ch);
+		$response = curl_exec($ch);
 
 		if (curl_errno($ch)) {
 
@@ -236,12 +236,12 @@ class AopClient {
 		} else {
 			$httpStatusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			if (200 !== $httpStatusCode) {
-				throw new Exception($reponse, $httpStatusCode);
+				throw new Exception($response, $httpStatusCode);
 			}
 		}
 
 		curl_close($ch);
-		return $reponse;
+		return $response;
 	}
 
 	protected function getMillisecond() {

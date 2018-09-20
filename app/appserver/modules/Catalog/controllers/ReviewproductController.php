@@ -36,9 +36,9 @@ class ReviewproductController extends AppserverController
                 
                 $code = Yii::$service->helper->appserver->account_no_login_or_login_token_timeout;
                 $data = [];
-                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
                 
-                return $reponseData;
+                return $responseData;
             }
         }
         return  $this->getBlock()->getLastData();
@@ -69,9 +69,9 @@ class ReviewproductController extends AppserverController
             if(!\Yii::$service->helper->captcha->validateCaptcha($captcha)){
                 $code = Yii::$service->helper->appserver->status_invalid_captcha;
                 $data = [];
-                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
                 
-                return $reponseData;
+                return $responseData;
             }
         }
         // 检查用户登录状态
@@ -81,9 +81,9 @@ class ReviewproductController extends AppserverController
             if(!$identity){
                 $code = Yii::$service->helper->appserver->account_no_login_or_login_token_timeout;
                 $data = [];
-                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
                 
-                return $reponseData;
+                return $responseData;
             }
         }
         $product_id = Yii::$app->request->post('product_id');
@@ -96,9 +96,9 @@ class ReviewproductController extends AppserverController
         if (!$product['spu']) {
             $code = Yii::$service->helper->appserver->product_not_active;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         // 检查前台传递的信息
         if(!$customer_name){
@@ -106,9 +106,9 @@ class ReviewproductController extends AppserverController
             $code = Yii::$service->helper->appserver->status_miss_param;
             $data = [];
             $message = 'customer name is empty';
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data, $message);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data, $message);
             
-            return $reponseData;
+            return $responseData;
         }
         
         if(!$summary){
@@ -116,9 +116,9 @@ class ReviewproductController extends AppserverController
             $code = Yii::$service->helper->appserver->status_miss_param;
             $data = [];
             $message = 'summary is empty';
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data, $message);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data, $message);
             
-            return $reponseData;
+            return $responseData;
         }
         
         if(!$review_content){
@@ -126,9 +126,9 @@ class ReviewproductController extends AppserverController
             $code = Yii::$service->helper->appserver->status_miss_param;
             $data = [];
             $message = 'review content is empty';
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data, $message);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data, $message);
             
-            return $reponseData;
+            return $responseData;
         }
         
         if(!$selectStar){
@@ -136,18 +136,18 @@ class ReviewproductController extends AppserverController
             $code = Yii::$service->helper->appserver->status_miss_param;
             $data = [];
             $message = 'review Star is empty';
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data, $message);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data, $message);
             
-            return $reponseData;
+            return $responseData;
         }
         // 用户是否有添加这个产品的权限
         if (!Yii::$service->product->review->isReviewRole($product_id)) {
             $code = Yii::$service->helper->appserver->status_miss_param;
             $data = [];
             $message = 'product _id:'.$product_id.'  , you review this product only after ordered it';
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data, $message);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data, $message);
             
-            return $reponseData;
+            return $responseData;
         }
 
         $editForm = [

@@ -39,8 +39,8 @@ class EditaccountController extends AppserverTokenController
                 'minPassLength' => Yii::$service->customer->getRegisterPassMinLength(),
                 'maxPassLength' => Yii::$service->customer->getRegisterPassMaxLength(),
             ];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
-            return $reponseData;
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
+            return $responseData;
         }
     }
     
@@ -61,8 +61,8 @@ class EditaccountController extends AppserverTokenController
             $data = [
                 'error' => $errorInfo,
             ];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
-            return $reponseData;
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
+            return $responseData;
         }
         $identity->firstname = $firstname;
         $identity->lastname = $lastname;
@@ -74,8 +74,8 @@ class EditaccountController extends AppserverTokenController
             
             $code = Yii::$service->helper->appserver->status_success;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
-            return $reponseData;
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
+            return $responseData;
         }else{
             $errors = Yii::$service->helper->errors->getModelErrorsStrFormat($identity->errors);
             if($errors){
@@ -83,8 +83,8 @@ class EditaccountController extends AppserverTokenController
                 $data = [
                     'error' => $errors,
                 ];
-                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
-                return $reponseData;
+                $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
+                return $responseData;
             }
         }
     }

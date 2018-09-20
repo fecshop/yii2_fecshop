@@ -38,9 +38,9 @@ class Review
             
             $code = Yii::$service->helper->appserver->order_generate_cart_product_empty;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         $currency_info = Yii::$service->page->currency->getCurrencyInfo();
         $this->initAddress();
@@ -72,9 +72,9 @@ class Review
             'countryArr'                => $this->_countrySelect,
             'country'                   => $this->_country,
         ];
-        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
         
-        return $reponseData;
+        return $responseData;
     }
 
     /**
@@ -425,17 +425,17 @@ class Review
             
             $code = Yii::$service->helper->appserver->order_paypal_express_get_token_fail;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         if (!$getPayerID) {
             
             $code = Yii::$service->helper->appserver->order_paypal_express_get_PayerID_fail;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
 
         $methodName_ = 'GetExpressCheckoutDetails';
@@ -449,9 +449,9 @@ class Review
             
             $code = Yii::$service->helper->appserver->order_paypal_express_get_apiAddress_fail;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
     }
 
