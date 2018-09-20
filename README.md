@@ -65,7 +65,7 @@ Fecshop Trace 网站流量广告分析系统
 > golang + mongodb + elasticSearch 做的一套用户行为分析系统， 已经和fecshop无缝对接完成，该系统也是开源项目，通过js打点和php发送数据的2种方式收集数据，存入mongodb，然后通过golang脚本进行一系列的统计，结果数据传递到elasticSearch进行查询，该系统对于初始的数据统计，以及广告分析已经完善，详细可以参看下面的demo，对于您自己想要的数据分析，可以自己二次开发。
 
 
-对于google analysis，百度统计等统计系统，收集的数据太少，譬如购物车数据，搜索数据，用户email，另外还有订单数据不准确的问题，另外，对于广告数据也不能满足要求，因此terry开发了一套网站流量广告系统来完善周围，
+对于google analysis，百度统计等统计系统，收集的数据太少，譬如购物车数据，搜索数据，用户email，另外还有订单支付状态不准确的问题等等，另外，对于广告数据也不能满足要求，因此terry开发了一套网站流量广告系统来完善周围，
 更加详细的介绍，为什么开发这套系统的原因，参看：http://www.fecshop.com/doc/fec-go-guide/develop/cn-1.0/guide-trace-changjing.html
 
 
