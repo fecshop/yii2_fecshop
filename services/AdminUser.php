@@ -18,15 +18,15 @@ use Yii;
  */
 class AdminUser extends Service
 {
-    
+
     protected $_adminUserLoginModelName = '\fecshop\models\mysqldb\adminUser\AdminUserLogin';
     protected $_adminUserLoginModel;
-    
-    
+
+
      public function init(){
         parent::init();
-        list($this->_adminUserLoginModelName,$this->_adminUserLoginModel) = \Yii::mapGet($this->_adminUserLoginModelName);  
-         
+        list($this->_adminUserLoginModelName,$this->_adminUserLoginModel) = \Yii::mapGet($this->_adminUserLoginModelName);
+
     }
     /**
      * @property $ids | Int Array
@@ -44,11 +44,11 @@ class AdminUser extends Service
 
         return $users;
     }
-    
+
     /** AppServer 部分使用的函数
-     * @property $email | String
+     * @property $username | String
      * @property $password | String
-     * 无状态登录，通过email 和password进行登录
+     * 无状态登录，通过 username 和 password 进行登录
      * 登录成功后，合并购物车，返回accessToken
      * ** 该函数是未登录用户，通过参数进行登录需要执行的函数。
      */
@@ -56,7 +56,7 @@ class AdminUser extends Service
         $header = Yii::$app->request->getHeaders();
         if(isset($header['access-token']) && $header['access-token']){
             $accessToken = $header['access-token'];
-        }   
+        }
         // 如果request header中有access-token，则查看这个 access-token 是否有效
         if($accessToken){
             $identity = Yii::$app->user->loginByAccessToken($accessToken);
@@ -65,7 +65,7 @@ class AdminUser extends Service
                 $timeout = Yii::$service->session->timeout;
                 if($access_token_created_at + $timeout > time()){
                     return $accessToken;
-                } 
+                }
             }
         }
         // 如果上面access-token不存在
@@ -73,7 +73,7 @@ class AdminUser extends Service
             'username'     => $username,
             'password'  => $password,
         ];
-        
+
         if($this->login($data)){
             $identity = Yii::$app->user->identity;
             $identity->generateAccessToken();
@@ -81,11 +81,11 @@ class AdminUser extends Service
             $identity->save();
             $this->setHeaderAccessToken($identity->access_token);
             return $identity->access_token;
-            
+
         }
     }
-    
-    
+
+
     /**
      * @property $data|array
      * 数组格式：['username'=>'xxx@xxx.com','password'=>'xxxx']
@@ -104,15 +104,15 @@ class AdminUser extends Service
 
         return $loginStatus;
     }
-    
+
     protected function actionSetHeaderAccessToken($accessToken){
         if($accessToken){
             Yii::$app->response->getHeaders()->set('access-token',$accessToken);
             return true;
         }
     }
-    
-    
+
+
 
     /** AppServer 部分使用的函数
      * @property $type | null or  Object
@@ -147,7 +147,7 @@ class AdminUser extends Service
             }
         }
     }
-    
+
     /**
      * 通过accessToek的方式，进行登出从操作。
      */

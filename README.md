@@ -45,6 +45,8 @@ Fecshop支持多语言，多货币，架构上支持pc，手机web，手机app�
 
 
 作者, Terry Email：2358269014@qq.com
+
+Fecshop QQ群号（新）：782387676，入群验证：fecshop
  
 [Fecshop](http://www.fecshop.com) Github地址: https://github.com/fancyecommerce/yii2_fecshop
 
@@ -55,6 +57,28 @@ Fecshop线上项目案例：http://www.fecshop.com/topic/55
 Fecshop问题咨询，Bug提交等参看：[Fecshop论坛](http://www.fecshop.com/topic)
 
 Fecshop开源项目历程：[Fecshop时间线](http://www.fecshop.com/site/timeline)
+
+
+Fecshop Trace 网站流量广告分析系统
+----------------------
+
+> golang + mongodb + elasticSearch 做的一套用户行为分析系统， 已经和fecshop无缝对接完成，该系统也是开源项目，通过js打点和php发送数据的2种方式收集数据，存入mongodb，然后通过golang脚本进行一系列的统计，结果数据传递到elasticSearch进行查询，该系统对于初始的数据统计，以及广告分析已经完善，详细可以参看下面的demo，对于您自己想要的数据分析，可以自己二次开发。
+
+
+对于google analysis，百度统计等统计系统，收集的数据太少，譬如购物车数据，搜索数据，用户email，另外还有订单支付状态不准确的问题等等，另外，对于广告数据也不能满足要求，因此terry开发了一套网站流量广告系统来完善周围，
+更加详细的介绍，为什么开发这套系统的原因： http://www.fecshop.com/doc/fec-go-guide/develop/cn-1.0/guide-trace-about.html
+
+
+**备注：因为之前想吧这个做成saas的方式做点创收，后面想直接开源了，因此需要把三层用户换成2层，去掉权限控制等等，来回折腾了一番基本完成，fecshop中已经默认打点，pc端，wap端，vue端都已经打通，通过配置开启就行，有兴趣的可以看看下面demo（不要修改密码）。目前文档和功能需要进一步梳理，近期个人时间太少，2018.10月中旬的时候在整理该功能**
+
+网站流量分析系统文档： http://www.fecshop.com/doc/fec-go-guide/develop/cn-1.0/guide-README.html
+
+详细参看github地址： https://github.com/fecshop/trace_fecshop ， readme部分有演示地址，进入后不要修改代码
+
+Fecshop Trace Demo: http://trace.fecshop.com
+
+测试账户： test test123 （清不要修改密码，该账户有一定的权限限制）
+
 
 2、Fecshop文档，视频，扩展库
 ------------
@@ -76,7 +100,7 @@ Fecshop开源项目历程：[Fecshop时间线](http://www.fecshop.com/site/timel
 > 请务必按照说明安装，Fecshop是基于composer在线安装，直接git clone下载下来是不行的，请按照下面的说明操作
 
 
-在强调一遍：**Fecshop是基于composer在线安装，直接git clone下载下来是不行的**，请按照安装文档操作
+再强调一遍：**Fecshop是基于composer在线安装，直接git clone下载下来是不行的**，请按照安装文档操作
 
 
 3.1、【标准方式】标准安装方式：从基础linux一步一步的配置的方式，详细参看文档： [Fecshop 安装](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-hand-install.html)
@@ -97,7 +121,16 @@ Fecshop开源项目历程：[Fecshop时间线](http://www.fecshop.com/site/timel
 
 如果您使用docker compose或者 vagrant box的安装方式，不需要执行这个操作。
 
-5、架构特色
+5、联系Terry：
+----------------
+
+扫一扫添加Terry微信：
+
+![weixin](http://www.fecshop.com/weixinlogo.png)
+
+
+
+6、架构特色
 -----------
 
 架构特色：参看详细介绍：[Fecshop 架构特色](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-framework.html)
@@ -167,7 +200,7 @@ appserver（手机app服务），appapi（erp，或者其他接口对接），
 鉴于以上特点，您可以下载安装[Fecshop](http://www.fecshop.com)，然后更改[Fecshop](http://www.fecshop.com)的模板和功能，扩展自己想要
 的功能，或者安装第三方开发好了的扩展或者模板，来快速的组建起来您的网站。
 
-6、捐赠
+7、捐赠
 -----------
 
 如果您认为这是一个不错的项目，对您有帮助，你可以通过下面的方式进行捐赠，
@@ -184,8 +217,14 @@ appserver（手机app服务），appapi（erp，或者其他接口对接），
 
 [捐赠历史](http://www.fecshop.com/donate)：（捐助，建议写一下留言）
 
-| 捐赠人        | 金额      |  时间            |  方式           | 账户                  | 捐助者留言      |
-| --------------| ----------| -------------    | -----------     | ----------------------| ----------|
+| 捐赠人        | 金额      |  时间            |  方式           | 账户                       | 捐助者留言      |
+| -------------| ---------| -----------    | -----------   | ----------------------| ----------------|
+| （*）         | ￥500.00   | 2018-07-31  |   微信          | -                     |                  |
+| （*）         | ￥15.00   | 2018-07-23  |   微信          | -                     |                  |
+| （*）         | ￥15.00   | 2018-07-19  |   微信          | -                     |                  |
+| （*）         | ￥99.99  | 2018-07-12       |   微信        | -          | 作为国内的真正开源系统，真是良心之作，支持，祝愿长久发展！   |
+| *方招         | ￥30.00  | 2018-07-10       |   支付宝        | fan***gmail.com          | 感谢作者。非常不错的电商平台   |
+| 厦门码农网络科技有限公司         | ￥16.66  | 2018-07-04       |   支付宝        | cod***@126.com           | 厦门码农支持开源，为Fecshop！   |
 | *雷雷         | ￥800.00  | 2018-06-27       |   支付宝        | 134******22           | 支持作者，支持fecshop   |
 | （*）         | ￥1.00    | 2018-06-22       |   微信          | -                     |  |
 | *建欣         | ￥50.00   | 2018-06-15       |   支付宝        | 593***@qq.com         | 小小心意，支持fecshop的发展   |

@@ -65,9 +65,9 @@ class ProductreviewController extends AppserverTokenController
             'refuseStatus'  => Yii::$service->product->review->refuseStatus(),
             'activeStatus'  => Yii::$service->product->review->activeStatus(),
         ];
-        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
         
-        return $reponseData;
+        return $responseData;
     }
 
     

@@ -27,9 +27,9 @@ class SuccessController extends AppserverController
         if (!$increment_id) {
             $code = Yii::$service->helper->appserver->order_not_find_increment_id_from_dbsession;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         $order = Yii::$service->order->getInfoByIncrementId($increment_id);
         // 清空购物车。这里针对的是未登录用户进行购物车清空。
@@ -43,8 +43,8 @@ class SuccessController extends AppserverController
             'increment_id'  => $increment_id,
             'order'         => $order,
         ];
-        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
         
-        return $reponseData;
+        return $responseData;
     }
 }

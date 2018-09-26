@@ -39,9 +39,9 @@ class StandardController extends AppserverController
         $data = [
             'redirectUrl'  => Yii::$service->payment->alipay->start($return_url,'GET'),
         ];
-        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
         
-        return $reponseData;
+        return $responseData;
     }
     /**
      * 从支付宝支付成功后，跳转返回 fec-shop 的部分
@@ -53,16 +53,16 @@ class StandardController extends AppserverController
             
             $code = Yii::$service->helper->appserver->status_success;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }else{
             
             $code = Yii::$service->helper->appserver->order_alipay_payment_fail;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
     }
     /**

@@ -65,9 +65,9 @@ class HomeController extends AppserverController
                 'language'    => $language,
                 'currency'    => $currency,
             ];
-        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
         
-        return $reponseData;
+        return $responseData;
     }
     
     public function getAdvertise(){

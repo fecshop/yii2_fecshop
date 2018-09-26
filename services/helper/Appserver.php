@@ -123,7 +123,7 @@ class Appserver extends Service
      * @property $data | 混合状态，可以是数字，数组等格式，用于做返回给前端的数组。
      * @property $message | String ，选填，如果不填写，则使用  函数 返回的内容作为message
      */
-    public function getReponseData($code, $data, $message = ''){
+    public function getResponseData($code, $data, $message = ''){
         if(!$message){
             $message = $this->getMessageByCode($code);
         }

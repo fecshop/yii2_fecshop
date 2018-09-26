@@ -57,9 +57,9 @@ class ContactController extends AppserverController
             'contactsCaptchaActive'   => $contactsCaptcha,
             'contactsEmail'     => $contactsEmail,
         ];
-        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
         
-        return $reponseData;
+        return $responseData;
         
     }
     
@@ -89,9 +89,9 @@ class ContactController extends AppserverController
             $code = Yii::$service->helper->appserver->status_miss_param;
             $data = [];
             $message = implode(',',$errorArr);
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data, $message);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data, $message);
             
-            return $reponseData;
+            return $responseData;
         }   
         $contacts = Yii::$app->getModule('customer')->params['contacts'];
         $contactsCaptcha = $contacts['contactsCaptcha'] ? true : false;
@@ -99,9 +99,9 @@ class ContactController extends AppserverController
             if(!Yii::$service->helper->captcha->validateCaptcha($captcha)){
                 $code = Yii::$service->helper->appserver->status_invalid_captcha;
                 $data = [];
-                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
                 
-                return $reponseData;
+                return $responseData;
             }
             
         }
@@ -118,18 +118,18 @@ class ContactController extends AppserverController
             $data = [
                 'content' => 'contact us success',
             ];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }else{
             
             $code = Yii::$service->helper->appserver->account_contact_us_send_email_fail;
             $data = [
                 'content' => 'contact us success',
             ];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         
     }

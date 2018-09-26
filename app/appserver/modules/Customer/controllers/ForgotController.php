@@ -29,9 +29,9 @@ class ForgotController extends AppserverController
         // 用户已经登录
         //    $code = Yii::$service->helper->appserver->account_is_logined;
         //    $data = [];
-        //    $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        //    $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
         //    
-        //    return $reponseData;
+        //    return $responseData;
         //}
         $forgotPasswordParam = \Yii::$app->getModule('customer')->params['forgotPassword'];
         $forgotCaptchaActive = isset($forgotPasswordParam['forgotCaptcha']) ? $forgotPasswordParam['forgotCaptcha'] : false;
@@ -40,9 +40,9 @@ class ForgotController extends AppserverController
         $data = [
             'forgotCaptchaActive' => $forgotCaptchaActive,
         ];
-        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
         
-        return $reponseData;
+        return $responseData;
         
     }
     
@@ -58,18 +58,18 @@ class ForgotController extends AppserverController
             $data = [
                 'resetPasswordActive' => true,
             ];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         } else {
             
             $code = Yii::$service->helper->appserver->account_forget_password_token_timeout;
             $data = [
                 'resetPasswordActive' => false,
             ];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         
         
@@ -88,9 +88,9 @@ class ForgotController extends AppserverController
             $data = [
                 'resetPasswordActive' => false,
             ];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         $email = Yii::$app->request->post('email');
         $password = Yii::$app->request->post('newPassword');
@@ -110,24 +110,24 @@ class ForgotController extends AppserverController
                 'error' => implode(',',$errorArr),
             ];
             $code = Yii::$service->helper->appserver->account_forget_password_reset_param_invalid;
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         
         $status = Yii::$service->customer->changePasswordAndClearToken($password, $identity);
         if ($status) {
             $code = Yii::$service->helper->appserver->status_success;
             $data = [ ];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }else{
             $code = Yii::$service->helper->appserver->account_forget_password_reset_fail;
             $data = [ ];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         
     }
@@ -142,9 +142,9 @@ class ForgotController extends AppserverController
             // 用户已经登录
             $code = Yii::$service->helper->appserver->account_is_logined;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         
         $email       = Yii::$app->request->post('email');
@@ -155,9 +155,9 @@ class ForgotController extends AppserverController
             if(!Yii::$service->helper->captcha->validateCaptcha($captcha)){
                 $code = Yii::$service->helper->appserver->status_invalid_captcha;
                 $data = [];
-                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
                 
-                return $reponseData;
+                return $responseData;
             }
         }
         // 验证邮箱是否存在
@@ -165,9 +165,9 @@ class ForgotController extends AppserverController
         if(!$identity){
             $code = Yii::$service->helper->appserver->account_email_not_exist;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         // 发送邮件
         $domain       = Yii::$app->request->post('domain');
@@ -180,9 +180,9 @@ class ForgotController extends AppserverController
 
         $code = Yii::$service->helper->appserver->status_success;
         $data = [];
-        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
         
-        return $reponseData;
+        return $responseData;
     }
     /**
      * 发送忘记密码邮件.

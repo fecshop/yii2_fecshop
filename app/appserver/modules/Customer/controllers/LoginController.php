@@ -33,9 +33,9 @@ class LoginController extends AppserverController
             
             $code = Yii::$service->helper->appserver->account_is_logined;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         $email       = Yii::$app->request->post('email');
         $password    = Yii::$app->request->post('password');
@@ -46,25 +46,25 @@ class LoginController extends AppserverController
             if(!Yii::$service->helper->captcha->validateCaptcha($captcha)){
                 $code = Yii::$service->helper->appserver->status_invalid_captcha;
                 $data = [];
-                $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+                $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
                 
-                return $reponseData;
+                return $responseData;
             }
         }
         $accessToken = Yii::$service->customer->loginAndGetAccessToken($email,$password);
         if($accessToken){
             $code = Yii::$service->helper->appserver->status_success;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }else{
             
             $code = Yii::$service->helper->appserver->account_login_invalid_email_or_password;
             $data = [];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         
     }
@@ -82,9 +82,9 @@ class LoginController extends AppserverController
             // 用户已经登录
             $code = Yii::$service->helper->appserver->account_is_logined;
             $data = [ ];
-            $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
-            return $reponseData;
+            return $responseData;
         }
         $loginParam = \Yii::$app->getModule('customer')->params['login'];
         $loginCaptchaActive = isset($loginParam['loginPageCaptcha']) ? $loginParam['loginPageCaptcha'] : false;
@@ -97,9 +97,9 @@ class LoginController extends AppserverController
             'googleLoginUrl'    => Yii::$service->customer->google->getLoginUrl($googleRedirectUrl,true),
             'facebookLoginUrl'  => Yii::$service->customer->facebook->getLoginUrl($facebookRedirectUrl,true),
         ];
-        $reponseData = Yii::$service->helper->appserver->getReponseData($code, $data);
+        $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
         
-        return $reponseData;
+        return $responseData;
         
     }
     
