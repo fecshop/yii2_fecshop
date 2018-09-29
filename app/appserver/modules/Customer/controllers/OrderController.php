@@ -11,7 +11,6 @@ namespace fecshop\app\appserver\modules\Customer\controllers;
 
 use fecshop\app\appserver\modules\AppserverTokenController;
 use Yii;
-use \Firebase\JWT\JWT;
 
 /**
  * @author Terry Zhao <2358269014@qq.com>
@@ -25,7 +24,7 @@ class OrderController extends AppserverTokenController
     protected $orderBy;
     protected $customer_id;
     protected $_page = 'p';
-    
+
     public function actionIndex()
     {
         if(Yii::$app->request->getMethod() === 'OPTIONS'){
@@ -65,11 +64,11 @@ class OrderController extends AppserverTokenController
                 'count'         => $count,
             ];
             $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
-            
+
             return $responseData;
         }
     }
-    
+
     public function getOrderArr($order){
         $orderInfo = [];
         $orderInfo['created_at'] = date('Y-m-d H:i:s',$order['created_at']);
@@ -98,7 +97,7 @@ class OrderController extends AppserverTokenController
         $orderInfo['payment_method'] = $order['payment_method'];
         $orderInfo['shipping_method'] = $order['shipping_method'];
         $orderInfo['tracking_number'] = $order['tracking_number'];
-        
+
         $orderInfo['shipping_total'] = $order['shipping_total'];
         $orderInfo['base_shipping_total'] = $order['base_shipping_total'];
         $orderInfo['customer_telephone'] = $order['customer_telephone'];
@@ -112,13 +111,13 @@ class OrderController extends AppserverTokenController
         $orderInfo['customer_address_country_name'] = $order['customer_address_country_name'];
         $orderInfo['currency_symbol'] = $order['currency_symbol'];
         $orderInfo['products'] = $order['products'];
-        
-        
-        
-        return $orderInfo; 
+
+
+
+        return $orderInfo;
     }
-    
-    
+
+
     public function actionView(){
         if(Yii::$app->request->getMethod() === 'OPTIONS'){
             return [];
@@ -144,7 +143,7 @@ class OrderController extends AppserverTokenController
                                 'product_id' => $product['product_id'],
                                 'custom_option_info' => $product['custom_option_info'],
                             ];
-                            
+
                         }
                     }
                     $order_info['products'] = $productArr;
@@ -153,16 +152,16 @@ class OrderController extends AppserverTokenController
                         'order'=> $order_info,
                     ];
                     $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
-                    
+
                     return $responseData;
-                    
+
                 }
             }
         }
-        
-        
+
+
     }
-    
+
     public function actionReorder()
     {
         $order_id = Yii::$app->request->get('order_id');
@@ -182,7 +181,7 @@ class OrderController extends AppserverTokenController
             $code = Yii::$service->helper->appserver->account_reorder_order_id_invalid;
             $data = [];
             $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
-            
+
             return $responseData;
         }
         $this->addOrderProductToCart($order_id);
@@ -190,11 +189,11 @@ class OrderController extends AppserverTokenController
         $code = Yii::$service->helper->appserver->status_success;
         $data = [];
         $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
-        
+
         return $responseData;
     }
-    
-    
+
+
     public function addOrderProductToCart($order_id)
     {
         $items = Yii::$service->order->item->getByOrderId($order_id);
