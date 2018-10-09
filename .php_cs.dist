@@ -1,12 +1,22 @@
 <?php
 
+$header = <<<'EOF'
+FecShop file.
+
+@link http://www.fecshop.com/
+@copyright Copyright (c) 2016 FecShop Software LLC
+@license http://www.fecshop.com/license/
+EOF;
+
 $finder = PhpCsFixer\Finder::create()
-    ->in(__DIR__ . '/services')
+    ->in('./services')
+    ->notPath('./services/helper/MobildDetect.php')
 ;
 
 $config = PhpCsFixer\Config::create()
     ->setRules([
         '@PSR2' => true,
+        'header_comment' => ['header' => $header],
     ])
     ->setFinder($finder)
 ;
