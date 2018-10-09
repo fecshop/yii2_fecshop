@@ -113,8 +113,8 @@ class Currency extends Service
     protected function actionGetCurrentCurrencyPrice($price)
     {
         $currencyCode  = $this->getCurrentCurrency();
-        $currencyPrice = $this->getCurrencyPrice($price,$currencyCode);
-        if($currencyPrice){
+        $currencyPrice = $this->getCurrencyPrice($price, $currencyCode);
+        if ($currencyPrice) {
             return $currencyPrice;
         }
         /*
@@ -130,7 +130,7 @@ class Currency extends Service
      * property $currencyCode|String，货币简码,譬如 USD
      * 根据基础货币，得到相应货币的价格
      */
-    protected function actionGetCurrencyPrice($price,$currencyCode)
+    protected function actionGetCurrencyPrice($price, $currencyCode)
     {
         if (isset($this->currencys[$currencyCode]['rate'])) {
             $rate = $this->currencys[$currencyCode]['rate'];
@@ -244,7 +244,8 @@ class Currency extends Service
     }
 
 
-    public function setCurrentCurrency2CNY(){
+    public function setCurrentCurrency2CNY()
+    {
         return $this->setCurrentCurrency('CNY');
     }
 }

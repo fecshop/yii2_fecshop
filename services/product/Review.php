@@ -29,16 +29,18 @@ class Review extends Service
     protected $_reviewModelName = '\fecshop\models\mongodb\product\Review';
     protected $_reviewModel;
     
-    public function init(){
+    public function init()
+    {
         parent::init();
-        list($this->_reviewModelName,$this->_reviewModel) = \Yii::mapGet($this->_reviewModelName);  
+        list($this->_reviewModelName, $this->_reviewModel) = \Yii::mapGet($this->_reviewModelName);
     }
     
     /**
      * @property $product_id | String, 产品id
      * 是否有评论的权限，如果有，则返回true
      */
-    public function isReviewRole($product_id){
+    public function isReviewRole($product_id)
+    {
         if (!$this->reviewOnlyOrderedProduct) {
             return true;
         }
@@ -392,7 +394,7 @@ class Review extends Service
         $reviewModel = $this->_reviewModel;
         $filter = [
             'numPerPage' 	=> 10000,  // mongodb 查询，numPerPage必须设置，如果不设置，默认为20
-      		'pageNum'		=> 1,
+              'pageNum'		=> 1,
             'where'            => [
                 ['product_spu' => $spu],
                 ['status' => $reviewModel->getActiveStatus()],
@@ -401,7 +403,7 @@ class Review extends Service
         $coll = $this->coll($filter);
         $count = $coll['count'];
         $data = $coll['coll'];
-        $rate_total = 0; 
+        $rate_total = 0;
         $rate_total_arr['star_0'] = 0;
         $rate_total_arr['star_1'] = 0;
         $rate_total_arr['star_2'] = 0;

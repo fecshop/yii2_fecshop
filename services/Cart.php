@@ -71,7 +71,8 @@ class Cart extends Service
      * @property $addQty |int , 加入购物车的产品个数。
      * @return 得到在购物车个数变动数，根据产品的打包销售数进行改变
      */
-    public function getCartQty($package_number, $addQty){
+    public function getCartQty($package_number, $addQty)
+    {
         if ($package_number >= 2) {
             return (int)($addQty * $package_number);
         } else {
@@ -124,7 +125,6 @@ class Cart extends Service
         }
         Yii::$service->cart->quote->computeCartInfo();
         return true;
-        
     }
 
     /**
@@ -139,7 +139,6 @@ class Cart extends Service
         }
         Yii::$service->cart->quote->computeCartInfo();
         return true;
-        
     }
     
     /**

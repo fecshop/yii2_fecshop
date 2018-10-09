@@ -32,8 +32,8 @@ class MongoSearch extends Service implements SearchInterface
     public function init()
     {
         parent::init();
-        list($this->_productModelName,$this->_productModel) = \Yii::mapGet($this->_productModelName); 
-        list($this->_searchModelName,$this->_searchModel) = \Yii::mapGet($this->_searchModelName); 
+        list($this->_productModelName, $this->_productModel) = \Yii::mapGet($this->_productModelName);
+        list($this->_searchModelName, $this->_searchModel) = \Yii::mapGet($this->_searchModelName);
         $sModel = $this->_searchModel;
         /**
          * 初始化search model 的属性，将需要过滤的属性添加到search model的类属性中。
@@ -118,7 +118,7 @@ class MongoSearch extends Service implements SearchInterface
             if (is_array($coll['coll']) && !empty($coll['coll'])) {
                 foreach ($coll['coll'] as $one) {
                     $one['product_id'] = $one['_id'];
-                    unset($one['_id']); 
+                    unset($one['_id']);
                     //$langCodes = Yii::$service->fecshoplang->allLangCode;
                     //if(!empty($langCodes) && is_array($langCodes)){
                     //	foreach($langCodes as $langCodeInfo){
@@ -153,11 +153,11 @@ class MongoSearch extends Service implements SearchInterface
         return true;
     }
 
-     /**
-     * @property $nowTimeStamp | int 
-     * 批量更新过程中，被更新的产品都会更新字段sync_updated_at
-     * 删除xunSearch引擎中sync_updated_at小于$nowTimeStamp的字段.
-     */
+    /**
+    * @property $nowTimeStamp | int
+    * 批量更新过程中，被更新的产品都会更新字段sync_updated_at
+    * 删除xunSearch引擎中sync_updated_at小于$nowTimeStamp的字段.
+    */
     protected function actionDeleteNotActiveProduct($nowTimeStamp)
     {
         $sModel = $this->_searchModel;
@@ -198,11 +198,11 @@ class MongoSearch extends Service implements SearchInterface
     }
 
     /**
-     * @property $select | Array 
-     * @property $where | Array 
+     * @property $select | Array
+     * @property $where | Array
      * @property $pageNum | Int
-     * @property $numPerPage | Array 
-     * @property $product_search_max_count | Int ， 搜索结果最大产品数。 
+     * @property $numPerPage | Array
+     * @property $product_search_max_count | Int ， 搜索结果最大产品数。
      * 对于上面的参数和以前的$filter类似，大致和下面的类似
      * [
      *	'category_id' 	=> 1,
@@ -321,7 +321,7 @@ class MongoSearch extends Service implements SearchInterface
              */
             $s_data = [];
             foreach ($data as $one) {
-                if($one['_id']) {
+                if ($one['_id']) {
                     $_id = (string) $one['_id'];
                     $s_data[$_id] = $one;
                 }

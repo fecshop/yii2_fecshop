@@ -18,8 +18,8 @@ use Yii;
  */
 class Sitemap extends Service
 {
-    public    $numPerPage = 100;
-    public    $sitemapConfig;
+    public $numPerPage = 100;
+    public $sitemapConfig;
     protected $currentDate; // = date('Y-m-d');
 
     protected function initSiteMap()

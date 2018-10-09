@@ -30,7 +30,7 @@ class Rewrite extends Service
      * 如果不设置，则系统使用默认路径
      * 如果设置了路径，则使用自定义的路径
      */
-    public $storagePath = ''; 
+    public $storagePath = '';
     protected $_urlRewrite;
 
     public function init()
@@ -47,7 +47,7 @@ class Rewrite extends Service
         */
     }
     /**
-     * @property $urlKey | string 
+     * @property $urlKey | string
      * 通过重写后的urlkey字符串，去url_rewrite表中查询，找到重写前的url字符串。
      */
     protected function actionGetOriginUrl($urlKey)
@@ -106,7 +106,7 @@ class Rewrite extends Service
         return $this->_urlRewrite->save($one);
     }
     /**
-     * @property $ids | Array or String or Int 
+     * @property $ids | Array or String or Int
      * 删除相应的url rewrite 记录
      */
     protected function actionRemove($ids)

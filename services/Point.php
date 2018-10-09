@@ -18,5 +18,4 @@ use Yii;
  */
 class Point extends Service
 {
-    
 }

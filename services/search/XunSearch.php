@@ -33,8 +33,8 @@ class XunSearch extends Service implements SearchInterface
     public function init()
     {
         parent::init();
-        list($this->_productModelName,$this->_productModel) = \Yii::mapGet($this->_productModelName); 
-        list($this->_searchModelName,$this->_searchModel) = \Yii::mapGet($this->_searchModelName); 
+        list($this->_productModelName, $this->_productModel) = \Yii::mapGet($this->_productModelName);
+        list($this->_searchModelName, $this->_searchModel) = \Yii::mapGet($this->_searchModelName);
     }
     /**
      * 初始化xunSearch索引.
@@ -110,7 +110,7 @@ class XunSearch extends Service implements SearchInterface
         echo "begin delete Xun Search Date \n";
         $nowTimeStamp = (int) $nowTimeStamp;
         $XunSearchData = $this->_searchModel->find()
-            ->limit($numPerPage)  
+            ->limit($numPerPage)
             ->offset(($i - 1) * $numPerPage)
             ->all();
         foreach ($XunSearchData as $one) {
@@ -194,7 +194,7 @@ class XunSearch extends Service implements SearchInterface
             $s_data = [];
             foreach ($data as $one) {
                 $_id = (string) $one['_id'];
-                if($_id){
+                if ($_id) {
                     $s_data[$_id] = $one;
                 }
             }
@@ -263,7 +263,7 @@ class XunSearch extends Service implements SearchInterface
         if (is_object($product_id)) {
             $product_id = (string) $product_id;
             $model = $this->_searchModel->findOne($product_id);
-            if($model){
+            if ($model) {
                 $model->delete();
             }
         }

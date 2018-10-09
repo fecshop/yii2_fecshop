@@ -21,7 +21,6 @@ use Yii;
  */
 class Product extends Service
 {
-    
     public $customAttrGroup;
     public $categoryAggregateMaxCount; // Yii::$service->product->categoryAggregateMaxCount;
     /**
@@ -34,7 +33,7 @@ class Product extends Service
      * 如果不设置，则系统使用默认路径
      * 如果设置了路径，则使用自定义的路径
      */
-    public $storagePath = ''; 
+    public $storagePath = '';
     protected $_product;
     protected $_defaultAttrGroup = 'default';
 
@@ -44,7 +43,7 @@ class Product extends Service
         $currentService = $this->getStorageService($this);
         $this->_product = new $currentService();
         /*
-        if ($this->storage == 'mongodb') { 
+        if ($this->storage == 'mongodb') {
             // 根据配置注入的config值，返回相应的class，譬如：\fecshop\services\product\ProductMongodb
             $currentService = $this->getStorageService($this);
             $this->_product = new $currentService();
@@ -117,8 +116,8 @@ class Product extends Service
                 && is_array($this->customAttrGroup[$productAttrGroup]['general_attr'])
         ) {
             $general_attr = $this->customAttrGroup[$productAttrGroup]['general_attr'];
-            if(is_array($general_attr)){
-                foreach($general_attr as $attr => $info){
+            if (is_array($general_attr)) {
+                foreach ($general_attr as $attr => $info) {
                     $arr[] = $attr;
                 }
             }
@@ -128,8 +127,8 @@ class Product extends Service
                 && is_array($this->customAttrGroup[$productAttrGroup]['spu_attr'])
         ) {
             $spu_attr = $this->customAttrGroup[$productAttrGroup]['spu_attr'];
-            if(is_array($spu_attr)){
-                foreach($spu_attr as $attr => $info){
+            if (is_array($spu_attr)) {
+                foreach ($spu_attr as $attr => $info) {
                     $arr[] = $attr;
                 }
             }
@@ -141,7 +140,7 @@ class Product extends Service
      * @property $productAttrGroup|string
      * @return 一维数组
      * 得到这个产品属性组里面的 属性,也就是原来的产品属性+属性组对应的属性
-     * 
+     *
      */
     protected function actionGetSpuAttr($productAttrGroup)
     {
@@ -184,7 +183,7 @@ class Product extends Service
         return '';
     }
     /**
-     * @property $status | Int 
+     * @property $status | Int
      * @return boolean ， 产品状态是否是active
      */
     protected function actionIsActive($status)

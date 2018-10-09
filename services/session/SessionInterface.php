@@ -15,13 +15,13 @@ namespace fecshop\services\session;
  */
 interface SessionInterface
 {
-    public function set($key,$val,$timeout);
+    public function set($key, $val, $timeout);
 
-    public function get($key,$reflush);
+    public function get($key, $reflush);
 
     public function remove($key);
 
-    public function setFlash($key,$val,$timeout);
+    public function setFlash($key, $val, $timeout);
     
     public function getFlash($key);
     

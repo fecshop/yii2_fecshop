@@ -57,7 +57,8 @@ class Errors extends Service
         }
     }
     
-    public function getModelErrorsStrFormat($model_errors){
+    public function getModelErrorsStrFormat($model_errors)
+    {
         $error_arr = [];
         if (is_array($model_errors)) {
             foreach ($model_errors as $errors) {
@@ -83,7 +84,7 @@ class Errors extends Service
     {
         if ($errors = $this->_errors) {
             $this->_errors = false;
-            if(is_array($errors) && !empty($errors)){
+            if (is_array($errors) && !empty($errors)) {
                 if ($separator) {
                     if ($separator === true) {
                         $separator = '|';

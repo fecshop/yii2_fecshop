@@ -18,5 +18,4 @@ use fecshop\services\Service;
  */
 class BuyAlsoBuy extends Service
 {
-    
 }

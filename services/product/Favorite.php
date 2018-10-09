@@ -23,9 +23,10 @@ class Favorite extends Service
     protected $_favoriteModelName = '\fecshop\models\mongodb\product\Favorite';
     protected $_favoriteModel;
     
-    public function init(){
+    public function init()
+    {
         parent::init();
-        list($this->_favoriteModelName,$this->_favoriteModel) = \Yii::mapGet($this->_favoriteModelName);  
+        list($this->_favoriteModelName, $this->_favoriteModel) = \Yii::mapGet($this->_favoriteModelName);
     }
     
     protected function actionGetPrimaryKey()

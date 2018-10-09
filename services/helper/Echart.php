@@ -26,7 +26,7 @@ use fecshop\services\Service;
  * appadmin因为是后台，在上面下载的是完整的
  * 如果您想在前台入口，譬如appfront, apphtml5使用，可以选择比较小的js文件下载
  * 目前只有appadmin是默认加载了js，如果您想在前天入口，譬如appfront, apphtml5使用，您可以自行加载
- * 自行加载：进入到模板路径，将下载的js文件放到./assets/js下面，在layouts文件夹找到相应的layouts文件，添加设置即可，具体的方式您可以参考：@fecshop/app/appadmin/theme/base/default/layouts/dashboard.php 
+ * 自行加载：进入到模板路径，将下载的js文件放到./assets/js下面，在layouts文件夹找到相应的layouts文件，添加设置即可，具体的方式您可以参考：@fecshop/app/appadmin/theme/base/default/layouts/dashboard.php
  */
 class Echart extends Service
 {
@@ -52,7 +52,7 @@ class Echart extends Service
                 '周6' => 7,
                 '周7' => 1,
             ],
-        
+
      *  ];
      * @property $yPrex | String, 在Y轴的值加一个后缀，譬如问题加 °C
      * @property $legend | boolean, 是否显示 legend
@@ -60,7 +60,7 @@ class Echart extends Service
      * @property $width | Int，图表的长度
      * @property $height | Int，图标的高度
      * @return String，返回X-Y线性图表
-     * 
+     *
      */
     public function getLine($data, $legend = false, $yPrex = '', $width = 1100, $height = 400, $title = '')
     {
@@ -85,10 +85,10 @@ class Echart extends Service
         $xAxis = array_unique($xAxis);
         sort($xAxis);
         $xAxisArr = [];
-        foreach($xAxis as $s){
+        foreach ($xAxis as $s) {
             $xAxisArr[] =  '\''.$s.'\'';
         }
-        $xAxisStr = implode(',',$xAxisArr);
+        $xAxisStr = implode(',', $xAxisArr);
         
         // 计算series
         $seriesArr = [];
@@ -96,7 +96,7 @@ class Echart extends Service
             foreach ($data as $key => $info) {
                 if (is_array($info)) {
                     $arr = [];
-                    foreach($xAxis as $s){
+                    foreach ($xAxis as $s) {
                         if (isset($info[$s]) && $info[$s]) {
                             $arr[] = $info[$s];
                         } else {
@@ -124,7 +124,6 @@ class Echart extends Service
                     }
                     ";
                 }
-                
             }
         }
         $seriesArr = implode(',', $seriesArr);
@@ -186,18 +185,4 @@ class Echart extends Service
         
         return $str;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }

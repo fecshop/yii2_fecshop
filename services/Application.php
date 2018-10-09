@@ -25,7 +25,7 @@ class Application
     
     /**
      * @property $config | Array 注入的配置数组
-     * 在@app/web/index.php 入口文件处。会调用 new fecshop\services\Application($config['services']); 
+     * 在@app/web/index.php 入口文件处。会调用 new fecshop\services\Application($config['services']);
      * Yii::$service 就是该类实例化的对象，注入的配置保存到 $this->childService 中
      */
     public function __construct($config = [])
@@ -40,14 +40,13 @@ class Application
      */
     public function getChildService($childServiceName)
     {
-        
         if (!$this->_childService[$childServiceName]) {
             $childService = $this->childService;
             if (isset($childService[$childServiceName])) {
                 $service = $childService[$childServiceName];
-                if(!isset($service['enableService']) || $service['enableService']){
+                if (!isset($service['enableService']) || $service['enableService']) {
                     $this->_childService[$childServiceName] = Yii::createObject($service);
-                }else{
+                } else {
                     throw new InvalidConfigException('Child Service ['.$childServiceName.'] is disable in '.get_called_class().', you must config it! ');
                 }
             } else {

@@ -31,7 +31,7 @@ class Mongodb extends Service
     public function init()
     {
         parent::init();
-        list($this->_logModelName,$this->_logModel) = \Yii::mapGet($this->_logModelName);  
+        list($this->_logModelName, $this->_logModel) = \Yii::mapGet($this->_logModelName);
         if (!$this->collection) {
             $this->collection = $this->_defaultCollection;
         }

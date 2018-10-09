@@ -30,9 +30,10 @@ class StaticBlockMysqldb extends Service implements StaticBlockInterface
             'content',
         ];
     
-    public function init(){
+    public function init()
+    {
         parent::init();
-        list($this->_staticBlockModelName,$this->_staticBlockModel) = Yii::mapGet($this->_staticBlockModelName);  
+        list($this->_staticBlockModelName, $this->_staticBlockModel) = Yii::mapGet($this->_staticBlockModelName);
     }
     
     public function getPrimaryKey()

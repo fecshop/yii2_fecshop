@@ -48,8 +48,9 @@ class Appapi extends Service
      * @property $data | 混合状态，可以是数字，数组等格式，用于做返回给前端的数组。
      * @property $message | String ，选填，如果不填写，则使用  函数 返回的内容作为message
      */
-    public function getResponseData($code, $data, $message = ''){
-        if(!$message){
+    public function getResponseData($code, $data, $message = '')
+    {
+        if (!$message) {
             $message = $this->getMessageByCode($code);
         }
         if ($message) {
@@ -67,21 +68,22 @@ class Appapi extends Service
                 'data'    => '',
             ];
         }
-        
     }
     
     /**
      * @property $code | String ，状态码
      * 得到 code 对应 message的数组
      */
-    public function getMessageByCode($code){
+    public function getMessageByCode($code)
+    {
         $messageArr = $this->getMessageArr();
         return isset($messageArr[$code]['message']) ? $messageArr[$code]['message'] : '';
     }
     /**
      * 得到 code 对应 message的数组
      */
-    public function getMessageArr(){
+    public function getMessageArr()
+    {
         $arr = [
             /**
              * 公共状态码
@@ -144,5 +146,4 @@ class Appapi extends Service
         ];
         return $arr;
     }
-    
 }

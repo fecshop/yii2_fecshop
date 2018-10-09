@@ -24,9 +24,9 @@ class Trace extends Service
     public $trace_url;      // trace系统接收数据的url，在trace系统中获取
     public $trace_api_url;
     // 通过trace系统得到的token
-    public $access_token;  
+    public $access_token;
     // api发送数据给trace系统的最大等待时间，超过这个时间将不继续等待
-    public $api_time_out = 1;  
+    public $api_time_out = 1;
     
     protected $_fta;
     protected $_ftactivity;
@@ -53,7 +53,8 @@ class Trace extends Service
     /**
      * @return String, 通用的js部分，需要先设置 website_id 和 trace_url
      */
-    public function getTraceCommonJsCode(){
+    public function getTraceCommonJsCode()
+    {
         if ($this->traceJsEnable) {
             return "<script type=\"text/javascript\">
 	var _maq = _maq || [];
@@ -78,7 +79,8 @@ class Trace extends Service
      * @property $categoryName | String ， 填写分类的name，如果是多语言网站，那么这里填写默认语言的分类name
      * @return String, 分类页面的js Code
      */
-    public function getTraceCategoryJsCode($categoryName){
+    public function getTraceCategoryJsCode($categoryName)
+    {
         if ($this->traceJsEnable && $categoryName) {
             return "<script type=\"text/javascript\">
 	var _maq = _maq || [];
@@ -94,7 +96,8 @@ class Trace extends Service
      * @return String, 产品页面的js Code
      * <?= Yii::$service->page->trace->getTraceProductJsCode($sku)  ?>
      */
-    public function getTraceProductJsCode($sku){
+    public function getTraceProductJsCode($sku)
+    {
         if ($this->traceJsEnable && $sku) {
             return "<script type=\"text/javascript\">
 	var _maq = _maq || [];
@@ -119,10 +122,11 @@ class Trace extends Service
                 "price":75.11
             }
         ]
-     * 
+     *
      * @return String, 购物车页面的js Code
      */
-    public function getTraceCartJsCode($cart){
+    public function getTraceCartJsCode($cart)
+    {
         if ($this->traceJsEnable && $cart) {
             return "<script type=\"text/javascript\">
 	var _maq = _maq || [];
@@ -141,7 +145,8 @@ class Trace extends Service
      }
      * @return String, 注册页面的js Code
      */
-    public function getTraceSearchJsCode($search){
+    public function getTraceSearchJsCode($search)
+    {
         if ($this->traceJsEnable && $search) {
             return "<script type=\"text/javascript\">
 	var _maq = _maq || [];
@@ -152,7 +157,8 @@ class Trace extends Service
         }
     }
     
-    public function initCookie(){
+    public function initCookie()
+    {
         // 判断当前是否是appserver端，如果是，则从 Yii::$app->request->post('cookies') 中获取
         if (Yii::$service->helper->isApiApp()) {
             \Yii::info('is ApiApp', 'fecshop_debug');
@@ -177,7 +183,7 @@ class Trace extends Service
         $this->_ftreturn          = $cookies['_ftreturn'];
         // params.website_id
         $this->_fta_site_id       = $cookies['_fta_site_id'];
-        if (!$this->_fta_site_id){
+        if (!$this->_fta_site_id) {
             // 对于paypal ipn修改订单状态，website_id的值从配置中读取
             $this->_fta_site_id = $this->website_id;
         }
@@ -193,11 +199,11 @@ class Trace extends Service
         $this->_fec_content       = $cookies['fec_content'];
         // params.fec_design
         $this->_fec_design        = $cookies['fec_design'];
-        
     }
     
     // 登录账户，通过api传递数据给trace系统 【已经部署到customer service login函数里面】
-    public function sendTraceLoginInfoByApi($login_email){
+    public function sendTraceLoginInfoByApi($login_email)
+    {
         if ($this->traceJsEnable && $login_email) {
             $this->apiSendTrace([
                 self::LOGIN_EMAIL => $login_email,
@@ -205,25 +211,28 @@ class Trace extends Service
         }
     }
     // 注册账户，通过api传递数据给trace系统【已经部署到customer service register函数里面】
-    public function sendTraceRegisterInfoByApi($register_email){
+    public function sendTraceRegisterInfoByApi($register_email)
+    {
         if ($this->traceJsEnable && $register_email) {
             $this->apiSendTrace([
                 self::REGISTER_EMAIL => $register_email,
             ]);
         }
-    } 
+    }
     // 产品加入购物车，通过api传递数据给trace系统 sku, qty, price
-    public function sendTraceAddToCartInfoByApi($cart_info){
+    public function sendTraceAddToCartInfoByApi($cart_info)
+    {
         if ($this->traceJsEnable && $cart_info) {
             $this->apiSendTrace([
                 self::CART => $cart_info,
             ]);
         }
-    } 
+    }
     
     
     // 订单生成成功，通过api传递数据给trace系统
-    public function sendTracePaymentPendingOrderByApi($order){
+    public function sendTracePaymentPendingOrderByApi($order)
+    {
         if ($this->traceJsEnable && $order) {
             $this->apiSendTrace([
                 self::PAYMENT_PENDING_ORDER => $order,
@@ -231,7 +240,8 @@ class Trace extends Service
         }
     }
     // 订单支付成功，通过api传递数据给trace系统
-    public function sendTracePaymentSuccessOrderByApi($order){
+    public function sendTracePaymentSuccessOrderByApi($order)
+    {
         if ($this->traceJsEnable && $order) {
             $this->apiSendTrace([
                 self::PAYMENT_SUCCESS_ORDER => $order,
@@ -240,10 +250,11 @@ class Trace extends Service
     }
     /**
      * @property $data | Array，目前分类四类:loginEmail, registerEmail, paymentPendingOrder, paymentSuccessOrder,
-     * 
+     *
      *
      */
-    public function apiSendTrace($data){
+    public function apiSendTrace($data)
+    {
         \Yii::info('apiSendTrace-data', 'fecshop_debug');
         ob_start();
         ob_implicit_flush(false);
@@ -308,7 +319,7 @@ class Trace extends Service
             // 完成
             return true;
         // 如果是paypal ipn发送订单支付成功信息，则使用下面的方式发送数据给trace系统，用于更新订单状态
-        } else if (isset($data[self::PAYMENT_SUCCESS_ORDER]) && $data[self::PAYMENT_SUCCESS_ORDER]) {
+        } elseif (isset($data[self::PAYMENT_SUCCESS_ORDER]) && $data[self::PAYMENT_SUCCESS_ORDER]) {
             \Yii::info(self::PAYMENT_SUCCESS_ORDER, 'fecshop_debug');
             $this->apiSend($data);
             return true;
@@ -319,7 +330,8 @@ class Trace extends Service
      * 通过curl函数，发送数据给统计系统，在使用前，您需要配置
      * `trace_api_url` `api_time_out` `access_token`
      */
-    public function apiSend($data){
+    public function apiSend($data)
+    {
         // var_dump($data);exit;
         $data = json_encode($data);
         $ch = curl_init();
@@ -327,11 +339,12 @@ class Trace extends Service
         curl_setopt($ch, CURLOPT_URL, $this->trace_api_url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch,CURLOPT_TIMEOUT, $this->api_time_out);  //定义超时3秒钟  
+        curl_setopt($ch, CURLOPT_TIMEOUT, $this->api_time_out);  //定义超时3秒钟
         // POST数据
         curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, 
-            CURLOPT_HTTPHEADER, 
+        curl_setopt(
+            $ch,
+            CURLOPT_HTTPHEADER,
             [
             'Accept: application/json',
             'Content-Type: application/json',
@@ -354,9 +367,8 @@ class Trace extends Service
         \Yii::info($output, 'fecshop_debug');
         //var_dump($output);exit;
         return $output;
-        
     }
-	
+    
     
     
     /**
@@ -373,7 +385,7 @@ class Trace extends Service
             "discount_amount":0.00, // 折扣金额
             "coupon":"xxxxx", // 优惠券，没有则为空
             "city":"fdasfds", // 城市
-            
+
             "email":"2358269014@qq.com", // 下单填写的email
             "first_name":"terry", //
             "last_name":"water", //
@@ -399,15 +411,15 @@ class Trace extends Service
                 }
             ]
         }
-     * 
+     *
      * @return String, 未支付订单页面的js Code
      */
     /* 改成api发送数据
     public function getTraceOrderJsCode($order){
         if ($this->traceJsEnable && $order) {
             return "<script type=\"text/javascript\">
-	var _maq = _maq || [];
-	_maq.push(['order', ".$order."]);
+    var _maq = _maq || [];
+    _maq.push(['order', ".$order."]);
 </script>";
         } else {
             return '';
@@ -429,7 +441,7 @@ class Trace extends Service
             "discount_amount":0.00, // 折扣金额
             "coupon":"xxxxx", // 优惠券，没有则为空
             "city":"fdasfds", // 城市
-            
+
             "email":"2358269014@qq.com", // 下单填写的email
             "first_name":"terry", //
             "last_name":"water", //
@@ -455,15 +467,15 @@ class Trace extends Service
                 }
             ]
         }
-     * 
+     *
      * @return String, 支付成功订单页面的js Code
      */
     /* 改成api发送数据
     public function getTraceSuccessOrderJsCode($successOrder){
         if ($this->traceJsEnable && $successOrder) {
             return "<script type=\"text/javascript\">
-	var _maq = _maq || [];
-	_maq.push(['successOrder', ".$successOrder."]);
+    var _maq = _maq || [];
+    _maq.push(['successOrder', ".$successOrder."]);
 </script>";
         } else {
             return '';
@@ -478,8 +490,8 @@ class Trace extends Service
     public function getTraceLoginJsCode($login_email){
         if ($this->traceJsEnable && $login_email) {
             return "<script type=\"text/javascript\">
-	var _maq = _maq || [];
-	_maq.push(['login_email', '".$login_email."']);
+    var _maq = _maq || [];
+    _maq.push(['login_email', '".$login_email."']);
 </script>";
         } else {
             return '';
@@ -494,14 +506,12 @@ class Trace extends Service
     public function getTraceRegisterJsCode($register_email){
         if ($this->traceJsEnable && $register_email) {
             return "<script type=\"text/javascript\">
-	var _maq = _maq || [];
-	_maq.push(['register_email', '".$register_email."']);
+    var _maq = _maq || [];
+    _maq.push(['register_email', '".$register_email."']);
 </script>";
         } else {
             return '';
         }
     }
     */
-    
-    
 }

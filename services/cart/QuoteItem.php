@@ -30,9 +30,10 @@ class QuoteItem extends Service
     protected $_itemModelName = '\fecshop\models\mysqldb\cart\Item';
     protected $_itemModel;
     
-    public function init(){
+    public function init()
+    {
         parent::init();
-        list($this->_itemModelName,$this->_itemModel) = Yii::mapGet($this->_itemModelName);  
+        list($this->_itemModelName, $this->_itemModel) = Yii::mapGet($this->_itemModelName);
     }
     
     /**
@@ -90,7 +91,6 @@ class QuoteItem extends Service
         
         $item['afterAddQty'] = $item_one->qty;
         $this->sendTraceAddToCartInfoByApi($item);
-        
     }
     /**
      * @property $item | Array, example:
@@ -101,9 +101,10 @@ class QuoteItem extends Service
      *      'sku' 				=> 'xxxx',
      *      'afterAddQty'       => 33,  // 添加后，该产品在sku中的个数，这个个数是为了计算购物车中产品的价格
      * ];
-     * 将加入购物车的操作，加入trace 
+     * 将加入购物车的操作，加入trace
      */
-    public function sendTraceAddToCartInfoByApi($item){
+    public function sendTraceAddToCartInfoByApi($item)
+    {
         if (Yii::$service->page->trace->traceJsEnable) {
             $product_price_arr  = Yii::$service->product->price->getCartPriceByProductId($item['product_id'], $item['afterAddQty'], $item['custom_option_sku'], 2);
             $base_product_price = isset($product_price_arr['base_price']) ? $product_price_arr['base_price'] : 0;
@@ -363,7 +364,7 @@ class QuoteItem extends Service
             if ($product['min_sales_qty'] && $product['min_sales_qty'] >= 2) {
                 $min_sales_qty = $product['min_sales_qty'];
             }
-            if($lessedQty < $min_sales_qty){
+            if ($lessedQty < $min_sales_qty) {
                 Yii::$service->helper->errors->add('product less buy qty is '.$product['min_sales_qty']);
                 
                 return false;
@@ -459,7 +460,7 @@ class QuoteItem extends Service
             $updateCount = $this->_itemModel->updateAll(
                 ['active'  => $active],
                 ['cart_id' => $cart_id]
-            ); 
+            );
             if ($updateCount > 0) {
                 Yii::$service->cart->quote->computeCartInfo();
             }
@@ -471,7 +472,7 @@ class QuoteItem extends Service
     }
     
     
-    /** 
+    /**
      * @property $cart_id | int 购物车id
      * 删除购物车中的所有的active产品。对于noActive产品保留
      * 注意：清空购物车并不是清空所有信息，仅仅是清空用户购物车中的产品。
@@ -494,7 +495,6 @@ class QuoteItem extends Service
                 return true;
             }
         }
-        
     }
 
     /** 废弃，改为 removeNoActiveItemsByCartId()，因为购物车改为勾选下单方式。

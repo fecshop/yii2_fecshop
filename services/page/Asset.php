@@ -119,7 +119,6 @@ class Asset extends Service
                     foreach ($cssConfig as $c) {
                         //$view->registerCssFile($this->jsCssDomain.$publishDir[1].'/'.$c['css'].$cssV, $c['options']);
                         $view->registerCssFile($publishDir[1].'/'.$c['css'].$cssV, $c['options']);
-                    
                     }
                 }
             }

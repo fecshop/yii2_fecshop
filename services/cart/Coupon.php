@@ -35,10 +35,11 @@ class Coupon extends Service
     public $coupon_type_percent = 1;
     public $coupon_type_direct  = 2;
     
-    public function init(){
+    public function init()
+    {
         parent::init();
-        list($this->_couponModelName,$this->_couponModel) = Yii::mapGet($this->_couponModelName);  
-        list($this->_couponUsageModelName,$this->_couponUsageModel) = Yii::mapGet($this->_couponUsageModelName);  
+        list($this->_couponModelName, $this->_couponModel) = Yii::mapGet($this->_couponModelName);
+        list($this->_couponUsageModelName, $this->_couponUsageModel) = Yii::mapGet($this->_couponUsageModelName);
     }
     
     protected function actionGetPrimaryKey()
@@ -61,7 +62,7 @@ class Coupon extends Service
             return new $this->_couponModelName;
         }
     }
-    /** 
+    /**
      * @property $customer_id | Int
      * @property $coupon_id | Int
      * 通过customer_id 和 coupon_id得到 Coupon Usage Model.
@@ -357,14 +358,14 @@ class Coupon extends Service
                         $data = [
                             'id'  => $cu_model['id'],
                         ];
-                        $result = $this->_couponUsageModel->getDb()->createCommand($sql,$data)->execute();
+                        $result = $this->_couponUsageModel->getDb()->createCommand($sql, $data)->execute();
                     }
                     // coupon的总使用次数+1
                     $sql = 'update '.$this->_couponModel->tableName().' set times_used = times_used + 1 where coupon_id  = :coupon_id ';
                     $data = [
                         'coupon_id' => $c_model['coupon_id'],
                     ];
-                    $result = $this->_couponModel->getDb()->createCommand($sql,$data)->execute();
+                    $result = $this->_couponModel->getDb()->createCommand($sql, $data)->execute();
                     return true;
                 } elseif ($type == 'cancel') {
                     $couponModel = $this->getCouponModel();
@@ -375,13 +376,13 @@ class Coupon extends Service
                         $data = [
                             'id'  => $cu_model['id'],
                         ];
-                        $result = $this->_couponUsageModel->getDb()->createCommand($sql,$data)->execute();
+                        $result = $this->_couponUsageModel->getDb()->createCommand($sql, $data)->execute();
                         // $this->_couponModel 使用次数-1
                         $sql = 'update '.$this->_couponModel->tableName().' set times_used = times_used - 1 where coupon_id  = :coupon_id ';
                         $data = [
                             'coupon_id' => $c_model['coupon_id'],
                         ];
-                        $result = $this->_couponModel->getDb()->createCommand($sql,$data)->execute();
+                        $result = $this->_couponModel->getDb()->createCommand($sql, $data)->execute();
                         
                         return true;
                     }
@@ -416,15 +417,15 @@ class Coupon extends Service
                     // 在service中不要出现事务等操作。在调用层使用。
                     //$innerTransaction = Yii::$app->db->beginTransaction();
                     //try {
-                        $set_status = Yii::$service->cart->quote->setCartCoupon($coupon_code);
+                    $set_status = Yii::$service->cart->quote->setCartCoupon($coupon_code);
                     $up_status = $this->updateCouponUse('add');
                     if ($set_status && $up_status) {
                         //$innerTransaction->commit();
-                            return true;
+                        return true;
                     } else {
                         Yii::$service->helper->errors->add('add coupon fail');
                     }
-                        //Yii::$service->helper->errors->add('add coupon fail');
+                    //Yii::$service->helper->errors->add('add coupon fail');
                         //$innerTransaction->rollBack();
                     //} catch (Exception $e) {
                         //Yii::$service->helper->errors->add('add coupon fail');
@@ -452,7 +453,7 @@ class Coupon extends Service
                 $cancel_status = Yii::$service->cart->quote->cancelCartCoupon($coupon_code);
                 if ($up_status && $cancel_status) {
                     return true;
-                }  
+                }
             }
         }
     }

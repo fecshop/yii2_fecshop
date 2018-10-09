@@ -41,7 +41,7 @@ class Appserver extends Service
      * 用户部分的状态码
      */
     public $account_register_email_exist                  = 1100000; // 注册：邮箱已经存在
-    public $account_register_invalid_data                 = 1100001; // 注册：注册数据格式不正确 
+    public $account_register_invalid_data                 = 1100001; // 注册：注册数据格式不正确
     public $account_login_invalid_email_or_password       = 1100002; // 登录：账户的邮箱或者密码不正确
     public $account_no_login_or_login_token_timeout       = 1100003; // 登录：账户的token已经过期,或者没有登录
     public $account_edit_invalid_data                     = 1100004; // 编辑：账户的编辑数据不正确
@@ -95,7 +95,7 @@ class Appserver extends Service
     public $order_generate_create_account_fail             = 1500005; // Order: 下订单，游客在下订单的同时直接生成账户失败。
     public $order_generate_save_address_fail               = 1500006; // Order: 下订单，游客在下订单的同时保存address信息失败。
     public $order_generate_cart_product_empty              = 1500007; // Order: 下订单，购物车数据为空
-    public $order_shipping_country_empty                   = 1500008; // Order: 下订单页面，切换address，从customer address中无法获取country 
+    public $order_shipping_country_empty                   = 1500008; // Order: 下订单页面，切换address，从customer address中无法获取country
     public $order_paypal_standard_get_token_fail           = 1500009; // Order: 通过paypal standard方式支付，获取token失败
     public $order_paypal_standard_payment_fail             = 1500010; // Order: 通过paypal standard方式支付，通过api支付失败
     public $order_paypal_standard_updateorderinfoafterpayment_fail  = 1500011; // Order: 通过paypal standard方式支付，api支付订单成功后，更新订单信息失败
@@ -123,8 +123,9 @@ class Appserver extends Service
      * @property $data | 混合状态，可以是数字，数组等格式，用于做返回给前端的数组。
      * @property $message | String ，选填，如果不填写，则使用  函数 返回的内容作为message
      */
-    public function getResponseData($code, $data, $message = ''){
-        if(!$message){
+    public function getResponseData($code, $data, $message = '')
+    {
+        if (!$message) {
             $message = $this->getMessageByCode($code);
         }
         if ($message) {
@@ -142,21 +143,22 @@ class Appserver extends Service
                 'data'    => '',
             ];
         }
-        
     }
     
     /**
      * @property $code | String ，状态码
      * 得到 code 对应 message的数组
      */
-    public function getMessageByCode($code){
+    public function getMessageByCode($code)
+    {
         $messageArr = $this->getMessageArr();
         return isset($messageArr[$code]['message']) ? $messageArr[$code]['message'] : '';
     }
     /**
      * 得到 code 对应 message的数组
      */
-    public function getMessageArr(){
+    public function getMessageArr()
+    {
         $arr = [
             /**
              * 公共状态码
@@ -282,14 +284,14 @@ class Appserver extends Service
             
             
             /**
-             * category 
+             * category
              */
             $this->category_not_exist => [
                 'message' => 'category is not exist',
             ],
             
             /**
-             * product 
+             * product
              */
             $this->product_favorite_fail => [
                 'message' => 'product favorite fail',
@@ -306,7 +308,7 @@ class Appserver extends Service
                 'message' => 'save product review fail',
             ],
             /**
-             * Cart 
+             * Cart
              */
             $this->cart_product_add_fail => [
                 'message' => 'product add to cart fail',
@@ -327,7 +329,7 @@ class Appserver extends Service
             
             
             /**
-             * Order 
+             * Order
              */
             $this->order_generate_product_stock_out => [
                 'message' => 'before generate order,check product stock out ',
@@ -395,26 +397,9 @@ class Appserver extends Service
              */
             $this->cms_article_not_exist => [
                 'message' => 'article is not exist',
-            ], 
+            ],
             
         ];
         return $arr;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }

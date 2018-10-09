@@ -18,8 +18,8 @@ use Yii;
  */
 class Url extends Service
 {
-    public    $randomCount = 8;
-    public    $showScriptName;
+    public $randomCount = 8;
+    public $showScriptName;
     protected $_secure;
     protected $_currentBaseUrl;
     protected $_origin_url;

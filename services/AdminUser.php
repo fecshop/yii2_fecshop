@@ -18,15 +18,14 @@ use Yii;
  */
 class AdminUser extends Service
 {
-
     protected $_adminUserLoginModelName = '\fecshop\models\mysqldb\adminUser\AdminUserLogin';
     protected $_adminUserLoginModel;
 
 
-     public function init(){
+    public function init()
+    {
         parent::init();
-        list($this->_adminUserLoginModelName,$this->_adminUserLoginModel) = \Yii::mapGet($this->_adminUserLoginModelName);
-
+        list($this->_adminUserLoginModelName, $this->_adminUserLoginModel) = \Yii::mapGet($this->_adminUserLoginModelName);
     }
     /**
      * @property $ids | Int Array
@@ -52,18 +51,19 @@ class AdminUser extends Service
      * 登录成功后，合并购物车，返回accessToken
      * ** 该函数是未登录用户，通过参数进行登录需要执行的函数。
      */
-    protected function actionLoginAndGetAccessToken($username,$password){
+    protected function actionLoginAndGetAccessToken($username, $password)
+    {
         $header = Yii::$app->request->getHeaders();
-        if(isset($header['access-token']) && $header['access-token']){
+        if (isset($header['access-token']) && $header['access-token']) {
             $accessToken = $header['access-token'];
         }
         // 如果request header中有access-token，则查看这个 access-token 是否有效
-        if($accessToken){
+        if ($accessToken) {
             $identity = Yii::$app->user->loginByAccessToken($accessToken);
             if ($identity !== null) {
                 $access_token_created_at = $identity->access_token_created_at;
                 $timeout = Yii::$service->session->timeout;
-                if($access_token_created_at + $timeout > time()){
+                if ($access_token_created_at + $timeout > time()) {
                     return $accessToken;
                 }
             }
@@ -74,14 +74,13 @@ class AdminUser extends Service
             'password'  => $password,
         ];
 
-        if($this->login($data)){
+        if ($this->login($data)) {
             $identity = Yii::$app->user->identity;
             $identity->generateAccessToken();
             $identity->access_token_created_at = time();
             $identity->save();
             $this->setHeaderAccessToken($identity->access_token);
             return $identity->access_token;
-
         }
     }
 
@@ -105,9 +104,10 @@ class AdminUser extends Service
         return $loginStatus;
     }
 
-    protected function actionSetHeaderAccessToken($accessToken){
-        if($accessToken){
-            Yii::$app->response->getHeaders()->set('access-token',$accessToken);
+    protected function actionSetHeaderAccessToken($accessToken)
+    {
+        if ($accessToken) {
+            Yii::$app->response->getHeaders()->set('access-token', $accessToken);
             return true;
         }
     }
@@ -121,26 +121,27 @@ class AdminUser extends Service
      * 如果不过期，则返回identity
      * ** 该方法为appserver用户通过access-token验证需要执行的函数。
      */
-    protected function actionLoginByAccessToken($type = null){
+    protected function actionLoginByAccessToken($type = null)
+    {
         $header = Yii::$app->request->getHeaders();
-        if(isset($header['access-token']) && $header['access-token']){
+        if (isset($header['access-token']) && $header['access-token']) {
             $accessToken = $header['access-token'];
         }
-        if($accessToken){
+        if ($accessToken) {
             $identity = Yii::$app->user->loginByAccessToken($accessToken, $type);
             if ($identity !== null) {
                 $access_token_created_at = $identity->access_token_created_at;
                 $timeout = Yii::$service->session->timeout;
                 // 如果时间没有过期，则返回identity
-                if($access_token_created_at + $timeout > time()){
+                if ($access_token_created_at + $timeout > time()) {
                     //如果时间没有过期，但是快要过期了，在过$updateTimeLimit段时间就要过期，那么更新access_token_created_at。
                     $updateTimeLimit = Yii::$service->session->updateTimeLimit;
-                    if($access_token_created_at + $timeout <= (time() + $updateTimeLimit )){
+                    if ($access_token_created_at + $timeout <= (time() + $updateTimeLimit)) {
                         $identity->access_token_created_at = time();
                         $identity->save();
                     }
                     return $identity;
-                }else{
+                } else {
                     $this->logoutByAccessToken();
                     return false;
                 }
@@ -155,8 +156,8 @@ class AdminUser extends Service
     {
         $userComponent = Yii::$app->user;
         $identity = $userComponent->identity;
-        if ($identity !== null ) {
-            if(!Yii::$app->user->isGuest){
+        if ($identity !== null) {
+            if (!Yii::$app->user->isGuest) {
                 $identity->access_token = null;
                 $identity->access_token_created_at = null;
                 $identity->save();

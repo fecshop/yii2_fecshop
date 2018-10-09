@@ -23,13 +23,13 @@ class Order extends Service
      */
     public $emailTheme;
 
-     /**
-     * @property $emailInfo | Array  ，数组格式格式如下：
-     * [ 'emcustomer_emailail' => 'xx@xx.com' , [...] ] 其中customer_email是必须有的数组key，对于其他的，
-     * 可以根据功能添加，添加后，可以在邮件模板的$params中调用，譬如调用customer_email为 $params['customer_email']
-     * @return boolean , 如果发送成功，则返回true。
-     * 新订单邮件
-     */
+    /**
+    * @property $emailInfo | Array  ，数组格式格式如下：
+    * [ 'emcustomer_emailail' => 'xx@xx.com' , [...] ] 其中customer_email是必须有的数组key，对于其他的，
+    * 可以根据功能添加，添加后，可以在邮件模板的$params中调用，譬如调用customer_email为 $params['customer_email']
+    * @return boolean , 如果发送成功，则返回true。
+    * 新订单邮件
+    */
     public function sendCreateEmail($orderInfo)
     {
         $toEmail = $orderInfo['customer_email'];

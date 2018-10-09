@@ -31,7 +31,7 @@ class Staticblock extends Service
      * 如果不设置，则系统使用默认路径
      * 如果设置了路径，则使用自定义的路径
      */
-    public $storagePath = ''; 
+    public $storagePath = '';
     protected $_static_block;
 
     /**

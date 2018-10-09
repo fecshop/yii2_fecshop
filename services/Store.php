@@ -58,16 +58,18 @@ class Store extends Service
     
     public $apiAppNameArr = ['appserver','appapi'];
     // 是否是api入口
-    public function isApiStore(){
+    public function isApiStore()
+    {
         $appName = Yii::$app->params['appName'];
-        if($appName && in_array($appName,$this->apiAppNameArr)){
+        if ($appName && in_array($appName, $this->apiAppNameArr)) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
     // 得到当前入口的名字
-    public function getCurrentAppName(){
+    public function getCurrentAppName()
+    {
         return Yii::$app->params['appName'];
     }
     
@@ -128,15 +130,15 @@ class Store extends Service
                     /**
                      * appserver 部分
                      */
-                    if(isset($store['serverLangs']) && !empty($store['serverLangs'])){
+                    if (isset($store['serverLangs']) && !empty($store['serverLangs'])) {
                         $this->serverLangs = $store['serverLangs'];
                     }
                     $headers = Yii::$app->request->getHeaders();
-                    if(isset($headers['fecshop-lang']) && $headers['fecshop-lang']){
+                    if (isset($headers['fecshop-lang']) && $headers['fecshop-lang']) {
                         $h_lang = $headers['fecshop-lang'];
-                        if(is_array($this->serverLangs)){
-                            foreach($this->serverLangs as $one){
-                                if($one['code'] == $h_lang){
+                        if (is_array($this->serverLangs)) {
+                            foreach ($this->serverLangs as $one) {
+                                if ($one['code'] == $h_lang) {
                                     Yii::$service->store->currentLangCode = $h_lang;
                                     Yii::$service->store->currentLang = $one['language'];
                                     Yii::$service->store->currentLangName = $one['languageName'];
@@ -145,9 +147,9 @@ class Store extends Service
                             }
                         }
                     }
-                    if(isset($headers['fecshop-currency']) && $headers['fecshop-currency']){
+                    if (isset($headers['fecshop-currency']) && $headers['fecshop-currency']) {
                         $currentC = Yii::$service->page->currency->getCurrentCurrency();
-                        if($currentC != $headers['fecshop-currency']){
+                        if ($currentC != $headers['fecshop-currency']) {
                             Yii::$service->page->currency->setCurrentCurrency($headers['fecshop-currency']);
                         }
                     }
@@ -158,11 +160,10 @@ class Store extends Service
         if (!$init_compelte) {
             throw new InvalidValueException('this domain is not config in store component');
         }
-        
     }
 
     /**
-     * @property $store_code | String 
+     * @property $store_code | String
      * @property $store | Array
      * mobile devide url redirect.
      * pc端自动跳转到html5端的检测
@@ -209,14 +210,14 @@ class Store extends Service
         $redirectUrl = str_replace($store_code, $redirectDomain, $currentUrl);
         // pc端跳转到html5，可能一个是https，一个是http，因此需要下面的代码进行转换。
         if ($mobile_https) {
-            if (strstr($redirectUrl,'https://') || strstr($redirectUrl,'http://')) {
-                $redirectUrl = str_replace('http://','https://',$redirectUrl);
+            if (strstr($redirectUrl, 'https://') || strstr($redirectUrl, 'http://')) {
+                $redirectUrl = str_replace('http://', 'https://', $redirectUrl);
             } else {
                 $redirectUrl = 'https:'.$redirectUrl;
             }
         } else {
-            if (strstr($redirectUrl,'https://') || strstr($redirectUrl,'http://')) {
-                $redirectUrl = str_replace('https://','http://',$redirectUrl);
+            if (strstr($redirectUrl, 'https://') || strstr($redirectUrl, 'http://')) {
+                $redirectUrl = str_replace('https://', 'http://', $redirectUrl);
             } else {
                 $redirectUrl = 'http:'.$redirectUrl;
             }
@@ -227,7 +228,8 @@ class Store extends Service
     /**
      * @return boolean, 检测是否属于满足跳转到appserver的条件
      */
-    public function isAppServerMobile(){
+    public function isAppServerMobile()
+    {
         $store = $this->store;
         $condition = isset($store['mobile']['condition']) ? $store['mobile']['condition'] : false;
         $redirectDomain = isset($store['mobile']['redirectDomain']) ? $store['mobile']['redirectDomain'] : false;
@@ -236,17 +238,14 @@ class Store extends Service
             $mobileDetect = Yii::$service->helper->mobileDetect;
             if (in_array('phone', $condition) && in_array('tablet', $condition)) {
                 if ($mobileDetect->isMobile()) {
-                    
                     return true;
                 }
             } elseif (in_array('phone', $condition)) {
                 if ($mobileDetect->isMobile() && !$mobileDetect->isTablet()) {
-                    
                     return true;
                 }
             } elseif (in_array('tablet', $condition)) {
                 if ($mobileDetect->isTablet()) {
-                    
                     return true;
                 }
             }
@@ -258,7 +257,8 @@ class Store extends Service
      * @property $urlPath | String，跳转到vue端的url Path
      * @return boolean, 生成vue端的url，然后进行跳转。
      */
-    public function redirectAppServerMobile($urlPath){
+    public function redirectAppServerMobile($urlPath)
+    {
         $store = $this->store;
         $redirectDomain = isset($store['mobile']['redirectDomain']) ? $store['mobile']['redirectDomain'] : false;
         $mobile_https = (isset($store['mobile']['https']) && $store['mobile']['https']) ? 'https://' : 'http://';

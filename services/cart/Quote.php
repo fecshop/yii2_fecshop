@@ -32,9 +32,10 @@ class Quote extends Service
      */
     protected $cartInfo;
     
-    public function init(){
+    public function init()
+    {
         parent::init();
-        list($this->_cartModelName,$this->_cartModel) = Yii::mapGet($this->_cartModelName);  
+        list($this->_cartModelName, $this->_cartModel) = Yii::mapGet($this->_cartModelName);
     }
     /**
      * @return int 得到cart_id
@@ -166,7 +167,7 @@ class Quote extends Service
     {
         $items_count = 0;
         if ($cart_id = $this->getCartId()) {
-            if($cart_id ){
+            if ($cart_id) {
                 $cart = $this->getCart();
                 //$one = $this->_cartModel->findOne(['cart_id' => $cart_id]);
                 if (isset($cart['items_count']) && $cart['items_count']) {
@@ -179,7 +180,7 @@ class Quote extends Service
     }
 
     /**
-     * @property $item_qty | Int 
+     * @property $item_qty | Int
      * 当$item_qty为null时，从cart items表中查询产品总数。
      * 当$item_qty 不等于null时，代表已经知道购物车中产品的个数，不需要去cart_item表中查询，譬如清空购物车操作，直接就知道产品个数肯定为零。
      * 当购物车的产品变动后，会调用该函数，更新cart表的产品总数
@@ -391,8 +392,8 @@ class Quote extends Service
 
                         'products'          => $products,               //产品信息。
                         'product_weight'            => Yii::$service->helper->format->number_format($product_weight),         //产品的总重量。
-                        'product_volume_weight'     => Yii::$service->helper->format->number_format($product_volume_weight), 
-                        'product_volume'            => Yii::$service->helper->format->number_format($product_volume), 
+                        'product_volume_weight'     => Yii::$service->helper->format->number_format($product_volume_weight),
+                        'product_volume'            => Yii::$service->helper->format->number_format($product_volume),
                     ];
                 }
             }
@@ -428,9 +429,8 @@ class Quote extends Service
      */
     public function getShippingCost($shipping_method = '', $weight = '', $country = '', $region = '')
     {
-        
         if (!$this->_shipping_cost) {
-            $available_method = Yii::$service->shipping->getAvailableShippingMethods($country,$region,$weight);
+            $available_method = Yii::$service->shipping->getAvailableShippingMethods($country, $region, $weight);
             $shippingInfo = $available_method[$shipping_method];
             $shippingCost = Yii::$service->shipping->getShippingCost($shipping_method, $shippingInfo, $weight, $country, $region);
             $this->_shipping_cost = $shippingCost;

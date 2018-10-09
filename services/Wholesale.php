@@ -18,6 +18,4 @@ use Yii;
  */
 class Wholesale extends Service
 {
-    
-    
 }

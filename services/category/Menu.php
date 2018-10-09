@@ -23,12 +23,13 @@ class Menu extends Service
     protected $_categoryModelName = '\fecshop\models\mongodb\Category';
     protected $_categoryModel;
     
-    public function init(){
+    public function init()
+    {
         parent::init();
-        list($this->_categoryModelName,$this->_categoryModel) = Yii::mapGet($this->_categoryModelName);  
+        list($this->_categoryModelName, $this->_categoryModel) = Yii::mapGet($this->_categoryModelName);
     }
     /**
-     * @property $parentId | int 
+     * @property $parentId | int
      * 得到分类的目录信息
      */
     protected function actionGetCategoryMenuArr($parentId = '')

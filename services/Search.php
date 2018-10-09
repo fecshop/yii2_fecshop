@@ -65,7 +65,7 @@ class Search extends Service
     }
 
     /**
-     * @property $nowTimeStamp | int 
+     * @property $nowTimeStamp | int
      * 批量更新过程中，被更新的产品都会更新字段sync_updated_at
      * 删除xunSearch引擎中sync_updated_at小于$nowTimeStamp的字段.
      */
@@ -81,11 +81,11 @@ class Search extends Service
     }
 
     /**
-     * @property $select | Array 
-     * @property $where | Array 
+     * @property $select | Array
+     * @property $where | Array
      * @property $pageNum | Int
-     * @property $numPerPage | Array 
-     * @property $product_search_max_count | Int ， 搜索结果最大产品数。 
+     * @property $numPerPage | Array
+     * @property $product_search_max_count | Int ， 搜索结果最大产品数。
      * 对于上面的参数和以前的$filter类似，大致和下面的类似
      * [
      *	'category_id' 	=> 1,
@@ -118,7 +118,6 @@ class Search extends Service
                     // 如果当前store的语言，在当前的搜索引擎中支持，则会使用这个搜索，作为支持。
 
                     if (in_array($currentLangCode, $searchLangCode)) {
-                        
                         return $service->getSearchProductColl($select, $where, $pageNum, $numPerPage, $product_search_max_count, $filterAttr);
                     }
                 }
@@ -129,7 +128,7 @@ class Search extends Service
     /**
      * 得到搜索的sku列表侧栏的过滤.
      * @property $filter_attr | Array
-     * @property $where | Array , like 
+     * @property $where | Array , like
      *  [
      *		['>','price',11],
      *		['<','price',22],

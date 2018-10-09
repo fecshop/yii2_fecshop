@@ -51,7 +51,7 @@ class Payment extends Service
      * @return 返回提交订单信息跳转到的第三方支付url，也就是第三方支付的url。
      *                                                                                                    #从配置信息中获取
      */
-    public function getStandardStartUrl($payment_method = '',$type = '')
+    public function getStandardStartUrl($payment_method = '', $type = '')
     {
         if (!$payment_method) {
             $payment_method = $this->getPaymentMethod();
@@ -60,9 +60,9 @@ class Payment extends Service
             $paymentConfig = $this->paymentConfig;
             if (isset($paymentConfig['standard'][$payment_method]['start_url'])) {
                 if (!empty($paymentConfig['standard'][$payment_method]['start_url'])) {
-                    if($type == 'appserver'){
+                    if ($type == 'appserver') {
                         return $this->getAppServerUrl($paymentConfig['standard'][$payment_method]['start_url']);
-                    }else{
+                    } else {
                         return $this->getUrl($paymentConfig['standard'][$payment_method]['start_url']);
                     }
                 }
@@ -70,11 +70,11 @@ class Payment extends Service
         }
     }
     
-    public function getAppServerUrl($url){
+    public function getAppServerUrl($url)
+    {
         $url = str_replace('@homeUrl', '', $url);
 
         return trim($url);
-        
     }
     
     /**
@@ -276,7 +276,8 @@ class Payment extends Service
      * @property $payment_method | String 支付方式。
      * @return 返回支付方式的label
      */
-    public function getPaymentLabelByMethod($payment_method = ''){
+    public function getPaymentLabelByMethod($payment_method = '')
+    {
         $payment_method_label = $this->getStandardLabel($payment_method);
         if (!$payment_method_label) {
             $payment_method_label = $this->getExpressLabel($payment_method);

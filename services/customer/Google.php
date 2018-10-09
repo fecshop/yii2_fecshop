@@ -27,11 +27,11 @@ class Google extends Service
      * @property $customDomain | boolean, 是否是自定义url
      * @return  得到跳转到google登录的url
      */
-    public function getLoginUrl($url,$customDomain = false)
+    public function getLoginUrl($url, $customDomain = false)
     {
-        if(!$customDomain){
+        if (!$customDomain) {
             $redirectUrl = Yii::$service->url->getUrl($url);
-        }else {
+        } else {
             $redirectUrl = $url;
         }
         global $googleapiinfo;

@@ -25,13 +25,14 @@ class RewriteMongodb extends Service implements RewriteInterface
     protected $_urlRewriteModelName = '\fecshop\models\mongodb\url\UrlRewrite';
     protected $_urlRewriteModel;
     
-    public function init(){
+    public function init()
+    {
         parent::init();
-        list($this->_urlRewriteModelName,$this->_urlRewriteModel) = \Yii::mapGet($this->_urlRewriteModelName);  
+        list($this->_urlRewriteModelName, $this->_urlRewriteModel) = \Yii::mapGet($this->_urlRewriteModelName);
     }
     
     /**
-     * @property $urlKey | string 
+     * @property $urlKey | string
      * 通过重写后的urlkey字符串，去url_rewrite表中查询，找到重写前的url字符串。
      */
     public function getOriginUrl($urlKey)
@@ -106,7 +107,7 @@ class RewriteMongodb extends Service implements RewriteInterface
         return true;
     }
     /**
-     * @property $ids | Array or String 
+     * @property $ids | Array or String
      * 删除相应的url rewrite 记录
      */
     public function remove($ids)

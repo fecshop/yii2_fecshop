@@ -24,9 +24,10 @@ class ArticleMysqldb extends Service implements ArticleInterface
     protected $_articleModelName = '\fecshop\models\mysqldb\cms\Article';
     protected $_articleModel;
     
-    public function init(){
+    public function init()
+    {
         parent::init();
-        list($this->_articleModelName,$this->_articleModel) = Yii::mapGet($this->_articleModelName);  
+        list($this->_articleModelName, $this->_articleModel) = Yii::mapGet($this->_articleModelName);
     }
     /**
      *  language attribute.
@@ -65,10 +66,9 @@ class ArticleMysqldb extends Service implements ArticleInterface
      */
     public function getByUrlKey($urlKey)
     {
-        
         if ($urlKey) {
             $model = $this->_articleModel->findOne(['url_key' => '/'.$urlKey]);
-            if (isset($model['url_key'])){
+            if (isset($model['url_key'])) {
                 $model['content'] = unserialize($model['content']);
                 $model['title'] = unserialize($model['title']);
                 $model['meta_keywords'] = unserialize($model['meta_keywords']);
@@ -158,7 +158,8 @@ class ArticleMysqldb extends Service implements ArticleInterface
         return $model->attributes;
     }
     
-    protected function initStatus($model){
+    protected function initStatus($model)
+    {
         $statusArr = [$model::STATUS_ACTIVE, $model::STATUS_DELETED];
         if ($model['status']) {
             $model['status'] = (int) $model['status'];

@@ -14,7 +14,7 @@ namespace fecshop\services;
 use Yii;
 
 /**
- * Category Service 分类service 
+ * Category Service 分类service
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -30,7 +30,7 @@ class Category extends Service
      * 如果不设置，则系统使用默认路径
      * 如果设置了路径，则使用自定义的路径
      */
-    public $storagePath = ''; 
+    public $storagePath = '';
     protected $_category;
 
     /**
@@ -85,7 +85,6 @@ class Category extends Service
      */
     protected function actionGetByPrimaryKey($primaryKey)
     {
-        
         return $this->_category->getByPrimaryKey($primaryKey);
     }
     /**
@@ -129,9 +128,9 @@ class Category extends Service
      *  数组中只有  id  name(default language), child(子分类) 等数据。
      *  目前此函数仅仅用于后台对分类的编辑使用。 appadmin.
      */
-    protected function actionGetTreeArr($rootCategoryId = 0,$lang = '',$appserver=false,$level=1)
+    protected function actionGetTreeArr($rootCategoryId = 0, $lang = '', $appserver=false, $level=1)
     {
-        return $this->_category->getTreeArr($rootCategoryId,$lang,$appserver);
+        return $this->_category->getTreeArr($rootCategoryId, $lang, $appserver);
     }
 
     /**

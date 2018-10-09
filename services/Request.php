@@ -27,9 +27,10 @@ class Request extends \yii\web\Request
     protected $_urlRewriteModelName = '\fecshop\models\mongodb\UrlRewrite';
     protected $_urlRewriteModel;
     
-    public function init(){
+    public function init()
+    {
         parent::init();
-        list($this->_urlRewriteModelName,$this->_urlRewriteModel) = \Yii::mapGet($this->_urlRewriteModelName);  
+        list($this->_urlRewriteModelName, $this->_urlRewriteModel) = \Yii::mapGet($this->_urlRewriteModelName);
     }
     /**
      * rewrite yii\web\Request  resolveRequestUri().

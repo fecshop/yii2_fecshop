@@ -23,9 +23,10 @@ class Item extends Service
     protected $_itemModelName = '\fecshop\models\mysqldb\order\Item';
     protected $_itemModel;
     
-    public function init(){
+    public function init()
+    {
         parent::init();
-        list($this->_itemModelName,$this->_itemModel) = \Yii::mapGet($this->_itemModelName);  
+        list($this->_itemModelName, $this->_itemModel) = \Yii::mapGet($this->_itemModelName);
     }
     /**
      * @property $product_id | string , 产品的id
@@ -33,7 +34,8 @@ class Item extends Service
      * @property $month | int, 几个月内的订单
      * 通过product_id和customerId，得到$month个月内下单支付成功的产品
      */
-    protected function actionGetByProductIdAndCustomerId($product_id, $month, $customer_id = 0){
+    protected function actionGetByProductIdAndCustomerId($product_id, $month, $customer_id = 0)
+    {
         if (!$customer_id) {
             if (Yii::$app->user->isGuest) {
                 return false;
@@ -250,7 +252,6 @@ class Item extends Service
                 $saveStatus = $myOrderItem->save();
                 // 如果保存失败，直接返回。
                 if (!$saveStatus) {
-                    
                     return $saveStatus;
                 }
             }

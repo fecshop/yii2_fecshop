@@ -68,8 +68,8 @@ class Service extends BaseObject
             if (isset($childService[$childServiceName])) {
                 $service = $childService[$childServiceName];
                 if ($service['enableService'] !== false) {
-                    $this->_childService[$childServiceName] = Yii::createObject($service);  
-                }else{
+                    $this->_childService[$childServiceName] = Yii::createObject($service);
+                } else {
                     throw new InvalidConfigException('Child Service ['.$childServiceName.'] is disable in '.get_called_class().', you must config it! ');
                 }
             } else {
@@ -87,8 +87,8 @@ class Service extends BaseObject
     {
         $childService = $this->childService;
         $arr = [];
-        if(is_array($childService) && !empty($childService)){
-            foreach($childService as $childName => $service){
+        if (is_array($childService) && !empty($childService)) {
+            foreach ($childService as $childName => $service) {
                 if ($service['enableService'] !== false) {
                     $arr[] = $childName;
                 }
@@ -216,7 +216,8 @@ class Service extends BaseObject
      * 感谢：
      * @dionyang 提的建议：http://www.fecshop.com/topic/281
      */
-    public function getStorageService($object){
+    public function getStorageService($object)
+    {
         $className = get_class($object);
         if (!isset($object->storage) || !$object->storage) {
             throw new InvalidConfigException('you must config class var $storage in '.$className);
@@ -230,7 +231,7 @@ class Service extends BaseObject
         }
         $storageServiceClass =  $storagePath.ucfirst($object->storage);
     
-        if(!class_exists($storageServiceClass)){
+        if (!class_exists($storageServiceClass)) {
             throw new InvalidCallException('class ['.$storageServiceClass.'] is not exist , you must add the class before you use it');
             
             return false;
