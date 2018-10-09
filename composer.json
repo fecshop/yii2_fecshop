@@ -1,28 +1,28 @@
-{  
-  "name": "fancyecommerce/fecshop",  
-  "description": "fancyecommerce yii2 fecshop ",  
-  "keywords": [  
+{
+  "name": "fancyecommerce/fecshop",
+  "description": "fancyecommerce yii2 fecshop ",
+  "keywords": [
     "yii2",
     "fecshop" ,
     "fancyecommerce" ,
     "shop" ,
     "ecommerce" ,
     "cart"
-  ],  
-  "homepage": "https://github.com/fancyecommerce/yii2_fecshop",  
-  "type": "yii2-extension",  
-  "license": "BSD-3-Clause",  
-  "support": {  
+  ],
+  "homepage": "https://github.com/fancyecommerce/yii2_fecshop",
+  "type": "yii2-extension",
+  "license": "BSD-3-Clause",
+  "support": {
 	"source": "https://github.com/fancyecommerce/yii2_fecshop"
-  },  
-  "authors": [  
+  },
+  "authors": [
     {
       "name": "terry",
       "email": "zqy234@126.com"
     }
-  ],  
-  "minimum-stability": "stable",  
-  "require": {  
+  ],
+  "minimum-stability": "stable",
+  "require": {
     "php": ">=5.4.0",
     "yiisoft/yii2-swiftmailer": "2.0.7",
     "yiisoft/yii2": ">=2.0.15" ,
@@ -32,13 +32,13 @@
     "ramsey/uuid": "*",
     "facebook/graph-sdk": "*",
     "hightman/xunsearch": "*@beta"
-  }, 
-  "autoload": {  
+  },
+  "autoload": {
     "psr-4": {
       "fecshop\\": ""
     }
-  },  
-  "config": {  
+  },
+  "config": {
 	"process-timeout": 1800
   }
 }
