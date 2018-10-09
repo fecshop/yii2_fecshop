@@ -10,6 +10,8 @@
 
 namespace fecshop\services;
 
+use fecshop\services\product\ProductMongodb;
+use fecshop\services\product\ProductMysqldb;
 use yii\base\InvalidCallException;
 use yii\base\InvalidConfigException;
 use Yii;
@@ -35,7 +37,13 @@ class Product extends Service
      * 如果设置了路径，则使用自定义的路径
      */
     public $storagePath = '';
+    /**
+     * @var ProductMongodb | ProductMysqldb 根据 $storage 及 $storagePath 配置的 Product 的实现
+     */
     protected $_product;
+    /**
+     * @var string 默认属性组名称
+     */
     protected $_defaultAttrGroup = 'default';
 
     public function init()
@@ -43,15 +51,6 @@ class Product extends Service
         parent::init();
         $currentService = $this->getStorageService($this);
         $this->_product = new $currentService();
-        /*
-        if ($this->storage == 'mongodb') {
-            // 根据配置注入的config值，返回相应的class，譬如：\fecshop\services\product\ProductMongodb
-            $currentService = $this->getStorageService($this);
-            $this->_product = new $currentService();
-        //}else if($this->storage == 'mysqldb'){
-            //$this->_category = new CategoryMysqldb;
-        }
-        */
     }
     
     
