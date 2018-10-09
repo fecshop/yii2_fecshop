@@ -124,9 +124,9 @@ Fecshop Trace Demo: http://trace.fecshop.com
 5、联系Terry：
 ----------------
 
-扫一扫添加Terry微信：
+扫一扫添加Terry的微信：
 
-![weixin](http://www.fecshop.com/weixinlogo.png)
+![weixin](http://www.fecshop.com/terry_fecshop_weixin.png)
 
 
 
