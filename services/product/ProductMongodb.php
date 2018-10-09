@@ -47,7 +47,7 @@ class ProductMongodb extends Service implements ProductInterface
         return $model::STATUS_ENABLE;
     }
     
-    public function getByPrimaryKey($primaryKey)
+    public function getByPrimaryKey($primaryKey = null)
     {
         if ($primaryKey) {
             return $this->_productModel->findOne($primaryKey);

@@ -187,8 +187,9 @@ class Product extends Service
     }
 
     /**
-     * @property $status | Int
-     * @return boolean ， 产品状态是否是active
+     * 产品状态是否是 active
+     * @param int $status
+     * @return boolean 如果产品状态是 active 返回 true, 否则返回 false
      */
     protected function actionIsActive($status)
     {
@@ -198,10 +199,10 @@ class Product extends Service
     /**
      * @property $productAttrGroup | String  产品属性组
      * 通过产品属性组，从配置中得到对应的custom_options部分的配置
+     * @return array
      */
     protected function actionGetCustomOptionAttrInfo($productAttrGroup)
     {
-        $arr = [];
         if ($productAttrGroup == $this->_defaultAttrGroup) {
             return [];
         }
@@ -210,6 +211,7 @@ class Product extends Service
         ) {
             return $this->customAttrGroup[$productAttrGroup]['custom_options'];
         }
+        return [];
     }
 
     /**
@@ -387,7 +389,7 @@ class Product extends Service
     }
 
     /**
-     *[
+     * [
      *	'category_id' 	=> 1,
      *	'pageNum'		=> 2,
      *	'numPerPage'	=> 50,
