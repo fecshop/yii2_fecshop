@@ -10,7 +10,7 @@ EOF;
 
 $finder = PhpCsFixer\Finder::create()
     ->in('./services')
-    ->notPath('./services/helper/MobildDetect.php')
+    ->notName('MobileDetect.php')
 ;
 
 $config = PhpCsFixer\Config::create()
