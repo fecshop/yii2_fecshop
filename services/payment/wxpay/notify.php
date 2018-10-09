@@ -32,7 +32,7 @@ class PayNotifyCallBack extends WxPayNotify
     public function NotifyProcess($data, &$msg)
     {
         \Yii::info("call back:" . json_encode($data), 'fecshop_debug');
-        $notfiyOutput = array();
+        $notfiyOutput = [];
         
         if (!array_key_exists("transaction_id", $data)) {
             $msg = "输入参数不正确";

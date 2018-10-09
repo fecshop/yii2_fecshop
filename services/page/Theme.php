@@ -94,7 +94,7 @@ class Theme extends Service
                 }
             }
         }
-        /* not find view file */
+        // not find view file
         if ($throwError) {
             $notExistFile = [];
             foreach ($absoluteDir as $dir) {

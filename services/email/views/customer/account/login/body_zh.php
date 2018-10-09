@@ -1,8 +1,8 @@
 <?php
 use yii\helpers\Html;
 
-/* @var $this yii\web\View */
-/* @var $user common\models\User */
+// @var $this yii\web\View
+// @var $user common\models\User
 
 ?>
 收到 <?= \Yii::$service->helper->htmlEncode($name) ?>, 消息<br/>

@@ -87,11 +87,11 @@ class Shipping extends Service
         return (float)$volume_weight;
     }
     /**
-    * @property $long | Float ,长度，单位cm
-    * @property $width | Float ,宽度，单位cm
-    * @property $high | Float ,高度，单位cm
-    * @return 体积体积，单位cm
-    */
+     * @property $long | Float ,长度，单位cm
+     * @property $width | Float ,宽度，单位cm
+     * @property $high | Float ,高度，单位cm
+     * @return 体积体积，单位cm
+     */
     public function getVolume($long, $width, $high)
     {
         return Yii::$service->helper->format->number_format($long * $width * $high);
@@ -308,24 +308,24 @@ class Shipping extends Service
      * @return array ，通过csv表格，得到对应的运费数组信息
      * 内部函数，将csv表格中的shipping数据读出来
      * 返回的数据格式为：
-        [
-            'fast_shipping' => [
-                'US' => [
-                    '*' => [
-                        [0.5100, 22.9],
-                        [1.0100, 25.9],
-                        [2.5100, 34.9],
-                    ]
-                ],
-                'DE' => [
-                    '*' => [
-                        [0.5100, 22.9],
-                        [1.0100, 25.9],
-                        [2.5100, 34.9],
-                    ]
-                ],
-            ]
-        ]
+     * [
+     *     'fast_shipping' => [
+     *         'US' => [
+     *             '*' => [
+     *                 [0.5100, 22.9],
+     *                 [1.0100, 25.9],
+     *                 [2.5100, 34.9],
+     *             ]
+     *     ],
+     *         'DE' => [
+     *             '*' => [
+     *                 [0.5100, 22.9],
+     *                 [1.0100, 25.9],
+     *                 [2.5100, 34.9],
+     *             ]
+     *        ],
+     *     ]
+     * ]
      */
     protected function getShippingByTableCsv($shipping_method)
     {

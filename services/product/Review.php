@@ -247,9 +247,9 @@ class Review extends Service
      * 		'numPerPage' 	=> 20,
      * 		'pageNum'		=> 1,
      * 		'orderBy'	=> [$this->getPrimaryKey() => SORT_DESC, 'sku' => SORT_ASC ],
-     'where'			=> [
-     ['>','price',1],
-     ['<=','price',10]
+     * 'where'			=> [
+     * ['>','price',1],
+     * ['<=','price',10]
      * 			['sku' => 'uk10001'],
      * 		],
      * 	'asArray' => true,
@@ -395,7 +395,7 @@ class Review extends Service
         $reviewModel = $this->_reviewModel;
         $filter = [
             'numPerPage' 	=> 10000,  // mongodb 查询，numPerPage必须设置，如果不设置，默认为20
-              'pageNum'		=> 1,
+            'pageNum'		=> 1,
             'where'            => [
                 ['product_spu' => $spu],
                 ['status' => $reviewModel->getActiveStatus()],

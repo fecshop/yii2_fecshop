@@ -59,9 +59,7 @@ class Url extends Service
                 'origin_url'        => $originUrl,
             ])->one();
             if (isset($data_one['custom_url_key'])) {
-                /*
-                 * 只要进行了查询，就要更新一下rewrite url表的updated_at.
-                 */
+                // 只要进行了查询，就要更新一下rewrite url表的updated_at.
                 $data_one->updated_at = time();
                 $data_one->save();
 
@@ -103,8 +101,8 @@ class Url extends Service
     protected function actionRemoveRewriteUrlKey($url_key)
     {
         $model = $this->findOne([
-                'custom_url_key' => $url_key,
-            ]);
+            'custom_url_key' => $url_key,
+        ]);
         if ($model['custom_url_key']) {
             $model->delete();
         }

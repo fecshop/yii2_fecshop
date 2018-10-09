@@ -49,7 +49,7 @@ class Newsletter extends Service
                 $mongoNewsletter->save();
 
                 return [
-                'code' => 200,
+                    'code' => 200,
                     'description' => 'subscription email success',
                 ];
             }

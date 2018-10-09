@@ -75,8 +75,8 @@ class Menu extends Service
     protected function hasChild($categoryId)
     {
         $one = $this->_categoryModel->find()->asArray()->where([
-                'parent_id' => $categoryId,
-            ])->one();
+            'parent_id' => $categoryId,
+        ])->one();
         if ($one['_id']) {
             return true;
         }

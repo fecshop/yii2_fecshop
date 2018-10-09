@@ -98,15 +98,15 @@ class Article extends Service
      * get artile collection by $filter
      * example filter:
      * [
-     * 		'numPerPage' 	=> 20,
-     * 		'pageNum'		=> 1,
-     * 		'orderBy'	=> ['_id' => SORT_DESC, 'sku' => SORT_ASC ],
-     'where'			=> [
-     ['>','price',1],
-     ['<=','price',10]
+     * 		'numPerPage' => 20,
+     * 		'pageNum' => 1,
+     * 		'orderBy' => ['_id' => SORT_DESC, 'sku' => SORT_ASC ],
+     *      'where' => [
+     *          ['>','price',1],
+     *          ['<=','price',10]
      * 			['sku' => 'uk10001'],
      * 		],
-     * 	'asArray' => true,
+     * 	    'asArray' => true,
      * ]
      */
     protected function actionColl($filter = '')

@@ -54,8 +54,8 @@ class Mongodb extends Service
             return;
         }
         $coll = $this->_logModel->find()->where([
-                'user_id' => $user_id,
-            ])
+            'user_id' => $user_id,
+        ])
             ->asArray()
             ->orderBy(['date_time' => SORT_DESC])
             ->limit($count)

@@ -351,7 +351,7 @@ class Appserver extends Service
             $this->order_generate_save_address_fail => [
                 'message' => 'order generate page, login account save address fail',
             ],
-             $this->order_generate_cart_product_empty => [
+            $this->order_generate_cart_product_empty => [
                 'message' => 'order generate page, cart product is empty',
             ],
             $this->order_shipping_country_empty => [
@@ -360,7 +360,7 @@ class Appserver extends Service
             $this->order_paypal_standard_get_token_fail => [
                 'message' => 'order pay by paypal standard api, fetch token fail',
             ],
-             $this->order_paypal_standard_payment_fail => [
+            $this->order_paypal_standard_payment_fail => [
                 'message' => 'order pay by paypal standard api, payment fail',
             ],
             $this->order_paypal_standard_updateorderinfoafterpayment_fail => [

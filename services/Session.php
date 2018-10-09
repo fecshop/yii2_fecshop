@@ -48,9 +48,9 @@ class Session extends Service
     private $_session;
     public $fecshop_uuid = 'fecshop-uuid';
     /**
-        1. \Yii::$app->user->enableSession = false;
-            查看是否是false，如果是
-
+     * 1. \Yii::$app->user->enableSession = false;
+     * 查看是否是false，如果是
+     *
      */
     public function init()
     {

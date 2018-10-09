@@ -27,7 +27,7 @@ class RewriteMysqldb extends Service implements RewriteInterface
      */
     protected $_lang_attr = [
 
-        ];
+    ];
     
     protected $_urlRewriteModelName = '\fecshop\models\mysqldb\url\UrlRewrite';
     protected $_urlRewriteModel;

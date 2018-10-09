@@ -27,9 +27,9 @@ class StaticBlockMysqldb extends Service implements StaticBlockInterface
      *  language attribute.
      */
     protected $_lang_attr = [
-            'title',
-            'content',
-        ];
+        'title',
+        'content',
+    ];
     
     public function init()
     {

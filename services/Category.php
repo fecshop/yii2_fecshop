@@ -51,14 +51,14 @@ class Category extends Service
         }
         */
     }
-    
-    
-    
+
+
+
     protected function actionGetCategoryEnableStatus()
     {
         return $this->_category->getCategoryEnableStatus();
     }
-    
+
     protected function actionGetCategoryMenuShowStatus()
     {
         return $this->_category->getCategoryMenuShowStatus();
@@ -96,7 +96,7 @@ class Category extends Service
     {
         return $this->_category->getByUrlKey($urlKey);
     }
-    
+
     protected function actionCollCount($filter = '')
     {
         return $this->_category->collCount($filter);
@@ -107,15 +107,15 @@ class Category extends Service
      * get artile collection by $filter
      * example filter:
      * [
-     * 		'numPerPage' 	=> 20,
-     * 		'pageNum'		=> 1,
-     * 		'orderBy'	=> ['_id' => SORT_DESC, 'sku' => SORT_ASC ],
-     * 		'where'			=> [
-     *			['>','price','1'],
-     *			['<','price','10'],
-     * 			['sku' => 'uk10001'],
-     * 		],
-     * 	'asArray' => true,
+     *      'numPerPage'    => 20,
+     *      'pageNum'       => 1,
+     *      'orderBy'   => ['_id' => SORT_DESC, 'sku' => SORT_ASC ],
+     *      'where'         => [
+     *          ['>','price','1'],
+     *          ['<','price','10'],
+     *          ['sku' => 'uk10001'],
+     *          ],
+     *      'asArray' => true,
      * ]
      * 通过上面的filter数组，得到过滤后的分类数据列表集合。
      */
@@ -129,7 +129,7 @@ class Category extends Service
      *  数组中只有  id  name(default language), child(子分类) 等数据。
      *  目前此函数仅仅用于后台对分类的编辑使用。 appadmin.
      */
-    protected function actionGetTreeArr($rootCategoryId = 0, $lang = '', $appserver=false, $level=1)
+    protected function actionGetTreeArr($rootCategoryId = 0, $lang = '', $appserver = false, $level = 1)
     {
         return $this->_category->getTreeArr($rootCategoryId, $lang, $appserver);
     }

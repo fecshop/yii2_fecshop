@@ -130,8 +130,9 @@ class QuoteItem extends Service
      * ];
      * @return boolean;
      *                  将购物车中的某个产品更改个数，更改后的个数就是上面qty的值。
+     * @deprecated 该函数已经被遗弃
      */
-    /** 该函数已经被遗弃
+    /*
     public function changeItemQty($item)
     {
         $cart_id = Yii::$service->cart->quote->getCartId();
@@ -155,6 +156,7 @@ class QuoteItem extends Service
         }
     }
     */
+
 
     /**
      * 通过quoteItem表，计算得到所有产品的总数

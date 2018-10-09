@@ -100,23 +100,17 @@ class Store extends Service
                     if (isset($store['theme']) && !empty($store['theme'])) {
                         Yii::$service->store->currentTheme = $store['theme'];
                     }
-                    /*
-                     * set local theme dir.
-                     */
+                    // set local theme dir.
                     if (isset($store['localThemeDir']) && $store['localThemeDir']) {
                         //Yii::$service->page->theme->localThemeDir = $store['localThemeDir'];
                         Yii::$service->page->theme->setLocalThemeDir($store['localThemeDir']);
                     }
-                    /*
-                     * set third theme dir.
-                     */
+                    // set third theme dir.
                     if (isset($store['thirdThemeDir']) && $store['thirdThemeDir']) {
                         //Yii::$service->page->theme->thirdThemeDir = $store['thirdThemeDir'];
                         Yii::$service->page->theme->setThirdThemeDir($store['thirdThemeDir']);
                     }
-                    /*
-                     * init store currency.
-                     */
+                    // init store currency.
                     if (isset($store['currency']) && !empty($store['currency'])) {
                         $currency = $store['currency'];
                     } else {

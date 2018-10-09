@@ -231,9 +231,7 @@ class Category extends Service
         }
     }
 
-    /*
-     * 得到不选择这个属性的url
-     */
+    // 得到不选择这个属性的url
     /*
     protected function actionGetFilterUnChooseAttrUrl($attrUrlStr,$val){
         $val = $this->attrValConvertUrlStr($val);

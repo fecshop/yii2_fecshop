@@ -308,9 +308,7 @@ class ProductMongodb extends Service implements ProductInterface
             }
         }
         $model->updated_at = time();
-        /*
-         * 计算出来产品的最终价格。
-         */
+        // 计算出来产品的最终价格。
         $one['final_price'] = Yii::$service->product->price->getFinalPrice($one['price'], $one['special_price'], $one['special_from'], $one['special_to']);
         $one['score'] = (int) $one['score'];
         unset($one['_id']);
@@ -329,9 +327,7 @@ class ProductMongodb extends Service implements ProductInterface
             $model->qty = $custom_option_qty;
         }
         $saveStatus = Yii::$service->helper->ar->save($model, $one);
-        /*
-         * 自定义url部分
-         */
+        // 自定义url部分
         if ($originUrlKey) {
             $originUrl = $originUrlKey.'?'.$this->getPrimaryKey() .'='. $primaryVal;
             $originUrlKey = isset($one['url_key']) ? $one['url_key'] : '';

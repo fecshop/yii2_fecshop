@@ -344,13 +344,13 @@ class Wxpay extends Service
     }
     
     /**
-    * 微信 支付成功后，对订单的状态进行修改
-    * 如果支付成功，则修改订单状态为支付成功状态。
-    * @property $out_trade_no | string ， fecshop的订单编号 increment_id
-    * @property $trade_no | 微信支付交易号
-    * @property isClearCart | boolean 是否清空购物车
-    *
-    */
+     * 微信 支付成功后，对订单的状态进行修改
+     * 如果支付成功，则修改订单状态为支付成功状态。
+     * @property $out_trade_no | string ， fecshop的订单编号 increment_id
+     * @property $trade_no | 微信支付交易号
+     * @property isClearCart | boolean 是否清空购物车
+     *
+     */
     protected function updateOrderInfo($out_trade_no, $trade_no, $isClearCart=true)
     {
         if (!empty($out_trade_no) && !empty($trade_no)) {

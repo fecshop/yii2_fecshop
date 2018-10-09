@@ -66,9 +66,7 @@ class Breadcrumbs extends Service
         }
     }
 
-    /*
-     * generate Breadcrumbs html ,before generate , you should use addItems function to add breadcrumbs items.
-     */
+    // generate Breadcrumbs html ,before generate , you should use addItems function to add breadcrumbs items.
     /*
     protected function actionGenerateHtml(){
         $arr = [];

@@ -155,10 +155,10 @@ class MongoSearch extends Service implements SearchInterface
     }
 
     /**
-    * @property $nowTimeStamp | int
-    * 批量更新过程中，被更新的产品都会更新字段sync_updated_at
-    * 删除xunSearch引擎中sync_updated_at小于$nowTimeStamp的字段.
-    */
+     * @property $nowTimeStamp | int
+     * 批量更新过程中，被更新的产品都会更新字段sync_updated_at
+     * 删除xunSearch引擎中sync_updated_at小于$nowTimeStamp的字段.
+     */
     protected function actionDeleteNotActiveProduct($nowTimeStamp)
     {
         $sModel = $this->_searchModel;

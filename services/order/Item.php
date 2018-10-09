@@ -67,10 +67,10 @@ class Item extends Service
             return false;
         }
         $items = $this->_itemModel->find()->asArray()->where([
-                'product_id' => $product_id,
-            ])->andWhere([
-                'in', 'order_id', $order_ids
-            ])
+            'product_id' => $product_id,
+        ])->andWhere([
+            'in', 'order_id', $order_ids
+        ])
             ->all();
         if (!empty($items)) {
             return $items;

@@ -27,15 +27,15 @@ class Product extends Service
     /**
      * @property $filter | Array   example:
      * [
-     'category_id' 	=> 1,
-     'pageNum'		=> 2,
-     'numPerPage'	=> 50,
-     'orderBy'		=> 'name',
-     'where'			=> [
-     ['>','price',11],
-     ['<','price',22],
-     ],
-     ]
+     *     'category_id'    => 1,
+     *     'pageNum'        => 2,
+     *     'numPerPage'     => 50,
+     *     'orderBy'        => 'name',
+     *     'where'          => [
+     *         ['>','price',11],
+     *         ['<','price',22],
+     *     ],
+     * ]
      * 通过搜索条件得到当类下的产品。
      */
     protected function actionColl($filter)

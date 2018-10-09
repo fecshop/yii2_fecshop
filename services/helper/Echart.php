@@ -35,32 +35,32 @@ class Echart extends Service
     /**
      *  @property $data | Array, 用来展示图标的数据。 - 折线
      *  $data = [
-            '最高气温' => [
-                '周1' => 11,
-                '周2' => 3,
-                '周3' => 15,
-                '周4' => 55,
-                '周5' => 43,
-                '周6' => 77,
-                '周7' => 11,
-            ],
-            '最低气温' => [
-                '周1' => 1,
-                '周2' => 3,
-                '周3' => 5,
-                '周4' => 5,
-                '周5' => 3,
-                '周6' => 7,
-                '周7' => 1,
-            ],
-
+     * '最高气温' => [
+     *     '周1' => 11,
+     *     '周2' => 3,
+     *     '周3' => 15,
+     *     '周4' => 55,
+     *     '周5' => 43,
+     *     '周6' => 77,
+     *     '周7' => 11,
+     * ],
+     * '最低气温' => [
+     *     '周1' => 1,
+     *     '周2' => 3,
+     *     '周3' => 5,
+     *     '周4' => 5,
+     *     '周5' => 3,
+     *     '周6' => 7,
+     *     '周7' => 1,
+     * ],
+     *
      *  ];
      * @property $yPrex | String, 在Y轴的值加一个后缀，譬如问题加 °C
      * @property $legend | boolean, 是否显示 legend
      * @property $title | String，标题
      * @property $width | Int，图表的长度
      * @property $height | Int，图标的高度
-     * @return String，返回X-Y线性图表
+     * @return string 返回X-Y线性图表
      *
      */
     public function getLine($data, $legend = false, $yPrex = '', $width = 1100, $height = 400, $title = '')

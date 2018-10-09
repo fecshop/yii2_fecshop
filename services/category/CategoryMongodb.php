@@ -459,10 +459,10 @@ class CategoryMongodb extends Service implements CategoryInterface
     {
         //echo $category_id;
         $data = $this->_categoryModel->find()->asArray()->where([
-                        'parent_id' => $category_id,
-                        'status' => $this->getCategoryEnableStatus(),
-                        'menu_show'  => $this->getCategoryMenuShowStatus(),
-                    ])->all();
+            'parent_id' => $category_id,
+            'status' => $this->getCategoryEnableStatus(),
+            'menu_show'  => $this->getCategoryMenuShowStatus(),
+        ])->all();
         $arr = [];
         if (is_array($data) && !empty($data)) {
             foreach ($data as $one) {

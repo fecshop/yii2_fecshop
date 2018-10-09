@@ -421,9 +421,7 @@ class Stock extends Service
     protected function actionProductIsInStock($product, $sale_qty, $custom_option_sku)
     {
         $is_in_stock = $product['is_in_stock'];
-        /*
-         * 零库存模式 && 产品是上架状态 直接返回true
-         */
+        // 零库存模式 && 产品是上架状态 直接返回true
         if ($this->zeroInventory && $this->checkOnShelfStatus($is_in_stock)) {
             return true; // 零库存模式不扣产品库存，也不需要返还库存。
         }
@@ -432,9 +430,9 @@ class Stock extends Service
         if ($this->checkOnShelfStatus($is_in_stock)) {
             if ($custom_option_sku) {
                 $productCustomOptionQty = $this->_COQtyModel->find()->where([
-                        'product_id'        => $product_id,
-                        'custom_option_sku' => $custom_option_sku
-                    ])->one();
+                    'product_id'        => $product_id,
+                    'custom_option_sku' => $custom_option_sku
+                ])->one();
                 if ($productCustomOptionQty['qty']) {
                     if ($productCustomOptionQty['qty'] >= $sale_qty) {
                         return true;
@@ -449,8 +447,8 @@ class Stock extends Service
                 }
             } elseif (($product_qty > 0) && ($product_qty > $sale_qty)) {
                 $productFlatQty = $this->_flatQtyModel->find()->where([
-                        'product_id' => $product_id
-                    ])->one();
+                    'product_id' => $product_id
+                ])->one();
                 if ($productFlatQty['qty']) {
                     if ($productFlatQty['qty'] >= $sale_qty) {
                         return true;

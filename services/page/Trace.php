@@ -28,7 +28,7 @@ class Trace extends Service
     public $access_token;
     // api发送数据给trace系统的最大等待时间，超过这个时间将不继续等待
     public $api_time_out = 1;
-    
+
     protected $_fta;
     protected $_ftactivity;
     protected $_ftactivity_child;
@@ -37,20 +37,20 @@ class Trace extends Service
     protected $_ftreferurl;
     protected $_ftreturn;
     protected $_fta_site_id;  // website_id
-    
+
     protected $_fid;  // 广告id
     protected $_fec_medium;     // 广告渠道
     protected $_fec_source;     // 广告子渠道
     protected $_fec_campaign;   // 广告活动
     protected $_fec_content;    // 广告推广员
     protected $_fec_design;     // 广告图片设计员
-    
+
     const LOGIN_EMAIL = 'login_email';
     const REGISTER_EMAIL = 'register_email';
     const CART = 'cart';
     const PAYMENT_PENDING_ORDER = 'payment_pending_order';
     const PAYMENT_SUCCESS_ORDER = 'payment_success_order';
-    
+
     /**
      * @return String, 通用的js部分，需要先设置 website_id 和 trace_url
      */
@@ -58,19 +58,19 @@ class Trace extends Service
     {
         if ($this->traceJsEnable) {
             return "<script type=\"text/javascript\">
-	var _maq = _maq || [];
-	_maq.push(['website_id', '" . $this->website_id . "']);
+    var _maq = _maq || [];
+    _maq.push(['website_id', '" . $this->website_id . "']);
     _maq.push(['fec_store', '" . Yii::$service->store->currentStore . "']);
     _maq.push(['fec_lang', '" . Yii::$service->store->currentLangCode . "']);
     _maq.push(['fec_app', '" . Yii::$service->store->getCurrentAppName() . "']);
     _maq.push(['fec_currency', '" . Yii::$service->page->currency->getCurrentCurrency() . "']);
-    
-        
-	(function() {
-		var ma = document.createElement('script'); ma.type = 'text/javascript'; ma.async = true;
-		ma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + '".$this->trace_url."';
-		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ma, s);
-	})();
+
+
+    (function() {
+        var ma = document.createElement('script'); ma.type = 'text/javascript'; ma.async = true;
+        ma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + '".$this->trace_url."';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ma, s);
+    })();
 </script>";
         } else {
             return '';
@@ -84,14 +84,14 @@ class Trace extends Service
     {
         if ($this->traceJsEnable && $categoryName) {
             return "<script type=\"text/javascript\">
-	var _maq = _maq || [];
-	_maq.push(['category', '".$categoryName."']);
+    var _maq = _maq || [];
+    _maq.push(['category', '".$categoryName."']);
 </script>";
         } else {
             return '';
         }
     }
-    
+
     /**
      * @property $sku | String ， 产品页面的sku编码
      * @return String, 产品页面的js Code
@@ -101,28 +101,28 @@ class Trace extends Service
     {
         if ($this->traceJsEnable && $sku) {
             return "<script type=\"text/javascript\">
-	var _maq = _maq || [];
-	_maq.push(['sku', '".$sku."']);
+    var _maq = _maq || [];
+    _maq.push(['sku', '".$sku."']);
 </script>";
         } else {
             return '';
         }
     }
-    
+
     /**
      * @property $cart | String ， 购物车数据，示例JSON数据：
-        [
-            {
-                "sku":"grxjy56002622",
-                "qty":1,
-                "price":35.52
-            },
-            {
-                "sku":"grxjy5606622",
-                "qty":4,
-                "price":75.11
-            }
-        ]
+     * [
+     * {
+     * "sku":"grxjy56002622",
+     * "qty":1,
+     * "price":35.52
+     * },
+     * {
+     * "sku":"grxjy5606622",
+     * "qty":4,
+     * "price":75.11
+     * }
+     * ]
      *
      * @return String, 购物车页面的js Code
      */
@@ -130,34 +130,34 @@ class Trace extends Service
     {
         if ($this->traceJsEnable && $cart) {
             return "<script type=\"text/javascript\">
-	var _maq = _maq || [];
-	_maq.push(['cart', ".$cart."]);
+    var _maq = _maq || [];
+    _maq.push(['cart', ".$cart."]);
 </script>";
         } else {
             return '';
         }
     }
-    
+
     /**
      * @property $search | String ，搜索的json格式如下：
-     {
-        "text": "fashion handbag", // 搜索词
-        "result_qty":5  // 搜索的产品个数
-     }
+     * {
+     * "text": "fashion handbag", // 搜索词
+     * "result_qty":5  // 搜索的产品个数
+     * }
      * @return String, 注册页面的js Code
      */
     public function getTraceSearchJsCode($search)
     {
         if ($this->traceJsEnable && $search) {
             return "<script type=\"text/javascript\">
-	var _maq = _maq || [];
-	_maq.push(['search', ".$search." ]);
+    var _maq = _maq || [];
+    _maq.push(['search', ".$search." ]);
 </script>";
         } else {
             return '';
         }
     }
-    
+
     public function initCookie()
     {
         // 判断当前是否是appserver端，如果是，则从 Yii::$app->request->post('cookies') 中获取
@@ -201,7 +201,7 @@ class Trace extends Service
         // params.fec_design
         $this->_fec_design        = $cookies['fec_design'];
     }
-    
+
     // 登录账户，通过api传递数据给trace系统 【已经部署到customer service login函数里面】
     public function sendTraceLoginInfoByApi($login_email)
     {
@@ -229,8 +229,8 @@ class Trace extends Service
             ]);
         }
     }
-    
-    
+
+
     // 订单生成成功，通过api传递数据给trace系统
     public function sendTracePaymentPendingOrderByApi($order)
     {
@@ -262,11 +262,11 @@ class Trace extends Service
         var_dump($data);
         $post_log = ob_get_clean();
         \Yii::info($post_log, 'fecshop_debug');
-        
+
         // 发送的数据
         $this->initCookie();
         \Yii::info('apiSendTrace', 'fecshop_debug');
-        
+
         // 对于paypal ipn请求，website_id 从配置中读取。
         // params.website_id
         $data['website_id'] = $this->_fta_site_id;
@@ -297,7 +297,7 @@ class Trace extends Service
             $data['first_referrer_url'] = $this->_ftreferurl;
             // params.is_return
             $data['is_return'] = $this->_ftreturn;
-            
+
             // params.fid
             $data['fid'] = $this->_fid;
             // params.fec_medium
@@ -310,8 +310,8 @@ class Trace extends Service
             $data['fec_content'] = $this->_fec_content;
             // params.fec_design
             $data['fec_design'] = $this->_fec_design;
-            
-            
+
+
             //var_dump($data);
             ////var_dump($_COOKIE);
             //exit;
@@ -347,10 +347,10 @@ class Trace extends Service
             $ch,
             CURLOPT_HTTPHEADER,
             [
-            'Accept: application/json',
-            'Content-Type: application/json',
-            'Access-Token: '.$this->access_token,
-            'Content-Length: ' . strlen($data)
+                'Accept: application/json',
+                'Content-Type: application/json',
+                'Access-Token: '.$this->access_token,
+                'Content-Length: ' . strlen($data)
             ]
         );
         // 把post的变量加上
@@ -369,49 +369,49 @@ class Trace extends Service
         //var_dump($output);exit;
         return $output;
     }
-    
-    
-    
+
+
+
     /**
      * @property $order | String ， 订单数据，示例JSON数据：
-        {
-            "invoice": "500023149", // 订单号
-            "order_type": "standard or express", // standard（标准支付流程类型）express（基于api的支付类型，譬如paypal快捷支付。）
-            "payment_status":"pending", // pending（未支付成功）
-            "payment_type":"paypal", // 支付渠道，譬如是paypal还是西联等支付渠道
-            //"currency":"RMB", // 当前货币
-            //"currency_rate":6.2, // 公式：当前金额 * 汇率 = 美元金额
-            "amount":35.52, // 订单总金额
-            "shipping":0.00, // 运费金额
-            "discount_amount":0.00, // 折扣金额
-            "coupon":"xxxxx", // 优惠券，没有则为空
-            "city":"fdasfds", // 城市
-
-            "email":"2358269014@qq.com", // 下单填写的email
-            "first_name":"terry", //
-            "last_name":"water", //
-            "zip":"266326", // 邮编
-            "country_code":"US", // 国家简码
-            "state_code":"CT", // 省或州
-            "country_name":"Unit states", // 国家简码
-            "state_name":"ctrssf", // 省或州
-            "address1":"address street 1", // 详细地址1
-            "address2":"address street 2", // 详细地址2
-            "products":[ // 产品详情
-                {
-                    "sku":"xxxxyr", // sku
-                    "name":"Fashion Solid Color Warm Coat", // 产品名称
-                    "qty":1, // 个数
-                    "price":25.92 // 产品单价
-                },
-                {
-                    "sku":"yyyy", // sku
-                    "name":"Fashion Waist Warm Coat", // 产品名称
-                    "qty":1, // 个数
-                    "price":34.16 // 产品单价
-                }
-            ]
-        }
+     * {
+     * "invoice": "500023149", // 订单号
+     * "order_type": "standard or express", // standard（标准支付流程类型）express（基于api的支付类型，譬如paypal快捷支付。）
+     * "payment_status":"pending", // pending（未支付成功）
+     * "payment_type":"paypal", // 支付渠道，譬如是paypal还是西联等支付渠道
+     * //"currency":"RMB", // 当前货币
+     * //"currency_rate":6.2, // 公式：当前金额 * 汇率 = 美元金额
+     * "amount":35.52, // 订单总金额
+     * "shipping":0.00, // 运费金额
+     * "discount_amount":0.00, // 折扣金额
+     * "coupon":"xxxxx", // 优惠券，没有则为空
+     * "city":"fdasfds", // 城市
+     *
+     * "email":"2358269014@qq.com", // 下单填写的email
+     * "first_name":"terry", //
+     * "last_name":"water", //
+     * "zip":"266326", // 邮编
+     * "country_code":"US", // 国家简码
+     * "state_code":"CT", // 省或州
+     * "country_name":"Unit states", // 国家简码
+     * "state_name":"ctrssf", // 省或州
+     * "address1":"address street 1", // 详细地址1
+     * "address2":"address street 2", // 详细地址2
+     * "products":[ // 产品详情
+     * {
+     * "sku":"xxxxyr", // sku
+     * "name":"Fashion Solid Color Warm Coat", // 产品名称
+     * "qty":1, // 个数
+     * "price":25.92 // 产品单价
+     * },
+     * {
+     * "sku":"yyyy", // sku
+     * "name":"Fashion Waist Warm Coat", // 产品名称
+     * "qty":1, // 个数
+     * "price":34.16 // 产品单价
+     * }
+     * ]
+     * }
      *
      * @return String, 未支付订单页面的js Code
      */
@@ -427,47 +427,47 @@ class Trace extends Service
         }
     }
     */
-    
+
     /**
      * @property $order | String ， 订单数据，示例JSON数据：
-        {
-            "invoice": "500023149", // 订单号
-            "order_type": "standard or express", // standard（标准支付流程类型）express（基于api的支付类型，譬如paypal快捷支付。）
-            "payment_status":"pending", // pending（未支付成功）
-            "payment_type":"paypal", // 支付渠道，譬如是paypal还是西联等支付渠道
-            // "currency":"RMB", // 当前货币
-            // "currency_rate":6.2, // 公式：当前金额 * 汇率 = 美元金额
-            "amount":35.52, // 订单总金额
-            "shipping":0.00, // 运费金额
-            "discount_amount":0.00, // 折扣金额
-            "coupon":"xxxxx", // 优惠券，没有则为空
-            "city":"fdasfds", // 城市
-
-            "email":"2358269014@qq.com", // 下单填写的email
-            "first_name":"terry", //
-            "last_name":"water", //
-            "zip":"266326", // 邮编
-            "country_code":"US", // 国家简码
-            "state_code":"CT", // 省或州
-            "country_name":"Unit states", // 国家简码
-            "state_name":"ctrssf", // 省或州
-            "address1":"address street 1", // 详细地址1
-            "address2":"address street 2", // 详细地址2
-            "products":[ // 产品详情
-                {
-                    "sku":"xxxxyr", // sku
-                    "name":"Fashion Solid Color Warm Coat", // 产品名称
-                    "qty":1, // 个数
-                    "price":25.92 // 产品单价
-                },
-                {
-                    "sku":"yyyy", // sku
-                    "name":"Fashion Waist Warm Coat", // 产品名称
-                    "qty":1, // 个数
-                    "price":34.16 // 产品单价
-                }
-            ]
-        }
+     * {
+     * "invoice": "500023149", // 订单号
+     * "order_type": "standard or express", // standard（标准支付流程类型）express（基于api的支付类型，譬如paypal快捷支付。）
+     * "payment_status":"pending", // pending（未支付成功）
+     * "payment_type":"paypal", // 支付渠道，譬如是paypal还是西联等支付渠道
+     * // "currency":"RMB", // 当前货币
+     * // "currency_rate":6.2, // 公式：当前金额 * 汇率 = 美元金额
+     * "amount":35.52, // 订单总金额
+     * "shipping":0.00, // 运费金额
+     * "discount_amount":0.00, // 折扣金额
+     * "coupon":"xxxxx", // 优惠券，没有则为空
+     * "city":"fdasfds", // 城市
+     *
+     * "email":"2358269014@qq.com", // 下单填写的email
+     * "first_name":"terry", //
+     * "last_name":"water", //
+     * "zip":"266326", // 邮编
+     * "country_code":"US", // 国家简码
+     * "state_code":"CT", // 省或州
+     * "country_name":"Unit states", // 国家简码
+     * "state_name":"ctrssf", // 省或州
+     * "address1":"address street 1", // 详细地址1
+     * "address2":"address street 2", // 详细地址2
+     * "products":[ // 产品详情
+     * {
+     * "sku":"xxxxyr", // sku
+     * "name":"Fashion Solid Color Warm Coat", // 产品名称
+     * "qty":1, // 个数
+     * "price":25.92 // 产品单价
+     * },
+     * {
+     * "sku":"yyyy", // sku
+     * "name":"Fashion Waist Warm Coat", // 产品名称
+     * "qty":1, // 个数
+     * "price":34.16 // 产品单价
+     * }
+     * ]
+     * }
      *
      * @return String, 支付成功订单页面的js Code
      */

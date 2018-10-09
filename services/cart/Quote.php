@@ -273,8 +273,9 @@ class Quote extends Service
 
     /**
      * 得到购物车中的用户地址信息.
+     * @deprecated 该函数已经废弃
      */
-    /** 该函数已经废弃
+    /*
     public function getCartAddress()
     {
         $email = '';
@@ -317,6 +318,7 @@ class Quote extends Service
         ];
     }
     */
+
 
     /**
      * @property $activeProduct | boolean , 是否只要active的产品

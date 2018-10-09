@@ -22,7 +22,7 @@ use yii\base\BaseObject;
 class Service extends BaseObject
 {
     public $childService;
-    public $enableService = true; /* 该服务是否可用  */
+    public $enableService = true; // 该服务是否可用
     protected $_childService;
 
     protected $_beginCallTime;
@@ -119,9 +119,7 @@ class Service extends BaseObject
     {
         if (Yii::$app->serviceLog->isServiceLogEnable()) {
             list($logTrace, $isCalledByThis) = $this->debugBackTrace();
-            /*
-             * if function is called by $this ,not log it to mongodb.
-             */
+            // if function is called by $this ,not log it to mongodb.
             if ($isCalledByThis) {
                 return;
             }

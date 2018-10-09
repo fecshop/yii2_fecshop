@@ -224,37 +224,37 @@ class ProductApi extends Service
          * 选填 当选择淘宝模式的产品时，一行数据是一个spu，各个sku的图片，库存，浮动价格，各个自定义属性的值等，就会存储到这个属性里面
          * 譬如：
          * "custom_option": {
-                "red-s-s2-s3": {
-                   "my_color": "red",
-                   "my_size": "S",
-                   "my_size2": "S2",
-                   "my_size3": "S3",
-                   "sku": "red-s-s2-s3",
-                   "qty": NumberInt(99999),
-                   "price": 0,
-                   "image": "/2/01/20161024170457_10036.jpg"
-                },
-                "red-m-s2-s3": {
-                   "my_color": "red",
-                   "my_size": "M",
-                   "my_size2": "S2",
-                   "my_size3": "S3",
-                   "sku": "red-m-s2-s3",
-                   "qty": NumberInt(99999),
-                   "price": 0,
-                   "image": "/2/01/20161024170457_10036.jpg"
-                },
-                "red-l-s2-s3": {
-                   "my_color": "red",
-                   "my_size": "L",
-                   "my_size2": "S2",
-                   "my_size3": "S3",
-                   "sku": "red-l-s2-s3",
-                   "qty": NumberInt(99999),
-                   "price": 0,
-                   "image": "/2/01/20161024170457_10036.jpg"
-                }
-            }
+         * "red-s-s2-s3": {
+         * "my_color": "red",
+         * "my_size": "S",
+         * "my_size2": "S2",
+         * "my_size3": "S3",
+         * "sku": "red-s-s2-s3",
+         * "qty": NumberInt(99999),
+         * "price": 0,
+         * "image": "/2/01/20161024170457_10036.jpg"
+         * },
+         * "red-m-s2-s3": {
+         * "my_color": "red",
+         * "my_size": "M",
+         * "my_size2": "S2",
+         * "my_size3": "S3",
+         * "sku": "red-m-s2-s3",
+         * "qty": NumberInt(99999),
+         * "price": 0,
+         * "image": "/2/01/20161024170457_10036.jpg"
+         * },
+         * "red-l-s2-s3": {
+         * "my_color": "red",
+         * "my_size": "L",
+         * "my_size2": "S2",
+         * "my_size3": "S3",
+         * "sku": "red-l-s2-s3",
+         * "qty": NumberInt(99999),
+         * "price": 0,
+         * "image": "/2/01/20161024170457_10036.jpg"
+         * }
+         * }
          *  需要进行如下检查：
          *  1. 图片地址是否存在，不存在则报错
          *  2. sku 存在，且在当前数组中sku 重复的，将会被去除
@@ -364,41 +364,41 @@ class ProductApi extends Service
         /**
          *  选填 产品的图片
          *  图片的格式如下：
-            "image": {
-                "gallery": [
-                    {
-                        "image": "/2/01/20161024170457_13851.jpg",
-                        "label": "",
-                        "sort_order": ""
-                    },
-                    {
-                        "image": "/2/01/20161024170457_21098.jpg",
-                        "label": "",
-                        "sort_order": ""
-                    },
-                    {
-                        "image": "/2/01/20161101155240_26690.jpg",
-                        "label": "",
-                        "sort_order": ""
-                    },
-                    {
-                        "image": "/2/01/20161101155240_56328.jpg",
-                        "label": "",
-                        "sort_order": ""
-                    },
-                    {
-                        "image": "/2/01/20161101155240_94256.jpg",
-                        "label": "",
-                        "sort_order": ""
-                    }
-                ],
-                "main": {
-                    "image": "/2/01/20161024170457_10036.jpg",
-                    "label": "",
-                    "sort_order": ""
-                }
-            },
-          */
+         * "image": {
+         * "gallery": [
+         * {
+         * "image": "/2/01/20161024170457_13851.jpg",
+         * "label": "",
+         * "sort_order": ""
+         * },
+         * {
+         * "image": "/2/01/20161024170457_21098.jpg",
+         * "label": "",
+         * "sort_order": ""
+         * },
+         * {
+         * "image": "/2/01/20161101155240_26690.jpg",
+         * "label": "",
+         * "sort_order": ""
+         * },
+         * {
+         * "image": "/2/01/20161101155240_56328.jpg",
+         * "label": "",
+         * "sort_order": ""
+         * },
+         * {
+         * "image": "/2/01/20161101155240_94256.jpg",
+         * "label": "",
+         * "sort_order": ""
+         * }
+         * ],
+         * "main": {
+         * "image": "/2/01/20161024170457_10036.jpg",
+         * "label": "",
+         * "sort_order": ""
+         * }
+         * },
+         */
         $image = $post['image'];
         if ($image) {
             if (isset($image['main'])) {

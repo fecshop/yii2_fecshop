@@ -590,7 +590,7 @@ class Customer extends Service
             $identity->generateAccessToken();
             $identity->access_token_created_at = time();
             $identity->save();
-            # 执行购物车合并等操作。
+            // 执行购物车合并等操作。
             Yii::$service->cart->mergeCartAfterUserLogin();
             $this->setHeaderAccessToken($identity->access_token);
             return $identity->access_token;

@@ -89,9 +89,9 @@ class Order extends Service
         ];
     }
     /**
-    * 付款成功，而且订单付款状态正常的订单状态
-    *
-    */
+     * 付款成功，而且订单付款状态正常的订单状态
+     *
+     */
     public function getOrderPaymentedStatusArr()
     {
         return [
@@ -761,7 +761,7 @@ class Order extends Service
      */
     public function checkOrderVersion($increment_id)
     {
-        # 更新订单版本号，防止被多次执行。
+        // 更新订单版本号，防止被多次执行。
         $sql    = 'update '.$this->_orderModel->tableName().' set version = version + 1  where increment_id = :increment_id';
         $data   = [
             'increment_id'  => $increment_id,
@@ -770,7 +770,7 @@ class Order extends Service
         $myOrder    = $this->_orderModel->find()->where([
             'increment_id'  => $increment_id,
         ])->one();
-        # 如果版本号不等于1，则回滚
+        // 如果版本号不等于1，则回滚
         if ($myOrder['version'] > 1) {
             Yii::$service->helper->errors->add('Your order has been paid');
             return false;
