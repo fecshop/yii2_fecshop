@@ -53,6 +53,7 @@ class Category extends Service
 
         return $urlStr;
     }
+
     /**
      * 对Url中的特殊字符进行转换。（用name生成url的时候，会使用这些字符进行转换）
      */

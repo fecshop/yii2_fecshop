@@ -22,7 +22,9 @@ use fecshop\services\Service;
 class ArticleMysqldb extends Service implements ArticleInterface
 {
     public $numPerPage = 20;
+
     protected $_articleModelName = '\fecshop\models\mysqldb\cms\Article';
+
     protected $_articleModel;
 
     public function init()
@@ -30,6 +32,7 @@ class ArticleMysqldb extends Service implements ArticleInterface
         parent::init();
         list($this->_articleModelName, $this->_articleModel) = Yii::mapGet($this->_articleModelName);
     }
+
     /**
      *  language attribute.
      */

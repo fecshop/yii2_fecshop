@@ -24,10 +24,12 @@ class Image extends Service
      * absolute image save floder.
      */
     public $imageFloder = 'media/catalog/category';
+
     /**
      * upload image max size.
      */
     public $maxUploadMSize;
+
     /**
      * allow image type.
      */

@@ -23,11 +23,17 @@ use Yii;
 class MongoSearch extends Service implements SearchInterface
 {
     public $searchIndexConfig;
+
     public $searchLang;
+
     public $enable;
+
     protected $_productModelName = '\fecshop\models\mongodb\Product';
+
     protected $_productModel;
+
     protected $_searchModelName = '\fecshop\models\mongodb\Search';
+
     protected $_searchModel;
     
     public function init()

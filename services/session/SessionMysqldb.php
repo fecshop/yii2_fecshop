@@ -23,6 +23,7 @@ use fecshop\services\Service;
 class SessionMysqldb extends Service implements SessionInterface
 {
     protected $_sessionModelName = '\fecshop\models\mysqldb\SessionStorage';
+
     protected $_sessionModel;
     
     public function init()
@@ -82,6 +83,7 @@ class SessionMysqldb extends Service implements SessionInterface
             return true;
         }
     }
+
     /**
      * 销毁所有
      */

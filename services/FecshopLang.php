@@ -28,6 +28,7 @@ class Fecshoplang extends Service
      * default language.
      */
     public $defaultLangCode;
+
     protected $_allLangCode;
 
     /**
@@ -39,6 +40,7 @@ class Fecshoplang extends Service
     {
         return $attrName.'_'.$langCode;
     }
+
     /**
      * @property $attrName | String 属性名称
      * 得到默认语言的属性名称
@@ -47,6 +49,7 @@ class Fecshoplang extends Service
     {
         return $attrName.'_'.$this->defaultLangCode;
     }
+
     /**
      * 得到所有的语言简码，譬如：en,es,fr,zh,de等
      */

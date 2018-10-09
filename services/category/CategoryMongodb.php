@@ -22,6 +22,7 @@ class CategoryMongodb extends Service implements CategoryInterface
     public $numPerPage = 20;
     
     protected $_categoryModelName = '\fecshop\models\mongodb\Category';
+
     protected $_categoryModel;
     
     public function init()
@@ -55,7 +56,6 @@ class CategoryMongodb extends Service implements CategoryInterface
         }
     }
     
-    
     /**
      * 返回主键。
      */
@@ -63,6 +63,7 @@ class CategoryMongodb extends Service implements CategoryInterface
     {
         return '_id';
     }
+
     /**
      * 得到分类激活状态的值
      */
@@ -71,6 +72,7 @@ class CategoryMongodb extends Service implements CategoryInterface
         $model = $this->_categoryModel;
         return $model::STATUS_ENABLE;
     }
+
     /**
      * 得到分类在menu中显示的状态值
      */
@@ -79,7 +81,6 @@ class CategoryMongodb extends Service implements CategoryInterface
         $model = $this->_categoryModel;
         return $model::MENU_SHOW;
     }
-    
 
     /*
      * example filter:

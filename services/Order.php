@@ -20,55 +20,75 @@ use Yii;
  */
 class Order extends Service
 {
-    public $requiredAddressAttr; // 必填的订单字段。
+    public $requiredAddressAttr;
+
+    // 必填的订单字段。
     // 下面是订单支付状态
     // 等待付款状态
     public $payment_status_pending          = 'payment_pending';
+
     // 付款处理中，(支付处理中，因为信用卡有预售，因此需要等IPN消息来确认是否支付成功)
     public $payment_status_processing       = 'payment_processing';
+
     // 收款成功（支付状态已确认，代表已经收到钱了）
     public $payment_status_confirmed        = 'payment_confirmed';
+
     // 欺诈【当paypal的返回金额和网站金额不一致【以及货币类型】的情况，就会判定该状态】
     public $payment_status_suspected_fraud  = 'payment_suspected_fraud';
+
     // 订单支付已取消【用户进入paypal点击取消订单返回网站，或者payment_pending订单超过xx时间未支付被脚本取消，或者客服后台取消】
     public $payment_status_canceled         = 'payment_canceled';
+
     // 订单审核中（订单收款成功后，进入erp，需要客服审核，才能开始发货流程，或者可能存在某些问题，被客服暂时挂起）
     public $status_holded                   = 'holded';
+
     // 订单备货处理中，从成功收款进入erp并客服审核成功后，进入备货流程 到 发货前的状态
     public $status_processing                   = 'processing';
+
     // 订单已发货【订单包裹被物流公司收取后】
     public $status_dispatched                   = 'dispatched';
+
     // 订单已退款【已收款订单因为某些原因进行退款，譬如：仓库无货，用户收到货后发现破损退款等】
     public $status_refunded                     = 'refunded';
+
     // 订单已完成，【用户收到货物xx时间后，未发起纠纷争端，订单状态标记为已完成】
     public $status_completed                 = 'completed';
+
     // 订单已取消，【用户付款后，因为纠纷进行取消订单后的状态】
     public $status_canceled                 = 'canceled';
     
     // 订单号格式。
     public $increment_id = 1000000000;
+
     // 将xx分钟内未支付的pending订单取消掉，并释放产品库存的设置
     public $minuteBeforeThatReturnPendingStock  = 60;
+
     // 每次处理未支付的pending订单的个数限制。
     public $orderCountThatReturnPendingStock    = 30;
+
     // 订单备注字符的最大数
     public $orderRemarkStrMaxLen = 1500;
     
     // 支付类型，目前只有standard 和 express 两种，express 指的是在购物车点击支付按钮的方式，譬如paypal的express
     // standard类型指的是填写完货运地址后生成订单跳转到第三方支付平台的支付类型。
     protected $checkout_type;
+
     // 当前的订单信息保存到这个变量中，订单信息是从数据库中取出来订单和产品信息，然后进行了一定的数据处理后，再保存到该变量的。
     protected $_currentOrderInfo;
+
     // 支付类型常量
     const CHECKOUT_TYPE_STANDARD    = 'standard';
+
     const CHECKOUT_TYPE_EXPRESS     = 'express';
+
     const CHECKOUT_TYPE_ADMIN_CREATE= 'admin_create';
+
     // 作为保存incrementId到session的key，把当前的order incrementId保存到session的时候，对应的key就是该常量。
     const CURRENT_ORDER_INCREAMENT_ID = 'current_order_increament_id';
     
     protected $_orderModelName = '\fecshop\models\mysqldb\Order';
+
     protected $_orderModel;
-    
     
     public function init()
     {
@@ -88,6 +108,7 @@ class Order extends Service
             self::CHECKOUT_TYPE_EXPRESS      => self::CHECKOUT_TYPE_EXPRESS,
         ];
     }
+
     /**
      * 付款成功，而且订单付款状态正常的订单状态
      *
@@ -101,6 +122,7 @@ class Order extends Service
             $this->status_completed,
         ];
     }
+
     /**
      * @return array
      * 将订单所有的状态，组合成一个数组，进行返回。
@@ -156,6 +178,7 @@ class Order extends Service
 
         return false;
     }
+
     /**
      * 得到支付类型
      */
@@ -184,6 +207,7 @@ class Order extends Service
 
         return true;
     }
+
     /**
      * 得到order 表的id字段。
      */
@@ -268,8 +292,6 @@ class Order extends Service
 
         return $order_info;
     }
-
-    
     
     protected function actionGetorderinfocoll($filter = '')
     {
@@ -288,8 +310,6 @@ class Order extends Service
             'count'=> $query->limit(null)->offset(null)->count(),
         ];
     }
-    
-    
     
     /**
      * @property $order_id | Int
@@ -414,6 +434,7 @@ class Order extends Service
 
         return true;
     }
+
     /**
      * @property $increment_id | String , 订单号
      * @return object （$this->_orderModel），返回 $this->_orderModel model
@@ -437,6 +458,7 @@ class Order extends Service
             return;
         }
     }
+
     /**
      * @property $token | String  , paypal 支付获取的token，订单生成后只有三个字段
      *       order_id, increment_id , payment_token ，目的就是将token对应到一个increment_id
@@ -459,6 +481,7 @@ class Order extends Service
             return false;
         }
     }
+
     /**
      * @property $token | String  , paypal 支付获取的token，
      *   通过token 得到订单 Object
@@ -474,7 +497,6 @@ class Order extends Service
         }
     }
     
-    
     /**
      * @property $reflush | boolean 是否从数据库中重新获取，如果是，则不会使用类变量中计算的值
      * 通过从session中取出来订单的increment_id
@@ -486,6 +508,7 @@ class Order extends Service
         $increment_id = isset($orderModel['increment_id']) ? $orderModel['increment_id'] : '';
         return Yii::$service->order->getOrderInfoByIncrementId($increment_id);
     }
+
     /**
      * @property $address | Array 货运地址
      * @property $shipping_method | String 货运快递方式
@@ -627,6 +650,7 @@ class Order extends Service
             return false;
         }
     }
+
     /**
      * @property $order_increment_id | string，订单编号 increment_id
      * 订单支付成功后，执行的代码，该代码只会在接收到支付成功信息后，才会执行。
@@ -702,6 +726,7 @@ class Order extends Service
         }
         return false;
     }
+
     /**
      * @property $myOrder | Object, 订单对象
      * @property $products | Array，购物车产品数组
@@ -798,6 +823,7 @@ class Order extends Service
     {
         return Yii::$service->session->get(self::CURRENT_ORDER_INCREAMENT_ID);
     }
+
     /**
      * @property $increment_id | String 订单号
      * @property $token | String ，通过api支付的token
@@ -959,6 +985,7 @@ class Order extends Service
         }
         return $logMessage;
     }
+
     /**
      * @property $days | Int 天数
      * 得到最近1个月的订单数据，包括：日期，订单支付状态，订单金额

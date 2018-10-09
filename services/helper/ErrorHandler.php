@@ -21,6 +21,7 @@ use Yii;
 class ErrorHandler extends Service
 {
     protected $_errorHandlerModelName = '\fecshop\models\mongodb\ErrorHandlerLog';
+
     protected $_errorHandlerModel;
     
     public function init()
@@ -33,6 +34,7 @@ class ErrorHandler extends Service
     {
         return '_id';
     }
+
     /**
      * @property $code | Int, http 错误码
      * @property $message | String, 错误的具体信息
@@ -83,7 +85,6 @@ class ErrorHandler extends Service
             return $this->_errorHandlerModel->findOne($primaryKey);
         }
     }
-    
     
     /*
      * example filter:

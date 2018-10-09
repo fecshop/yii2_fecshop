@@ -34,6 +34,7 @@ class Format extends Service
         //$number = number_format();
         //return $number;
     }
+
     /**
      * @property $day | Int 多少天之前
      * 返回最近xx天的日期数组

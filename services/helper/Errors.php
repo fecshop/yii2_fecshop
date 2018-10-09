@@ -21,6 +21,7 @@ use Yii;
 class Errors extends Service
 {
     protected $_errors = false;
+
     public $status = true;
 
     /**
@@ -35,6 +36,7 @@ class Errors extends Service
             $this->_errors[] = $errros;
         }
     }
+
     /**
      * @property $model_errors | Array
      * Yii2的model在使用rules验证数据格式的时候，报错保存在errors中

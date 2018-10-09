@@ -22,7 +22,9 @@ use Yii;
 class Newsletter extends Service
 {
     public $numPerPage = 20;
+
     protected $_newsletterModelName = '\fecshop\models\mongodb\customer\Newsletter';
+
     protected $_newsletterModel;
     
     public function init()
@@ -30,6 +32,7 @@ class Newsletter extends Service
         parent::init();
         list($this->_newsletterModelName, $this->_newsletterModel) = Yii::mapGet($this->_newsletterModelName);
     }
+
     public function getPrimaryKey()
     {
         return '_id';

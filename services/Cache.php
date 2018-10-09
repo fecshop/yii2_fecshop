@@ -23,6 +23,7 @@ class Cache extends Service
 {
     // 各个页面cache的配置
     public $cacheConfig;
+
     // cache 总开关
     public $enable;
 

@@ -22,11 +22,15 @@ use yii\base\BaseObject;
 class Service extends BaseObject
 {
     public $childService;
+
     public $enableService = true; // 该服务是否可用
+
     protected $_childService;
 
     protected $_beginCallTime;
+
     protected $_beginCallCode;
+
     protected $_callFuncLog;
 
     public function __get($attr)
@@ -80,6 +84,7 @@ class Service extends BaseObject
 
         return $this->_childService[$childServiceName];
     }
+
     /**
      * 得到所有的子服务
      * 如果子服务含有enableService字段，并且设置成false，则该子服务会被判定为关闭

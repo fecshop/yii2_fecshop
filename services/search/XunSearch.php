@@ -23,12 +23,19 @@ use Yii;
 class XunSearch extends Service implements SearchInterface
 {
     public $searchIndexConfig;
+
     public $searchLang;
+
     public $fuzzy = false;
+
     public $synonyms = false;
+
     protected $_productModelName = '\fecshop\models\mongodb\Product';
+
     protected $_productModel;
+
     protected $_searchModelName  = '\fecshop\models\xunsearch\Search';
+
     protected $_searchModel;
     
     public function init()
@@ -37,6 +44,7 @@ class XunSearch extends Service implements SearchInterface
         list($this->_productModelName, $this->_productModel) = \Yii::mapGet($this->_productModelName);
         list($this->_searchModelName, $this->_searchModel) = \Yii::mapGet($this->_searchModelName);
     }
+
     /**
      * 初始化xunSearch索引.
      */

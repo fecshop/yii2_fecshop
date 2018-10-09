@@ -20,14 +20,15 @@ use Yii;
 class AdminUser extends Service
 {
     protected $_adminUserLoginModelName = '\fecshop\models\mysqldb\adminUser\AdminUserLogin';
-    protected $_adminUserLoginModel;
 
+    protected $_adminUserLoginModel;
 
     public function init()
     {
         parent::init();
         list($this->_adminUserLoginModelName, $this->_adminUserLoginModel) = \Yii::mapGet($this->_adminUserLoginModelName);
     }
+
     /**
      * @property $ids | Int Array
      * @return 得到相应用户的数组。
@@ -85,7 +86,6 @@ class AdminUser extends Service
         }
     }
 
-
     /**
      * @property $data|array
      * 数组格式：['username'=>'xxx@xxx.com','password'=>'xxxx']
@@ -112,8 +112,6 @@ class AdminUser extends Service
             return true;
         }
     }
-
-
 
     /** AppServer 部分使用的函数
      * @property $type | null or  Object

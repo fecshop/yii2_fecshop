@@ -24,12 +24,19 @@ use Monolog\Handler\IFTTTHandler;
 class Wxpay extends Service
 {
     public $devide;
+
     public $configFile;
+
     public $subjectMaxLength = 30;
+
     public $tradeType;
+
     public $scanCodeBody = '微信支付';
+
     public $deviceInfo = 'WEB';
+
     public $expireTime = 600;
+
     protected $_order;
     
     // 允许更改的订单状态，不存在这里面的订单状态不允许修改
@@ -76,6 +83,7 @@ class Wxpay extends Service
             Yii::$service->order->payment_status_processing,
         ];
     }
+
     /**
      * 接收IPN消息的url，接收微信支付的异步消息，进而更改订单状态。
      */
@@ -87,6 +95,7 @@ class Wxpay extends Service
         $notify = new \PayNotifyCallBack();
         $notify->Handle(false);
     }
+
     /**
      * @property $data | Array 数据格式如下：
      *   array(18) {
@@ -218,7 +227,6 @@ class Wxpay extends Service
         ];
     }
     
-    
     public function getShangHaiExpireTime($expire_time)
     {
         $timezone_out = date_default_timezone_get();
@@ -228,7 +236,6 @@ class Wxpay extends Service
         
         return $r_time;
     }
-    
     
     public function scanCodeCheckTradeIsSuccess($out_trade_no)
     {
@@ -304,6 +311,7 @@ class Wxpay extends Service
             }
         }
     }
+
     /**
      * 检查订单是否合法
      * 如果每项验证都通过则返回真
@@ -367,6 +375,7 @@ class Wxpay extends Service
             return false;
         }
     }
+
     /**
      * @property $increment_id | String 订单号
      * @property $sendEmail | boolean 是否发送邮件

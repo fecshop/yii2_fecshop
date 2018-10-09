@@ -26,40 +26,62 @@ class Paypal extends Service
      * 打开url后，浏览器查找：PAYMENTINFO_n_PAYMENTSTATUS  ， 即可找到下面各个状态对应的含义
      */
     public $payment_status_none         = 'none';
+
     public $payment_status_completed    = 'completed';
+
     public $payment_status_denied       = 'denied';
+
     public $payment_status_expired      = 'expired';
+
     public $payment_status_failed       = 'failed';
+
     public $payment_status_in_progress  = 'in_progress';
+
     public $payment_status_pending      = 'pending';
+
     public $payment_status_refunded     = 'refunded';
+
     public $payment_status_refunded_part= 'partially_refunded';
+
     public $payment_status_reversed     = 'reversed';
+
     public $payment_status_unreversed   = 'canceled_reversal';
+
     public $payment_status_processed    = 'processed';
+
     public $payment_status_voided       = 'voided';
+
     public $seller_email ;
 
     // 是否使用证书的方式（https）
     public $use_local_certs = false;
+
     // 在payment中 express paypal 的配置值
     public $express_payment_method;
+
     public $standard_payment_method;
+
     public $version = '109.0';
+
     public $crt_file;
 
     protected $_postData;
+
     protected $_order;
 
     const EXPRESS_TOKEN     = 'paypal_express_token';
+
     const EXPRESS_PAYER_ID  = 'paypal_express_payer_id';
     
     protected $payerID;
+
     protected $token;
+
     // 允许更改的订单状态，不存在这里面的订单状态不允许修改
     protected $_allowChangOrderStatus;
     
     protected $_ipnMessageModelName = '\fecshop\models\mysqldb\IpnMessage';
+
     protected $_ipnMessageModel;
     
     public function init()
@@ -71,6 +93,7 @@ class Paypal extends Service
             Yii::$service->order->payment_status_processing,
         ];
     }
+
     /**
      * @property $domain | string
      * @return 得到证书crt文件的绝对路径
@@ -392,7 +415,6 @@ class Paypal extends Service
         }
     }
     
-    
     /**
      * @property $token | String , 通过 下面的 PPHttpPost5 方法返回的paypal standard的token
      * @return String，通过token得到跳转的 paypal url，通过这个url跳转到paypal登录页面，进行支付的开始
@@ -405,7 +427,6 @@ class Paypal extends Service
             return $webscrUrl.'?useraction=commit&cmd=_express-checkout&token='.urlencode($token);
         }
     }
-
 
     /**
      * @property $methodName_ | String，请求的方法，譬如： $methodName_ = "SetExpressCheckout";
@@ -641,7 +662,6 @@ class Paypal extends Service
 
         return $this->getRequestUrlStrByArray($nvp_array);
     }
-    
     
     /**
      * @property $landingPage | String ，访问api的类型，譬如login

@@ -21,6 +21,7 @@ use Yii;
 class Google extends Service
 {
     protected $currentCountry;
+
     protected $currentState;
 
     /**

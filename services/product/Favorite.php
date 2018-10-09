@@ -22,6 +22,7 @@ use Yii;
 class Favorite extends Service
 {
     protected $_favoriteModelName = '\fecshop\models\mongodb\product\Favorite';
+
     protected $_favoriteModel;
     
     public function init()
@@ -44,6 +45,7 @@ class Favorite extends Service
             return new $this->_favoriteModelName();
         }
     }
+
     /**
      * @property $product_id | String ， 产品id
      * @property $user_id | Int ，用户id
@@ -65,6 +67,7 @@ class Favorite extends Service
             }
         }
     }
+
     /**
      * @property $product_id | String ， 产品id
      * @property $user_id | Int ，用户id

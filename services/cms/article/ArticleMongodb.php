@@ -22,7 +22,9 @@ use fecshop\services\Service;
 class ArticleMongodb extends Service implements ArticleInterface
 {
     public $numPerPage = 20;
+
     protected $_articleModelName = '\fecshop\models\mongodb\cms\Article';
+
     protected $_articleModel;
     
     public function init()
@@ -44,6 +46,7 @@ class ArticleMongodb extends Service implements ArticleInterface
             return new $this->_articleModelName;
         }
     }
+
     /**
      * @property $urlKey | String ,  对应表的url_key字段
      * 根据url_key 查询得到article model

@@ -23,8 +23,11 @@ use Yii;
 class Session extends Service
 {
     public $type;
+
     public $_defaultType = 'session';
+
     public $_sessionKey = 'services_product_viewlog_history';
+
     public $_maxProductCount = 10;
 
     /**

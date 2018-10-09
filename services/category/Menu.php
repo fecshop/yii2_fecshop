@@ -21,7 +21,9 @@ use Yii;
 class Menu extends Service
 {
     public $rootCategoryId = '0';
+
     protected $_categoryModelName = '\fecshop\models\mongodb\Category';
+
     protected $_categoryModel;
     
     public function init()
@@ -29,6 +31,7 @@ class Menu extends Service
         parent::init();
         list($this->_categoryModelName, $this->_categoryModel) = Yii::mapGet($this->_categoryModelName);
     }
+
     /**
      * @property $parentId | int
      * 得到分类的目录信息

@@ -32,6 +32,7 @@ use fecshop\services\Service;
 class Echart extends Service
 {
     protected $i = 0;
+
     /**
      *  @property $data | Array, 用来展示图标的数据。 - 折线
      *  $data = [

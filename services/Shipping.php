@@ -21,17 +21,25 @@ use yii\base\InvalidConfigException;
 class Shipping extends Service
 {
     public $shippingConfig;
-    public $shippingCsvDir; // 存放运费csv表格的文件路径。
+
+    public $shippingCsvDir;
+
+    // 存放运费csv表格的文件路径。
     // 体积重系数，新体积重计算 = 长(cm) * 宽(cm) * 高(cm) / 体积重系数 ， 因此一立方的体积的商品，体积重为200Kg
     public $volumeWeightCoefficient = 5000;
+
     // 在init函数初始化，将shipping method的配置值加载到这个变量
     protected $_shipping_methods ;
+
     // 是否缓存shipping method 配置数据（因为csv部分需要读取csv文件，稍微耗时一些，可以选择放到缓存里面）
     protected $_cache_shipping_methods_config = 0;
+
     // 可用的shipping method，计算出来的值保存到这个类变量中。
     protected $_available_shipping;
+
     // 缓存key
     const  CACHE_SHIPPING_METHODS_CONFIG = 'cache_shipping_methods_config';
+
     /**
      * 1.从配置中取出来所有的shipping method
      * 2.对于公式为csv的shipping method，将对应的csv文件中的配置信息取出来
@@ -75,6 +83,7 @@ class Shipping extends Service
         }
         return $this->_shipping_methods;
     }
+
     /**
      * @property $long | Float ,长度，单位cm
      * @property $width | Float ,宽度，单位cm
@@ -86,6 +95,7 @@ class Shipping extends Service
         $volume_weight = ($long * $width * $high) / $this->volumeWeightCoefficient;
         return (float)$volume_weight;
     }
+
     /**
      * @property $long | Float ,长度，单位cm
      * @property $width | Float ,宽度，单位cm
@@ -149,6 +159,7 @@ class Shipping extends Service
             throw new InvalidConfigException('error,shipping info config is error');
         }
     }
+
     /**
      * @proeprty $shipping_method 货运方式的key
      * @proeprty $weight 产品的总重量
@@ -300,9 +311,6 @@ class Shipping extends Service
         return $this->_available_shipping[$c_key][$r_key][$w_key];
     }
     
-    
-    
-    
     /**
      * @property $shipping_method | String 货运方式的key
      * @return array ，通过csv表格，得到对应的运费数组信息
@@ -353,7 +361,6 @@ class Shipping extends Service
         fclose($fp);
         return $shippingCsvArr;
     }
-    
     
     /**
      * @property $countryLimit | Array 配置中的国家限制数组

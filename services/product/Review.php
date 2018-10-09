@@ -23,11 +23,15 @@ use yii\base\InvalidValueException;
 class Review extends Service
 {
     public $filterByLang;
+
     // 用户购物过的产品才能评论。
     public $reviewOnlyOrderedProduct = true;
+
     // 订单创建后，多久内可以进行评论，超过这个期限将不能评论产品（单位为月）
     public $reviewMonth = 6;
+
     protected $_reviewModelName = '\fecshop\models\mongodb\product\Review';
+
     protected $_reviewModel;
     
     public function init()
@@ -296,6 +300,7 @@ class Review extends Service
 
         return true;
     }
+
     /**
      * @property $ids | Array or String
      * @return boolean

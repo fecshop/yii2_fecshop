@@ -25,10 +25,12 @@ class Image extends Service
      * absolute image save floder.
      */
     public $imageFloder = 'media/upload';
+
     /**
      * upload image max size (MB).
      */
     public $maxUploadMSize = 2;
+
     /**
      * allow image type.
      */
@@ -41,6 +43,7 @@ class Image extends Service
     ];
 
     protected $_maxUploadSize;
+
     public $appbase;
 
     /**
@@ -154,6 +157,7 @@ class Image extends Service
     {
         return $this->GetImgDir($this->imageFloder.$str, 'common');
     }
+
     /**
      * @property $name | String , 图片的原始名字，也就是图片上传的时候的名字。
      * @property $length | String ， 生成图片随机字符的长度。

@@ -49,6 +49,7 @@ class Price extends Service
             'value'  => $price,
         ];
     }
+
     /**
      * @property $price | Float 产品价格
      * @return String ， 带有相应货币符号的价格

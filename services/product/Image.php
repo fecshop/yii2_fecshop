@@ -25,10 +25,12 @@ class Image extends Service
      * absolute image save floder.
      */
     public $imageFloder = 'media/catalog/product';
+
     /**
      * upload image max size.
      */
     public $maxUploadMSize;
+
     /**
      * allow image type.
      */
@@ -39,11 +41,15 @@ class Image extends Service
         'image/jpg',
         'image/pjpeg',
     ];
+
     // 默认产品图片，当产品图片找不到的时候，就会使用该默认图片
     public $defaultImg = '/default.jpg';
+
     // 产品水印图片。
     public $waterImg   = 'product_water.jpg';
+
     protected $_defaultImg;
+
     protected $_md5WaterImgPath;
 
     /**
@@ -95,6 +101,7 @@ class Image extends Service
 
         return Yii::$service->image->saveUploadImg($FILE);
     }
+
     /**
      * 获取产品默认图片的完整URL
      */
@@ -120,6 +127,7 @@ class Image extends Service
         
         return $newUrl;
     }
+
     /**
      * 和上面的方法 actionGetResize 功能类似, actionGetResize是得到按照图片尺寸resize后的图片的url。
      * 本函数是得到resize后图片的 完整文件路径 （绝对文件地址）
@@ -130,6 +138,7 @@ class Image extends Service
         
         return $newPath;
     }
+
     /**
      * @property $imageVal | String ，图片相对路径字符串。
      * @property $imgResize | Array or Int ， 数组 [230,230] 代表生成的图片为230*230，如果宽度或者高度不够，则会用白色填充
@@ -156,6 +165,7 @@ class Image extends Service
             return [$newPath, $newUrl];
         }
     }
+
     /**
      * @property $imageVal | String ，图片相对路径字符串。
      * @property $imgResize | Array or Int ， 数组 [230,230] 代表生成的图片为230*230，如果宽度或者高度不够，则会用白色填充

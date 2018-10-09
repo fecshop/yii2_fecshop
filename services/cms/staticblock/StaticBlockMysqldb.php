@@ -21,8 +21,11 @@ use fecshop\services\Service;
 class StaticBlockMysqldb extends Service implements StaticBlockInterface
 {
     public $numPerPage = 20;
+
     protected $_staticBlockModelName = '\fecshop\models\mysqldb\cms\StaticBlock';
+
     protected $_staticBlockModel;
+
     /**
      *  language attribute.
      */

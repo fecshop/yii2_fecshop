@@ -21,34 +21,55 @@ use Yii;
 class Trace extends Service
 {
     public $traceJsEnable = true;  // 是否打开js追踪
+
     public $website_id;     // 网站的id，在trace系统中获取
+
     public $trace_url;      // trace系统接收数据的url，在trace系统中获取
+
     public $trace_api_url;
+
     // 通过trace系统得到的token
     public $access_token;
+
     // api发送数据给trace系统的最大等待时间，超过这个时间将不继续等待
     public $api_time_out = 1;
 
     protected $_fta;
+
     protected $_ftactivity;
+
     protected $_ftactivity_child;
+
     protected $_fto;
+
     protected $_ftreferdomain;
+
     protected $_ftreferurl;
+
     protected $_ftreturn;
+
     protected $_fta_site_id;  // website_id
 
     protected $_fid;  // 广告id
+
     protected $_fec_medium;     // 广告渠道
+
     protected $_fec_source;     // 广告子渠道
+
     protected $_fec_campaign;   // 广告活动
+
     protected $_fec_content;    // 广告推广员
+
     protected $_fec_design;     // 广告图片设计员
 
     const LOGIN_EMAIL = 'login_email';
+
     const REGISTER_EMAIL = 'register_email';
+
     const CART = 'cart';
+
     const PAYMENT_PENDING_ORDER = 'payment_pending_order';
+
     const PAYMENT_SUCCESS_ORDER = 'payment_success_order';
 
     /**
@@ -76,6 +97,7 @@ class Trace extends Service
             return '';
         }
     }
+
     /**
      * @property $categoryName | String ， 填写分类的name，如果是多语言网站，那么这里填写默认语言的分类name
      * @return String, 分类页面的js Code
@@ -211,6 +233,7 @@ class Trace extends Service
             ]);
         }
     }
+
     // 注册账户，通过api传递数据给trace系统【已经部署到customer service register函数里面】
     public function sendTraceRegisterInfoByApi($register_email)
     {
@@ -220,6 +243,7 @@ class Trace extends Service
             ]);
         }
     }
+
     // 产品加入购物车，通过api传递数据给trace系统 sku, qty, price
     public function sendTraceAddToCartInfoByApi($cart_info)
     {
@@ -230,7 +254,6 @@ class Trace extends Service
         }
     }
 
-
     // 订单生成成功，通过api传递数据给trace系统
     public function sendTracePaymentPendingOrderByApi($order)
     {
@@ -240,6 +263,7 @@ class Trace extends Service
             ]);
         }
     }
+
     // 订单支付成功，通过api传递数据给trace系统
     public function sendTracePaymentSuccessOrderByApi($order)
     {
@@ -249,6 +273,7 @@ class Trace extends Service
             ]);
         }
     }
+
     /**
      * @property $data | Array，目前分类四类:loginEmail, registerEmail, paymentPendingOrder, paymentSuccessOrder,
      *
@@ -326,6 +351,7 @@ class Trace extends Service
             return true;
         }
     }
+
     /**
      * @property $data | Array, 传递给统计系统的数据。
      * 通过curl函数，发送数据给统计系统，在使用前，您需要配置
@@ -369,8 +395,6 @@ class Trace extends Service
         //var_dump($output);exit;
         return $output;
     }
-
-
 
     /**
      * @property $order | String ， 订单数据，示例JSON数据：

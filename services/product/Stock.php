@@ -25,17 +25,24 @@ class Stock extends Service
 {
     // 零库存：也就是说库存忽略掉，产品的库存
     public $zeroInventory = 0;
+
     // product model arr
     protected $_product_arr;
+
     // product items（譬如购物车信息）
     protected $_product_items;
+
     // 是否已经检查产品是否有库存。
     protected $_checkItemsStockStatus;
+
     //protected $CheckItemsStock
     
     protected $_flatQtyModelName = '\fecshop\models\mysqldb\product\ProductFlatQty';
+
     protected $_flatQtyModel;
+
     protected $_COQtyModelName = '\fecshop\models\mysqldb\product\ProductCustomOptionQty';
+
     protected $_COQtyModel;
     
     public function init()
@@ -44,6 +51,7 @@ class Stock extends Service
         list($this->_flatQtyModelName, $this->_flatQtyModel) = \Yii::mapGet($this->_flatQtyModelName);
         list($this->_COQtyModelName, $this->_COQtyModel) = \Yii::mapGet($this->_COQtyModelName);
     }
+
     /**
      * @property $productIds | Array ,  字符串数组
      * @return  Array ，example
@@ -139,6 +147,7 @@ class Stock extends Service
         $productFlatQty->save();
         return true;
     }
+
     /**
      *  @property $product_id | String , mongodb中的产品id字符串
      *  产品做删除的时候，需要在mysql中删除掉库存
@@ -153,7 +162,6 @@ class Stock extends Service
         $this->_COQtyModel->deleteAll(['product_id' => $product_id]);
         return true;
     }
-    
     
     /**
      * @property $items | Array ， example:
@@ -237,8 +245,6 @@ class Stock extends Service
             return false;
         }
     }
-
-    
     
     /**
      * @property $items | Array ， example:
@@ -369,7 +375,6 @@ class Stock extends Service
             return false;
         }
     }
-    
 
     /**
      * @property $product_items | Array ， example:
@@ -519,6 +524,7 @@ class Stock extends Service
         
         return $r_arr;
     }
+
     /**
      * @property $product_id | String
      * 得到产品的所有custom_option_sku 数组

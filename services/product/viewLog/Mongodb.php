@@ -23,11 +23,15 @@ use fecshop\services\Service;
 class Mongodb extends Service
 {
     public $collection;
+
     public $_defaultCollection = 'log_product_view';
+
     public $_maxProductCount = 10;
     
     protected $_logModelName = '\fecshop\models\mongodb\product\ViewLog';
+
     protected $_logModel;
+
     // init
     public function init()
     {

@@ -20,13 +20,21 @@ use Yii;
 class Url extends Service
 {
     public $randomCount = 8;
+
     public $showScriptName;
+
     protected $_secure;
+
     protected $_currentBaseUrl;
+
     protected $_origin_url;
+
     protected $_httpType;
+
     protected $_baseUrl;
+
     protected $_currentUrl;
+
     /**
      * About: 对于 \yii\helpers\CUrl 已经 封装了一些对url的操作，也就是基于yii2的url机制进行的
      * 但是对于前端并不适用，对于域名当首页http://xx.com这类url是没有问题，但是，
@@ -129,7 +137,6 @@ class Url extends Service
         
         return $this->_currentUrl;
     }
-    
 
     protected function actionGetCurrentUrlNoParam()
     {
@@ -251,8 +258,6 @@ class Url extends Service
     {
         return Yii::$app->getHomeUrl();
     }
-    
-    
 
     /**
      * get  base url.

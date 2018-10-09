@@ -22,13 +22,17 @@ use Yii;
 class QuoteItem extends Service
 {
     public $itemDefaultActiveStatus = 1;
+
     public $activeStatus = 1;
+
     public $noActiveStatus = 2;
     
     protected $_my_cart_item;    // 购物车cart item 对象
+
     protected $_cart_product_info;
     
     protected $_itemModelName = '\fecshop\models\mysqldb\cart\Item';
+
     protected $_itemModel;
     
     public function init()
@@ -93,6 +97,7 @@ class QuoteItem extends Service
         $item['afterAddQty'] = $item_one->qty;
         $this->sendTraceAddToCartInfoByApi($item);
     }
+
     /**
      * @property $item | Array, example:
      * $item = [
@@ -156,7 +161,6 @@ class QuoteItem extends Service
         }
     }
     */
-
 
     /**
      * 通过quoteItem表，计算得到所有产品的总数
@@ -473,7 +477,6 @@ class QuoteItem extends Service
 
         return false;
     }
-    
     
     /**
      * @property $cart_id | int 购物车id

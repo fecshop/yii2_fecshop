@@ -24,13 +24,19 @@ use Yii;
 class Customer extends Service
 {
     public $customer_register;
+
     const USER_LOGIN_SUCCESS_REDIRECT_URL_KEY = 'usr_login_success_redirect_url';
     
     protected $_customerModelName = '\fecshop\models\mysqldb\Customer';
+
     protected $_customerModel;
+
     protected $_customerLoginModelName = '\fecshop\models\mysqldb\customer\CustomerLogin';
+
     protected $_customerLoginModel;
+
     protected $_customerRegisterModelName = '\fecshop\models\mysqldb\customer\CustomerRegister';
+
     protected $_customerRegisterModel;
     
     public function init()
@@ -45,6 +51,7 @@ class Customer extends Service
         list($this->_customerLoginModelName, $this->_customerLoginModel) = \Yii::mapGet($this->_customerLoginModelName);
         list($this->_customerRegisterModelName, $this->_customerRegisterModel) = \Yii::mapGet($this->_customerRegisterModelName);
     }
+
     /**
      * 注册用户名字的最小长度.
      */
@@ -147,6 +154,7 @@ class Customer extends Service
         }
         return false;
     }
+
     /**
      * @property $email | String , email字符串
      * 查看该email是否被注册过。
@@ -160,6 +168,7 @@ class Customer extends Service
             return false;
         }
     }
+
     /**
      * @property $param | array ，用户的数组
      * 数据格式如下：
@@ -237,6 +246,7 @@ class Customer extends Service
 
         return get_class($model);
     }
+
     /**
      * 通过主键，得到customer model
      */
@@ -372,6 +382,7 @@ class Customer extends Service
 
         return $url ? $url : '';
     }
+
     /**
      * @property $urlKey | String
      * **注意**：该方法不能在接口类型里面使用
@@ -412,6 +423,7 @@ class Customer extends Service
         $model = $this->_customerModel;
         return $model::STATUS_ACTIVE;
     }
+
     /**
      * 得到customer 表的主键（mysql表）
      */
@@ -419,6 +431,7 @@ class Customer extends Service
     {
         return 'id';
     }
+
     /**
      * @property $filter|array
      * get  collection by $filter
@@ -446,7 +459,6 @@ class Customer extends Service
             'count'=> $query->limit(null)->offset(null)->count(),
         ];
     }
-    
     
     /**
      * @property $id | String  主键值
@@ -497,6 +509,7 @@ class Customer extends Service
     }
 
     //2. 创建第三方用户的账户，密码自动生成
+
     /**
      * @property  $user | Array ,example:
      * ['first_name' => $first_name,'last_name' => $last_name,'email' => $email,]
@@ -555,6 +568,7 @@ class Customer extends Service
         //return $authnum;
         return $authnum;
     }
+
     /** AppServer 部分使用的函数
      * @property $email | String
      * @property $password | String
@@ -596,6 +610,7 @@ class Customer extends Service
             return $identity->access_token;
         }
     }
+
     /** AppServer 部分使用的函数
      * @property $type | null or  Object
      * 从request headers中获取access-token，然后执行登录
@@ -631,6 +646,7 @@ class Customer extends Service
             }
         }
     }
+
     /**
      * 通过accessToek的方式，进行登出从操作。
      */
@@ -649,7 +665,6 @@ class Customer extends Service
 
         return $userComponent->getIsGuest();
     }
-
     
     protected function actionSetHeaderAccessToken($accessToken)
     {

@@ -21,6 +21,7 @@ use Yii;
 class Facebook extends Service
 {
     public $facebook_app_id;
+
     public $facebook_app_secret;
 
     /**

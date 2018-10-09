@@ -22,10 +22,13 @@ use fecshop\services\Service;
 class Db extends Service
 {
     public $table;
+
     public $_defaultTable = 'log_product_view';
+
     public $_maxProductCount = 10;
     
     protected $_logModelName = '\fecshop\models\db\product\ViewLog';
+
     protected $_logModel;
     
     // init function

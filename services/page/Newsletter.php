@@ -21,6 +21,7 @@ use fecshop\services\Service;
 class Newsletter extends Service
 {
     protected $_newsletterModelName = '\fecshop\models\mongodb\customer\Newsletter';
+
     protected $_newsletterModel;
     
     public function init()
@@ -28,6 +29,7 @@ class Newsletter extends Service
         parent::init();
         list($this->_newsletterModelName, $this->_newsletterModel) = \Yii::mapGet($this->_newsletterModelName);
     }
+
     /**
      * @property $email | String
      * newsletter subscription.

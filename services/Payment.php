@@ -20,6 +20,7 @@ use Yii;
 class Payment extends Service
 {
     public $paymentConfig;
+
     /**
      * Array
      * 不需要释放库存的支付方式。譬如货到付款，在系统中
@@ -27,6 +28,7 @@ class Payment extends Service
      * 如果需要释放产品库存，客服在后台取消订单即可释放产品库存。
      */
     public $noRelasePaymentMethod;
+
     protected $_currentPaymentMethod;
 
     /**
@@ -109,8 +111,6 @@ class Payment extends Service
             }
         }
     }
-
-   
 
     /**
      * @property $payment_method | String 支付方式。
@@ -210,8 +210,6 @@ class Payment extends Service
             }
         }
     }
-    
-    
 
     /**
      * @return array 得到所有支付的数组，数组含有三个字段。
@@ -273,6 +271,7 @@ class Payment extends Service
             }
         }
     }
+
     /**
      * @property $payment_method | String 支付方式。
      * @return 返回支付方式的label
@@ -369,6 +368,7 @@ class Payment extends Service
             }
         }
     }
+
     /**
      * @property $payment_method | String 支付方式。
      * @return 返回进行数据交互的express的api地址。
@@ -387,6 +387,7 @@ class Payment extends Service
             }
         }
     }
+
     /**
      * @property $payment_method | String 支付方式。
      * @return 返回进行数据交互的express的account。
@@ -443,8 +444,6 @@ class Payment extends Service
             }
         }
     }
-    
-    
 
     /**
      * @property $payment_method | String 支付方式。
@@ -483,9 +482,6 @@ class Payment extends Service
             }
         }
     }
-    
-    
-    
 
     /**
      * @property $payment_method | String 支付方式。
@@ -525,9 +521,6 @@ class Payment extends Service
             }
         }
     }
-    
-    
-    
     
     /**
      * @property $payment_method | String 支付方式。

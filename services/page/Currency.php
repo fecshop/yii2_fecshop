@@ -38,21 +38,25 @@ class Currency extends Service
      * ].
      */
     public $currencys;
+
     /**
      * 基础货币，产品的价格，填写的都是基础货币的价格。
      * 该值需要在配置文件中进行配置.
      */
     public $baseCurrecy;
+
     /**
      * 网站的默认货币，需要注意的是，默认货币不要和基础货币混淆，举例：
      * 后台产品统一使用的美元填写产品价格，但是我的网站前端的默认货币为人民币。
      * 该值需要在配置文件中进行配置.
      */
     public $defaultCurrency = 'USD';
+
     /**
      * 当前的货币简码
      */
     protected $_currentCurrencyCode;
+
     /**
      * 根据配置，保存所有货币的配置信息。
      */
@@ -126,6 +130,7 @@ class Currency extends Service
 
         return $price;
     }
+
     /**
      * property $price|Float ，默认货币的价格
      * property $currencyCode|String，货币简码,譬如 USD
@@ -243,7 +248,6 @@ class Currency extends Service
             return false;
         }
     }
-
 
     public function setCurrentCurrency2CNY()
     {

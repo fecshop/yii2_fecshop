@@ -21,7 +21,9 @@ use Yii;
 class Product extends Service
 {
     public $pageNum = 1;
+
     public $numPerPage = 50;
+
     public $allowedNumPerPage;
 
     /**

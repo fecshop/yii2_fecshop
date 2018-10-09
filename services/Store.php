@@ -27,14 +27,17 @@ class Store extends Service
     public $stores;
 
     public $store;
+
     /**
      * current store language,for example: en_US,fr_FR.
      */
     public $currentLang;
+
     /**
      * current store language name.
      */
     public $currentLangName;
+
     /**
      * current store theme package.
      */
@@ -43,21 +46,25 @@ class Store extends Service
      * current store theme.
      */
     //public $currentTheme = 'default';
+
     /**
      * 当前store的key，也就是当前的store.
      */
     public $currentStore;
+
     /**
      * current language code example : fr  es cn ru.
      */
     public $currentLangCode;
 
     public $thirdLogin;
+
     //public $https;
     
     public $serverLangs;
     
     public $apiAppNameArr = ['appserver','appapi'];
+
     // 是否是api入口
     public function isApiStore()
     {
@@ -68,6 +75,7 @@ class Store extends Service
             return false;
         }
     }
+
     // 得到当前入口的名字
     public function getCurrentAppName()
     {
@@ -220,6 +228,7 @@ class Store extends Service
         header('Location:'.$redirectUrl);
         exit;
     }
+
     /**
      * @return boolean, 检测是否属于满足跳转到appserver的条件
      */
@@ -248,6 +257,7 @@ class Store extends Service
         
         return false;
     }
+
     /**
      * @property $urlPath | String，跳转到vue端的url Path
      * @return boolean, 生成vue端的url，然后进行跳转。

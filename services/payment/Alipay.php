@@ -22,47 +22,66 @@ use Yii;
 class Alipay extends Service
 {
     public $gatewayUrl;
+
     // 商家 appid
     public $appId;
+
     // 商家uid
     public $sellerId;
+
     // 应用私钥
     public $rsaPrivateKey;
+
     // 支付宝公钥
     public $alipayrsaPublicKey;
+
     public $format;
+
     public $charset;
+
     public $signType;
     
     public $devide;
+
     public $apiVersion = '1.0'; //'1.0';
     
     //protected $_returnUrl;
     //protected $_notifyUrl;
     protected $_AopClient;
+
     protected $_alipayRequest;
+
     protected $_productCode;
+
     protected $_order;
+
     //交易创建，等待买家付款
     const WAIT_BUYER_PAY = 'WAIT_BUYER_PAY';
+
     //未付款交易超时关闭，或支付完成后全额退款
     const TRADE_CLOSED = 'TRADE_CLOSED';
+
     //交易支付成功
     const TRADE_SUCCESS = 'TRADE_SUCCESS';
+
     //交易结束，不可退款
     const TRADE_FINISHED = 'TRADE_FINISHED';
     
     protected $_ipnMessageModelName = '\fecshop\models\mysqldb\IpnMessage';
+
     protected $_ipnMessageModel;
     
     // 允许更改的订单状态，不存在这里面的订单状态不允许修改
     protected $_allowChangOrderStatus;
+
     protected $_initAlipayLib = 0;
+
     /**
      * 支付宝：SDK工作目录
      * 存放日志，AOP缓存数据
      */
     public $alipay_aop_sdk_work_dir = '/tmp/';
+
     /**
      * 是否处于开发模式
      * 在你自己电脑上开发程序的时候千万不要设为false，以免缓存造成你的代码修改了不生效
@@ -79,6 +98,7 @@ class Alipay extends Service
             Yii::$service->order->payment_status_processing,
         ];
     }
+
     /**
      * 初始化 $this->_AopClient
      */
@@ -106,6 +126,7 @@ class Alipay extends Service
             $this->_AopClient->alipayrsaPublicKey= $this->alipayrsaPublicKey;
         }
     }
+
     /**
      * @property $out_trade_no | String ，[支付宝传递过来的]fecshop站内订单号
      * @property $total_amount | String ，[支付宝传递过来的]fecshop站内订单金额（CNY）
@@ -159,6 +180,7 @@ class Alipay extends Service
         
         return true;
     }
+
     /**
      * 支付宝 支付成功后，返回网站，调用该函数进行支付宝订单支付状态查询
      * 如果支付成功，则修改订单状态为支付成功状态。
@@ -198,6 +220,7 @@ class Alipay extends Service
             return false;
         }
     }
+
     /**
      * 支付宝的消息接收IPN，执行的函数，接收的消息用来更改订单状态。
      * 您开启log后，可以在@app/runtime/fecshop_logs
@@ -245,6 +268,7 @@ class Alipay extends Service
             return false;
         }
     }
+
     /**
      * @property $increment_id | String 订单号
      * @property $sendEmail | boolean 是否发送邮件
@@ -300,7 +324,6 @@ class Alipay extends Service
         */
         return true;
     }
-
     
     /**
      * 根据订单，将内容提交给支付宝。跳转到支付宝支付页面。
@@ -347,6 +370,7 @@ class Alipay extends Service
 
         return $this->_AopClient->pageExecute($this->_alipayRequest, $type);
     }
+
     /**
      * 通过订单信息，得到支付宝支付传递的参数数据
      * 也就是一个json格式的数组。
@@ -377,7 +401,6 @@ class Alipay extends Service
             }
         }
     }
-    
     
     // 支付宝的 标示
     public function getAlipayHandle()

@@ -24,25 +24,39 @@ class Appapi extends Service
      * 公共状态码
      */
     public $status_success                                = 200;
+
     public $status_unkown                                 = 1000000;   // 程序内部错误：未知错误
+
     public $status_mysql_disconnect                       = 1000001;   // 程序内部错误：mysql连接错误
+
     public $status_mongodb_disconnect                     = 1000002;   // 程序内部错误：mongodb连接错误
+
     public $status_redis_disconnect                       = 1000003;   // 程序内部错误：redis连接错误
+
     public $status_invalid_token                          = 1000004;   // 无效数据：token无效
+
     public $status_invalid_request_url                    = 1000005;   // 无效请求：该url不存在
+
     public $status_invalid_email                          = 1000006;   // 格式错误：邮箱格式无效
+
     public $status_invalid_captcha                        = 1000007;   // 无效数据：验证码错误
+
     public $status_invalid_param                          = 1000008;   // 无效参数
+
     public $status_miss_param                             = 1000009;   // 参数丢失
+
     public $status_limit_beyond                           = 1000010;   // 超出限制
+
     public $status_data_repeat                            = 1000011;   // 数据重复
+
     public $status_attack                                 = 1000012;   // 确定为攻击返回的状态
+
     public $status_invalid_code                           = 1000013;   // 程序内部错误：传递的无效code
+
     /**
      * 用户部分的状态码
      */
     public $account_no_login_or_login_token_timeout       = 1100003; // 登录：账户的token已经过期,或者没有登录
-    
     
     /**
      * @property $code | String 状态码
@@ -80,6 +94,7 @@ class Appapi extends Service
         $messageArr = $this->getMessageArr();
         return isset($messageArr[$code]['message']) ? $messageArr[$code]['message'] : '';
     }
+
     /**
      * 得到 code 对应 message的数组
      */

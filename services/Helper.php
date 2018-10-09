@@ -20,7 +20,9 @@ use Yii;
 class Helper extends Service
 {
     protected $_app_name;
+
     protected $_param;
+
     /**
      * 得到当前的app入口的名字，譬如 appfront apphtml5  appserver等.
      */
@@ -71,6 +73,7 @@ class Helper extends Service
     {
         return isset($this->_param['appServiceDomain']) ? $this->_param['appServiceDomain'] : false;
     }
+
     /**
      * 该端口是否是Api入口，譬如appserver  appapi等，都是属于api的入口
      * api入口都会将 Yii::$app->user->enableSession 关闭，因此通过该值判断， 是否是Api App

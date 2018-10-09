@@ -22,12 +22,17 @@ use Yii;
 class Quote extends Service
 {
     const SESSION_CART_ID = 'current_session_cart_id';
+
     protected $_cart_id;
+
     protected $_cart;
+
     protected $_shipping_cost;
     
     protected $_cartModelName = '\fecshop\models\mysqldb\Cart';
+
     protected $_cartModel;
+
     /**
      * 存储购物车的信息。
      */
@@ -38,6 +43,7 @@ class Quote extends Service
         parent::init();
         list($this->_cartModelName, $this->_cartModel) = Yii::mapGet($this->_cartModelName);
     }
+
     /**
      * @return int 得到cart_id
      * Cart的session的超时时间由session组件决定。
@@ -198,7 +204,6 @@ class Quote extends Service
         return true;
     }
 
-
     /**
      * @property $cart_id | int
      * 设置cart_id类变量以及session中记录当前cartId的值
@@ -318,7 +323,6 @@ class Quote extends Service
         ];
     }
     */
-
 
     /**
      * @property $activeProduct | boolean , 是否只要active的产品

@@ -22,7 +22,9 @@ use fecshop\services\Service;
 class StaticBlockMongodb extends Service implements StaticBlockInterface
 {
     public $numPerPage = 20;
+
     protected $_staticBlockModelName = '\fecshop\models\mongodb\cms\StaticBlock';
+
     protected $_staticBlockModel;
     
     public function init()
@@ -30,6 +32,7 @@ class StaticBlockMongodb extends Service implements StaticBlockInterface
         parent::init();
         list($this->_staticBlockModelName, $this->_staticBlockModel) = Yii::mapGet($this->_staticBlockModelName);
     }
+
     public function getPrimaryKey()
     {
         return '_id';

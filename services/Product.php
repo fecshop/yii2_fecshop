@@ -24,23 +24,31 @@ use Yii;
  */
 class Product extends Service
 {
+    /**
+     * @var array 自定义的属性组配置数组
+     */
     public $customAttrGroup;
+
     public $categoryAggregateMaxCount; // Yii::$service->product->categoryAggregateMaxCount;
+
     /**
      * $storagePrex , $storage , $storagePath 为找到当前的storage而设置的配置参数
      * 可以在配置中更改，更改后，就会通过容器注入的方式修改相应的配置值
      */
     public $storage     = 'ProductMongodb';   // 当前的storage，如果在config中配置，那么在初始化的时候会被注入修改
+
     /**
      * 设置storage的path路径，
      * 如果不设置，则系统使用默认路径
      * 如果设置了路径，则使用自定义的路径
      */
     public $storagePath = '';
+
     /**
      * @var ProductMongodb | ProductMysqldb 根据 $storage 及 $storagePath 配置的 Product 的实现
      */
     protected $_product;
+
     /**
      * @var string 默认属性组名称
      */
@@ -53,12 +61,10 @@ class Product extends Service
         $this->_product = new $currentService();
     }
     
-    
     protected function actionGetEnableStatus()
     {
         return $this->_product->getEnableStatus();
     }
-    
     
     /**
      * 得到产品的所有的属性组。
@@ -96,10 +102,8 @@ class Product extends Service
         ) {
             $arr = array_merge($arr, $this->customAttrGroup[$productAttrGroup]['spu_attr']);
         }
-        //var_dump($arr);
         return $arr;
     }
-    
     
     /**
      * @property $productAttrGroup|string
@@ -133,14 +137,13 @@ class Product extends Service
                 }
             }
         }
-        //var_dump($arr);
         return $arr;
     }
+
     /**
      * @property $productAttrGroup|string
-     * @return 一维数组
-     * 得到这个产品属性组里面的 属性,也就是原来的产品属性+属性组对应的属性
-     *
+     * @return array 一维数组
+     * 得到这个产品属性组里面的属性,也就是原来的产品属性+属性组对应的属性
      */
     protected function actionGetSpuAttr($productAttrGroup)
     {
@@ -161,14 +164,14 @@ class Product extends Service
 
     /**
      * @property $productAttrGroup | String
-     * @return String, 显示图片的spu属性。
+     * @return string 显示图片的spu属性。
      */
     protected function actionGetSpuImgAttr($productAttrGroup)
     {
-        $arr = [];
         if ($productAttrGroup == $this->_defaultAttrGroup) {
             return '';
         }
+
         // 得到用于spu，细分sku的属性，譬如颜色尺码之类。
         if (isset($this->customAttrGroup[$productAttrGroup]['spu_attr'])
                 && is_array($this->customAttrGroup[$productAttrGroup]['spu_attr'])
@@ -182,6 +185,7 @@ class Product extends Service
 
         return '';
     }
+
     /**
      * @property $status | Int
      * @return boolean ， 产品状态是否是active
@@ -190,6 +194,7 @@ class Product extends Service
     {
         return ($status == 1) ? true : false;
     }
+
     /**
      * @property $productAttrGroup | String  产品属性组
      * 通过产品属性组，从配置中得到对应的custom_options部分的配置
@@ -230,6 +235,7 @@ class Product extends Service
     {
         return $this->_product->getByPrimaryKey($primaryKey);
     }
+
     /**
      * @property $attr_group | String , 属性组名称
      * 给product model 增加相应的属性组对应的属性。
@@ -247,6 +253,7 @@ class Product extends Service
     {
         return $this->_product->apicoll();
     }
+
     /**
      * api部分
      */
@@ -254,6 +261,7 @@ class Product extends Service
     {
         return $this->_product->apiGetByPrimaryKey($primaryKey);
     }
+
     /**
      * api部分
      */
@@ -261,6 +269,7 @@ class Product extends Service
     {
         return $this->_product->apiSave($product_one);
     }
+
     /**
      * api部分
      */

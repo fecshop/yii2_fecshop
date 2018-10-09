@@ -23,17 +23,25 @@ use Yii;
 class Coupon extends Service
 {
     protected $_useCouponInit; // 是否初始化这个百年两
+
     protected $_customer_id;   // 用户id
+
     protected $_coupon_code;   // 优惠卷码
+
     protected $_coupon_model;  // 优惠券model
+
     protected $_coupon_usage_model; // 优惠券使用次数记录model
     
     protected $_couponModelName = '\fecshop\models\mysqldb\cart\Coupon';
+
     protected $_couponModel;
+
     protected $_couponUsageModelName = '\fecshop\models\mysqldb\cart\CouponUsage';
+
     protected $_couponUsageModel;
     
     public $coupon_type_percent = 1;
+
     public $coupon_type_direct  = 2;
     
     public function init()
@@ -63,6 +71,7 @@ class Coupon extends Service
             return new $this->_couponModelName;
         }
     }
+
     /**
      * @property $customer_id | Int
      * @property $coupon_id | Int
@@ -92,6 +101,7 @@ class Coupon extends Service
             return $this->_coupon_usage_model;
         }
     }
+
     /**
      * @property $coupon_code | String
      * 根据 coupon_code 得到 coupon model
@@ -141,6 +151,7 @@ class Coupon extends Service
             'count'=> $query->limit(null)->offset(null)->count(),
         ];
     }
+
     /**
      * @property $one|array , save one data .
      * @return int 保存coupon成功后，返回保存的id。
@@ -302,6 +313,7 @@ class Coupon extends Service
         }
         return false;
     }
+
     /**
      * @property $coupon_code | String , coupon_code字符串
      * @property $dc_price | Float 总价格
@@ -440,6 +452,7 @@ class Coupon extends Service
             Yii::$service->helper->errors->add('Coupon is not available or has expired');
         }
     }
+
     /**
      * @property $coupon_code | String
      * 取消优惠券

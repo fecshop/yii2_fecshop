@@ -19,6 +19,7 @@ $config = PhpCsFixer\Config::create()
         'align_multiline_comment' => true,
         'array_indentation' => true,
         'array_syntax' => ['syntax' => 'short'],
+        'class_attributes_separation' => ['elements' => ['const', 'method', 'property']],
         'header_comment' => ['header' => $header],
         'method_argument_space' => ['on_multiline' => 'ensure_fully_multiline'],
         'single_line_comment_style' => true,

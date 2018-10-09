@@ -27,12 +27,14 @@ class Article extends Service
      * 可以在配置中更改，更改后，就会通过容器注入的方式修改相应的配置值
      */
     public $storage     = 'ArticleMongodb';   // 当前的storage，如果在config中配置，那么在初始化的时候会被注入修改
+
     /**
      * 设置storage的path路径，
      * 如果不设置，则系统使用默认路径
      * 如果设置了路径，则使用自定义的路径
      */
     public $storagePath = '';
+
     protected $_article;
 
     public function init()
@@ -50,8 +52,6 @@ class Article extends Service
         }
         */
     }
-    
-    
 
     /**
      * Get Url by article's url key.
@@ -76,6 +76,7 @@ class Article extends Service
     {
         return $this->_article->getByPrimaryKey($primaryKey);
     }
+
     /**
      * @property $urlKey | String ,  对应表的url_key字段
      * 根据url_key 查询得到article model

@@ -23,8 +23,8 @@ class ProductMongodb extends Service implements ProductInterface
 {
     public $numPerPage = 20;
     
-    
     protected $_productModelName = '\fecshop\models\mongodb\Product';
+
     protected $_productModel;
     
     public function init()
@@ -37,6 +37,7 @@ class ProductMongodb extends Service implements ProductInterface
     {
         return '_id';
     }
+
     /**
      * 得到分类激活状态的值
      */
@@ -45,8 +46,6 @@ class ProductMongodb extends Service implements ProductInterface
         $model = $this->_productModel;
         return $model::STATUS_ENABLE;
     }
-    
-    
     
     public function getByPrimaryKey($primaryKey)
     {
@@ -102,8 +101,6 @@ class ProductMongodb extends Service implements ProductInterface
             }
         }
     }
-    
-    
 
     /*
      * example filter:

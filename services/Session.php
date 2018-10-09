@@ -27,6 +27,7 @@ class Session extends Service
 {
     // 设置session超时时间
     public $timeout;
+
     // 当过期时间+session创建时间 - 当前事件 < $updateTimeLimit ,则更新session创建时间
     public $updateTimeLimit = 600;
     
@@ -35,6 +36,7 @@ class Session extends Service
      * 可以在配置中更改，更改后，就会通过容器注入的方式修改相应的配置值
      */
     public $storage     = '';   // 当前的storage，如果在config中配置，那么在初始化的时候会被注入修改
+
     /**
      * 设置storage的path路径
      * 如果不设置，则系统使用默认路径
@@ -46,7 +48,9 @@ class Session extends Service
     protected $_uuid;
     
     private $_session;
+
     public $fecshop_uuid = 'fecshop-uuid';
+
     /**
      * 1. \Yii::$app->user->enableSession = false;
      * 查看是否是false，如果是
@@ -117,7 +121,6 @@ class Session extends Service
     {
         return $this->_session->remove($key);
     }
-    
     
     public function setFlash($key, $val, $timeout='')
     {

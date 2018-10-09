@@ -193,6 +193,7 @@ class Cart extends Service
     {
         return Yii::$service->cart->quote->updateGuestCart($address, $shipping_method, $payment_method);
     }
+
     /**
      * @property $address_id | Int
      * @property $shipping_method | String 货运方式

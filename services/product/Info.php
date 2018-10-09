@@ -28,6 +28,7 @@ class Info extends Service
     //public function __construct(){
     //list($this->_productModelName,$this->_productModel) = \Yii::mapGet($this->_productModelName);
     //}
+
     /**
      * @property $custome_option | Array
      * $custome_option = [

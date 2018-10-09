@@ -23,7 +23,9 @@ use yii\base\InvalidValueException;
 class RewriteMongodb extends Service implements RewriteInterface
 {
     public $numPerPage = 20;
+
     protected $_urlRewriteModelName = '\fecshop\models\mongodb\url\UrlRewrite';
+
     protected $_urlRewriteModel;
     
     public function init()
@@ -107,6 +109,7 @@ class RewriteMongodb extends Service implements RewriteInterface
 
         return true;
     }
+
     /**
      * @property $ids | Array or String
      * 删除相应的url rewrite 记录
@@ -146,6 +149,7 @@ class RewriteMongodb extends Service implements RewriteInterface
 
         return true;
     }
+
     /**
      * @property $time | Int
      * 根据updated_at 更新时间，删除相应的url rewrite 记录
@@ -171,6 +175,7 @@ class RewriteMongodb extends Service implements RewriteInterface
             echo "delete complete \n";
         }
     }
+
     /**
      * 返回url rewrite model 对应的query
      */
@@ -178,6 +183,7 @@ class RewriteMongodb extends Service implements RewriteInterface
     {
         return $this->_urlRewriteModel->find();
     }
+
     /**
      * 返回url rewrite 查询结果
      */
@@ -185,6 +191,7 @@ class RewriteMongodb extends Service implements RewriteInterface
     {
         return $this->_urlRewriteModel->findOne($where);
     }
+
     /**
      * 返回url rewrite model
      */

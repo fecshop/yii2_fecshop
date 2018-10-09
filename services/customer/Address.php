@@ -22,8 +22,11 @@ use Yii;
 class Address extends Service
 {
     protected $currentCountry;
+
     protected $currentState;
+
     protected $_addressModelName = '\fecshop\models\mysqldb\customer\Address';
+
     protected $_addressModel;
     
     public function init()
@@ -52,6 +55,7 @@ class Address extends Service
             return new $this->_addressModelName();
         }
     }
+
     /**
      * @property $address_id | Int , address表的id
      * @property $customer_id | Int ， 用户id
@@ -297,6 +301,7 @@ class Address extends Service
         
         return true;
     }
+
     /**
      * @property $customer_id | Int ,
      * @property $address_id | Int，address id

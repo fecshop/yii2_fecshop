@@ -23,9 +23,11 @@ use Yii;
 class ProductApi extends Service
 {
     protected $_error = []; // $this->_error
+
     protected $_param = []; // $this->_param
     
     protected $_productModelName = '\fecshop\models\mongodb\Product';
+
     protected $_productModel;
     
     public function init()

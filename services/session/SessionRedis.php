@@ -23,6 +23,7 @@ use fecshop\services\Service;
 class SessionRedis extends Service implements SessionInterface
 {
     protected $_sessionModelName = '\fecshop\models\redis\SessionStorage';
+
     protected $_sessionModel;
     
     public function init()

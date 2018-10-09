@@ -23,6 +23,7 @@ class CategoryMysqldb extends Service implements CategoryInterface
     public $numPerPage = 20;
     
     protected $_categoryModelName = '\fecshop\models\mysqldb\Category';
+
     protected $_categoryModel;
     
     public function init()

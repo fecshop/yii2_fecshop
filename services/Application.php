@@ -22,6 +22,7 @@ use yii\base\InvalidConfigException;
 class Application
 {
     public $childService;
+
     public $_childService;
     
     /**
@@ -57,6 +58,7 @@ class Application
 
         return $this->_childService[$childServiceName];
     }
+
     /**
      * @property $attr | String ， service的name。
      * 魔术方法，当调用一个属性，对象不存在的时候就会执行该方法，然后

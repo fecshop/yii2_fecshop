@@ -20,13 +20,16 @@ use Yii;
 class Sitemap extends Service
 {
     public $numPerPage = 100;
+
     public $sitemapConfig;
+
     protected $currentDate; // = date('Y-m-d');
 
     protected function initSiteMap()
     {
         $this->currentDate = date('Y-m-d');
     }
+
     /**
      * 在store的配置中，没一个store都有一个sitemap文件路径的配置项，譬如：
      * 'sitemapDir' => '@appfront/web/sitemap.xml',
@@ -59,6 +62,7 @@ class Sitemap extends Service
             }
         }
     }
+
     /**
      * sitemap 文件写入内容后的结束执行的函数。
      */
@@ -84,6 +88,7 @@ class Sitemap extends Service
             }
         }
     }
+
     /**
      * 在sitemap文件中写入home部分的链接
      */
@@ -112,6 +117,7 @@ class Sitemap extends Service
             }
         }
     }
+
     /**
      * 得到分类的总个数
      */
@@ -122,6 +128,7 @@ class Sitemap extends Service
         $count = $coll['count'];
         echo ceil($count / $this->numPerPage);
     }
+
     /**
      * 在sitemap文件中写入分类部分的链接
      */
@@ -162,6 +169,7 @@ class Sitemap extends Service
             }
         }
     }
+
     /**
      * 得到产品的总个数
      */
@@ -172,6 +180,7 @@ class Sitemap extends Service
         $count = $coll['count'];
         echo ceil($count / $this->numPerPage);
     }
+
     /**
      * 在sitemap文件中写入产品部分的链接
      */
@@ -212,6 +221,7 @@ class Sitemap extends Service
             }
         }
     }
+
     /**
      * page页的总个数
      */
@@ -222,6 +232,7 @@ class Sitemap extends Service
         $count = $coll['count'];
         echo ceil($count / $this->numPerPage);
     }
+
     /**
      * 在sitemap文件中写入page部分的链接
      */
