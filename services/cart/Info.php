@@ -14,7 +14,7 @@ use fecshop\services\Service;
 use Yii;
 
 /**
- * Cart Info services.
+ * Info sub-service of cart service.
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -31,19 +31,20 @@ class Info extends Service
     public $addToCartCheckSkuQty = false;
 
     /**
-     * @property $item | Array  , example
+     * Checks several conditions before you add product to cart
+     * @param array $item
+     * example:
      * $item = [
      *		'product_id' 		=> 22222,
      *		'custom_option_sku' => ['color'=>'red','size'=>'l'],
      *		'qty' 				=> 22,
      * ];
-     * @proeprty $product | Object , Product Model
-     * return boolean 是否满足条件
-     * 在产品加入购物车之前，检查产品是否存在，产品的状态，库存状态等
-     * 满足条件返回true
+     * @param \fecshop\models\mongodb\Product $product
+     * @return bool true if can add product to cart, false otherwise
      */
     public function checkProductBeforeAdd($item, $product)
     {
+        // 加入购物车的产品个数不能小于设置的最小购买数量
         $qty = $item['qty'];
         $min_sales_qty = $product['min_sales_qty'];
         if (($min_sales_qty > 0) && ($min_sales_qty > $qty)) {
@@ -51,10 +52,8 @@ class Info extends Service
             
             return false;
         }
-        $product_id = $item['product_id'];
-        $custom_option_sku = $item['custom_option_sku'];
         // 验证产品是否是激活状态
-        if ($product['status'] != 1) {
+        if ($product['status'] != Yii::$service->product->getEnableStatus()) {
             Yii::$service->helper->errors->add('product is not active');
 
             return false;
@@ -68,28 +67,29 @@ class Info extends Service
         // 验证提交产品数据
         // 验证产品是否存在
         if (!$product['sku']) {
-            Yii::$service->helper->errors->add('this product is not exist');
+            Yii::$service->helper->errors->add('The product is not exist');
 
             return false;
         }
-        // 验证库存 是否库存满足？
+        // 验证库存 是否库存满足
+        $product_id = $item['product_id'];
+        $custom_option_sku = $item['custom_option_sku'];
         if ($this->addToCartCheckSkuQty) {
             // 验证：1.上架状态， 2.库存个数是否大于购买个数
             // 该验证方式是默认验证方式
             if (!Yii::$service->product->stock->productIsInStock($product, $qty, $custom_option_sku)) {
-                Yii::$service->helper->errors->add('the qty of product stocks is less than your purchase qty');
+                Yii::$service->helper->errors->add('The qty of product in stock is less than your purchase qty');
 
                 return false;
             }
         } else {
             // 验证：1.上架状态
             if (!Yii::$service->product->stock->checkOnShelfStatus($product['is_in_stock'])) {
-                Yii::$service->helper->errors->add('product is Stock Out');
+                Yii::$service->helper->errors->add('The product is out of stock');
 
                 return false;
             }
         }
-        
 
         return true;
     }

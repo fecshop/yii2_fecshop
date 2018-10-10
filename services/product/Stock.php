@@ -17,7 +17,11 @@ use fecshop\services\Service;
 use Yii;
 
 /**
- * Product Stock Service
+ * Stock sub-service of product service.
+ *
+ * @method productIsInStock($product, $qty, $custom_option_sku)
+ * @see Stock::actionProductIsInStock()
+ *
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */

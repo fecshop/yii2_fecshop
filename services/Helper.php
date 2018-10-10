@@ -13,7 +13,11 @@ namespace fecshop\services;
 use Yii;
 
 /**
- * Helper services.
+ * Helper service.
+ *
+ * @property \fecshop\services\helper\AR $ar ar sub-service of helper service
+ * @property \fecshop\services\helper\Errors $errors errors sub-service of helper service
+ *
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */

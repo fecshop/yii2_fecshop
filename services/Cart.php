@@ -26,8 +26,9 @@ use Yii;
 class Cart extends Service
 {
     /**
-     * 将某个产品加入到购物车中.
-     * @property $item|array
+     * 将某个产品加入到购物车中
+     * @param array $item
+     * example:
      * $item = [
      *		'product_id' 		=> 22222,
      *		'custom_option_sku' => ['color'=>'red','size'=>'l'],
@@ -35,11 +36,13 @@ class Cart extends Service
      * ];
      * 注意： $item['custom_option_sku'] 除了为上面的数组格式，还可以为字符串
      * 为字符串的时候，字符串标示的就是产品的custom option  sku
+     * @return bool true if add product to cart successfully, false otherwise
      */
     protected function actionAddProductToCart($item)
     {
         $product = Yii::$service->product->getByPrimaryKey($item['product_id']);
-        // 根据传递的值，得到custom_option_sku的值。
+
+        // 根据传递的值，得到 custom_option_sku 的值
         if (isset($item['custom_option_sku']) && !empty($item['custom_option_sku'])) {
             if (is_array($item['custom_option_sku'])) {
                 $custom_option_sku = Yii::$service->cart->info->getCustomOptionSku($item, $product);
@@ -59,12 +62,13 @@ class Cart extends Service
         if (!$productValidate) {
             return false;
         }
+
         // 开始加入购物车
         // service 里面不允许有事务，请在调用层使用事务。
-        $beforeEventName    = 'event_add_to_cart_before';
-        $afterEventName     = 'event_add_to_cart_after';
+        $beforeEventName = 'event_add_to_cart_before';
+        $afterEventName = 'event_add_to_cart_after';
         /**
-         * 此处属于fecshop自造的简单事件event，比较简洁
+         * 此处属于 fecshop 自造的简单事件 event ，比较简洁
          * 详情参看：http://www.fecshop.com/doc/fecshop-guide/instructions/cn-1.0/guide-fecshop_event.html
          */
         Yii::$service->event->trigger($beforeEventName, $item); // 触发事件 - 加购物车前事件
