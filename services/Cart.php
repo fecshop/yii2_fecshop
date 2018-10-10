@@ -14,6 +14,9 @@ use Yii;
 
 /**
  * Cart services. 购物车service， 执行购物车部分对应的方法。
+ *
+ * @property \fecshop\services\cart\Info $info cart info sub-service
+ *
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */

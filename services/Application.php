@@ -16,6 +16,11 @@ use yii\base\InvalidConfigException;
 /**
  * 此对象就是Yii::$service,通过魔术方法__get ， 得到服务对象，服务对象是单例模式。
  * 对于fecshop服务的介绍，可以参看文档：http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-service-abc.html
+ *
+ * For the convenience of jump of IDE, we declare all the services as follows:
+ * @property \fecshop\services\Cart $cart cart service
+ * @property \fecshop\services\Product $product product service
+ *
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */

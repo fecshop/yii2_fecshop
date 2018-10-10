@@ -18,7 +18,10 @@ use Yii;
 
 /**
  * Product Service is the component that you can get product info from it.
- * @property Image|\fecshop\services\Product\Image $image ,This property is read-only.
+ *
+ * @property \fecshop\services\Image | \fecshop\services\Product\Image $image image service or product image sub-service
+ * @property \fecshop\services\product\Info $info product info sub-service
+ *
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
