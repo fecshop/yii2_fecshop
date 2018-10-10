@@ -10,8 +10,6 @@
 
 namespace fecshop\services;
 
-use fecshop\services\product\ProductMongodb;
-use fecshop\services\product\ProductMysqldb;
 use yii\base\InvalidCallException;
 use yii\base\InvalidConfigException;
 use Yii;
@@ -21,6 +19,9 @@ use Yii;
  *
  * @property \fecshop\services\Image | \fecshop\services\Product\Image $image image service or product image sub-service
  * @property \fecshop\services\product\Info $info product info sub-service
+ *
+ * @method getByPrimaryKey($primaryKey) get product model by primary key
+ *         @see \fecshop\services\Product::actionGetByPrimaryKey()
  *
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
@@ -48,7 +49,7 @@ class Product extends Service
     public $storagePath = '';
 
     /**
-     * @var ProductMongodb | ProductMysqldb 根据 $storage 及 $storagePath 配置的 Product 的实现
+     * @var \fecshop\services\product\ProductInterface 根据 $storage 及 $storagePath 配置的 Product 的实现
      */
     protected $_product;
 
