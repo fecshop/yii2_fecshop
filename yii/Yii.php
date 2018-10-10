@@ -14,6 +14,9 @@ require $dir.'/BaseYii.php';
  */
 class Yii extends \yii\BaseYii
 {
+    /**
+     * @var \fecshop\services\Application $service
+     */
     public static $service;
     /**
      * rewriteMap , like:
