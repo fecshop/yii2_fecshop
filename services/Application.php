@@ -18,8 +18,29 @@ use yii\base\InvalidConfigException;
  * 对于fecshop服务的介绍，可以参看文档：http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-service-abc.html
  *
  * For the convenience of jump of IDE, we declare all the services as follows:
+ * @property \fecshop\services\AdminUser $adminUser adminUser service
  * @property \fecshop\services\Cart $cart cart service
+ * @property \fecshop\services\Category $category category service
+ * @property \fecshop\services\Cms $cms cms service
+ * @property \fecshop\services\Coupon $coupon coupon service
+ * @property \fecshop\services\Customer $customer customer service
+ * @property \fecshop\services\Email $email email service
+ * @property \fecshop\services\Event $event event service
+ * @property \fecshop\services\Fecshoplang $fecshopLang fecshopLang service
+ * @property \fecshop\services\Helper $helper helper service
+ * @property \fecshop\services\Image $image image service
+ * @property \fecshop\services\Order $order order service
+ * @property \fecshop\services\Page $page page service
+ * @property \fecshop\services\Payment $payment payment service
+ * @property \fecshop\services\Point $point point service
  * @property \fecshop\services\Product $product product service
+ * @property \fecshop\services\Request $request request service
+ * @property \fecshop\services\Search $search search service
+ * @property \fecshop\services\Session $session session service
+ * @property \fecshop\services\Shipping $shipping shipping service
+ * @property \fecshop\services\Sitemap $sitemap sitemap service
+ * @property \fecshop\services\Store $store store service
+ * @property \fecshop\services\Url $url url service
  *
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
