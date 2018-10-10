@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -21,17 +22,20 @@ use fecshop\services\Service;
 class Db extends Service
 {
     public $table;
+
     public $_defaultTable = 'log_product_view';
+
     public $_maxProductCount = 10;
     
     protected $_logModelName = '\fecshop\models\db\product\ViewLog';
+
     protected $_logModel;
     
     // init function
     public function init()
     {
         parent::init();
-        list($this->_logModelName,$this->_logModel) = \Yii::mapGet($this->_logModelName);  
+        list($this->_logModelName, $this->_logModel) = \Yii::mapGet($this->_logModelName);
         if (!$this->table) {
             $this->table = $this->_defaultTable;
         }
@@ -53,8 +57,8 @@ class Db extends Service
             return;
         }
         $coll = $this->_logModel->find()->where([
-                'user_id' => $user_id,
-            ])
+            'user_id' => $user_id,
+        ])
             ->asArray()
             ->orderBy(['date_time' => SORT_DESC])
             ->limit($count)

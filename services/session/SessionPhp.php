@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -22,42 +23,47 @@ class SessionPhp extends Service implements SessionInterface
 {
     public $timeout;
     
-    public function init(){
+    public function init()
+    {
         parent::init();
         $this->timeout = Yii::$app->session->timeout;
     }
     
-    public function set($key,$val,$timeout){
-        if($timeout){
+    public function set($key, $val, $timeout)
+    {
+        if ($timeout) {
             $this->timeout = $timeout;
             Yii::$app->session->setTimeout($timeout);
         }
-        return Yii::$app->session->set($key,$val);
+        return Yii::$app->session->set($key, $val);
     }
 
-    public function get($key,$reflush){
+    public function get($key, $reflush)
+    {
         return Yii::$app->session->get($key);
     }
 
-    public function remove($key){
+    public function remove($key)
+    {
         return Yii::$app->session->remove($key);
-        
     }
 
-    public function setFlash($key,$val,$timeout){
-        if($timeout){
+    public function setFlash($key, $val, $timeout)
+    {
+        if ($timeout) {
             $this->timeout = $timeout;
             Yii::$app->session->setTimeout($timeout);
         }
-        return Yii::$app->session->setFlash($key,$val);
+        return Yii::$app->session->setFlash($key, $val);
     }
     
-    public function getFlash($key){
+    public function getFlash($key)
+    {
         return Yii::$app->session->getFlash($key);
     }
     
-    public function destroy(){
+    public function destroy()
+    {
         return Yii::$app->getSession()->destroy();
     }
-    
 }

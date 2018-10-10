@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -21,9 +22,13 @@ class Footer extends Service
 {
     //public $textTerms;
     const TEXT_TERMS    = 'footer_text_terms';
+
     const COPYRIGHT     = 'footer_copyright';
+
     const FOLLOW_USE    = 'footer_follow_us';
+
     const PAYMENT_IMG   = 'footer_payment_img';
+
     /**
      * 得到页面底部的html部分
      */
@@ -31,6 +36,7 @@ class Footer extends Service
     {
         Yii::$service->page->staticblock->get(self::TEXT_TERMS);
     }
+
     /**
      * 得到页面底部的版权部分
      */
@@ -38,6 +44,7 @@ class Footer extends Service
     {
         Yii::$service->page->staticblock->get(self::COPYRIGHT);
     }
+
     /**
      * 得到页面底部的follow us部分
      */
@@ -45,6 +52,7 @@ class Footer extends Service
     {
         Yii::$service->page->staticblock->get(self::FOLLOW_USE);
     }
+
     /**
      * 得到页面底部的支付图片部分
      */

@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -21,21 +22,28 @@ use Yii;
 class Quote extends Service
 {
     const SESSION_CART_ID = 'current_session_cart_id';
+
     protected $_cart_id;
+
     protected $_cart;
+
     protected $_shipping_cost;
     
     protected $_cartModelName = '\fecshop\models\mysqldb\Cart';
+
     protected $_cartModel;
+
     /**
      * 存储购物车的信息。
      */
     protected $cartInfo;
     
-    public function init(){
+    public function init()
+    {
         parent::init();
-        list($this->_cartModelName,$this->_cartModel) = Yii::mapGet($this->_cartModelName);  
+        list($this->_cartModelName, $this->_cartModel) = Yii::mapGet($this->_cartModelName);
     }
+
     /**
      * @return int 得到cart_id
      * Cart的session的超时时间由session组件决定。
@@ -166,7 +174,7 @@ class Quote extends Service
     {
         $items_count = 0;
         if ($cart_id = $this->getCartId()) {
-            if($cart_id ){
+            if ($cart_id) {
                 $cart = $this->getCart();
                 //$one = $this->_cartModel->findOne(['cart_id' => $cart_id]);
                 if (isset($cart['items_count']) && $cart['items_count']) {
@@ -179,7 +187,7 @@ class Quote extends Service
     }
 
     /**
-     * @property $item_qty | Int 
+     * @property $item_qty | Int
      * 当$item_qty为null时，从cart items表中查询产品总数。
      * 当$item_qty 不等于null时，代表已经知道购物车中产品的个数，不需要去cart_item表中查询，譬如清空购物车操作，直接就知道产品个数肯定为零。
      * 当购物车的产品变动后，会调用该函数，更新cart表的产品总数
@@ -195,7 +203,6 @@ class Quote extends Service
 
         return true;
     }
-
 
     /**
      * @property $cart_id | int
@@ -271,8 +278,9 @@ class Quote extends Service
 
     /**
      * 得到购物车中的用户地址信息.
+     * @deprecated 该函数已经废弃
      */
-    /** 该函数已经废弃
+    /*
     public function getCartAddress()
     {
         $email = '';
@@ -391,8 +399,8 @@ class Quote extends Service
 
                         'products'          => $products,               //产品信息。
                         'product_weight'            => Yii::$service->helper->format->number_format($product_weight),         //产品的总重量。
-                        'product_volume_weight'     => Yii::$service->helper->format->number_format($product_volume_weight), 
-                        'product_volume'            => Yii::$service->helper->format->number_format($product_volume), 
+                        'product_volume_weight'     => Yii::$service->helper->format->number_format($product_volume_weight),
+                        'product_volume'            => Yii::$service->helper->format->number_format($product_volume),
                     ];
                 }
             }
@@ -428,9 +436,8 @@ class Quote extends Service
      */
     public function getShippingCost($shipping_method = '', $weight = '', $country = '', $region = '')
     {
-        
         if (!$this->_shipping_cost) {
-            $available_method = Yii::$service->shipping->getAvailableShippingMethods($country,$region,$weight);
+            $available_method = Yii::$service->shipping->getAvailableShippingMethods($country, $region, $weight);
             $shippingInfo = $available_method[$shipping_method];
             $shippingCost = Yii::$service->shipping->getShippingCost($shipping_method, $shippingInfo, $weight, $country, $region);
             $this->_shipping_cost = $shippingCost;

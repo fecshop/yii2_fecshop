@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -22,23 +23,32 @@ use Yii;
 class Coupon extends Service
 {
     protected $_useCouponInit; // 是否初始化这个百年两
+
     protected $_customer_id;   // 用户id
+
     protected $_coupon_code;   // 优惠卷码
+
     protected $_coupon_model;  // 优惠券model
+
     protected $_coupon_usage_model; // 优惠券使用次数记录model
     
     protected $_couponModelName = '\fecshop\models\mysqldb\cart\Coupon';
+
     protected $_couponModel;
+
     protected $_couponUsageModelName = '\fecshop\models\mysqldb\cart\CouponUsage';
+
     protected $_couponUsageModel;
     
     public $coupon_type_percent = 1;
+
     public $coupon_type_direct  = 2;
     
-    public function init(){
+    public function init()
+    {
         parent::init();
-        list($this->_couponModelName,$this->_couponModel) = Yii::mapGet($this->_couponModelName);  
-        list($this->_couponUsageModelName,$this->_couponUsageModel) = Yii::mapGet($this->_couponUsageModelName);  
+        list($this->_couponModelName, $this->_couponModel) = Yii::mapGet($this->_couponModelName);
+        list($this->_couponUsageModelName, $this->_couponUsageModel) = Yii::mapGet($this->_couponUsageModelName);
     }
     
     protected function actionGetPrimaryKey()
@@ -61,7 +71,8 @@ class Coupon extends Service
             return new $this->_couponModelName;
         }
     }
-    /** 
+
+    /**
      * @property $customer_id | Int
      * @property $coupon_id | Int
      * 通过customer_id 和 coupon_id得到 Coupon Usage Model.
@@ -90,6 +101,7 @@ class Coupon extends Service
             return $this->_coupon_usage_model;
         }
     }
+
     /**
      * @property $coupon_code | String
      * 根据 coupon_code 得到 coupon model
@@ -139,6 +151,7 @@ class Coupon extends Service
             'count'=> $query->limit(null)->offset(null)->count(),
         ];
     }
+
     /**
      * @property $one|array , save one data .
      * @return int 保存coupon成功后，返回保存的id。
@@ -300,6 +313,7 @@ class Coupon extends Service
         }
         return false;
     }
+
     /**
      * @property $coupon_code | String , coupon_code字符串
      * @property $dc_price | Float 总价格
@@ -357,14 +371,14 @@ class Coupon extends Service
                         $data = [
                             'id'  => $cu_model['id'],
                         ];
-                        $result = $this->_couponUsageModel->getDb()->createCommand($sql,$data)->execute();
+                        $result = $this->_couponUsageModel->getDb()->createCommand($sql, $data)->execute();
                     }
                     // coupon的总使用次数+1
                     $sql = 'update '.$this->_couponModel->tableName().' set times_used = times_used + 1 where coupon_id  = :coupon_id ';
                     $data = [
                         'coupon_id' => $c_model['coupon_id'],
                     ];
-                    $result = $this->_couponModel->getDb()->createCommand($sql,$data)->execute();
+                    $result = $this->_couponModel->getDb()->createCommand($sql, $data)->execute();
                     return true;
                 } elseif ($type == 'cancel') {
                     $couponModel = $this->getCouponModel();
@@ -375,13 +389,13 @@ class Coupon extends Service
                         $data = [
                             'id'  => $cu_model['id'],
                         ];
-                        $result = $this->_couponUsageModel->getDb()->createCommand($sql,$data)->execute();
+                        $result = $this->_couponUsageModel->getDb()->createCommand($sql, $data)->execute();
                         // $this->_couponModel 使用次数-1
                         $sql = 'update '.$this->_couponModel->tableName().' set times_used = times_used - 1 where coupon_id  = :coupon_id ';
                         $data = [
                             'coupon_id' => $c_model['coupon_id'],
                         ];
-                        $result = $this->_couponModel->getDb()->createCommand($sql,$data)->execute();
+                        $result = $this->_couponModel->getDb()->createCommand($sql, $data)->execute();
                         
                         return true;
                     }
@@ -416,15 +430,15 @@ class Coupon extends Service
                     // 在service中不要出现事务等操作。在调用层使用。
                     //$innerTransaction = Yii::$app->db->beginTransaction();
                     //try {
-                        $set_status = Yii::$service->cart->quote->setCartCoupon($coupon_code);
+                    $set_status = Yii::$service->cart->quote->setCartCoupon($coupon_code);
                     $up_status = $this->updateCouponUse('add');
                     if ($set_status && $up_status) {
                         //$innerTransaction->commit();
-                            return true;
+                        return true;
                     } else {
                         Yii::$service->helper->errors->add('add coupon fail');
                     }
-                        //Yii::$service->helper->errors->add('add coupon fail');
+                    //Yii::$service->helper->errors->add('add coupon fail');
                         //$innerTransaction->rollBack();
                     //} catch (Exception $e) {
                         //Yii::$service->helper->errors->add('add coupon fail');
@@ -438,6 +452,7 @@ class Coupon extends Service
             Yii::$service->helper->errors->add('Coupon is not available or has expired');
         }
     }
+
     /**
      * @property $coupon_code | String
      * 取消优惠券
@@ -452,7 +467,7 @@ class Coupon extends Service
                 $cancel_status = Yii::$service->cart->quote->cancelCartCoupon($coupon_code);
                 if ($up_status && $cancel_status) {
                     return true;
-                }  
+                }
             }
         }
     }

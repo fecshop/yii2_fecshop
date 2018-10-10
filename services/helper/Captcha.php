@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -19,15 +20,25 @@ use fecshop\services\Service;
 class Captcha extends Service
 {
     public $charset = 'abcdefghkmnprstuvwxyzABCDEFGHKMNPRSTUVWXYZ0123456789'; //随机因子
+
     public $codelen = 4;    //验证码长度
+
     public $width   = 130;  //宽度
+
     public $height  = 50;   //高度
+
     public $fontsize= 20;  //指定字体大小
+
     public $case_sensitive = false;
+
     private $fontcolor; //指定字体颜色
+
     private $code; //验证码
+
     private $img; //图形资源句柄
+
     private $font; //指定的字体
+
     private $_sessionKey = 'captcha_session_key';
 
     /**

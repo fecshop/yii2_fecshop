@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -21,8 +22,11 @@ use fecshop\services\Service;
 class Breadcrumbs extends Service
 {
     public $homeName = 'Home';
+
     public $ifAddHomeUrl = true;
+
     public $active = true;
+
     protected $_items;
 
     public function init()
@@ -50,6 +54,7 @@ class Breadcrumbs extends Service
             $this->_items[] = $items;
         }
     }
+
     /**
      * 通过上面的方法addItems($items)，把item加入进来后
      * 然后，通过该函数取出来。
@@ -65,9 +70,7 @@ class Breadcrumbs extends Service
         }
     }
 
-    /*
-     * generate Breadcrumbs html ,before generate , you should use addItems function to add breadcrumbs items.
-     */
+    // generate Breadcrumbs html ,before generate , you should use addItems function to add breadcrumbs items.
     /*
     protected function actionGenerateHtml(){
         $arr = [];

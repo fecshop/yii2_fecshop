@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -24,10 +25,12 @@ class Image extends Service
      * absolute image save floder.
      */
     public $imageFloder = 'media/upload';
+
     /**
      * upload image max size (MB).
      */
     public $maxUploadMSize = 2;
+
     /**
      * allow image type.
      */
@@ -40,6 +43,7 @@ class Image extends Service
     ];
 
     protected $_maxUploadSize;
+
     public $appbase;
 
     /**
@@ -60,7 +64,7 @@ class Image extends Service
         }
     }
 
-   /**
+    /**
      * @property $str | String 图片的相对路径
      * @property $app | String @appimage下面的文件夹的名称。各个名称对应各个入口的名字，譬如common appfront appadmin等
      * @return 返回图片的完整URL
@@ -153,29 +157,30 @@ class Image extends Service
     {
         return $this->GetImgDir($this->imageFloder.$str, 'common');
     }
+
     /**
      * @property $name | String , 图片的原始名字，也就是图片上传的时候的名字。
      * @property $length | String ， 生成图片随机字符的长度。
      * 随机生成图片的新名字，因为有的图片名字可能是中文或者其他语言，而fecshop在保存名字的时候会取名字的前2个字母生成2层文件夹
      * 这样中文名字就会出现问题，因此需要使用随机生成的名字（生成2层文件夹，是为了让文件夹下面不至于太多的文件，linux文件夹下的文件超过几万个，查找文件就会有点慢，这样做是为了避免这个文件。）
      */
-    protected function generateImgName( $name,$length = 15 ) { 
-        $arr = explode('.',$name);
+    protected function generateImgName($name, $length = 15)
+    {
+        $arr = explode('.', $name);
         $fileType = '.'.$arr[count($arr)-1];
-        // 密码字符集，可任意添加你需要的字符 
-        $chars = 'abcdefghijklmnopqrstuvwxyz0123456789'; 
-        $str =''; 
-        for ( $i = 0; $i < $length; $i++ ) 
-        { 
-            // 这里提供两种字符获取方式 
-            // 第一种是使用 substr 截取$chars中的任意一位字符； 
-            // 第二种是取字符数组 $chars 的任意元素 
-            // $str .= substr($chars, mt_rand(0, strlen($chars) – 1), 1); 
-            $str .= $chars[ mt_rand(0, strlen($chars) - 1) ]; 
-        } 
+        // 密码字符集，可任意添加你需要的字符
+        $chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+        $str ='';
+        for ($i = 0; $i < $length; $i++) {
+            // 这里提供两种字符获取方式
+            // 第一种是使用 substr 截取$chars中的任意一位字符；
+            // 第二种是取字符数组 $chars 的任意元素
+            // $str .= substr($chars, mt_rand(0, strlen($chars) – 1), 1);
+            $str .= $chars[ mt_rand(0, strlen($chars) - 1) ];
+        }
         $str .= time();
-        return $str.$fileType; 
-    } 
+        return $str.$fileType;
+    }
     
     /**
      * @property $param_img_file | Array .

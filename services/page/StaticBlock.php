@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -33,7 +34,7 @@ class StaticBlock extends Service
         }
     }
 
-    /** 
+    /**
      *	@property $_id | Int
      *  get StaticBlock one data by $_id.
      */

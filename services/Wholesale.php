@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -18,6 +19,4 @@ use Yii;
  */
 class Wholesale extends Service
 {
-    
-    
 }

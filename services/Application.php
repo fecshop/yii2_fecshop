@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -15,17 +16,23 @@ use yii\base\InvalidConfigException;
 /**
  * 此对象就是Yii::$service,通过魔术方法__get ， 得到服务对象，服务对象是单例模式。
  * 对于fecshop服务的介绍，可以参看文档：http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-service-abc.html
+ *
+ * For the convenience of jump of IDE, we declare all the services as follows:
+ * @property \fecshop\services\Cart $cart cart service
+ * @property \fecshop\services\Product $product product service
+ *
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
 class Application
 {
     public $childService;
+
     public $_childService;
     
     /**
      * @property $config | Array 注入的配置数组
-     * 在@app/web/index.php 入口文件处。会调用 new fecshop\services\Application($config['services']); 
+     * 在@app/web/index.php 入口文件处。会调用 new fecshop\services\Application($config['services']);
      * Yii::$service 就是该类实例化的对象，注入的配置保存到 $this->childService 中
      */
     public function __construct($config = [])
@@ -40,14 +47,13 @@ class Application
      */
     public function getChildService($childServiceName)
     {
-        
         if (!$this->_childService[$childServiceName]) {
             $childService = $this->childService;
             if (isset($childService[$childServiceName])) {
                 $service = $childService[$childServiceName];
-                if(!isset($service['enableService']) || $service['enableService']){
+                if (!isset($service['enableService']) || $service['enableService']) {
                     $this->_childService[$childServiceName] = Yii::createObject($service);
-                }else{
+                } else {
                     throw new InvalidConfigException('Child Service ['.$childServiceName.'] is disable in '.get_called_class().', you must config it! ');
                 }
             } else {
@@ -57,6 +63,7 @@ class Application
 
         return $this->_childService[$childServiceName];
     }
+
     /**
      * @property $attr | String ， service的name。
      * 魔术方法，当调用一个属性，对象不存在的时候就会执行该方法，然后

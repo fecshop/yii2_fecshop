@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -22,31 +23,28 @@ class CategoryMysqldb extends Service implements CategoryInterface
     public $numPerPage = 20;
     
     protected $_categoryModelName = '\fecshop\models\mysqldb\Category';
+
     protected $_categoryModel;
     
-    public function init(){
+    public function init()
+    {
         parent::init();
-        list($this->_categoryModelName,$this->_categoryModel) = Yii::mapGet($this->_categoryModelName);  
+        list($this->_categoryModelName, $this->_categoryModel) = Yii::mapGet($this->_categoryModelName);
     }
     
-    public function getByPrimaryKey($primaryKey){
-        
-    }
-
-    public function coll($filter){
-        
+    public function getByPrimaryKey($primaryKey)
+    {
     }
 
-    public function save($one, $originUrlKey){
-        
+    public function coll($filter)
+    {
     }
 
-    public function remove($ids){
-        
+    public function save($one, $originUrlKey)
+    {
     }
-    
-    
-    
-    
-    
+
+    public function remove($ids)
+    {
+    }
 }

@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -21,22 +22,26 @@ use fecshop\services\Service;
 class ArticleMysqldb extends Service implements ArticleInterface
 {
     public $numPerPage = 20;
+
     protected $_articleModelName = '\fecshop\models\mysqldb\cms\Article';
+
     protected $_articleModel;
-    
-    public function init(){
+
+    public function init()
+    {
         parent::init();
-        list($this->_articleModelName,$this->_articleModel) = Yii::mapGet($this->_articleModelName);  
+        list($this->_articleModelName, $this->_articleModel) = Yii::mapGet($this->_articleModelName);
     }
+
     /**
      *  language attribute.
      */
     protected $_lang_attr = [
-            'title',
-            'meta_description',
-            'content',
-            'meta_keywords',
-        ];
+        'title',
+        'meta_description',
+        'content',
+        'meta_keywords',
+    ];
 
     public function getPrimaryKey()
     {
@@ -58,17 +63,16 @@ class ArticleMysqldb extends Service implements ArticleInterface
             return new $this->_articleModelName();
         }
     }
-    
+
     /**
      * @property $urlKey | String ,  对应表的url_key字段
      * 根据url_key 查询得到article model
      */
     public function getByUrlKey($urlKey)
     {
-        
         if ($urlKey) {
             $model = $this->_articleModel->findOne(['url_key' => '/'.$urlKey]);
-            if (isset($model['url_key'])){
+            if (isset($model['url_key'])) {
                 $model['content'] = unserialize($model['content']);
                 $model['title'] = unserialize($model['title']);
                 $model['meta_keywords'] = unserialize($model['meta_keywords']);
@@ -82,15 +86,15 @@ class ArticleMysqldb extends Service implements ArticleInterface
     /*
      * example filter:
      * [
-     * 		'numPerPage' 	=> 20,
-     * 		'pageNum'		=> 1,
-     * 		'orderBy'	=> ['_id' => SORT_DESC, 'sku' => SORT_ASC ],
-            'where'			=> [
-                ['>','price',1],
-                ['<=','price',10]
-     * 			['sku' => 'uk10001'],
-     * 		],
-     * 	'asArray' => true,
+     *     'numPerPage'     => 20,
+     *     'pageNum'        => 1,
+     *     'orderBy'        => ['_id' => SORT_DESC, 'sku' => SORT_ASC ],
+     *     'where'          => [
+     *         ['>','price',1],
+     *         ['<=','price',10]
+     *         ['sku' => 'uk10001'],
+     *     ],
+     *     'asArray' => true,
      * ]
      */
     public function coll($filter = '')
@@ -157,8 +161,9 @@ class ArticleMysqldb extends Service implements ArticleInterface
         $model['meta_description'] = unserialize($model['meta_description']);
         return $model->attributes;
     }
-    
-    protected function initStatus($model){
+
+    protected function initStatus($model)
+    {
         $statusArr = [$model::STATUS_ACTIVE, $model::STATUS_DELETED];
         if ($model['status']) {
             $model['status'] = (int) $model['status'];
@@ -187,8 +192,7 @@ class ArticleMysqldb extends Service implements ArticleInterface
                         Yii::$service->url->removeRewriteUrlKey($url_key);
                         $model->delete();
                     } else {
-
-                        //throw new InvalidValueException("ID:$id is not exist.");
+                        // throw new InvalidValueException("ID:$id is not exist.");
                         Yii::$service->helper->errors->add("Article Remove Errors:ID $id is not exist.");
                         $innerTransaction->rollBack();
 

@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -22,16 +23,20 @@ use fecshop\services\Service;
 class Mongodb extends Service
 {
     public $collection;
+
     public $_defaultCollection = 'log_product_view';
+
     public $_maxProductCount = 10;
     
     protected $_logModelName = '\fecshop\models\mongodb\product\ViewLog';
+
     protected $_logModel;
+
     // init
     public function init()
     {
         parent::init();
-        list($this->_logModelName,$this->_logModel) = \Yii::mapGet($this->_logModelName);  
+        list($this->_logModelName, $this->_logModel) = \Yii::mapGet($this->_logModelName);
         if (!$this->collection) {
             $this->collection = $this->_defaultCollection;
         }
@@ -53,8 +58,8 @@ class Mongodb extends Service
             return;
         }
         $coll = $this->_logModel->find()->where([
-                'user_id' => $user_id,
-            ])
+            'user_id' => $user_id,
+        ])
             ->asArray()
             ->orderBy(['date_time' => SORT_DESC])
             ->limit($count)

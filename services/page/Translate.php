@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -41,6 +42,7 @@ class Translate extends Service
             return Yii::t($this->category, $text, $arr);
         }
     }
+
     /**
      * @property $language | String，设置当前的语言。
      * 语言部分使用的是Yii2的语言功能。

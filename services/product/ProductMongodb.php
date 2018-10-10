@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -22,30 +23,31 @@ class ProductMongodb extends Service implements ProductInterface
 {
     public $numPerPage = 20;
     
-    
     protected $_productModelName = '\fecshop\models\mongodb\Product';
+
     protected $_productModel;
     
-    public function init(){
+    public function init()
+    {
         parent::init();
-        list($this->_productModelName,$this->_productModel) = \Yii::mapGet($this->_productModelName);  
+        list($this->_productModelName, $this->_productModel) = \Yii::mapGet($this->_productModelName);
     }
     
     public function getPrimaryKey()
     {
         return '_id';
     }
+
     /**
      * 得到分类激活状态的值
      */
-    public function getEnableStatus(){
+    public function getEnableStatus()
+    {
         $model = $this->_productModel;
         return $model::STATUS_ENABLE;
     }
     
-    
-    
-    public function getByPrimaryKey($primaryKey)
+    public function getByPrimaryKey($primaryKey = null)
     {
         if ($primaryKey) {
             return $this->_productModel->findOne($primaryKey);
@@ -99,8 +101,6 @@ class ProductMongodb extends Service implements ProductInterface
             }
         }
     }
-    
-    
 
     /*
      * example filter:
@@ -305,9 +305,7 @@ class ProductMongodb extends Service implements ProductInterface
             }
         }
         $model->updated_at = time();
-        /*
-         * 计算出来产品的最终价格。
-         */
+        // 计算出来产品的最终价格。
         $one['final_price'] = Yii::$service->product->price->getFinalPrice($one['price'], $one['special_price'], $one['special_from'], $one['special_to']);
         $one['score'] = (int) $one['score'];
         unset($one['_id']);
@@ -326,9 +324,7 @@ class ProductMongodb extends Service implements ProductInterface
             $model->qty = $custom_option_qty;
         }
         $saveStatus = Yii::$service->helper->ar->save($model, $one);
-        /*
-         * 自定义url部分
-         */
+        // 自定义url部分
         if ($originUrlKey) {
             $originUrl = $originUrlKey.'?'.$this->getPrimaryKey() .'='. $primaryVal;
             $originUrlKey = isset($one['url_key']) ? $one['url_key'] : '';
@@ -341,7 +337,7 @@ class ProductMongodb extends Service implements ProductInterface
         /**
          * 更新产品库存。
          */
-        Yii::$service->product->stock->saveProductStock($product_id,$one);
+        Yii::$service->product->stock->saveProductStock($product_id, $one);
         /**
          * 更新产品信息到搜索表。
          */
@@ -359,7 +355,7 @@ class ProductMongodb extends Service implements ProductInterface
     {
         $primaryKey = $this->getPrimaryKey();
         $PrimaryVal = 1;
-        if (!isset($one[$primaryKey]) || !$one[$primaryKey] ) {
+        if (!isset($one[$primaryKey]) || !$one[$primaryKey]) {
             $PrimaryVal = 0;
         }
         if (!$PrimaryVal && (!isset($one['sku']) || empty($one['sku']))) {
@@ -373,7 +369,7 @@ class ProductMongodb extends Service implements ProductInterface
             return false;
         }
         $defaultLangName = \Yii::$service->fecshoplang->getDefaultLangAttrName('name');
-        if($PrimaryVal && $one['name'] && empty($one['name'][$defaultLangName])){
+        if ($PrimaryVal && $one['name'] && empty($one['name'][$defaultLangName])) {
             Yii::$service->helper->errors->add(' name '.$defaultLangName.' 不能为空 ');
 
             return false;
@@ -384,7 +380,7 @@ class ProductMongodb extends Service implements ProductInterface
             return false;
         }
         $defaultLangDes = \Yii::$service->fecshoplang->getDefaultLangAttrName('description');
-        if($PrimaryVal && $one['description'] && empty($one['description'][$defaultLangDes])){
+        if ($PrimaryVal && $one['description'] && empty($one['description'][$defaultLangDes])) {
             Yii::$service->helper->errors->add(' description '.$defaultLangDes.' 不能为空 ');
 
             return false;
@@ -397,7 +393,7 @@ class ProductMongodb extends Service implements ProductInterface
         if (is_array($one['custom_option']) && !empty($one['custom_option'])) {
             $new_custom_option = [];
             foreach ($one['custom_option'] as $k=>$v) {
-                $k = preg_replace('/[^A-Za-z0-9\-_]/', '', $k); 
+                $k = preg_replace('/[^A-Za-z0-9\-_]/', '', $k);
                 $new_custom_option[$k] = $v;
             }
             $one['custom_option'] = $new_custom_option;
@@ -430,12 +426,11 @@ class ProductMongodb extends Service implements ProductInterface
                     Yii::$service->search->removeByProductId($id);
                     Yii::$service->product->stock->removeProductStock($id);
                     $model->delete();
-                    //$this->removeChildCate($id);
+                //$this->removeChildCate($id);
                 } else {
                     Yii::$service->helper->errors->add("Product Remove Errors:ID:$id is not exist.");
                     $removeAll = 0;
                 }
-                
             }
             if (!$removeAll) {
                 return false;
@@ -451,7 +446,7 @@ class ProductMongodb extends Service implements ProductInterface
                 Yii::$service->search->removeByProductId($model[$this->getPrimaryKey()]);
                 Yii::$service->product->stock->removeProductStock($id);
                 $model->delete();
-                //$this->removeChildCate($id);
+            //$this->removeChildCate($id);
             } else {
                 Yii::$service->helper->errors->add("Product Remove Errors:ID:$id is not exist.");
 
@@ -583,12 +578,11 @@ class ProductMongodb extends Service implements ProductInterface
         foreach ($select as $column) {
             $project[$column] = 1;
             $group[$column] = ['$first' => '$'.$column];
-            
         }
         $group['product_id'] = ['$first' => '$product_id'];
         $langCode = Yii::$service->store->currentLangCode;
         
-        $name_lang  = Yii::$service->fecshoplang->getLangAttrName('name',$langCode);
+        $name_lang  = Yii::$service->fecshoplang->getLangAttrName('name', $langCode);
         $default_name_lang  = Yii::$service->fecshoplang->GetDefaultLangAttrName('name');
         $project['name'] = [
             $default_name_lang => 1,
@@ -658,7 +652,7 @@ class ProductMongodb extends Service implements ProductInterface
             ],
             [
                 '$limit'    => Yii::$service->product->categoryAggregateMaxCount,
-            ], 
+            ],
         ];
         $filter_data = $this->_productModel->getCollection()->aggregate($pipelines);
 
@@ -666,7 +660,7 @@ class ProductMongodb extends Service implements ProductInterface
     }
 
     /**
-     * @property $spu | String 
+     * @property $spu | String
      * @property $avag_rate | Int ，平均评星
      * @property $count | Int ，评论次数
      * @property $lang_code | String ，语言简码
@@ -674,7 +668,7 @@ class ProductMongodb extends Service implements ProductInterface
      * @property $lang_count | Int ， 语言下评论次数。
      * @property $rate_total_arr | Array, 各个评星对应的个数
      * @property $rate_lang_total_arr | Array, 该语言下各个评星对应的个数
-     */ 
+     */
     public function updateProductReviewInfo($spu, $avag_rate, $count, $lang_code, $avag_lang_rate, $lang_count, $rate_total_arr, $rate_lang_total_arr)
     {
         $data = $this->_productModel->find()->where([

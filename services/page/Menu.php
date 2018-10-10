@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -24,10 +25,12 @@ class Menu extends Service
      * whether display HOME in the menu.
      */
     public $displayHome;
+
     /**
      * custom menu that display in the front of product category.
      */
     public $frontCustomMenu;
+
     /**
      * custom menu that display in the behind of product category.
      */
@@ -77,6 +80,7 @@ class Menu extends Service
 
         return $arr;
     }
+
     /**
      * @property $customMenu | Array , 自定义菜单部分数组，从配置中取出
      * @return Array，获取处理后的自定义菜单数组

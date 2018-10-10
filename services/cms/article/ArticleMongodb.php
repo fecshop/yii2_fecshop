@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -21,12 +22,15 @@ use fecshop\services\Service;
 class ArticleMongodb extends Service implements ArticleInterface
 {
     public $numPerPage = 20;
+
     protected $_articleModelName = '\fecshop\models\mongodb\cms\Article';
+
     protected $_articleModel;
     
-    public function init(){
+    public function init()
+    {
         parent::init();
-        list($this->_articleModelName,$this->_articleModel) = Yii::mapGet($this->_articleModelName);  
+        list($this->_articleModelName, $this->_articleModel) = Yii::mapGet($this->_articleModelName);
     }
     
     public function getPrimaryKey()
@@ -42,6 +46,7 @@ class ArticleMongodb extends Service implements ArticleInterface
             return new $this->_articleModelName;
         }
     }
+
     /**
      * @property $urlKey | String ,  对应表的url_key字段
      * 根据url_key 查询得到article model
@@ -50,7 +55,7 @@ class ArticleMongodb extends Service implements ArticleInterface
     {
         if ($urlKey) {
             $model = $this->_articleModel->findOne(['url_key' => '/'.$urlKey]);
-            if (isset($model['url_key'])){
+            if (isset($model['url_key'])) {
                 return $model;
             }
         }
@@ -118,7 +123,8 @@ class ArticleMongodb extends Service implements ArticleInterface
         return $model->attributes;
     }
     
-    protected function initStatus($model){
+    protected function initStatus($model)
+    {
         $statusArr = [$model::STATUS_ACTIVE, $model::STATUS_DELETED];
         if ($model['status']) {
             $model['status'] = (int) $model['status'];

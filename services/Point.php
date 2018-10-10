@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -11,12 +12,12 @@ namespace fecshop\services;
 
 use Yii;
 
-/**Î´¿ª·¢
+/**
+ * æœªå¼€å‘
  * Point services.
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
 class Point extends Service
 {
-    
 }

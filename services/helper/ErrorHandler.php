@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -20,17 +21,20 @@ use Yii;
 class ErrorHandler extends Service
 {
     protected $_errorHandlerModelName = '\fecshop\models\mongodb\ErrorHandlerLog';
+
     protected $_errorHandlerModel;
     
-    public function init(){
+    public function init()
+    {
         parent::init();
-        list($this->_errorHandlerModelName,$this->_errorHandlerModel) = \Yii::mapGet($this->_errorHandlerModelName);  
+        list($this->_errorHandlerModelName, $this->_errorHandlerModel) = \Yii::mapGet($this->_errorHandlerModelName);
     }
     
     public function getPrimaryKey()
     {
         return '_id';
     }
+
     /**
      * @property $code | Int, http 错误码
      * @property $message | String, 错误的具体信息
@@ -44,9 +48,17 @@ class ErrorHandler extends Service
      * 该函数从errorHandler得到错误信息，然后保存到mongodb中。
      */
     public function saveByErrorHandler(
-        $code, $message, $file, $line, $created_at,
-        $ip, $name, $trace_string, $url, $req_info=[]
-    ){
+        $code,
+        $message,
+        $file,
+        $line,
+        $created_at,
+        $ip,
+        $name,
+        $trace_string,
+        $url,
+        $req_info=[]
+    ) {
         $category = Yii::$service->helper->getAppName();
         $model = new $this->_errorHandlerModelName();
         $model->category     = $category;
@@ -62,7 +74,6 @@ class ErrorHandler extends Service
         $model->trace_string = $trace_string;
         $model->save();
         return (string)$model[$this->getPrimaryKey()];
-        
     }
     
     /**
@@ -74,7 +85,6 @@ class ErrorHandler extends Service
             return $this->_errorHandlerModel->findOne($primaryKey);
         }
     }
-    
     
     /*
      * example filter:
@@ -105,6 +115,4 @@ class ErrorHandler extends Service
             'count'=> $query->limit(null)->offset(null)->count(),
         ];
     }
-    
-    
 }

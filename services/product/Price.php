@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -48,6 +49,7 @@ class Price extends Service
             'value'  => $price,
         ];
     }
+
     /**
      * @property $price | Float 产品价格
      * @return String ， 带有相应货币符号的价格
@@ -77,9 +79,12 @@ class Price extends Service
      * @return float
      */
     protected function actionGetFinalPrice(
-        $price, $special_price,
-        $special_from, $special_to,
-        $qty = '', $tier_price = []
+        $price,
+        $special_price,
+        $special_from,
+        $special_to,
+        $qty = '',
+        $tier_price = []
     ) {
         if ($this->specialPriceisActive($price, $special_price, $special_from, $special_to)) {
             $return_price = $special_price;
@@ -121,10 +126,14 @@ class Price extends Service
             }
 
             return $this->getCartPrice(
-                $price, $special_price,
-                $special_from, $special_to,
-                $qty, $custom_option_price,
-                $tier_price, $format
+                $price,
+                $special_price,
+                $special_from,
+                $special_to,
+                $qty,
+                $custom_option_price,
+                $tier_price,
+                $format
             );
         }
     }
@@ -132,7 +141,7 @@ class Price extends Service
     // 产品加入购物车，得到相应个数的最终价格。
 
     /**
-     * @property $price | Float 
+     * @property $price | Float
      * @property $special_price | Float
      * @property $special_from | Int
      * @property $special_to | Int
@@ -146,10 +155,14 @@ class Price extends Service
      * @property $format | Int , 返回的价格的格式，0代表为美元格式，1代表为当前货币格式，2代表美元和当前货币格式都有
      */
     protected function actionGetCartPrice(
-        $price, $special_price,
-        $special_from, $special_to,
-        $qty = '', $custom_option_price,
-        $tier_price = [], $format = 1
+        $price,
+        $special_price,
+        $special_from,
+        $special_to,
+        $qty = '',
+        $custom_option_price,
+        $tier_price = [],
+        $format = 1
     ) {
         if ($this->specialPriceisActive($price, $special_price, $special_from, $special_to)) {
             $return_price = $special_price;
@@ -287,12 +300,10 @@ class Price extends Service
                 'value'         => $special_price_info['value'],
                 'code'          => $special_price_info['code'],
             ];
-            $off = ($price_info['value'] - $special_price_info['value'] ) / $price_info['value'];
+            $off = ($price_info['value'] - $special_price_info['value']) / $price_info['value'];
             $this->currentOff = round($off * 100);
         }
 
         return $return;
     }
-    
-    
 }

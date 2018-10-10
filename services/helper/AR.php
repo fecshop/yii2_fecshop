@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -20,6 +21,7 @@ use Yii;
 class AR extends Service
 {
     public $numPerPage = 20;
+
     public $pageNum = 1;
 
     /*
@@ -72,6 +74,7 @@ class AR extends Service
 
         return $query;
     }
+
     /**
      * @property $model | Object , 数据库model
      * @property $one | Array ， 数据数组，对model进行赋值
@@ -97,7 +100,6 @@ class AR extends Service
                 }
             }
             if ($model->save()) {
-                
                 return $model;
             } else {
                 Yii::$service->helper->errors->add('model save fail');

@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -20,14 +21,17 @@ use fecshop\services\Service;
 class Newsletter extends Service
 {
     protected $_newsletterModelName = '\fecshop\models\mongodb\customer\Newsletter';
+
     protected $_newsletterModel;
     
-    public function init(){
+    public function init()
+    {
         parent::init();
-        list($this->_newsletterModelName,$this->_newsletterModel) = \Yii::mapGet($this->_newsletterModelName);  
+        list($this->_newsletterModelName, $this->_newsletterModel) = \Yii::mapGet($this->_newsletterModelName);
     }
+
     /**
-     * @property $email | String  
+     * @property $email | String
      * newsletter subscription.
      */
     protected function actionSubscription($email)
@@ -47,7 +51,7 @@ class Newsletter extends Service
                 $mongoNewsletter->save();
 
                 return [
-                'code' => 200,
+                    'code' => 200,
                     'description' => 'subscription email success',
                 ];
             }

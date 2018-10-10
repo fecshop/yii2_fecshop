@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -23,27 +24,34 @@ use Yii;
 class Customer extends Service
 {
     public $customer_register;
+
     const USER_LOGIN_SUCCESS_REDIRECT_URL_KEY = 'usr_login_success_redirect_url';
     
     protected $_customerModelName = '\fecshop\models\mysqldb\Customer';
+
     protected $_customerModel;
+
     protected $_customerLoginModelName = '\fecshop\models\mysqldb\customer\CustomerLogin';
+
     protected $_customerLoginModel;
+
     protected $_customerRegisterModelName = '\fecshop\models\mysqldb\customer\CustomerRegister';
+
     protected $_customerRegisterModel;
     
-    public function init(){
+    public function init()
+    {
         // 对于 api端口，设置Yii::$app->user->enableSession = false;
         // 下面的代码注释掉，对于使用到user组件的，在相应的模块部分设置 Yii::$app->user->enableSession = false;
         // if(Yii::$service->store->isApiStore()){
         //    Yii::$app->user->enableSession = false;
         //}
         parent::init();
-        list($this->_customerModelName,$this->_customerModel) = \Yii::mapGet($this->_customerModelName); 
-        list($this->_customerLoginModelName,$this->_customerLoginModel) = \Yii::mapGet($this->_customerLoginModelName);  
-        list($this->_customerRegisterModelName,$this->_customerRegisterModel) = \Yii::mapGet($this->_customerRegisterModelName);  
-        
+        list($this->_customerModelName, $this->_customerModel) = \Yii::mapGet($this->_customerModelName);
+        list($this->_customerLoginModelName, $this->_customerLoginModel) = \Yii::mapGet($this->_customerLoginModelName);
+        list($this->_customerRegisterModelName, $this->_customerRegisterModel) = \Yii::mapGet($this->_customerRegisterModelName);
     }
+
     /**
      * 注册用户名字的最小长度.
      */
@@ -146,6 +154,7 @@ class Customer extends Service
         }
         return false;
     }
+
     /**
      * @property $email | String , email字符串
      * 查看该email是否被注册过。
@@ -159,6 +168,7 @@ class Customer extends Service
             return false;
         }
     }
+
     /**
      * @property $param | array ，用户的数组
      * 数据格式如下：
@@ -217,12 +227,12 @@ class Customer extends Service
         } elseif (is_object($identity)) {
             $customerModel = $identity;
         }
-        if($customerModel['email']){
+        if ($customerModel['email']) {
             $customerModel->updated_at = time();
             $customerModel->setPassword($password);
             $customerModel->save();
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -236,6 +246,7 @@ class Customer extends Service
 
         return get_class($model);
     }
+
     /**
      * 通过主键，得到customer model
      */
@@ -339,7 +350,7 @@ class Customer extends Service
     }
 
     /**
-     * @property $token | String 
+     * @property $token | String
      * 通过PasswordResetToken 得到user.
      */
     protected function actionFindByPasswordResetToken($token)
@@ -371,6 +382,7 @@ class Customer extends Service
 
         return $url ? $url : '';
     }
+
     /**
      * @property $urlKey | String
      * **注意**：该方法不能在接口类型里面使用
@@ -387,7 +399,7 @@ class Customer extends Service
             //echo Yii::$service->session->get($this::USER_LOGIN_SUCCESS_REDIRECT_URL_KEY);
             //exit;
             return Yii::$service->url->redirect($url);
-        } else if($urlKey) {
+        } elseif ($urlKey) {
             return Yii::$service->url->redirectByUrlKey($urlKey);
         } else {
             return Yii::$service->url->redirectHome();
@@ -411,6 +423,7 @@ class Customer extends Service
         $model = $this->_customerModel;
         return $model::STATUS_ACTIVE;
     }
+
     /**
      * 得到customer 表的主键（mysql表）
      */
@@ -418,6 +431,7 @@ class Customer extends Service
     {
         return 'id';
     }
+
     /**
      * @property $filter|array
      * get  collection by $filter
@@ -446,7 +460,6 @@ class Customer extends Service
         ];
     }
     
-    
     /**
      * @property $id | String  主键值
      * 通过主键值找到分类，并且删除分类在url rewrite表中的记录
@@ -462,7 +475,6 @@ class Customer extends Service
 
         $model = $this->_customerModel->findOne($id);
         if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
-            
             $model->delete();
         } else {
             Yii::$service->helper->errors->add("customer Remove Errors:ID:$id is not exist.");
@@ -497,6 +509,7 @@ class Customer extends Service
     }
 
     //2. 创建第三方用户的账户，密码自动生成
+
     /**
      * @property  $user | Array ,example:
      * ['first_name' => $first_name,'last_name' => $last_name,'email' => $email,]
@@ -516,7 +529,7 @@ class Customer extends Service
             if ($loginStatus) {
                 return true;
             }
-        // 不存在，注册。
+            // 不存在，注册。
         } else {
             if (!(isset($user['password']) && $user['password'])) {
                 $user['password'] = $this->getRandomPassword();
@@ -555,6 +568,7 @@ class Customer extends Service
         //return $authnum;
         return $authnum;
     }
+
     /** AppServer 部分使用的函数
      * @property $email | String
      * @property $password | String
@@ -562,20 +576,21 @@ class Customer extends Service
      * 登录成功后，合并购物车，返回accessToken
      * ** 该函数是未登录用户，通过参数进行登录需要执行的函数。
      */
-    protected function actionLoginAndGetAccessToken($email,$password){
+    protected function actionLoginAndGetAccessToken($email, $password)
+    {
         $header = Yii::$app->request->getHeaders();
-        if(isset($header['access-token']) && $header['access-token']){
+        if (isset($header['access-token']) && $header['access-token']) {
             $accessToken = $header['access-token'];
-        }   
+        }
         // 如果request header中有access-token，则查看这个 access-token 是否有效
-        if($accessToken){
+        if ($accessToken) {
             $identity = Yii::$app->user->loginByAccessToken($accessToken);
             if ($identity !== null) {
                 $access_token_created_at = $identity->access_token_created_at;
                 $timeout = Yii::$service->session->timeout;
-                if($access_token_created_at + $timeout > time()){
+                if ($access_token_created_at + $timeout > time()) {
                     return $accessToken;
-                } 
+                }
             }
         }
         // 如果上面access-token不存在
@@ -584,18 +599,18 @@ class Customer extends Service
             'password'  => $password,
         ];
         
-        if(Yii::$service->customer->login($data)){
+        if (Yii::$service->customer->login($data)) {
             $identity = Yii::$app->user->identity;
             $identity->generateAccessToken();
             $identity->access_token_created_at = time();
             $identity->save();
-            # 执行购物车合并等操作。
+            // 执行购物车合并等操作。
             Yii::$service->cart->mergeCartAfterUserLogin();
             $this->setHeaderAccessToken($identity->access_token);
             return $identity->access_token;
-            
         }
     }
+
     /** AppServer 部分使用的函数
      * @property $type | null or  Object
      * 从request headers中获取access-token，然后执行登录
@@ -603,33 +618,35 @@ class Customer extends Service
      * 如果不过期，则返回identity
      * ** 该方法为appserver用户通过access-token验证需要执行的函数。
      */
-    protected function actionLoginByAccessToken($type = null){
+    protected function actionLoginByAccessToken($type = null)
+    {
         $header = Yii::$app->request->getHeaders();
-        if(isset($header['access-token']) && $header['access-token']){
+        if (isset($header['access-token']) && $header['access-token']) {
             $accessToken = $header['access-token'];
         }
-        if($accessToken){
+        if ($accessToken) {
             $identity = Yii::$app->user->loginByAccessToken($accessToken, $type);
             if ($identity !== null) {
                 $access_token_created_at = $identity->access_token_created_at;
                 $timeout = Yii::$service->session->timeout;
                 // 如果时间没有过期，则返回identity
-                if($access_token_created_at + $timeout > time()){
+                if ($access_token_created_at + $timeout > time()) {
                     //如果时间没有过期，但是快要过期了，在过$updateTimeLimit段时间就要过期，那么更新access_token_created_at。
                     $updateTimeLimit = Yii::$service->session->updateTimeLimit;
-                    if($access_token_created_at + $timeout <= (time() + $updateTimeLimit )){
+                    if ($access_token_created_at + $timeout <= (time() + $updateTimeLimit)) {
                         $identity->access_token_created_at = time();
                         $identity->save();
                     }
                     
                     return $identity;
-                }else{
+                } else {
                     $this->logoutByAccessToken();
                     return false;
                 }
             }
         }
     }
+
     /**
      * 通过accessToek的方式，进行登出从操作。
      */
@@ -637,8 +654,8 @@ class Customer extends Service
     {
         $userComponent = Yii::$app->user;
         $identity = $userComponent->identity;
-        if ($identity !== null ) {
-            if(!Yii::$app->user->isGuest){
+        if ($identity !== null) {
+            if (!Yii::$app->user->isGuest) {
                 $identity->access_token = null;
                 $identity->access_token_created_at = null;
                 $identity->save();
@@ -648,11 +665,11 @@ class Customer extends Service
 
         return $userComponent->getIsGuest();
     }
-
     
-    protected function actionSetHeaderAccessToken($accessToken){
-        if($accessToken){
-            Yii::$app->response->getHeaders()->set('access-token',$accessToken);
+    protected function actionSetHeaderAccessToken($accessToken)
+    {
+        if ($accessToken) {
+            Yii::$app->response->getHeaders()->set('access-token', $accessToken);
             return true;
         }
     }
@@ -662,7 +679,8 @@ class Customer extends Service
      * 得到最近X天的注册用户
      * 下面的数据是为了后台的customer 注册数统计
      */
-    public function getPreMonthCustomer($days){
+    public function getPreMonthCustomer($days)
+    {
         // 得到一个月前的时间戳
         $preMonthTime = strtotime("-$days days");
         $filter = [
@@ -690,8 +708,6 @@ class Customer extends Service
         
         return [
             '用户注册数' => $customerArr,
-        ];   
+        ];
     }
-    
-    
 }

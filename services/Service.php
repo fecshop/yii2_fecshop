@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -21,11 +22,15 @@ use yii\base\BaseObject;
 class Service extends BaseObject
 {
     public $childService;
-    public $enableService = true; /* 该服务是否可用  */
+
+    public $enableService = true; // 该服务是否可用
+
     protected $_childService;
 
     protected $_beginCallTime;
+
     protected $_beginCallCode;
+
     protected $_callFuncLog;
 
     public function __get($attr)
@@ -68,8 +73,8 @@ class Service extends BaseObject
             if (isset($childService[$childServiceName])) {
                 $service = $childService[$childServiceName];
                 if ($service['enableService'] !== false) {
-                    $this->_childService[$childServiceName] = Yii::createObject($service);  
-                }else{
+                    $this->_childService[$childServiceName] = Yii::createObject($service);
+                } else {
                     throw new InvalidConfigException('Child Service ['.$childServiceName.'] is disable in '.get_called_class().', you must config it! ');
                 }
             } else {
@@ -79,6 +84,7 @@ class Service extends BaseObject
 
         return $this->_childService[$childServiceName];
     }
+
     /**
      * 得到所有的子服务
      * 如果子服务含有enableService字段，并且设置成false，则该子服务会被判定为关闭
@@ -87,8 +93,8 @@ class Service extends BaseObject
     {
         $childService = $this->childService;
         $arr = [];
-        if(is_array($childService) && !empty($childService)){
-            foreach($childService as $childName => $service){
+        if (is_array($childService) && !empty($childService)) {
+            foreach ($childService as $childName => $service) {
                 if ($service['enableService'] !== false) {
                     $arr[] = $childName;
                 }
@@ -118,9 +124,7 @@ class Service extends BaseObject
     {
         if (Yii::$app->serviceLog->isServiceLogEnable()) {
             list($logTrace, $isCalledByThis) = $this->debugBackTrace();
-            /*
-             * if function is called by $this ,not log it to mongodb.
-             */
+            // if function is called by $this ,not log it to mongodb.
             if ($isCalledByThis) {
                 return;
             }
@@ -216,7 +220,8 @@ class Service extends BaseObject
      * 感谢：
      * @dionyang 提的建议：http://www.fecshop.com/topic/281
      */
-    public function getStorageService($object){
+    public function getStorageService($object)
+    {
         $className = get_class($object);
         if (!isset($object->storage) || !$object->storage) {
             throw new InvalidConfigException('you must config class var $storage in '.$className);
@@ -230,7 +235,7 @@ class Service extends BaseObject
         }
         $storageServiceClass =  $storagePath.ucfirst($object->storage);
     
-        if(!class_exists($storageServiceClass)){
+        if (!class_exists($storageServiceClass)) {
             throw new InvalidCallException('class ['.$storageServiceClass.'] is not exist , you must add the class before you use it');
             
             return false;

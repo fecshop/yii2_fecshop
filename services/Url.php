@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -18,14 +19,22 @@ use Yii;
  */
 class Url extends Service
 {
-    public    $randomCount = 8;
-    public    $showScriptName;
+    public $randomCount = 8;
+
+    public $showScriptName;
+
     protected $_secure;
+
     protected $_currentBaseUrl;
+
     protected $_origin_url;
+
     protected $_httpType;
+
     protected $_baseUrl;
+
     protected $_currentUrl;
+
     /**
      * About: 对于 \yii\helpers\CUrl 已经 封装了一些对url的操作，也就是基于yii2的url机制进行的
      * 但是对于前端并不适用，对于域名当首页http://xx.com这类url是没有问题，但是，
@@ -58,9 +67,7 @@ class Url extends Service
                 'origin_url'        => $originUrl,
             ])->one();
             if (isset($data_one['custom_url_key'])) {
-                /*
-                 * 只要进行了查询，就要更新一下rewrite url表的updated_at.
-                 */
+                // 只要进行了查询，就要更新一下rewrite url表的updated_at.
                 $data_one->updated_at = time();
                 $data_one->save();
 
@@ -102,8 +109,8 @@ class Url extends Service
     protected function actionRemoveRewriteUrlKey($url_key)
     {
         $model = $this->findOne([
-                'custom_url_key' => $url_key,
-            ]);
+            'custom_url_key' => $url_key,
+        ]);
         if ($model['custom_url_key']) {
             $model->delete();
         }
@@ -130,7 +137,6 @@ class Url extends Service
         
         return $this->_currentUrl;
     }
-    
 
     protected function actionGetCurrentUrlNoParam()
     {
@@ -252,8 +258,6 @@ class Url extends Service
     {
         return Yii::$app->getHomeUrl();
     }
-    
-    
 
     /**
      * get  base url.

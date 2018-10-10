@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -20,6 +21,7 @@ use Yii;
 class Message extends Service
 {
     protected $_correctName = 'correct_message';
+
     protected $_errorName   = 'error_message';
 
     /**

@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -19,7 +20,9 @@ use Yii;
 class Helper extends Service
 {
     protected $_app_name;
+
     protected $_param;
+
     /**
      * 得到当前的app入口的名字，譬如 appfront apphtml5  appserver等.
      */
@@ -60,21 +63,25 @@ class Helper extends Service
      * @property $domain | String vue类型的appserver传递的domain
      * 这个是appservice发送邮件，在邮件里面的url链接地址，在这里保存
      */
-    public function setAppServiceDomain($domain){
-        $this->_param['appServiceDomain'] = $domain; 
+    public function setAppServiceDomain($domain)
+    {
+        $this->_param['appServiceDomain'] = $domain;
         return true;
     }
     
-    public function getAppServiceDomain(){
+    public function getAppServiceDomain()
+    {
         return isset($this->_param['appServiceDomain']) ? $this->_param['appServiceDomain'] : false;
     }
+
     /**
      * 该端口是否是Api入口，譬如appserver  appapi等，都是属于api的入口
      * api入口都会将 Yii::$app->user->enableSession 关闭，因此通过该值判断， 是否是Api App
-     * 
+     *
      */
-    public function isApiApp(){
-        if(\Yii::$service->store->isApiStore() == true){
+    public function isApiApp()
+    {
+        if (\Yii::$service->store->isApiStore() == true) {
             return true;
         } else {
             return false;

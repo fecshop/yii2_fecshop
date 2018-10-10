@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -24,6 +25,7 @@ use yii\base\InvalidValueException;
 class Widget extends Service
 {
     public $defaultObMethod = 'getLastData';
+
     public $widgetConfig;
 
     /**
@@ -65,6 +67,7 @@ class Widget extends Service
 
         return $this->renderContent($configKey, $config, $parentThis);
     }
+
     /**
      * @property $configKey | string ,使用配置中的widget，该参数对应相应的数组key
      * @property $config,就是上面actionRender()方法中的参数，格式一样。
@@ -102,6 +105,7 @@ class Widget extends Service
 
         return Yii::$app->view->renderFile($viewFile, $params);
     }
+
     /**
      * @property $configKey | string ,使用配置中的widget，该参数对应相应的数组key
      * @property $config,就是上面actionRender()方法中的参数，格式一样。
@@ -158,7 +162,7 @@ class Widget extends Service
             }
         }
 
-        /* not find view file */
+        // not find view file
         if ($throwError) {
             $notExistFile = [];
             foreach ($absoluteDir as $dir) {

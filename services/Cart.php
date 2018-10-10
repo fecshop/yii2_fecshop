@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -13,6 +14,9 @@ use Yii;
 
 /**
  * Cart services. 购物车service， 执行购物车部分对应的方法。
+ *
+ * @property \fecshop\services\cart\Info $info cart info sub-service
+ *
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -69,9 +73,10 @@ class Cart extends Service
     /**
      * @property $package_number | int , 打包销售的个数，这个是产品编辑的时候，如果某个商品想打包作为销售单位，填写的值
      * @property $addQty |int , 加入购物车的产品个数。
-     * @return 得到在购物车个数变动数，根据产品的打包销售数进行改变
+     * @return int 得到在购物车个数变动数，根据产品的打包销售数进行改变
      */
-    public function getCartQty($package_number, $addQty){
+    public function getCartQty($package_number, $addQty)
+    {
         if ($package_number >= 2) {
             return (int)($addQty * $package_number);
         } else {
@@ -124,7 +129,6 @@ class Cart extends Service
         }
         Yii::$service->cart->quote->computeCartInfo();
         return true;
-        
     }
 
     /**
@@ -139,7 +143,6 @@ class Cart extends Service
         }
         Yii::$service->cart->quote->computeCartInfo();
         return true;
-        
     }
     
     /**
@@ -193,6 +196,7 @@ class Cart extends Service
     {
         return Yii::$service->cart->quote->updateGuestCart($address, $shipping_method, $payment_method);
     }
+
     /**
      * @property $address_id | Int
      * @property $shipping_method | String 货运方式

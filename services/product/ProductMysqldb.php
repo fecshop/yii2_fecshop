@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -8,6 +9,7 @@
  */
 
 namespace fecshop\services\product;
+
 use fecshop\services\Service;
 
 use Yii;
@@ -19,6 +21,4 @@ use Yii;
  */
 class ProductMysqldb extends Service implements ProductInterface
 {
-    
-    
 }

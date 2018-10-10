@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -20,15 +21,18 @@ use Yii;
  */
 class Newsletter extends Service
 {
-    
     public $numPerPage = 20;
+
     protected $_newsletterModelName = '\fecshop\models\mongodb\customer\Newsletter';
+
     protected $_newsletterModel;
     
-    public function init(){
+    public function init()
+    {
         parent::init();
-        list($this->_newsletterModelName,$this->_newsletterModel) = Yii::mapGet($this->_newsletterModelName);  
+        list($this->_newsletterModelName, $this->_newsletterModel) = Yii::mapGet($this->_newsletterModelName);
     }
+
     public function getPrimaryKey()
     {
         return '_id';

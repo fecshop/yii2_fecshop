@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -20,6 +21,7 @@ use Yii;
 class Facebook extends Service
 {
     public $facebook_app_id;
+
     public $facebook_app_secret;
 
     /**
@@ -27,11 +29,11 @@ class Facebook extends Service
      * @property $customDomain | boolean, 是否是自定义url
      * @return  得到跳转到facebook登录的url
      */
-    public function getLoginUrl($url,$customDomain = false)
+    public function getLoginUrl($url, $customDomain = false)
     {
-        if(!$customDomain){
+        if (!$customDomain) {
             $redirectUrl = Yii::$service->url->getUrl($url);
-        }else {
+        } else {
             $redirectUrl = $url;
         }
         $thirdLogin  = Yii::$service->store->thirdLogin;

@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -13,7 +14,7 @@ use fecshop\services\Service;
 use Yii;
 
 /**
- * Cart services.
+ * Cart Info services.
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -45,7 +46,7 @@ class Info extends Service
     {
         $qty = $item['qty'];
         $min_sales_qty = $product['min_sales_qty'];
-        if(($min_sales_qty > 0) && ($min_sales_qty > $qty) ){
+        if (($min_sales_qty > 0) && ($min_sales_qty > $qty)) {
             Yii::$service->helper->errors->add('The minimum number of shopping carts for this item is '.$min_sales_qty);
             
             return false;
@@ -92,6 +93,7 @@ class Info extends Service
 
         return true;
     }
+
     /**
      * @property $item | Array , 数据格式为：
      * [
@@ -116,16 +118,13 @@ class Info extends Service
      *          "image": "/2/01/20161024170457_10036.jpg"
      *      ],
      *  ]
-     * @return 得到custom option部分对应的sku
+     * @return string 得到 custom option 部分对应的sku
      * 当用户在产品加入购物车的时候选择了颜色尺码等属性，通过这个函数，可以得到这些属性对应的custom_option_sku的值。
      * 如果不存在，则返回为空。
      */
     public function getCustomOptionSku($item, $product)
     {
-        $qty = $item['qty'];
         $custom_option_arr = $item['custom_option_sku'];
-        $product_id = $item['product_id'];
-        $co_sku = '';
         if ($custom_option_arr) {
             $product_custom_option = $product['custom_option'];
             $co_sku = Yii::$service->product->info->getProductCOSku($custom_option_arr, $product_custom_option);
@@ -133,5 +132,6 @@ class Info extends Service
                 return $co_sku;
             }
         }
+        return '';
     }
 }

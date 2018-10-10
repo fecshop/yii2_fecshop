@@ -1,5 +1,6 @@
 <?php
 use fecshop\app\appfront\helper\Format;
+
 ?>
 <body style="background:#F6F6F6; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12px; margin:0; padding:0;">
 	<div style="background:#F6F6F6; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12px; margin:0; padding:0;">
@@ -55,7 +56,7 @@ use fecshop\app\appfront\helper\Format;
 												
 										<td>&nbsp;</td>
 										<td valign="top" style="padding:7px 9px 9px;font-size:12px;border-right-color:rgb(234,234,234);border-bottom-color:rgb(234,234,234);border-left-color:rgb(234,234,234);border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-right-style:solid;border-bottom-style:solid;border-left-style:solid">
-											<p><b><?= ucfirst(str_replace('_',' ',$order['payment_method'])); ?></b></p>
+											<p><b><?= ucfirst(str_replace('_', ' ', $order['payment_method'])); ?></b></p>
 
 											</td>
 									</tr>
@@ -101,35 +102,43 @@ use fecshop\app\appfront\helper\Format;
 												<th bgcolor="#eaeaea" align="right" style="padding:3px 9px;font-size:13px">SubTotal</th>
 											</tr>
 										</thead>
-										<?php if(is_array($order['products']) && !empty($order['products'])){  ?>
-										<?php foreach($order['products'] as $product){ ?>
+										<?php if (is_array($order['products']) && !empty($order['products'])) {
+    ?>
+										<?php foreach ($order['products'] as $product) {
+        ?>
 											
 											<tbody>
 												<tr>
 													<td valign="top" align="left" style="padding:3px 9px;font-size:11px;border-bottom-color:rgb(204,204,204);border-bottom-width:1px;border-bottom-style:dotted">
 														<a href="<?=  Yii::$service->url->getUrl($product['redirect_url']) ; ?>">
-															<img src="<?= Yii::$service->product->image->getResize($product['image'],[100,100],false) ?>" alt="<?= $product['name'] ?>" width="75" height="75">
+															<img src="<?= Yii::$service->product->image->getResize($product['image'], [100,100], false) ?>" alt="<?= $product['name'] ?>" width="75" height="75">
 														</a>
 													</td>
 													<td valign="top" align="left" style="padding:3px 9px;font-size:11px;border-bottom-color:rgb(204,204,204);border-bottom-width:1px;border-bottom-style:dotted">
 													<b style="font-size:11px">
 													<?= $product['name'] ?></b>
-													<?php  if(is_array($product['custom_option_info'])){  ?>
+													<?php  if (is_array($product['custom_option_info'])) {
+            ?>
 														<ul>
-															<?php foreach($product['custom_option_info'] as $label => $val){  ?>
+															<?php foreach ($product['custom_option_info'] as $label => $val) {
+                ?>
 																
 																<li><?= Yii::$service->page->translate->__($label.':') ?><?= Yii::$service->page->translate->__($val) ?> </li>
 																
-															<?php }  ?>
+															<?php
+            } ?>
 														</ul>
-													<?php }  ?>
+													<?php
+        } ?>
 													</td>
 													<td valign="top" align="left" style="padding:3px 9px;font-size:11px;border-bottom-color:rgb(204,204,204);border-bottom-width:1px;border-bottom-style:dotted"><?= $product['sku'] ?></td>
 													<td valign="top" align="center" style="padding:3px 9px;font-size:11px;border-bottom-color:rgb(204,204,204);border-bottom-width:1px;border-bottom-style:dotted"><?= $product['qty'] ?></td>
 													<td valign="top" align="right" style="padding:3px 9px;font-size:11px;border-bottom-color:rgb(204,204,204);border-bottom-width:1px;border-bottom-style:dotted"><span><?= $order['currency_symbol'] ?><?= Format::price($product['row_total']); ?></span></td>
 												</tr>
 											</tbody>
-										<?php } } ?>
+										<?php
+    }
+} ?>
 										<tbody>
 											<tr>
 												<td align="right" style="padding:3px 9px" colspan="4">Subtotal</td>

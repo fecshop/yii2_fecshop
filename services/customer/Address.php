@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -21,13 +22,17 @@ use Yii;
 class Address extends Service
 {
     protected $currentCountry;
+
     protected $currentState;
+
     protected $_addressModelName = '\fecshop\models\mysqldb\customer\Address';
+
     protected $_addressModel;
     
-    public function init(){
+    public function init()
+    {
         parent::init();
-        list($this->_addressModelName,$this->_addressModel) = \Yii::mapGet($this->_addressModelName);  
+        list($this->_addressModelName, $this->_addressModel) = \Yii::mapGet($this->_addressModelName);
     }
     
     protected function actionGetPrimaryKey()
@@ -50,6 +55,7 @@ class Address extends Service
             return new $this->_addressModelName();
         }
     }
+
     /**
      * @property $address_id | Int , address表的id
      * @property $customer_id | Int ， 用户id
@@ -164,7 +170,7 @@ class Address extends Service
 
     /**
      * @property $one|array , 保存的address数组
-     * @return int 返回保存的 address_id 的值。     
+     * @return int 返回保存的 address_id 的值。
      */
     protected function actionSave($one)
     {
@@ -205,12 +211,11 @@ class Address extends Service
         if ($one['is_default'] == 1) {
             $customer_id = $one['customer_id'];
             if ($customer_id && $primaryVal) {
-                
                 $this->_addressModel->updateAll(
                     ['is_default'=>2],  // $attributes
                     'customer_id = :customer_id and  '.$primaryKey.' != :primaryVal ',      // $condition
                     [
-                        'customer_id' => $customer_id, 
+                        'customer_id' => $customer_id,
                         'primaryVal'  => $primaryVal,
                     ]
                 );
@@ -296,6 +301,7 @@ class Address extends Service
         
         return true;
     }
+
     /**
      * @property $customer_id | Int ,
      * @property $address_id | Int，address id

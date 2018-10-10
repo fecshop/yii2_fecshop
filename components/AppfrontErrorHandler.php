@@ -6,19 +6,19 @@ use yii\web\ErrorHandler;
 use yii\base\Exception;
 
 /**
- * Òì³£²¶»ñÆ÷
+ * å¼‚å¸¸æ•èŽ·å™¨
  */
 class AppfrontErrorHandler extends ErrorHandler
 {
     /**
      * [renderException description]
-     * @property  $exception | Object Òì³£Êý¾Ý¶ÔÏó
+     * @property  $exception | Object å¼‚å¸¸æ•°æ®å¯¹è±¡
      * 
      */
     public function renderException($exception)
     {
         //echo 1;exit;
-        // »ñÈ¡Òì³£Êý¾Ý , 404Ò³Ãæ²»×öÊÕ¼¯
+        // èŽ·å–å¼‚å¸¸æ•°æ® , 404é¡µé¢ä¸åšæ”¶é›†
         $code = $exception->statusCode ?: 500; 
         if ($code != 404) {
             method_exists($exception,'getMessage')  ? $message  = $exception->getMessage()  : $message = '';
@@ -109,11 +109,11 @@ class AppfrontErrorHandler extends ErrorHandler
         
     }
     /**
-     * Õâ¿é´úÂëÄ¿Ç°Ã»ÓÐ±àÐ´£¬ÄúÒ²¿ÉÒÔÓÃ Sentry£¨´íÎóÈÕÖ¾ÊÕ¼¯¿ò¼Ü£© À´ÊÕ¼¯´íÎóÈÕÖ¾¡£
+     * è¿™å—ä»£ç ç›®å‰æ²¡æœ‰ç¼–å†™ï¼Œæ‚¨ä¹Ÿå¯ä»¥ç”¨ Sentryï¼ˆé”™è¯¯æ—¥å¿—æ”¶é›†æ¡†æž¶ï¼‰ æ¥æ”¶é›†é”™è¯¯æ—¥å¿—ã€‚
      * $option = [
      *   'fromMail' => 'xxx@xxx.com',
-     *   'subject'  => 'fecshop±¨´í Code:' . $exceptionInfo['code'],
-     *   'htmlBody' => 'Òì³£' . '(' . YII_ENV . ')' . $exceptionInfo['code'] . ':' . $exceptionInfo['message'] . '<br />ÎÄ¼þ£º' . $exceptionInfo['file'] . ':' . $exceptionInfo['line'] . '<br /> Ê±¼ä£º' . $exceptionInfo['time'] . '<br />ÇëÇóip£º' . $exceptionInfo['ip'],
+     *   'subject'  => 'fecshopæŠ¥é”™ Code:' . $exceptionInfo['code'],
+     *   'htmlBody' => 'å¼‚å¸¸' . '(' . YII_ENV . ')' . $exceptionInfo['code'] . ':' . $exceptionInfo['message'] . '<br />æ–‡ä»¶ï¼š' . $exceptionInfo['file'] . ':' . $exceptionInfo['line'] . '<br /> æ—¶é—´ï¼š' . $exceptionInfo['time'] . '<br />è¯·æ±‚ipï¼š' . $exceptionInfo['ip'],
      * ];
      *
      *

@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -19,15 +20,20 @@ use Yii;
 class Email extends Service
 {
     public $mailerConfig;
+
     public $defaultForm;
+
     public $mailerInfo;
+
     /**
      * 邮件模板部分动态数据提供类的返回数据的函数名字，使用默认值即可。
      */
     public $defaultObMethod = 'getLastData';
 
     protected $_mailer;      // Array
+
     protected $_mailer_from; //Array
+
     protected $_from;
 
     /**

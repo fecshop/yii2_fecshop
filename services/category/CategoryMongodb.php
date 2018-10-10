@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -21,11 +22,13 @@ class CategoryMongodb extends Service implements CategoryInterface
     public $numPerPage = 20;
     
     protected $_categoryModelName = '\fecshop\models\mongodb\Category';
+
     protected $_categoryModel;
     
-    public function init(){
+    public function init()
+    {
         parent::init();
-        list($this->_categoryModelName,$this->_categoryModel) = Yii::mapGet($this->_categoryModelName);  
+        list($this->_categoryModelName, $this->_categoryModel) = Yii::mapGet($this->_categoryModelName);
     }
     
     /**
@@ -34,7 +37,6 @@ class CategoryMongodb extends Service implements CategoryInterface
     public function getByPrimaryKey($primaryKey)
     {
         if ($primaryKey) {
-             
             return $this->_categoryModel->findOne($primaryKey);
         } else {
             return new $this->_categoryModelName;
@@ -47,13 +49,12 @@ class CategoryMongodb extends Service implements CategoryInterface
     public function getByUrlKey($urlKey)
     {
         if ($urlKey) {
-            $urlKey = "/".trim($urlKey,"/");
+            $urlKey = "/".trim($urlKey, "/");
             return $this->_categoryModel->findOne(['url_key' => $urlKey]);
         } else {
             return new $this->_categoryModelName;
         }
     }
-    
     
     /**
      * 返回主键。
@@ -62,21 +63,24 @@ class CategoryMongodb extends Service implements CategoryInterface
     {
         return '_id';
     }
+
     /**
      * 得到分类激活状态的值
      */
-    public function getCategoryEnableStatus(){
+    public function getCategoryEnableStatus()
+    {
         $model = $this->_categoryModel;
         return $model::STATUS_ENABLE;
     }
+
     /**
      * 得到分类在menu中显示的状态值
      */
-    public function getCategoryMenuShowStatus(){
+    public function getCategoryMenuShowStatus()
+    {
         $model = $this->_categoryModel;
         return $model::MENU_SHOW;
     }
-    
 
     /*
      * example filter:
@@ -153,11 +157,11 @@ class CategoryMongodb extends Service implements CategoryInterface
         $one['status']    = (int)$one['status'];
         $one['menu_show'] = (int)$one['menu_show'];
         $allowMenuShowArr = [ $model::MENU_SHOW, $model::MENU_NOT_SHOW];
-        if (!in_array($one['menu_show'],$allowMenuShowArr)) {
+        if (!in_array($one['menu_show'], $allowMenuShowArr)) {
             $one['menu_show'] = $model::MENU_SHOW;
         }
         $allowStatusArr = [ $model::STATUS_ENABLE, $model::STATUS_DISABLE];
-        if (!in_array($one['status'],$allowStatusArr)) {
+        if (!in_array($one['status'], $allowStatusArr)) {
             $one['status'] = $model::STATUS_ENABLE;
         }
         $saveStatus = Yii::$service->helper->ar->save($model, $one);
@@ -238,7 +242,7 @@ class CategoryMongodb extends Service implements CategoryInterface
      *  数组中只有  id  name(default language), child(子分类) 等数据。
      *  目前此函数仅仅用于后台对分类的编辑使用。 appadmin.
      */
-    public function getTreeArr($rootCategoryId = '', $lang = '',$appserver=false,$level = 1)
+    public function getTreeArr($rootCategoryId = '', $lang = '', $appserver=false, $level = 1)
     {
         $arr = [];
         if (!$lang) {
@@ -260,13 +264,13 @@ class CategoryMongodb extends Service implements CategoryInterface
                     'level'   => $level,
                     'name'    => Yii::$service->fecshoplang->getLangAttrVal($cate['name'], 'name', $lang),
                 ];
-                if($appserver){
+                if ($appserver) {
                     $arr[$idVal]['url'] = '/catalog/category/'.$idVal;
                 }
                 //echo $arr[$idVal]['name'];
 
                 if ($this->hasChildCategory($idVal)) {
-                    $arr[$idVal]['child'] = $this->getTreeArr($idVal, $lang,$appserver,$level+1);
+                    $arr[$idVal]['child'] = $this->getTreeArr($idVal, $lang, $appserver, $level+1);
                 }
             }
         }
@@ -456,10 +460,10 @@ class CategoryMongodb extends Service implements CategoryInterface
     {
         //echo $category_id;
         $data = $this->_categoryModel->find()->asArray()->where([
-                        'parent_id' => $category_id,
-                        'status' => $this->getCategoryEnableStatus(),
-                        'menu_show'  => $this->getCategoryMenuShowStatus(),
-                    ])->all();
+            'parent_id' => $category_id,
+            'status' => $this->getCategoryEnableStatus(),
+            'menu_show'  => $this->getCategoryMenuShowStatus(),
+        ])->all();
         $arr = [];
         if (is_array($data) && !empty($data)) {
             foreach ($data as $one) {

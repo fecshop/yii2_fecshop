@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -12,6 +13,7 @@ namespace fecshop\services;
 use Yii;
 use Ramsey\Uuid\Uuid;
 use fecshop\services\session\SessionPhp;
+
 //use fecshop\services\session\SessionMongodb;
 //use fecshop\services\session\SessionMysqldb;
 //use fecshop\services\session\SessionRedis;
@@ -25,6 +27,7 @@ class Session extends Service
 {
     // 设置session超时时间
     public $timeout;
+
     // 当过期时间+session创建时间 - 当前事件 < $updateTimeLimit ,则更新session创建时间
     public $updateTimeLimit = 600;
     
@@ -33,29 +36,32 @@ class Session extends Service
      * 可以在配置中更改，更改后，就会通过容器注入的方式修改相应的配置值
      */
     public $storage     = '';   // 当前的storage，如果在config中配置，那么在初始化的时候会被注入修改
+
     /**
      * 设置storage的path路径
      * 如果不设置，则系统使用默认路径
      * 如果设置了路径，则使用自定义的路径
      */
-    public $storagePath = ''; 
+    public $storagePath = '';
     
     // 生成的uuid唯一标识码
     protected $_uuid;
     
     private $_session;
-    public  $fecshop_uuid = 'fecshop-uuid';
+
+    public $fecshop_uuid = 'fecshop-uuid';
+
     /**
-        1. \Yii::$app->user->enableSession = false;
-            查看是否是false，如果是
-    
+     * 1. \Yii::$app->user->enableSession = false;
+     * 查看是否是false，如果是
+     *
      */
     public function init()
     {
         parent::init();
-        if(\Yii::$app->user->enableSession == true){
+        if (\Yii::$app->user->enableSession == true) {
             $this->_session = new SessionPhp; // phpsession
-        }else {
+        } else {
             $currentService = $this->getStorageService($this);
             $this->_session = new $currentService();
             /*
@@ -80,56 +86,57 @@ class Session extends Service
      * 读取不到，自己生成uuid
      * 最后将uuid写入response headers中
      */
-    public function getUUID(){
-        if(!$this->_uuid){
+    public function getUUID()
+    {
+        if (!$this->_uuid) {
             $header = Yii::$app->request->getHeaders();
             $uuidName = $this->fecshop_uuid;
             // 1.从requestheader里面获取uuid，
-            if(isset($header[$uuidName]) && !empty($header[$uuidName])){
+            if (isset($header[$uuidName]) && !empty($header[$uuidName])) {
                 $this->_uuid = $header[$uuidName];
-            }else{ // 2.如果获取不到uuid，就生成uuid
+            } else { // 2.如果获取不到uuid，就生成uuid
                 $uuid1 = Uuid::uuid1();
                 $this->_uuid = $uuid1->toString();
             }
             // 3.把 $this->_uuid 写入到 response 的header里面
-            Yii::$app->response->getHeaders()->set($uuidName,$this->_uuid);
-            
+            Yii::$app->response->getHeaders()->set($uuidName, $this->_uuid);
         }
         return $this->_uuid;
     }
     
-    public function set($key,$val,$timeout=''){
-        if(!$timeout && (Yii::$app->user->enableSession == false)){
+    public function set($key, $val, $timeout='')
+    {
+        if (!$timeout && (Yii::$app->user->enableSession == false)) {
             $timeout = $this->timeout;
         }
-        return $this->_session->set($key,$val,$timeout);
+        return $this->_session->set($key, $val, $timeout);
     }
     
-    public function get($key,$reflush=false){
-        return $this->_session->get($key,$reflush);
-        
+    public function get($key, $reflush=false)
+    {
+        return $this->_session->get($key, $reflush);
     }
     
-    public function remove($key){
+    public function remove($key)
+    {
         return $this->_session->remove($key);
     }
     
-    
-    public function setFlash($key,$val,$timeout=''){
-        if(!$timeout && (Yii::$app->user->enableSession == false) ){
+    public function setFlash($key, $val, $timeout='')
+    {
+        if (!$timeout && (Yii::$app->user->enableSession == false)) {
             $timeout = $this->timeout;
         }
-        return $this->_session->setFlash($key,$val,$timeout);
+        return $this->_session->setFlash($key, $val, $timeout);
     }
     
-    public function getFlash($key){
+    public function getFlash($key)
+    {
         return $this->_session->getFlash($key);
     }
     
-    public function destroy(){
+    public function destroy()
+    {
         return $this->_session->destroy();
-        
     }
-    
-    
 }

@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -18,5 +19,4 @@ use fecshop\services\Service;
  */
 class BuyAlsoBuy extends Service
 {
-    
 }

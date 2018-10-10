@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -20,21 +21,23 @@ use Yii;
 class Product extends Service
 {
     public $pageNum = 1;
+
     public $numPerPage = 50;
+
     public $allowedNumPerPage;
 
     /**
      * @property $filter | Array   example:
      * [
-     'category_id' 	=> 1,
-     'pageNum'		=> 2,
-     'numPerPage'	=> 50,
-     'orderBy'		=> 'name',
-     'where'			=> [
-     ['>','price',11],
-     ['<','price',22],
-     ],
-     ]
+     *     'category_id'    => 1,
+     *     'pageNum'        => 2,
+     *     'numPerPage'     => 50,
+     *     'orderBy'        => 'name',
+     *     'where'          => [
+     *         ['>','price',11],
+     *         ['<','price',22],
+     *     ],
+     * ]
      * 通过搜索条件得到当类下的产品。
      */
     protected function actionColl($filter)

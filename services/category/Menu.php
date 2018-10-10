@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * FecShop file.
  *
  * @link http://www.fecshop.com/
@@ -20,15 +21,19 @@ use Yii;
 class Menu extends Service
 {
     public $rootCategoryId = '0';
+
     protected $_categoryModelName = '\fecshop\models\mongodb\Category';
+
     protected $_categoryModel;
     
-    public function init(){
+    public function init()
+    {
         parent::init();
-        list($this->_categoryModelName,$this->_categoryModel) = Yii::mapGet($this->_categoryModelName);  
+        list($this->_categoryModelName, $this->_categoryModel) = Yii::mapGet($this->_categoryModelName);
     }
+
     /**
-     * @property $parentId | int 
+     * @property $parentId | int
      * 得到分类的目录信息
      */
     protected function actionGetCategoryMenuArr($parentId = '')
@@ -73,8 +78,8 @@ class Menu extends Service
     protected function hasChild($categoryId)
     {
         $one = $this->_categoryModel->find()->asArray()->where([
-                'parent_id' => $categoryId,
-            ])->one();
+            'parent_id' => $categoryId,
+        ])->one();
         if ($one['_id']) {
             return true;
         }
