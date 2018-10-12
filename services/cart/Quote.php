@@ -15,7 +15,11 @@ use fecshop\services\Service;
 use Yii;
 
 /**
- * Cart services. 对购物车操作的具体实现部分。
+ * Cart service.
+ *
+ * @method createCart() create cart
+ * @see \fecshop\services\cart\Quote::actionCreateCart()
+ *
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */

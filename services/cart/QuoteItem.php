@@ -10,7 +10,6 @@
 
 namespace fecshop\services\cart;
 
-//use fecshop\models\mysqldb\cart\Item as MyCartItem;
 use fecshop\services\Service;
 use Yii;
 
@@ -61,7 +60,7 @@ class QuoteItem extends Service
         }
         // 查看是否存在此产品，如果存在，则相加个数
         if (!isset($item['product_id']) || empty($item['product_id'])) {
-            Yii::$service->helper->errors->add('add to cart error,product id is empty');
+            Yii::$service->helper->errors->add('add to cart error, product id is empty');
 
             return false;
         }
