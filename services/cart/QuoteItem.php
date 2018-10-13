@@ -101,6 +101,8 @@ class QuoteItem extends Service
         
         $item['afterAddQty'] = $item_one->qty;
         $this->sendTraceAddToCartInfoByApi($item);
+
+        return true;
     }
 
     /**
