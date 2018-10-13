@@ -32,6 +32,9 @@ class QuoteItem extends Service
     
     protected $_itemModelName = '\fecshop\models\mysqldb\cart\Item';
 
+    /**
+     * @var \fecshop\models\mysqldb\cart\Item
+     */
     protected $_itemModel;
     
     public function init()
@@ -41,15 +44,17 @@ class QuoteItem extends Service
     }
     
     /**
-     * @property $item | Array, example:
+     * 将某个产品加入到购物车中。
+     * 在添加到 cart_item 表后，更新购物车中产品的总数。
+     * @param array $item
+     * @return mixed
+     * example:
      * $item = [
      *		'product_id' 		=> 22222,
      *		'custom_option_sku' => red-xxl,
      *		'qty' 				=> 22,
      *      'sku' 				=> 'xxxx',
      * ];
-     * 将某个产品加入到购物车中。在添加到cart_item表后，更新
-     * 购物车中产品的总数。
      */
     public function addItem($item)
     {
@@ -71,25 +76,26 @@ class QuoteItem extends Service
         if (isset($item['custom_option_sku']) && !empty($item['custom_option_sku'])) {
             $where['custom_option_sku'] = $item['custom_option_sku'];
         }
+        /** @var \fecshop\models\mysqldb\cart\Item $item_one */
         $item_one = $this->_itemModel->find()->where($where)->one();
         if ($item_one['cart_id']) {
-            $item_one->active       = $this->itemDefaultActiveStatus;
+            $item_one->active = $this->itemDefaultActiveStatus;
             $item_one->qty = $item['qty'] + $item_one['qty'];
             $item_one->save();
             // 重新计算购物车的数量
             Yii::$service->cart->quote->computeCartInfo();
         } else {
             $item_one = new $this->_itemModelName;
-            $item_one->store        = Yii::$service->store->currentStore;
-            $item_one->cart_id      = $cart_id;
-            $item_one->created_at   = time();
-            $item_one->updated_at   = time();
-            $item_one->product_id   = $item['product_id'];
-            $item_one->qty          = $item['qty'];
-            $item_one->active       = $this->itemDefaultActiveStatus;
+            $item_one->store = Yii::$service->store->currentStore;
+            $item_one->cart_id = $cart_id;
+            $item_one->created_at = time();
+            $item_one->updated_at = time();
+            $item_one->product_id = $item['product_id'];
+            $item_one->qty = $item['qty'];
+            $item_one->active = $this->itemDefaultActiveStatus;
             $item_one->custom_option_sku = ($item['custom_option_sku'] ? $item['custom_option_sku'] : '');
             $item_one->save();
-            // 重新计算购物车的数量,并写入sales_flat_cart表存储
+            // 重新计算购物车的数量,并写入 sales_flat_cart 表存储
             Yii::$service->cart->quote->computeCartInfo();
         }
         
