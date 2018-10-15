@@ -10,12 +10,17 @@
 
 namespace fecshop\services\cart;
 
-//use fecshop\models\mysqldb\Cart as MyCart;
 use fecshop\services\Service;
 use Yii;
 
 /**
- * Cart services. 对购物车操作的具体实现部分。
+ * Cart service.
+ *
+ * @method createCart() create cart
+ * @see \fecshop\services\cart\Quote::actionCreateCart()
+ * @method setCartId($cart_id) set cart id
+ * @see \fecshop\services\cart\Quote::actionSetCartId()
+ *
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -45,10 +50,9 @@ class Quote extends Service
     }
 
     /**
-     * @return int get cart id
-     * Cart的session的超时时间由session组件决定。
-     * 在执行$this->CreateCart $this->mergeCartAfterUserLogin,都会执行 $this->setCartId,执行 Yii::$service->session->set(self::SESSION_CART_ID,'xxxx'); 给其赋值。
-     * 当新用户没有任何购物车操作，则返回为空值。
+     * @return int|null get cart id, or null if user does not do any cart operation
+     * @see \fecshop\services\cart\Quote::createCart()
+     * @see \fecshop\services\cart\Quote::mergeCartAfterUserLogin()
      */
     public function getCartId()
     {
@@ -216,7 +220,7 @@ class Quote extends Service
     }
 
     /**
-     * @property $cart_id | int
+     * @param int $cart_id cart id
      * 设置cart_id类变量以及session中记录当前cartId的值
      * Cart的session的超时时间由session组件决定。
      */

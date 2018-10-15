@@ -19,9 +19,12 @@ use Yii;
  *
  * @property \fecshop\services\Image | \fecshop\services\Product\Image $image image service or product image sub-service
  * @property \fecshop\services\product\Info $info product info sub-service
+ * @property \fecshop\services\product\Stock $stock stock sub-service of product service
  *
  * @method getByPrimaryKey($primaryKey) get product model by primary key
- *         @see \fecshop\services\Product::actionGetByPrimaryKey()
+ * @see \fecshop\services\Product::actionGetByPrimaryKey()
+ * @method getEnableStatus() get enable status
+ * @see \fecshop\services\Product::actionGetEnableStatus()
  *
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
@@ -64,7 +67,7 @@ class Product extends Service
         $currentService = $this->getStorageService($this);
         $this->_product = new $currentService();
     }
-    
+
     protected function actionGetEnableStatus()
     {
         return $this->_product->getEnableStatus();
