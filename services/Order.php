@@ -10,7 +10,6 @@
 
 namespace fecshop\services;
 
-//use fecshop\models\mysqldb\Order as MyOrder;
 use Yii;
 
 /**
@@ -846,9 +845,9 @@ class Order extends Service
     }
 
     /**
-     * @property $order_id | Int
-     * @return $increment_id | Int
-     *                       通过 order_id 生成订单号。
+     * @param int $order_id the order id
+     * @return int $increment_id
+     * 通过 order_id 生成订单号。
      */
     protected function generateIncrementIdByOrderId($order_id)
     {
@@ -857,16 +856,19 @@ class Order extends Service
         return $increment_id;
     }
 
-    /**废弃
+    /**
      * get order list by customer account id.
+     * @param int $customer_id
+     * @deprecated
      */
-    protected function actionGetCustomerOrderList($customer_id = '')
+    protected function actionGetCustomerOrderList($customer_id)
     {
     }
 
-    /**废弃
-     * @property $order_id 订单id
+    /**
+     * @param int $order_id the order id
      * 订单支付成功后，更改订单的状态为支付成功状态。
+     * @deprecated
      */
     protected function actionOrderPaySuccess($order_id)
     {
@@ -977,7 +979,7 @@ class Order extends Service
                     //$one->save();
                     $innerTransaction->commit();
                     $logMessage[] = 'cancel order[end] increment_id: '.$one['increment_id'];
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $innerTransaction->rollBack();
                 }
             }

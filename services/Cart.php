@@ -20,7 +20,6 @@ use Yii;
  * @property \fecshop\services\cart\Quote $quote quote sub-service of cart
  * @property \fecshop\services\cart\QuoteItem $quoteItem quoteItem sub-service of cart
  *
- * @method generateOrderByCart()
  * @method getCartInfo($activeProduct, $shippingMethod = '', $country = '', $region = '*')
  * @see \fecshop\services\Cart::actionGetCartInfo()
  *
