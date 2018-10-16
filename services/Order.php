@@ -530,7 +530,6 @@ class Order extends Service
         $currency_rate  = $currency_info['rate'];
         $country        = $address['country'];
         $state          = $address['state'];
-        //echo "$shipping_method,$country,$state";exit;
         $cartInfo       = Yii::$service->cart->getCartInfo(true, $shipping_method, $country, $state);
         // 检查cartInfo中是否存在产品
         if (!is_array($cartInfo) && empty($cartInfo)) {
