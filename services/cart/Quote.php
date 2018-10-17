@@ -376,6 +376,7 @@ class Quote extends Service
                 $products = $cart_product_info['products'];
                 $product_total = $cart_product_info['product_total'];
                 $base_product_total = $cart_product_info['base_product_total'];
+                $product_qty_total = $cart_product_info['product_qty_total'];
                 //if (!$shipping_method) {
                 //    $shipping_method = Yii::$service->shipping->getDefaultShippingMethod($country,$region,$product_weight);
                 //}
@@ -398,7 +399,7 @@ class Quote extends Service
                     $this->cartInfo[$cartInfoKey] = [
                         'cart_id'           => $cart_id,
                         'store'             => $cart['store'],          // store nme
-                        'items_count'       => $cart['items_count'],    // 购物车中的产品总数
+                        'items_count'       => $product_qty_total,      // 因为购物车使用了active，因此生成订单的产品个数 = 购物车中active的产品的总个数（也就是在购物车页面用户勾选的产品的总数），而不是字段 $cart['items_count']
                         'coupon_code'       => $coupon_code,            // coupon卷码
                         'shipping_method'   => $shipping_method,
                         'payment_method'    => $cart['payment_method'],
