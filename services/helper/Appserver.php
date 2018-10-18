@@ -11,7 +11,6 @@
 namespace fecshop\services\helper;
 
 use fecshop\services\Service;
-use Yii;
 
 /**
  * 该类主要是给appserver端的api，返回的数据做格式输出，规范输出的各种状态。
@@ -25,7 +24,7 @@ class Appserver extends Service
      */
     public $status_success                                = 200;
 
-    public $status_unknown                                 = 1000000;   // 程序内部错误：未知错误
+    public $status_unknown                                = 1000000;   // 程序内部错误：未知错误
 
     public $status_mysql_disconnect                       = 1000001;   // 程序内部错误：mysql连接错误
 
@@ -172,9 +171,10 @@ class Appserver extends Service
     public $cms_article_not_exist                          = 1600001;           // Article: 文章不存在
     
     /**
-     * @property $code | String 状态码
-     * @property $data | 混合状态，可以是数字，数组等格式，用于做返回给前端的数组。
-     * @property $message | String ，选填，如果不填写，则使用  函数 返回的内容作为message
+     * @param int $code 状态码
+     * @param mixed $data 可以是数字，数组等格式，用于做返回给前端的数组。
+     * @param string $message 选填，如果不填写，则使用函数返回的内容作为 message
+     * @return array
      */
     public function getResponseData($code, $data, $message = '')
     {
@@ -187,7 +187,8 @@ class Appserver extends Service
                 'message' => $message,
                 'data'    => $data,
             ];
-        } else { // 如果不存在，则说明系统内部调用不存在的code，报错。
+        } else {
+            // 如果不存在，则说明系统内部调用不存在的 code，报错。
             $code = $this->status_invalid_code;
             $message = $this->getMessageByCode($code);
             return [
@@ -199,8 +200,9 @@ class Appserver extends Service
     }
     
     /**
-     * @property $code | String ，状态码
-     * 得到 code 对应 message的数组
+     * 得到 code 对应 message
+     * @param int $code 状态码
+     * @return string|array
      */
     public function getMessageByCode($code)
     {
@@ -368,7 +370,7 @@ class Appserver extends Service
                 'message' => 'product add to cart fail',
             ],
             $this->cart_product_add_param_invaild => [
-                'message' => 'product add to cart request param is invaild',
+                'message' => 'product add to cart request param is invalid',
             ],
             $this->cart_product_update_qty_fail => [
                 'message' => 'update cart product qty fail',
