@@ -25,7 +25,7 @@ class Appserver extends Service
      */
     public $status_success                                = 200;
 
-    public $status_unkown                                 = 1000000;   // 程序内部错误：未知错误
+    public $status_unknown                                 = 1000000;   // 程序内部错误：未知错误
 
     public $status_mysql_disconnect                       = 1000001;   // 程序内部错误：mysql连接错误
 
@@ -220,7 +220,7 @@ class Appserver extends Service
             $this->status_success => [
                 'message' => 'process success',
             ],
-            $this->status_unkown => [
+            $this->status_unknown => [
                 'message' => 'unknow errors',
             ],
             $this->status_mysql_disconnect => [

@@ -10,12 +10,17 @@
 
 namespace fecshop\services;
 
-//use fecshop\services\category\CategoryMongodb;
-//use fecshop\services\category\CategoryMysqldb;
+use fecshop\services\category\CategoryInterface;
 use Yii;
 
 /**
- * Category Service 分类service
+ * Category service.
+ *
+ * @method coll($filters = [])
+ * @see \fecshop\services\Category::actionColl()
+ * @method getCategoryEnableStatus()
+ * @see \fecshop\services\Category::actionGetCategoryEnableStatus()
+ *
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -34,6 +39,9 @@ class Category extends Service
      */
     public $storagePath = '';
 
+    /**
+     * @var CategoryInterface
+     */
     protected $_category;
 
     /**
@@ -104,8 +112,8 @@ class Category extends Service
     }
 
     /**
-     * @property $filter|array
-     * get artile collection by $filter
+     * Get category collection by $filter.
+     * @param array $filter
      * example filter:
      * [
      *      'numPerPage'    => 20,
@@ -118,9 +126,8 @@ class Category extends Service
      *          ],
      *      'asArray' => true,
      * ]
-     * 通过上面的filter数组，得到过滤后的分类数据列表集合。
      */
-    protected function actionColl($filter = '')
+    protected function actionColl($filter = [])
     {
         return $this->_category->coll($filter);
     }

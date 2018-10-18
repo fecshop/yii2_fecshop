@@ -11,7 +11,6 @@
 namespace fecshop\services\category;
 
 /**
- * Cms Article services.
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
