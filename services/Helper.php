@@ -15,7 +15,7 @@ use Yii;
 /**
  * Helper service.
  *
- * @property \fecshop\services\helper\Appserver $appserver  appserver sub-service of helper
+ * @property \fecshop\services\helper\Appserver $appserver  appserver sub-service of helper service
  * @property \fecshop\services\helper\AR $ar ar sub-service of helper service
  * @property \fecshop\services\helper\Errors $errors errors sub-service of helper service
  *
