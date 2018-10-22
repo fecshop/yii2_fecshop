@@ -16,8 +16,12 @@ namespace fecshop\services;
 use Yii;
 
 /**
- * Customer service. 前端用户部分
- * @property Image|\fecshop\services\Product\Image $image ,This property is read-only.
+ * Customer service.
+ *
+ * @property Image|\fecshop\services\Product\Image $image
+ *
+ * @method loginByAccessToken($type = null) see [[\fecshop\services\Customer::actionLoginByAccessToken()]]
+ *
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -611,39 +615,43 @@ class Customer extends Service
         }
     }
 
-    /** AppServer 部分使用的函数
-     * @property $type | null or  Object
+    /**
+     * Logs in a user by the given access token.
      * 从request headers中获取access-token，然后执行登录
      * 如果登录成功，然后验证时间是否过期
      * 如果不过期，则返回identity
-     * ** 该方法为appserver用户通过access-token验证需要执行的函数。
+     * @param $type
+     * @return mixed
      */
     protected function actionLoginByAccessToken($type = null)
     {
         $header = Yii::$app->request->getHeaders();
         if (isset($header['access-token']) && $header['access-token']) {
             $accessToken = $header['access-token'];
+        } else {
+            return null;
         }
-        if ($accessToken) {
-            $identity = Yii::$app->user->loginByAccessToken($accessToken, $type);
-            if ($identity !== null) {
-                $access_token_created_at = $identity->access_token_created_at;
-                $timeout = Yii::$service->session->timeout;
-                // 如果时间没有过期，则返回identity
-                if ($access_token_created_at + $timeout > time()) {
-                    //如果时间没有过期，但是快要过期了，在过$updateTimeLimit段时间就要过期，那么更新access_token_created_at。
-                    $updateTimeLimit = Yii::$service->session->updateTimeLimit;
-                    if ($access_token_created_at + $timeout <= (time() + $updateTimeLimit)) {
-                        $identity->access_token_created_at = time();
-                        $identity->save();
-                    }
-                    
-                    return $identity;
-                } else {
-                    $this->logoutByAccessToken();
-                    return false;
+
+        /** @var \fecshop\models\mysqldb\Customer $identity */
+        $identity = Yii::$app->user->loginByAccessToken($accessToken, $type);
+        if ($identity !== null) {
+            $access_token_created_at = $identity->access_token_created_at;
+            $timeout = Yii::$service->session->timeout;
+            // 如果时间没有过期，则返回identity
+            if ($access_token_created_at + $timeout > time()) {
+                //如果时间没有过期，但是快要过期了，在过$updateTimeLimit段时间就要过期，那么更新access_token_created_at。
+                $updateTimeLimit = Yii::$service->session->updateTimeLimit;
+                if ($access_token_created_at + $timeout <= (time() + $updateTimeLimit)) {
+                    $identity->access_token_created_at = time();
+                    $identity->save();
                 }
+                return $identity;
+            } else {
+                $this->logoutByAccessToken();
+                return null;
             }
+        } else {
+            return null;
         }
     }
 
