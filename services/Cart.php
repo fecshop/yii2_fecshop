@@ -81,8 +81,8 @@ class Cart extends Service
     }
     
     /**
-     * @property $package_number | int , 打包销售的个数，这个是产品编辑的时候，如果某个商品想打包作为销售单位，填写的值
-     * @property $addQty |int , 加入购物车的产品个数。
+     * @param int $package_number 打包销售的个数，这个是产品编辑的时候，如果某个商品想打包作为销售单位，填写的值
+     * @param int $addQty 加入购物车的产品个数。
      * @return int 得到在购物车个数变动数，根据产品的打包销售数进行改变
      */
     public function getCartQty($package_number, $addQty)
