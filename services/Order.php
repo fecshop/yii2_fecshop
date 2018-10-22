@@ -467,6 +467,7 @@ class Order extends Service
     protected function actionGeneratePPExpressOrder($token)
     {
         $myOrder = new $this->_orderModelName();
+        $myOrder->setGenerateOrderByPaypalToken(true);
         $myOrder->payment_token = $token;
         $myOrder->save();
         $order_id = $myOrder['order_id'];
