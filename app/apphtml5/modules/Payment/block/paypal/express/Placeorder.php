@@ -68,7 +68,7 @@ class Placeorder
                         } else {
                             $innerTransaction->rollBack();
                         }
-                    } catch (Exception $e) {
+                    } catch (\Exception $e) {
                         $innerTransaction->rollBack();
                     }
                     //echo 22;
@@ -114,7 +114,7 @@ class Placeorder
                                     $innerTransaction->rollBack();
                                     return false;
                                 }
-                            } catch (Exception $e) {
+                            } catch (\Exception $e) {
                                 $innerTransaction->rollBack();
                                 return false;
                             }
@@ -129,7 +129,7 @@ class Placeorder
                                 }else{
                                     $innerTransaction->rollBack();
                                 }
-                            } catch (Exception $e) {
+                            } catch (\Exception $e) {
                                 $innerTransaction->rollBack();
                             }
                         }

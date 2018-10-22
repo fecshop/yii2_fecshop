@@ -200,7 +200,7 @@ class ArticleMysqldb extends Service implements ArticleInterface
                     }
                 }
                 $innerTransaction->commit();
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 Yii::$service->helper->errors->add('Article Remove Errors: transaction rollback');
                 $innerTransaction->rollBack();
 
@@ -216,7 +216,7 @@ class ArticleMysqldb extends Service implements ArticleInterface
                     Yii::$service->url->removeRewriteUrlKey($url_key);
                     $model->delete();
                     $innerTransaction->commit();
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     Yii::$service->helper->errors->add('Article Remove Errors: transaction rollback');
                     $innerTransaction->rollBack();
                 }

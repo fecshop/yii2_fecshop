@@ -178,7 +178,7 @@ class CartController extends AppserverController
 
                     return $responseData;
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $innerTransaction->rollBack();
             }
         } else {
@@ -218,7 +218,7 @@ class CartController extends AppserverController
                 } else {
                     $innerTransaction->rollBack();
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $innerTransaction->rollBack();
             }
             $error_arr = Yii::$service->helper->errors->get(true);
@@ -308,7 +308,7 @@ class CartController extends AppserverController
 
                     return $responseData;
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $innerTransaction->rollBack();
                 $code = Yii::$service->helper->appserver->cart_coupon_invalid;
                 $data = [
@@ -355,7 +355,7 @@ class CartController extends AppserverController
             } else {
                 $innerTransaction->rollBack();
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $innerTransaction->rollBack();
         }
         $code = Yii::$service->helper->appserver->cart_product_update_qty_fail;
@@ -384,7 +384,7 @@ class CartController extends AppserverController
                 $data = [];
                 $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $innerTransaction->rollBack();
         }
 
@@ -409,7 +409,7 @@ class CartController extends AppserverController
                 $data = [];
                 $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $innerTransaction->rollBack();
         }
 

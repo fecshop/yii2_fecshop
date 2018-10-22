@@ -65,7 +65,7 @@ class StandardController extends AppfrontController
             }else{
                 $innerTransaction->rollBack();
             }
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 			$innerTransaction->rollBack();
 		}
         return Yii::$service->url->redirectByUrlKey('checkout/onepage');

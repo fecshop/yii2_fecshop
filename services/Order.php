@@ -979,7 +979,7 @@ class Order extends Service
                     //$one->save();
                     $innerTransaction->commit();
                     $logMessage[] = 'cancel order[end] increment_id: '.$one['increment_id'];
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $innerTransaction->rollBack();
                 }
             }
