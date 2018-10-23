@@ -12,6 +12,7 @@ namespace fecshop\services\helper;
 
 use fecshop\services\Service;
 use Yii;
+use yii\db\ActiveQuery;
 
 /**
  * AR services.（Active Record）
@@ -24,9 +25,9 @@ class AR extends Service
 
     public $pageNum = 1;
 
-    /*
+    /**
      * example filter:
-    * [
+     * [
      * 		'numPerPage' 	=> 20,
      * 		'pageNum'		=> 1,
      * 		'orderBy'	=> ['_id' => SORT_DESC, 'sku' => SORT_ASC ],
@@ -38,6 +39,7 @@ class AR extends Service
      * 	'asArray' => true,
      * ]
      * 查询方面使用的函数，根据传递的参数，进行query
+     * @return ActiveQuery
      */
     public function getCollByFilter($query, $filter)
     {

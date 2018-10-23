@@ -31,7 +31,7 @@ class Yii extends \yii\BaseYii
      * 通过$rewriteMap，查找是否存在重写，如果存在，则得到重写的className
      * 然后返回 类名 和 对象
      */
-    public static function mapGet($absoluteClassName,$arguments = []){
+    public static function mapGet($absoluteClassName, $arguments = []){
         $absoluteClassName = self::mapGetName($absoluteClassName);
         if (!empty($arguments) && is_array($arguments)) {
             $class = new ReflectionClass($absoluteClassName);
@@ -45,7 +45,7 @@ class Yii extends \yii\BaseYii
             $absoluteOb = new $absoluteClassName;
         }
         
-        return [$absoluteClassName,$absoluteOb];
+        return [$absoluteClassName, $absoluteOb];
     }
     /**
      * @property $absoluteClassName | String , like: '\fecshop\app\appfront\modules\Cms\block\home\Index'
