@@ -19,6 +19,8 @@ use Yii;
 /**
  * Stock sub-service of product service.
  *
+ * @method deduct($items = [])
+ * @see \fecshop\services\product\Stock::actionDeduct()
  * @method productIsInStock($product, $qty, $custom_option_sku)
  * @see Stock::actionProductIsInStock()
  *
@@ -168,7 +170,8 @@ class Stock extends Service
     }
     
     /**
-     * @property $items | Array ， example:
+     * @var array $items
+     * example:
      * 	[
      *		[
      *			'product_id' => 'xxxxx',
@@ -189,11 +192,12 @@ class Stock extends Service
      *  **注意**：在调用该函数的时候必须使用事务，在返回false的时候要回滚。
      *  **注意**：在调用该函数的时候必须使用事务，在返回false的时候要回滚。
      */
-    protected function actionDeduct($items = '')
+    protected function actionDeduct($items = [])
     {
-        if (!$items) { //如果$items为空，则去购物车取数据。
+        if (!$items) {
+            // 如果 $items 为空，则去购物车取数据。
             $cartInfo = Yii::$service->cart->getCartInfo(true);
-            $items = isset($cartInfo['products']) ? $cartInfo['products'] : '';
+            $items = isset($cartInfo['products']) ? $cartInfo['products'] : [];
         }
         /**
          * $this->checkItemsStock 函数检查产品是否都是上架状态
