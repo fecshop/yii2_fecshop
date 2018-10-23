@@ -10,32 +10,20 @@
 
 namespace fecshop\services;
 
-use fecshop\services\page\Asset;
-use fecshop\services\page\Breadcrumbs;
-use fecshop\services\page\Currency;
-use fecshop\services\page\Footer;
-use fecshop\services\page\Menu;
-use fecshop\services\page\Newsletter;
-use fecshop\services\page\StaticBlock;
-use fecshop\services\page\Theme;
-use fecshop\services\page\Trace;
-use fecshop\services\page\Translate;
-use fecshop\services\page\Widget;
-
 /**
  * Page service.
  *
- * @property Asset $asset
- * @property Breadcrumbs $breadcrumbs
- * @property Currency $currency
- * @property Footer $footer
- * @property Menu $menu
- * @property Newsletter $newsletter
- * @property StaticBlock $staticBlock
- * @property Theme $theme
- * @property Trace $trace
- * @property Translate $translate
- * @property Widget $widget
+ * @property \fecshop\services\page\Asset $asset
+ * @property \fecshop\services\page\Breadcrumbs $breadcrumbs
+ * @property \fecshop\services\page\Currency $currency
+ * @property \fecshop\services\page\Footer $footer
+ * @property \fecshop\services\page\Menu $menu
+ * @property \fecshop\services\page\Newsletter $newsletter
+ * @property \fecshop\services\page\StaticBlock $staticBlock
+ * @property \fecshop\services\page\Theme $theme
+ * @property \fecshop\services\page\Trace $trace
+ * @property \fecshop\services\page\Translate $translate
+ * @property \fecshop\services\page\Widget $widget
  *
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0

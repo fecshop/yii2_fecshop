@@ -10,13 +10,8 @@
 namespace fecshop\app\appserver\modules;
 
 use yii\rest\Controller;
-use fec\helpers\CConfig;
 use Yii;
 use yii\web\Response;
-use yii\filters\auth\CompositeAuth;
-use yii\filters\auth\HttpBasicAuth;
-use yii\filters\auth\HttpBearerAuth;
-use yii\base\InvalidValueException;
 
 /**
  * @author Terry Zhao <2358269014@qq.com>

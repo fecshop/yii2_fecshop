@@ -10,9 +10,6 @@
 
 namespace fecshop\services;
 
-use fecshop\services\category\CategoryInterface;
-use Yii;
-
 /**
  * Category service.
  *
@@ -40,7 +37,7 @@ class Category extends Service
     public $storagePath = '';
 
     /**
-     * @var CategoryInterface
+     * @var \fecshop\services\category\CategoryInterface
      */
     protected $_category;
 
