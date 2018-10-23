@@ -394,7 +394,7 @@ class Paypal extends Service
         }
         //$innerTransaction->commit();
         return true;
-        //} catch (Exception $e) {
+        //} catch (\Exception $e) {
         //	$innerTransaction->rollBack();
         //}
         //return false;

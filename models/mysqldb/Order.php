@@ -17,13 +17,29 @@ use yii\db\ActiveRecord;
  */
 class Order extends ActiveRecord
 {
+    /**
+     * @var 如果该值为true，则会干扰下面的rules()方法，让其返回没有rules限制
+     * 可以通过下面的方法setGenerateOrderByPaypalToken() 来设置该值
+     * 目前这个部分的设置主要用于paypal express 支付部分，也就是在购物车页面点击paypal
+     * 先生成一个空的订单，里面只有order_id 和 token信息，当从paypal express跳转回网站后，
+     * 在通过session获取到这个订单，然后更新这个订单。
+     */
+    protected $generate_order_by_paypal_token = false;
+
     public static function tableName()
     {
         return '{{%sales_flat_order}}';
     }
+
+    public function setGenerateOrderByPaypalToken($status = true){
+        $this->generate_order_by_paypal_token = $status;
+    }
     
     public function rules()
     {
+        if ($this->generate_order_by_paypal_token) {
+            return [];
+        }
         $rules = [
             
             ['customer_email', 'filter', 'filter' => 'trim'],

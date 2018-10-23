@@ -190,6 +190,7 @@ class Favorite extends Service
         if ($one['_id']) {
             $one->delete();
             $this->updateUserFavoriteCount($user_id);
+            $product_id = (string) $one['_id'];
             $this->updateProductFavoriteCount($product_id);
 
             return true;

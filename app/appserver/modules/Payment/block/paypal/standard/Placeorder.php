@@ -83,7 +83,7 @@ class Placeorder
                     }else{
                         $innerTransaction->rollBack();
                     }
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $innerTransaction->rollBack();
                 }
                 $code = Yii::$service->helper->appserver->order_paypal_standard_updateorderinfoafterpayment_fail;

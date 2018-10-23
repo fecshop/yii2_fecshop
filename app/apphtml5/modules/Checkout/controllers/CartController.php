@@ -72,7 +72,7 @@ class CartController extends AppfrontController
                     $innerTransaction->rollBack();
                     exit;
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $innerTransaction->rollBack();
             }
         }
@@ -104,7 +104,7 @@ class CartController extends AppfrontController
                 } else {
                     $innerTransaction->rollBack();
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $innerTransaction->rollBack();
             }
             
@@ -181,7 +181,7 @@ class CartController extends AppfrontController
                     $innerTransaction->commit();
                     exit;
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $innerTransaction->rollBack();
             }
         } else {
@@ -217,7 +217,7 @@ class CartController extends AppfrontController
                 ]);
                 $innerTransaction->rollBack();
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $innerTransaction->rollBack();
         }
         exit;
@@ -243,7 +243,7 @@ class CartController extends AppfrontController
                 ]);
                 $innerTransaction->rollBack();
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $innerTransaction->rollBack();
         }
         exit;
@@ -268,7 +268,7 @@ class CartController extends AppfrontController
                 ]);
                 $innerTransaction->rollBack();
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $innerTransaction->rollBack();
         }
         exit;

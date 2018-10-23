@@ -226,13 +226,22 @@ class Email extends Service
         } else {
             $setFrom = $from;
         }
-        $mailer->compose()
-            ->setFrom($setFrom)
-            ->setTo($to)
-            ->setSubject($subject)
-            ->setHtmlBody($htmlBody)
-            ->send();
-        return true;
+        try {
+            $mailer->compose()
+                ->setFrom($setFrom)
+                ->setTo($to)
+                ->setSubject($subject)
+                ->setHtmlBody($htmlBody)
+                ->send();
+            return true;
+        } catch (\Swift_TransportException $e) {
+            $errorMessage = $e->getMessage();
+            Yii::$service->helper->errors->add($errorMessage);
+            return false;
+        } catch (\Exception $e) {
+            Yii::$service->helper->errors->add('send email fail');
+            return false;
+        }
     }
 
     /**

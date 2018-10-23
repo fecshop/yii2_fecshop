@@ -165,7 +165,7 @@ class RewriteMysqldb extends Service implements RewriteInterface
                     }
                 }
                 $innerTransaction->commit();
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 Yii::$service->helper->errors->add('UrlRewrite Remove Errors: transaction rollback');
                 $innerTransaction->rollBack();
 
@@ -180,7 +180,7 @@ class RewriteMysqldb extends Service implements RewriteInterface
                     $url_key = $model['url_key'];
                     $model->delete();
                     $innerTransaction->commit();
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     Yii::$service->helper->errors->add('UrlRewrite Remove Errors: transaction rollback');
                     $innerTransaction->rollBack();
                 }

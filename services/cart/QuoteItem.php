@@ -211,6 +211,9 @@ class QuoteItem extends Service
         $product_total  = 0;
         $product_weight = 0;
         $product_volume_weight = 0;
+        $base_product_total = 0;
+        $product_volume = 0;
+        $product_qty_total = 0;
         if ($cart_id) {
             if (!isset($this->_cart_product_info[$cart_id])) {
                 $data = $this->_itemModel->find()->where([
@@ -242,11 +245,12 @@ class QuoteItem extends Service
                             $p_vwt              = $product_one['volume_weight'] * $qty;
                             
                             if ($active == $this->activeStatus) {
-                                $product_total      += $product_row_price;
+                                $product_total          += $product_row_price;
                                 $base_product_total     += $base_product_row_price;
                                 $product_weight         += $p_wt;
                                 $product_volume_weight  += $p_vwt;
                                 $product_volume         += $p_pv;
+                                $product_qty_total      += $qty;
                             }
                             $productSpuOptions  = $this->getProductSpuOptions($product_one);
                             $products[] = [
@@ -278,12 +282,13 @@ class QuoteItem extends Service
                         }
                     }
                     $this->_cart_product_info[$cart_id] = [
-                        'products'          => $products,
-                        'product_total'     => $product_total,
-                        'base_product_total'=> $base_product_total,
-                        'product_weight'    => $product_weight,
-                        'product_volume_weight'    => $product_volume_weight,
-                        'product_volume'    => $product_volume,
+                        'products'              => $products,
+                        'product_qty_total'     => $product_qty_total,
+                        'product_total'         => $product_total,
+                        'base_product_total'    => $base_product_total,
+                        'product_weight'        => $product_weight,
+                        'product_volume_weight' => $product_volume_weight,
+                        'product_volume'        => $product_volume,
                         
                     ];
                 }

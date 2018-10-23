@@ -101,7 +101,7 @@ class Manageredit
         $orderModel = Yii::$service->order->getByPrimaryKey($order_id);
         if(is_array($editForm) && $orderModel['order_id']){
             foreach($editForm as $k => $v){
-                if(isset($orderModel[$k])){
+                if ($orderModel->hasAttribute($k)) {
                     $orderModel[$k] = $v;
                 }
             } 

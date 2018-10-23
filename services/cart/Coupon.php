@@ -440,7 +440,7 @@ class Coupon extends Service
                     }
                     //Yii::$service->helper->errors->add('add coupon fail');
                         //$innerTransaction->rollBack();
-                    //} catch (Exception $e) {
+                    //} catch (\Exception $e) {
                         //Yii::$service->helper->errors->add('add coupon fail');
                         //$innerTransaction->rollBack();
                     //}
