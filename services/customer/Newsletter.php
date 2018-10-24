@@ -10,12 +10,12 @@
 
 namespace fecshop\services\customer;
 
-//use fecshop\models\mongodb\customer\Newsletter as NewsletterModel;
 use fecshop\services\Service;
 use Yii;
 
 /**
- * Newsletter child services.
+ * Newsletter sub service of customer.
+ * @method subscribe($email, $isRegister = true) see [[\fecshop\services\customer\Newsletter::actionSubscribe()]]
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */

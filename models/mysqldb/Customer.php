@@ -26,8 +26,8 @@ use yii\web\IdentityInterface;
  * @property int $created_at
  * @property int $updated_at
  * @property string $password write-only password
- */
-/**
+ * @property int $access_token_created_at
+ *
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -89,10 +89,9 @@ class Customer extends ActiveRecord implements IdentityInterface
     /**
      * Finds user by password reset token.
      *
-     * @param  string      $token password reset token
+     * @param string $token password reset token
      * @return static|null
      */
-    // 此处是忘记密码所使用的
     public static function findByPasswordResetToken($token)
     {
         if (!static::isPasswordResetTokenValid($token)) {
