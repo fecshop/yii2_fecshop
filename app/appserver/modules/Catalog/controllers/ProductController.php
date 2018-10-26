@@ -41,8 +41,12 @@ class ProductController extends AppserverController
     protected $_reviewHelper;
     protected $_currentSpuAttrValArr;
     protected $_spuAttrShowAsImgArr;
-    
-    public function actionFavorite(){
+
+    /**
+     * Add favorite or remove favorite.
+     */
+    public function actionFavorite()
+    {
         if(Yii::$app->request->getMethod() === 'OPTIONS'){
             return [];
         }
@@ -50,32 +54,49 @@ class ProductController extends AppserverController
             $code = Yii::$service->helper->appserver->account_no_login_or_login_token_timeout;
             $data = [];
             $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
-            
+
             return $responseData;
         }
         $product_id = Yii::$app->request->get('product_id');
-        $identity   = Yii::$app->user->identity;
-        $user_id    = $identity->id;
-        $addStatus = Yii::$service->product->favorite->add($product_id, $user_id);
-        if (!$addStatus) {
-            $code = Yii::$service->helper->appserver->product_favorite_fail;
-            $data = [];
-            $message = Yii::$service->helper->errors->get(true);
-            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data,$message);
-            
-            return $responseData;
-        }else{
-            $code = Yii::$service->helper->appserver->status_success;
-            $data = [
-                'content' => 'success',
-            ];
-            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
-            
-            return $responseData;
+        $user_id = Yii::$app->user->identity->getId();
+        $oldFavorite = Yii::$service->product->favorite->getByProductIdAndUserId($product_id, $user_id);
+        if ($oldFavorite && $oldFavorite[Yii::$service->product->favorite->getPrimaryKey()]) {
+            $removeStatus = Yii::$service->product->favorite->currentUserRemove($oldFavorite[Yii::$service->product->favorite->getPrimaryKey()]);
+            if (!$removeStatus) {
+                $code = Yii::$service->helper->appserver->product_favorite_fail;
+                $data = [];
+                $message = Yii::$service->helper->errors->get(true);
+                $responseData = Yii::$service->helper->appserver->getResponseData($code, $data,$message);
+
+                return $responseData;
+            }else{
+                $code = Yii::$service->helper->appserver->status_success;
+                $data = [
+                    'content' => 'success',
+                ];
+                $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
+
+                return $responseData;
+            }
+        } else {
+            $addStatus = Yii::$service->product->favorite->add($product_id, $user_id);
+            if (!$addStatus) {
+                $code = Yii::$service->helper->appserver->product_favorite_fail;
+                $data = [];
+                $message = Yii::$service->helper->errors->get(true);
+                $responseData = Yii::$service->helper->appserver->getResponseData($code, $data,$message);
+
+                return $responseData;
+            }else{
+                $code = Yii::$service->helper->appserver->status_success;
+                $data = [
+                    'content' => 'success',
+                ];
+                $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
+
+                return $responseData;
+            }
         }
-        // 收藏失败，需要登录
-        
-        
     }
     
     public function behaviors()
