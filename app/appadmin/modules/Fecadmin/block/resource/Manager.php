@@ -177,11 +177,5 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
         return $table_th_bar;
     }
 
-    /**
-     * get edit html bar, it contains  add ,eidt ,delete  button.
-     */
-    public function getEditBar()
-    {
-        return '';
-    }
+    
 }
