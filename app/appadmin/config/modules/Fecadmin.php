@@ -31,6 +31,12 @@ return [
             'systemlog' => [
         		'class' => 'fecshop\app\appadmin\modules\Fecadmin\controllers\SystemlogController',
         	],
+			'resource' => [
+				'class' => 'fecshop\app\appadmin\modules\Fecadmin\controllers\ResourceController',
+			],
+			'role' => [
+				'class' => 'fecshop\app\appadmin\modules\Fecadmin\controllers\RoleController',
+			],
         ],
         'params' => [
             /**

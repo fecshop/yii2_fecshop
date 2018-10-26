@@ -28,7 +28,7 @@ class AccountController extends AppadminController
     # 我的账户
     public function actionIndex()
     {
-        $data = $this->getBlock()->getLastData();
+        $data = $this->getFecadminBlock()->getLastData();
 		return $this->render($this->action->id,$data);
 	}
 	
@@ -36,7 +36,7 @@ class AccountController extends AppadminController
     public function actionManager()
     {
         //echo $this->action->id ;exit;
-		$data = $this->getBlock()->getLastData();
+		$data = $this->getFecadminBlock()->getLastData();
 		return $this->render($this->action->id,$data);
 	}
 	
@@ -44,7 +44,7 @@ class AccountController extends AppadminController
 	public function actionManageredit()
     {
 		//echo $this->action->id ;exit;
-		$data = $this->getBlock()->getLastData();
+		$data = $this->getFecadminBlock()->getLastData();
 		return $this->render($this->action->id,$data);
 	}
 	
@@ -52,14 +52,14 @@ class AccountController extends AppadminController
     {
 		
 		//echo $this->action->id ;exit;
-		$data = $this->getBlock("manageredit")->save();
+		$data = $this->getFecadminBlock("manageredit")->save();
 		//return $this->render($this->action->id,$data);
 	}
 	
 	public function actionManagerdelete()
     {
 		//echo $this->action->id ;exit;
-		$this->getBlock("manageredit")->delete();
+		$this->getFecadminBlock("manageredit")->delete();
 		
 	}
 
