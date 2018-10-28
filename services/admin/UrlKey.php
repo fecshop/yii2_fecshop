@@ -97,6 +97,33 @@ class UrlKey extends Service
             'count'=> $query->limit(null)->offset(null)->count(),
         ];
     }
+	/**
+	 * @return 按照tag，将资源（url_key）进行分组, 按照 tag_sort_order 进行排序
+	 */
+	public function getGroupsResources(){
+		$filter = [ 
+			'asArray' => true,
+			'numPerPage' 	=> 4000,
+      		'pageNum'		=> 1,
+		];
+		$coll = $this->coll($filter);
+		$arr = [];
+		if (!empty($coll['coll']) && is_array($coll['coll'])) {
+			foreach ($coll['coll'] as $one) {
+				$tag = $one['tag'];
+				$arr[$tag][] = [
+					'id' => $one['id'],
+					'name' => $one['name'],
+					'tag_sort_order' => $one['tag_sort_order'],
+					'url_key' => $one['url_key'],
+				];
+				
+			}
+		}
+		$arr = \fec\helpers\CFunc::array_sort($arr, 'tag_sort_order', 'asc', true);
+		
+		return $arr;
+	}
 
     /**
      * @property $one|array

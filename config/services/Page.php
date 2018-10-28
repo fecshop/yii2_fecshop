@@ -268,7 +268,7 @@ return [
                                 'child' => [
                                     'order_manager' => [
                                         'label' => '订单管理',
-                                        'url_key' => '/catalog/urlrewrite/index',
+                                        'url_key' => '/sales/orderinfo/manager',
                                     ],
                                 ],
                             ],

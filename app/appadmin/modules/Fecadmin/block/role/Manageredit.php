@@ -36,16 +36,19 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         return [
             'editBar' => $this->getEditBar(),
             'saveUrl' => CUrl::getUrl('fecadmin/role/managereditsave'),
+			'groupResources' => $this->getGroupResources(),
             //'menu'    => self::getMenuStr(),
         ];
     }
+	public function getGroupResources(){
+		$groupResource = Yii::$service->admin->urlKey->getGroupsResources();
+		
+		return $groupResource;
+	}
     public function setService()
     {
         $this->_service = Yii::$service->admin->role;;
     }
-
-
-
 
     public function getEditArr(){
         return [
@@ -69,8 +72,6 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         ];
 
     }
-
-
 
     # 保存
     public function save(){

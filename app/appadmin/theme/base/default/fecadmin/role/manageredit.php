@@ -63,7 +63,7 @@ $this->title = 'Dashboard';
                     <div style=" float:left; display:block; margin:10px; overflow:auto; width:900px; height:400px; overflow:auto; border:solid 1px #CCC; line-height:21px; background:#FFF;">
                         <ul  class="men_str  tree treeFolder treeCheck expand" >
 
-                            <?= $menu ?>
+                            <?php  var_dump($groupResources); ?>
                         </ul>
                     </div>
 
