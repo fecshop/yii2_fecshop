@@ -136,7 +136,7 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
                 'orderField'    => 'tag',
                 'label'            => 'tag',
                 'width'            => '50',
-                'align'        => 'center',
+                'align'        => 'left',
                 'display'        => Yii::$service->admin->urlKey->getTags(),
             ],
 
