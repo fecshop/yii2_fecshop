@@ -20,6 +20,9 @@ use fecshop\services\Service;
  */
 class Role extends Service
 {
+    
+    const ADMIN_ROLEIDS_RESOURCES = 'admin_roleids_resources';
+    
     public $numPerPage = 20;
 
     protected $_roleModelName = '\fecshop\models\mysqldb\admin\Role';
@@ -213,5 +216,72 @@ class Role extends Service
         }
 
         return true;
+    }
+    /**
+     * @return array
+     * 得到当前用户的可用的resources数组
+     */
+    public function getCurrentRoleResources(){
+        if (Yii::$app->user->isGuest) {
+            return [];
+        }
+        $user = Yii::$app->user->identity;
+        $userId = $user->Id;
+        // 通过userId得到这个用户所在的用户组
+        $userRoles = Yii::$service->admin->UserRole->coll([
+            'where'			=> [
+                [
+                    'user_id' => $userId,
+                ]
+            ],
+            'fetchAll' => true,
+        ]);
+        $role_ids = [];
+        if (is_array($userRoles['coll']) && !empty($userRoles['coll'])) {
+            foreach ($userRoles['coll'] as $one) {
+                $role_ids[] = $one['role_id'];
+            }
+        }
+        if (empty($role_ids)) {
+            return [];
+        }
+        
+        return $this->getRoleResourcesByRoleIds($role_ids);
+    }
+    
+    /**
+     * @param array $role_ids
+     * @return array , 包含url_key_id的数组
+     *  通过$role_ids数组，获得相应的所有url_key_id数组
+     */
+    public function getRoleResourcesByRoleIds($role_ids){
+        if (empty($role_ids)) {
+            return [];
+        }
+        sort($role_ids);
+        $role_ids_cache_str = self::ADMIN_ROLEIDS_RESOURCES . implode('-', $role_ids);
+        $resources = Yii::$app->cache->get($role_ids_cache_str);
+        if (!$resources) {
+            // 通过role_ids 得到url_keys
+            $roleUrlKeys = Yii::$service->admin->roleUrlKey->coll([
+                'where'			=> [
+                    ['in', 'role_id',  $role_ids]
+                ],
+                'fetchAll' => true,
+            ]);
+            $roleUrlKeyIds = [];
+            if (is_array($roleUrlKeys['coll']) && !empty($roleUrlKeys['coll'])) {
+                foreach ($roleUrlKeys['coll'] as $one) {
+                    if (!isset($roleUrlKeyIds[$one['url_key_id']])) {
+                        $roleUrlKeyIds[$one['url_key_id']] = $one['url_key_id'];
+                    }
+                }
+            }
+            Yii::$app->cache->set($role_ids_cache_str, $roleUrlKeyIds);
+            
+            return $roleUrlKeyIds;
+        }
+        
+        return $resources;
     }
 }
