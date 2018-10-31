@@ -458,7 +458,7 @@ class Stock extends Service
                         
                     //Yii::$service->helper->errors->add('Product Id:'.$product['_id'].' && customOptionSku:'.$custom_option_sku.' , The product has no qty');
                 }
-            } elseif (($product_qty > 0) && ($product_qty > $sale_qty)) {
+            } else {
                 $productFlatQty = $this->_flatQtyModel->find()->where([
                     'product_id' => $product_id
                 ])->one();
