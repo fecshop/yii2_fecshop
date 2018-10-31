@@ -504,15 +504,15 @@ class Customer extends Service
     }
     
     /**
-     * @property $id | String  主键值
-     * 通过主键值找到分类，并且删除分类在url rewrite表中的记录
-     * 查看这个分类是否存在子分类，如果存在子分类，则删除所有的子分类，以及子分类在url rewrite表中对应的数据。
+     * Remove customer by primary key value
+     * @param int $id the primary key value
+     * @return bool
+     * @throws
      */
     public function remove($id)
     {
         if (!$id) {
             Yii::$service->helper->errors->add('remove id is empty');
-
             return false;
         }
 
@@ -521,10 +521,8 @@ class Customer extends Service
             $model->delete();
         } else {
             Yii::$service->helper->errors->add("customer Remove Errors:ID:$id is not exist.");
-
             return false;
         }
-
         return true;
     }
     
