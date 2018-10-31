@@ -302,7 +302,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
                         $val = $one['image']['main']['image'];
                     }
                     $imgUrl = Yii::$service->product->image->getUrl($val);
-                    $str .= '<td><span style="display:block;" title="'.$imgUrl.'"><img style="margin:auto;display:block;max-width:100px;max-height:100px;" src="'.$imgUrl.'" /></span></td>';
+                    $str .= '<td><span style="display:block;padding:10px 5px;" title="'.$imgUrl.'"><img style="margin:auto;display:block;max-width:100px;max-height:100px;" src="'.$imgUrl.'" /></span></td>';
                     continue;
                 }
                 if ($val) {
