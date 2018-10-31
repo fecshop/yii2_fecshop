@@ -17,34 +17,30 @@ $this->title = 'Dashboard';
 
 
 <script>
-    function func(type){
-        cate_str = "";
-        jQuery(".menu_tree div.ckbox.checked").each(function(){
-            cate_id = jQuery(this).find("input").val();
-            cate_str += cate_id+",";
-        });
 
-        jQuery("#resultBox").val(cate_str);
-
-
-
-    }
     function thissubmit(thiss){
-
         return validateCallback(thiss, dialogAjaxDoneCloseAndReflush);
-
     }
 
 </script>
 
-
+<style>
+    .group_resource li ul li{
+        float:left;
+        margin:5px 0 0 0;
+    }
+    .clear{
+        clear:both;
+    }
+    .group_resource li{
+        margin:25px 10px 0 0 ;
+        float:left;
+    }
+</style>
 
 <div class="pageContent">
     <form  method="post" action="<?= $saveUrl ?>" class="pageForm required-validate" onsubmit="return thissubmit(this, dialogAjaxDoneCloseAndReflush);">
-
         <?php echo CRequest::getCsrfInputHtml();  ?>
-
-        <input id="resultBox"  name="menu[select_menus]" type="hidden" value="<?= $menu_ids_str ?>" />
         <div class="tabs" currentIndex="0" eventType="click"  layoutH="56">
             <div class="tabsHeader">
                 <div class="tabsHeaderContent">
@@ -59,11 +55,32 @@ $this->title = 'Dashboard';
                     <?= $editBar; ?>
                 </div>
                 <div class="menu_tree">
+                    <div style=" float:left; display:block; margin:10px; overflow:auto; width:900px; overflow:auto; border:solid 1px #CCC; line-height:21px; background:#FFF;">
+                        <ul  class="group_resource" >
+                            <?php if (is_array($groupResources)):  ?>
+                                <li class="clear"></li>
+                                <?php foreach ($groupResources as $groupKey => $resources): ?>
+                                    <li>
+                                        <div><span><?= isset($tags[$groupKey]) ? $tags[$groupKey] : '' ?></span></div>
+                                        <ul>
+                                            <?php if (is_array($resources)):  ?>
+                                                <li class="clear"></li>
+                                                <?php foreach ($resources as $resource): ?>
+                                                    <li>
+                                                        <label>
+                                                            <input type="checkbox" name="editFormData[resources][]"  value="<?= $resource['id'] ?>" <?= $resource['selected'] ? 'checked="checked"' : '' ?>    />
+                                                            <span><?= $resource['name'] ?></span>
+                                                        </label>
+                                                    </li>
+                                                <?php endforeach; ?>
+                                                    <li class="clear"></li>
+                                            <?php endif;  ?>
+                                        </ul>
+                                    </li>
+                                    <li class="clear"></li>
+                                <?php endforeach; ?>
 
-                    <div style=" float:left; display:block; margin:10px; overflow:auto; width:900px; height:400px; overflow:auto; border:solid 1px #CCC; line-height:21px; background:#FFF;">
-                        <ul  class="men_str  tree treeFolder treeCheck expand" >
-
-                            <?php  var_dump($groupResources); ?>
+                            <?php endif;  ?>
                         </ul>
                     </div>
 
@@ -75,11 +92,6 @@ $this->title = 'Dashboard';
                 <div class="tabsFooterContent"></div>
             </div>
         </div>
-
-
-
-
-
         <div class="formBar">
             <ul >
                 <!--<li><a class="buttonActive" href="javascript:;"><span>保存</span></a></li>-->

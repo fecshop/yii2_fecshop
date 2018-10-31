@@ -18,13 +18,13 @@ use fecshop\services\Service;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class UrlKey extends Service
+class RoleUrlKey extends Service
 {
     public $numPerPage = 20;
 
-    protected $_staticBlockModelName = '\fecshop\models\mysqldb\admin\RoleUrlKey';
+    protected $_modelName = '\fecshop\models\mysqldb\admin\RoleUrlKey';
 
-    protected $_staticBlockModel;
+    protected $_model;
 
     /**
      *  language attribute.
@@ -35,7 +35,7 @@ class UrlKey extends Service
     public function init()
     {
         parent::init();
-        list($this->_staticBlockModelName, $this->_staticBlockModel) = Yii::mapGet($this->_staticBlockModelName);
+        list($this->_modelName, $this->_model) = Yii::mapGet($this->_modelName);
     }
 
     public function getPrimaryKey()
@@ -46,7 +46,7 @@ class UrlKey extends Service
     public function getByPrimaryKey($primaryKey)
     {
         if ($primaryKey) {
-            $one = $this->_staticBlockModel->findOne($primaryKey);
+            $one = $this->_model->findOne($primaryKey);
             foreach ($this->_lang_attr as $attrName) {
                 if (isset($one[$attrName])) {
                     $one[$attrName] = unserialize($one[$attrName]);
@@ -55,7 +55,7 @@ class UrlKey extends Service
 
             return $one;
         } else {
-            return new $this->_staticBlockModelName();
+            return new $this->_modelName();
         }
     }
     /*
@@ -74,7 +74,7 @@ class UrlKey extends Service
      */
     public function coll($filter = '')
     {
-        $query = $this->_staticBlockModel->find();
+        $query = $this->_model->find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
         $coll = $query->all();
         if (!empty($coll)) {
@@ -106,14 +106,14 @@ class UrlKey extends Service
             return;
         }
         if ($primaryVal) {
-            $model = $this->_staticBlockModel->findOne($primaryVal);
+            $model = $this->_model->findOne($primaryVal);
             if (!$model) {
                 Yii::$service->helper->errors->add('static block '.$this->getPrimaryKey().' is not exist');
 
                 return;
             }
         } else {
-            $model = new $this->_staticBlockModelName();
+            $model = new $this->_modelName();
             $model->created_at = time();
         }
         $model->updated_at = time();
@@ -129,6 +129,29 @@ class UrlKey extends Service
         return true;
     }
 
+    /**
+     * @param int $roleId
+     * @param array $url_key_ids
+     * 先删除该role_id 对应的所有的数据，然后将这些数据依次插入到表中
+     */
+    public function repeatSaveRoleUrlKey($roleId, $url_key_ids){
+        if ($roleId && is_array($url_key_ids) && !empty($url_key_ids)) {
+            $this->_model->deleteAll([
+                'role_id' => $roleId
+            ]);
+            foreach ($url_key_ids as $url_key_id) {
+                $model = new $this->_modelName();
+                $model->created_at = time();
+                $model->updated_at = time();
+                $model->url_key_id = $url_key_id;
+                $model->role_id = $roleId;
+                $model->save();
+            }
+            return true;
+        }
+        return false;
+    }
+
     protected function validateUrlKeyRoleId($one)
     {
         $url_key_id = $one['url_key_id'];
@@ -139,7 +162,7 @@ class UrlKey extends Service
             'url_key_id' => $url_key_id,
             'role_id' => $role_id,
         ];
-        $query = $this->_staticBlockModel->find()->asArray();
+        $query = $this->_model->find()->asArray();
         $query->where($where);
         if ($primaryVal) {
             $query->andWhere(['<>', $id, $primaryVal]);
@@ -161,13 +184,13 @@ class UrlKey extends Service
         }
         if (is_array($ids) && !empty($ids)) {
             foreach ($ids as $id) {
-                $model = $this->_staticBlockModel->findOne($id);
+                $model = $this->_model->findOne($id);
                 $model->delete();
             }
         } else {
             $id = $ids;
             foreach ($ids as $id) {
-                $model = $this->_staticBlockModel->findOne($id);
+                $model = $this->_model->findOne($id);
                 $model->delete();
             }
         }

@@ -22,7 +22,7 @@ use Yii;
 class AdminMenu extends Service
 {
     /**
-     * @var array 后台菜单配置
+     * @var array 后台菜单配置, 参看@fecshop/config/services/Page.php的配置
      */
     public $menuConfig;
 

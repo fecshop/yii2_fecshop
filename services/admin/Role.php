@@ -22,9 +22,9 @@ class Role extends Service
 {
     public $numPerPage = 20;
 
-    protected $_staticBlockModelName = '\fecshop\models\mysqldb\admin\Role';
+    protected $_roleModelName = '\fecshop\models\mysqldb\admin\Role';
 
-    protected $_staticBlockModel;
+    protected $_roleModel;
 
     /**
      *  language attribute.
@@ -35,7 +35,7 @@ class Role extends Service
     public function init()
     {
         parent::init();
-        list($this->_staticBlockModelName, $this->_staticBlockModel) = Yii::mapGet($this->_staticBlockModelName);
+        list($this->_roleModelName, $this->_roleModel) = Yii::mapGet($this->_roleModelName);
     }
     public function getPrimaryKey()
     {
@@ -45,7 +45,7 @@ class Role extends Service
     public function getByPrimaryKey($primaryKey)
     {
         if ($primaryKey) {
-            $one = $this->_staticBlockModel->findOne($primaryKey);
+            $one = $this->_roleModel->findOne($primaryKey);
             foreach ($this->_lang_attr as $attrName) {
                 if (isset($one[$attrName])) {
                     $one[$attrName] = unserialize($one[$attrName]);
@@ -54,7 +54,7 @@ class Role extends Service
 
             return $one;
         } else {
-            return new $this->_staticBlockModelName();
+            return new $this->_roleModelName();
         }
     }
     /*
@@ -73,7 +73,7 @@ class Role extends Service
      */
     public function coll($filter = '')
     {
-        $query = $this->_staticBlockModel->find();
+        $query = $this->_roleModel->find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
         $coll = $query->all();
         if (!empty($coll)) {
@@ -95,24 +95,24 @@ class Role extends Service
      * @property $one|array
      * save $data to cms model,then,add url rewrite info to system service urlrewrite.
      */
-    public function save($one)
+    public function saveRole($one)
     {
         $currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
         $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
         if (!($this->validateRoleName($one))) {
-            Yii::$service->helper->errors->add('url key 存在，您必须定义一个唯一的identify ');
+            Yii::$service->helper->errors->add('role name 存在，您必须定义一个唯一的role_name ');
 
-            return;
+            return null;
         }
         if ($primaryVal) {
-            $model = $this->_staticBlockModel->findOne($primaryVal);
+            $model = $this->_roleModel->findOne($primaryVal);
             if (!$model) {
                 Yii::$service->helper->errors->add('static block '.$this->getPrimaryKey().' is not exist');
 
-                return;
+                return null;
             }
         } else {
-            $model = new $this->_staticBlockModelName();
+            $model = new $this->_roleModelName();
             $model->created_at = time();
         }
         $model->updated_at = time();
@@ -125,7 +125,50 @@ class Role extends Service
         $model      = Yii::$service->helper->ar->save($model, $one);
         $primaryVal = $model[$primaryKey];
 
-        return true;
+        return $model;
+    }
+
+    /**
+     * @param array $one ,example
+     * [
+     *      'role_id' => xx,
+     *      'role_name' => 'xxxx',
+     *      'role_description' => 'xxxx',
+     *      'resources' => [3, 5, 76, 876, 999],
+     * @return boolean
+     * save role  info and resources
+     * ]
+     */
+    public function saveRoleAndResources($one){
+        $roleData = [];
+        if (isset($one['role_id'])) {
+            $roleData['role_id'] = $one['role_id'];
+        }
+        if (isset($one['role_name'])) {
+            $roleData['role_name'] = $one['role_name'];
+        } else {
+            Yii::$service->helper->errors->add('role name can not empty');
+            return false;
+        }
+        if (isset($one['role_description'])) {
+            $roleData['role_description'] = $one['role_description'];
+        }
+        $primaryKey = $this->getPrimaryKey();
+        $roleModel = $this->saveRole($roleData);
+        if ($roleModel) {
+            $roleId = $roleModel[$primaryKey];
+            if ($roleId && isset($one['resources'])) {
+                $resources = $one['resources'];
+                if (is_array($resources) && !empty($resources)) {
+                    Yii::$service->admin->roleUrlKey->repeatSaveRoleUrlKey($roleId, $resources);
+                    
+                    return true;
+                }
+            }
+        }
+        Yii::$service->helper->errors->add('save role and resource fail');
+
+        return false;
     }
 
     protected function validateRoleName($one)
@@ -136,7 +179,7 @@ class Role extends Service
         $where = [
             'role_name' => $role_name,
         ];
-        $query = $this->_staticBlockModel->find()->asArray();
+        $query = $this->_roleModel->find()->asArray();
         $query->where($where);
         if ($primaryVal) {
             $query->andWhere(['<>', $id, $primaryVal]);
@@ -158,13 +201,13 @@ class Role extends Service
         }
         if (is_array($ids) && !empty($ids)) {
             foreach ($ids as $id) {
-                $model = $this->_staticBlockModel->findOne($id);
+                $model = $this->_roleModel->findOne($id);
                 $model->delete();
             }
         } else {
             $id = $ids;
             foreach ($ids as $id) {
-                $model = $this->_staticBlockModel->findOne($id);
+                $model = $this->_roleModel->findOne($id);
                 $model->delete();
             }
         }

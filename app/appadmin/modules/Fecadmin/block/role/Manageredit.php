@@ -37,14 +37,20 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
             'editBar' => $this->getEditBar(),
             'saveUrl' => CUrl::getUrl('fecadmin/role/managereditsave'),
 			'groupResources' => $this->getGroupResources(),
+            'tags' => $this->getTagsArr(),
             //'menu'    => self::getMenuStr(),
         ];
     }
 	public function getGroupResources(){
-		$groupResource = Yii::$service->admin->urlKey->getGroupsResources();
+        $role_id = Yii::$app->request->get('role_id');
+		$groupResource = Yii::$service->admin->urlKey->getResourcesWithGroupAndSelected($role_id);
 		
 		return $groupResource;
 	}
+    public function getTagsArr(){
+
+        return Yii::$service->admin->urlKey->getTags();
+    }
     public function setService()
     {
         $this->_service = Yii::$service->admin->role;;
@@ -75,49 +81,23 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
 
     # 保存
     public function save(){
-        $request_param 		= CRequest::param();
-        $this->_param		= $request_param['editFormData'];
-        $this->initParam();
-        //$model = $this->_one;
-        $this->_one->attributes = $this->_param;
-
-        if($this->_one[$this->_paramKey]){
-            if(CConfig::param("is_demo")){
-                if($this->_one[$this->_paramKey] == 4){
-                    echo  json_encode(array(
-                        "statusCode"=>"300",
-                        "message"=>"demo版本，不允许编辑admin role",
-                    ));
-                    exit;
-                }
-            }
-            if ($this->_one->validate()) {
-                $this->saveMenuAndRole();
-                //$this->_one->save();
-                echo  json_encode(array(
-                    "statusCode"=>"200",
-                    "message"=>"update",
-                ));
-                exit;
-            }
-        }else{
-            if ($this->_one->validate()) {
-                //$this->_one->save();
-                $this->saveMenuAndRole();
-                echo  json_encode(array(
-                    "statusCode"=>"200",
-                    "message"=>"insert",
-                ));
-                exit;
-            }
+        $param = Yii::$app->request->post('editFormData');
+        $saveStatus = Yii::$service->admin->role->saveRoleAndResources($param);
+        if ($saveStatus){
+            echo  json_encode(array(
+                "statusCode"=>"200",
+                "message"=>"save success",
+            ));
+            exit;
+        } else {
+            $errors = Yii::$service->helper->errors->get();
+            echo  json_encode(["statusCode"=>"300",
+                "message" => $errors,
+            ]);
+            exit;
         }
-        $errors = $this->_one->errors;
-        echo  json_encode(["statusCode"=>"300",
-            "message" => CModel::getErrorStr($errors),
-        ]);
-        exit;
-
     }
+
 
     # 批量删除
     public function delete(){

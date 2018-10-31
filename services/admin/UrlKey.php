@@ -99,8 +99,26 @@ class UrlKey extends Service
     }
 	/**
 	 * @return 按照tag，将资源（url_key）进行分组, 按照 tag_sort_order 进行排序
+     * 根据传递的roleId 获取对应的url_key_id，将资源（url_key）默认选中
 	 */
-	public function getGroupsResources(){
+	public function getResourcesWithGroupAndSelected($role_id = 0){
+        $selectRoleUrlKeys = [];
+        if ($role_id) {
+            $filter = [
+                'numPerPage' 	=> 9000,
+                'pageNum'		=> 1,
+                'where'			=> [
+                    ['role_id' => $role_id],
+                ],
+                'asArray' => true,
+            ];
+            $data = Yii::$service->admin->roleUrlKey->coll($filter);
+            if (isset($data['coll']) && is_array($data['coll'])) {
+                foreach ($data['coll'] as $one) {
+                    $selectRoleUrlKeys[$one['url_key_id']] = $one['url_key_id'];
+                }
+            }
+        }
 		$filter = [ 
 			'asArray' => true,
 			'numPerPage' 	=> 4000,
@@ -110,19 +128,32 @@ class UrlKey extends Service
 		$arr = [];
 		if (!empty($coll['coll']) && is_array($coll['coll'])) {
 			foreach ($coll['coll'] as $one) {
-				$tag = $one['tag'];
-				$arr[$tag][] = [
-					'id' => $one['id'],
+				 $tag = $one['tag'];
+                 $id = $one['id'];
+				 $one_arr = [
+					'id' => $id,
 					'name' => $one['name'],
 					'tag_sort_order' => $one['tag_sort_order'],
 					'url_key' => $one['url_key'],
 				];
-				
+                if (isset($selectRoleUrlKeys[$id]) && $selectRoleUrlKeys[$id]) {
+                    $one_arr['selected'] = true;
+                } else {
+                    $one_arr['selected'] = false;
+                }
+                $arr[$tag][] = $one_arr;
 			}
 		}
 		$arr = \fec\helpers\CFunc::array_sort($arr, 'tag_sort_order', 'asc', true);
-		
-		return $arr;
+        $urlKeyTags = $this->urlKeyTags;
+        $arrSort = [];
+        foreach ($urlKeyTags as $k => $v) {
+            if (isset($arr[$k])) {
+                $arrSort[$k] = $arr[$k];
+            }
+
+        }
+		return $arrSort;
 	}
 
     /**
