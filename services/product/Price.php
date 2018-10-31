@@ -58,7 +58,7 @@ class Price extends Service
     {
         $currencyInfo = $this->getCurrentInfo();
         $price = $price * $currencyInfo['rate'];
-		$price = Yii::$service->helper->format->number_format($price);
+        $price = Yii::$service->helper->format->number_format($price);
 
         return $currencyInfo['symbol'].$price;
     }
