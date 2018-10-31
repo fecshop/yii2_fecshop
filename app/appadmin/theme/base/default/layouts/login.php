@@ -16,10 +16,6 @@ use yii\widgets\Breadcrumbs;
 use fecadmin\myassets\LoginAsset;
 use common\widgets\Alert;
 use fec\helpers\CUrl;
-use fecadmin\views\layouts\Head;
-use fecadmin\views\layouts\Footer;
-use fecadmin\views\layouts\Header;
-use fecadmin\views\layouts\Menu;
 LoginAsset::register($this);
 ?>
 

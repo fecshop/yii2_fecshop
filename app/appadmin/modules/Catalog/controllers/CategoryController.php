@@ -27,14 +27,15 @@ class CategoryController extends CatalogController
         $parent_id = Yii::$app->request->get('parent_id');
         if ($idVal || $parent_id || $parent_id === '0') {
             $data = $this->getBlock()->getLastInfo();
-            //$data['product'] = $this->getBlock('product')->getLastData();
-            //echo $data['product']['pagerForm'];
-            //exit;
             return $this->render('info', $data);
         }
         $data = $this->getBlock()->getLastData();
 
         return $this->render($this->action->id, $data);
+    }
+
+    public function actionSave(){
+        $this->getBlock('index')->saveCategory();
     }
 
     public function actionProduct()

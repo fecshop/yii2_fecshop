@@ -18,7 +18,7 @@ use fec\helpers\CUrl;
 use fecadmin\views\layouts\Head;
 use fecadmin\views\layouts\Footer;
 use fecadmin\views\layouts\Header;
-use fecadmin\views\layouts\Menu;
+use fecshop\app\appadmin\modules\Fecadmin\helper\Menu;
 AppAsset::register($this);
 $publishedPath = $this->assetManager->publish('@fecadmin/myassets/dwz_jui-master/dwz.frag.xml');
 ?>

@@ -17,13 +17,12 @@ use fecshop\app\appadmin\modules\AppadminController;
  */
 class CacheController extends AppadminController
 {
-	public $blockIndexFile = '\fecshop\app\appadmin\modules\Fecadmin\block\cache\Index';
-    public $enableCsrfValidation = false;
+	public $enableCsrfValidation = false;
+	public $blockNamespace = 'fecshop\\app\\appadmin\\modules\\Fecadmin\\block';
 	# 刷新缓存
     public function actionIndex()
     {
-		$blockIndex = Yii::mapGetName($this->blockIndexFile);
-        $block = new $blockIndex;
+        $block = $this->getBlock();
         if(CRequest::param("method") == 'reflush'){
 			$block->reflush();
 		}

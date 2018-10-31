@@ -368,7 +368,9 @@ class Url extends Service
      */
     protected function generateUrlByName($name)
     {
+        setlocale(LC_ALL, '');
         $url = iconv('UTF-8', 'ASCII//TRANSLIT', $name);
+
         $url = preg_replace('{[^a-zA-Z0-9_.| -]}', '', $url);
         $url = strtolower(trim($url, '-'));
         $url = preg_replace('{[_| -]+}', '-', $url);

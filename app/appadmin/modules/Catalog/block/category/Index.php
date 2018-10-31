@@ -174,12 +174,10 @@ class Index extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInterf
 
     public function getLastData()
     {
-        $this->saveCategory();
-
         return [
             'base_info' => $this->getBaseInfo(),
             'meta_info' => $this->getMetaInfo(),
-            'save_url'    => CUrl::getUrl('catalog/category/index'),
+            'save_url'    => CUrl::getUrl('catalog/category/save'),
             'category_tree' => $this->getCategoryTree(),
         ];
     }
