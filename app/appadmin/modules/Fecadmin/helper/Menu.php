@@ -23,7 +23,7 @@ class Menu{
     }
 
     public static function getRoleUrlKey(){
-        return [];
+        return Yii::$service->admin->role->getCurrentRoleResources();
     }
 
     # 得到后台显示菜单（左侧）
@@ -37,8 +37,9 @@ class Menu{
             $name = $node["label"];
             $url_key = $node["url_key"];
             $roleUrlKeys = self::getRoleUrlKey();
-            if(!isset($roleUrlKeys[$url_key]) || !$roleUrlKeys[$url_key]){
-                //continue;
+            //var_dump($roleUrlKeys);exit;
+            if($url_key && (!isset($roleUrlKeys[$url_key]) || !$roleUrlKeys[$url_key])){
+                continue;
             }
 
             if($i == 1){

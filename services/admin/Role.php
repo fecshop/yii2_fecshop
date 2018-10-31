@@ -228,7 +228,7 @@ class Role extends Service
         $user = Yii::$app->user->identity;
         $userId = $user->Id;
         // 通过userId得到这个用户所在的用户组
-        $userRoles = Yii::$service->admin->UserRole->coll([
+        $userRoles = Yii::$service->admin->userRole->coll([
             'where'			=> [
                 [
                     'user_id' => $userId,
@@ -277,9 +277,24 @@ class Role extends Service
                     }
                 }
             }
-            Yii::$app->cache->set($role_ids_cache_str, $roleUrlKeyIds);
+            $urlKeys = Yii::$service->admin->urlKey->coll([
+                'where'			=> [
+                    ['in', 'id',  $roleUrlKeyIds]
+                ],
+                'fetchAll' => true,
+            ]);
+            $urlKeyIds = [];
+            if (is_array($urlKeys['coll']) && !empty($urlKeys['coll'])) {
+                foreach ($urlKeys['coll'] as $one) {
+                    if (!isset($urlKeyIds[$one['url_key']])) {
+                        $urlKeyIds[$one['url_key']] = $one['url_key'];
+                    }
+                }
+            }
             
-            return $roleUrlKeyIds;
+            Yii::$app->cache->set($role_ids_cache_str, $urlKeyIds);
+            
+            return $urlKeyIds;
         }
         
         return $resources;

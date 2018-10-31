@@ -44,6 +44,9 @@ return [
             'role' => [
                 'class' => 'fecshop\services\admin\Role',
             ],
+            'userRole' => [
+                'class' => 'fecshop\services\admin\UserRole',
+            ],
         ],
     ],
 ];
