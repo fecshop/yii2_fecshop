@@ -451,12 +451,9 @@ class Stock extends Service
                         return true;
                     } else {
                         Yii::$service->helper->errors->add('product: [ {product_name} ] is stock out', ['product_name' => $product_name]);
-                        //Yii::$service->helper->errors->add('Product Id:'.$product['_id'].' && customOptionSku:'.$custom_option_sku.' , Product inventory is less than '.$sale_qty);
                     }
                 } else {
                     Yii::$service->helper->errors->add('product: [ {product_name} ] is stock out', ['product_name' => $product_name]);
-                        
-                    //Yii::$service->helper->errors->add('Product Id:'.$product['_id'].' && customOptionSku:'.$custom_option_sku.' , The product has no qty');
                 }
             } else {
                 $productFlatQty = $this->_flatQtyModel->find()->where([
@@ -466,14 +463,23 @@ class Stock extends Service
                     if ($productFlatQty['qty'] >= $sale_qty) {
                         return true;
                     } else {
-                        Yii::$service->helper->errors->add('Product Id:'.$product['_id'].' , Product inventory is less than '.$sale_qty);
+                        Yii::$service->helper->errors->add(
+                            'Product Id: {product_id}, Product inventory is less than [{sale_qty}]',
+                            ['product_id' => $product['_id'], 'sale_qty' => $sale_qty]
+                        );
                     }
                 } else {
-                    Yii::$service->helper->errors->add('Product Id:'.$product['_id'].' , The product has no qty');
+                    Yii::$service->helper->errors->add(
+                        'Product Id: {product_id}, The product has no qty',
+                        ['product_id' => $product['_id']]
+                    );
                 }
             }
         } else {
-            Yii::$service->helper->errors->add('Product Id:'.$product['_id'].' , The product has off the shelf');
+            Yii::$service->helper->errors->add(
+                'Product Id: {product_id}, The product has off the shelf',
+                ['product_id' => $product['_id']]
+            );
         }
 
         return false;
