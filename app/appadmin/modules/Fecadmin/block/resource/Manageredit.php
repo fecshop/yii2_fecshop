@@ -61,7 +61,7 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
 
 
             [
-                'label'=>'url_key',
+                'label'=>'resource',
                 'name'=>'url_key',
                 'display'=>[
                     'type' => 'inputString',

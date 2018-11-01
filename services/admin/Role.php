@@ -25,9 +25,16 @@ class Role extends Service
     
     public $numPerPage = 20;
 
+    public $productViewAllRoleKey = 'catalog_product_view_all';
+    public $productEditAllRoleKey = 'catalog_product_edit_all';
+    public $productSaveAllRoleKey = 'catalog_product_save_all';
+    public $productRemoveAllRoleKey = 'catalog_product_remove_all';
+
     protected $_roleModelName = '\fecshop\models\mysqldb\admin\Role';
 
     protected $_roleModel;
+
+    protected $_current_role_resources;
 
     /**
      *  language attribute.
@@ -217,36 +224,41 @@ class Role extends Service
 
         return true;
     }
+
     /**
      * @return array
      * 得到当前用户的可用的resources数组
      */
     public function getCurrentRoleResources(){
-        if (Yii::$app->user->isGuest) {
-            return [];
-        }
-        $user = Yii::$app->user->identity;
-        $userId = $user->Id;
-        // 通过userId得到这个用户所在的用户组
-        $userRoles = Yii::$service->admin->userRole->coll([
-            'where'			=> [
-                [
-                    'user_id' => $userId,
-                ]
-            ],
-            'fetchAll' => true,
-        ]);
-        $role_ids = [];
-        if (is_array($userRoles['coll']) && !empty($userRoles['coll'])) {
-            foreach ($userRoles['coll'] as $one) {
-                $role_ids[] = $one['role_id'];
+        if (!$this->_current_role_resources) {
+            if (Yii::$app->user->isGuest) {
+                return [];
             }
+            $user = Yii::$app->user->identity;
+            $userId = $user->Id;
+            // 通过userId得到这个用户所在的用户组
+            $userRoles = Yii::$service->admin->userRole->coll([
+                'where' => [
+                    [
+                        'user_id' => $userId,
+                    ]
+                ],
+                'fetchAll' => true,
+            ]);
+            $role_ids = [];
+            if (is_array($userRoles['coll']) && !empty($userRoles['coll'])) {
+                foreach ($userRoles['coll'] as $one) {
+                    $role_ids[] = $one['role_id'];
+                }
+            }
+            if (empty($role_ids)) {
+                return [];
+            }
+
+            $this->_current_role_resources = $this->getRoleResourcesByRoleIds($role_ids);
         }
-        if (empty($role_ids)) {
-            return [];
-        }
-        
-        return $this->getRoleResourcesByRoleIds($role_ids);
+
+        return $this->_current_role_resources;
     }
     
     /**

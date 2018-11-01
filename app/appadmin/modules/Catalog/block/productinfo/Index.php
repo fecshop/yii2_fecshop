@@ -376,4 +376,38 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 
         return $str;
     }
+    
+    public $productView;
+    /**
+     * list table body.
+     */
+    public function getTableTbody()
+    {
+        $searchArr = $this->getSearchArr();
+        if (is_array($searchArr) && !empty($searchArr)) {
+            $where = $this->initDataWhere($searchArr);
+        }
+        // 查看role,通过resource，判断当前用户是否有查看所有产品的权限，默认，用户只有查看自己发布的产品，而不能查看其他用户的产品
+        $resources = Yii::$service->admin->role->getCurrentRoleResources();
+        $viewAllKey = Yii::$service->admin->role->productViewAllRoleKey;
+        if (!is_array($resources) || !isset($resources[$viewAllKey]) || !$resources[$viewAllKey]) {
+            $user = Yii::$app->user->identity;
+            $where[] = [
+                'created_user_id' => $user->Id,
+            ];
+        }
+        //var_dump($where);
+        $filter = [
+            'numPerPage'    => $this->_param['numPerPage'],
+            'pageNum'        => $this->_param['pageNum'],
+            'orderBy'        => [$this->_param['orderField'] => (($this->_param['orderDirection'] == 'asc') ? SORT_ASC : SORT_DESC)],
+            'where'            => $where,
+            'asArray'        => $this->_asArray,
+        ];
+        $coll = $this->_service->coll($filter);
+        $data = $coll['coll'];
+        $this->_param['numCount'] = $coll['count'];
+
+        return $this->getTableTbodyHtml($data);
+    }
 }

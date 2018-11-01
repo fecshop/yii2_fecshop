@@ -91,7 +91,7 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
 
             [    // 字符串类型
                 'type'=>'inputtext',
-                'title'=>'Url Key',
+                'title'=>'Resource',
                 'name'=>'url_key',
                 'columns_type' =>'string',
             ],
@@ -149,7 +149,7 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
             ],
             [
                 'orderField'    => 'url_key',
-                'label'            => 'url key',
+                'label'            => 'resource',
                 'width'            => '60',
                 'align'        => 'left',
 
