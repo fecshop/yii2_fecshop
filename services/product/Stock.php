@@ -199,6 +199,27 @@ class Stock extends Service
             $cartInfo = Yii::$service->cart->getCartInfo(true);
             $items = isset($cartInfo['products']) ? $cartInfo['products'] : [];
         }
+        // 如果items为空，则返回
+        if (!is_array($items) || empty($items)) {
+            Yii::$service->helper->errors->add('cart products is empty');
+            return false;
+        }    
+        // 查看产品的状态，上下架状态，以及产品库存检查是否够用。
+        foreach ($items as $k=>$item) {
+            $product_id        = $item['product_id'];
+            $sale_qty           = (int)$item['qty'];
+            $custom_option_sku  = $item['custom_option_sku'];
+            $product = Yii::$service->product->getByPrimaryKey($product_id);
+            // 购物车中的产品已经被删除，则会查询不到
+            if (!$product['sku']) {
+                Yii::$service->helper->errors->add('product: [ {product_id} ] is not exist', ['product_id' => $product_id]);
+                return false;
+            } 
+            $status = $this->productIsInStock($product, $sale_qty, $custom_option_sku);
+            if (!$status) {
+                return false;
+            }
+        } 
         /**
          * $this->checkItemsStock 函数检查产品是否都是上架状态
          * 如果满足上架状态 && 零库存为1，则直接返回。
@@ -208,51 +229,152 @@ class Stock extends Service
         }
         
         // 开始扣除库存。
-        if (is_array($items) && !empty($items)) {
-            foreach ($items as $k=>$item) {
-                $product_id         = $item['product_id'];
-                $sale_qty           = (int)$item['qty'];
-                $product_name       = Yii::$service->store->getStoreAttrVal($item['product_name'], 'name');
-                $custom_option_sku  = $item['custom_option_sku'];
-                if ($product_id && $sale_qty) {
-                    $sale_qty = 0 - $sale_qty;
-                    // 应对高并发库存超卖的控制，更新后在查询产品的库存，如果库存小于则回滚。
-                    $updateColumns = $this->_flatQtyModel->updateAllCounters(
-                        ['qty' => $sale_qty],
-                        ['and', ['product_id' => $product_id], ['>=', 'qty', $sale_qty]]
+        foreach ($items as $k=>$item) {
+            $product_id         = $item['product_id'];
+            $sale_qty           = (int)$item['qty'];
+            $product_name       = Yii::$service->store->getStoreAttrVal($item['product_name'], 'name');
+            $custom_option_sku  = $item['custom_option_sku'];
+            if ($product_id && $sale_qty) {
+                // 应对高并发库存超卖的控制，扣除库存的时候，加上qty个数的查询，不满足查询条件则不扣除库存
+                $updateColumns = $this->_flatQtyModel->updateAllCounters(
+                    ['qty' => 0 - $sale_qty],
+                    ['and', ['product_id' => $product_id], ['>=', 'qty', $sale_qty]]
+                );
+                if (empty($updateColumns)) {// 上面更新sql返回的更新行数如果为0，则说明更新失败，产品不存在，或者产品库存不够
+                    Yii::$service->helper->errors->add('product: [ {product_name} ] is stock out', ['product_name' => $product_name]);
+                    return false;
+                }
+                // 对于custom option（淘宝模式）的库存扣除
+                if ($custom_option_sku) {
+                    $updateColumns = $this->_COQtyModel->updateAllCounters(
+                        ['qty' => 0 - $sale_qty],
+                        [
+                            'and',
+                            [
+                                'custom_option_sku' => $custom_option_sku,
+                                'product_id'        => $product_id
+                            ],
+                            ['>=','qty',$sale_qty]
+                        ]
                     );
                     if (empty($updateColumns)) {// 上面更新sql返回的更新行数如果为0，则说明更新失败，产品不存在，或者产品库存不够
                         Yii::$service->helper->errors->add('product: [ {product_name} ] is stock out', ['product_name' => $product_name]);
                         return false;
                     }
-                
-                    // 对于custom option（淘宝模式）的库存扣除
+                }
+            }
+        }
+        
+        return true;
+    }
+    
+    /**
+     * @property $product_items | Array ， example:
+     * 	[
+     *		[
+     *			'product_id' => 'xxxxx',
+     *			'qty' => 2,
+     *			'custom_option_sku' => 'cos_1',  # 存在该项，则应该到产品的
+     *		],
+     *		[
+     *			'product_id' => 'yyyyy',
+     *			'qty' => 1,
+     *		],
+     *	]
+     * @return bool
+     *              返还产品库存。如果在返还过程中产品不存在，也不会返回false
+     */
+    protected function actionReturnQty($product_items)
+    {
+        if ($this->zeroInventory) {
+            return true; // 零库存模式不扣产品库存，也不需要返还库存。
+        }
+        // 开始扣除库存。
+        if (is_array($product_items) && !empty($product_items)) {
+            foreach ($product_items as $k=>$item) {
+                $product_id         = $item['product_id'];
+                $sale_qty           = $item['qty'];
+                $custom_option_sku  = $item['custom_option_sku'];
+                if ($product_id && $sale_qty) {
+                    $updateColumns = $this->_flatQtyModel->updateAllCounters(['qty' => $sale_qty], ['product_id' => $product_id]);
                     if ($custom_option_sku) {
-                        $updateColumns = $this->_COQtyModel->updateAllCounters(
-                            ['qty' => $sale_qty],
-                            [
-                                'and',
-                                [
-                                    'custom_option_sku' => $custom_option_sku,
-                                    'product_id'        => $product_id
-                                ],
-                                ['>=','qty',$sale_qty]
-                            ]
-                        );
-                        if (empty($updateColumns)) {// 上面更新sql返回的更新行数如果为0，则说明更新失败，产品不存在，或者产品库存不够
-                            Yii::$service->helper->errors->add('product: [ {product_name} ] is stock out', ['product_name' => $product_name]);
-                            return false;
-                        }
+                        // 对于custom option（淘宝模式）的库存扣除
+                        $updateColumns = $this->_COQtyModel->updateAllCounters(['qty' => $sale_qty], ['product_id' => $product_id,'custom_option_sku' => $custom_option_sku]);
                     }
                 }
             }
-            
-            return true;
-        } else {
-            Yii::$service->helper->errors->add('cart products is empty');
+        }
+
+        return true;
+    }
+
+    /**
+     * @property $product | Object,  Product Model
+     * @property $sale_qty | Int 需要出售的个数
+     * @property $custom_option_sku | String 产品custom option sku
+     * @return bool
+     *  查看产品库存
+     */
+    protected function actionProductIsInStock($product, $sale_qty, $custom_option_sku)
+    {
+        $is_in_stock = $product['is_in_stock'];
+        $product_id = $product['_id'];
+        $product_name       = Yii::$service->store->getStoreAttrVal($product['name'], 'name');
+        // 查看产品状态（产品如果disabled，则意味产品被清除）
+        if ($product['status'] != Yii::$service->product->getEnableStatus()) {
+            Yii::$service->helper->errors->add('product: [ {product_name} ] status is not active', ['product_name' => $product_name]);
             return false;
         }
+        // 零库存模式 && 产品是上架状态 直接返回true
+        if ($this->zeroInventory && $this->checkOnShelfStatus($is_in_stock)) {
+            return true; // 零库存模式不扣产品库存，也不需要返还库存。
+        }
+        // 查看产品的上下架状态
+        if ($this->checkOnShelfStatus($is_in_stock)) {
+            if ($custom_option_sku) {
+                $productCustomOptionQty = $this->_COQtyModel->find()->where([
+                    'product_id'        => $product_id,
+                    'custom_option_sku' => $custom_option_sku
+                ])->one();
+                if ($productCustomOptionQty['qty']) {
+                    if ($productCustomOptionQty['qty'] >= $sale_qty) {
+                        return true;
+                    } else {
+                        Yii::$service->helper->errors->add('product: [ {product_name} ] is stock out', ['product_name' => $product_name]);
+                    }
+                } else {
+                    Yii::$service->helper->errors->add('product: [ {product_name} ] is stock out', ['product_name' => $product_name]);
+                }
+            } else {
+                $productFlatQty = $this->_flatQtyModel->find()->where([
+                    'product_id' => $product_id
+                ])->one();
+                if ($productFlatQty['qty']) {
+                    if ($productFlatQty['qty'] >= $sale_qty) {
+                        return true;
+                    } else {
+                        Yii::$service->helper->errors->add(
+                            'Product Id: {product_id}, Product inventory is less than [{sale_qty}]',
+                            ['product_id' => $product['_id'], 'sale_qty' => $sale_qty]
+                        );
+                    }
+                } else {
+                    Yii::$service->helper->errors->add(
+                        'Product Id: {product_id}, The product has no qty',
+                        ['product_id' => $product['_id']]
+                    );
+                }
+            }
+        } else {
+            Yii::$service->helper->errors->add(
+                'Product Id: {product_id}, The product has off the shelf',
+                ['product_id' => $product['_id']]
+            );
+        }
+
+        return false;
     }
+    
     
     /**
      * @property $items | Array ， example:
@@ -267,7 +389,7 @@ class Stock extends Service
      *			'qty' => 1,
      *		],
      *	]
-     *  @return Array 有库存返回的数据格式如下：
+     *  @return Mix 有库存返回的数据格式如下：
      *    [
      *        'stockStatus'           => 1,
      *        'outStockProducts'    => '',
@@ -290,33 +412,47 @@ class Stock extends Service
      *
      *        ],
      *    ];
+     *    购物车没有产品返回null
      *
      */
     protected function actionCheckItemsQty()
     {
         $cartInfo = Yii::$service->cart->getCartInfo(true);
         $items = isset($cartInfo['products']) ? $cartInfo['products'] : '';
-        
-        /**
-         * $this->checkItemsStock 函数检查产品是否都是上架状态
-         * 如果满足上架状态 && 零库存为1，则直接返回。
-         */
-        if ($this->zeroInventory) {
-            // 零库存模式 不会更新产品库存。
-            return [
-                'stockStatus'           => 1,
-                'outStockProducts'    => '',
-            ];
-        }
-        
         $outStockProducts = [];
         // 开始扣除库存。
         if (is_array($items) && !empty($items)) {
             foreach ($items as $k=>$item) {
-                $product_id         = $item['product_id'];
-                $sale_qty           = (int)$item['qty'];
-                $product_name       = $item['product_name'];
-                $custom_option_sku  = $item['custom_option_sku'];
+                $product_id               = $item['product_id'];
+                $item_product_name  = $item['product_name'];
+                $sale_qty                  = (int)$item['qty'];
+                $custom_option_sku   = $item['custom_option_sku'];
+                $product = Yii::$service->product->getByPrimaryKey($product_id);
+                // 产品是否存在判断
+                if (!$product['sku']) {
+                    $outStockProducts[] = [
+                        'product_id'        => $product_id,
+                        'product_name'      => $item_product_name,
+                        'custom_option_sku' => $custom_option_sku,
+                        'stock_qty'         => 0,
+                    ];
+                }
+                $product_name       = Yii::$service->store->getStoreAttrVal($product['name'], 'name');
+                $is_in_stock            = $product['is_in_stock'];
+                // 查看产品状态（产品如果disabled，则意味产品被清除）
+                if ($product['status'] != Yii::$service->product->getEnableStatus()) {
+                    $outStockProducts[] = [
+                        'product_id'        => $product_id,
+                        'product_name'      => $product_name,
+                        'custom_option_sku' => $custom_option_sku,
+                        'stock_qty'         => 0,
+                    ];
+                }
+                // 零库存模式 && 产品是上架状态 不需要继续判断库存
+                if ($this->zeroInventory && $this->checkOnShelfStatus($is_in_stock)) {
+                    continue;
+                }
+                // 产品的个数判断
                 if ($product_id && $sale_qty) {
                     if (!$custom_option_sku) {
                         $productM = $this->_flatQtyModel->find()->where([
@@ -380,110 +516,11 @@ class Stock extends Service
             }
         } else {
             Yii::$service->helper->errors->add('cart products is empty');
-            return false;
+            return null;
         }
     }
 
-    /**
-     * @property $product_items | Array ， example:
-     * 	[
-     *		[
-     *			'product_id' => 'xxxxx',
-     *			'qty' => 2,
-     *			'custom_option_sku' => 'cos_1',  # 存在该项，则应该到产品的
-     *		],
-     *		[
-     *			'product_id' => 'yyyyy',
-     *			'qty' => 1,
-     *		],
-     *	]
-     * @return bool
-     *              返还产品库存。如果在返还过程中产品不存在，也不会返回false
-     */
-    protected function actionReturnQty($product_items)
-    {
-        if ($this->zeroInventory) {
-            return true; // 零库存模式不扣产品库存，也不需要返还库存。
-        }
-        // 开始扣除库存。
-        if (is_array($product_items) && !empty($product_items)) {
-            foreach ($product_items as $k=>$item) {
-                $product_id         = $item['product_id'];
-                $sale_qty           = $item['qty'];
-                $custom_option_sku  = $item['custom_option_sku'];
-                if ($product_id && $sale_qty) {
-                    $updateColumns = $this->_flatQtyModel->updateAllCounters(['qty' => $sale_qty], ['product_id' => $product_id]);
-                    if ($custom_option_sku) {
-                        // 对于custom option（淘宝模式）的库存扣除
-                        $updateColumns = $this->_COQtyModel->updateAllCounters(['qty' => $sale_qty], ['product_id' => $product_id,'custom_option_sku' => $custom_option_sku]);
-                    }
-                }
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * @property $product | Object,  Product Model
-     * @property $sale_qty | Int 需要出售的个数
-     * @property $custom_option_sku | String 产品custom option sku
-     * @return bool
-     *              返还产品库存。
-     */
-    protected function actionProductIsInStock($product, $sale_qty, $custom_option_sku)
-    {
-        $is_in_stock = $product['is_in_stock'];
-        // 零库存模式 && 产品是上架状态 直接返回true
-        if ($this->zeroInventory && $this->checkOnShelfStatus($is_in_stock)) {
-            return true; // 零库存模式不扣产品库存，也不需要返还库存。
-        }
-        $product_id = $product['_id'];
-        $product_name       = Yii::$service->store->getStoreAttrVal($product['name'], 'name');
-        if ($this->checkOnShelfStatus($is_in_stock)) {
-            if ($custom_option_sku) {
-                $productCustomOptionQty = $this->_COQtyModel->find()->where([
-                    'product_id'        => $product_id,
-                    'custom_option_sku' => $custom_option_sku
-                ])->one();
-                if ($productCustomOptionQty['qty']) {
-                    if ($productCustomOptionQty['qty'] >= $sale_qty) {
-                        return true;
-                    } else {
-                        Yii::$service->helper->errors->add('product: [ {product_name} ] is stock out', ['product_name' => $product_name]);
-                    }
-                } else {
-                    Yii::$service->helper->errors->add('product: [ {product_name} ] is stock out', ['product_name' => $product_name]);
-                }
-            } else {
-                $productFlatQty = $this->_flatQtyModel->find()->where([
-                    'product_id' => $product_id
-                ])->one();
-                if ($productFlatQty['qty']) {
-                    if ($productFlatQty['qty'] >= $sale_qty) {
-                        return true;
-                    } else {
-                        Yii::$service->helper->errors->add(
-                            'Product Id: {product_id}, Product inventory is less than [{sale_qty}]',
-                            ['product_id' => $product['_id'], 'sale_qty' => $sale_qty]
-                        );
-                    }
-                } else {
-                    Yii::$service->helper->errors->add(
-                        'Product Id: {product_id}, The product has no qty',
-                        ['product_id' => $product['_id']]
-                    );
-                }
-            }
-        } else {
-            Yii::$service->helper->errors->add(
-                'Product Id: {product_id}, The product has off the shelf',
-                ['product_id' => $product['_id']]
-            );
-        }
-
-        return false;
-    }
+    
 
     /**
      * @property $is_in_stock | Int,  状态
