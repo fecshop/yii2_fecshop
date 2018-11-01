@@ -53,8 +53,20 @@ class AppadminController extends FecadminbaseController
 
     public function beforeAction($action)
     {
-
-        return true;
+        $moduleId = Yii::$app->controller->module->id;
+        $controllerId = $this->id;
+        $actionId = $this->action->id;
+        $currentUrlKey = "/$moduleId/$controllerId/$actionId";
+        $resources = Yii::$service->admin->role->getCurrentRoleResources();
+        if (is_array($resources) && isset($resources[$currentUrlKey]) && $resources[$currentUrlKey]) {
+            return true;
+        } else {
+            echo  json_encode([
+                'statusCode' => '300',
+                'message' => 'you do not have role',
+            ]);
+            exit;
+        }
     }
     
 
