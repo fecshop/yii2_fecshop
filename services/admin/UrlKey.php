@@ -160,6 +160,7 @@ class UrlKey extends Service
 		return $arrSort;
 	}
 
+    public $can_not_delete = 1;
     /**
      * @property $one|array
      * save $data to cms model,then,add url rewrite info to system service urlrewrite.
@@ -178,7 +179,12 @@ class UrlKey extends Service
             if (!$model) {
                 Yii::$service->helper->errors->add('static block '.$this->getPrimaryKey().' is not exist');
 
-                return;
+                return false;
+            }
+            if ($model->can_delete == $this->can_not_delete) {
+                Yii::$service->helper->errors->add('resource(url key) created by system, can not edit and save');
+
+                return false;
             }
         } else {
             $model = new $this->_staticBlockModelName();
@@ -226,6 +232,12 @@ class UrlKey extends Service
         if (is_array($ids) && !empty($ids)) {
             foreach ($ids as $id) {
                 $model = $this->_staticBlockModel->findOne($id);
+                if ($model->can_delete == $this->can_not_delete) {
+                    Yii::$service->helper->errors->add('resource(url key) created by system, can not remove');
+
+                    return false;
+                }
+
                 $model->delete();
                 // delete roleUrlKey
                 Yii::$service->admin->roleUrlKey->removeByUrlKeyId($id);
@@ -233,6 +245,11 @@ class UrlKey extends Service
         } else {
             $id = $ids;
             $model = $this->_staticBlockModel->findOne($id);
+            if ($model->can_delete == $this->can_not_delete) {
+                Yii::$service->helper->errors->add('resource(url key) created by system, can not remove');
+
+                return false;
+            }
             $model->delete();
             // delete roleUrlKey
             Yii::$service->admin->roleUrlKey->removeByUrlKeyId($id);
