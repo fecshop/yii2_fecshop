@@ -223,13 +223,15 @@ class UrlKey extends Service
             foreach ($ids as $id) {
                 $model = $this->_staticBlockModel->findOne($id);
                 $model->delete();
+                // delete roleUrlKey
+                Yii::$service->admin->roleUrlKey->removeByUrlKeyId($id);
             }
         } else {
             $id = $ids;
-            foreach ($ids as $id) {
-                $model = $this->_staticBlockModel->findOne($id);
-                $model->delete();
-            }
+            $model = $this->_staticBlockModel->findOne($id);
+            $model->delete();
+            // delete roleUrlKey
+            Yii::$service->admin->roleUrlKey->removeByUrlKeyId($id);
         }
 
         return true;

@@ -213,13 +213,18 @@ class Role extends Service
             foreach ($ids as $id) {
                 $model = $this->_roleModel->findOne($id);
                 $model->delete();
+                // delete user  role
+                Yii::$service->admin->userRole->removeByRoleId($id);
+                Yii::$service->admin->roleUrlKey->removeByRoleId($id);
+
             }
         } else {
             $id = $ids;
-            foreach ($ids as $id) {
-                $model = $this->_roleModel->findOne($id);
-                $model->delete();
-            }
+            $model = $this->_roleModel->findOne($id);
+            $model->delete();
+            // delete user  role
+            Yii::$service->admin->userRole->removeByRoleId($id);
+            Yii::$service->admin->roleUrlKey->removeByRoleId($id);
         }
 
         return true;

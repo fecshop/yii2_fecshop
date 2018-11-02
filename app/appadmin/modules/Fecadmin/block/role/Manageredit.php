@@ -99,79 +99,32 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
     }
 
 
-    # 批量删除
-    public function delete(){
-        //$request_param 		= CRequest::param();
-        //$this->_param		= $request_param;
-        //$this->initParam();
-        if($role_id = CRequest::param($this->_paramKey)){
-            $model = AdminRole::findOne([$this->_paramKey => $role_id]);
-            if($model->role_id){
-                # 不允许删除admin
-                if(CConfig::param("is_demo")){
-                    if($model->role_id == 4){
-                        echo  json_encode(["statusCode"=>"300",
-                            "message" => 'demo版本，不允许编辑admin',
-                        ]);
-                        exit;
-                    }
-                }
-                $innerTransaction = Yii::$app->db->beginTransaction();
-                try {
-                    $model->delete();
-                    # 删除这个role 对应的所有关联的菜单
-                    AdminRoleMenu::deleteAll(['role_id' => $role_id]);
-                    AdminUserRole::deleteAll(['role_id' => $role_id]);
-                    $innerTransaction->commit();
-                } catch (Exception $e) {
-                    $innerTransaction->rollBack();
-                }
-                echo  json_encode(["statusCode"=>"200",
-                    "message" => 'Delete Success!',
-                ]);
-                exit;
-            }else{
-                echo  json_encode(["statusCode"=>"300",
-                    "message" => "role_id => $role_id , is not exist",
-                ]);
-                exit;
-            }
-        }else if($ids = CRequest::param($this->_paramKey.'s')){
-            $id_arr = explode(",",$ids);
 
-            $innerTransaction = Yii::$app->db->beginTransaction();
-            try {
-                # 不允许删除admin
-                if(CConfig::param("is_demo")){
-                    if(in_array(4,$id_arr)){
-                        echo  json_encode(["statusCode"=>"300",
-                            "message" => 'demo版本，不允许删除admin',
-                        ]);
-                        $innerTransaction->rollBack();
-                        exit;
-                    }
-                }
-                AdminRole::deleteAll(['in','role_id',$id_arr]);
-                # 删除这个role 对应的所有关联的菜单
-                AdminUserRole::deleteAll(['in','role_id',$id_arr]);
-                $innerTransaction->commit();
-            } catch (Exception $e) {
-                $innerTransaction->rollBack();
-            }
-            echo  json_encode(["statusCode"=>"200",
-                "message" => "$ids Delete Success!",
+    // 批量删除
+    public function delete()
+    {
+        $ids = '';
+        if ($id = CRequest::param($this->_primaryKey)) {
+            $ids = $id;
+        } elseif ($ids = CRequest::param($this->_primaryKey.'s')) {
+            $ids = explode(',', $ids);
+        }
+        $this->_service->remove($ids);
+        $errors = Yii::$service->helper->errors->get();
+        if (!$errors) {
+            echo  json_encode([
+                'statusCode'=>'200',
+                'message'=>'remove data  success',
+            ]);
+            exit;
+        } else {
+            echo  json_encode([
+                'statusCode'=>'300',
+                'message'=>$errors,
             ]);
             exit;
         }
-        echo  json_encode(["statusCode"=>"300",
-            "message" => "role_id or ids Param is not Exist!",
-        ]);
-        exit;
-
     }
-
-
-
 }
 
 

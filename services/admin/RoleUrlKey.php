@@ -175,6 +175,28 @@ class RoleUrlKey extends Service
         return true;
     }
 
+    /**
+     * @param $url_key_id int
+     * @return bool
+     * 按照$url_key_id为条件进行删除，一般是url_key进行删除操作的时候，删除这里的数据
+     */
+    public function removeByUrlKeyId($url_key_id){
+        $this->_model->deleteAll(['url_key_id' => $url_key_id]);
+
+        return true;
+    }
+
+    /**
+     * @param $url_key_id int
+     * @return bool
+     * 按照$role_id为条件进行删除，一般是role进行删除操作的时候，删除这里的数据
+     */
+    public function removeByRoleId($role_id){
+        $this->_model->deleteAll(['role_id' => $role_id]);
+
+        return true;
+    }
+
     public function remove($ids)
     {
         if (!$ids) {
@@ -189,10 +211,8 @@ class RoleUrlKey extends Service
             }
         } else {
             $id = $ids;
-            foreach ($ids as $id) {
-                $model = $this->_model->findOne($id);
-                $model->delete();
-            }
+            $model = $this->_model->findOne($id);
+            $model->delete();
         }
 
         return true;

@@ -106,11 +106,20 @@ class UserRole extends Service
             }
         } else {
             $id = $ids;
-            foreach ($ids as $id) {
-                $model = $this->_roleModel->findOne($id);
-                $model->delete();
-            }
+            $model = $this->_roleModel->findOne($id);
+            $model->delete();
         }
+
+        return true;
+    }
+
+    /**
+     * @param $url_key_id int
+     * @return bool
+     * 按照$url_key_id为条件进行删除，一般是url_key进行删除操作的时候，删除这里的数据
+     */
+    public function removeByRoleId($role_id){
+        $this->_roleModel->deleteAll(['role_id' => $role_id]);
 
         return true;
     }
