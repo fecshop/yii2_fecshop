@@ -144,7 +144,11 @@ class UrlKey extends Service
                 $arr[$tag][] = $one_arr;
 			}
 		}
-		$arr = \fec\helpers\CFunc::array_sort($arr, 'tag_sort_order', 'asc', true);
+        // 按照 tag_sort_order 进行排序
+        foreach ($arr as $k => $one) {
+            $arr[$k] = \fec\helpers\CFunc::array_sort($one, 'tag_sort_order', 'asc', true);
+        }
+        //var_dump($arr);
         $urlKeyTags = $this->urlKeyTags;
         $arrSort = [];
         foreach ($urlKeyTags as $k => $v) {

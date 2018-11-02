@@ -43,24 +43,7 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         parent::init();
         $product_id = $this->_param[$this->_primaryKey];
         if($product_id){
-            // edit role,通过resource，判断当前用户是否有编辑该产品的权限，默认，用户只有编辑自己发布的产品，而不能编辑其他用户的产品
-            $resources = Yii::$service->admin->role->getCurrentRoleResources();
-            $editAllKey = Yii::$service->admin->role->productEditAllRoleKey;
-            if (!is_array($resources) || !isset($resources[$editAllKey]) || !$resources[$editAllKey]) {
-                $product = Yii::$service->product->getByPrimaryKey($product_id);
-                if ($product['sku']) {
-                    $user = Yii::$app->user->identity;
-                    $created_user_id = $product['created_user_id'];
-                    if ($user->Id != $created_user_id) {
-                        echo  json_encode([
-                            'statusCode' => '300',
-                            'message' => 'you donot have role to edit this product',
-                        ]);
-                        exit;
-                    }
-                }
-            }
-                // 从mysql中取出来qty。
+            // 从mysql中取出来qty。
             $qty = Yii::$service->product->stock->getProductFlatQty($product_id);
             $this->_one['qty'] = $qty ;
         }
