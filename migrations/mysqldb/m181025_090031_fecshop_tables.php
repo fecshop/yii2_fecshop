@@ -27,7 +27,7 @@ class m181025_090031_fecshop_tables extends Migration
               `name` varchar(150) DEFAULT NULL COMMENT 'url key 的名称',
               `tag` varchar(40) NOT NULL COMMENT 'tag名称，在同一个菜单里面的url_key可以设置成同一个Tag',
               `tag_sort_order` int(10) DEFAULT '0',
-              `url_key` varchar(255) NOT NULL,
+              `url_key` varchar(255) NOT NULL COMMENT '资源，可以是url_key, 也可以是某个字符串标示',
               `created_at` int(20) DEFAULT NULL,
               `updated_at` int(20) DEFAULT NULL,
               `can_delete` int(5) DEFAULT '2' COMMENT '是否可以被删除，1代表不可以删除，2代表可以删除',

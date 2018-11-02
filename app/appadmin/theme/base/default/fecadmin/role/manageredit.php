@@ -29,12 +29,18 @@ $this->title = 'Dashboard';
         float:left;
         margin:5px 0 0 0;
     }
+    .group_resource{
+        padding-left:10px;
+    }
     .clear{
         clear:both;
     }
     .group_resource li{
         margin:25px 10px 0 0 ;
         float:left;
+    }
+    .line-resources{
+        width:100%
     }
 </style>
 
@@ -58,9 +64,8 @@ $this->title = 'Dashboard';
                     <div style=" float:left; display:block; margin:10px; overflow:auto; width:900px; overflow:auto; border:solid 1px #CCC; line-height:21px; background:#FFF;">
                         <ul  class="group_resource" >
                             <?php if (is_array($groupResources)):  ?>
-                                <li class="clear"></li>
                                 <?php foreach ($groupResources as $groupKey => $resources): ?>
-                                    <li>
+                                    <li class="line-resources">
                                         <div><span><?= isset($tags[$groupKey]) ? $tags[$groupKey] : '' ?></span></div>
                                         <ul>
                                             <?php if (is_array($resources)):  ?>
@@ -77,7 +82,6 @@ $this->title = 'Dashboard';
                                             <?php endif;  ?>
                                         </ul>
                                     </li>
-                                    <li class="clear"></li>
                                 <?php endforeach; ?>
 
                             <?php endif;  ?>
