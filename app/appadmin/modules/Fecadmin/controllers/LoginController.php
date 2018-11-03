@@ -43,7 +43,8 @@ class LoginController extends \fecadmin\controllers\LoginController
             $AdminUserLogin = new AdminUserLogin;
             $AdminUserLogin->attributes = $loginParam;
             if($AdminUserLogin->login()){
-                \fecadmin\helpers\CSystemlog::saveSystemLog();
+                //\fecadmin\helpers\CSystemlog::saveSystemLog();
+                Yii::$service->admin->systemLog->save();
                 //$this->redirect("/",200)->send();
                 Yii::$app->getResponse()->redirect("/")->send();                
                 return;

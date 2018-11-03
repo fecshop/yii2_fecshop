@@ -33,6 +33,7 @@ class LogoutController extends \fecadmin\controllers\LogoutController
         if($isGuest){
             
         }else{
+            Yii::$service->admin->systemLog->save();
             Yii::$app->user->logout();
         }    
         \fecadmin\helpers\CSystemlog::saveSystemLog();
