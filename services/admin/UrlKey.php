@@ -20,9 +20,17 @@ use fecshop\services\Service;
  */
 class UrlKey extends Service
 {
+    
+    const URLKEY_LABEL_ARR = 'appadmin_urlkey_label_cache_arr'; 
+    
     public $numPerPage = 20;
 
     public $urlKeyTags;
+    // 没有在数据库中添加的url key
+    public $addUrlKeyAndLabelArr = [
+        '/fecadmin/login/index' => '帐号登陆',
+        '/fecadmin/logout/index' => '帐号退出',
+    ];
 
     protected $_staticBlockModelName = '\fecshop\models\mysqldb\admin\UrlKey';
 
@@ -97,6 +105,43 @@ class UrlKey extends Service
             'count'=> $query->limit(null)->offset(null)->count(),
         ];
     }
+    /**
+     * @return array 得到urlKey 和 label 对应的数组。
+     *  这样可以通过url_key得到当前操作的菜单的name
+     */
+    public function getUrlKeyAndLabelArr(){
+        $arr = Yii::$app->cache->get(self::URLKEY_LABEL_ARR);
+        if (!$arr) {
+            $arr = [];
+            $filter = [
+                'fetchAll' => true,
+                'asArray' => true,
+            ];
+            $data = $this->coll($filter);
+            if (is_array($data['coll'])) {
+                foreach ($data['coll'] as $one) {
+                    $url_key =  $one['url_key'];
+                    $label = $this->urlKeyTags[$one['tag']] .' '. $one['name'];
+                    $arr[$url_key] = $label;
+                }
+            }
+            $addArr = $this->getAddUrlKeyAndLabelArr();
+            if (is_array($addArr)) {
+                $arr = array_merge($arr, $addArr);
+            }
+            Yii::$app->cache->set(self::URLKEY_LABEL_ARR, $arr);
+        }
+        
+        return $arr;
+    }
+    
+    protected function getAddUrlKeyAndLabelArr(){
+        
+        return $this->addUrlKeyAndLabelArr;
+    }
+    
+    
+    
 	/**
 	 * @return 按照tag，将资源（url_key）进行分组, 按照 tag_sort_order 进行排序
      * 根据传递的roleId 获取对应的url_key_id，将资源（url_key）默认选中
@@ -105,12 +150,11 @@ class UrlKey extends Service
         $selectRoleUrlKeys = [];
         if ($role_id) {
             $filter = [
-                'numPerPage' 	=> 9000,
-                'pageNum'		=> 1,
                 'where'			=> [
                     ['role_id' => $role_id],
                 ],
                 'asArray' => true,
+                'fetchAll' => true,
             ];
             $data = Yii::$service->admin->roleUrlKey->coll($filter);
             if (isset($data['coll']) && is_array($data['coll'])) {
@@ -121,8 +165,7 @@ class UrlKey extends Service
         }
 		$filter = [ 
 			'asArray' => true,
-			'numPerPage' 	=> 4000,
-      		'pageNum'		=> 1,
+			'fetchAll' => true,
 		];
 		$coll = $this->coll($filter);
 		$arr = [];
