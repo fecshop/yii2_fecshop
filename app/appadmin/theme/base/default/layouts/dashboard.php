@@ -18,7 +18,6 @@ use fec\helpers\CUrl;
 use fecadmin\views\layouts\Head;
 use fecadmin\views\layouts\Footer;
 use fecadmin\views\layouts\Header;
-use fecshop\app\appadmin\modules\Fecadmin\helper\Menu;
 AppAsset::register($this);
 $publishedPath = $this->assetManager->publish('@fecadmin/myassets/dwz_jui-master/dwz.frag.xml');
 ?>
@@ -121,7 +120,7 @@ $cssOptions = [
 				<div class="toggleCollapse"><h2>主菜单</h2><div>收缩</div></div>
 
 				<div class="accordion" fillSpace="sidebar">
-					<?= Menu::getContent();  ?>
+					<?= Yii::$service->admin->menu->getLeftMenuHtml();  ?>
 				</div>
 			</div>
 		</div>
