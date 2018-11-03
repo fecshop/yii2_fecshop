@@ -59,6 +59,7 @@ class AppadminController extends FecadminbaseController
         $currentUrlKey = "/$moduleId/$controllerId/$actionId";
         $resources = Yii::$service->admin->role->getCurrentRoleResources();
         if (is_array($resources) && isset($resources[$currentUrlKey]) && $resources[$currentUrlKey]) {
+            Yii::$service->admin->systemLog->save(); 
             return true;
         } else {
             echo  json_encode([
