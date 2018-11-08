@@ -48,6 +48,26 @@ class Payment extends Service
     {
         return $this->_currentPaymentMethod;
     }
+    /**
+     * @return 得到支付方式，以及对应的label，譬如：
+     * [
+     *  'check_money' => 'Check / Money Order',
+     *  'alipay_standard' => '支付宝支付',
+     * ]                                                                                                  #从配置信息中获取
+     */
+    public function getPaymentLabels(){
+        $arr = [];
+        $paymentConfig = $this->paymentConfig;
+        if (is_array($paymentConfig['standard'])) {
+            foreach ($paymentConfig['standard'] as $payment_method => $one) {
+                if (isset($one['label']) && !empty($one['label']) && $payment_method) {
+                    $arr[$payment_method] = $one['label'];
+                }
+            }
+        }
+
+        return $arr;
+    }
 
     /**
      * @property $payment_method | String 支付方式。

@@ -121,97 +121,98 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
         $table_th_bar = [
             [
                 'orderField'    => $this->_primaryKey,
-                'label'            => 'ID',
-                'width'            => '50',
-                'align'        => 'center',
+                'label'         => 'ID',
+                'width'         => '50',
+                'align'         => 'center',
 
             ],
             [
                 'orderField'    => 'increment_id',
-                'label'            => '订单号',
-                'width'            => '50',
-                'align'        => 'left',
+                'label'         => '订单号',
+                'width'         => '50',
+                'align'         => 'left',
                 //'lang'			=> true,
             ],
 
             [
                 'orderField'    => 'created_at',
-                'label'            => '创建时间',
-                'width'            => '50',
-                'align'        => 'left',
-                'convert'        => ['int' => 'date'],
+                'label'         => '创建时间',
+                'width'         => '50',
+                'align'         => 'left',
+                'convert'       => ['int' => 'date'],
                 //'lang'			=> true,
             ],
 
             [
                 'orderField'    => 'order_status',
-                'label'            => '订单状态',
-                'width'            => '50',
-                'align'        => 'left',
+                'label'         => '订单状态',
+                'width'         => '50',
+                'align'         => 'left',
                 //'lang'			=> true,
             ],
 
             [
                 'orderField'    => 'items_count',
-                'label'            => '总数',
-                'width'            => '50',
-                'align'        => 'left',
+                'label'         => '总数',
+                'width'         => '50',
+                'align'         => 'left',
                 //'lang'			=> true,
             ],
 
             [
                 'orderField'    => 'total_weight',
-                'label'            => '总重量',
-                'width'            => '50',
-                'align'        => 'left',
+                'label'         => '总重量',
+                'width'         => '50',
+                'align'         => 'left',
                 //'lang'			=> true,
             ],
 
             [
                 'orderField'    => 'base_grand_total',
-                'label'            => '总金额（美元）',
-                'width'            => '50',
-                'align'        => 'left',
+                'label'         => '总金额（美元）',
+                'width'         => '50',
+                'align'         => 'left',
                 //'lang'			=> true,
             ],
 
             [
                 'orderField'    => 'payment_method',
-                'label'            => '支付方式',
-                'width'            => '50',
-                'align'        => 'left',
+                'label'         => '支付方式',
+                'width'         => '50',
+                'align'         => 'left',
+                'display'       => Yii::$service->payment->getPaymentLabels(),
                 //'lang'			=> true,
             ],
 
             [
                 'orderField'    => 'shipping_method',
-                'label'            => '货运方式',
-                'width'            => '50',
-                'align'        => 'left',
+                'label'         => '货运方式',
+                'width'         => '50',
+                'align'         => 'left',
                 //'lang'			=> true,
             ],
 
             [
                 'orderField'    => 'base_shipping_total',
-                'label'            => '运费（美元）',
-                'width'            => '50',
-                'align'        => 'left',
+                'label'         => '运费（美元）',
+                'width'         => '50',
+                'align'         => 'left',
                 //'lang'			=> true,
             ],
 
             [
                 'orderField'    => 'customer_address_country',
-                'label'            => '国家',
-                'width'            => '50',
-                'align'        => 'left',
+                'label'         => '国家',
+                'width'         => '50',
+                'align'         => 'left',
                 //'lang'			=> true,
             ],
 
             [
                 'orderField'    => 'customer_email',
-                'label'            => '邮箱',
-                'width'            => '50',
-                'align'        => 'left',
+                'label'         => '邮箱',
+                'width'         => '50',
+                'align'         => 'left',
                 //'lang'			=> true,
             ],
 
@@ -226,7 +227,7 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
     public function getTableTbodyHtml($data)
     {
         $fileds = $this->getTableFieldArr();
-        $str .= '';
+        $str = '';
         $csrfString = \fec\helpers\CRequest::getCsrfString();
         $user_ids = [];
         foreach ($data as $one) {
