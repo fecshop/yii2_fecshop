@@ -20,7 +20,7 @@ return [
     'params'    => $params,
     'components' => [
         'user' => [
-            'identityClass' => 'fecadmin\models\AdminUser',
+            'identityClass' => 'fecshop\models\mysqldb\AdminUser',
             'enableAutoLogin' => true,
         ],
         'i18n' => [

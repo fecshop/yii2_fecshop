@@ -17,7 +17,6 @@ use common\widgets\Alert;
 use fec\helpers\CUrl;
 use fecadmin\views\layouts\Head;
 use fecadmin\views\layouts\Footer;
-use fecadmin\views\layouts\Header;
 AppAsset::register($this);
 $publishedPath = $this->assetManager->publish('@fecadmin/myassets/dwz_jui-master/dwz.frag.xml');
 ?>
@@ -107,8 +106,23 @@ $cssOptions = [
 <?php $this->beginBody() ?>
 	<div id="layout">
 		<div id="header">
-			<?= Header::getContent();  ?>
-			<!-- navMenu -->
+			<div class="headerNav">
+				<a target="_blank" class="logo" href="http://www.fecshop.com">FECSHOP</a>
+				
+                  <?php $currentLangCode = Yii::$service->admin->getCurrentLangCode() ?>
+                  <?php $langArr = Yii::$service->admin->getLangArr() ?>
+                  <select class="store_langs" style="font-size:10px;">
+                       <?php foreach ($langArr as $code => $name): ?>
+                           <option  value="<?= $code ?>" <?= ($code == $currentLangCode) ? 'selected="selected"' : ''  ?>>
+                               <?= $name ?>
+                           </option>
+                      <?php endforeach; ?>
+                   </select>
+				<a style="color:#fff; display: block; height: 21px;position: absolute; right: 10px;top: 18px;z-index: 31;" 
+				href="<?= Yii::$service->url->getUrl("fecadmin/logout") ?>">
+					退出
+				</a>
+			</div>
 		</div>
 		<div id="leftside">
 			<div id="sidebar_s">
@@ -181,6 +195,34 @@ $cssOptions = [
     </div>
 </footer>
 <?php $this->endBody() ?>
+<script> 
+　$(document).ready(function(){
+        $(".store_langs").change(function(){
+            $langCode = $(this).val();
+            $.ajax({
+                url:'<?= Yii::$service->url->getUrl('fecadmin/login/changelang')  ?>',
+                async:false,
+                timeout: 80000,
+                dataType: 'json', 
+                type:'get',
+                data:{
+                    'lang':$langCode,
+                },
+                success:function(data, textStatus){
+                    if (data.status == "success"){
+                        window.location.reload();
+                    } else {
+                        
+                    }
+                },
+                error:function(){
+                    alert('加载分类信息出错');
+                }
+            });
+        });    
+    
+    });  
+</script> 
 </body>
 </html>
 <?php $this->endPage() ?>

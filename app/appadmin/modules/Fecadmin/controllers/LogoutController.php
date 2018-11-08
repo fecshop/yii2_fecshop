@@ -30,14 +30,14 @@ class LogoutController extends \fecadmin\controllers\LogoutController
     {
         $isGuest = Yii::$app->user->isGuest;
         //echo $isGuest;exit;
-        if($isGuest){
-            
-        }else{
+        $currentLang = Yii::$service->admin->getCurrentLangCode();
+        if(!$isGuest){
             Yii::$service->admin->systemLog->save();
             Yii::$app->user->logout();
-        }    
+        }
         \fecadmin\helpers\CSystemlog::saveSystemLog();
-        Yii::$app->getResponse()->redirect("/fecadmin/login/index")->send();   
+        Yii::$service->url->redirectByUrlKey("/fecadmin/login/index", ['lang' => $currentLang]);
+        // Yii::$app->getResponse()->redirect()->send();
         //$this->redirect("/fecadmin/login/index",200)->send();
     }
     

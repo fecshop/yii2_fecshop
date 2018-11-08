@@ -28,7 +28,10 @@ class LoginController extends \fecadmin\controllers\LoginController
     
     public function actionIndex()
     {
-        //exit;
+        $langCode = Yii::$app->request->get('lang');
+        if ($langCode) {
+            Yii::$service->admin->setCurrentLangCode($langCode);
+        }
         $isGuest = Yii::$app->user->isGuest;
         //echo $isGuest;exit;
         if(!$isGuest){
@@ -46,15 +49,37 @@ class LoginController extends \fecadmin\controllers\LoginController
                 //\fecadmin\helpers\CSystemlog::saveSystemLog();
                 Yii::$service->admin->systemLog->save();
                 //$this->redirect("/",200)->send();
-                Yii::$app->getResponse()->redirect("/")->send();                
+                Yii::$app->getResponse()->redirect("/")->send();
+                
                 return;
             }else{
                 $errors = CModel::getErrorStr($AdminUserLogin->errors);
             }
         }
         
-        return $this->render('index',['error' => $errors]);
+        return $this->render('index',[
+            'error' => $errors,
+        ]);
     }
+    
+    public function actionChangelang(){
+        $langCode = Yii::$app->request->get('lang');
+        if ($langCode) {
+            $status = Yii::$service->admin->setCurrentLangCode($langCode);
+            if ($status) {
+                echo json_encode([
+                    'status' => 'success'
+                ]);
+                exit;
+            }
+        }  
+        
+        echo json_encode([
+            'status' => 'fail'
+        ]);
+        exit;
+    }
+   
     
     
     /**
