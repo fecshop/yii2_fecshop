@@ -17,11 +17,11 @@ use fec\helpers\CRequest;
 <form action="<?= CUrl::getUrl('fecadmin/login/index'); ?>" method="post">
 	<?php echo CRequest::getCsrfInputHtml();  ?>	
 	<p>
-		<label>用户名：</label>
+		<label><?= Yii::$service->page->translate->__('User'); ?>：</label>
 		<input type="text" name="login[username]" size="20" class="login_input" />
 	</p>
 	<p>
-		<label>密码：</label>
+		<label><?= Yii::$service->page->translate->__('Password'); ?>：</label>
 		<input type="password" name="login[password]" size="20" class="login_input" />
 	</p>
 	<!--

@@ -33,5 +33,11 @@ table.list .hover{
     color:#333;
     margin-left:5px;
 }
-
+.store_langs{
+    float: right;
+    right: 70px;
+    position: absolute;
+    margin: 15px 0 0;
+    font-size: 10px;
+}
 

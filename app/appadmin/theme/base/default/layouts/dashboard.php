@@ -16,7 +16,6 @@ use fecadmin\myassets\AppAsset;
 use common\widgets\Alert;
 use fec\helpers\CUrl;
 use fecadmin\views\layouts\Head;
-use fecadmin\views\layouts\Footer;
 AppAsset::register($this);
 $publishedPath = $this->assetManager->publish('@fecadmin/myassets/dwz_jui-master/dwz.frag.xml');
 ?>
@@ -120,7 +119,7 @@ $cssOptions = [
                    </select>
 				<a style="color:#fff; display: block; height: 21px;position: absolute; right: 10px;top: 18px;z-index: 31;" 
 				href="<?= Yii::$service->url->getUrl("fecadmin/logout") ?>">
-					退出
+					<?= Yii::$service->page->translate->__('Logout'); ?>
 				</a>
 			</div>
 		</div>
@@ -131,7 +130,7 @@ $cssOptions = [
 				</div>
 			</div>
 			<div id="sidebar">
-				<div class="toggleCollapse"><h2>主菜单</h2><div>收缩</div></div>
+				<div class="toggleCollapse"><h2><?= Yii::$service->page->translate->__('Main Menu'); ?></h2><div><?= Yii::$service->page->translate->__('Pull Back'); ?></div></div>
 
 				<div class="accordion" fillSpace="sidebar">
 					<?= Yii::$service->admin->menu->getLeftMenuHtml();  ?>
@@ -143,7 +142,7 @@ $cssOptions = [
 				<div class="tabsPageHeader">
 					<div class="tabsPageHeaderContent"><!-- 显示左右控制时添加 class="tabsPageHeaderMargin" -->
 						<ul class="navTab-tab">
-							<li tabid="main" class="main"><a href="javascript:;"><span><span class="home_icon">我的主页</span></span></a></li>
+							<li tabid="main" class="main"><a href="javascript:;"><span><span class="home_icon"><?= Yii::$service->page->translate->__('My Main Page'); ?></span></span></a></li>
 						</ul>
 					</div>
 					<div class="tabsLeft">left</div><!-- 禁用只需要添加一个样式 class="tabsLeft tabsLeftDisabled" -->
@@ -151,12 +150,12 @@ $cssOptions = [
 					<div class="tabsMore">more</div>
 				</div>
 				<ul class="tabsMoreList">
-					<li><a href="javascript:;">我的主页</a></li>
+					<li><a href="javascript:;"><?= Yii::$service->page->translate->__('My Main Page'); ?></a></li>
 				</ul>
 				<div class="navTab-panel tabsPageContent layoutBox">
 					<div class="page unitBox">
 						<div class="accountInfo">
-							<p><span>您好：<?= \fec\helpers\CUser::getCurrentUsername();   ?></span></p>
+							<p><span><?= Yii::$service->page->translate->__('Hello'); ?>: <?= \fec\helpers\CUser::getCurrentUsername();   ?></span></p>
                         </div>
                         
                         <?php $day = 31;  // 获取三个月的数据?>
@@ -165,20 +164,20 @@ $cssOptions = [
                         
                         <?php list($orderAmount, $orderCount) = Yii::$service->order->getPreMonthOrder($day); ?>
                         <div style="padding-left:100px;font-size:16px;">
-                            最近1个月的订单金额趋势(基础货币)
+                            <?= Yii::$service->page->translate->__('Order amount trend for the last month (base currency)'); ?>
                         </div>
                         <?= Yii::$service->helper->echart->getLine($orderAmount, true); ?>
                         
                         <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
                         <div style="padding-left:100px;font-size:16px;">
-                            最近1个月的订单个数趋势
+                            <?= Yii::$service->page->translate->__('Trends in the number of orders in the last month'); ?>
                         </div>
                         <?= Yii::$service->helper->echart->getLine($orderCount, true); ?>
                         
 						<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
                         
                         <div style="padding-left:100px;font-size:16px;">
-                            最近1个月的注册用户个数
+                            <?= Yii::$service->page->translate->__('Number of registered users in the last month'); ?>
                         </div>
                         <?php $customerRegisterCount = Yii::$service->customer->getPreMonthCustomer($day); ?>
                         <?= Yii::$service->helper->echart->getLine($customerRegisterCount, false); ?>
@@ -191,7 +190,12 @@ $cssOptions = [
 	</div>
 <footer class="footer">
     <div class="container">
-        <?= Footer::getContent(); ?>
+        <div style="position:absolute;z-index: 99999;" id="footer">
+            © 2015-2018 
+            <a style="text-decoration:none" href="http://www.fecshop.com" target="_blank">
+                <?= Yii::$service->page->translate->__('Fecshop Team'); ?> - www.fecshop.com
+            </a>
+        </div>
     </div>
 </footer>
 <?php $this->endBody() ?>
@@ -216,7 +220,7 @@ $cssOptions = [
                     }
                 },
                 error:function(){
-                    alert('加载分类信息出错');
+                    alert('<?= Yii::$service->page->translate->__('loading category information error'); ?>');
                 }
             });
         });    
