@@ -142,4 +142,20 @@ class Fecshoplang extends Service
             return '';
         }
     }
+    /**
+     * @return  array , like
+     *  ['en' => 'en_US' , 'zh' => 'zh_CN']
+     */
+    public function getLangAndCodeArr(){
+        $arr = [];
+        if (is_array($this->allLangCode)) {
+            foreach ($this->allLangCode as $lang => $one) {
+                if (isset($one['code']) && $one['code'] && $lang) {
+                    $arr[$one['code']] = $lang;
+                }
+            }
+        }
+
+        return $arr;
+    }
 }

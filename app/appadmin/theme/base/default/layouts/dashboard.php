@@ -201,7 +201,7 @@ $cssOptions = [
             $langCode = $(this).val();
             $.ajax({
                 url:'<?= Yii::$service->url->getUrl('fecadmin/login/changelang')  ?>',
-                async:false,
+                async:true,
                 timeout: 80000,
                 dataType: 'json', 
                 type:'get',

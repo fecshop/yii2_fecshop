@@ -48,9 +48,9 @@ $login_bannerPath = $this->assetManager->publish('@fecadmin/myassets/dwz_jui-mas
 			<div class="login_headerContent">
 				<div class="navList">
 					<ul>
-						<li><a target="_blank" href="http://www.fecshop.com/first">关于</a></li>
-						<li><a target="_blank"  href="http://www.fecshop.com/topic">反馈</a></li>
-						<li><a target="_blank"  href="http://www.fecshop.com/topic" target="_blank">帮助</a></li>
+						<li><a target="_blank" href="http://www.fecshop.com/first"><?= Yii::$service->page->translate->__('Abouts'); ?></a></li>
+						<li><a target="_blank"  href="http://www.fecshop.com/topic"><?= Yii::$service->page->translate->__('Feedback'); ?></a></li>
+						<li><a target="_blank"  href="http://www.fecshop.com/topic" target="_blank"><?= Yii::$service->page->translate->__('Help'); ?></a></li>
                            <li>
                            <?php $currentLangCode = Yii::$service->admin->getCurrentLangCode() ?>
                            <?php $langArr = Yii::$service->admin->getLangArr() ?>
@@ -100,7 +100,7 @@ $login_bannerPath = $this->assetManager->publish('@fecadmin/myassets/dwz_jui-mas
             $langCode = $(this).val();
             $.ajax({
                 url:'<?= Yii::$service->url->getUrl('fecadmin/login/changelang')  ?>',
-                async:false,
+                async:true,
                 timeout: 80000,
                 dataType: 'json', 
                 type:'get',
