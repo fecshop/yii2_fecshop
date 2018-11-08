@@ -1034,12 +1034,12 @@ class Order extends Service
         
         return [
             [
-                '订单总额' => $orderAmountArr,
-                '支付订单总额' => $paymentOrderAmountArr,
+                Yii::$service->page->translate->__('Order Total') => $orderAmountArr,
+                Yii::$service->page->translate->__('Payment Order Total') => $paymentOrderAmountArr,
             ],
             [
-                '订单总数' => $orderCountArr,
-                '支付订单总数' => $paymentOrderCountArr,
+                Yii::$service->page->translate->__('Order Count') => $orderCountArr,
+                Yii::$service->page->translate->__('Payment Order Count') => $paymentOrderCountArr,
             ],
         ];
     }
