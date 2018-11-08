@@ -83,7 +83,7 @@ class CustomerRegister extends Customer
     public function setPassword($password)
     {
         if ($this->password) {
-            $this->password_hash = \Yii::$app->security->generatePasswordHash($password);
+            $this->password_hash = \Yii::$app->security->generatePasswordHash($password, 6);
             $this->password = '';
         }
     }
