@@ -26,6 +26,8 @@ class UrlKey extends Service
     public $numPerPage = 20;
 
     public $urlKeyTags;
+    protected $_urlKeyTags;
+    
     // 没有在数据库中添加的url key
     public $addUrlKeyAndLabelArr = [
         '/fecadmin/login/index' => '帐号登陆',
@@ -49,7 +51,14 @@ class UrlKey extends Service
     }
 
     public function getTags(){
-        return $this->urlKeyTags;
+        if (!$this->_urlKeyTags) {
+            if (is_array($this->urlKeyTags)) {
+                foreach ($this->urlKeyTags as $k => $v) {
+                    $this->_urlKeyTags[$k] = Yii::$service->page->translate->__($v);
+                }
+            }
+        }
+        return $this->_urlKeyTags;
     }
 
     public function getPrimaryKey()
@@ -119,9 +128,10 @@ class UrlKey extends Service
             ];
             $data = $this->coll($filter);
             if (is_array($data['coll'])) {
+                $tags = $this->getTags();
                 foreach ($data['coll'] as $one) {
                     $url_key =  $one['url_key'];
-                    $label = $this->urlKeyTags[$one['tag']] .' '. $one['name'];
+                    $label = $tags[$one['tag']] .' '. $one['name'];
                     $arr[$url_key] = $label;
                 }
             }
@@ -192,7 +202,7 @@ class UrlKey extends Service
             $arr[$k] = \fec\helpers\CFunc::array_sort($one, 'tag_sort_order', 'asc', true);
         }
         //var_dump($arr);
-        $urlKeyTags = $this->urlKeyTags;
+        $urlKeyTags = $this->getTags();
         $arrSort = [];
         foreach ($urlKeyTags as $k => $v) {
             if (isset($arr[$k])) {
