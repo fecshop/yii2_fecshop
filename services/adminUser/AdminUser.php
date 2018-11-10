@@ -30,13 +30,33 @@ class AdminUser extends Service
 
     protected $_userFormModelName = '\fecshop\models\mysqldb\adminUser\AdminUserForm';
     protected $_userFormModel;
-
+    
+    protected $_userPassResetModelName = '\fecshop\models\mysqldb\adminUser\AdminUserResetPassword';
+    protected $_userPassResetModel;
 
     public function init()
     {
         parent::init();
         list($this->_modelName, $this->_model) = \Yii::mapGet($this->_modelName);
         list($this->_userFormModelName, $this->_userFormModel) = \Yii::mapGet($this->_userFormModelName);
+        list($this->_userPassResetModelName, $this->_userPassResetModel) = \Yii::mapGet($this->_userPassResetModelName);
+    }
+    /**
+     * @param $data array
+     * @return boolean
+     * update current user password
+     */
+    public function resetCurrentPassword($data){
+        $this->_userPassResetModel->attributes = $data;
+        if ($this->_userPassResetModel->validate()) {
+			$this->_userPassResetModel->updatePassword();
+            
+            return true;
+        } else {
+			Yii::$service->helper->errors->addByModelErrors($errors);
+            
+            return false;
+        }        
     }
 
     public function getPrimaryKey()
@@ -210,7 +230,8 @@ class AdminUser extends Service
 
         return $removeIds;
     }
-
+    
+    
 
 
 
