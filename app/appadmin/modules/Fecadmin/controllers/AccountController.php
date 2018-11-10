@@ -18,6 +18,7 @@ use fecshop\app\appadmin\modules\AppadminController;
 class AccountController extends AppadminController
 {
 	public $enableCsrfValidation = false;
+	public $blockNamespace = 'fecshop\\app\\appadmin\\modules\\Fecadmin\\block';
     
     public function init()
     {
@@ -26,17 +27,17 @@ class AccountController extends AppadminController
     }
     
     # 我的账户
-    public function actionIndex()
-    {
-        $data = $this->getFecadminBlock()->getLastData();
-		return $this->render($this->action->id,$data);
-	}
+    //public function actionIndex()
+    //{
+    //    $data = $this->getBlock()->getLastData();
+	//	return $this->render($this->action->id,$data);
+	//}
 	
 	# 我的账户
     public function actionManager()
     {
         //echo $this->action->id ;exit;
-		$data = $this->getFecadminBlock()->getLastData();
+		$data = $this->getBlock()->getLastData();
 		return $this->render($this->action->id,$data);
 	}
 	
@@ -44,7 +45,7 @@ class AccountController extends AppadminController
 	public function actionManageredit()
     {
 		//echo $this->action->id ;exit;
-		$data = $this->getFecadminBlock()->getLastData();
+		$data = $this->getBlock()->getLastData();
 		return $this->render($this->action->id,$data);
 	}
 	
@@ -52,14 +53,14 @@ class AccountController extends AppadminController
     {
 		
 		//echo $this->action->id ;exit;
-		$data = $this->getFecadminBlock("manageredit")->save();
+		$data = $this->getBlock("manageredit")->save();
 		//return $this->render($this->action->id,$data);
 	}
 	
 	public function actionManagerdelete()
     {
 		//echo $this->action->id ;exit;
-		$this->getFecadminBlock("manageredit")->delete();
+		$this->getBlock("manageredit")->delete();
 		
 	}
 

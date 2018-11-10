@@ -74,7 +74,7 @@ $this->title = 'Dashboard';
                                                     <li>
                                                         <label>
                                                             <input type="checkbox" name="editFormData[resources][]"  value="<?= $resource['id'] ?>" <?= $resource['selected'] ? 'checked="checked"' : '' ?>    />
-                                                            <span><?= $resource['name'] ?></span>
+                                                            <span><?= Yii::$service->page->translate->__($resource['name']); ?></span>
                                                         </label>
                                                     </li>
                                                 <?php endforeach; ?>
