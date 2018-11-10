@@ -80,7 +80,7 @@ $cssOptions = [
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <?= Html::csrfMetaTags() ?>
-    <title><?= $this->title ? Html::encode($this->title) : 'Fecshop 后台管理系统' ?></title>
+    <title><?= $this->title ? Html::encode($this->title) : Yii::$service->page->translate->__('Fecshop Admin Manager System') ?></title>
     <?php $this->head() ?>  
 <script> 
 

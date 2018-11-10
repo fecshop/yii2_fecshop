@@ -298,7 +298,9 @@ class AppadminbaseBlock extends BaseObject
 				</table>
 				<div class="subBar">
 					<ul>
-						<li><div class="buttonActive"><div class="buttonContent"><button type="submit">检索</button></div></div></li>
+						<li><div class="buttonActive"><div class="buttonContent"><button type="submit">
+						'.Yii::$service->page->translate->__('search').'
+						</button></div></div></li>
 						<!-- <li><a class="button" href="#" target="dialog" mask="true" title="查询框"><span>高级检索</span></a></li> -->
 					</ul>
 				</div>';
@@ -408,10 +410,10 @@ class AppadminbaseBlock extends BaseObject
         <li><a class="icon csvdownload"   href="'.$csvUrl.'" target="dwzExport" targetType="navTab" title="实要导出这些记录吗?"><span>导出EXCEL</span></a></li>
         */
         return '<ul class="toolBar">
-					<li><a class="add"   href="'.$this->_editUrl.'"  target="dialog" height="580" width="1000" drawable="true" mask="true"><span>添加</span></a></li>
+					<li><a class="add"   href="'.$this->_editUrl.'"  target="dialog" height="580" width="1000" drawable="true" mask="true"><span>' . Yii::$service->page->translate->__('Add') . '</span></a></li>
 
-					<li><a target="dialog" height="580" width="1000" drawable="true" mask="true" class="edit" href="'.$this->_editUrl.'?'.$this->_primaryKey.'={sid_user}" ><span>修改</span></a></li>
-					<li><a title="确实要删除这些记录吗?" target="selectedTodo" rel="'.$this->_primaryKey.'s" postType="string" href="'.$this->_deleteUrl.'" class="delete"><span>批量删除</span></a></li>
+					<li><a target="dialog" height="580" width="1000" drawable="true" mask="true" class="edit" href="'.$this->_editUrl.'?'.$this->_primaryKey.'={sid_user}" ><span>' . Yii::$service->page->translate->__('Update') . '</span></a></li>
+					<li><a title="' . Yii::$service->page->translate->__('Are you sure you want to delete these records?') . '" target="selectedTodo" rel="'.$this->_primaryKey.'s" postType="string" href="'.$this->_deleteUrl.'" class="delete"><span>' . Yii::$service->page->translate->__('batch deletion') . '</span></a></li>
 				</ul>';
     }
 
@@ -421,7 +423,7 @@ class AppadminbaseBlock extends BaseObject
     public function getToolBar($numCount, $pageNum, $numPerPage)
     {
         return    '<div class="pages">
-					<span>显示</span>
+					<span>' . Yii::$service->page->translate->__('show') . '</span>
 					<select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
 						<option '.($numPerPage == 2 ? 'selected' : '').' value="2">2</option>
 						<option '.($numPerPage == 6 ? 'selected' : '').' value="6">6</option>
@@ -430,7 +432,7 @@ class AppadminbaseBlock extends BaseObject
 						<option '.($numPerPage == 100 ? 'selected' : '').'  value="100">100</option>
 						<option '.($numPerPage == 200 ? 'selected' : '').'  value="200">200</option>
 					</select>
-					<span>条，共'.$numCount.'条</span>
+					<span>' . Yii::$service->page->translate->__('Line, total {numCount} line', ['numCount' => $numCount]) . '</span>
 				</div>
 				<div class="pagination" targetType="navTab" totalCount="'.$numCount.'" numPerPage="'.$numPerPage.'" pageNumShown="10" currentPage="'.$pageNum.'"></div>
 				';
@@ -466,7 +468,7 @@ class AppadminbaseBlock extends BaseObject
             $align = isset($b['align']) ? 'align="'.$b['align'].'"' : '';
             $str .= '<th width="'.$width.'" '.$align.' orderField="'.$orderField.'" class="'.$class.'">'.$label.'</th>';
         }
-        $str .= '<th width="80" >编辑</th>';
+        $str .= '<th width="80" >' . Yii::$service->page->translate->__('Edit') . '</th>';
         $str .= '</tr></thead>';
 
         return $str;
@@ -583,8 +585,8 @@ class AppadminbaseBlock extends BaseObject
                 $str .= '<td><span title="'.$display_title.'">'.$val.'</span></td>';
             }
             $str .= '<td>
-						<a title="编辑" target="dialog" class="btnEdit" mask="true" drawable="true" width="1000" height="580" href="'.$this->_editUrl.'?'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" >编辑</a>
-						<a title="删除" target="ajaxTodo" href="'.$this->_deleteUrl.'?'.$csrfString.'&'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" class="btnDel">删除</a>
+						<a title="' . Yii::$service->page->translate->__('search') . '编辑" target="dialog" class="btnEdit" mask="true" drawable="true" width="1000" height="580" href="'.$this->_editUrl.'?'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" >' . Yii::$service->page->translate->__('search') . '编辑</a>
+						<a title="' . Yii::$service->page->translate->__('search') . '删除" target="ajaxTodo" href="'.$this->_deleteUrl.'?'.$csrfString.'&'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" class="btnDel">' . Yii::$service->page->translate->__('search') . '删除</a>
 					</td>';
             $str .= '</tr>';
         }
