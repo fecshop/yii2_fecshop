@@ -48,7 +48,7 @@ class Menu extends Service
     public function getLeftMenuTreeHtml($treeArr='', $i=1){
         $str = '';
         foreach($treeArr as $node){
-            $name = $node["label"];
+            $name = Yii::$service->page->translate->__($node["label"]);
             $url_key = $node["url_key"];
             $roleUrlKeys = $this->getRoleUrlKey();
             if($url_key && (!isset($roleUrlKeys[$url_key]) || !$roleUrlKeys[$url_key])){

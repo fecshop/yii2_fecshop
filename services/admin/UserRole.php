@@ -69,6 +69,7 @@ class UserRole extends Service
      * 			['sku' => 'uk10001'],
      * 		],
      * 	'asArray' => true,
+     *  'fetchAll' => true,
      * ]
      */
     public function coll($filter = '')
@@ -114,13 +115,67 @@ class UserRole extends Service
     }
 
     /**
-     * @param $url_key_id int
+     * @param $role_id int
      * @return bool
-     * 按照$url_key_id为条件进行删除，一般是url_key进行删除操作的时候，删除这里的数据
+     * 按照$role_id为条件进行删除
      */
     public function removeByRoleId($role_id){
         $this->_roleModel->deleteAll(['role_id' => $role_id]);
 
+        return true;
+    }
+    /**
+     * @param $user_id array int
+     * @return bool
+     * 按照$user_id为条件进行删除
+     */
+    public function deleteByUserIds($user_ids){
+        $this->_roleModel->deleteAll(['in', 'user_id', $user_ids]);
+
+        return true;
+        
+    }
+    
+    /**
+     * @param $user_id int 
+     * @param $roles array, role id array.
+     * @return boolean 
+     * 保存userId为$user_id对应的 $roles array, 不在$roles array中其他存在数据库的roles将会被删除
+     */
+    public function saveUserRole($user_id, $roles){
+        $role_ids = [];
+        if (!empty($roles)) {
+            foreach ($roles as $k=>$role_id) {
+                $one = $this->_roleModel->findOne([
+                    'role_id' => $role_id,
+                    'user_id' => $user_id,
+                ]);
+                $role_ids[] = $role_id;
+                if (!$one['id']) {
+                    $one = new $this->_roleModelName;
+                    $one->role_id = $role_id;
+                    $one->user_id = $user_id;
+                    $one->save();
+                }
+            }
+            if (!empty($role_ids) && is_array($role_ids)) {
+                $this->_roleModel->deleteAll([
+                    'and',
+                    ['user_id' => $user_id],
+                    ['not in', 'role_id', $role_ids],
+                ]);
+            } else {
+                Yii::$service->helper->errors->add('You must at least select one user role');
+                
+                return false;
+            }
+
+        }else{
+            Yii::$service->helper->errors->add('You must at least select one user role');
+            
+            return false;
+        }
+        
         return true;
     }
     

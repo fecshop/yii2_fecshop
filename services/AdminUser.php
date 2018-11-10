@@ -19,71 +19,10 @@ use Yii;
  */
 class AdminUser extends Service
 {
-    protected $_adminUserLoginModelName = '\fecshop\models\mysqldb\adminUser\AdminUserLogin';
-
-    protected $_adminUserLoginModel;
-
     public function init()
     {
         parent::init();
-        list($this->_adminUserLoginModelName, $this->_adminUserLoginModel) = \Yii::mapGet($this->_adminUserLoginModelName);
-    }
 
-    /**
-     * @property $ids | Int Array
-     * @return 得到相应用户的数组。
-     */
-    protected function actionGetIdAndNameArrByIds($ids)
-    {
-        $user_coll = \fecadmin\models\AdminUser::find()->asArray()->select(['id', 'username'])->where([
-            'in', 'id', $ids,
-        ])->all();
-        $users = [];
-        foreach ($user_coll as $one) {
-            $users[$one['id']] = $one['username'];
-        }
-
-        return $users;
-    }
-
-    /** AppServer 部分使用的函数
-     * @property $username | String
-     * @property $password | String
-     * 无状态登录，通过 username 和 password 进行登录
-     * 登录成功后，合并购物车，返回accessToken
-     * ** 该函数是未登录用户，通过参数进行登录需要执行的函数。
-     */
-    protected function actionLoginAndGetAccessToken($username, $password)
-    {
-        $header = Yii::$app->request->getHeaders();
-        if (isset($header['access-token']) && $header['access-token']) {
-            $accessToken = $header['access-token'];
-        }
-        // 如果request header中有access-token，则查看这个 access-token 是否有效
-        if ($accessToken) {
-            $identity = Yii::$app->user->loginByAccessToken($accessToken);
-            if ($identity !== null) {
-                $access_token_created_at = $identity->access_token_created_at;
-                $timeout = Yii::$service->session->timeout;
-                if ($access_token_created_at + $timeout > time()) {
-                    return $accessToken;
-                }
-            }
-        }
-        // 如果上面access-token不存在
-        $data = [
-            'username'     => $username,
-            'password'  => $password,
-        ];
-
-        if ($this->login($data)) {
-            $identity = Yii::$app->user->identity;
-            $identity->generateAccessToken();
-            $identity->access_token_created_at = time();
-            $identity->save();
-            $this->setHeaderAccessToken($identity->access_token);
-            return $identity->access_token;
-        }
     }
 
     /**
@@ -92,25 +31,34 @@ class AdminUser extends Service
      */
     protected function actionLogin($data)
     {
-        $model = new $this->_adminUserLoginModelName();
-        $model->username    = $data['username'];
-        $model->password    = $data['password'];
-        //echo 1;exit;
-        $loginStatus        = $model->login();
-        $errors             = $model->errors;
-        if (!empty($errors)) {
-            Yii::$service->helper->errors->addByModelErrors($errors);
-        }
-
-        return $loginStatus;
+        return Yii::$service->adminUser->userLogin->login($data);
     }
 
-    protected function actionSetHeaderAccessToken($accessToken)
+    /**
+     * @property $ids | Int Array
+     * @return 得到相应用户的数组。
+     */
+    public function getIdAndNameArrByIds($ids)
     {
-        if ($accessToken) {
-            Yii::$app->response->getHeaders()->set('access-token', $accessToken);
-            return true;
-        }
+        return Yii::$service->adminUser->adminUser->getIdAndNameArrByIds($ids);
+    }
+
+    /** Appapi 部分使用的函数
+     * @param $username | String
+     * @param $password | String
+     * @return mix string|null
+     * Appapi 和 第三方进行数据对接部分的用户登陆验证
+     */
+    public function loginAndGetAccessToken($username, $password)
+    {
+        return Yii::$service->adminUser->userLogin->loginAndGetAccessToken($username, $password);
+    }
+
+
+
+    public function setHeaderAccessToken($accessToken)
+    {
+        return Yii::$service->adminUser->userLogin->setHeaderAccessToken($accessToken);
     }
 
     /** AppServer 部分使用的函数
@@ -120,32 +68,9 @@ class AdminUser extends Service
      * 如果不过期，则返回identity
      * ** 该方法为appserver用户通过access-token验证需要执行的函数。
      */
-    protected function actionLoginByAccessToken($type = null)
+    public function loginByAccessToken($type = null)
     {
-        $header = Yii::$app->request->getHeaders();
-        if (isset($header['access-token']) && $header['access-token']) {
-            $accessToken = $header['access-token'];
-        }
-        if ($accessToken) {
-            $identity = Yii::$app->user->loginByAccessToken($accessToken, $type);
-            if ($identity !== null) {
-                $access_token_created_at = $identity->access_token_created_at;
-                $timeout = Yii::$service->session->timeout;
-                // 如果时间没有过期，则返回identity
-                if ($access_token_created_at + $timeout > time()) {
-                    //如果时间没有过期，但是快要过期了，在过$updateTimeLimit段时间就要过期，那么更新access_token_created_at。
-                    $updateTimeLimit = Yii::$service->session->updateTimeLimit;
-                    if ($access_token_created_at + $timeout <= (time() + $updateTimeLimit)) {
-                        $identity->access_token_created_at = time();
-                        $identity->save();
-                    }
-                    return $identity;
-                } else {
-                    $this->logoutByAccessToken();
-                    return false;
-                }
-            }
-        }
+        return Yii::$service->adminUser->userLogin->loginByAccessToken($type);
     }
 
     /**
@@ -153,17 +78,6 @@ class AdminUser extends Service
      */
     public function logoutByAccessToken()
     {
-        $userComponent = Yii::$app->user;
-        $identity = $userComponent->identity;
-        if ($identity !== null) {
-            if (!Yii::$app->user->isGuest) {
-                $identity->access_token = null;
-                $identity->access_token_created_at = null;
-                $identity->save();
-            }
-            $userComponent->switchIdentity(null);
-        }
-
-        return $userComponent->getIsGuest();
+        return Yii::$service->adminUser->userLogin->logoutByAccessToken();
     }
 }

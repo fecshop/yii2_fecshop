@@ -55,67 +55,67 @@ return [
                 'menuConfig' => [
                     // 一级大类
                     'catalog' => [
-                        'label' => '产品分类',
+                        'label' => 'Category & Prodcut',
                         'child' => [
                             // 二级类
                             'product_manager' => [
-                                'label' => '产品管理',
+                                'label' => 'Manager Product',
                                 'child' => [
                                     // 三级类
                                     'product_info_manager' => [
-                                        'label' => '产品信息管理',
+                                        'label' => 'Product Info',
                                         'url_key' => '/catalog/productinfo/index',
                                     ],
                                     // 三级类
                                     'product_review_manager' => [
-                                        'label' => '产品评论管理',
+                                        'label' => 'Product Reveiew',
                                         'url_key' => '/catalog/productreview/index',
                                     ],
                                     // 三级类
                                     'product_search_manager' => [
-                                        'label' => '产品搜索管理',
+                                        'label' => 'Product Search',
                                         'url_key' => '/catalog/productsearch/index',
                                     ],
 
                                     'product_favorite_manager' => [
-                                        'label' => '产品收藏管理',
+                                        'label' => 'Product Favorite',
                                         'url_key' => '/catalog/productfavorite/index',
                                     ],
                                 ]
                             ],
                             'category_manager' => [
-                                'label' => '分类管理',
+                                'label' => 'Manager Category',
                                 'url_key' => '/catalog/category/index',
                             ],
                             'urlrewrite_manager' => [
-                                'label' => 'URL重写管理',
+                                'label' => 'URL Rewrite',
                                 'url_key' => '/catalog/urlrewrite/index',
                             ],
                         ]
                     ],
                     'sales' => [
-                        'label' => '销售',
+                        'label' => 'Sales',
                         'child' => [
                             'order' => [
-                                'label' => '订单',
+                                'label' => 'Order',
                                 'child' => [
                                     'order_manager' => [
-                                        'label' => '订单管理',
+                                        'label' => 'Manager Order',
                                         'url_key' => '/sales/orderinfo/manager',
                                     ],
                                 ],
                             ],
                             'coupon' => [
-                                'label' => '优惠券',
+                                'label' => 'Coupon',
                                 'url_key' => '/sales/coupon/manager',
                             ],
                         ],
                     ],
                     'customer' => [
-                        'label' => '用户管理',
+                        'label' => 'Manager User',
                         'child' => [
                             'account' => [
-                                'label' => '账号管理',
+                                'label' => 'Manager Account',
                                 'url_key' => '/customer/account/index',
                             ],
                             'newsletter' => [
@@ -129,35 +129,35 @@ return [
                         'label' => 'CMS',
                         'child' => [
                             'page' => [
-                                'label' => 'Page管理',
+                                'label' => 'Manager Page',
                                 'url_key' => '/cms/article/index',
                             ],
                             'staticblock' => [
-                                'label' => '静态块',
+                                'label' => 'Static Block',
                                 'url_key' => '/cms/staticblock/index',
                             ],
                         ],
                     ],
                     'dashboard' => [
-                        'label' => '控制面板',
+                        'label' => 'Dashboard',
                         'child' => [
                             'adminuser' => [
-                                'label' => '用户管理',
+                                'label' => 'Admin User',
                                 'child' => [
                                     'myaccount' => [
-                                        'label' => '我的账户',
+                                        'label' => 'My Account',
                                         'url_key' => '/fecadmin/myaccount/index',
                                     ],
                                     'account_manager' => [
-                                        'label' => '账户管理',
+                                        'label' => 'Manager Account',
                                         'url_key' => '/fecadmin/account/manager',
                                     ],
                                     'role_manager' => [
-                                        'label' => '权限管理',
+                                        'label' => 'Manager Role',
                                         'url_key' => '/fecadmin/role/manager',
                                     ],
                                     'resource_manager' => [
-                                        'label' => '资源管理',
+                                        'label' => 'Manager Resource',
                                         'url_key' => '/fecadmin/resource/manager',
                                     ],
                                 ],
@@ -167,19 +167,19 @@ return [
                             //    'url_key' => '/fecadmin/menu/manager',
                             //],
                             'log' => [
-                                'label' => '操作日志',
+                                'label' => 'Log Info',
                                 'url_key' => '/fecadmin/log/index',
                             ],
                             'logtj' => [
-                                'label' => '日志统计',
+                                'label' => 'Log Statistics',
                                 'url_key' => '/fecadmin/logtj/index',
                             ],
                             'cache' => [
-                                'label' => '缓存管理',
+                                'label' => 'Manager Cache',
                                 'url_key' => '/fecadmin/cache/index',
                             ],
                             'config' => [
-                                'label' => '后台配置',
+                                'label' => 'Admin Config',
                                 'url_key' => '/fecadmin/config/manager',
                             ],
                             'error_handler' => [
