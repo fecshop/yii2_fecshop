@@ -39,6 +39,10 @@ class SystemLog extends Service
         list($this->_modelName, $this->_model) = Yii::mapGet($this->_modelName);
     }
     
+    public function getSystemLogModel(){
+        return $this->_model;
+    }
+    
     public function getPrimaryKey()
     {
         return 'id';

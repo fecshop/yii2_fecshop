@@ -18,10 +18,11 @@ use fecshop\app\appadmin\modules\AppadminController;
 class LogtjController extends AppadminController
 {
 	public $enableCsrfValidation = false;
+    public $blockNamespace = 'fecshop\\app\\appadmin\\modules\\Fecadmin\\block';
     
     public function actionIndex()
     {
-		$data = $this->getFecadminBlock()->getLastData();
+		$data = $this->getBlock()->getLastData();
 		return $this->render($this->action->id,$data);
 	}
 
