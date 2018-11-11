@@ -7,61 +7,31 @@
  * @license http://www.fecshop.com/license/
  */
 namespace fecshop\app\appadmin\modules\Fecadmin\block\cache;
-use fecadmin\FecadminbaseBlock;
-use fecadmin\models\AdminUser;
-use fecadmin\models\AdminLog;
+
 use fec\helpers\CUrl;
-use fec\helpers\CRequest;
-use fec\helpers\CCache;
+use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockInterface;
+use fecshop\app\appadmin\modules\AppadminbaseBlock;
 use Yii;
+
 /**
+ * block cms\article.
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Index extends FecadminbaseBlock{
-	public $_obj ;
-	public $_paramKey = 'id';
-	public $_defaultDirection = 'asc';
-	public $_currentUrl;
-	
-	public function __construct(){
-		$this->_currentUrl = CUrl::getUrl("fecadmin/cache/index");
-		$this->_modelName = 'admin_user';
-		parent::__construct();
-	}
-	// 各个入口的redis配置和common的redis配置，合并，最后存放到该类变量中
+class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
+{
+    // 各个入口的redis配置和common的redis配置，合并，最后存放到该类变量中
     public $appRedisCache;
     // 报错信息
     public $errors; 
     // 从模块配置中取出来 common的redis配置的数组key。
     public $commonConfigKey = 'commonConfig';
-	
-	# 初始化参数
-	public function initParam(){
-		# 定义编辑和删除的URL
-		
-		$this->_editUrl 	= ''; #CUrl::getUrl("fecadmin/log/indexedit");
-		$this->_deleteUrl 	= '';	#CUrl::getUrl("fecadmin/account/indexdelete");
-		$this->_obj	= new AdminLog;
-		$this->_paramKey = 'id';
-		/*  
-		# 自定义参数如下：
-		#排序默认为主键倒序
-		$this->_orderField  = 'created_at';
-		$this->_sortDirection = 'asc';
-		
-		# 主键默认为id
-		$this->_paramKey = 'id';
-		
-		#第一次打开默认为第一页,一页显示50个
-		$this->_pageNum = 1;
-		$this->_numPerPage;
-		
-		*/
-		parent::initParam();
-		
-	}
-	
+    
+	public function init()
+    {
+		$this->_currentUrl = CUrl::getUrl("fecadmin/cache/index");
+        $this->_currentParamUrl = CUrl::getCurrentUrl();
+    }
 	public function getLastData(){
 		# 返回数据的函数
 		# 隐藏部分
@@ -86,15 +56,12 @@ class Index extends FecadminbaseBlock{
 			'toolBar'	=> $toolBar,
 		];
 	}
-	
-	
+    public function getTableFieldArr(){
+        return [];
+    }
 	# 定义搜索部分字段格式
 	public function getSearchArr(){
-		
-		$data = [
-		
-		];
-		return $data;
+		return [];
 	}
 	
 	public function getEditBar(){
