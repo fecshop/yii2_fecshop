@@ -39,6 +39,60 @@ class SystemLog extends Service
         list($this->_modelName, $this->_model) = Yii::mapGet($this->_modelName);
     }
     
+    public function getPrimaryKey()
+    {
+        return 'id';
+    }
+
+    public function getByPrimaryKey($primaryKey)
+    {
+        if ($primaryKey) {
+            $one = $this->_model->findOne($primaryKey);
+            foreach ($this->_lang_attr as $attrName) {
+                if (isset($one[$attrName])) {
+                    $one[$attrName] = unserialize($one[$attrName]);
+                }
+            }
+
+            return $one;
+        } else {
+            return new $this->_modelName();
+        }
+    }
+    /*
+     * example filter:
+     * [
+     * 		'numPerPage' 	=> 20,
+     * 		'pageNum'		=> 1,
+     * 		'orderBy'	=> ['_id' => SORT_DESC, 'sku' => SORT_ASC ],
+            'where'			=> [
+                ['>','price',1],
+                ['<=','price',10]
+     * 			['sku' => 'uk10001'],
+     * 		],
+     * 	'asArray' => true,
+     * ]
+     */
+    public function coll($filter = '')
+    {
+        $query = $this->_model->find();
+        $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
+        $coll = $query->all();
+        if (!empty($coll)) {
+            foreach ($coll as $k => $one) {
+                foreach ($this->_lang_attr as $attr) {
+                    $one[$attr] = $one[$attr] ? unserialize($one[$attr]) : '';
+                }
+                $coll[$k] = $one;
+            }
+        }
+        //var_dump($one);
+        return [
+            'coll' => $coll,
+            'count'=> $query->limit(null)->offset(null)->count(),
+        ];
+    }
+    
 	# 保存系统日志。
 	public function save(){
 		if (!$this->enableLog) {
@@ -70,3 +124,4 @@ class SystemLog extends Service
 	}
 	
 }
+
