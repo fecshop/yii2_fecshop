@@ -44,6 +44,9 @@ return [
             'role' => [
                 'class' => 'fecshop\services\admin\Role',
             ],
+            'config' => [
+                'class' => 'fecshop\services\admin\Config',
+            ],
             'userRole' => [
                 'class' => 'fecshop\services\admin\UserRole',
             ],

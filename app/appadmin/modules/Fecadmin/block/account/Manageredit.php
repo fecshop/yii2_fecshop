@@ -138,9 +138,7 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
                 'display'=>[
                     'type' => 'inputString',
                 ],
-
             ],
-
             [
                 'label'=>'用户状态',
                 'name'=>'status',
@@ -154,14 +152,6 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
                 'require' => 1,
                 'default' => $activeStatus,
             ],
-            //[
-            //	'label'=>'权限',
-            //	'name'=>'role',
-            //	'display'=>[
-            //		'type' => 'select',
-            //		'data' => AdminRole::getAdminRoleArr(),
-            //	],
-            //],
             [
                 'label'=>'出生日期',
                 'name'=>'birth_date',
@@ -182,7 +172,6 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
                 ],
             ],
         ];
-
     }
 
     public function getUserRoleIds(){
@@ -206,10 +195,7 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         return $role_ids;
     }
 
-
-
     public function getEditBar($editArr = []){
-
         if (empty($editArr)) {
             $editArr = $this->getEditArr();
         }
@@ -226,7 +212,6 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
             if(empty($display)){
                 $display = ['type' => 'inputString'];
             }
-            //var_dump($this->_one['id']);
             $value = $this->_one[$name] ? $this->_one[$name] : $column['default'];
             $display_type = isset($display['type']) ? $display['type'] : 'inputString';
             if($display_type == 'inputString'){
@@ -268,7 +253,6 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
                     }
                     $select_str .= '</select>';
                 }
-
                 $str .='<p>
 							<label>'.$label.'：</label>
 							'.$select_str.'
@@ -277,16 +261,6 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         }
         return $str;
     }
-
-
-
-
-
-
-
-
-
-
 
 }
 

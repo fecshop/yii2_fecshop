@@ -34,9 +34,9 @@ class UrlKey extends Service
         '/fecadmin/logout/index' => '帐号退出',
     ];
 
-    protected $_staticBlockModelName = '\fecshop\models\mysqldb\admin\UrlKey';
+    protected $_modelName = '\fecshop\models\mysqldb\admin\UrlKey';
 
-    protected $_staticBlockModel;
+    protected $_mode;
 
     /**
      *  language attribute.
@@ -47,7 +47,7 @@ class UrlKey extends Service
     public function init()
     {
         parent::init();
-        list($this->_staticBlockModelName, $this->_staticBlockModel) = Yii::mapGet($this->_staticBlockModelName);
+        list($this->_modelName, $this->_mode) = Yii::mapGet($this->_modelName);
     }
 
     public function getTags(){
@@ -69,7 +69,7 @@ class UrlKey extends Service
     public function getByPrimaryKey($primaryKey)
     {
         if ($primaryKey) {
-            $one = $this->_staticBlockModel->findOne($primaryKey);
+            $one = $this->_mode->findOne($primaryKey);
             foreach ($this->_lang_attr as $attrName) {
                 if (isset($one[$attrName])) {
                     $one[$attrName] = unserialize($one[$attrName]);
@@ -78,7 +78,7 @@ class UrlKey extends Service
 
             return $one;
         } else {
-            return new $this->_staticBlockModelName();
+            return new $this->_modelName();
         }
     }
     /*
@@ -97,7 +97,7 @@ class UrlKey extends Service
      */
     public function coll($filter = '')
     {
-        $query = $this->_staticBlockModel->find();
+        $query = $this->_mode->find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
         $coll = $query->all();
         if (!empty($coll)) {
@@ -228,7 +228,7 @@ class UrlKey extends Service
             return;
         }
         if ($primaryVal) {
-            $model = $this->_staticBlockModel->findOne($primaryVal);
+            $model = $this->_mode->findOne($primaryVal);
             if (!$model) {
                 Yii::$service->helper->errors->add('static block '.$this->getPrimaryKey().' is not exist');
 
@@ -240,7 +240,7 @@ class UrlKey extends Service
                 return false;
             }
         } else {
-            $model = new $this->_staticBlockModelName();
+            $model = new $this->_modelName();
             $model->created_at = time();
         }
         $model->updated_at = time();
@@ -262,7 +262,7 @@ class UrlKey extends Service
         $id = $this->getPrimaryKey();
         $primaryVal = isset($one[$id]) ? $one[$id] : '';
         $where = ['url_key' => $url_key];
-        $query = $this->_staticBlockModel->find()->asArray();
+        $query = $this->_mode->find()->asArray();
         $query->where($where);
         if ($primaryVal) {
             $query->andWhere(['<>', $id, $primaryVal]);
@@ -284,7 +284,7 @@ class UrlKey extends Service
         }
         if (is_array($ids) && !empty($ids)) {
             foreach ($ids as $id) {
-                $model = $this->_staticBlockModel->findOne($id);
+                $model = $this->_mode->findOne($id);
                 if ($model->can_delete == $this->can_not_delete) {
                     Yii::$service->helper->errors->add('resource(url key) created by system, can not remove');
 
@@ -297,7 +297,7 @@ class UrlKey extends Service
             }
         } else {
             $id = $ids;
-            $model = $this->_staticBlockModel->findOne($id);
+            $model = $this->_mode->findOne($id);
             if ($model->can_delete == $this->can_not_delete) {
                 Yii::$service->helper->errors->add('resource(url key) created by system, can not remove');
 

@@ -17,11 +17,12 @@ use fecshop\app\appadmin\modules\AppadminController;
  */
 class ConfigController extends AppadminController
 {
-	public $enableCsrfValidation = false;
+	public $blockNamespace = 'fecshop\\app\\appadmin\\modules\\Fecadmin\\block';
+    public $enableCsrfValidation = false;
     
     public function actionManager()
     {
-		$data = $this->getFecadminBlock()->getLastData();
+		$data = $this->getBlock()->getLastData();
 		return $this->render($this->action->id,$data);
 	}
 	
@@ -29,7 +30,7 @@ class ConfigController extends AppadminController
 	public function actionManageredit()
     {
 		//echo $this->action->id ;exit;
-		$data = $this->getFecadminBlock()->getLastData();
+		$data = $this->getBlock()->getLastData();
 		return $this->render($this->action->id,$data);
 	}
 	
@@ -37,14 +38,14 @@ class ConfigController extends AppadminController
     {
 		
 		//echo $this->action->id ;exit;
-		$data = $this->getFecadminBlock("manageredit")->save();
+		$data = $this->getBlock("manageredit")->save();
 		//return $this->render($this->action->id,$data);
 	}
 	
 	public function actionManagerdelete()
     {
 		//echo $this->action->id ;exit;
-		$this->getFecadminBlock("manageredit")->delete();
+		$this->getBlock("manageredit")->delete();
 		
 	}
 
