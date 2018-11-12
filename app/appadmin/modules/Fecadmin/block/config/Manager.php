@@ -67,16 +67,16 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
 	public function getSearchArr(){
 		$data = [
 			[	# 字符串类型
-				'type'=>'inputtext',
-				'title'=>'配置LABEL',
-				'name'=>'label' ,
-				'columns_type' =>'string'
+				'type' => 'inputtext',
+				'title' => Yii::$service->page->translate->__('config label'),
+				'name' => 'label' ,
+				'columns_type' => 'string'
 			],
 			[	# 字符串类型
-				'type'=>'inputtext',
-				'title'=>'配置KEY',
-				'name'=>'key' ,
-				'columns_type' =>'string'
+				'type' => 'inputtext',
+				'title' => Yii::$service->page->translate->__('config key') ,
+				'name' => 'key' ,
+				'columns_type' => 'string'
 			],
 		];
         
@@ -93,37 +93,37 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
 			],
 			[	
 				'orderField'	=> 'label',
-				'label'			=> '配置LABEL',
+				'label'			=> Yii::$service->page->translate->__('config label'),
 				'width'			=> '150',
 				'align' 		=> 'left',
 			],
 			[	
 				'orderField'	=> 'key',
-				'label'			=> '配置key',
+				'label'			=> Yii::$service->page->translate->__('config key') ,
 				'width'			=> '110',
 				'align' 		=> 'left',
 			],
 			[	
 				'orderField'	=> 'value',
-				'label'			=> '配置值',
+				'label'			=> Yii::$service->page->translate->__('config value') ,
 				'width'			=> '150',
 				'align' 		=> 'left',
 			],
 			[	
 				'orderField'	=> 'created_at',
-				'label'			=> '创建时间',
+				'label'			=> Yii::$service->page->translate->__('created at') ,
 				'width'			=> '70',
 				'align' 		=> 'center',
 			],
 			[	
 				'orderField'	=> 'updated_at',
-				'label'			=> '更新时间',
+				'label'			=> Yii::$service->page->translate->__('updated at') ,
 				'width'			=> '70',
 				'align' 		=> 'center',
 			],
 			[	
 				'orderField'	=> 'created_person',
-				'label'			=> '创建人',
+				'label'			=> Yii::$service->page->translate->__('create person') ,
 				'width'			=> '50',
 				'align' 		=> 'left',
 			],
