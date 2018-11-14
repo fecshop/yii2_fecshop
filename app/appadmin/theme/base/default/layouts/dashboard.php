@@ -13,11 +13,19 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use fecadmin\myassets\AppAsset;
+use fecadmin\myassets\AppZhAsset;
 use common\widgets\Alert;
 use fec\helpers\CUrl;
 use fecadmin\views\layouts\Head;
-AppAsset::register($this);
-$publishedPath = $this->assetManager->publish('@fecadmin/myassets/dwz_jui-master/dwz.frag.xml');
+
+$currentLangCode = Yii::$service->admin->getCurrentLangCode();
+if ($currentLangCode == 'zh') {
+    AppZhAsset::register($this);
+    $publishedPath = $this->assetManager->publish('@fecadmin/myassets/dwz_jui-master/dwz.frag.zh.xml');
+} else {
+    AppAsset::register($this);
+    $publishedPath = $this->assetManager->publish('@fecadmin/myassets/dwz_jui-master/dwz.frag.xml');
+}
 ?>
 <?php
 // fecshop 多模板机制的js和css部分
