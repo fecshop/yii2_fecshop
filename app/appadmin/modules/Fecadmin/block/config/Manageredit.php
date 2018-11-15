@@ -42,7 +42,6 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         ];
     }
     
-    
     public function save()
     {
         $request_param = CRequest::param();
@@ -55,14 +54,14 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         $errors = Yii::$service->helper->errors->get();
         if (!$errors) {
             echo  json_encode([
-                'statusCode'=>'200',
-                'message'=>'save success',
+                'statusCode' => '200',
+                'message' => Yii::$service->page->translate->__('Save Success'),
             ]);
             exit;
         } else {
             echo  json_encode([
-                'statusCode'=>'300',
-                'message'=>$errors,
+                'statusCode' => '300',
+                'message' => $errors,
             ]);
             exit;
         }
@@ -80,14 +79,14 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         $errors = Yii::$service->helper->errors->get();
         if (!$errors) {
             echo  json_encode([
-                'statusCode'=>'200',
-                'message'=>'remove config  success',
+                'statusCode' => '200',
+                'message' => Yii::$service->page->translate->__('Remove Success'),
             ]);
             exit;
         } else {
             echo  json_encode([
-                'statusCode'=>'300',
-                'message'=>$errors,
+                'statusCode' => '300',
+                'message' => $errors,
             ]);
             exit;
         }
@@ -97,33 +96,33 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         
         return [
             [
-                'label'=>'Label',
-                'name'=>'label',
-                'display'=>[
+                'label' => Yii::$service->page->translate->__('Config Label'),
+                'name' => 'label',
+                'display' => [
                     'type' => 'inputString',
                 ],
                 'require' => 1,
             ],
             [
-                'label'=>'KEY',
-                'name'=>'key',
-                'display'=>[
+                'label' => Yii::$service->page->translate->__('Config Key'),
+                'name' => 'key',
+                'display' => [
                     'type' => 'inputString',
                 ],
                 'require' => 1,
             ],
             [
-                'label'=>'Value',
-                'name'=>'value',
-                'display'=>[
+                'label' => Yii::$service->page->translate->__('Config Value'),
+                'name' => 'value',
+                'display' => [
                     'type' => 'inputString',
                 ],
                 'require' => 1,
             ],
             [
-                'label'=>'描述',
-                'name'=>'description',
-                'display'=>[
+                'label' => Yii::$service->page->translate->__('Description'),
+                'name' => 'description',
+                'display' => [
                     'type' => 'inputString',
                 ],
                 'require' => 0,
@@ -193,15 +192,6 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         }
         return $str;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
 }
