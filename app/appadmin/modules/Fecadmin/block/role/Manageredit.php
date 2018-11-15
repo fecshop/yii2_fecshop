@@ -29,8 +29,6 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         $this->_saveUrl = CUrl::getUrl('fecadmin/role/managereditsave');
         parent::init();
     }
-
-
     # 传递给前端的数据 显示编辑form
     public function getLastData(){
         return [
@@ -57,26 +55,25 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
     }
 
     public function getEditArr(){
+        
         return [
             [
-                'label'=>'权限名称',
-                'name'=>'role_name',
-                'display'=>[
+                'label' => Yii::$service->page->translate->__('Role Name'),
+                'name' => 'role_name',
+                'display' => [
                     'type' => 'inputString',
                 ],
                 'require' => 1,
             ],
             [
-                'label'=>'权限描述',
-                'name'=>'role_description',
-                'display'=>[
+                'label' => Yii::$service->page->translate->__('Role Description'),
+                'name' => 'role_description',
+                'display' => [
                     'type' => 'inputString',
                 ],
                 'require' => 1,
             ],
-
         ];
-
     }
 
     # 保存
@@ -86,7 +83,7 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         if ($saveStatus){
             echo  json_encode(array(
                 "statusCode"=>"200",
-                "message"=>"save success",
+                "message"=>Yii::$service->page->translate->__('Save Success'),
             ));
             exit;
         } else {
@@ -114,7 +111,7 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         if (!$errors) {
             echo  json_encode([
                 'statusCode'=>'200',
-                'message'=>'remove data  success',
+                'message'=>Yii::$service->page->translate->__('Remove Success'),
             ]);
             exit;
         } else {
@@ -126,19 +123,4 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
