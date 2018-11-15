@@ -299,7 +299,7 @@ class AppadminbaseBlock extends BaseObject
 				<div class="subBar">
 					<ul>
 						<li><div class="buttonActive"><div class="buttonContent"><button type="submit">
-						'.Yii::$service->page->translate->__('search').'
+						'.Yii::$service->page->translate->__('Search').'
 						</button></div></div></li>
 						<!-- <li><a class="button" href="#" target="dialog" mask="true" title="查询框"><span>高级检索</span></a></li> -->
 					</ul>
@@ -413,7 +413,7 @@ class AppadminbaseBlock extends BaseObject
 					<li><a class="add"   href="'.$this->_editUrl.'"  target="dialog" height="580" width="1000" drawable="true" mask="true"><span>' . Yii::$service->page->translate->__('Add') . '</span></a></li>
 
 					<li><a target="dialog" height="580" width="1000" drawable="true" mask="true" class="edit" href="'.$this->_editUrl.'?'.$this->_primaryKey.'={sid_user}" ><span>' . Yii::$service->page->translate->__('Update') . '</span></a></li>
-					<li><a title="' . Yii::$service->page->translate->__('Are you sure you want to delete these records?') . '" target="selectedTodo" rel="'.$this->_primaryKey.'s" postType="string" href="'.$this->_deleteUrl.'" class="delete"><span>' . Yii::$service->page->translate->__('batch deletion') . '</span></a></li>
+					<li><a title="' . Yii::$service->page->translate->__('Are you sure you want to delete these records?') . '" target="selectedTodo" rel="'.$this->_primaryKey.'s" postType="string" href="'.$this->_deleteUrl.'" class="delete"><span>' . Yii::$service->page->translate->__('Batch Delete') . '</span></a></li>
 				</ul>';
     }
 
@@ -423,7 +423,7 @@ class AppadminbaseBlock extends BaseObject
     public function getToolBar($numCount, $pageNum, $numPerPage)
     {
         return    '<div class="pages">
-					<span>' . Yii::$service->page->translate->__('show') . '</span>
+					<span>' . Yii::$service->page->translate->__('Show') . '</span>
 					<select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
 						<option '.($numPerPage == 2 ? 'selected' : '').' value="2">2</option>
 						<option '.($numPerPage == 6 ? 'selected' : '').' value="6">6</option>
@@ -432,7 +432,7 @@ class AppadminbaseBlock extends BaseObject
 						<option '.($numPerPage == 100 ? 'selected' : '').'  value="100">100</option>
 						<option '.($numPerPage == 200 ? 'selected' : '').'  value="200">200</option>
 					</select>
-					<span>' . Yii::$service->page->translate->__('Line, total {numCount} line', ['numCount' => $numCount]) . '</span>
+					<span>' . Yii::$service->page->translate->__('Line, Total {numCount} Line', ['numCount' => $numCount]) . '</span>
 				</div>
 				<div class="pagination" targetType="navTab" totalCount="'.$numCount.'" numPerPage="'.$numPerPage.'" pageNumShown="10" currentPage="'.$pageNum.'"></div>
 				';
@@ -585,8 +585,8 @@ class AppadminbaseBlock extends BaseObject
                 $str .= '<td><span title="'.$display_title.'">'.$val.'</span></td>';
             }
             $str .= '<td>
-						<a title="' . Yii::$service->page->translate->__('search') . '编辑" target="dialog" class="btnEdit" mask="true" drawable="true" width="1000" height="580" href="'.$this->_editUrl.'?'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" >' . Yii::$service->page->translate->__('search') . '编辑</a>
-						<a title="' . Yii::$service->page->translate->__('search') . '删除" target="ajaxTodo" href="'.$this->_deleteUrl.'?'.$csrfString.'&'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" class="btnDel">' . Yii::$service->page->translate->__('search') . '删除</a>
+						<a title="' . Yii::$service->page->translate->__('Edit') . '" target="dialog" class="btnEdit" mask="true" drawable="true" width="1000" height="580" href="'.$this->_editUrl.'?'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" >' . Yii::$service->page->translate->__('edit') . '</a>
+						<a title="' . Yii::$service->page->translate->__('Delete') . '" target="ajaxTodo" href="'.$this->_deleteUrl.'?'.$csrfString.'&'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" class="btnDel">' . Yii::$service->page->translate->__('delete') . '</a>
 					</td>';
             $str .= '</tr>';
         }
