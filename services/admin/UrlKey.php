@@ -20,9 +20,7 @@ use fecshop\services\Service;
  */
 class UrlKey extends Service
 {
-    
     const URLKEY_LABEL_ARR = 'appadmin_urlkey_label_cache_arr'; 
-    
     public $numPerPage = 20;
 
     public $urlKeyTags;
@@ -30,10 +28,10 @@ class UrlKey extends Service
     
     // 没有在数据库中添加的url key
     public $addUrlKeyAndLabelArr = [
-        '/fecadmin/login/index' => '帐号登陆',
-        '/fecadmin/logout/index' => '帐号退出',
+        '/fecadmin/login/index' => 'Login',
+        '/fecadmin/logout/index' => 'Logout',
     ];
-
+    
     protected $_modelName = '\fecshop\models\mysqldb\admin\UrlKey';
 
     protected $_mode;
@@ -50,11 +48,16 @@ class UrlKey extends Service
         list($this->_modelName, $this->_mode) = Yii::mapGet($this->_modelName);
     }
 
-    public function getTags(){
+    public function getTags($translate = true){
         if (!$this->_urlKeyTags) {
             if (is_array($this->urlKeyTags)) {
                 foreach ($this->urlKeyTags as $k => $v) {
-                    $this->_urlKeyTags[$k] = Yii::$service->page->translate->__($v);
+                    if ($translate) {
+                        $this->_urlKeyTags[$k] = Yii::$service->page->translate->__($v);
+                    } else {
+                        $this->_urlKeyTags[$k] = $v;
+                    }
+                    
                 }
             }
         }
@@ -128,7 +131,7 @@ class UrlKey extends Service
             ];
             $data = $this->coll($filter);
             if (is_array($data['coll'])) {
-                $tags = $this->getTags();
+                $tags = $this->getTags(false);
                 foreach ($data['coll'] as $one) {
                     $url_key =  $one['url_key'];
                     $label = $tags[$one['tag']] .' '. $one['name'];
