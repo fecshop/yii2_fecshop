@@ -24,20 +24,14 @@ use fecadmin\models\AdminRole;
 				<input type="hidden"  value="<?=  $product_id; ?>" size="30" name="product_id" class="textInput ">
 				
 				<fieldset id="fieldset_table_qbe">
-					<legend style="color:#cc0000">编辑信息</legend>
+					<legend style="color:#cc0000"><?= Yii::$service->page->translate->__('Edit Info'); ?></legend>
 					<div>
 						<?= $editBar; ?>
-						
-						
-						
-						
 					</div>
-					
-					
 				</fieldset>
 				
 				<fieldset id="fieldset_table_qbe">
-					<legend style="color:#cc0000">ROLE信息</legend>
+					<legend style="color:#cc0000"><?= Yii::$service->page->translate->__('Role Info'); ?></legend>
 					
 					<div>
 							
@@ -56,13 +50,10 @@ use fecadmin\models\AdminRole;
 								</div>
 								<?= $label ?>
 							</label>
-							
 							<?php
 								}
-							?>
-								
+							?>	
 						</div>
-					
 					</div>
 				</fieldset>
 		</div>
@@ -70,10 +61,10 @@ use fecadmin\models\AdminRole;
 		<div class="formBar">
 			<ul>
 				<!--<li><a class="buttonActive" href="javascript:;"><span>保存</span></a></li>-->
-				<li><div class="buttonActive"><div class="buttonContent"><button onclick="func('accept')"  value="accept" name="accept" type="submit">保存</button></div></div></li>
+				<li><div class="buttonActive"><div class="buttonContent"><button onclick="func('accept')"  value="accept" name="accept" type="submit"><?= Yii::$service->page->translate->__('Save'); ?></button></div></div></li>
 			
 				<li>
-					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+					<div class="button"><div class="buttonContent"><button type="button" class="close"><?= Yii::$service->page->translate->__('Cancel'); ?></button></div></div>
 				</li>
 			</ul>
 		</div>

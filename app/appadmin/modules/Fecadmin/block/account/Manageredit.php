@@ -56,8 +56,8 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         $errors = Yii::$service->helper->errors->get();
         if (!$errors) {
             echo  json_encode([
-                'statusCode'=>'200',
-                'message'=>'save success',
+                'statusCode' => '200',
+                'message' => Yii::$service->page->translate->__('Save Success') ,
             ]);
             exit;
         } else {
@@ -68,7 +68,6 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
             exit;
         }
     }
-
     // 批量删除
     public function delete()
     {
@@ -83,7 +82,7 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         if (!$errors) {
             echo  json_encode([
                 'statusCode'=>'200',
-                'message'=>'remove account  success',
+                'message'=> Yii::$service->page->translate->__('Remove Success') ,
             ]);
             exit;
         } else {
@@ -100,7 +99,7 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         $deleteStatus = Yii::$service->adminUser->adminUser->getDeleteStatus();
         return [
             [
-                'label'=>'用户名',
+                'label'=> Yii::$service->page->translate->__('User Name'),
                 'name'=>'username',
                 'display'=>[
                     'type' => 'inputString',
@@ -108,7 +107,7 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
                 'require' => 1,
             ],
             [
-                'label'=>'密码',
+                'label'=> Yii::$service->page->translate->__('Password'),
                 'name'=>'password',
                 'display'=>[
                     'type' => 'inputPassword',
@@ -116,7 +115,7 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
                 'require' => 0,
             ],
             [
-                'label'=>'邮箱',
+                'label'=> Yii::$service->page->translate->__('Email'),
                 'name'=>'email',
                 'require' => 0,
                 'display'=>[
@@ -124,7 +123,7 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
                 ],
             ],
             [
-                'label'=>'姓名',
+                'label'=> Yii::$service->page->translate->__('Name'),
                 'name'=>'person',
                 'require' => 0,
                 'display'=>[
@@ -132,7 +131,7 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
                 ],
             ],
             [
-                'label'=>'员工编号',
+                'label'=> Yii::$service->page->translate->__('Worker No'),
                 'name'=>'code',
                 'require' => 1,
                 'display'=>[
@@ -140,32 +139,34 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
                 ],
             ],
             [
-                'label'=>'用户状态',
+                'label'=> Yii::$service->page->translate->__('Status'),
                 'name'=>'status',
                 'display'=>[
                     'type' => 'select',
                     'data' => [
-                        $activeStatus 	=> '激活',
-                        $deleteStatus 	=> '关闭',
+                        $activeStatus 	=> Yii::$service->page->translate->__('Enable'),
+                        $deleteStatus 	=> Yii::$service->page->translate->__('Disable'),
                     ]
                 ],
                 'require' => 1,
                 'default' => $activeStatus,
             ],
             [
-                'label'=>'出生日期',
+                'label'=> Yii::$service->page->translate->__('Birth Date'),
                 'name'=>'birth_date',
                 'display'=>[
                     'type' => 'inputDate',
                 ],
             ],
             [
+                'label'=> Yii::$service->page->translate->__('Auth Key'),
                 'name'=>'auth_key',
                 'display'=>[
                     'type' => 'inputString',
                 ],
             ],
             [
+                'label'=> Yii::$service->page->translate->__('Access Token'),
                 'name'=>'access_token',
                 'display'=>[
                     'type' => 'inputString',
@@ -186,8 +187,8 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         ];
         $data = Yii::$service->admin->userRole->coll($filter);
         $role_ids = [];
-        if(is_array($data['coll']) && !empty($data['coll'])){
-            foreach($data['coll'] as $r){
+        if (is_array($data['coll']) && !empty($data['coll'])) {
+            foreach ($data['coll'] as $r) {
                 $role_ids[] = $r['role_id'];
             }
         }
@@ -200,46 +201,46 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
             $editArr = $this->getEditArr();
         }
         $str = '';
-        if($this->_param[$this->_primaryKey]){
+        if ($this->_param[$this->_primaryKey]) {
             $str = '<input type="hidden"  value="'.$this->_param[$this->_primaryKey].'" size="30" name="editFormData['.$this->_primaryKey
             .']" class="textInput ">';
         }
-        foreach($editArr as $column){
+        foreach ($editArr as $column) {
             $name = $column['name'];
             $require = $column['require'] ? 'required' : '';
             $label = $column['label'] ? $column['label'] : $this->_one->getAttributeLabel($name);
             $display = isset($column['display']) ? $column['display'] : '';
-            if(empty($display)){
+            if (empty($display)) {
                 $display = ['type' => 'inputString'];
             }
             $value = $this->_one[$name] ? $this->_one[$name] : $column['default'];
             $display_type = isset($display['type']) ? $display['type'] : 'inputString';
-            if($display_type == 'inputString'){
+            if ($display_type == 'inputString') {
                 $str .='<p>
 							<label>'.$label.'：</label>
 							<input type="text"  value="'.$value.'" size="30" name="editFormData['.$name.']" class="textInput '.$require.' ">
 						</p>';
-            }else if($display_type == 'inputDate'){
+            } else if ($display_type == 'inputDate') {
                 $str .='<p>
 							<label>'.$label.'：</label>
 							<input type="text"  value="'.($value ? date("Y-m-d",strtotime($value)) : '').'" size="30" name="editFormData['.$name.']" class="date textInput '.$require.' ">
 						</p>';
-            }else if($display_type == 'inputEmail'){
+            } else if ($display_type == 'inputEmail') {
                 $str .='<p>
 							<label>'.$label.'：</label>
 							<input type="text"  value="'.$value.'" size="30" name="editFormData['.$name.']" class="email textInput '.$require.' ">
 						</p>';
-            }else if($display_type == 'inputPassword'){
+            } else if ($display_type == 'inputPassword') {
                 $str .='<p>
 							<label>'.$label.'：</label>
 							<input type="password"  value="" size="30" name="editFormData['.$name.']" class=" textInput '.$require.' ">
 						</p>';
-            }else if($display_type == 'select'){
+            } else if ($display_type == 'select') {
                 $data = isset($display['data']) ? $display['data'] : '';
                 //var_dump($data);
                 //echo $value;
                 $select_str = '';
-                if(is_array($data)){
+                if(is_array($data)) {
                     $select_str .= '<select class="combox '.$require.'" name="editFormData['.$name.']" >';
                     $select_str .='<option value="">'.$label.'</option>';
                     foreach($data as $k => $v){
