@@ -129,7 +129,7 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
                 $str .= '<div class="nps"><span>Sku:</span><input style="width:40px;" type="text" class="custom_option_sku"  value="" /></div>
 						<div class="nps"><span>Qty:</span><input style="width:40px;" type="text" class="custom_option_qty"  value="" /></div>
 						<div class="nps"><span>Price:</span><input  style="width:40px;" type="text" class="custom_option_price"  value="" /></div>
-						<div class="nps" style="width:220px;"><a class=" button chose_custom_op_img" style="display: block;float: left; margin: -2px 10px 0;" ><span style="margin:0">选择图片</span></a><div class="chosened_img"></div></div>
+						<div class="nps" style="width:220px;"><a class=" button chose_custom_op_img" style="display: block;float: left; margin: -2px 10px 0;" ><span style="margin:0">' . Yii::$service->page->translate->__('Select Image') . '</span></a><div class="chosened_img"></div></div>
 						<div class="nps"><a style="display: block;float: right; margin: -2px 10px 0;" class="button add_custom_option"><span style="margin:0">+</span></a></div>
 					';
 
@@ -265,14 +265,13 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
 			<table class="list productimg" width="100%" >
 				<thead>
 					<tr>
-						<td>图片</td>
-						<td>label</td>
-						<td>sort_order</td>
-						
-                        <td>主图</td>
-                        <td>橱窗图</td>
-						<td>描述图</td>
-                        <td>删除</td>
+						<td>' . Yii::$service->page->translate->__('Image') . '</td>
+						<td>' . Yii::$service->page->translate->__('Label') . '</td>
+						<td>' . Yii::$service->page->translate->__('Sort Order') . '</td>
+                        <td>' . Yii::$service->page->translate->__('Main Image') . '</td>
+                        <td>' . Yii::$service->page->translate->__('Window Img') . '</td>
+						<td>' . Yii::$service->page->translate->__('Description Img') . '</td>
+                        <td>' . Yii::$service->page->translate->__('Delete') . '</td>
 					</tr>
 				</thead>
 				<tbody>';
@@ -297,7 +296,7 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
                             </select>
                         </td>
                         
-                        <td style="padding:0 0 0 20px;"><a class="delete_img btnDel" href="javascript:void(0)">删除</a></td>
+                        <td style="padding:0 0 0 20px;"><a class="delete_img btnDel" href="javascript:void(0)">' . Yii::$service->page->translate->__('Delete') . '</a></td>
 					</tr>';
         }
         if (!empty($gallery_image) && is_array($gallery_image)) {
@@ -322,7 +321,7 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
                                             '.$this->getYesNoOptions($is_detail).'
                                         </select>
                                     </td>
-									<td style="padding:0 0 0 20px;"><a class="delete_img btnDel" href="javascript:void(0)">删除</a></td>
+									<td style="padding:0 0 0 20px;"><a class="delete_img btnDel" href="javascript:void(0)">' . Yii::$service->page->translate->__('Delete') . '</a></td>
 								</tr>';
                 $i++;
             }
@@ -338,13 +337,13 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
     public function getYesNoOptions($val){
         if($val == 1){
             return '
-                <option  value="1" selected="selected" >Yes</option>
-                <option  value="2">No</option>
+                <option  value="1" selected="selected" >' . Yii::$service->page->translate->__('Yes') . '</option>
+                <option  value="2">' . Yii::$service->page->translate->__('No') . '</option>
             ';
         }else{
             return '
-                <option  value="1">Yes</option>
-                <option  value="2" selected="selected">No</option>
+                <option  value="1">' . Yii::$service->page->translate->__('Yes') . '</option>
+                <option  value="2" selected="selected">' . Yii::$service->page->translate->__('No') . '</option>
             ';
         }
     }
@@ -403,14 +402,14 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         $errors = Yii::$service->helper->errors->get();
         if (!$errors) {
             echo  json_encode([
-                'statusCode'=>'200',
-                'message'=>'save success',
+                'statusCode' => '200',
+                'message'    => Yii::$service->page->translate->__('Save Success'),
             ]);
             exit;
         } else {
             echo  json_encode([
-                'statusCode'=>'300',
-                'message'=>$errors,
+                'statusCode' => '300',
+                'message'    => $errors,
             ]);
             exit;
         }
@@ -473,11 +472,11 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
                     if (!empty($one)) {
                         list($gallery_image, $gallery_label, $gallery_sort_order,$gallery_is_thumbnails,$gallery_is_detail) = explode('#####', $one);
                         $save_gallery[] = [
-                            'image'         => $gallery_image,
-                            'label'         => $gallery_label,
-                            'sort_order'    => $gallery_sort_order,
+                            'image'            => $gallery_image,
+                            'label'              => $gallery_label,
+                            'sort_order'      => $gallery_sort_order,
                             'is_thumbnails' => $gallery_is_thumbnails,
-                            'is_detail'     => $gallery_is_detail,
+                            'is_detail'         => $gallery_is_detail,
                         ];
                     }
                 }
@@ -488,11 +487,11 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         if ($image_main) {
             list($main_image, $main_label, $main_sort_order,$main_is_thumbnails,$main_is_detail) = explode('#####', $image_main);
             $save_main = [
-                'image'        => $main_image,
-                'label'        => $main_label,
-                'sort_order'    => $main_sort_order,
-                'is_thumbnails'    => $main_is_thumbnails,
-                'is_detail'    => $main_is_detail,
+                'image'             => $main_image,
+                'label'               => $main_label,
+                'sort_order'       => $main_sort_order,
+                'is_thumbnails'   => $main_is_thumbnails,
+                'is_detail'          => $main_is_detail,
             ];
             $this->_param['image']['main'] = $save_main;
         }
@@ -616,14 +615,14 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         $errors = Yii::$service->helper->errors->get();
         if (!$errors) {
             echo  json_encode([
-                'statusCode'=>'200',
-                'message'=>'remove data  success',
+                'statusCode' => '200',
+                'message' => Yii::$service->page->translate->__('Remove Success'),
             ]);
             exit;
         } else {
             echo  json_encode([
-                'statusCode'=>'300',
-                'message'=>$errors,
+                'statusCode' => '300',
+                'message' => $errors,
             ]);
             exit;
         }

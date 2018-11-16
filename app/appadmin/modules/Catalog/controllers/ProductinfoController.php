@@ -42,7 +42,7 @@ class ProductinfoController extends CatalogController
                 if ($user->Id != $created_user_id) {
                     echo  json_encode([
                         'statusCode' => '300',
-                        'message' => 'you donot have role to edit this product',
+                        'message' => Yii::$service->page->translate->__('You do not have role to edit this product'),
                     ]);
                     exit;
                 }
@@ -82,7 +82,7 @@ class ProductinfoController extends CatalogController
                 if ($user->Id != $created_user_id) {
                     echo  json_encode([
                         'statusCode' => '300',
-                        'message' => 'you donot have role to edit this product',
+                        'message' => Yii::$service->page->translate->__('You do not have role to save this product') ,
                     ]);
                     exit;
                 }
@@ -92,7 +92,7 @@ class ProductinfoController extends CatalogController
 
         return $this->render($this->action->id, $data);
     }
-
+    // Yii::$service->page->translate->__('')
     public function actionManagerdelete()
     {
         // edit role,通过resource，判断当前用户是否有编辑（此处的编辑相当于查看产品的详细信息）所有产品的权限，默认，用户只有编辑查看自己发布的产品，而不能查看编辑其他用户的产品
@@ -109,7 +109,7 @@ class ProductinfoController extends CatalogController
                 if ($user->Id != $created_user_id) {
                     echo  json_encode([
                         'statusCode' => '300',
-                        'message' => 'you donot have role to edit this product',
+                        'message' => Yii::$service->page->translate->__('You do not have role to remove this product'),
                     ]);
                     exit;
                 }
@@ -126,7 +126,7 @@ class ProductinfoController extends CatalogController
                         if ($user->Id != $created_user_id) {
                             echo json_encode([
                                 'statusCode' => '300',
-                                'message' => 'you donot have role to edit this product',
+                                'message' => Yii::$service->page->translate->__('You do not have role to remove this product') ,
                             ]);
                             exit;
                         }

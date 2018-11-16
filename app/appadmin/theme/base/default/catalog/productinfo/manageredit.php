@@ -103,7 +103,7 @@ function getCategoryData(product_id,i){
 			}
 		},
 		error:function(){
-			alert('加载分类信息出错');
+			alert('<?=  Yii::$service->page->translate->__('Status') ?>加载分类信息出错');
 		}
 	});
 }
@@ -111,16 +111,16 @@ function getCategoryData(product_id,i){
 function thissubmit(thiss){
 	// product image
 	main_image_image 		=  $('.productimg input[type=radio]:checked').val();
-	main_image_label 		=  $('.productimg input[type=radio]:checked').parent().parent().find(".image_label").val();
+	main_image_label 		    =  $('.productimg input[type=radio]:checked').parent().parent().find(".image_label").val();
 	main_image_sort_order 	=  $('.productimg input[type=radio]:checked').parent().parent().find(".sort_order").val();
-	main_image_is_thumbnails=  $('.productimg input[type=radio]:checked').parent().parent().find(".is_thumbnails").val();
-    main_image_is_detail 	=  $('.productimg input[type=radio]:checked').parent().parent().find(".is_detail").val();
+	main_image_is_thumbnails    =  $('.productimg input[type=radio]:checked').parent().parent().find(".is_thumbnails").val();
+    main_image_is_detail 	    =  $('.productimg input[type=radio]:checked').parent().parent().find(".is_detail").val();
     //alert(main_image_image+main_image_label+main_image_sort_order);
 	if(main_image_image){
 		image_main = main_image_image+'#####'+main_image_label+'#####'+main_image_sort_order  +'#####'+main_image_is_thumbnails  +'#####'+main_image_is_detail;
 		$(".tabsContent .image_main").val(image_main);
 	}else{
-		alert('您至少上传并选择一张主图');
+		alert('<?=  Yii::$service->page->translate->__('You upload and select at least one main image') ?>');
 		//DWZ.ajaxDone;
 		return false;
 	}
@@ -202,15 +202,15 @@ function thissubmit(thiss){
 			<div class="tabsHeader">
 				<div class="tabsHeaderContent">
 					<ul>
-						<li><a href="javascript:;"><span>基本信息</span></a></li>
-						<li><a href="javascript:;"><span>Price信息</span></a></li>
-						<li><a href="javascript:;"><span>Meta信息</span></a></li>
-						<li><a href="javascript:;"><span>描述信息</span></a></li>
-						<li><a href="javascript:;"><span>图片信息</span></a></li>
-						<li><a href="javascript:;"><span>分类信息</span></a></li>
-						<li><a href="javascript:;"><span>属性组信息</span></a></li>
-						<li><a href="javascript:;"><span>自定义信息</span></a></li>
-						<li><a href="javascript:;"><span>相关产品信息</span></a></li>
+						<li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Basic Info') ?></span></a></li>
+						<li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Price Info') ?></span></a></li>
+						<li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Meta Info') ?></span></a></li>
+						<li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Description Info') ?></span></a></li>
+						<li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Image Info') ?></span></a></li>
+						<li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Category Info') ?></span></a></li>
+						<li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Attr Group') ?></span></a></li>
+						<li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Custom Option') ?></span></a></li>
+						<li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Relate Product') ?></span></a></li>
 					</ul>
 				</div>
 			</div>
@@ -219,7 +219,7 @@ function thissubmit(thiss){
 					<input type="hidden"  value="<?=  $product_id; ?>" size="30" name="product_id" class="textInput ">
 				
 					<fieldset id="fieldset_table_qbe">
-						<legend style="color:#cc0000">产品属性组切换：编辑前请先切换相应的产品属性组</legend>
+						<legend style="color:#cc0000"><?=  Yii::$service->page->translate->__('Product attribute group switching: Please switch the product attribute group before editing') ?></legend>
 						<div>
 							<p class="edit_p">
 								<?= $attrGroup ?>
@@ -231,15 +231,15 @@ function thissubmit(thiss){
 				<div>
 					<?= $priceInfo ?>
 					<div class="edit_p">
-						<label>Tier Price：</label>
+						<label><?=  Yii::$service->page->translate->__('Tier Price') ?>：</label>
 						<input type="hidden" name="editFormData[tier_price]" class="tier_price_input"  />
 						<div class="tier_price" style="float:left;width:700px;">
 							<table style="">
 								<thead>
 									<tr>
-										<th>Qty</th>
-										<th>Price</th>
-										<th>Action</th>
+										<th><?=  Yii::$service->page->translate->__('Qty') ?></th>
+										<th><?=  Yii::$service->page->translate->__('Price') ?></th>
+										<th><?=  Yii::$service->page->translate->__('Action') ?></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -247,7 +247,7 @@ function thissubmit(thiss){
 										<?php foreach($tier_price as $one){ ?>
 										<tr>
 											<td>
-												<input class="tier_qty" type="text" value="<?= $one['qty'] ?>"> and above 
+												<input class="tier_qty" type="text" value="<?= $one['qty'] ?>"> <?=  Yii::$service->page->translate->__('And Above') ?>
 											</td>
 											<td>
 												<input class="tier_price" type="text" value="<?= $one['price'] ?>">
@@ -263,7 +263,7 @@ function thissubmit(thiss){
 									<tr>
 										<td colspan="100" style="text-align:right;">						
 											<a rel="2" style="text-align:right;" href="javascript:void(0)" class="addProductTierPrice button">
-												<span>增加TierPrice</span>
+												<span><?=  Yii::$service->page->translate->__('Add Tier Price') ?></span>
 											</a>					
 										</td>				
 									</tr>			
@@ -273,7 +273,7 @@ function thissubmit(thiss){
 								$(document).ready(function(){
 									$(".addProductTierPrice").click(function(){
 										str = "<tr>";
-										str +="<td><input class=\"tier_qty\" type=\"text\"   /> and above </td>";
+										str +="<td><input class=\"tier_qty\" type=\"text\"   /> <?=  Yii::$service->page->translate->__('And Above') ?> </td>";
 										str +="<td><input class=\"tier_price\" type=\"text\"   /></td>";
 										str +="<td><img src=\"<?= \Yii::$service->image->getImgUrl('/images/bkg_btn-close2.gif')  ?>\" /></td>";
 										str +="</tr>";
@@ -303,7 +303,7 @@ function thissubmit(thiss){
 						<!-- position: absolute;left: 10px;top: 5px;只针对本用例将input隐至图片底下。-->
 						<!-- height:0;width:0;z-index: -1;是为了隐藏input，因为Chrome下不能使用display:none，否则无法添加文件 -->
 						<!-- onclick="getElementById('inputfile').click()" 点击图片时则点击添加文件按钮 -->
-						<button style="" onclick="getElementById('inputfile').click()" class="scalable" type="button" title="Duplicate" id=""><span><span><span>Browse Files</span></span></span></button>
+						<button style="" onclick="getElementById('inputfile').click()" class="scalable" type="button" title="Duplicate" id=""><span><span><span><?=  Yii::$service->page->translate->__('Browse Files') ?></span></span></span></button>
 						
 						<input type="file" multiple="multiple" id="inputfile" style="height:0;width:0;z-index: -1; position: absolute;left: 10px;top: 5px;"/>
 						<span class="loading"></span>
@@ -366,7 +366,7 @@ function thissubmit(thiss){
 										//$(".loading").hide();	//加载成功移除加载图片
 									},
 									error:function(){
-										alert('上传出错');
+										alert('<?=  Yii::$service->page->translate->__('Upload Error') ?>');
 										//$(".loading").hide();	//加载失败移除加载图片
 									}
 								});
@@ -377,15 +377,15 @@ function thissubmit(thiss){
 				<div>
 					<script>
 									
-									$(document).ready(function(){
-										id = '<?= $product_id; ?>' ;
-										
-										getCategoryData(id,0);  
-									});
-								</script>
-								<input type="hidden" value="" name="category"  class="inputcategory"/>
-								<ul class="category_tree tree treeFolder treeCheck expand" >
-																	</ul>
+                        $(document).ready(function(){
+                            id = '<?= $product_id; ?>' ;
+                            
+                            getCategoryData(id,0);  
+                        });
+                    </script>
+                    <input type="hidden" value="" name="category"  class="inputcategory"/>
+                    <ul class="category_tree tree treeFolder treeCheck expand" >
+                    </ul>
 				</div>
 				<div >
 					<?= $groupAttr ?>
@@ -468,7 +468,7 @@ function thissubmit(thiss){
 								alert("you must chose a image");
 							}
 							$str += '<td rel="image"><img style="width:30px;" rel="'+chosened_img_rel+'" src="'+chosened_img_src+'"/></td>';
-							$str += '<td><a title="删除"  href="javascript:void(0)" class="btnDel deleteCustomList">删除</a></td>'
+							$str += '<td><a title="<?=  Yii::$service->page->translate->__('Delete') ?>"  href="javascript:void(0)" class="btnDel deleteCustomList"><?=  Yii::$service->page->translate->__('Delete') ?></a></td>'
 							//检查这个sku是否已经存在
 							$(".custom_option_sku").each(function(){
 								sku = $(this).html();
@@ -484,14 +484,8 @@ function thissubmit(thiss){
 						});
 						
 					});
-					
 					</script>
-					
-					
-					
-					
 				</div>
-				
 				<div class="relation_list" style="margin:20px 2px;">
 						<?= $relation ?>	
 				</div>
@@ -503,9 +497,9 @@ function thissubmit(thiss){
 		<div class="formBar">
 			<ul>
 				<!--<li><a class="buttonActive" href="javascript:;"><span>保存</span></a></li>-->
-				<li><div class="buttonActive"><div class="buttonContent"><button onclick=""  value="accept" name="accept" type="submit">保存</button></div></div></li>
+				<li><div class="buttonActive"><div class="buttonContent"><button onclick=""  value="accept" name="accept" type="submit"><?=  Yii::$service->page->translate->__('Save') ?></button></div></div></li>
 				<li>
-					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+					<div class="button"><div class="buttonContent"><button type="button" class="close"><?=  Yii::$service->page->translate->__('Cancel') ?></button></div></div>
 				</li>
 			</ul>
 		</div>
