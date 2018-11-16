@@ -142,7 +142,6 @@ class XunSearch extends Service implements SearchInterface
 
     protected function fullTearchText($select, $where, $pageNum, $numPerPage, $product_search_max_count)
     {
-        // var_dump($where);
         $enableStatus = Yii::$service->product->getEnableStatus();
         $searchText = $where['$text']['$search'];
         $productM = Yii::$service->product->getBySku($searchText);
@@ -161,7 +160,20 @@ class XunSearch extends Service implements SearchInterface
                     return [];
                 }
                 foreach ($where as $k => $v) {
-                    if ($k != '$text') {
+                    if ($k === '$text') {
+                        continue;
+                    }
+                    if (is_array($v)) {
+                        // 范围查询，类似 [ 'price' => [ '$gte'=> 100, '$lte' => 150 ] ] 的这种情况
+                        // 如果$k的值为`price`, 改为 `final_price`
+                        $k !== 'price' || $k = 'final_price';
+                        // 得到范围查询的开始和结束值，如果范围查询只有开始，譬如  x < 3, 那么范围的结束用空字符串'', 不能使用null，使用null会跑出异常, 详细参看
+                        // @vendor/hightman/xunsearch/wrapper/yii2-ext/QueryBuilder.php 281行函数。
+                        $rangBegin = isset($v['$gte']) ? $v['$gte'] : (isset($v['$gt']) ? $v['$gt'] : '');
+                        $rangEnd = isset($v['$lte']) ? $v['$lte'] : (isset($v['$lt']) ? $v['$lt'] : '');
+                        // 关于xunsearch的查询，参看：https://github.com/hightman/xs-sdk-php#%E6%A3%80%E7%B4%A2%E5%AF%B9%E8%B1%A1
+                        $XunSearchQuery->andWhere(['BETWEEN', $k, $rangBegin, $rangEnd]);
+                    } else {
                         $XunSearchQuery->andWhere([$k => $v]);
                     }
                 }
@@ -185,7 +197,6 @@ class XunSearch extends Service implements SearchInterface
             foreach ($data as $d) {
                 $productIds[] = new \MongoDB\BSON\ObjectId($d['_id']);
             }
-
             $productIds = array_slice($productIds, $offset, $limit);
         }
         
