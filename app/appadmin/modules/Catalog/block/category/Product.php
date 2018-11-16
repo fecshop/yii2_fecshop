@@ -88,31 +88,32 @@ class Product extends AppadminbaseBlock implements AppadminbaseBlockInterface
     {
         $data = [
             [    // 字符串类型
-                'type'=>'inputtext',
-                'title'=>'Name',
-                'name'=>'name',
-                'columns_type' =>'string',
-                'lang'    => true,
+                'type'  => 'inputtext',
+                'title' => 'Name',
+                'name'  => 'name',
+                'columns_type' => 'string',
+                'lang'  => true,
             ],
             [    // 字符串类型
-                'type'=>'inputtext',
-                'title'=>'Spu',
-                'name'=>'spu',
+                'type'  => 'inputtext',
+                'title' => Yii::$service->page->translate->__('Spu'),
+                'name'  => 'spu',
                 'columns_type' =>'string',
             ],
             [    // 字符串类型
-                'type'=>'inputtext',
-                'title'=>'Sku',
-                'name'=>'sku',
+                'type'  => 'inputtext',
+                'title' => Yii::$service->page->translate->__('Sku'),
+                'name'  => 'sku',
                 'columns_type' =>'string',
             ],
             [    // 时间区间类型搜索
-                'type'=>'inputdatefilter',
-                'name'=> 'updated_at',
+                'type'  => 'inputdatefilter',
+                'name'  => 'updated_at',
+                'title' => Yii::$service->page->translate->__('Updated At'),
                 'columns_type' =>'int',
-                'value'=>[
-                    'gte'=>'更新时间开始',
-                    'lt' =>'更新时间结束',
+                'value' => [
+                    'gte' => Yii::$service->page->translate->__('Updated Begin'),
+                    'lt'  => Yii::$service->page->translate->__('Updated End'),
                 ],
             ],
         ];
@@ -132,56 +133,54 @@ class Product extends AppadminbaseBlock implements AppadminbaseBlockInterface
                 'label'			=> 'ID',
                 'width'			=> '50',
                 'align' 		=> 'center',
-
             ],
             */
             [
                 'orderField'    => 'image_main',
-                'label'            => '图片',
-                'width'            => '30',
-                'align'        => 'left',
-                'lang'            => true,
+                'label'         => Yii::$service->page->translate->__('Image'),
+                'width'         => '30',
+                'align'         => 'left',
+                'lang'          => true,
             ],
             [
                 'orderField'    => 'name',
-                'label'            => '标题',
-                'width'            => '250',
-                'align'        => 'left',
-                'lang'            => true,
+                'label'         => Yii::$service->page->translate->__('Title'),
+                'width'         => '250',
+                'align'         => 'left',
+                'lang'          => true,
             ],
             [
                 'orderField'    => 'spu',
-                'label'            => 'Spu',
-                'width'            => '50',
-                'align'        => 'center',
+                'label'         => Yii::$service->page->translate->__('Spu'),
+                'width'         => '50',
+                'align'         => 'center',
             ],
             [
                 'orderField'    => 'sku',
-                'label'            => 'Sku',
-                'width'            => '50',
-                'align'        => 'center',
+                'label'         => Yii::$service->page->translate->__('Sku'),
+                'width'         => '50',
+                'align'         => 'center',
             ],
             [
                 'orderField'    => 'qty',
-                'label'            => '库存个数',
-                'width'            => '50',
-                'align'        => 'center',
+                'label'         => Yii::$service->page->translate->__('Stock Qty'),
+                'width'         => '50',
+                'align'         => 'center',
             ],
             [
                 'orderField'    => 'created_at',
-                'label'            => '创建时间',
-                'width'            => '50',
-                'align'        => 'center',
-                'convert'        => ['int' => 'datetime'],
+                'label'         => Yii::$service->page->translate->__('Created At'),
+                'width'         => '50',
+                'align'         => 'center',
+                'convert'       => ['int' => 'datetime'],
             ],
             [
                 'orderField'    => 'updated_at',
-                'label'            => '更新时间',
-                'width'            => '50',
-                'align'        => 'center',
-                'convert'        => ['int' => 'datetime'],
+                'label'         => Yii::$service->page->translate->__('Updated At'),
+                'width'         => '50',
+                'align'         => 'center',
+                'convert'       => ['int' => 'datetime'],
             ],
-
         ];
 
         return $table_th_bar;
@@ -267,10 +266,10 @@ class Product extends AppadminbaseBlock implements AppadminbaseBlockInterface
         }
         $filter = [
             'numPerPage'    => $this->_param['numPerPage'],
-            'pageNum'        => $this->_param['pageNum'],
-            'orderBy'        => [$this->_param['orderField'] => (($this->_param['orderDirection'] == 'asc') ? SORT_ASC : SORT_DESC)],
-            'where'            => $where,
-            'asArray'        => $this->_asArray,
+            'pageNum'       => $this->_param['pageNum'],
+            'orderBy'       => [$this->_param['orderField'] => (($this->_param['orderDirection'] == 'asc') ? SORT_ASC : SORT_DESC)],
+            'where'         => $where,
+            'asArray'       => $this->_asArray,
         ];
         $coll = $this->_service->coll($filter);
         $data = $coll['coll'];
@@ -292,8 +291,6 @@ class Product extends AppadminbaseBlock implements AppadminbaseBlockInterface
             $product_unselect_arr = explode(',', $product_unselect_info);
             $this->_select_id_arr = array_diff($this->_select_id_arr, $product_unselect_arr);
         }
-
-        //var_dump($this->_select_id_arr);
         $this->_param['numCount'] = $coll['count'];
 
         return $this->getTableTbodyHtml($data);
@@ -305,7 +302,7 @@ class Product extends AppadminbaseBlock implements AppadminbaseBlockInterface
     public function getTableTbodyHtml($data)
     {
         $fileds = $this->getTableFieldArr();
-        $str .= '';
+        $str = '';
         $csrfString = \fec\helpers\CRequest::getCsrfString();
         $user_ids = [];
         foreach ($data as $one) {
@@ -380,7 +377,6 @@ class Product extends AppadminbaseBlock implements AppadminbaseBlockInterface
                             }
                         }
                     }
-
                     if (isset($field['lang']) && !empty($field['lang'])) {
                         //var_dump($val);
                         //var_dump($orderField);
@@ -389,7 +385,6 @@ class Product extends AppadminbaseBlock implements AppadminbaseBlockInterface
                 }
                 $str .= '<td>'.$val.'</td>';
             }
-
             $str .= '</tr>';
         }
 
@@ -479,8 +474,8 @@ class Product extends AppadminbaseBlock implements AppadminbaseBlockInterface
 				</table>
 				<div class="subBar">
 					<ul>
-						<li><a class="button productReset" ><span>全部产品检索</span></a></li>
-						<li><a class="button productSearch" ><span>当前分类产品检索</span></a></li>
+						<li><a class="button productReset" ><span>' . Yii::$service->page->translate->__('All Product List') . '</span></a></li>
+						<li><a class="button productSearch" ><span>' . Yii::$service->page->translate->__('Current Cateory Product') . '</span></a></li>
 					</ul>
 				</div>';
         }

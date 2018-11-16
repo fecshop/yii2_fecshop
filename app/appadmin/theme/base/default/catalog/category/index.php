@@ -28,7 +28,6 @@ function array_unique(arr)
 	return re;
 }
 
-
 function array_quchu(arr1,arr2){
     var arr3 = [];
     for (var i = 0; i < arr1.length; i++) {
@@ -52,8 +51,8 @@ function product_select(){
 		var select_arr = product_select_info.split(","); 
 	}else{
 		var select_arr = []; 
-	} 
-	
+	}
+
 	product_unselect_info = $('#jbsxBox_product input[name="product_unselect_info"]').val();
 	if(product_unselect_info){
 		var un_select_arr = product_unselect_info.split(","); 
@@ -111,10 +110,10 @@ $(document).ready(function(){
 		delCateUrl = "<?= CUrl::getUrl('catalog/category/remove');  ?>";
 		delCateId  = $(".treeFolder .selected > .category_one").attr("key");
 		if(!delCateId){
-			alertMsg.warn('请选择您要删除的分类');
+			alertMsg.warn('<?= Yii::$service->page->translate->__('Please select the category you want to delete') ?>');
 		}else{
 			delCateUrl += "?<?= Yii::$service->category->getPrimaryKey() ?>="+delCateId;
-			alertMsg.confirm("您确定要删除这个分类吗？",
+			alertMsg.confirm("<?= Yii::$service->page->translate->__('Are you sure you want to delete this category') ?>?",
 			{
 				okCall:function(){
 					$.post(delCateUrl,DWZ.ajaxDone,"json");
@@ -122,14 +121,8 @@ $(document).ready(function(){
 				}
 			});
 		}
-		
-			
 	});
 });
-	
-	
-	
-
 </script>
 
 <form  method="post" action="<?= $save_url ?>" class="pageForm required-validate"  onsubmit="return thissubmit(this);">
@@ -137,18 +130,17 @@ $(document).ready(function(){
 	<div style=" display: none;">
 		<a href="" ajaxxurl="<?= CUrl::getUrl('catalog/category/index'); ?>" target="ajax" rel="jbsxBox"  class="add_category_a">add</a>
 	</div>
-	
 	<div class="pageContent" style="padding:5px">
 		<div layoutH="16" style="float:left; display:block; overflow:auto; width:240px; border:solid 1px #CCC; line-height:21px; background:#fff">
 			<div style="">
 				<div class="formBar">
 					<ul style="float:left;">
 						<!--<li><a class="buttonActive" href="javascript:;"><span>保存</span></a></li>-->
-						<li class="add-category"><a href="javascript:void(0)" class="addcategory button"><span>增加</span></a></li>
+						<li class="add-category"><a href="javascript:void(0)" class="addcategory button"><span><?= Yii::$service->page->translate->__('Add') ?></span></a></li>
 						
-						<li><div class="buttonActive"><div class="buttonContent"><button type="submit" name="accept" value="accept" >保存</button></div></div></li>
+						<li><div class="buttonActive"><div class="buttonContent"><button type="submit" name="accept" value="accept" ><?= Yii::$service->page->translate->__('Save') ?></button></div></div></li>
 						
-						<li  class="del-category"><a href="javascript:void(0)" class="delcategory button" ><span>删除</span></a></li>
+						<li  class="del-category"><a href="javascript:void(0)" class="delcategory button" ><span><?= Yii::$service->page->translate->__('Delete') ?></span></a></li>
 						
 					</ul>
 				</div>
