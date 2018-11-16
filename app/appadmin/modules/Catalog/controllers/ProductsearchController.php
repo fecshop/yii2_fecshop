@@ -21,6 +21,6 @@ class ProductsearchController extends CatalogController
     
     public function actionIndex()
     {
-        echo '未开发';
+        echo Yii::$service->page->translate->__('not develop');
     }
 }
