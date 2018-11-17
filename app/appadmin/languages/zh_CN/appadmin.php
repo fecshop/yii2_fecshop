@@ -321,12 +321,10 @@ return [
     'And Above' => '以上',
     'Add Tier Price' => '增加等级(Tier)价格',
     'Select Image' => '选择图片',
-    '' => '',
-    
-    
-    '' => '',
-    '' => '',
-    '' => '',
+    'you must chose a image' => '您必须选择一张图片',
+    'this custom_option sku is exist' => 'custom option sku已经存在',
+    'load category info error' => '加载分类信息出错',
+    'can not select empty' => '不能选择空',
     '' => '',
     '' => '',
     '' => '',

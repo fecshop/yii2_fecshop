@@ -103,7 +103,7 @@ function getCategoryData(product_id,i){
 			}
 		},
 		error:function(){
-			alert('<?=  Yii::$service->page->translate->__('Status') ?>加载分类信息出错');
+			alert("<?=  Yii::$service->page->translate->__('load category info error') ?>");
 		}
 	});
 }
@@ -437,7 +437,7 @@ function thissubmit(thiss){
                                 label_v = $(this).find("option:selected").text();
 								if(!val){
 									i = 1;
-									alert("select can not empty");
+									alert("<?=  Yii::$service->page->translate->__('can not select empty') ?>");
 								}
 								$str += '<td rel="'+attr+'" val="'+val+'" >'+label_v+'</td>';
 								val = val.replace(/ /g, "*")
@@ -466,7 +466,7 @@ function thissubmit(thiss){
 							chosened_img_rel = $(".chosened_img img").attr('rel');
 							if(!chosened_img_src || !chosened_img_rel){
 								i = 1;
-								alert("you must chose a image");
+								alert("<?= Yii::$service->page->translate->__('you must chose a image');  ?>");
 							}
 							$str += '<td rel="image"><img style="width:30px;" rel="'+chosened_img_rel+'" src="'+chosened_img_src+'"/></td>';
 							$str += '<td><a title="<?=  Yii::$service->page->translate->__('Delete') ?>"  href="javascript:void(0)" class="btnDel deleteCustomList"><?=  Yii::$service->page->translate->__('Delete') ?></a></td>'
@@ -475,7 +475,7 @@ function thissubmit(thiss){
 								sku = $(this).html();
 								if(sku == custom_option_sku){
 									i = 1;
-									alert('this custom_option sku is exist');
+									alert("<?= Yii::$service->page->translate->__('this custom_option sku is exist');  ?>");
 								}
 							});
 							if(!i){
