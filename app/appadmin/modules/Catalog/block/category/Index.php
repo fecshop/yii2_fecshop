@@ -85,19 +85,6 @@ class Index extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInterf
         $str .= '</ul>';
 
         return $str;
-        /*
-        <ul class="tree treeFolder">
-                <li><a href="javascript:void(0);">11</a>
-                    <ul>
-                        <li><a href="javascript:void(0);" >22</a></li>
-                        <li><a href="javascript:void(0);" >33</a></li>
-                        <li><a href="javascript:void(0);" >44</a></li>
-                        <li><a href="javascript:void(0);" >55</a></li>
-                    </ul>
-                </li>
-
-             </ul>
-        */
     }
 
     public function saveCategory()
@@ -127,8 +114,6 @@ class Index extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInterf
             $product_select_info = CRequest::param('product_select_info');
             $product_unselect_info = CRequest::param('product_unselect_info');
             $category_id = $editFormData[$cate_id];
-            //var_dump($editFormData);
-            //echo $category_id;exit;
             $addCateProductIdArr = explode(',', $product_select_info);
             $deleteCateProductIdArr = explode(',', $product_unselect_info);
             Yii::$service->product->addAndDeleteProductCategory($category_id, $addCateProductIdArr, $deleteCateProductIdArr);
@@ -162,13 +147,13 @@ class Index extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInterf
         $primaryVal = Yii::$app->request->get($primaryKey);
 
         return [
-            'thumbnail_image'       => $this->_one['thumbnail_image'],
-            'image'                 => $this->_one['image'],
-            'thumbnail_imageurl'    => Yii::$service->category->image->getUrl($this->_one['thumbnail_image']),
-            'imageurl'              => Yii::$service->category->image->getUrl($this->_one['image']),
-            'product_url'           => CUrl::getUrl('catalog/category/product', [$primaryKey => $primaryVal]),
-            'base_info'             => $this->getBaseInfo(),
-            'meta_info'             => $this->getMetaInfo(),
+            'thumbnail_image'      => $this->_one['thumbnail_image'],
+            'image'                     => $this->_one['image'],
+            'thumbnail_imageurl'  => Yii::$service->category->image->getUrl($this->_one['thumbnail_image']),
+            'imageurl'                  => Yii::$service->category->image->getUrl($this->_one['image']),
+            'product_url'              => CUrl::getUrl('catalog/category/product', [$primaryKey => $primaryVal]),
+            'base_info'                 => $this->getBaseInfo(),
+            'meta_info'                => $this->getMetaInfo(),
         ];
     }
 

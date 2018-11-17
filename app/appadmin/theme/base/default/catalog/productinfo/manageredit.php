@@ -147,7 +147,7 @@ function thissubmit(thiss){
 			
 			if(rel != 'image'){
 				if(rel){
-					option_header[rel] = $(this).html();
+					option_header[rel] = $(this).attr('val');
 				}
 			}else{
 				rel = $(this).find("img").attr("rel");
@@ -434,11 +434,12 @@ function thissubmit(thiss){
 							$(".custom_option_attr").each(function(){
 								attr = $(this).attr("atr");
 								val = $(this).val();
+                                label_v = $(this).find("option:selected").text();
 								if(!val){
 									i = 1;
 									alert("select can not empty");
 								}
-								$str += '<td rel="'+attr+'">'+val+'</td>';
+								$str += '<td rel="'+attr+'" val="'+val+'" >'+label_v+'</td>';
 								val = val.replace(/ /g, "*")
 								if(!general_sku){
 									general_sku = val;
@@ -449,18 +450,18 @@ function thissubmit(thiss){
 							custom_option_sku = general_sku;
 							custom_option_sku = custom_option_sku.toLowerCase();   
 							$(".custom_option_sku").val(custom_option_sku);
-							$str += '<td class="custom_option_sku" rel="sku">'+custom_option_sku+'</td>';
+							$str += '<td class="custom_option_sku" rel="sku" val="'+custom_option_sku+'">'+custom_option_sku+'</td>';
 							custom_option_qty = $(".custom_option_qty").val();
 							if(!custom_option_qty){
 								custom_option_qty = 99999;
 							}
-							$str += '<td rel="qty">'+custom_option_qty+'</td>';
+							$str += '<td rel="qty" val="'+custom_option_qty+'" >'+custom_option_qty+'</td>';
 							custom_option_price = $(".custom_option_price").val();
 							if(!custom_option_price){
 								custom_option_price = 0;
 							}
 							$(".custom_option_price").val(custom_option_price);
-							$str += '<td rel="price">'+custom_option_price+'</td>';
+							$str += '<td rel="price" val="'+custom_option_price+'" >'+custom_option_price+'</td>';
 							chosened_img_src = $(".chosened_img img").attr('src');
 							chosened_img_rel = $(".chosened_img img").attr('rel');
 							if(!chosened_img_src || !chosened_img_rel){

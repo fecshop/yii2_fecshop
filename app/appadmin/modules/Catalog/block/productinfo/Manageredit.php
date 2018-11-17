@@ -112,15 +112,15 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
 
                 foreach ($custom_option_attr_info as $attr => $info) {
                     $label = $info['label'];
-                    $this->_custom_option_list_str .= '<th>'.$label.'</th>';
+                    $this->_custom_option_list_str .= '<th>' . Yii::$service->page->translate->__($attr) . '</th>';
 
-                    $str .= '<div class="nps"><span >'.$label.':</span>';
+                    $str .= '<div class="nps"><span >' . Yii::$service->page->translate->__($attr) . ':</span>';
                     $type = isset($info['display']['type']) ? $info['display']['type'] : '';
                     $data = isset($info['display']['data']) ? $info['display']['data'] : '';
                     if ($type == 'select' && is_array($data) && !empty($data)) {
                         $str .= '<select atr="'.$attr.'" class="custom_option_attr">';
-                        foreach ($info['display']['data'] as $k=>$v) {
-                            $str .= '<option value="'.$k.'">'.$v.'</option>';
+                        foreach ($info['display']['data'] as $v) {
+                            $str .= '<option value="'.$v.'">' . Yii::$service->page->translate->__($v) . '</option>';
                         }
                         $str .= '</select>';
                     }
@@ -133,7 +133,7 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
 						<div class="nps"><a style="display: block;float: right; margin: -2px 10px 0;" class="button add_custom_option"><span style="margin:0">+</span></a></div>
 					';
 
-                $this->_custom_option_list_str .= '<th>sku</th><th>qty</th><th>price</th><th>img</th><th>delete</th>';
+                $this->_custom_option_list_str .= '<th>' . Yii::$service->page->translate->__('sku') . '</th><th>' . Yii::$service->page->translate->__('qty') . '</th><th>' . Yii::$service->page->translate->__('price') . '</th><th>' . Yii::$service->page->translate->__('image') . '</th><th>' . Yii::$service->page->translate->__('delete') . '</th>';
                 $this->_custom_option_list_str .= '<tr><thead>';
                 //$this->_custom_option_list_str .= '<tbody></tbody>';
                 //$this->_custom_option_list_str .= '</table>';
@@ -146,13 +146,13 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
                         $this->_custom_option_list_str .= '<tr>';
                         foreach ($custom_option_attr_info as $attr => $info) {
                             $val = $one[$attr];
-                            $this->_custom_option_list_str .= '<td rel="'.$attr.'">'.$val.'</td>';
+                            $this->_custom_option_list_str .= '<td rel="'.$attr.'" val="'.$val.'">' . Yii::$service->page->translate->__($val) . '</td>';
                         }
-                        $this->_custom_option_list_str .= '<td class="custom_option_sku" rel="sku">'.$one['sku'].'</td>';
-                        $this->_custom_option_list_str .= '<td rel="qty">'.$one['qty'].'</td>';
-                        $this->_custom_option_list_str .= '<td rel="price">'.$one['price'].'</td>';
-                        $this->_custom_option_list_str .= '<td rel="image"><img style="width:30px;" rel="'.$one['image'].'" src="'.Yii::$service->product->image->getUrl($one['image']).'"/></td>';
-                        $this->_custom_option_list_str .= '<td><a title="删除"  href="javascript:void(0)" class="btnDel deleteCustomList">删除</a></td>';
+                        $this->_custom_option_list_str .= '<td class="custom_option_sku" rel="sku" val="'.$one['sku'].'">'.$one['sku'].'</td>';
+                        $this->_custom_option_list_str .= '<td rel="qty" val="'.$one['qty'].'">'.$one['qty'].'</td>';
+                        $this->_custom_option_list_str .= '<td rel="price" val="'.$one['price'].'">'.$one['price'].'</td>';
+                        $this->_custom_option_list_str .= '<td rel="image" ><img style="width:30px;" rel="'.$one['image'].'" src="'.Yii::$service->product->image->getUrl($one['image']).'"/></td>';
+                        $this->_custom_option_list_str .= '<td><a title="' . Yii::$service->page->translate->__('delete') . '"  href="javascript:void(0)" class="btnDel deleteCustomList">' . Yii::$service->page->translate->__('delete') . '</a></td>';
                         $this->_custom_option_list_str .= '</tr>';
                     }
                 }
@@ -213,14 +213,12 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
 
         return $this->_lang_attr.$editBar.$this->_textareas;
     }
-
+    
     public function getGroupAttr()
     {
         $this->_lang_attr = '';
         $this->_textareas = '';
         $editArr = $this->_attr->getGroupAttr();
-        //var_dump($editArr);
-        //var_dump($this->_one);
         $this->_primaryKey = $this->_service->getPrimaryKey();
         $product_id = $this->_param[$this->_primaryKey];
         $this->_one = $this->_service->getByPrimaryKey($product_id);
@@ -237,13 +235,23 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
                 foreach($custom_option as $custom_option_sku => $one){
                     $custom_option[$custom_option_sku]['qty'] = isset($co_qty_arr[$custom_option_sku]) ? $co_qty_arr[$custom_option_sku] : 0;
                 }
-                //###########g
                 $this->_one['custom_option'] = $custom_option;
-                //var_dump($custom_option);
             }
         }
-        
-        if (!empty($editArr)) {
+        // add translate
+        if (!empty($editArr) && is_array($editArr)) {
+            foreach ($editArr as $k => $v) {
+                $editArr[$k]['label'] = Yii::$service->page->translate->__($k);
+                if (isset($v['display']['type']) && $v['display']['type'] == 'select') {
+                    if (isset($v['display']['data']) && is_array($v['display']['data'])) {
+                        $select_data = [];
+                        foreach ($v['display']['data'] as $v2) {
+                            $select_data[$v2] = Yii::$service->page->translate->__($v2);
+                        }
+                        $editArr[$k]['display']['data'] = $select_data;
+                    }
+                }    
+            }
             $editBar = $this->getEditBar($editArr);
 
             return $this->_lang_attr.$editBar.$this->_textareas;

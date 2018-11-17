@@ -61,11 +61,6 @@ return [
  '$ High to Low'                => '￥ 价格由高到低',
  'Refine By'                    => '过滤选项',
  'clear all'                    => '清空所有过滤',
-
- 'style'            => '样式',
- 'pattern-type'     => '风格',
- 'sleeve-length'    => '袖长',
- 'collar'           => '领口',
  
  // 用户登录页面
  'Login or Create an Account'     => '登录 创建用户',
@@ -206,6 +201,10 @@ return [
  'Contact us Send Success'         => '联系我们发送成功',
 
  // 产品详细页面 - 颜色尺码
+ 'style'            => '样式',
+ 'pattern-type'     => '风格',
+ 'sleeve-length'    => '袖长',
+ 'collar'           => '领口',
  'My Color:'                       => '我的颜色：',
  'My Size:'                        => '我的尺码：',
  'My Size2:'                       => '我的尺码2：',
