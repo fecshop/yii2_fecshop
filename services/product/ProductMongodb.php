@@ -536,8 +536,53 @@ class ProductMongodb extends Service implements ProductInterface
 
         return $query->all();
     }
-
     /**
+     * 得到分类页面的产品列表
+     * $filter 参数的详细，参看函数 getFrontCategoryProductsGroupBySpu($filter);
+     */
+    public function getFrontCategoryProducts($filter){
+        if (Yii::$service->product->productSpuShowOnlyOneSku) {
+            
+            return $this->getFrontCategoryProductsGroupBySpu($filter);
+        } else {
+            
+            return $this->getFrontCategoryProductsAll($filter);
+        }
+    }
+    /**
+     * 得到分类页面的产品（All）
+     * $filter 参数的详细，参看函数 getFrontCategoryProductsGroupBySpu($filter);
+     */
+    public function getFrontCategoryProductsAll($filter){
+        $where = $filter['where'];
+        if (empty($where)) {
+            return [];
+        }
+        if (!isset($where['status'])) {
+            $where['status'] = $this->getEnableStatus();
+        }
+        $orderBy = $filter['orderBy'];
+        $pageNum = $filter['pageNum'];
+        $numPerPage = $filter['numPerPage'];
+        $select = $filter['select'];
+        $where_c = [];
+        foreach ($where as $k => $v) {
+            $where_c[] = [$k => $v];
+        }
+        $filter = [
+            'numPerPage' 	=> $numPerPage,
+     		'pageNum'		    => $pageNum,
+      		'orderBy'	        => $orderBy,
+      		'where'			    => $where_c,
+      	    'asArray'           => true,
+        ];
+        
+        return $this->coll($filter);
+    }
+    
+    
+    /**
+     * 相同spu下面的所有sku，只显示一个，取score值最高的那个显示
      *[
      *	'category_id' 	=> 1,
      *	'pageNum'		=> 2,
@@ -560,7 +605,7 @@ class ProductMongodb extends Service implements ProductInterface
      *   不过，对于一般的用户来说，这个不会成为瓶颈问题，一般一个分类下的产品不会出现几十万的情况。
      * 4.最后就得到spu唯一的产品列表（多个spu相同，sku不同的产品，只要score最高的那个）.
      */
-    public function getFrontCategoryProducts($filter)
+    public function getFrontCategoryProductsGroupBySpu($filter)
     {
         $where = $filter['where'];
         if (empty($where)) {
