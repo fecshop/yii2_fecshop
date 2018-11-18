@@ -61,33 +61,30 @@ class Manageredit
         $checkTypeArr = Yii::$service->order->getCheckoutTypeArr();
         $order_info['checkout_method_options'] = $this->getOptions($checkTypeArr,$order_info['checkout_method']);
         // 游客下单
-        $customerOrderArr = [ 1 => '是',2 => '否',];
+        $customerOrderArr = [ 
+            1 => Yii::$service->page->translate->__('Yes'),
+            2 => Yii::$service->page->translate->__('No'),
+        ];
         $order_info['customer_is_guest_options'] = $this->getOptions($customerOrderArr,$order_info['customer_is_guest']);
         // 省
         $order_info['customer_address_country_options'] = Yii::$service->helper->country->getCountryOptionsHtml($order_info['customer_address_country']);
         // 市
         $order_info['customer_address_state_options'] = Yii::$service->helper->country->getStateOptionsByContryCode($order_info['customer_address_country'],$order_info['customer_address_state']);
-        // 支付方式label
-        
-        // 货运方式label
+        // 支付方式label 货运方式label
         $order_info['shipping_method_label'] = Yii::$service->shipping->getShippingLabelByMethod($order_info['shipping_method']);
         $order_info['payment_method_label'] = Yii::$service->payment->getPaymentLabelByMethod($order_info['payment_method']);
         
         return $order_info;
     }
     
-    
-    
-    
     public function getOptions($orderStatusArr,$order_status){
         $str = '';
-        if(is_array($orderStatusArr)){
-            foreach($orderStatusArr as $k => $v){
-                if($order_status == $k ){
+        if (is_array($orderStatusArr)) {
+            foreach ($orderStatusArr as $k => $v) {
+                if ($order_status == $k ) {
                     $str .= '<option selected="selected" value="'.$k.'">'.$v.'</option>';
-                }else{
+                } else {
                     $str .= '<option value="'.$k.'">'.$v.'</option>';
-                
                 }
             }
         }
@@ -99,8 +96,8 @@ class Manageredit
         $editForm = Yii::$app->request->post('editForm');
         $order_id = $editForm['order_id'];
         $orderModel = Yii::$service->order->getByPrimaryKey($order_id);
-        if(is_array($editForm) && $orderModel['order_id']){
-            foreach($editForm as $k => $v){
+        if (is_array($editForm) && $orderModel['order_id']) {
+            foreach ($editForm as $k => $v) {
                 if ($orderModel->hasAttribute($k)) {
                     $orderModel[$k] = $v;
                 }
@@ -108,8 +105,8 @@ class Manageredit
             $orderModel->save();
         }
         echo  json_encode([
-            'statusCode'=>'200',
-            'message'=>'save success',
+            'statusCode' => '200',
+            'message' => Yii::$service->page->translate->__('Save Success'),
         ]);
         exit;
     }
@@ -118,18 +115,37 @@ class Manageredit
         $order_ids = Yii::$app->request->get('order_ids');
         $order_arr = explode(',', $order_ids);
         $excelArr[] = [
-            '订单Id(order_id)', '订单编号(increment_id)', '订单状态(order_status)',
-            'Store(store)', '创建时间(created_at)', '更新时间(updated_at)',
-            '订单总金额(base_grand_total)', '用户Id(customer_id)', '订单Email(customer_email)',
-            '订单用户-名(customer_firstname)', '订单用户-姓(customer_lastname)', '是否游客(customer_is_guest)',
-            '优惠券(coupon_code)', '支付方式(payment_method)', '货运方式(shipping_method)',
-            '订单运费(base_shipping_total)', '订单电话(customer_telephone)', '订单国家(customer_address_country)',
-            '订单省/市(customer_address_state)', '订单城市(customer_address_city)', '订单邮编(customer_address_zip)',
-            '订单街道地址1(customer_address_street1)', '订单街道地址2(customer_address_street2)', '订单备注(order_remark)',
-            
-            '产品Id(product_id)', '产品Sku(sku)', '产品名称(name)',
-            '产品自定义选项Sku(custom_option_sku)',
-            '产品单重(weight)', '产品数量(qty)', '产品单价(base_price)',
+            Yii::$service->page->translate->__('Order Id'),
+            Yii::$service->page->translate->__('Increment Id'),
+            Yii::$service->page->translate->__('Order Status') ,
+            Yii::$service->page->translate->__('Store'),
+            Yii::$service->page->translate->__('Created At'),
+            Yii::$service->page->translate->__('Update At'),
+            Yii::$service->page->translate->__('Base Grand Total'),
+            Yii::$service->page->translate->__('Customer Id'), 
+            Yii::$service->page->translate->__('Order Email'),
+            Yii::$service->page->translate->__('First Name') ,
+            Yii::$service->page->translate->__('Last Name'),
+            Yii::$service->page->translate->__('Is Guest'),
+            Yii::$service->page->translate->__('Coupon Code'),
+            Yii::$service->page->translate->__('Payment Method'),
+            Yii::$service->page->translate->__('Shipping Method'),
+            Yii::$service->page->translate->__('Base Shipping Total'),
+            Yii::$service->page->translate->__('Telephone') ,
+            Yii::$service->page->translate->__('Country'),
+            Yii::$service->page->translate->__('State'),
+            Yii::$service->page->translate->__('City'),
+            Yii::$service->page->translate->__('Zip'),
+            Yii::$service->page->translate->__('Street1'),
+            Yii::$service->page->translate->__('Street2'),
+            Yii::$service->page->translate->__('Remark'),
+            Yii::$service->page->translate->__('Product Id'),
+            Yii::$service->page->translate->__('Sku'),
+            Yii::$service->page->translate->__('Product Name'),
+            Yii::$service->page->translate->__('Custom Option Sku') ,
+            Yii::$service->page->translate->__('Weight'),
+            Yii::$service->page->translate->__('Qty'),
+            Yii::$service->page->translate->__('Product Unit Price(base price)'),
         ];
         if (!empty($order_arr)) {
             $orderFilter = [
@@ -178,25 +194,14 @@ class Manageredit
                             
                             $orderItem['product_id'], $orderItem['sku'], $orderItem['name'], 
                             $orderItem['custom_option_sku'], $orderItem['weight'], 
-                            $orderItem['qty'], $orderItem['base_price']
-                            
+                            $orderItem['qty'], $orderItem['base_price'],
                         ];
-                        
                     }
                 }
             }
-            
         }
         
-        
-        
         \fec\helpers\CExcel::downloadExcelFileByArray($excelArr);
-        
     }
-    
-    
-        
-    
-    
-    
+   
 }
