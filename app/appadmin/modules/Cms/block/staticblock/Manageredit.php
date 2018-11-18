@@ -34,10 +34,10 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
     public function getLastData()
     {
         return [
-            'editBar'    => $this->getEditBar(),
-            'textareas'    => $this->_textareas,
-            'lang_attr'    => $this->_lang_attr,
-            'saveUrl'    => $this->_saveUrl,
+            'editBar'      => $this->getEditBar(),
+            'textareas'   => $this->_textareas,
+            'lang_attr'   => $this->_lang_attr,
+            'saveUrl'      => $this->_saveUrl,
         ];
     }
 
@@ -50,44 +50,41 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
     {
         return [
             [
-                'label'=>'标题',
-                'name'=>'title',
-                'display'=>[
+                'label'  => Yii::$service->page->translate->__('Title'),
+                'name' => 'title',
+                'display' => [
                     'type' => 'inputString',
                     'lang' => true,
                 ],
                 'require' => 1,
             ],
-
             [
-                'label'=>'identify',
-                'name'=>'identify',
-                'display'=>[
+                'label'  => Yii::$service->page->translate->__('Identify'),
+                'name' => 'identify',
+                'display' => [
                     'type' => 'inputString',
                 ],
                 'require' => 1,
             ],
-
             [
-                'label'=>'Content',
-                'name'=>'content',
-                'display'=>[
+                'label'  => Yii::$service->page->translate->__('Content'),
+                'name' => 'content',
+                'display' => [
                     'type' => 'textarea',
                     'lang' => true,
-                    'rows'    => 14,
+                    'rows'   => 14,
                     'cols'    => 110,
                 ],
                 'require' => 0,
             ],
-
             [
-                'label'=>'用户状态',
-                'name'=>'status',
-                'display'=>[
+                'label'  => Yii::$service->page->translate->__('Status'),
+                'name' => 'status',
+                'display' => [
                     'type' => 'select',
                     'data' => [
-                        1    => '激活',
-                        2    => '关闭',
+                        1    => Yii::$service->page->translate->__('Enable'),
+                        2    => Yii::$service->page->translate->__('Disable'),
                     ],
                 ],
                 'require' => 1,
@@ -111,14 +108,14 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         $errors = Yii::$service->helper->errors->get();
         if (!$errors) {
             echo  json_encode([
-                'statusCode'=>'200',
-                'message'=>'save success',
+                'statusCode' => '200',
+                'message'    => Yii::$service->page->translate->__('Save Success'),
             ]);
             exit;
         } else {
             echo  json_encode([
-                'statusCode'=>'300',
-                'message'=>$errors,
+                'statusCode' => '300',
+                'message'    => $errors,
             ]);
             exit;
         }
@@ -137,14 +134,14 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         $errors = Yii::$service->helper->errors->get();
         if (!$errors) {
             echo  json_encode([
-                'statusCode'=>'200',
-                'message'=>'remove data  success',
+                'statusCode' => '200',
+                'message'    => Yii::$service->page->translate->__('Remove Success') ,
             ]);
             exit;
         } else {
             echo  json_encode([
-                'statusCode'=>'300',
-                'message'=>$errors,
+                'statusCode' => '300',
+                'message'    => $errors,
             ]);
             exit;
         }

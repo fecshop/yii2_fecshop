@@ -58,12 +58,12 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
         $toolBar = $this->getToolBar($this->_param['numCount'], $this->_param['pageNum'], $this->_param['numPerPage']);
 
         return [
-            'pagerForm'        => $pagerForm,
-            'searchBar'        => $searchBar,
-            'editBar'        => $editBar,
-            'thead'        => $thead,
-            'tbody'        => $tbody,
-            'toolBar'    => $toolBar,
+            'pagerForm'     => $pagerForm,
+            'searchBar'      => $searchBar,
+            'editBar'          => $editBar,
+            'thead'            => $thead,
+            'tbody'            => $tbody,
+            'toolBar'          => $toolBar,
         ];
     }
 
@@ -74,34 +74,34 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
     {
         $data = [
             [    // selecit的Int 类型
-                'type'=>'select',
-                'title'=>'状态',
-                'name'=>'status',
-                'columns_type' =>'int',  // int使用标准匹配， string使用模糊查询
-                'value'=> [                    // select 类型的值
-                    1=>'激活',
-                    2=>'关闭',
+                'type' => 'select',
+                'title'  => Yii::$service->page->translate->__('Status'),
+                'name' => 'status',
+                'columns_type' => 'int',  // int使用标准匹配， string使用模糊查询
+                'value' => [                    // select 类型的值
+                    1 => Yii::$service->page->translate->__('Enable'),
+                    2 => Yii::$service->page->translate->__('Disable'),
                 ],
             ],
             [    // 字符串类型
-                'type'=>'inputtext',
-                'title'=>'标题',
-                'name'=>'title',
-                'columns_type' =>'string',
+                'type' => 'inputtext',
+                'title'  => Yii::$service->page->translate->__('Title'),
+                'name' => 'title',
+                'columns_type' => 'string',
             ],
             [    // 字符串类型
-                'type'=>'inputtext',
-                'title'=>'标识符',
-                'name'=>'identify',
-                'columns_type' =>'string',
+                'type' => 'inputtext',
+                'title'  => Yii::$service->page->translate->__('Identify'),
+                'name' => 'identify',
+                'columns_type' => 'string',
             ],
             [    // 时间区间类型搜索
-                'type'=>'inputdatefilter',
-                'name'=> 'created_at',
-                'columns_type' =>'int',
-                'value'=>[
-                    'gte'=>'用户创建时间开始',
-                    'lt' =>'用户创建时间结束',
+                'type' => 'inputdatefilter',
+                'name' => 'created_at',
+                'columns_type' => 'int',
+                'value' => [
+                    'gte' => Yii::$service->page->translate->__('Created Begin'),
+                    'lt'    => Yii::$service->page->translate->__('Created End'),
                 ],
             ],
         ];
@@ -117,46 +117,44 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
         $table_th_bar = [
             [
                 'orderField'    => $this->_primaryKey,
-                'label'            => 'ID',
-                'width'            => '50',
-                'align'        => 'center',
-
+                'label'           => Yii::$service->page->translate->__('Id'),
+                'width'          => '50',
+                'align'           => 'center',
             ],
             [
                 'orderField'    => 'title',
-                'label'            => '标题',
-                'width'            => '50',
-                'align'        => 'left',
+                'label'           => Yii::$service->page->translate->__('Title'),
+                'width'          => '50',
+                'align'           => 'left',
                 'lang'            => true,
             ],
             [
                 'orderField'    => 'identify',
-                'label'            => '标识符',
-                'width'            => '50',
-                'align'        => 'left',
+                'label'           => Yii::$service->page->translate->__('Identify'),
+                'width'          => '50',
+                'align'           => 'left',
                 'lang'            => false,
             ],
             [
                 'orderField'    => 'created_user_id',
-                'label'            => '创建人',
-                'width'            => '110',
-                'align'        => 'center',
+                'label'           => Yii::$service->page->translate->__('Created Person'),
+                'width'          => '110',
+                'align'           => 'center',
             ],
             [
                 'orderField'    => 'created_at',
-                'label'            => '创建时间',
-                'width'            => '110',
-                'align'        => 'center',
-                'convert'        => ['int' => 'datetime'],
+                'label'           => Yii::$service->page->translate->__('Created At'),
+                'width'          => '110',
+                'align'           => 'center',
+                'convert'       => ['int' => 'datetime'],
             ],
             [
                 'orderField'    => 'updated_at',
-                'label'            => '更新时间',
-                'width'            => '110',
-                'align'        => 'center',
-                'convert'        => ['int' => 'datetime'],
+                'label'           => Yii::$service->page->translate->__('Updated At'),
+                'width'          => '110',
+                'align'           => 'center',
+                'convert'       => ['int' => 'datetime'],
             ],
-
         ];
 
         return $table_th_bar;
@@ -241,8 +239,8 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
                 $str .= '<td>'.$val.'</td>';
             }
             $str .= '<td>
-						<a title="编辑" target="dialog" class="btnEdit" mask="true" drawable="true" width="1000" height="580" href="'.$this->_editUrl.'?'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" >编辑</a>
-						<a title="删除" target="ajaxTodo" href="'.$this->_deleteUrl.'?'.$csrfString.'&'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" class="btnDel">删除</a>
+						<a title="' . Yii::$service->page->translate->__('Edit') . '" target="dialog" class="btnEdit" mask="true" drawable="true" width="1000" height="580" href="'.$this->_editUrl.'?'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" >' . Yii::$service->page->translate->__('Edit') . '</a>
+						<a title="' . Yii::$service->page->translate->__('Remove') . '" target="ajaxTodo" href="'.$this->_deleteUrl.'?'.$csrfString.'&'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" class="btnDel">' . Yii::$service->page->translate->__('Remove') . '</a>
 					</td>';
             $str .= '</tr>';
         }
