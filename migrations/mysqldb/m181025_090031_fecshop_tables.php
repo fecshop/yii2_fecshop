@@ -101,7 +101,7 @@ class m181025_090031_fecshop_tables extends Migration
                 (62, '保存分类', 'catalog_category_manager', 4, 'catalog/category/save', 1540782923, 1540782923, 1),
                 (63, '查看所有产品（默认仅可以查看自己创建的产品）', 'catalog_product_info_manager', 8, 'catalog_product_view_all', 1541061023, 1541065009, 1),
                 (64, '编辑查看所有产品（默认仅可以编辑自己创建的产品）', 'catalog_product_info_manager', 9, 'catalog_product_edit_all', 1541064880, 1541124984, 1),
-                (66, '删除所有产品（默认仅可以删除izji创建的产品）', 'catalog_product_info_manager', 15, 'catalog_product_remove_all', 1541064963, 1541125092, 1),
+                (66, '删除所有产品（默认仅可以删除自己创建的产品）', 'catalog_product_info_manager', 15, 'catalog_product_remove_all', 1541064963, 1541125092, 1),
                 (70, '保存所有产品（默认仅可以保存自己创建的产品）', 'catalog_product_info_manager', 10, 'catalog_product_save_all', 1541125009, 1541125031, 1);
 
             ",
