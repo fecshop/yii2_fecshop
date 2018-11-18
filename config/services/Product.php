@@ -14,6 +14,19 @@ return [
          * 因此对总数进行了限制。
          */
         'categoryAggregateMaxCount' => 6000,
+        /**
+         * // https://github.com/liip-forks/Imagine/blob/b3705657f1e4513c6351d3aabc4f9efb7f415803/lib/Imagine/Imagick/Image.php#L703
+         * png图片resize压缩的质量
+         * 范围为  0-9，数越大，质量越高，图片文件的容量越大, 数越低，图片越模糊，容量越小
+         */
+        'pngCompressionLevel' => 8,
+        /**
+          * https://github.com/liip-forks/Imagine/blob/b3705657f1e4513c6351d3aabc4f9efb7f415803/lib/Imagine/Imagick/Image.php#L676   
+          * https://secure.php.net/manual/zh/imagick.setimagecompressionquality.php
+          * 'jpeg', 'jpg', 'pjpeg' 格式图片进行压缩的质量数
+          * 范围：1-100，数越大，质量越高，图片文件的容量越大, 数越低，图片越模糊，容量越小
+          */
+        'jpegQuality' => 80,
         // 'customAttrGroup' => [], 详细参看@common/config/fecshop_local_services/Product.php 里面的配置
         // 子服务
         'childService' => [

@@ -41,7 +41,18 @@ class Image extends Service
         'image/jpg',
         'image/pjpeg',
     ];
-
+    /**
+     * // https://github.com/liip-forks/Imagine/blob/b3705657f1e4513c6351d3aabc4f9efb7f415803/lib/Imagine/Imagick/Image.php#L703
+     * png图片resize压缩的质量，范围为  0-9，数越大，质量越高，图片文件的容量越大
+     */
+    public $pngCompressionLevel = 8;
+    /**
+      * https://github.com/liip-forks/Imagine/blob/b3705657f1e4513c6351d3aabc4f9efb7f415803/lib/Imagine/Imagick/Image.php#L676   
+      * https://secure.php.net/manual/zh/imagick.setimagecompressionquality.php
+      * 'jpeg', 'jpg', 'pjpeg' 格式图片进行压缩的质量数，范围：1-100，数越大，质量越高，图片文件的容量越大
+      */
+    public $jpegQuality = 80;
+                
     // 默认产品图片，当产品图片找不到的时候，就会使用该默认图片
     public $defaultImg = '/default.jpg';
 
@@ -159,7 +170,11 @@ class Image extends Service
         list($newPath, $newUrl) = $this->getProductNewPath($imageVal, $imgResize, $waterImgPath);
         if ($newPath && $newUrl) {
             if (!file_exists($newPath)) {
-                \fec\helpers\CImage::saveResizeMiddleWaterImg($originImgPath, $newPath, $imgResize, $waterImgPath);
+                $options = [
+                    'png_compression_level' => $this->pngCompressionLevel,   
+                    'jpeg_quality'  => $this->jpegQuality,
+                ];
+                \fec\helpers\CImage::saveResizeMiddleWaterImg($originImgPath, $newPath, $imgResize, $waterImgPath, $options);
             }
 
             return [$newPath, $newUrl];
