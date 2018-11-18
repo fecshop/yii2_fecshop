@@ -10,7 +10,7 @@
 namespace fecshop\app\appadmin\modules\Catalog\controllers;
 
 use fecshop\app\appadmin\modules\Catalog\CatalogController;
-
+use Yii;
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
