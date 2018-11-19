@@ -184,7 +184,7 @@ class Address extends Service
         if ($primaryVal) {
             $model = $this->_addressModel->findOne($primaryVal);
             if (!$model) {
-                Yii::$service->helper->errors->add('address '.$this->getPrimaryKey().' is not exist');
+                Yii::$service->helper->errors->add('address {primaryKey} is not exist', ['primaryKey' => $this->getPrimaryKey()]);
 
                 return false;
             }
@@ -256,7 +256,7 @@ class Address extends Service
                     //    $model->delete();
                     //}
                 } else {
-                    Yii::$service->helper->errors->add("address Remove Errors:ID $id is not exist.");
+                    Yii::$service->helper->errors->add('Address Remove Errors:ID {id} is not exist', ['id' => $id]);
 
                     return false;
                 }
@@ -278,7 +278,7 @@ class Address extends Service
                 //    $model->delete();
                 //}
             } else {
-                Yii::$service->helper->errors->add("Address Remove Errors:ID:$id is not exist.");
+                Yii::$service->helper->errors->add('Address Remove Errors:ID:{id} is not exist', ['id'=> $id]);
 
                 return false;
             }

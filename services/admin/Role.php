@@ -110,14 +110,14 @@ class Role extends Service
         $currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
         $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
         if (!($this->validateRoleName($one))) {
-            Yii::$service->helper->errors->add('role name 存在，您必须定义一个唯一的role_name ');
+            Yii::$service->helper->errors->add('The role name exists, you must define a unique role_name');
 
             return null;
         }
         if ($primaryVal) {
             $model = $this->_roleModel->findOne($primaryVal);
             if (!$model) {
-                Yii::$service->helper->errors->add('static block '.$this->getPrimaryKey().' is not exist');
+                Yii::$service->helper->errors->add('role {primaryKey} is not exist', ['primaryKey' => $this->getPrimaryKey()]);
 
                 return null;
             }

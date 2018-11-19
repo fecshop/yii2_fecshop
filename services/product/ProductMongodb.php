@@ -272,7 +272,7 @@ class ProductMongodb extends Service implements ProductInterface
         if ($primaryVal) {
             $model = $this->_productModel->findOne($primaryVal);
             if (!$model) {
-                Yii::$service->helper->errors->add('Product '.$this->getPrimaryKey().' is not exist');
+                Yii::$service->helper->errors->add('Product {primaryKey} is not exist', ['primaryKey'=>$this->getPrimaryKey()]);
 
                 return false;
             }
@@ -284,7 +284,7 @@ class ProductMongodb extends Service implements ProductInterface
                 'sku' => $one['sku'],
             ])->one();
             if ($product_one['sku']) {
-                Yii::$service->helper->errors->add('Product Sku 已经存在，请使用其他的sku');
+                Yii::$service->helper->errors->add('Product Sku is exist，please use other sku');
 
                 return false;
             }
@@ -299,7 +299,7 @@ class ProductMongodb extends Service implements ProductInterface
                 'sku' => $one['sku'],
             ])->one();
             if ($product_one['sku']) {
-                Yii::$service->helper->errors->add('Product Sku 已经存在，请使用其他的sku');
+                Yii::$service->helper->errors->add('Product Sku is exist，please use other sku');
 
                 return false;
             }
@@ -359,34 +359,34 @@ class ProductMongodb extends Service implements ProductInterface
             $PrimaryVal = 0;
         }
         if (!$PrimaryVal && (!isset($one['sku']) || empty($one['sku']))) {
-            Yii::$service->helper->errors->add(' sku 必须存在 ');
+            Yii::$service->helper->errors->add('sku must exist');
 
             return false;
         }
         if (!$PrimaryVal && (!isset($one['spu']) || empty($one['spu']))) {
-            Yii::$service->helper->errors->add(' spu 必须存在 ');
+            Yii::$service->helper->errors->add('spu must exist');
 
             return false;
         }
         $defaultLangName = \Yii::$service->fecshoplang->getDefaultLangAttrName('name');
         if ($PrimaryVal && $one['name'] && empty($one['name'][$defaultLangName])) {
-            Yii::$service->helper->errors->add(' name '.$defaultLangName.' 不能为空 ');
+            Yii::$service->helper->errors->add('name {default_lang_name} can not empty', ['default_lang_name' => $defaultLangName]);
 
             return false;
         }
         if (!isset($one['name'][$defaultLangName]) || empty($one['name'][$defaultLangName])) {
-            Yii::$service->helper->errors->add(' name '.$defaultLangName.' 不能为空 ');
+            Yii::$service->helper->errors->add('name {default_lang_name} can not empty', ['default_lang_name' => $defaultLangName]);
 
             return false;
         }
         $defaultLangDes = \Yii::$service->fecshoplang->getDefaultLangAttrName('description');
         if ($PrimaryVal && $one['description'] && empty($one['description'][$defaultLangDes])) {
-            Yii::$service->helper->errors->add(' description '.$defaultLangDes.' 不能为空 ');
+            Yii::$service->helper->errors->add('description {default_lang_des} can not empty', ['default_lang_des' => $defaultLangDes]);
 
             return false;
         }
         if (!isset($one['description'][$defaultLangDes]) || empty($one['description'][$defaultLangDes])) {
-            Yii::$service->helper->errors->add(' description '.$defaultLangDes.'不能为空 ');
+            Yii::$service->helper->errors->add('description {default_lang_des} can not empty', ['default_lang_des' => $defaultLangDes]);
 
             return false;
         }
@@ -428,7 +428,7 @@ class ProductMongodb extends Service implements ProductInterface
                     $model->delete();
                 //$this->removeChildCate($id);
                 } else {
-                    Yii::$service->helper->errors->add("Product Remove Errors:ID:$id is not exist.");
+                    Yii::$service->helper->errors->add('Product Remove Errors:ID:{id} is not exist', ['id'=>$id]);
                     $removeAll = 0;
                 }
             }
@@ -448,7 +448,7 @@ class ProductMongodb extends Service implements ProductInterface
                 $model->delete();
             //$this->removeChildCate($id);
             } else {
-                Yii::$service->helper->errors->add("Product Remove Errors:ID:$id is not exist.");
+                Yii::$service->helper->errors->add('Product Remove Errors:ID:{id} is not exist.', ['id'=>$id]);
 
                 return false;
             }

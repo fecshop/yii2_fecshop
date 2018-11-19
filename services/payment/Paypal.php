@@ -866,7 +866,7 @@ class Paypal extends Service
                         );
                     }
                 } else {
-                    Yii::$service->helper->errors->add('paypal payment is not complete , current payment status is '.$PAYMENTINFO_0_PAYMENTSTATUS);
+                    Yii::$service->helper->errors->add('paypal payment is not complete , current payment status is {payment_status}', ['payment_status' => $PAYMENTINFO_0_PAYMENTSTATUS]);
                 }
             } else {
                 Yii::$service->helper->errors->add('current order is not exist');

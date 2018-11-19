@@ -280,7 +280,7 @@ class Review extends Service
         if ($primaryVal) {
             $model = $this->_reviewModel->findOne($primaryVal);
             if (!$model) {
-                Yii::$service->helper->errors->add('reviewModel '.$this->getPrimaryKey().' is not exist');
+                Yii::$service->helper->errors->add('reviewModel {primaryKey} is not exist', ['primaryKey'=>$this->getPrimaryKey()]);
 
                 return;
             }
@@ -323,7 +323,7 @@ class Review extends Service
                     $this->updateProductSpuReview($product_spu, $model['lang_code']);
                 } else {
                     //throw new InvalidValueException("ID:$id is not exist.");
-                    Yii::$service->helper->errors->add("Review Remove Errors:ID $id is not exist.");
+                    Yii::$service->helper->errors->add('Review Remove Errors:ID {id} is not exist.', ['id' => $id]);
 
                     return false;
                 }
@@ -334,7 +334,7 @@ class Review extends Service
             if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
                 $model->delete();
             } else {
-                Yii::$service->helper->errors->add("Review Remove Errors:ID:$id is not exist.");
+                Yii::$service->helper->errors->add('Review Remove Errors:ID:{id} is not exist.', ['id' => $id]);
 
                 return false;
             }

@@ -123,7 +123,7 @@ class RewriteMysqldb extends Service implements RewriteInterface
         if ($primaryVal) {
             $model = $this->_urlRewriteModel->findOne($primaryVal);
             if (!$model) {
-                Yii::$service->helper->errors->add('UrlRewrite '.$this->getPrimaryKey().' is not exist');
+                Yii::$service->helper->errors->add('UrlRewrite {primaryKey} is not exist', ['primaryKey'=>$this->getPrimaryKey()]);
 
                 return;
             }
@@ -158,7 +158,7 @@ class RewriteMysqldb extends Service implements RewriteInterface
                     } else {
 
                         //throw new InvalidValueException("ID:$id is not exist.");
-                        Yii::$service->helper->errors->add("UrlRewrite Remove Errors:ID $id is not exist.");
+                        Yii::$service->helper->errors->add('UrlRewrite Remove Errors:ID {id} is not exist.', ['id' => $id]);
                         $innerTransaction->rollBack();
 
                         return false;
@@ -185,7 +185,7 @@ class RewriteMysqldb extends Service implements RewriteInterface
                     $innerTransaction->rollBack();
                 }
             } else {
-                Yii::$service->helper->errors->add("UrlRewrite Remove Errors:ID:$id is not exist.");
+                Yii::$service->helper->errors->add('UrlRewrite Remove Errors:ID:{id} is not exist.', ['id' => $id]);
 
                 return false;
             }

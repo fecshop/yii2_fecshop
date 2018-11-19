@@ -226,14 +226,14 @@ class UrlKey extends Service
         $currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
         $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
         if (!($this->validateUrlKey($one))) {
-            Yii::$service->helper->errors->add('url key 存在，您必须定义一个唯一的identify ');
+            Yii::$service->helper->errors->add('The url key exists, you must define a unique url key');
 
             return;
         }
         if ($primaryVal) {
             $model = $this->_mode->findOne($primaryVal);
             if (!$model) {
-                Yii::$service->helper->errors->add('static block '.$this->getPrimaryKey().' is not exist');
+                Yii::$service->helper->errors->add('Url key {primaryKey} is not exist', ['primaryKey' => $this->getPrimaryKey()]);
 
                 return false;
             }

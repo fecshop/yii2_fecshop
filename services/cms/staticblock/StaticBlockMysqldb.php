@@ -118,14 +118,14 @@ class StaticBlockMysqldb extends Service implements StaticBlockInterface
         $currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
         $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
         if (!($this->validateIdentify($one))) {
-            Yii::$service->helper->errors->add('StaticBlock: identify存在，您必须定义一个唯一的identify ');
+            Yii::$service->helper->errors->add('Static block: identify exit, You must define a unique identify');
 
             return;
         }
         if ($primaryVal) {
             $model = $this->_staticBlockModel->findOne($primaryVal);
             if (!$model) {
-                Yii::$service->helper->errors->add('static block '.$this->getPrimaryKey().' is not exist');
+                Yii::$service->helper->errors->add('Static block {primaryKey} is not exist', ['primaryKey' => $this->getPrimaryKey()]);
 
                 return;
             }
