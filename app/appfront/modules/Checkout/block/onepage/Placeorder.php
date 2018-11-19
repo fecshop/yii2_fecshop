@@ -128,12 +128,12 @@ class Placeorder
             $passMin = Yii::$service->customer->getRegisterPassMinLength();
             $passMax = Yii::$service->customer->getRegisterPassMaxLength();
             if (strlen($customer_password) < $passMin) {
-                Yii::$service->helper->errors->add('password must Greater than '.$passMin);
+                Yii::$service->helper->errors->add('password must Greater than {min_password}', ['min_password' => $passMin]);
 
                 return false;
             }
             if (strlen($customer_password) > $passMax) {
-                Yii::$service->helper->errors->add('password must less than '.$passMax);
+                Yii::$service->helper->errors->add('password must less than {max_password}', ['max_password' => $passMax]);
 
                 return false;
             }
@@ -298,7 +298,7 @@ class Placeorder
         if ($order_remark && $orderRemarkStrMaxLen) {
             $order_remark_strlen = strlen($order_remark);
             if ($order_remark_strlen > $orderRemarkStrMaxLen) {
-                Yii::$service->helper->errors->add('order remark string length can not gt '.$orderRemarkStrMaxLen);
+                Yii::$service->helper->errors->add('order remark string length can not gt {orderRemarkStrMaxLen}', ['orderRemarkStrMaxLen' => $orderRemarkStrMaxLen]);
                 
                 return false;
             } else {
