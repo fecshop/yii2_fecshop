@@ -25,18 +25,18 @@ project status:
 ------------
 
 
-[Fecshop] (http://www.fecshop.com) Fully called Fancy ECommerce Shop, is an excellent open source e-commerce system based on the php Yii2 framework.
+[Fecshop](http://www.fecshop.com) Fully called Fancy ECommerce Shop, is an excellent open source e-commerce system based on the php Yii2 framework.
 Fecshop supports multi-language, multi-currency, architecture support pc, mobile web, mobile app, and erp docking, etc. You can customize and deploy your e-commerce system for free and fast.
 
-See the address for details: [Introduction to Fecshop] (http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-description.html)
+See the address for details: [Introduction to Fecshop](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-description.html)
 
-[Fecshop] (http://www.fecshop.com) website: http://www.fecshop.com, you can submit bugs, question consultation and so on.
+[Fecshop](http://www.fecshop.com) website: http://www.fecshop.com, you can submit bugs, question consultation and so on.
 
-[Fecshop](http://www.fecshop.com) [Completed] PC Web Demo: [http://fecshop.appfront.fancyecommerce.com] (http://fecshop.appfront.fancyecommerce.com/men? Fec_campaign=xxx&fec_content=94&fec_design=96&fec_medium=Share&fec_source=Facebook&fid=7a77a6ba-2d90-4ad5-bf75-fdf920de41f7)
+[Fecshop](http://www.fecshop.com) [Completed] PC Web Demo: [http://fecshop.appfront.fancyecommerce.com](http://fecshop.appfront.fancyecommerce.com/men? Fec_campaign=xxx&fec_content=94&fec_design=96&fec_medium=Share&fec_source=Facebook&fid=7a77a6ba-2d90-4ad5-bf75-fdf920de41f7)
 
-[Fecshop](http://www.fecshop.com) [Completed] Mobile Web Demo (WAP): [http://fecshop.apphtml5.fancyecommerce.com] (http://fecshop.apphtml5.fancyecommerce.com ?fec_campaign=xxxx&fec_content=94&fec_design=96&fec_medium=Adwords&fec_source=Facebook&fid=100000005)
+[Fecshop](http://www.fecshop.com) [Completed] Mobile Web Demo (WAP): [http://fecshop.apphtml5.fancyecommerce.com](http://fecshop.apphtml5.fancyecommerce.com ?fec_campaign=xxxx&fec_content=94&fec_design=96&fec_medium=Adwords&fec_source=Facebook&fid=100000005)
 
-[Fecshop](http://www.fecshop.com) [Completed] Mobile VUE Demo (Appserver, front and back completely separated mode): [http://demo.fancyecommerce.com/#/] (http:// Demo.fancyecommerce.com/#/?fec_campaign=xxxx&fec_content=94&fec_design=96&fec_medium=Adwords&fec_source=Facebook&fid=100000005)
+[Fecshop](http://www.fecshop.com) [Completed] Mobile VUE Demo (Appserver, front and back completely separated mode): [http://demo.fancyecommerce.com/#/](http:// Demo.fancyecommerce.com/#/?fec_campaign=xxxx&fec_content=94&fec_design=96&fec_medium=Adwords&fec_source=Facebook&fid=100000005)
 
 [Fecshop] (http://www.fecshop.com) Background demo address: Add QQ group, there are background demo address, account password and other information in the group announcement
 
@@ -45,13 +45,13 @@ Author, Terry Email: 2358269014@qq.com
  
 [Fecshop](http://www.fecshop.com) Github Address: https://github.com/fancyecommerce/yii2_fecshop
 
-Fecshop open source agreement: [Fecshop License Agreement] (http://www.fecshop.com/license)
+Fecshop open source agreement: [Fecshop License Agreement](http://www.fecshop.com/license)
 
 Fecshop online project case: http://www.fecshop.com/topic/55
 
-Fecshop question consultation, Bug submission, etc. See: [Fecshop Forum] (http://www.fecshop.com/topic)
+Fecshop question consultation, Bug submission, etc. See: [Fecshop Forum](http://www.fecshop.com/topic)
 
-Fecshop open source project history: [Fecshop timeline] (http://www.fecshop.com/site/timeline)
+Fecshop open source project history: [Fecshop timeline](http://www.fecshop.com/site/timeline)
 
 
 Fecshop Trace website traffic advertisement analysis system
@@ -72,15 +72,15 @@ Test account: test test123 (Do not change the password, the account has certain 
 2, Fecshop document, video, extension library
 ------------
 
-**Second Open and Installation Documentation: ** [Fecshop Installation Development Document] (http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-README.html) [Completion Completion]
+**Second Open and Installation Documentation: ** [Fecshop Installation Development Document](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-README.html) [Completion Completion]
 
-**Use help documentation:** [Fecshop Help Document] (http://www.fecshop.com/doc/fecshop-guide/instructions/cn-1.0/guide-README.html) [Complete Completion]
+**Use help documentation:** [Fecshop Help Document](http://www.fecshop.com/doc/fecshop-guide/instructions/cn-1.0/guide-README.html) [Complete Completion]
 
-**Installation Development Help Video:** [Fecshop Installation Development Video] (http://www.fecshop.com/doc/fecshop-guide/instructions/cn-1.0/guide-fecshop_video_install.html) [Completion Completion]
+**Installation Development Help Video:** [Fecshop Installation Development Video](http://www.fecshop.com/doc/fecshop-guide/instructions/cn-1.0/guide-fecshop_video_install.html) [Completion Completion]
 
-** Front and rear split mode Api: ** [Appserver VUE Api document] (http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-server.html) [Completion completed 】
+** Front and rear split mode Api: ** [Appserver VUE Api document](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-server.html) [Completion completed 】
 
-**Fecshop extension: ** [Fecshop official extension list] (http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-pkg-list.html)
+**Fecshop extension: ** [Fecshop official extension list](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-pkg-list.html)
 
 
 3, install Fecshop
@@ -92,20 +92,20 @@ Test account: test test123 (Do not change the password, the account has certain 
 Re-emphasize again: **Fecshop is based on composer online installation, direct git clone download is not **, please follow the installation documentation
 
 
-3.1, [Standard mode] Standard installation method: Step by step configuration from basic linux, see the documentation for details: [Fecshop installation] (http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0 /guide-fecshop-about-hand-install.html)
+3.1, [Standard mode] Standard installation method: Step by step configuration from basic linux, see the documentation for details: [Fecshop installation](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0 /guide-fecshop-about-hand-install.html)
 
 3.2, [strongly recommended] docker compose rapid deployment
 : Because the above installation operations require more installation, the process is more complicated.
 It is recommended to use docker compose, see:
-[docker compose quickly deploy Fecshop] (https://github.com/fecshop/yii2_fecshop_docker)
+[docker compose quickly deploy Fecshop](https://github.com/fecshop/yii2_fecshop_docker)
 
 3.3, [not recommended] vagrant box way: box made in 2017.6 months, no longer maintain vagrant box,
 It is recommended to use docker compose installation. If you want to use vagrant box, you can refer to:
-[Fecshop vagrant installation] (http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-vagrantinstall.html)
+[Fecshop vagrant installation](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-vagrantinstall.html)
 
 
 
-
+### 中文部分README
 
 项目状态：
 
