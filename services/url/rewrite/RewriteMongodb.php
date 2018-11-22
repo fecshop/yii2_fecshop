@@ -141,7 +141,7 @@ class RewriteMongodb extends Service implements RewriteInterface
                 $url_key = $model['url_key'];
                 $model->delete();
             } else {
-                Yii::$service->helper->errors->add("UrlRewrite Remove Errors:ID:{id} is not exist.', ['id' => $id]);
+                Yii::$service->helper->errors->add('UrlRewrite Remove Errors:ID:{id} is not exist.', ['id' => $id]);
 
                 return false;
             }
