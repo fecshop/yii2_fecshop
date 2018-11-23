@@ -28,15 +28,17 @@ class Category extends Service
     protected function actionAttrValConvertUrlStr($strVal)
     {
         if ($strVal) {
-            if (!preg_match('/^[A-Za-z0-9-_ &]+$/', $strVal)) {
-                throw new InvalidValueException('"'.$strVal .'":contain special str , you can only contain special string [A-Za-z0-9-_ &]');
-            }
-            $convert = $this->strUrlRelation();
-            foreach ($convert as $originStr => $nStr) {
-                $strVal = str_replace($originStr, $nStr, $strVal);
-            }
-
-            return $strVal;
+            return urlencode($strVal);
+            // 如果在其他url重写的需要，可以在这里添加一下字符串转换，添加后
+            // 函数actionUrlStrConvertAttrVal()也要做相应的转变
+            //if (!preg_match('/^[A-Za-z0-9-_ &]+$/', $strVal)) {
+            //    throw new InvalidValueException('"'.$strVal .'":contain special str , you can only contain special string [A-Za-z0-9-_ &]');
+            //}
+            //$convert = $this->strUrlRelation();
+            //foreach ($convert as $originStr => $nStr) {
+            //    $strVal = str_replace($originStr, $nStr, $strVal);
+            //}
+            //return $strVal;
         }
     }
 
@@ -46,12 +48,14 @@ class Category extends Service
      */
     protected function actionUrlStrConvertAttrVal($urlStr)
     {
-        $convert = $this->strUrlRelation();
-        foreach ($convert as $originStr => $nStr) {
-            $urlStr = str_replace($nStr, $originStr, $urlStr);
-        }
-
-        return $urlStr;
+        return urldecode($urlStr);
+        // 如果在其他url重写的需要，可以在这里添加一下字符串转换，添加后
+        // 函数 actionAttrValConvertUrlStr()也要做相应的转变
+        //$convert = $this->strUrlRelation();
+        //foreach ($convert as $originStr => $nStr) {
+        //    $urlStr = str_replace($nStr, $originStr, $urlStr);
+        //}
+        //return $urlStr;
     }
 
     /**
@@ -87,10 +91,9 @@ class Category extends Service
         }
 
         if ($currentRequestVal) {
-            $originAttrUrlStr = $attrUrlStr.'='.$currentRequestVal;
+            $originAttrUrlStr = $attrUrlStr . '=' . $this->attrValConvertUrlStr($currentRequestVal);
             $currentUrl = Yii::$service->url->getCurrentUrl();
             if ($originAttrUrlStr == $str) {
-                //return str_replace($originAttrUrlStr,$str,$currentUrl);
                 $url = $currentUrl;
                 if (strstr($currentUrl, '?'.$originAttrUrlStr.'&')) {
                     $url = str_replace('?'.$originAttrUrlStr.'&', '?', $currentUrl);
