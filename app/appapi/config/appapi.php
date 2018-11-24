@@ -35,6 +35,9 @@ $config = [
     'components' => [
         'urlManager' => [
             'class' => 'yii\web\UrlManager',
+            'rules' => [
+                '' => 'v1/home/index',
+            ],
             /*
             'enablePrettyUrl'        => true,
             'enableStrictParsing'    => true,
