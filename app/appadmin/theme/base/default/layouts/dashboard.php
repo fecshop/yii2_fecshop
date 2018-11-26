@@ -16,6 +16,7 @@ use fecadmin\myassets\AppAsset;
 use fecadmin\myassets\AppZhAsset;
 use common\widgets\Alert;
 use fec\helpers\CUrl;
+use fec\helpers\CRequest;
 use fecadmin\views\layouts\Head;
 
 $currentLangCode = Yii::$service->admin->getCurrentLangCode();
@@ -125,8 +126,9 @@ $cssOptions = [
                            </option>
                       <?php endforeach; ?>
                    </select>
-				<a style="color:#fff; display: block; height: 21px;position: absolute; right: 10px;top: 18px;z-index: 31;" 
-				href="<?= Yii::$service->url->getUrl("fecadmin/logout") ?>">
+				<a style="color:#fff; display: block; height: 21px;position: absolute; right: 10px;top: 18px;z-index: 31;"
+				   doPost
+				   href='javascript:doPost("<?= Yii::$service->url->getUrl("fecadmin/logout") ?>", {"<?= CRequest::getCsrfName() ?>": "<?= CRequest::getCsrfValue() ?>", "islogout": "1"}) '>
 					<?= Yii::$service->page->translate->__('Logout'); ?>
 				</a>
 			</div>

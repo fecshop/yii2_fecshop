@@ -11,7 +11,7 @@ use Yii;
 use fec\helpers\CConfig;
 use fecadmin\FecadminbaseController;
 use fecshop\app\appadmin\modules\AppadminController;
-
+use yii\web\Controller;
 use yii\helpers\Url;
 use fec\helpers\CModel;
 use fec\helpers\CDate;
@@ -21,22 +21,27 @@ use fecadmin\models\AdminUser\AdminUserLogin;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class LogoutController extends \fecadmin\controllers\LogoutController
+class LogoutController extends Controller
 {
-	public $enableCsrfValidation = false;
+	public $enableCsrfValidation = true;
     public $blockNamespace;
     
     public function actionIndex()
     {
-        $isGuest = Yii::$app->user->isGuest;
-        //echo $isGuest;exit;
         $currentLang = Yii::$service->admin->getCurrentLangCode();
+        $islogout = Yii::$app->request->post('islogout');
+        if (!$islogout) {
+            Yii::$service->admin->systemLog->save();
+            Yii::$service->url->redirectByUrlKey("/fecadmin/login/index", ['lang' => $currentLang]);
+        }
+        $isGuest = Yii::$app->user->isGuest;
         if(!$isGuest){
             Yii::$service->admin->systemLog->save();
             Yii::$app->user->logout();
         }
-        \fecadmin\helpers\CSystemlog::saveSystemLog();
+        Yii::$service->admin->systemLog->save();
         Yii::$service->url->redirectByUrlKey("/fecadmin/login/index", ['lang' => $currentLang]);
+
         // Yii::$app->getResponse()->redirect()->send();
         //$this->redirect("/fecadmin/login/index",200)->send();
     }
