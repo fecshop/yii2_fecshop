@@ -15,7 +15,7 @@ use fec\helpers\CRequest;
 }
 </style>
 <form action="<?= CUrl::getUrl('fecadmin/login/index'); ?>" method="post">
-	<?php echo CRequest::getCsrfInputHtml();  ?>	
+	<?php echo CRequest::getCsrfInputHtml();  ?>
 	<p>
 		<label><?= Yii::$service->page->translate->__('User'); ?></label>
 		<input type="text" name="login[username]" size="20" class="login_input" />
