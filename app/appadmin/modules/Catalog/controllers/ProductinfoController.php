@@ -18,7 +18,7 @@ use Yii;
  */
 class ProductinfoController extends CatalogController
 {
-    public $enableCsrfValidation = false;
+    public $enableCsrfValidation = true;
 
     public function actionIndex()
     {
