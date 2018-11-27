@@ -167,16 +167,6 @@ class Coupon extends Service
                 Yii::$service->helper->errors->add('coupon {primaryKey} is not exist' , ['primaryKey' => $this->getPrimaryKey()] );
 
                 return;
-            } else {
-                $o_one = $this->_couponModel->find()
-                    ->where(['coupon_code' =>$one['coupon_code']])
-                    ->andWhere(['!=', $primaryKey, $primaryVal])
-                    ->one();
-                if ($o_one[$primaryKey]) {
-                    Yii::$service->helper->errors->add('coupon_code must be unique');
-
-                    return;
-                }
             }
         } else {
             $o_one = $this->_couponModel->find()
@@ -198,11 +188,19 @@ class Coupon extends Service
                 }
             }
         }
-        $model->updated_at = time();
-        $model      = Yii::$service->helper->ar->save($model, $one);
-        $primaryVal = $model[$primaryKey];
+        $model->attributes = $one;
+        if ($model->validate()) {
+            $model->updated_at = time();
+            $model = Yii::$service->helper->ar->save($model, $one);
+            $primaryVal = $model[$primaryKey];
 
-        return $primaryVal;
+            return $primaryVal;
+        } else {
+            $errors = $model->errors;
+            Yii::$service->helper->errors->addByModelErrors($errors);
+
+            return false;
+        }
     }
 
     /**
