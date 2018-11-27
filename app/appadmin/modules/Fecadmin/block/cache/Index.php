@@ -163,7 +163,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
             exit;
         }
         $successReflushAppNameArr = [];
-		$cacheAppNameStr = Yii::$app->request->get('ids');
+		$cacheAppNameStr = Yii::$app->request->post('ids');
 		$cacheAppNameArr = explode(",",$cacheAppNameStr);
         if (is_array($cacheAppNameArr)) {
             foreach ($cacheAppNameArr as $cacheAppName) {
