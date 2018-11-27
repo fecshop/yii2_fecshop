@@ -180,10 +180,10 @@ EOF;
                 $rows = isset($display['rows']) ? $display['rows'] : 15;
                 $cols = isset($display['cols']) ? $display['cols'] : 110;
                 $isLang = isset($display['lang']) ? $display['lang'] : false;
-                $uploadImgUrl = 'upimgurl="'.CUrl::getUrl('cms/staticblock/imageupload').'" upimgext="jpg,jpeg,gif,png"';
-                $uploadFlashUrl = 'upflashurl="'.CUrl::getUrl('cms/staticblock/flashupload').'" upflashext="swf"';
-                $uploadLinkUrl = 'uplinkurl="'.CUrl::getUrl('cms/staticblock/linkupload').'" uplinkext="zip,rar,txt"';
-                $uploadMediaUrl = 'upmediaurl="'.CUrl::getUrl('cms/staticblock/mediaupload').'" upmediaext:"avi"="" ';
+                $uploadImgUrl = 'upimgurl="'.CUrl::getUrl('cms/xeditor/imageupload').'" upimgext="jpg,jpeg,gif,png"';
+                $uploadFlashUrl = 'upflashurl="'.CUrl::getUrl('cms/xeditor/flashupload').'" upflashext="swf"';
+                $uploadLinkUrl = 'uplinkurl="'.CUrl::getUrl('cms/xeditor/linkupload').'" uplinkext="zip,rar,txt"';
+                $uploadMediaUrl = 'upmediaurl="'.CUrl::getUrl('cms/xeditor/mediaupload').'" upmediaext:"avi"="" ';
 
                 if ($isLang && is_array($langs) && !empty($langs)) {
                     $tabLangTitle = '';
