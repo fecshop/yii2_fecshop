@@ -367,10 +367,11 @@ return [
  '2 stars' => '2星',
  '1 stars' => '1星',
  'Write a Customer Review' => '填写用户评论',
- '' => '',
- '' => '',
- '' => '',
- '' => '',
+ 'coupon is empty' => '优惠卷为空',
+ 'cacle coupon success' => '取消优惠卷成功',
+ 'coupon is not exist' => '优惠卷不存在',
+ 'add coupon success' => '使用优惠卷成功',
+ 'Coupon is not available or has expired' => '优惠卷不可用或已经过期',
  
  
  
