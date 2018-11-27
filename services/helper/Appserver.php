@@ -11,6 +11,7 @@
 namespace fecshop\services\helper;
 
 use fecshop\services\Service;
+use Yii;
 
 /**
  * 该类主要是给appserver端的api，返回的数据做格式输出，规范输出的各种状态。
@@ -169,7 +170,63 @@ class Appserver extends Service
      * cms
      */
     public $cms_article_not_exist                          = 1600001;           // Article: 文章不存在
-    
+    /**
+     * 跨域访问cors
+     */
+    public $appserver_cors;
+    /**
+     *  用于vue端跨域访问的cors设置
+     * @return array
+     */
+    public function getCors(){
+        $fecshop_uuid = Yii::$service->session->fecshop_uuid;
+        $cors_allow_headers = [$fecshop_uuid, 'fecshop-lang', 'fecshop-currency', 'access-token'];
+        $cors = $this->appserver_cors;
+        $corsFilterArr = [];
+        if (is_array($cors) && !empty($cors)) {
+            if (isset($cors['Origin']) && $cors['Origin']) {
+                $corsFilterArr['Origin'] = $cors['Origin'];
+            }
+            if (isset($cors['Access-Control-Request-Method']) && $cors['Access-Control-Request-Method']) {
+                $corsFilterArr['Access-Control-Request-Method'] = $cors['Access-Control-Request-Method'];
+            }
+            if (isset($cors['Access-Control-Max-Age']) && $cors['Access-Control-Max-Age']) {
+                $corsFilterArr['Access-Control-Max-Age'] = $cors['Access-Control-Max-Age'];
+            }
+            if (isset($cors['Access-Control-Expose-Headers']) && $cors['Access-Control-Expose-Headers']) {
+                $cors_allow_headers = array_merge($cors_allow_headers, $cors['Access-Control-Expose-Headers']);
+            }
+            $corsFilterArr['Access-Control-Expose-Headers'] = $cors_allow_headers;
+        }
+        return $corsFilterArr;
+        
+    }
+    /**
+     * 用于vue端跨域访问的 customer token auth 的 cors设置
+     * @return array
+     */
+    public function getYiiAuthCors(){
+        $fecshop_uuid = Yii::$service->session->fecshop_uuid;
+        $cors_allow_headers = [$fecshop_uuid, 'fecshop-lang', 'fecshop-currency', 'access-token'];
+        $cors = $this->appserver_cors;
+        $corsFilterArr = [];
+        if (is_array($cors) && !empty($cors)) {
+            if (isset($cors['Origin']) && $cors['Origin']) {
+                $corsFilterArr[] = 'Access-Control-Allow-Origin: ' .  implode(', ', $cors['Origin']);
+            }
+            
+            if (isset($cors['Access-Control-Allow-Headers']) && is_array($cors['Access-Control-Allow-Headers'])) {
+                $cors_allow_headers = array_merge($cors_allow_headers, $cors['Access-Control-Allow-Headers']);
+            }
+            $corsFilterArr[] = 'Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, ' . implode(', ', $cors_allow_headers);    
+            
+            if (isset($cors['Access-Control-Allow-Methods']) && is_array($cors['Access-Control-Allow-Methods'])) {
+                $corsFilterArr[] = 'Access-Control-Allow-Methods: ' . implode(', ',$cors['Access-Control-Allow-Methods']);
+            }
+        }
+        return $corsFilterArr;
+        
+    }
     /**
      * @param int $code 状态码
      * @param mixed $data 可以是数字，数组等格式，用于做返回给前端的数组。
@@ -223,7 +280,7 @@ class Appserver extends Service
                 'message' => 'process success',
             ],
             $this->status_unknown => [
-                'message' => 'unknow errors',
+                'message' => 'unknown errors',
             ],
             $this->status_mysql_disconnect => [
                 'message' => 'mysql connect timeout',

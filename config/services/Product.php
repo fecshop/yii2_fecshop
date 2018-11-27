@@ -14,12 +14,35 @@ return [
          * 因此对总数进行了限制。
          */
         'categoryAggregateMaxCount' => 6000,
+        /**
+          * 分类页面的产品，如果一个spu下面由多个sku同时在这个分类，
+          * 那么，是否只显示一个sku（score最高），而不是全部sku
+          * true： 代表只显示一个sku
+          * false: 代表产品全部显示
+          */
+        'productSpuShowOnlyOneSku' => true,
         // 'customAttrGroup' => [], 详细参看@common/config/fecshop_local_services/Product.php 里面的配置
         // 子服务
         'childService' => [
             'image' => [
                 'class'             => 'fecshop\services\product\Image',
-                'imageFloder'       => 'media/catalog/product', # 产品图片存放路径。
+                // 产品图片存放路径。
+                'imageFloder'       => 'media/catalog/product', 
+                // MB  # 图片最大尺寸
+                'maxUploadMSize'=> 5, 
+                /**
+                 * // https://github.com/liip-forks/Imagine/blob/b3705657f1e4513c6351d3aabc4f9efb7f415803/lib/Imagine/Imagick/Image.php#L703
+                 * png图片resize压缩的质量数
+                 * 范围为  0-9，数越大，质量越高，图片文件的容量越大, 数越低，图片越模糊，容量越小
+                 */
+                'pngCompressionLevel' => 8,
+                /**
+                  * https://github.com/liip-forks/Imagine/blob/b3705657f1e4513c6351d3aabc4f9efb7f415803/lib/Imagine/Imagick/Image.php#L676   
+                  * https://secure.php.net/manual/zh/imagick.setimagecompressionquality.php
+                  * 'jpeg', 'jpg', 'pjpeg' 格式图片进行压缩的质量数
+                  * 范围：1-100，数越大，质量越高，图片文件的容量越大, 数越低，图片越模糊，容量越小
+                  */
+                'jpegQuality' => 80,
                 //'allowImgType' 	=> [ # 允许的图片类型
                 //    'image/jpeg',
                 //    'image/gif',
@@ -27,7 +50,6 @@ return [
                 //    'image/jpg',
                 //    'image/pjpeg',
                 //], 
-                'maxUploadMSize'=> 5, //MB  # 图片最大尺寸
                 //'waterImg'        => 'product_water.jpg',  # 水印图片
             ],
             'price' => [

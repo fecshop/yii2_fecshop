@@ -105,11 +105,12 @@ class Search extends Service
     protected function actionGetSearchProductColl($select, $where, $pageNum, $numPerPage, $product_search_max_count, $filterAttr = [])
     {
         $currentLangCode = Yii::$service->store->currentLangCode;
-
         if (!$currentLangCode) {
+            Yii::$service->helper->errors->add('current language code is empty');
             return;
         }
         $searchEngineList = $this->getAllChildServiceName();
+        // 根据当前store的语言，选择相应的搜索引擎
         if (is_array($searchEngineList) && !empty($searchEngineList)) {
             foreach ($searchEngineList as $sE) {
                 $service = $this->{$sE};
@@ -117,7 +118,6 @@ class Search extends Service
                 if (is_array($searchLang) && !empty($searchLang)) {
                     $searchLangCode = array_keys($searchLang);
                     // 如果当前store的语言，在当前的搜索引擎中支持，则会使用这个搜索，作为支持。
-
                     if (in_array($currentLangCode, $searchLangCode)) {
                         return $service->getSearchProductColl($select, $where, $pageNum, $numPerPage, $product_search_max_count, $filterAttr);
                     }

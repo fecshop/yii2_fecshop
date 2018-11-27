@@ -108,7 +108,7 @@ class Appapi extends Service
                 'message' => 'process success',
             ],
             $this->status_unknown => [
-                'message' => 'unknow errors',
+                'message' => 'unknown errors',
             ],
             $this->status_mysql_disconnect => [
                 'message' => 'mysql connect timeout',

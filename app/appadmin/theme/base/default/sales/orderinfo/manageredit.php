@@ -29,40 +29,40 @@ use fecshop\app\appfront\helper\Format;
 				<input type="hidden"  value="<?=  $order['order_id']; ?>" size="30" name="editForm[order_id]" class="textInput ">
 				
 				<fieldset id="fieldset_table_qbe">
-					<legend style="color:#cc0000">订单信息</legend>
+					<legend style="color:#cc0000"><?= Yii::$service->page->translate->__('Order Info')  ?></legend>
 					<div>
 						<p class="edit_p">
-							<label>订单号：</label>
+							<label><?= Yii::$service->page->translate->__('Increment Id')  ?>：</label>
 							<span><?= $order['increment_id'] ?></span>
 						</p>
 						
 						<p class="edit_p">
-							<label>订单状态：</label>
+							<label><?= Yii::$service->page->translate->__('Order Status')  ?>：</label>
 							<span><select name="editForm[order_status]"><?= $order['order_status_options'] ?></select></span>
 						</p>
 						
 						<p class="edit_p">
-							<label>Store：</label>
+							<label><?= Yii::$service->page->translate->__('Store')  ?>: </label>
 							<span>
                                 <input type="text" name="editForm[store]" value="<?= $order['store'] ?>" />
                             </span>
 						</p>
 						
 						<p class="edit_p">
-							<label>订单产品总数：</label>
+							<label><?= Yii::$service->page->translate->__('Item Count')  ?>：</label>
 							<span><?= $order['items_count'] ?></span>
 						</p>
 						
 						<p class="edit_p">
-							<label>订单总重量(KG)：</label>
+							<label><?= Yii::$service->page->translate->__('Total Weight')  ?>(KG)：</label>
 							<span><?= $order['total_weight'] ?></span>
 						</p>
 						
 						
 						
 						<p class="edit_p">
-							<label>订单货币简码：</label>
-                            <span><?= $order['order_to_base_rate'] ?></span>
+							<label><?= Yii::$service->page->translate->__('Currency Code')  ?>：</label>
+                            <span><?= $order['order_currency_code'] ?></span>
                             <!--
 							<span>
                                 <select name="editForm[order_currency_code]"><?= $order['order_currency_code_options'] ?></select>
@@ -71,7 +71,7 @@ use fecshop\app\appfront\helper\Format;
 						</p>
 						<?php $symbol = Yii::$service->page->currency->getSymbol($order['order_currency_code']);  ?>
 						<p class="edit_p">
-							<label>与基础货币汇率：</label>
+							<label><?= Yii::$service->page->translate->__('Rate / Base')  ?>：</label>
 							<span><?= $order['order_to_base_rate'] ?></span>
 						</p>
 						
@@ -84,52 +84,52 @@ use fecshop\app\appfront\helper\Format;
 						</p>
                         -->
                         <p class="edit_p">
-							<label>支付类型：</label>
+							<label><?= Yii::$service->page->translate->__('Checkout Method')  ?>：</label>
 							<span><?= $order['checkout_method'] ?></span>
 						</p>
 						<p class="edit_p">
-							<label>支付方式：</label>
+							<label><?= Yii::$service->page->translate->__('Payment Method')  ?>：</label>
 							<span><?= $order['payment_method_label'] ?></span>
 						</p>
 						
 						<?php  if($order['remote_ip']){  ?>
 						<p class="edit_p">
-							<label>IP：</label>
+							<label><?= Yii::$service->page->translate->__('Ip')  ?>：</label>
 							<span><?= $order['remote_ip'] ?></span>
 						</p>
 						<?php  }  ?>
 						
 						<p class="edit_p">
-							<label>订单总金额：</label>
+							<label><?= Yii::$service->page->translate->__('Order Grand Total')  ?>：</label>
 							<span><?= $symbol.$order['grand_total'] ?></span>
 						</p>
 						<p class="edit_p">
-							<label>订单产品总额：</label>
+							<label><?= Yii::$service->page->translate->__('Product Subtotal')  ?>：</label>
 							<span><?= $symbol.$order['subtotal'] ?></span>
 						</p>
 						
 						<?php  if($order['subtotal_with_discount']){  ?>
 						<p class="edit_p">
-							<label>优惠券：</label>
+							<label><?= Yii::$service->page->translate->__('Coupon Code')  ?>：</label>
 							<span><?= $symbol ?><?= $order['coupon_code'] ? $order['coupon_code'] : '0.00' ?></span>
 						</p>
 						<?php }  ?>
 						
 						<?php  if($order['subtotal_with_discount']){  ?>
 						<p class="edit_p">
-							<label>订单折扣：</label>
+							<label><?= Yii::$service->page->translate->__('Discount')  ?>：</label>
 							<span><?= $symbol.$order['subtotal_with_discount'] ?></span>
 						</p>
 						<?php  }  ?>
 						
 						<p class="edit_p">
-							<label>订单运费：</label>
+							<label><?= Yii::$service->page->translate->__('Shipping Total')  ?>: </label>
 							<span><?= $symbol.$order['shipping_total'] ?></span>
 						</p>
 						
 						<?php  if($order['payment_fee'] == 1){  ?>
 						<p class="edit_p">
-							<label>payment_fee：</label>
+							<label><?= Yii::$service->page->translate->__('Payment Fee')  ?>payment_fee：</label>
 							<span><?= $order['payment_fee'] ?></span>
 						</p>
 						<?php  }  ?>
@@ -138,29 +138,29 @@ use fecshop\app\appfront\helper\Format;
 				</fieldset>
 				
 				<fieldset id="fieldset_table_qbe">
-					<legend style="color:#cc0000">订单用户信息</legend>
+					<legend style="color:#cc0000"><?= Yii::$service->page->translate->__('Order Customer Info')  ?></legend>
 					<div>
 				
 						<p class="edit_p">
-							<label>FirstName：</label>
+							<label><?= Yii::$service->page->translate->__('First Name')  ?>: </label>
 							<span>
                                 <input type="text" name="editForm[customer_firstname]" value="<?= $order['customer_firstname'] ?>" />
                             </span>
                         </p>
 						<p class="edit_p">
-							<label>LastName：</label>
+							<label><?= Yii::$service->page->translate->__('Last Name')  ?>: </label>
 							<span>
                                 <input type="text" name="editForm[customer_lastname]" value="<?= $order['customer_lastname'] ?>" />
                             </span>
                         </p>
 						<p class="edit_p">
-							<label>是否游客下单：</label>
+							<label><?= Yii::$service->page->translate->__('Is Guest')  ?>：</label>
 							<span>
                                 <select name="editForm[customer_is_guest]"><?= $order['customer_is_guest_options'] ?></select>
                             </span>
 						</p>
 						<p class="edit_p">
-							<label>Email：</label>
+							<label><?= Yii::$service->page->translate->__('Email')  ?>: </label>
 							<span>
                                 <input type="text" name="editForm[customer_email]" value="<?= $order['customer_email'] ?>" />
                             </span>
@@ -168,7 +168,7 @@ use fecshop\app\appfront\helper\Format;
                         </p>
 						
 						<p class="edit_p">
-							<label>customer_id：</label>
+							<label><?= Yii::$service->page->translate->__('Customer Id')  ?>: </label>
 							<span>
                                 <input type="text" name="" value="<?= $order['customer_id'] ?>" />
                             </span>
@@ -177,40 +177,40 @@ use fecshop\app\appfront\helper\Format;
 				</fieldset>
 				
 				<fieldset id="fieldset_table_qbe">
-					<legend style="color:#cc0000">订单货运信息</legend>
+					<legend style="color:#cc0000"><?= Yii::$service->page->translate->__('Order Shipping Info')  ?></legend>
 					<div>
 				
 						<p class="edit_p">
-							<label>货运方式：</label>
+							<label><?= Yii::$service->page->translate->__('Shipping Method')  ?>: </label>
 							<span><?= $order['shipping_method_label'] ?></span>
 						</p>
 						<p class="edit_p">
-							<label>订单运费：</label>
+							<label><?= Yii::$service->page->translate->__('Shipping Total')  ?>: </label>
 							<span><?= $symbol.$order['shipping_total'] ?></span>
 						</p>
 						<p class="edit_p">
-							<label>货运追踪号：</label>
+							<label><?= Yii::$service->page->translate->__('Tracking Number')  ?>：</label>
                             <span>
                                 <input type="text" name="editForm[tracking_number]" value="<?= $order['tracking_number'] ?>" />
                             </span>
 						</p>
                         
 						<p class="edit_p">
-							<label>电话：</label>
+							<label><?= Yii::$service->page->translate->__('Telephone')  ?>: </label>
 							<span>
                                 <input type="text" name="editForm[customer_telephone]" value="<?= $order['customer_telephone'] ?>" />
                             </span>
                         </p>
 						
 						<p class="edit_p">
-							<label>国家：</label>
+							<label><?= Yii::$service->page->translate->__('Country')  ?>: </label>
 							<span>
                                 <select class="customer_country" style="width:200px;" name="editForm[customer_address_country]"><?= $order['customer_address_country_options'] ?></select>
                             </span>
                         </p>
 						
 						<p class="edit_p">
-							<label>省/市：</label>
+							<label><?= Yii::$service->page->translate->__('State')  ?>: </label>
                             <input type="hidden" class="hidden_state" value="<?= $order['customer_address_state']; ?>"  />
                             <span class="state_span">
                             <?php if($order['customer_address_state_options']): ?>
@@ -244,17 +244,14 @@ use fecshop\app\appfront\helper\Format;
                                                 content = data.content;
                                                 if(content){
                                                     str = '<select class="customer_state" style="width:200px;" name="editForm[customer_address_state]">'+content+'</select>';
-                                                   
                                                 }else{
                                                     str = '<input class="customer_state"  type="text" name="editForm[customer_address_state]" value="" />';
-                           
                                                 }
-                                                
                                                 $(".state_span").html(str); 
                                             }
                                         },
                                         error:function(){
-                                            alert('获取省市出错');
+                                            alert('<?= Yii::$service->page->translate->__('Get address state error')  ?>');
                                         }
                                     });
                                     
@@ -263,25 +260,25 @@ use fecshop\app\appfront\helper\Format;
                         
                         </script>
 						<p class="edit_p">
-							<label>城市：</label>
+							<label><?= Yii::$service->page->translate->__('City')  ?>: </label>
 							<span>
                                 <input type="text" name="editForm[customer_address_city]" value="<?= $order['customer_address_city'] ?>" />
                             </span>
                         </p>
 						<p class="edit_p">
-							<label>邮编：</label>
+							<label><?= Yii::$service->page->translate->__('Zip')  ?>: </label>
 							<span>
                                 <input type="text" name="editForm[customer_address_zip]" value="<?= $order['customer_address_zip'] ?>" />
                             </span>
                         </p>
 						<p class="edit_p">
-							<label>街道1：</label>
+							<label><?= Yii::$service->page->translate->__('Street1')  ?>: </label>
 							<span>
                                 <input type="text" name="editForm[customer_address_street1]" value="<?= $order['customer_address_street1'] ?>" />
                             </span>
                         </p>
 						<p class="edit_p">
-							<label>街道2：</label>
+							<label><?= Yii::$service->page->translate->__('Street2')  ?>: </label>
 							<span>
                                 <input type="text" name="editForm[customer_address_street2]" value="<?= $order['customer_address_street2'] ?>" />
                             </span>
@@ -291,14 +288,14 @@ use fecshop\app\appfront\helper\Format;
 				</fieldset>
 				
                 <fieldset id="fieldset_table_qbe">
-					<legend style="color:#cc0000">订单买家留言信息</legend>
+					<legend style="color:#cc0000"><?= Yii::$service->page->translate->__('Order Customer Remark')  ?></legend>
 					<div>
                         <textarea style="width:98%;height:100px;"><?= $order['order_remark'] ?></textarea>
                     </div>
                 </fieldset>   
 				
 				<fieldset id="fieldset_table_qbe">
-					<legend style="color:#cc0000">订单产品信息</legend>
+					<legend style="color:#cc0000"><?= Yii::$service->page->translate->__('Order Product Info')  ?></legend>
 					<div>
 						<table summary="Items Ordered" id="my-orders-table" class="data-table list" style="width:100%;table-layout: auto;">
 							<colgroup><col>
@@ -309,12 +306,12 @@ use fecshop\app\appfront\helper\Format;
 							</colgroup>
 							<thead>
 								<tr class="first last">
-									<th>产品名称</th>
-									<th>图片</th>
-									<th>Sku</th>
-									<th class="a-right">价格</th>
-									<th class="a-center">个数</th>
-									<th class="a-right">总金额</th>
+									<th><?= Yii::$service->page->translate->__('Product Name')  ?></th>
+									<th><?= Yii::$service->page->translate->__('Image')  ?></th>
+									<th><?= Yii::$service->page->translate->__('Sku')  ?></th>
+									<th class="a-right"><?= Yii::$service->page->translate->__('Price')  ?></th>
+									<th class="a-center"><?= Yii::$service->page->translate->__('Qty')  ?></th>
+									<th class="a-right"><?= Yii::$service->page->translate->__('Total')  ?></th>
 								</tr>
 							</thead>
 							
@@ -375,24 +372,24 @@ use fecshop\app\appfront\helper\Format;
 
 							<tfoot>
 								<tr class="subtotal first">
-									<td class="a-right" colspan="5">Subtotal</td>
+									<td class="a-right" colspan="5"><?= Yii::$service->page->translate->__('Subtotal')  ?></td>
 									<td class="last a-right"><span class="price"><?= $symbol ?><?=  Format::price($order['subtotal']); ?></span></td>
 								</tr>
 								<tr class="shipping">
-									<td class="a-right" colspan="5">Shipping &amp; Handling</td>
+									<td class="a-right" colspan="5"><?= Yii::$service->page->translate->__('Shipping Total')  ?></td>
 									<td class="last a-right">
 										<span class="price"><?= $symbol ?><?=  Format::price($order['shipping_total']); ?></span>    
 									</td>
 								</tr>
 								<tr class="discount">
-									<td class="a-right" colspan="5">Discount</td>
+									<td class="a-right" colspan="5"><?= Yii::$service->page->translate->__('Discount')  ?></td>
 									<td class="last a-right">
 										<span class="price"><?= $symbol ?><?=  Format::price($order['subtotal_with_discount']); ?></span>    
 									</td>
 								</tr>
 								<tr class="grand_total last">
 									<td class="a-right" colspan="5">
-										<strong>Grand Total</strong>
+										<strong><?= Yii::$service->page->translate->__('Grand Total')  ?></strong>
 									</td>
 									<td class="last a-right">
 										<strong><span class="price"><?= $symbol ?><?=  Format::price($order['grand_total']); ?></span></strong>
@@ -402,16 +399,15 @@ use fecshop\app\appfront\helper\Format;
 						</table>
 					</div>
 				</fieldset>
-				
 		</div>
 	
 		<div class="formBar">
 			<ul>
 				<!--<li><a class="buttonActive" href="javascript:;"><span>保存</span></a></li>-->
-				<li><div class="buttonActive"><div class="buttonContent"><button onclick="func('accept')"  value="accept" name="accept" type="submit">保存</button></div></div></li>
+				<li><div class="buttonActive"><div class="buttonContent"><button onclick="func('accept')"  value="accept" name="accept" type="submit"><?= Yii::$service->page->translate->__('Save')  ?></button></div></div></li>
 			
 				<li>
-					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+					<div class="button"><div class="buttonContent"><button type="button" class="close"><?= Yii::$service->page->translate->__('Cancel')  ?></button></div></div>
 				</li>
 			</ul>
 		</div>

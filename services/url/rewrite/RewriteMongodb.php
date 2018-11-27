@@ -97,7 +97,7 @@ class RewriteMongodb extends Service implements RewriteInterface
         if ($primaryVal) {
             $model = $this->_urlRewriteModel->findOne($primaryVal);
             if (!$model) {
-                Yii::$service->helper->errors->add('UrlRewrite '.$this->getPrimaryKey().' is not exist');
+                Yii::$service->helper->errors->add('UrlRewrite {primaryKey} is not exist', ['primaryKey'=>$this->getPrimaryKey()]);
 
                 return;
             }
@@ -129,7 +129,7 @@ class RewriteMongodb extends Service implements RewriteInterface
                     $model->delete();
                 } else {
                     //throw new InvalidValueException("ID:$id is not exist.");
-                    Yii::$service->helper->errors->add("UrlRewrite Remove Errors:ID $id is not exist.");
+                    Yii::$service->helper->errors->add('UrlRewrite Remove Errors:ID {id} is not exist.', ['id' => $id]);
 
                     return false;
                 }
@@ -141,7 +141,7 @@ class RewriteMongodb extends Service implements RewriteInterface
                 $url_key = $model['url_key'];
                 $model->delete();
             } else {
-                Yii::$service->helper->errors->add("UrlRewrite Remove Errors:ID:$id is not exist.");
+                Yii::$service->helper->errors->add('UrlRewrite Remove Errors:ID:{id} is not exist.', ['id' => $id]);
 
                 return false;
             }

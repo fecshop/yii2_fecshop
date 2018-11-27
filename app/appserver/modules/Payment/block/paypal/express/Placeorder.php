@@ -285,7 +285,7 @@ class Placeorder
         if ($order_remark && $orderRemarkStrMaxLen) {
             $order_remark_strlen = strlen($order_remark);
             if ($order_remark_strlen > $orderRemarkStrMaxLen) {
-                Yii::$service->helper->errors->add('order remark string length can not gt '.$orderRemarkStrMaxLen);
+                Yii::$service->helper->errors->add('order remark string length can not gt {orderRemarkStrMaxLen}', ['orderRemarkStrMaxLen' => $orderRemarkStrMaxLen]);
                 
                 return false;
             } else {

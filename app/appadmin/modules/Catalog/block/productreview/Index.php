@@ -82,29 +82,30 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
         $noActiveStatus = Yii::$service->product->review->noActiveStatus();
         $data = [
             [    // selecit的Int 类型
-                'type'=>'select',
-                'title'=>'审核状态',
-                'name'=>'status',
-                'columns_type' =>'int',  // int使用标准匹配， string使用模糊查询
-                'value'=> [                    // select 类型的值
-                    $noActiveStatus => '未审核',
-                    $activeStatus    => '审核通过',
-                    $refuseStatus    => '审核拒绝',
+                'type' => 'select',
+                'title' => Yii::$service->page->translate->__('Review Status'),
+                'name' => 'status',
+                'columns_type' => 'int',  // int使用标准匹配， string使用模糊查询
+                'value' => [                    // select 类型的值
+                    $noActiveStatus => Yii::$service->page->translate->__('Pending Review'),
+                    $activeStatus    => Yii::$service->page->translate->__('Approved'),
+                    $refuseStatus    => Yii::$service->page->translate->__('Not Approved'),
                 ],
             ],
             [    // 字符串类型
-                'type'=>'inputtext',
-                'title'=>'Spu',
-                'name'=>'product_spu',
-                'columns_type' =>'string',
+                'type' => 'inputtext',
+                'title'  => Yii::$service->page->translate->__('Spu'),
+                'name' => 'product_spu',
+                'columns_type' => 'string',
             ],
             [    // 时间区间类型搜索
-                'type'=>'inputdatefilter',
-                'name'=> 'review_date',
-                'columns_type' =>'int',
+                'type' => 'inputdatefilter',
+                'title'  => Yii::$service->page->translate->__('Review Date'),
+                'name' => 'review_date',
+                'columns_type' => 'int',
                 'value'=>[
-                    'gte'=>'评论时间开始',
-                    'lt' =>'评论时间结束',
+                    'gte' => Yii::$service->page->translate->__('Review Begin'),
+                    'lt' => Yii::$service->page->translate->__('Review End'),
                 ],
             ],
         ];
@@ -124,83 +125,83 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
         $table_th_bar = [
             [
                 'orderField'    => '_id',
-                'label'            => 'ID',
-                'width'            => '50',
-                'align'        => 'left',
+                'label'           => Yii::$service->page->translate->__('Id'),
+                'width'          => '50',
+                'align'           => 'left',
 
             ],
             [
-                'orderField'    => 'product_id',
-                'label'            => 'sku',
-                'width'            => '180',
-                'align'        => 'left',
+                'orderField'     => 'product_id',
+                'label'            => Yii::$service->page->translate->__('Product Id'),
+                'width'           => '180',
+                'align'            => 'left',
             ],
 
             [
                 'orderField'    => 'rate_star',
-                'label'            => '评星',
-                'width'            => '110',
-                'align'        => 'center',
-                'width'            => '30',
+                'label'           => Yii::$service->page->translate->__('Rate Star'),
+                'width'          => '110',
+                'align'           => 'center',
+                'width'          => '30',
             ],
 
             [
                 'orderField'    => 'name',
-                'label'            => '评论人',
-                'width'            => '110',
-                'align'        => 'left',
+                'label'           => Yii::$service->page->translate->__('Review Person'),
+                'width'          => '110',
+                'align'           => 'left',
             ],
 
             [
                 'orderField'    => 'summary',
-                'label'            => '评论标题',
-                'width'            => '110',
-                'align'        => 'left',
+                'label'           => Yii::$service->page->translate->__('Summary'),
+                'width'          => '110',
+                'align'           => 'left',
             ],
 
             [
                 'orderField'    => 'review_date',
-                'label'            => '评论时间',
-                'width'            => '110',
-                'align'        => 'center',
-                'convert'        => ['int' => 'datetime'],
+                'label'           => Yii::$service->page->translate->__('Review Date'),
+                'width'          => '110',
+                'align'           => 'center',
+                'convert'       => ['int' => 'datetime'],
             ],
 
             [
                 'orderField'    => 'store',
-                'label'            => 'Store',
-                'width'            => '110',
-                'align'        => 'left',
+                'label'           => Yii::$service->page->translate->__('Store'),
+                'width'          => '110',
+                'align'           => 'left',
             ],
 
             [
                 'orderField'    => 'lang_code',
-                'label'            => '语言',
-                'width'            => '35',
-                'align'        => 'center',
+                'label'           => Yii::$service->page->translate->__('Lang Code'),
+                'width'          => '65',
+                'align'           => 'center',
 
             ],
 
             [
                 'orderField'    => 'status',
-                'label'            => '审核状态',
-                'width'            => '120',
+                'label'           => Yii::$service->page->translate->__('Status'),
+                'width'          => '120',
                 'display'        => [
-                    $noActiveStatus => '未审核',
-                    $activeStatus    => '审核通过',
-                    $refuseStatus    => '审核拒绝',
-                ],
+                    $noActiveStatus => Yii::$service->page->translate->__('Pending Review'),
+                    $activeStatus     => Yii::$service->page->translate->__('Approved'),
+                    $refuseStatus    => Yii::$service->page->translate->__('Not Approved'),
+                ],   
             ],
             [
                 'orderField'    => 'audit_user',
-                'label'            => '审核人',
+                'label'            => Yii::$service->page->translate->__('Audit Person'),
                 'width'            => '110',
                 'align'        => 'left',
             ],
 
             [
                 'orderField'    => 'audit_date',
-                'label'            => '审核时间',
+                'label'            => Yii::$service->page->translate->__('Audit Date'),
                 'width'            => '110',
                 'align'        => 'center',
                 'convert'        => ['int' => 'datetime'],
@@ -302,8 +303,8 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
                 $str .= '<td>'.$val.'</td>';
             }
             $str .= '<td>
-						<a title="编辑" target="dialog" class="btnEdit" mask="true" drawable="true" width="1000" height="580" href="'.$this->_editUrl.'?'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" >编辑</a>
-						<a title="删除" target="ajaxTodo" href="'.$this->_deleteUrl.'?'.$csrfString.'&'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" class="btnDel">删除</a>
+						<a title="' . Yii::$service->page->translate->__('Edit') . '" target="dialog" class="btnEdit" mask="true" drawable="true" width="1000" height="580" href="'.$this->_editUrl.'?'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" >' . Yii::$service->page->translate->__('Edit') . '</a>
+						<a title="' . Yii::$service->page->translate->__('Delete') . '" target="ajaxTodo" href="'.$this->_deleteUrl.'?'.$csrfString.'&'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" class="btnDel">' . Yii::$service->page->translate->__('Delete') . '</a>
 					</td>';
             $str .= '</tr>';
         }
@@ -314,11 +315,11 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
     public function getEditBar()
     {
         return '<ul class="toolBar">
-					<li><a title="确实要批量审核这些记录吗?" target="selectedTodo" rel="'.$this->_primaryKey.'s" postType="string" href="'.$this->_auditUrl.'" class="edit"><span>批量审核通过</span></a></li>
-					<li><a title="确实要批量审核拒绝这些记录吗?" target="selectedTodo" rel="'.$this->_primaryKey.'s" postType="string" href="'.$this->_auditRejectedUrl.'" class="edit"><span>批量审核拒绝</span></a></li>
+					<li><a title="' . Yii::$service->page->translate->__('Are you sure you want to review these reviews in bulk') . '?" target="selectedTodo" rel="'.$this->_primaryKey.'s" postType="string" href="'.$this->_auditUrl.'" class="edit"><span>' . Yii::$service->page->translate->__('Bulk Approved') . '</span></a></li>
+					<li><a title="' . Yii::$service->page->translate->__('Are you sure you want to reject these reviews in bulk') . '?" target="selectedTodo" rel="'.$this->_primaryKey.'s" postType="string" href="'.$this->_auditRejectedUrl.'" class="edit"><span>' . Yii::$service->page->translate->__('Bulk Not Approved') . '</span></a></li>
 					
-					<li><a target="dialog" height="580" width="1000" drawable="true" mask="true" class="edit" href="'.$this->_editUrl.'?'.$this->_primaryKey.'={sid_user}" ><span>修改</span></a></li>
-					<li><a title="确实要删除这些记录吗?" target="selectedTodo" rel="'.$this->_primaryKey.'s" postType="string" href="'.$this->_deleteUrl.'" class="delete"><span>批量删除</span></a></li>
+					<li><a target="dialog" height="580" width="1000" drawable="true" mask="true" class="edit" href="'.$this->_editUrl.'?'.$this->_primaryKey.'={sid_user}" ><span>' . Yii::$service->page->translate->__('Edit') . '</span></a></li>
+					<li><a title="' . Yii::$service->page->translate->__('Are you sure you want to delete these reviews in bulk') . '?" target="selectedTodo" rel="'.$this->_primaryKey.'s" postType="string" href="'.$this->_deleteUrl.'" class="delete"><span>' . Yii::$service->page->translate->__('Bulk Delete') . '</span></a></li>
 				</ul>';
     }
 }

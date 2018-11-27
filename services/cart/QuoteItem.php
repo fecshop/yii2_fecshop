@@ -384,7 +384,7 @@ class QuoteItem extends Service
                 $min_sales_qty = $product['min_sales_qty'];
             }
             if ($lessedQty < $min_sales_qty) {
-                Yii::$service->helper->errors->add('product less buy qty is '.$product['min_sales_qty']);
+                Yii::$service->helper->errors->add('product less buy qty is {min_sales_qty}', ['min_sales_qty' => $product['min_sales_qty']]);
                 
                 return false;
             }

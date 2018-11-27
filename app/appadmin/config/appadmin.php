@@ -16,11 +16,14 @@ $params = require __DIR__ .'/params.php';
 return [
     'modules'=>$modules,
     /* only config in front web */
-    //'bootstrap' => ['store'],
+    'bootstrap' => ['store'],
     'params'    => $params,
     'components' => [
+        'store' => [
+            'appName' => 'appadmin',
+        ],
         'user' => [
-            'identityClass' => 'fecadmin\models\AdminUser',
+            'identityClass' => 'fecshop\models\mysqldb\AdminUser',
             'enableAutoLogin' => true,
         ],
         'i18n' => [

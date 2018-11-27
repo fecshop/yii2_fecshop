@@ -20,7 +20,6 @@ return [
             'translate' => [
                 'class'        => 'fecshop\services\page\Translate',
             ],
-
             'asset' => [
                 'class' =>  'fecshop\services\page\Asset',
                 // js 版本号，当更改了js，将这里的版本号+1，生成的js链接就会更改为  xxx.js?v=2 ,
@@ -217,7 +216,6 @@ return [
                 // 管理员提供，用于发送登录注册邮件，下单信息等。
                 'trace_api_url' => '',  // 'http://120.24.37.249:3000/fec/trace/api',
             ],
-
         ],
     ],
 ];

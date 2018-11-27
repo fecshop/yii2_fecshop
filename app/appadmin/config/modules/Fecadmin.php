@@ -22,6 +22,18 @@ return [
         	'cache' => [
         		'class' => 'fecshop\app\appadmin\modules\Fecadmin\controllers\CacheController',
         	],
+            'config' => [
+				'class' => 'fecshop\app\appadmin\modules\Fecadmin\controllers\ConfigController',
+			],
+            'logtj' => [
+				'class' => 'fecshop\app\appadmin\modules\Fecadmin\controllers\LogtjController',
+			],
+            'log' => [
+				'class' => 'fecshop\app\appadmin\modules\Fecadmin\controllers\LogController',
+			],
+            'myaccount' => [
+				'class' => 'fecshop\app\appadmin\modules\Fecadmin\controllers\MyaccountController',
+			],
             'index' => [
         		'class' => 'fecshop\app\appadmin\modules\Fecadmin\controllers\IndexController',
         	],
@@ -31,6 +43,12 @@ return [
             'systemlog' => [
         		'class' => 'fecshop\app\appadmin\modules\Fecadmin\controllers\SystemlogController',
         	],
+			'resource' => [
+				'class' => 'fecshop\app\appadmin\modules\Fecadmin\controllers\ResourceController',
+			],
+			'role' => [
+				'class' => 'fecshop\app\appadmin\modules\Fecadmin\controllers\RoleController',
+			],
         ],
         'params' => [
             /**

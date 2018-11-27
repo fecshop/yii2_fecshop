@@ -23,37 +23,62 @@ use fecadmin\models\AdminUser\AdminUserLogin;
  */
 class LoginController extends \fecadmin\controllers\LoginController
 {
-	public $enableCsrfValidation = false;
+	public $enableCsrfValidation = true;
     public $blockNamespace;
     
     public function actionIndex()
     {
-        //exit;
+        $langCode = Yii::$app->request->get('lang');
+        if ($langCode) {
+            Yii::$service->admin->setCurrentLangCode($langCode);
+        }
         $isGuest = Yii::$app->user->isGuest;
         //echo $isGuest;exit;
         if(!$isGuest){
             //$this->redirect("/",200);
             Yii::$app->getResponse()->redirect("/")->send();
             return;
-        }    
+        }
         $errors = '';
-        $loginParam = \fec\helpers\CRequest::param('login');
+        $loginParam = Yii::$app->request->post('login');
         if($loginParam){
-            //echo 1;exit; 
             $AdminUserLogin = new AdminUserLogin;
             $AdminUserLogin->attributes = $loginParam;
             if($AdminUserLogin->login()){
-                \fecadmin\helpers\CSystemlog::saveSystemLog();
+                //\fecadmin\helpers\CSystemlog::saveSystemLog();
+                Yii::$service->admin->systemLog->save();
                 //$this->redirect("/",200)->send();
-                Yii::$app->getResponse()->redirect("/")->send();                
+                Yii::$app->getResponse()->redirect("/")->send();
+
                 return;
             }else{
                 $errors = CModel::getErrorStr($AdminUserLogin->errors);
             }
         }
-        
-        return $this->render('index',['error' => $errors]);
+
+        return $this->render('index',[
+            'error' => $errors,
+        ]);
     }
+    
+    public function actionChangelang(){
+        $langCode = Yii::$app->request->get('lang');
+        if ($langCode) {
+            $status = Yii::$service->admin->setCurrentLangCode($langCode);
+            if ($status) {
+                echo json_encode([
+                    'status' => 'success'
+                ]);
+                exit;
+            }
+        }  
+        
+        echo json_encode([
+            'status' => 'fail'
+        ]);
+        exit;
+    }
+   
     
     
     /**
@@ -117,37 +142,6 @@ class LoginController extends \fecadmin\controllers\LoginController
         throw new InvalidValueException('layout file is not exist!');
     }
     
-    public function getBlock($blockname=''){
-	    $_currentNameSpace = \fec\helpers\CModule::param("_currentNameSpace");
-		//echo $_currentNameSpace;exit;
-        if(empty($_currentNameSpace)){
-			$message = "Modules Param '_currentNameSpace'  is not set , you can set like fecadmin\\Module";
-			throw new \yii\web\HttpException(406,$message);
-		}
-		$modulesDir = "\\".$_currentNameSpace."\\block\\";
-		$url_key = \fec\helpers\CUrl::getUrlKey();
-		$url_key = trim($url_key,"/");
-		$url_key = substr($url_key,strpos($url_key,"/")+1 );
-		$url_key_arr = explode("/",$url_key);
-		if(!isset($url_key_arr[1])) $url_key_arr[1] = 'index';
-		if($blockname){
-			$url_key_arr[count($url_key_arr)-1] = ucfirst($blockname);
-		}else{
-			$url_key_arr[count($url_key_arr)-1] = ucfirst($url_key_arr[count($url_key_arr)-1]);
-		}
-		
-		$block_space = implode("\\",$url_key_arr);
-		$blockFile = $modulesDir.$block_space;
-		//查找是否在rewriteMap中存在重写
-        //$relativeFile = Yii::mapGetName($relativeFile);
-        $blockFile = Yii::mapGetName($blockFile);
-        //echo $blockFile;exit;
-        
-		return new $blockFile;
-		
-    }
-	
-	
 }
 
 

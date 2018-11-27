@@ -71,32 +71,32 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
         $data = [
             
             [    // 字符串类型
-                'type'=>'inputtext',
-                'title'=>'ID',
-                'name'=>'_id',
-                'columns_type' =>'string',
+                'type' => 'inputtext',
+                'title' => Yii::$service->page->translate->__('Id'),
+                'name' => '_id',
+                'columns_type' => 'string',
             ],
             
             [    // selecit的Int 类型
-                'type'=>'select',
-                'title'=>'分类',
-                'name'=>'category',
+                'type' => 'select',
+                'title' => Yii::$service->page->translate->__('Category'),
+                'name' => 'category',
                 'columns_type' =>'string',  // int使用标准匹配， string使用模糊查询
                 'value'=> [                      // select 类型的值
-                    'appfront'  =>'appfront',
+                    'appfront'   =>'appfront',
                     'apphtml5'  =>'apphtml5',
-                    'appapi'    =>'appapi',
+                    'appapi'      =>'appapi',
                     'appserver' =>'appserver',
                 ],
             ],
             
             [    // 时间区间类型搜索
-                'type'=>'inputdatefilter',
-                'name'=> 'created_at',
-                'columns_type' =>'int',
-                'value'=>[
-                    'gte'=>'用户创建时间开始',
-                    'lt' =>'用户创建时间结束',
+                'type' => 'inputdatefilter',
+                'name' => 'created_at',
+                'columns_type' => 'int',
+                'value' => [
+                    'gte' => Yii::$service->page->translate->__('Created Begin'),
+                    'lt' => Yii::$service->page->translate->__('Created End'),
                 ],
             ],
         ];
@@ -111,35 +111,35 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
     {
         $table_th_bar = [
             [
-                'orderField'    => $this->_primaryKey,
-                'label'            => 'ID',
-                'width'            => '40',
-                'align'        => 'center',
+                'orderField'     => $this->_primaryKey,
+                'label'            => Yii::$service->page->translate->__('Id'),
+                'width'           => '40',
+                'align'            => 'center',
 
             ],
             [
-                'orderField'        => 'category',
-                'label'             => '分类',
-                'width'             => '40',
+                'orderField'      => 'category',
+                'label'             => Yii::$service->page->translate->__('Category'),
+                'width'            => '40',
                 'align'             => 'left',
             ],
             [
-                'orderField'    => 'code',
-                'label'            => '状态码',
+                'orderField'      => 'code',
+                'label'             => Yii::$service->page->translate->__('Status Code'),
                 'width'            => '40',
-                'align'        => 'center',
+                'align'             => 'center',
             ],
             
             [
-                'orderField'    => 'message',
-                'label'            => 'error message',
-                'width'            => '240',
-                'align'        => 'left',
+                'orderField'     => 'message',
+                'label'            => Yii::$service->page->translate->__('Error Message'),
+                'width'           => '240',
+                'align'            => 'left',
             ],
             
             [
                 'orderField'    => 'created_at',
-                'label'            => '创建时间',
+                'label'            => Yii::$service->page->translate->__('Created At'),
                 'width'            => '80',
                 'align'        => 'center',
                 'convert'        => ['int' => 'datetime'],

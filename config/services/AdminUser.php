@@ -8,5 +8,13 @@
 return [
     'adminUser' => [
         'class' => 'fecshop\services\AdminUser',
+        'childService' => [
+            'adminUser' => [
+                'class' => 'fecshop\services\adminUser\AdminUser',
+            ],
+            'userLogin' => [
+                'class' => 'fecshop\services\adminUser\UserLogin',
+            ],
+        ],
     ],
 ];

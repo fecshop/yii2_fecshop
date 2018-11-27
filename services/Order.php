@@ -197,7 +197,7 @@ class Order extends Service
         if (is_array($this->requiredAddressAttr) && !empty($this->requiredAddressAttr)) {
             foreach ($this->requiredAddressAttr as $attr) {
                 if (!isset($billing[$attr]) || empty($billing[$attr])) {
-                    Yii::$service->helper->errors->add($attr.' can not empty');
+                    Yii::$service->helper->errors->add('{attr} can not empty', ['attr' => $attr]);
 
                     return false;
                 }
@@ -380,7 +380,7 @@ class Order extends Service
         if ($primaryVal) {
             $model = $this->_orderModel->findOne($primaryVal);
             if (!$model) {
-                Yii::$service->helper->errors->add('order '.$this->getPrimaryKey().' is not exist');
+                Yii::$service->helper->errors->add('order {primaryKey} is not exist', ['primaryKey' => $this->getPrimaryKey()]);
 
                 return;
             }
@@ -414,7 +414,7 @@ class Order extends Service
                 if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
                     $model->delete();
                 } else {
-                    Yii::$service->helper->errors->add("Order Remove Errors:ID $id is not exist.");
+                    Yii::$service->helper->errors->add('Order Remove Errors:ID {id} is not exist', ['id' => $id]);
 
                     return false;
                 }
@@ -425,7 +425,7 @@ class Order extends Service
             if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
                 $model->delete();
             } else {
-                Yii::$service->helper->errors->add("Coupon Remove Errors:ID:$id is not exist.");
+                Yii::$service->helper->errors->add('Coupon Remove Errors:ID:{id} is not exist.', ['id' => $id]);
 
                 return false;
             }
@@ -664,7 +664,7 @@ class Order extends Service
         }
         $orderInfo = Yii::$service->order->getOrderInfoByIncrementId($order_increment_id);
         if (!$orderInfo['increment_id']) {
-            Yii::$service->helper->errors->add('get order by increment_id:'.$order_increment_id.' fail, order is not exist ');
+            Yii::$service->helper->errors->add('get order by increment_id: {increment_id} fail, order is not exist ', ['increment_id' => $order_increment_id]);
             return false;
         }
         // 追踪信息
@@ -1034,12 +1034,12 @@ class Order extends Service
         
         return [
             [
-                '订单总额' => $orderAmountArr,
-                '支付订单总额' => $paymentOrderAmountArr,
+                Yii::$service->page->translate->__('Order Total') => $orderAmountArr,
+                Yii::$service->page->translate->__('Payment Order Total') => $paymentOrderAmountArr,
             ],
             [
-                '订单总数' => $orderCountArr,
-                '支付订单总数' => $paymentOrderCountArr,
+                Yii::$service->page->translate->__('Order Count') => $orderCountArr,
+                Yii::$service->page->translate->__('Payment Order Count') => $paymentOrderCountArr,
             ],
         ];
     }

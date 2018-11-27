@@ -48,7 +48,7 @@ class Info extends Service
         $qty = $item['qty'];
         $min_sales_qty = $product['min_sales_qty'];
         if (($min_sales_qty > 0) && ($min_sales_qty > $qty)) {
-            Yii::$service->helper->errors->add('The minimum number of shopping carts for this item is '.$min_sales_qty);
+            Yii::$service->helper->errors->add('The minimum number of shopping carts for this item is {min_sales_qty}', ['min_sales_qty' => $min_sales_qty]);
             
             return false;
         }
@@ -60,7 +60,7 @@ class Info extends Service
         }
         // 加入购物车的产品个数超出 购物车中产品的最大个数。
         if ($qty > $this->maxCountAddToCart) {
-            Yii::$service->helper->errors->add('The number of products added to the shopping cart can not exceed '.$this->maxCountAddToCart);
+            Yii::$service->helper->errors->add('The number of products added to the shopping cart can not exceed {max_count_add_to_cart}', ['max_count_add_to_cart' => $this->maxCountAddToCart]);
 
             return false;
         }

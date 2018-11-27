@@ -11,7 +11,7 @@ use Yii;
 use fec\helpers\CConfig;
 use fecadmin\FecadminbaseController;
 use fecshop\app\appadmin\modules\AppadminController;
-
+use yii\web\Controller;
 use yii\helpers\Url;
 use fec\helpers\CModel;
 use fec\helpers\CDate;
@@ -21,22 +21,28 @@ use fecadmin\models\AdminUser\AdminUserLogin;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class LogoutController extends \fecadmin\controllers\LogoutController
+class LogoutController extends Controller
 {
-	public $enableCsrfValidation = false;
+	public $enableCsrfValidation = true;
     public $blockNamespace;
     
     public function actionIndex()
     {
+        $currentLang = Yii::$service->admin->getCurrentLangCode();
+        $islogout = Yii::$app->request->post('islogout');
+        if (!$islogout) {
+            Yii::$service->admin->systemLog->save();
+            Yii::$service->url->redirectByUrlKey("/fecadmin/login/index", ['lang' => $currentLang]);
+        }
         $isGuest = Yii::$app->user->isGuest;
-        //echo $isGuest;exit;
-        if($isGuest){
-            
-        }else{
+        if(!$isGuest){
+            Yii::$service->admin->systemLog->save();
             Yii::$app->user->logout();
-        }    
-        \fecadmin\helpers\CSystemlog::saveSystemLog();
-        Yii::$app->getResponse()->redirect("/fecadmin/login/index")->send();   
+        }
+        Yii::$service->admin->systemLog->save();
+        Yii::$service->url->redirectByUrlKey("/fecadmin/login/index", ['lang' => $currentLang]);
+
+        // Yii::$app->getResponse()->redirect()->send();
         //$this->redirect("/fecadmin/login/index",200)->send();
     }
     
@@ -104,37 +110,6 @@ class LogoutController extends \fecadmin\controllers\LogoutController
         throw new InvalidValueException('layout file is not exist!');
     }
     
-    public function getBlock($blockname=''){
-	    $_currentNameSpace = \fec\helpers\CModule::param("_currentNameSpace");
-		//echo $_currentNameSpace;exit;
-        if(empty($_currentNameSpace)){
-			$message = "Modules Param '_currentNameSpace'  is not set , you can set like fecadmin\\Module";
-			throw new \yii\web\HttpException(406,$message);
-		}
-		$modulesDir = "\\".$_currentNameSpace."\\block\\";
-		$url_key = \fec\helpers\CUrl::getUrlKey();
-		$url_key = trim($url_key,"/");
-		$url_key = substr($url_key,strpos($url_key,"/")+1 );
-		$url_key_arr = explode("/",$url_key);
-		if(!isset($url_key_arr[1])) $url_key_arr[1] = 'index';
-		if($blockname){
-			$url_key_arr[count($url_key_arr)-1] = ucfirst($blockname);
-		}else{
-			$url_key_arr[count($url_key_arr)-1] = ucfirst($url_key_arr[count($url_key_arr)-1]);
-		}
-		
-		$block_space = implode("\\",$url_key_arr);
-		$blockFile = $modulesDir.$block_space;
-		//查找是否在rewriteMap中存在重写
-        //$relativeFile = Yii::mapGetName($relativeFile);
-        $blockFile = Yii::mapGetName($blockFile);
-        //echo $blockFile;exit;
-        
-		return new $blockFile;
-		
-    }
-	
-	
 }
 
 

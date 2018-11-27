@@ -164,7 +164,7 @@ class Coupon extends Service
         if ($primaryVal) {
             $model = $this->_couponModel->findOne($primaryVal);
             if (!$model) {
-                Yii::$service->helper->errors->add('coupon '.$this->getPrimaryKey().' is not exist');
+                Yii::$service->helper->errors->add('coupon {primaryKey} is not exist' , ['primaryKey' => $this->getPrimaryKey()] );
 
                 return;
             } else {
@@ -224,7 +224,7 @@ class Coupon extends Service
                 if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
                     $model->delete();
                 } else {
-                    Yii::$service->helper->errors->add("Coupon Remove Errors:ID $id is not exist.");
+                    Yii::$service->helper->errors->add('Coupon remove errors:ID {id} is not exist.', ['id' => $id]);
 
                     return false;
                 }
@@ -235,7 +235,7 @@ class Coupon extends Service
             if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
                 $model->delete();
             } else {
-                Yii::$service->helper->errors->add("Coupon Remove Errors:ID:$id is not exist.");
+                Yii::$service->helper->errors->add('Coupon remove errors:ID {id} is not exist.', ['id' => $id]);
 
                 return false;
             }

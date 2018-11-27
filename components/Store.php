@@ -18,8 +18,14 @@ use yii\base\Component;
  */
 class Store extends Component implements BootstrapInterface
 {
+    public $appName;
+
     public function bootstrap($app)
     {
-        Yii::$service->store->bootstrap($app);
+        if ($this->appName == 'appadmin') {
+            Yii::$service->admin->bootstrap($app);
+        } else {
+            Yii::$service->store->bootstrap($app);
+        }
     }
 }

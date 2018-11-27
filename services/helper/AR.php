@@ -32,17 +32,19 @@ class AR extends Service
      * 		'pageNum'		=> 1,
      * 		'orderBy'	=> ['_id' => SORT_DESC, 'sku' => SORT_ASC ],
      * 		'where'			=> [
-                ['>','price',1],
-                ['<=','price',10]
-     * 			['sku' => 'uk10001'],
+     *         ['>','price',1],
+     *         ['<=','price',10]
+     * 	        ['sku' => 'uk10001'],
      * 		],
-     * 	'asArray' => true,
+     *      'asArray' => true,
+     *      'fetchAll' => false,   // 是否获取所有数据,如果为true，则传递的numPerPage和pageNum将会无效。
      * ]
      * 查询方面使用的函数，根据传递的参数，进行query
      * @return ActiveQuery
      */
     public function getCollByFilter($query, $filter)
     {
+        $fetchAll =  isset($filter['fetchAll']) ? $filter['fetchAll'] : false;
         $select     = isset($filter['select']) ? $filter['select'] : '';
         $asArray    = isset($filter['asArray']) ? $filter['asArray'] : true;
         $numPerPage = isset($filter['numPerPage']) ? $filter['numPerPage'] : $this->numPerPage;
@@ -68,8 +70,10 @@ class AR extends Service
                 }
             }
         }
-        $offset = ($pageNum - 1) * $numPerPage;
-        $query->limit($numPerPage)->offset($offset);
+        if (!$fetchAll) {
+            $offset = ($pageNum - 1) * $numPerPage;
+            $query->limit($numPerPage)->offset($offset);
+        }
         if ($orderBy) {
             $query->orderBy($orderBy);
         }

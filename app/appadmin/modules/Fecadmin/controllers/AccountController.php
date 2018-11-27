@@ -18,6 +18,7 @@ use fecshop\app\appadmin\modules\AppadminController;
 class AccountController extends AppadminController
 {
 	public $enableCsrfValidation = false;
+	public $blockNamespace = 'fecshop\\app\\appadmin\\modules\\Fecadmin\\block';
     
     public function init()
     {
@@ -26,11 +27,11 @@ class AccountController extends AppadminController
     }
     
     # 我的账户
-    public function actionIndex()
-    {
-        $data = $this->getBlock()->getLastData();
-		return $this->render($this->action->id,$data);
-	}
+    //public function actionIndex()
+    //{
+    //    $data = $this->getBlock()->getLastData();
+	//	return $this->render($this->action->id,$data);
+	//}
 	
 	# 我的账户
     public function actionManager()

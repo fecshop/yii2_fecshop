@@ -58,12 +58,12 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
         $toolBar = $this->getToolBar($this->_param['numCount'], $this->_param['pageNum'], $this->_param['numPerPage']);
 
         return [
-            'pagerForm'        => $pagerForm,
-            'searchBar'        => $searchBar,
-            'editBar'        => $editBar,
-            'thead'        => $thead,
-            'tbody'        => $tbody,
-            'toolBar'    => $toolBar,
+            'pagerForm'     => $pagerForm,
+            'searchBar'      => $searchBar,
+            'editBar'          => $editBar,
+            'thead'            => $thead,
+            'tbody'            => $tbody,
+            'toolBar'          => $toolBar,
         ];
     }
 
@@ -76,24 +76,21 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
         $activeStatus = Yii::$service->customer->getStatusActive();
 
         $data = [
-            
             [    // 字符串类型
-                'type'=>'inputtext',
-                'title'=>'邮箱',
-                'name'=>'email',
-                'columns_type' =>'string',
+                'type' => 'inputtext',
+                'title'  => Yii::$service->page->translate->__('Email') ,
+                'name' => 'email',
+                'columns_type' => 'string',
             ],
-            
             [    // 时间区间类型搜索
-                'type'=>'inputdatefilter',
-                'name'=> 'created_at',
-                'columns_type' =>'int',
-                'value'=>[
-                    'gte'=>'用户创建时间开始',
-                    'lt' =>'用户创建时间结束',
+                'type'  => 'inputdatefilter',
+                'name' => 'created_at',
+                'columns_type' => 'int',
+                'value' => [
+                    'gte' => Yii::$service->page->translate->__('Created Begin'),
+                    'lt'    => Yii::$service->page->translate->__('Created End'),
                 ],
             ],
-
         ];
 
         return $data;
@@ -110,39 +107,33 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
         $table_th_bar = [
             [
                 'orderField'    => $this->_primaryKey,
-                'label'            => 'ID',
-                'width'            => '50',
-                'align'        => 'center',
-
+                'label'           => Yii::$service->page->translate->__('Id'),
+                'width'          => '50',
+                'align'           => 'center',
             ],
-            
             [
                 'orderField'    => 'email',
-                'label'            => 'email',
-                'width'            => '50',
-                'align'        => 'left',
-
+                'label'           => Yii::$service->page->translate->__('Email'),
+                'width'          => '50',
+                'align'           => 'left',
             ],
-            
             [
                 'orderField'    => 'status',
-                'label'            => '状态',
-                'width'            => '50',
-                'align'        => 'center',
+                'label'           => Yii::$service->page->translate->__('Status'),
+                'width'          => '50',
+                'align'           => 'center',
                 'display'        => [
-                    $activeStatus =>'激活',
-                    $deleteStatus =>'关闭',
+                    $activeStatus => Yii::$service->page->translate->__('Enable'),
+                    $deleteStatus => Yii::$service->page->translate->__('Disable'),
                 ],
             ],
-
             [
-                'orderField'    => 'created_at',
-                'label'            => '创建时间',
-                'width'            => '110',
-                'align'        => 'center',
+                'orderField'     => 'created_at',
+                'label'            => Yii::$service->page->translate->__('Created At'),
+                'width'           => '110',
+                'align'            => 'center',
                 'convert'        => ['int' => 'datetime'],
             ],
-            
         ];
 
         return $table_th_bar;

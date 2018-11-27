@@ -150,7 +150,7 @@ class Alipay extends Service
             Yii::$service->payment->setPaymentMethod($this->_order['payment_method']);
         }
         if (!$this->_order) {
-            Yii::$service->helper->errors->add('order increment id:'.$out_trade_no.' is not exist.');
+            Yii::$service->helper->errors->add('order increment id:{out_trade_no} is not exist.', ['out_trade_no' => $out_trade_no]);
             
             return false;
         }
@@ -158,7 +158,7 @@ class Alipay extends Service
         //$order_total_amount = Yii::$service->page->currency->getCurrencyPrice($base_grand_total,'CNY');
         $order_total_amount = $this->_order['grand_total'];
         if ($order_total_amount != $total_amount) {
-            Yii::$service->helper->errors->add('order increment id:'.$out_trade_no.' , total_amount('.$total_amount.') is not equal to order_total_amount('.$order_total_amount.')');
+            Yii::$service->helper->errors->add('order increment id:{out_trade_no} , total_amount({total_amount}) is not equal to order_total_amount({order_total_amount})', ['out_trade_no'=>$out_trade_no , 'total_amount'=>$total_amount , 'order_total_amount'=>$order_total_amount ]);
             
             return false;
         }
@@ -168,12 +168,12 @@ class Alipay extends Service
             return false;
         }
         if ($seller_id != $this->sellerId) {
-            Yii::$service->helper->errors->add('request sellerId('.$seller_id.') is not equle to config sellerId('.$this->sellerId.')');
+            Yii::$service->helper->errors->add('request sellerId({seller_id}) is not equle to config sellerId({this_seller_id})', ['seller_id'=>$seller_id , 'this_seller_id'=>$this->sellerId ]);
             
             return false;
         }
         if ($auth_app_id != $this->appId) {
-            Yii::$service->helper->errors->add('request auth_app_id('.$auth_app_id.') is not equle to config appId('.$this->appId.')');
+            Yii::$service->helper->errors->add('request auth_app_id({auth_app_id}) is not equle to config appId({app_id})', ['auth_app_id'=>$auth_app_id, 'app_id'=>$this->appId ]);
             
             return false;
         }
@@ -215,7 +215,7 @@ class Alipay extends Service
             
             return true;
         } else {
-            Yii::$service->helper->errors->add('alipay payment fail,resultCode:'.$resultCode);
+            Yii::$service->helper->errors->add('Alipay payment fail,resultCode: {result_code}', ['result_code' => $resultCode]);
             
             return false;
         }

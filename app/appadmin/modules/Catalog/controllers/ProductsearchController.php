@@ -10,7 +10,7 @@
 namespace fecshop\app\appadmin\modules\Catalog\controllers;
 
 use fecshop\app\appadmin\modules\Catalog\CatalogController;
-
+use Yii;
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
@@ -21,6 +21,6 @@ class ProductsearchController extends CatalogController
     
     public function actionIndex()
     {
-        echo '未开发';
+        echo Yii::$service->page->translate->__('not develop');
     }
 }

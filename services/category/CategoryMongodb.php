@@ -130,7 +130,7 @@ class CategoryMongodb extends Service implements CategoryInterface
         if ($primaryVal) {
             $model = $this->_categoryModel->findOne($primaryVal);
             if (!$model) {
-                Yii::$service->helper->errors->add('Category '.$this->getPrimaryKey().' is not exist');
+                Yii::$service->helper->errors->add('Category {primaryKey} is not exist', ['primaryKey' => $this->getPrimaryKey()]);
 
                 return false;
             }
@@ -197,7 +197,7 @@ class CategoryMongodb extends Service implements CategoryInterface
                     $model->delete();
                     $this->removeChildCate($id);
                 } else {
-                    Yii::$service->helper->errors->add("Category Remove Errors:ID:$id is not exist.");
+                    Yii::$service->helper->errors->add("Category Remove Errors:ID:{id} is not exist.", ['id' => $id]);
 
                     $deleteAll = false;
                 }
@@ -213,7 +213,7 @@ class CategoryMongodb extends Service implements CategoryInterface
                 $model->delete();
                 $this->removeChildCate($id);
             } else {
-                Yii::$service->helper->errors->add("Category Remove Errors:ID:$id is not exist.");
+                Yii::$service->helper->errors->add("Category Remove Errors:ID:{id} is not exist." , ['id' => $id]);
 
                 return false;
             }

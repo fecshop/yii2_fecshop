@@ -28,19 +28,17 @@ class QueryParamAuth extends YiiQueryParamAuth
         if($identity){
             return $identity;
         }else{
-            $fecshop_uuid = Yii::$service->session->fecshop_uuid;
-            $cors_allow_headers = [$fecshop_uuid,'fecshop-lang','fecshop-currency','access-token'];
-            
-            header('Access-Control-Allow-Origin: *');
-            header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, ".implode(', ',$cors_allow_headers));
-            header('Access-Control-Allow-Methods: GET, POST, PUT,DELETE');
+            $cors = Yii::$service->helper->appserver->getYiiAuthCors();
+            if (is_array($cors)) {
+                foreach ($cors as $c) {
+                    header($c);
+                }
+            }
             $code = Yii::$service->helper->appserver->account_no_login_or_login_token_timeout;
             $result = [ 'code' => $code,'message' => 'token is time out'];
             Yii::$app->response->data = $result;
             Yii::$app->response->send();
             Yii::$app->end();
-            
-            
         }
     }
     

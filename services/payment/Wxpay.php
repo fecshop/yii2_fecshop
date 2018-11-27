@@ -202,7 +202,7 @@ class Wxpay extends Service
         //商户根据实际情况处理流程
         //var_dump($result);exit;
         if ($result['return_code'] == "FAIL") {
-            Yii::$service->helper->errors->add('api error:' . $result['return_msg']);
+            Yii::$service->helper->errors->add('Api error: {return_msg}',  ['return_msg' => $result['return_msg']]);
             
             return false;
         } elseif (!$result['code_url']) {
@@ -335,14 +335,14 @@ class Wxpay extends Service
             Yii::$service->payment->setPaymentMethod($this->_order['payment_method']);
         }
         if (!$this->_order) {
-            Yii::$service->helper->errors->add('order increment id:'.$out_trade_no.' is not exist.');
+            Yii::$service->helper->errors->add('order increment id:{out_trade_no} is not exist.', ['out_trade_no' => $out_trade_no]);
     
             return false;
         }
         $base_grand_total = $this->_order['base_grand_total'];
         $order_total_amount = Yii::$service->page->currency->getCurrencyPrice($base_grand_total, 'CNY');
         if ((string)($order_total_amount * 100) != $total_amount) { //由于微信中是以分为单位所以必须乘以100，二维码页面也已经作了处理，单位都是分,$order_total_amount * 100要转为字符串再比较
-            Yii::$service->helper->errors->add('order increment id:'.$out_trade_no.' , total_amount('.$total_amount.') is not equal to order_total_amount('.$order_total_amount.')');
+            Yii::$service->helper->errors->add('order increment id:{out_trade_no} , total_amount({total_amount}) is not equal to order_total_amount({order_total_amount})', ['out_trade_no'=>$out_trade_no , 'total_amount'=>$total_amount , 'order_total_amount'=>$order_total_amount ]);
             //return ['o' => $order_total_amount * 100, 't' => $total_amount]; //测试时便于观察订单金额和微信实际支付的金额，生产环境要注释掉
             return false;
         }
@@ -370,7 +370,7 @@ class Wxpay extends Service
                 return true;
             }
         } else {
-            Yii::$service->helper->errors->add('wxpay payment fail,resultCode:'.$resultCode);
+            Yii::$service->helper->errors->add('wxpay payment fail,resultCode: {result_code}', ['result_code' => $resultCode]);
             
             return false;
         }

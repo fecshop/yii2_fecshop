@@ -119,21 +119,18 @@ class Index
                 //var_dump($info);
                 if (isset($this->_product[$attr]) && $this->_product[$attr]) {
                     $attrVal = $this->_product[$attr];
+                    // get translate 
                     if (isset($info['display']['lang']) && $info['display']['lang'] && is_array($attrVal)) {
                         $attrVal = Yii::$service->store->getStoreAttrVal($attrVal, $attr);
-                    }
-                    if ($attrVal && !is_array($attrVal)) {
-                        $attr = str_replace('_', ' ', $attr);
-                        $attr = str_replace('-', ' ', $attr);
-                        $attr = Yii::$service->page->translate->__($attr);
+                    } else if ($attrVal && !is_array($attrVal)) {
                         $attrVal = Yii::$service->page->translate->__($attrVal);
-                        $gArr[$attr] = $attrVal;
                     }
+                    $attr = Yii::$service->page->translate->__($attr);
+                    $gArr[$attr] = $attrVal;
                 }
             }
         }
         
-        //var_dump($gArr);
         return $gArr;
     }
     /**
