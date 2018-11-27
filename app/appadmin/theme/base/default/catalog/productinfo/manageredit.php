@@ -298,14 +298,14 @@ function thissubmit(thiss){
 					<input type="hidden" name="image_main" class="image_main"  />
 					<input type="hidden" name="image_gallery" class="image_gallery"  />
 					<?=  $img_html ?>	
-					<div id="addpicContainer">
+					<div id="addpicContainer" style="padding-bottom:20px;">
 						<!-- 利用multiple="multiple"属性实现添加多图功能 -->
 						<!-- position: absolute;left: 10px;top: 5px;只针对本用例将input隐至图片底下。-->
 						<!-- height:0;width:0;z-index: -1;是为了隐藏input，因为Chrome下不能使用display:none，否则无法添加文件 -->
 						<!-- onclick="getElementById('inputfile').click()" 点击图片时则点击添加文件按钮 -->
 						<button style="" onclick="getElementById('inputfile').click()" class="scalable" type="button" title="Duplicate" id=""><span><span><span><?=  Yii::$service->page->translate->__('Browse Files') ?></span></span></span></button>
 						
-						<input type="file" multiple="multiple" id="inputfile" style="height:0;width:0;z-index: -1; position: absolute;left: 10px;top: 5px;"/>
+						<input type="file" multiple="multiple" id="inputfile" style="margin:10px;height:0;width:0;z-index: -1; position: absolute;left: 10px;top: 5px;"/>
 						<span class="loading"></span>
 					</div>
 					<script>
@@ -338,9 +338,7 @@ function thissubmit(thiss){
 								});
 								//$(".loading").show();	//显示加载图片
 								//发送数据
-								
-							
-									
+								data.append("<?= CRequest::getCsrfName() ?>", "<?= CRequest::getCsrfValue() ?>");
 								$.ajax({
 									url:'<?= CUrl::getUrl('catalog/productinfo/imageupload')  ?>',
 									type:'POST',
