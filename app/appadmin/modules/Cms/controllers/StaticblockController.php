@@ -18,7 +18,7 @@ use Yii;
  */
 class StaticblockController extends CmsController
 {
-    public $enableCsrfValidation = false;
+    public $enableCsrfValidation = true;
 
     public function actionIndex()
     {
@@ -55,15 +55,4 @@ class StaticblockController extends CmsController
         //var_dump($_FILES);
     }
 
-    public function actionFlashupload()
-    {
-    }
-
-    public function actionLinkupload()
-    {
-    }
-
-    public function actionMediaupload()
-    {
-    }
 }
