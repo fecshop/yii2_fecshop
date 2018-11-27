@@ -10,6 +10,7 @@
 namespace fecshop\app\appadmin\modules\Sales\block\coupon;
 
 use fec\helpers\CUrl;
+use fec\helpers\CRequest;
 use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockInterface;
 use fecshop\app\appadmin\modules\AppadminbaseBlock;
 use Yii;
@@ -266,7 +267,7 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
             }
             $str .= '<td>
 						<a title="' . Yii::$service->page->translate->__('Edit')  . '" target="dialog" class="btnEdit" mask="true" drawable="true" width="1000" height="580" href="'.$this->_editUrl.'?'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" >' . Yii::$service->page->translate->__('Edit')  . '</a>
-						<a title="' . Yii::$service->page->translate->__('Remove')  . '" target="ajaxTodo" href="'.$this->_deleteUrl.'?'.$csrfString.'&'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" class="btnDel">' . Yii::$service->page->translate->__('Remove')  . '</a>
+						<a title="' . Yii::$service->page->translate->__('Remove')  . '" target="ajaxTodo" href="'.$this->_deleteUrl.'?'.$csrfString.'&'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" class="btnDel"     csrfName="' .CRequest::getCsrfName(). '" csrfVal="' .CRequest::getCsrfValue(). '"       >' . Yii::$service->page->translate->__('Remove')  . '</a>
 					</td>';
             $str .= '</tr>';
         }
