@@ -17,7 +17,7 @@ use Yii;
  */
 class ProductsearchController extends CatalogController
 {
-    public $enableCsrfValidation = false;
+    public $enableCsrfValidation = true;
     
     public function actionIndex()
     {
