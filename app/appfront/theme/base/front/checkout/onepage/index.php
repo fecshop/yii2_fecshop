@@ -6,12 +6,13 @@
  * @copyright Copyright (c) 2016 FecShop Software LLC
  * @license http://www.fecshop.com/license/
  */
+use fec\helpers\CRequest;
 ?>
 <div class="main container one-column">
 	<div class="col-main">
 		<?= Yii::$service->page->widget->render('flashmessage'); ?>
 		<form action="<?= Yii::$service->url->getUrl('checkout/onepage'); ?>" method="post" id="onestepcheckout-form">
-			<?= \fec\helpers\CRequest::getCsrfInputHtml(); ?>
+			<?= CRequest::getCsrfInputHtml(); ?>
 			<fieldset style="margin: 0;" class="group-select">
 				<p class="onestepcheckout-description"><?= Yii::$service->page->translate->__('Welcome to the checkout,Fill in the fields below to complete your purchase');?> !</p>
 				<?php if (\Yii::$app->user->isGuest): ?>
@@ -119,6 +120,8 @@
 
 <script>
 <?php $this->beginBlock('placeOrder') ?>
+    csrfName = $(".thiscsrf").attr("name");
+    csrfVal = $(".thiscsrf").val();
 	function validateEmail(email) {
 		var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 		return re.test(email);
@@ -184,20 +187,20 @@
 			if(!coupon_code){
 				//alert("coupon can not empty!");
 			}
-			//coupon_url = $("#discount-coupon-form").attr("action");
-			//alert(coupon_url);
+			$data = {"coupon_code":coupon_code};
+            $data[csrfName] = csrfVal;
 			$.ajax({
 				async:true,
 				timeout: 6000,
 				dataType: 'json', 
 				type:'post',
-				data: {"coupon_code":coupon_code},
+				data: $data,
 				url:coupon_url,
 				success:function(data, textStatus){ 
 					if(data.status == 'success'){
 						$(".couponType").val($succ_coupon_type);
 						hml = $('.add_coupon_submit').html();
-						if(hml == 'Add Coupon'){
+						if(hml == '<?= Yii::$service->page->translate->__('Add Coupon');?>'){
 							$('.add_coupon_submit').html('<?= Yii::$service->page->translate->__('Cancel Coupon');?>');
 						}else{
 							$('.add_coupon_submit').html('<?= Yii::$service->page->translate->__('Add Coupon');?>');
@@ -281,9 +284,6 @@
 				$(".checkout-payment-method-load").after('<div style=""  class="validation-advice"><?= Yii::$service->page->translate->__('This is a required field.');?></div>');
 				j = 1;
 			}
-			
-			
-			
 			if(address_list){
 				if(!j){
 					$(".onestepcheckout-place-order").addClass('visit');
@@ -291,13 +291,9 @@
 					$("#onestepcheckout-form").submit();
 				}
 			}else{
-				//alert(11);
-				//alert(j);
 				$("#onestepcheckout-form .required-entry").each(function(){
 					value = $(this).val();
 					if(!value){
-						//alert(this);
-						//alert($(this).attr('name'));
 						i++;
 						$(this).after('<div style=""  class="validation-advice"><?= Yii::$service->page->translate->__('This is a required field.');?></div>');
 					}
@@ -313,9 +309,6 @@
 					
 					new_user_pass = $(".customer_password").val();
 					new_user_pass_cm = $(".customer_confirm_password").val();
-					//alert(new_user_pass);
-					//alert(new_user_pass.length);
-					//alert(new_user_pass_cm);
 					<?php 
 						$passwdMinLength = Yii::$service->customer->getRegisterPassMinLength();
 						$passwdMaxLength = Yii::$service->customer->getRegisterPassMaxLength();
@@ -334,9 +327,7 @@
 					}  
 				}
 				
-				//alert(222);
 				if(!i && !j){
-					//alert(333);
 					$(".onestepcheckout-place-order").addClass('visit');
 					$("#onestepcheckout-form").submit();
 				}
