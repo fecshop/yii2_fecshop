@@ -91,7 +91,7 @@
 							
 							<div class="myFavorite_nohove" id="myFavorite">
 								<i></i>
-								<a href="javascript:void(0)" url="<?= Yii::$service->url->getUrl('catalog/favoriteproduct/add',['product_id'=>$_id]); ?>" class="addheart" id="divMyFavorite" rel="nofollow" >
+								<a href="javascript:void(0)" url="<?= Yii::$service->url->getUrl('catalog/favoriteproduct/add'); ?>"  product_id="<?= $_id?>" class="addheart" id="divMyFavorite" rel="nofollow" >
 									<?= Yii::$service->page->translate->__('Add to Favorites'); ?>
 								</a>				
 							</div>
@@ -286,9 +286,15 @@
 			if($(this).hasClass('act')){
 				alert("<?= Yii::$service->page->translate->__('You already favorite this product'); ?>");
 			}else{
+                $(this).addClass('act');
 				url = $(this).attr('url');
-				$(this).addClass('act');
-				window.location.href = url;
+                product_id = $(this).attr('product_id');
+                csrfName = $(".product_csrf").attr("name");
+				csrfVal  = $(".product_csrf").val();
+                param = {};
+                param["product_id"] = product_id;
+                param[csrfName] = csrfVal;
+                doPost(url, param);
 			}
 	   });
 	   // 改变个数的时候，价格随之变动
