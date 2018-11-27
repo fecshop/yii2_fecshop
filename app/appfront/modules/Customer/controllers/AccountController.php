@@ -20,7 +20,7 @@ class AccountController extends AppfrontController
 {
     //protected $_registerSuccessRedirectUrlKey = 'customer/account';
 
-    public $enableCsrfValidation = false;
+    public $enableCsrfValidation = true;
 
     public function init()
     {
