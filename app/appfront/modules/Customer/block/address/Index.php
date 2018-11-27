@@ -19,8 +19,8 @@ class Index
 {
     public function getLastData()
     {
-        $method = Yii::$app->request->get('method');
-        $address_id = Yii::$app->request->get('address_id');
+        $method = Yii::$app->request->post('method');
+        $address_id = Yii::$app->request->post('address_id');
         if ($method == 'remove' && $address_id) {
             $this->removeAddressById($address_id);
         }
