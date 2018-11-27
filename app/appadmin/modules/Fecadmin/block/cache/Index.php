@@ -9,6 +9,7 @@
 namespace fecshop\app\appadmin\modules\Fecadmin\block\cache;
 
 use fec\helpers\CUrl;
+use fec\helpers\CRequest;
 use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockInterface;
 use fecshop\app\appadmin\modules\AppadminbaseBlock;
 use Yii;
@@ -72,7 +73,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 		}
 
 		return '<ul class="toolBar">
-					<li><a title="'.Yii::$service->page->translate->__('Are you sure you want to refresh the cache?').'" target="selectedTodo" rel="ids" postType="string" href="'.$this->_currentUrl.'?method=reflush" class="edit"><span>' . Yii::$service->page->translate->__('Refresh Cache') . '</span></a></li>
+					<li><a csrfName="' .CRequest::getCsrfName(). '" csrfVal="' .CRequest::getCsrfValue(). '" title="'.Yii::$service->page->translate->__('Are you sure you want to refresh the cache?').'" target="selectedTodo" rel="ids" postType="string" href="'.$this->_currentUrl.'?method=reflush" class="edit"><span>' . Yii::$service->page->translate->__('Refresh Cache') . '</span></a></li>
 					<li class="line">line</li>
 				</ul>';
 	}
