@@ -112,7 +112,7 @@ class Manageredit
     }
     
     public function exportExcel(){
-        $order_ids = Yii::$app->request->get('order_ids');
+        $order_ids = Yii::$app->request->post('order_ids');
         $order_arr = explode(',', $order_ids);
         $excelArr[] = [
             Yii::$service->page->translate->__('Order Id'),

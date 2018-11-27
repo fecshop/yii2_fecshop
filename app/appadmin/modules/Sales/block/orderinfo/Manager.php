@@ -10,6 +10,7 @@
 namespace fecshop\app\appadmin\modules\Sales\block\orderinfo;
 
 use fec\helpers\CUrl;
+use fec\helpers\CRequest;
 use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockInterface;
 use fecshop\app\appadmin\modules\AppadminbaseBlock;
 use Yii;
@@ -213,7 +214,7 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
     {
         $fileds = $this->getTableFieldArr();
         $str = '';
-        $csrfString = \fec\helpers\CRequest::getCsrfString();
+        $csrfString = CRequest::getCsrfString();
         $user_ids = [];
         foreach ($data as $one) {
             $user_ids[] = $one['created_person'];
@@ -330,8 +331,8 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
                                 var message = "' . Yii::$service->page->translate->__('Choose at least one order') . '";
                                 alertMsg.error(message);
                             } else {
-                                url = "'.$this->_exportExcelUrl.'?order_ids="+selectOrderIds;
-                                window.location.href = url;
+                                url = "'.$this->_exportExcelUrl.'" ;
+                                doPost(url, {"order_ids": selectOrderIds, "'.CRequest::getCsrfName().'": "'.CRequest::getCsrfValue() .'"});
                             }
                         });
                     });
