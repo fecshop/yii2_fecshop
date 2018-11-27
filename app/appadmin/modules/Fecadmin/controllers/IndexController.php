@@ -17,7 +17,7 @@ use fecshop\app\appadmin\modules\AppadminController;
  */
 class IndexController extends AppadminController
 {
-	public $enableCsrfValidation = false;
+	public $enableCsrfValidation = true;
     
     public function init()
     {
