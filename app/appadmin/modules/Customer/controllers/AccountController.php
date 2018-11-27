@@ -17,7 +17,7 @@ use fecshop\app\appadmin\modules\Customer\CustomerController;
  */
 class AccountController extends CustomerController
 {
-    public $enableCsrfValidation = false;
+    public $enableCsrfValidation = true;
     
     public function actionIndex()
     {
