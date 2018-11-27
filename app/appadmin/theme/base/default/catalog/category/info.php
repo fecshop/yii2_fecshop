@@ -1,5 +1,6 @@
 <?php
 use fec\helpers\CUrl;
+use fec\helpers\CRequest;
 ?>
 <div class="tabs" >
 	<div class="tabsHeader">
@@ -51,6 +52,7 @@ jQuery(document).ready(function(){
 		jQuery.each(jQuery('#inputthumbnail_image')[0].files, function(i, file) {
 			data.append('upload_file', file);
 		});
+        data.append("<?= CRequest::getCsrfName() ?>", "<?= CRequest::getCsrfValue() ?>");
 		$.ajax({
 			url:'<?= CUrl::getUrl('catalog/category/imageupload'); ?>',
 			type:'POST',
@@ -78,6 +80,7 @@ jQuery(document).ready(function(){
 		jQuery.each(jQuery('#inputimage')[0].files, function(i, file) {
 			data.append('upload_file', file);
 		});
+        data.append("<?= CRequest::getCsrfName() ?>", "<?= CRequest::getCsrfValue() ?>");
 		$.ajax({
 			url:'<?= CUrl::getUrl('catalog/category/imageupload'); ?>',
 			type:'POST',

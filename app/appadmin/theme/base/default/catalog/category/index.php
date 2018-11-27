@@ -116,7 +116,7 @@ $(document).ready(function(){
 			alertMsg.confirm("<?= Yii::$service->page->translate->__('Are you sure you want to delete this category') ?>?",
 			{
 				okCall:function(){
-					$.post(delCateUrl,DWZ.ajaxDone,"json");
+					$.post(delCateUrl, {<?= CRequest::getCsrfName() ?>: "<?= CRequest::getCsrfValue() ?>"}, DWZ.ajaxDone, "json");
 					navTab.reload();
 				}
 			});
@@ -125,8 +125,13 @@ $(document).ready(function(){
 });
 </script>
 
+<form id="pagerForm" method="post" action="<?= \fec\helpers\CUrl::getCurrentUrl();  ?>">
+	<?=  CRequest::getCsrfInputHtml();  ?>
+</form>
+    
 <form  method="post" action="<?= $save_url ?>" class="pageForm required-validate"  onsubmit="return thissubmit(this);">
-	<input type="hidden" name="parent_id"  class="parent_id"  value="0"  />
+	<?php echo CRequest::getCsrfInputHtml();  ?>	
+    <input type="hidden" name="parent_id"  class="parent_id"  value="0"  />
 	<div style=" display: none;">
 		<a href="" ajaxxurl="<?= CUrl::getUrl('catalog/category/index'); ?>" target="ajax" rel="jbsxBox"  class="add_category_a">add</a>
 	</div>

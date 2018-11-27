@@ -188,6 +188,7 @@ $(document).ready(function(){
 			url: url,
 			type: 'POST',
 			data:  {	
+                <?=  CRequest::getCsrfName(); ?>: "<?= CRequest::getCsrfValue(); ?>"
 			},
 			success: function(data, textStatus, jqXHR)
 			{
