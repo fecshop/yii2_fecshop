@@ -133,8 +133,8 @@
 					<a external href="javascript:void(0)" id="js_registBtn" class="button button-fill button-success redBtn addProductToCart">
 						<em><span><i></i><?= Yii::$service->page->translate->__('Add To Cart'); ?></span></em>
 					</a>
-					
-					<a external href="<?= Yii::$service->url->getUrl('catalog/favoriteproduct/add',['product_id'=>$_id]); ?>" id="js_registBtn" class="button button-fill button-success redBtn addProductToFavo">
+
+					<a href="javascript:void(0)" url="<?= Yii::$service->url->getUrl('catalog/favoriteproduct/add'); ?>"  product_id="<?= $_id?>" id="divMyFavorite" rel="nofollow"  external class="button button-fill button-success redBtn addProductToFavo">
 						<em><span><i></i><?= Yii::$service->page->translate->__('Add to Favorites'); ?></span></em>
 					</a>
 					
@@ -229,6 +229,30 @@
 	// add to cart js	
 	<?php $this->beginBlock('add_to_cart') ?>
 	$(document).ready(function(){
+		productAjaxUrl = "<?= Yii::$service->url->getUrl('customer/ajax/product');  ?>";
+		product_id   = "<?=  $_id ?>";
+		$.ajax({
+			async:true,
+			timeout: 6000,
+			dataType: 'json',
+			type:'get',
+			data: {
+				// 'currentUrl':window.location.href,
+				'product_id':product_id
+			},
+			url:productAjaxUrl,
+			success:function(data, textStatus){
+				if(data.favorite){
+					$("#divMyFavorite").addClass("act");
+				}
+				if(data.csrfName && data.csrfVal && data.product_id){
+					$(".product_csrf").attr("name",data.csrfName);
+					$(".product_csrf").val(data.csrfVal);
+				}
+			},
+			error:function (XMLHttpRequest, textStatus, errorThrown){}
+		});
+
 		$(".addProductToCart").click(function(){
 			i = 1;
 			$(".product_custom_options .pg .rg ul.required").each(function(){
@@ -290,15 +314,20 @@
 				});
 			}
 		});
-	   
 	   // product favorite
 	   $("#divMyFavorite").click(function(){
 			if($(this).hasClass('act')){
 				alert("<?= Yii::$service->page->translate->__('You already favorite this product'); ?>");
 			}else{
-				url = $(this).attr('url');
 				$(this).addClass('act');
-				window.location.href = url;
+				url = $(this).attr('url');
+				product_id = $(this).attr('product_id');
+				csrfName = $(".product_csrf").attr("name");
+				csrfVal  = $(".product_csrf").val();
+				param = {};
+				param["product_id"] = product_id;
+				param[csrfName] = csrfVal;
+				doPost(url, param);
 			}
 	   });
 	   // 改变个数的时候，价格随之变动
