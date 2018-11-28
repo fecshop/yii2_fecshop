@@ -316,7 +316,7 @@ $(document).ready(function(){
 		if(num > 1){
 			$data = {
 				item_id:$item_id,
-				up_type:"less_one",
+				up_type:"less_one"
 			};
             $data[csrfName] = csrfVal;
             
