@@ -18,6 +18,8 @@ use Yii;
  */
 class ReviewproductController extends AppfrontController
 {
+    public $enableCsrfValidation = true;
+    
     public function init()
     {
         parent::init();
