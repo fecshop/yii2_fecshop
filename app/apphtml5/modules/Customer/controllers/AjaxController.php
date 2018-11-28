@@ -56,6 +56,33 @@ class AjaxController extends AppfrontController
         exit;
     }
 
+    public function actionProduct()
+    {
+        $result_arr = [];
+        if (Yii::$app->request->isAjax) {
+            $result_arr['loginStatus'] = false;
+            $result_arr['favorite'] = false;
+            $product_id = Yii::$app->request->get('product_id');
+            if (!Yii::$app->user->isGuest) {
+                $result_arr['loginStatus'] = true;
+                if ($product_id) {
+                    $favorite = Yii::$service->product->favorite->getByProductIdAndUserId($product_id);
+                    $favorite ? ($result_arr['favorite'] = true) : '';
+                }
+            }
+            if ($product_id) {
+                // 添加csrf数据
+                $csrfName = \fec\helpers\CRequest::getCsrfName();
+                $csrfVal = \fec\helpers\CRequest::getCsrfValue();
+                $result_arr['csrfName'] = $csrfName;
+                $result_arr['csrfVal'] = $csrfVal;
+                $result_arr['product_id'] = $product_id;
+            }
+        }
+        echo json_encode($result_arr);
+        exit;
+    }
+
     public function actionIsregister()
     {
         $email = Yii::$app->request->get('email');
