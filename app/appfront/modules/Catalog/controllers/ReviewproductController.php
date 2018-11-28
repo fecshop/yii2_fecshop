@@ -18,6 +18,8 @@ use Yii;
  */
 class ReviewproductController extends AppfrontController
 {
+    public $enableCsrfValidation = true;
+    
     public function init()
     {
         parent::init();
@@ -37,14 +39,14 @@ class ReviewproductController extends AppfrontController
             return Yii::$service->url->redirectByUrlKey('customer/account/login');
         }
         $editForm = Yii::$app->request->post('editForm');
-        $editForm = \Yii::$service->helper->htmlEncode($editForm);
+        $editForm = Yii::$service->helper->htmlEncode($editForm);
         if (!empty($editForm) && is_array($editForm)) {
             $saveStatus = $this->getBlock()->saveReview($editForm);
             if ($saveStatus) {
                 $spu = Yii::$app->request->get('spu');
                 $_id = Yii::$app->request->get('_id');
-                $spu = \Yii::$service->helper->htmlEncode($spu);
-                $_id = \Yii::$service->helper->htmlEncode($_id);
+                $spu = Yii::$service->helper->htmlEncode($spu);
+                $_id = Yii::$service->helper->htmlEncode($_id);
                 if ($spu && $_id) {
                     $url = Yii::$service->url->getUrl('catalog/reviewproduct/lists', ['spu' => $spu, '_id'=>$_id]);
                     return $this->redirect($url);
@@ -52,7 +54,6 @@ class ReviewproductController extends AppfrontController
                 }
             }
         }
-        //echo 1;exit;
         $data = $this->getBlock()->getLastData($editForm);
 
         return $this->render($this->action->id, $data);

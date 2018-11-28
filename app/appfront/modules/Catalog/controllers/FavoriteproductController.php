@@ -17,6 +17,7 @@ use fecshop\app\appfront\modules\AppfrontController;
  */
 class FavoriteproductController extends AppfrontController
 {
+    public $enableCsrfValidation = true;
     // 增加收藏
     public function actionAdd()
     {
