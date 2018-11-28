@@ -18,15 +18,15 @@ use Yii;
  */
 class ProductfavoriteController extends AppfrontController
 {
-    //protected $_registerSuccessRedirectUrlKey = 'customer/account';
+    public $enableCsrfValidation = true;
 
     public function actionIndex()
     {
         if (Yii::$app->user->isGuest) {
             return Yii::$service->url->redirectByUrlKey('customer/account/login');
         }
-        $type = Yii::$app->request->get('type');
-        $favorite_id = Yii::$app->request->get('favorite_id');
+        $type = Yii::$app->request->post('type');
+        $favorite_id = Yii::$app->request->post('favorite_id');
         if ($type && $favorite_id) {
             $this->getBlock()->remove($favorite_id);
         }

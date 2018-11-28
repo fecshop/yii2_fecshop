@@ -6,6 +6,7 @@
  * @copyright Copyright (c) 2016 FecShop Software LLC
  * @license http://www.fecshop.com/license/
  */
+use fec\helpers\CRequest;
 ?>
 <?php
 use fecshop\app\apphtml5\helper\Format;
@@ -66,7 +67,7 @@ use fecshop\app\apphtml5\helper\Format;
 								</td>
 								<td>
 									<div class="favorite-Operation addressbook " style="display:inline-block;float:right; margin-top: 0px;">
-										<a external href="<?= Yii::$service->url->getUrl('customer/productfavorite',['type'=>'remove','favorite_id' => $one['favorite_id']]); ?>">
+										<a href='javascript:doPost("<?= Yii::$service->url->getUrl('customer/productfavorite') ?>", {"type":"remove", "favorite_id":"<?= $one['favorite_id'] ?>", "<?= CRequest::getCsrfName() ?>": "<?= CRequest::getCsrfValue() ?>" })' >
 											<span class="icon icon-remove"></span>
 										</a>
 									</div>

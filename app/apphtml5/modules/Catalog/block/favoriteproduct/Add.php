@@ -22,10 +22,11 @@ class Add
      */
     public function getLastData()
     {
-        $product_id = Yii::$app->request->get('product_id');
+        $product_id = Yii::$app->request->post('product_id');
         //没有登录的用户跳转到登录页面
         if (Yii::$app->user->isGuest) {
-            $url = Yii::$service->url->getCurrentUrl();
+            $product = Yii::$service->product->getByPrimaryKey($product_id);
+            $url = Yii::$service->url->getUrl($product['url_key']);
             Yii::$service->customer->setLoginSuccessRedirectUrl($url);
 
             return Yii::$service->url->redirectByUrlKey('customer/account/login');
