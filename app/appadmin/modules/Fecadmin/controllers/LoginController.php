@@ -109,8 +109,8 @@ class LoginController extends \fecadmin\controllers\LoginController
     
 
     /**
-     * @property $view|string , (only) view file name ,by this module id, this controller id , generate view relative path.
-     * @property $params|Array,
+     * @param $view|string , (only) view file name ,by this module id, this controller id , generate view relative path.
+     * @param $params|Array,
      * 1.get exist view file from mutil theme by theme protity.
      * 2.get content by yii view compontent  function renderFile()  ,
      */

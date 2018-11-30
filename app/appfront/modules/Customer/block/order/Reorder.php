@@ -54,7 +54,7 @@ class Reorder
     }
 
     /**
-     * @property $message | String
+     * @param $message | String
      * 添加报错信息
      */
     public function errorMessage($message)

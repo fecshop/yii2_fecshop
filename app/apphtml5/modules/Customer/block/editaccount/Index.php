@@ -30,7 +30,7 @@ class Index
     }
 
     /**
-     * @property $editForm|array
+     * @param $editForm|array
      * 保存修改后的用户信息。
      */
     public function saveAccount($editForm)

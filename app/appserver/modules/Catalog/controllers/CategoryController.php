@@ -403,7 +403,7 @@ class CategoryController extends AppserverController
         return $str;
     }
     /**
-     * @property $str | String
+     * @param $str | String
      * 字符串转换成数组。
      */
     protected function getFilterArr($str)

@@ -130,7 +130,7 @@ class Placeorder
     }
 
     /**
-     * @property $post|Array，前台传递参数数组。
+     * @param $post|Array，前台传递参数数组。
      * 如果游客选择了创建账户，并且输入了密码，则使用address email作为账号，
      * 进行账号的注册和登录。
      */
@@ -177,7 +177,7 @@ class Placeorder
     }
 
     /**
-     * @property $post | Array
+     * @param $post | Array
      * 登录用户，保存货运地址到customer address ，然后把生成的
      * address_id 写入到cart中。
      * shipping method写入到cart中
@@ -238,7 +238,7 @@ class Placeorder
     */
 
     /**
-     * @property $post | Array
+     * @param $post | Array
      * @return bool
      *              检查前台传递的信息是否正确。同时初始化一部分类变量
      */

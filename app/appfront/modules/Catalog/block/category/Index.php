@@ -95,7 +95,7 @@ class Index
         return $filter_category;
     }
     /**
-     * @property $filter_category | Array
+     * @param $filter_category | Array
      * 通过递归的方式，得到分类以及子分类的html。
      */
     protected function getFilterCategoryHtml($filter_category = '')
@@ -316,7 +316,7 @@ class Index
         return $str;
     }
     /**
-     * @property $str | String
+     * @param $str | String
      * 字符串转换成数组。
      */
     protected function getFilterArr($str)

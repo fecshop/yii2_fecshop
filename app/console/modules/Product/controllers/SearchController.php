@@ -87,7 +87,7 @@ class SearchController extends Controller
     }
 
     /**
-     *  @property $nowtime | Int 当前时间的时间戳
+     *  @param $nowtime | Int 当前时间的时间戳
      *  经过上面的批量更新，会更新updated_at字段，因此小于$nowtime的数据，会认为是无效
      *  的字段了，因为上面的更新是批量更新。
      */

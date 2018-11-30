@@ -99,7 +99,7 @@ class Index
     }
 
     /**
-     * @property $favorite_id|string
+     * @param $favorite_id|string
      */
     public function remove($favorite_id)
     {

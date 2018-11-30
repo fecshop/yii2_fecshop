@@ -89,7 +89,7 @@ class Index
         ];
     }
     /**
-     * @property $products | Array 产品的数组。
+     * @param $products | Array 产品的数组。
      * ajax方式访问，得到产品的数据
      * 这个是wap端手机页面访问，下拉自动加载下一页的数据的加载实现。
      */
@@ -118,7 +118,7 @@ class Index
         return $filter_category;
     }
     /**
-     * @property $filter_category | Array
+     * @param $filter_category | Array
      * 通过递归的方式，得到分类以及子分类的html。
      */
     protected function getFilterCategoryHtml($filter_category = '')
@@ -328,7 +328,7 @@ class Index
         return $str;
     }
     /**
-     * @property $str | String
+     * @param $str | String
      * 字符串转换成数组。
      */
     protected function getFilterArr($str)
