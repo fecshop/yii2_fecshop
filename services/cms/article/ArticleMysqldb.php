@@ -65,7 +65,7 @@ class ArticleMysqldb extends Service implements ArticleInterface
     }
 
     /**
-     * @property $urlKey | String ,  对应表的url_key字段
+     * @param $urlKey | String ,  对应表的url_key字段
      * 根据url_key 查询得到article model
      */
     public function getByUrlKey($urlKey)
@@ -118,7 +118,7 @@ class ArticleMysqldb extends Service implements ArticleInterface
     }
 
     /**
-     * @property $one|array
+     * @param $one|array
      * save $data to cms model,then,add url rewrite info to system service urlrewrite.
      */
     public function save($one, $originUrlKey)

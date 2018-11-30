@@ -29,7 +29,7 @@ class Widget extends Service
     public $widgetConfig;
 
     /**
-     * @property configKey   String or Array
+     * @param configKey   String or Array
      * 如果传递的是一个配置数组，内容格式如下：
      * [
      *    # class 选填
@@ -69,9 +69,9 @@ class Widget extends Service
     }
 
     /**
-     * @property $configKey | string ,使用配置中的widget，该参数对应相应的数组key
-     * @property $config,就是上面actionRender()方法中的参数，格式一样。
-     * @property $parentThis | array or '' , 调用层传递的参数数组，可以在view中调用。
+     * @param $configKey | string ,使用配置中的widget，该参数对应相应的数组key
+     * @param $config,就是上面actionRender()方法中的参数，格式一样。
+     * @param $parentThis | array or '' , 调用层传递的参数数组，可以在view中调用。
      *
      */
     protected function actionRenderContentHtml($configKey, $config, $parentThis = '')
@@ -107,9 +107,9 @@ class Widget extends Service
     }
 
     /**
-     * @property $configKey | string ,使用配置中的widget，该参数对应相应的数组key
-     * @property $config,就是上面actionRender()方法中的参数，格式一样。
-     * @property $parentThis | array or '' , 调用层传递的参数数组，可以在view中调用。
+     * @param $configKey | string ,使用配置中的widget，该参数对应相应的数组key
+     * @param $config,就是上面actionRender()方法中的参数，格式一样。
+     * @param $parentThis | array or '' , 调用层传递的参数数组，可以在view中调用。
      *
      */
     protected function actionRenderContent($configKey, $config, $parentThis = '')

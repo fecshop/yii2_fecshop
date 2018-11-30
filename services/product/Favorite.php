@@ -47,8 +47,8 @@ class Favorite extends Service
     }
 
     /**
-     * @property $product_id | String ， 产品id
-     * @property $user_id | Int ，用户id
+     * @param $product_id | String ， 产品id
+     * @param $user_id | Int ，用户id
      * @return $this->_favoriteModel ，如果用户在该产品收藏，则返回相应model。
      */
     protected function actionGetByProductIdAndUserId($product_id, $user_id = '')
@@ -69,8 +69,8 @@ class Favorite extends Service
     }
 
     /**
-     * @property $product_id | String ， 产品id
-     * @property $user_id | Int ，用户id
+     * @param $product_id | String ， 产品id
+     * @param $user_id | Int ，用户id
      * @return boolean，用户收藏该产品时，执行的操作。
      */
     protected function actionAdd($product_id, $user_id)
@@ -112,7 +112,7 @@ class Favorite extends Service
     }
 
     /**
-     * @property $product_id | String
+     * @param $product_id | String
      * 更新该产品被收藏的总次数。
      */
     protected function updateProductFavoriteCount($product_id)
@@ -128,7 +128,7 @@ class Favorite extends Service
     }
 
     /**
-     * @property $user_id | Int
+     * @param $user_id | Int
      * 更新该用户总的收藏产品个数到用户表
      */
     protected function updateUserFavoriteCount($user_id = '')
@@ -175,7 +175,7 @@ class Favorite extends Service
     }
 
     /**
-     * @property $favorite_id | string
+     * @param $favorite_id | string
      * 通过id删除favorite
      */
     protected function actionCurrentUserRemove($favorite_id)

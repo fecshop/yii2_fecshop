@@ -236,7 +236,7 @@ class AdminUser extends Service
 
 
     /**
-     * @property $ids | Int Array
+     * @param $ids | Int Array
      * @return 得到相应用户的数组。
      */
     public function getIdAndNameArrByIds($ids)

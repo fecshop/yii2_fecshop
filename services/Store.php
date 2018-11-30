@@ -166,8 +166,8 @@ class Store extends Service
     }
 
     /**
-     * @property $store_code | String
-     * @property $store | Array
+     * @param $store_code | String
+     * @param $store | Array
      * mobile devide url redirect.
      * pc端自动跳转到html5端的检测
      */
@@ -203,8 +203,8 @@ class Store extends Service
     }
 
     /**
-     * @property $store_code | String
-     * @property $redirectDomain | String
+     * @param $store_code | String
+     * @param $redirectDomain | String
      * 检测，html5端跳转检测
      */
     protected function redirectAppHtml5Mobile($store_code, $redirectDomain, $mobile_https)
@@ -259,7 +259,7 @@ class Store extends Service
     }
 
     /**
-     * @property $urlPath | String，跳转到vue端的url Path
+     * @param $urlPath | String，跳转到vue端的url Path
      * @return boolean, 生成vue端的url，然后进行跳转。
      */
     public function redirectAppServerMobile($urlPath)
@@ -281,8 +281,8 @@ class Store extends Service
     }
 
     /**
-     * @property $attrVal|array , language attr array , like   ['title_en' => 'xxxx','title_fr' => 'yyyy']
-     * @property $attrName|String, attribute name ,like: title ,description.
+     * @param $attrVal|array , language attr array , like   ['title_en' => 'xxxx','title_fr' => 'yyyy']
+     * @param $attrName|String, attribute name ,like: title ,description.
      * if  object or array  attribute is a language attribute, you can get current
      * language value by this function.
      * if lang attribute in current store language is empty , default language attribute will be return.

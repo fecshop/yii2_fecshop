@@ -63,7 +63,7 @@ class Currency extends Service
     protected $_currencys;
 
     /**
-     * @property $currencyCode | string 货币简码，譬如USD,RMB等
+     * @param $currencyCode | string 货币简码，譬如USD,RMB等
      * @return array
      *               如果不传递参数，得到所有的货币
      *               如果传递参数，得到的是当前货币的信息。
@@ -98,7 +98,7 @@ class Currency extends Service
     }
 
     /**
-     * @property $currencyCode | 货币简码
+     * @param $currencyCode | 货币简码
      * 得到货币的符号，譬如￥ $ 等。
      */
     protected function actionGetSymbol($currencyCode)
@@ -147,7 +147,7 @@ class Currency extends Service
     }
 
     /**
-     * @property $current_price | Float 当前货币下的价格
+     * @param $current_price | Float 当前货币下的价格
      * @return 基础货币下的价格
      *                                  通过当前的货币价格得到基础货币的价格，这是一个反推的过程，
      *                                  需要特别注意的是：这种反推方法换算得到的基础货币的价格，和原来的基础货币价格，
@@ -167,7 +167,7 @@ class Currency extends Service
     }
 
     /**
-     * @property $currencyCode | 货币简码
+     * @param $currencyCode | 货币简码
      * 初始化货币信息，在service Store bootstrap(Yii::$app->store->bootstrap()), 中会被调用
      * 1. 如果 $this->defaultCurrency 和 $this->baseCurrecy 没有设置，将会报错。
      * 2. 如果 传递参数$currencyCode为空，则会使用默认货币
@@ -189,7 +189,7 @@ class Currency extends Service
     }
 
     /**
-     * @property $currencyCode | String ， 货币简码，如果参数$currencyCode为空，则取当前的货币简码
+     * @param $currencyCode | String ， 货币简码，如果参数$currencyCode为空，则取当前的货币简码
      * @return array
      *               得到货币的详细信息,数据格式如下：
      *               [
@@ -220,7 +220,7 @@ class Currency extends Service
     }
 
     /**
-     * @property $currencyCode | String， 当前的货币简码
+     * @param $currencyCode | String， 当前的货币简码
      * 设置当前的货币。
      */
     protected function actionSetCurrentCurrency($currencyCode)
@@ -236,7 +236,7 @@ class Currency extends Service
     }
 
     /**
-     * @property $currency | String 货币简码
+     * @param $currency | String 货币简码
      * @return bool
      *              检测当前传递的货币简码，是否在配置中存在，如果存在则返回true
      */

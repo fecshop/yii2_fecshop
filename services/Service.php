@@ -202,7 +202,7 @@ class Service extends BaseObject
     }
     
     /**
-     * @property $object | Object , 调用该函数的对象
+     * @param $object | Object , 调用该函数的对象
      * 注意：
      * 1. $object 必须存在属性storage，否则将会报错
      * 2. 根据该函数得到相应的Storage，该文件必须存在并设置好相应的namespace，否则将报错

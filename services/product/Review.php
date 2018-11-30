@@ -41,7 +41,7 @@ class Review extends Service
     }
     
     /**
-     * @property $product_id | String, 产品id
+     * @param $product_id | String, 产品id
      * 是否有评论的权限，如果有，则返回true
      */
     public function isReviewRole($product_id)
@@ -86,7 +86,7 @@ class Review extends Service
     }
 
     /**
-     * @property $arr | Array
+     * @param $arr | Array
      * 初始化review model的属性，因为每一个产品的可能添加的评论字段不同。
      */
     protected function actionInitReviewAttr($arr)
@@ -105,7 +105,7 @@ class Review extends Service
     }
 
     /**
-     * @property $spu | String.
+     * @param $spu | String.
      * 通过spu找到评论总数。
      */
     protected function actionGetCountBySpu($spu)
@@ -150,7 +150,7 @@ class Review extends Service
     }
 
     /**
-     * @property $review_data | Array
+     * @param $review_data | Array
      *
      * 增加评论 前台增加评论调用的函数。
      */
@@ -180,7 +180,7 @@ class Review extends Service
     }
 
     /**
-     * @property $review_data | Array
+     * @param $review_data | Array
      * 保存评论
      */
     protected function actionUpdateReview($review_data)
@@ -220,7 +220,7 @@ class Review extends Service
     }
 
     /**
-     * @property $_id | String
+     * @param $_id | String
      * 后台编辑 通过评论id找到评论
      * 注意：因为每个产品的评论可能加入了新的字段，因此不能使用ActiveRecord的方式取出来，
      * 使用下面的方式可以把字段都取出来。
@@ -231,7 +231,7 @@ class Review extends Service
     }
 
     /**
-     * @property $primaryKey | String 主键值
+     * @param $primaryKey | String 主键值
      * get artile model by primary key.
      */
     protected function actionGetByPrimaryKey($primaryKey)
@@ -244,7 +244,7 @@ class Review extends Service
     }
 
     /**
-     * @property $filter|array
+     * @param $filter|array
      * get artile collection by $filter
      * example filter:
      * [
@@ -265,8 +265,8 @@ class Review extends Service
     }
 
     /**
-     * @property $one|array , save one data .
-     * @property $originUrlKey|string , article origin url key.
+     * @param $one|array , save one data .
+     * @param $originUrlKey|string , article origin url key.
      * 评论，后台审核评论的保存方法。
      * 保存后，把评论信息更新到产品表中。
      */
@@ -302,7 +302,7 @@ class Review extends Service
     }
 
     /**
-     * @property $ids | Array or String
+     * @param $ids | Array or String
      * @return boolean
      * 根据提供的ReviewId，删除产品评论
      */
@@ -344,7 +344,7 @@ class Review extends Service
     }
 
     /**
-     * @property $ids | Array
+     * @param $ids | Array
      * 通过 $ids 数组，批量审核通过评论
      */
     protected function actionAuditReviewByIds($ids)
@@ -368,7 +368,7 @@ class Review extends Service
     }
 
     /**
-     * @property $ids | Array
+     * @param $ids | Array
      * 通过 $ids 数组，批量审核评论拒绝
      */
     protected function actionAuditRejectedReviewByIds($ids)
@@ -392,7 +392,7 @@ class Review extends Service
     }
     
     /**
-     * @property $spu | String
+     * @param $spu | String
      * 当评论保存，更新评论的总数，平均评分信息到产品表的所有spu
      */
     protected function actionUpdateProductSpuReview($spu, $lang_code)
@@ -458,7 +458,7 @@ class Review extends Service
     }
 
     /**
-     * @property $filter|array
+     * @param $filter|array
      * get artile collection by $filter
      * example filter:
      * [

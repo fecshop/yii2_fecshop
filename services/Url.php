@@ -103,7 +103,7 @@ class Url extends Service
     }
 
     /**
-     * @property $url_key|string
+     * @param $url_key|string
      * remove url rewrite data by $url_key,which is custom url key that saved in custom url modules,like articcle , product, category ,etc..
      */
     protected function actionRemoveRewriteUrlKey($url_key)
@@ -149,7 +149,7 @@ class Url extends Service
     }
 
     /**
-     *  @property $urlKey|string
+     *  @param $urlKey|string
      *  get $origin_url by $custom_url_key ,it is used for yii2 init,
      *  in (new fecshop\services\Request)->resolveRequestUri(),  ## fecshop\services\Request is extend  yii\web\Request
      */
@@ -159,12 +159,12 @@ class Url extends Service
     }
 
     /**
-     * @property $url_key | String  urlKey的值
-     * @property $params | Array 。url里面个各个参数
-     * @property https | boolean 是否使用https的方式
-     * @property $domain | String ， 相应的域名，譬如www.fecshop.com
+     * @param $url_key | String  urlKey的值
+     * @param $params | Array 。url里面个各个参数
+     * @param https | boolean 是否使用https的方式
+     * @param $domain | String ， 相应的域名，譬如www.fecshop.com
      * @proeprty $showScriptName | boolean，是否在url中包含index.php/部分
-     * @property $useHttpForUrl | boolean ，是否在url中加入http部分、
+     * @param $useHttpForUrl | boolean ，是否在url中加入http部分、
      * 通过传入domain的方式得到相应的url
      * 该功能一般是在脚本中通过各个域名的传入得到相应的url，譬如sitemap的生成就是应用了这个方法得到
      * 产品和分类的url。
@@ -203,7 +203,7 @@ class Url extends Service
     }
 
     /**
-     * @property $path|String, for example about-us.html,  fashion-handbag/women.html
+     * @param $path|String, for example about-us.html,  fashion-handbag/women.html
      * genarate current store url by path.
      * example:
      * Yii::$service->url->getUrlByPath('cms/article/index?id=33');
@@ -381,9 +381,9 @@ class Url extends Service
     }
 
     /**
-     * @property $url|string  要处理的url ， 一般是当前的url
-     * @property $removeUrlParamStr|string  在url中删除的部分，一般是某个key对应的某个val，譬如color=green
-     * @property $backToPage1|bool  删除后，页数由原来的页数变成第一页？
+     * @param $url|string  要处理的url ， 一般是当前的url
+     * @param $removeUrlParamStr|string  在url中删除的部分，一般是某个key对应的某个val，譬如color=green
+     * @param $backToPage1|bool  删除后，页数由原来的页数变成第一页？
      */
     protected function actionRemoveUrlParamVal($url, $removeUrlParamStr, $backToPage1 = true)
     {

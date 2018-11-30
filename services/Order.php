@@ -163,7 +163,7 @@ class Order extends Service
     }
     
     /**
-     * @property $checkout_type | String  ，支付类型
+     * @param $checkout_type | String  ，支付类型
      * 设置支付类型，其他计算以此设置作为基础，进而获取其他的配置。
      */
     protected function actionSetCheckoutType($checkout_type)
@@ -187,7 +187,7 @@ class Order extends Service
     }
 
     /**
-     * @property $billing | Array
+     * @param $billing | Array
      * @return bool
      *              通过$this->requiredAddressAttr，检查地址的必填。
      */
@@ -216,7 +216,7 @@ class Order extends Service
     }
 
     /**
-     * @property $primaryKey | Int
+     * @param $primaryKey | Int
      * @return Object($this->_orderModel)
      * 通过主键值，返回Order Model对象
      */
@@ -232,7 +232,7 @@ class Order extends Service
     }
     
     /**
-     * @property $increment_id | String , 订单号
+     * @param $increment_id | String , 订单号
      * @return object （$this->_orderModel），返回 $this->_orderModel model
      * 通过订单号incrementId，得到订单Model对象。
      */
@@ -248,7 +248,7 @@ class Order extends Service
     }
 
     /**
-     * @property $reflush | boolean 是否从数据库中重新获取，如果是，则不会使用类变量中计算的值
+     * @param $reflush | boolean 是否从数据库中重新获取，如果是，则不会使用类变量中计算的值
      * 获取当前的订单信息，原理为：
      * 通过从session中取出来订单的increment_id,
      * 在通过increment_id(订单编号)取出来订单信息。
@@ -264,7 +264,7 @@ class Order extends Service
     }
 
     /**
-     * @property $increment_id | String 订单编号
+     * @param $increment_id | String 订单编号
      * @return array
      *               通过increment_id 从数据库中取出来订单数据，
      *               然后进行一系列的处理，返回订单数组数据。
@@ -311,7 +311,7 @@ class Order extends Service
     }
     
     /**
-     * @property $order_id | Int
+     * @param $order_id | Int
      * @return array
      *               通过order_id 从数据库中取出来订单数据，
      *               然后进行一系列的处理，返回订单数组数据。
@@ -339,7 +339,7 @@ class Order extends Service
     }
 
     /**
-     * @property $filter|array
+     * @param $filter|array
      * @return Array;
      *              通过过滤条件，得到coupon的集合。
      *              example filter:
@@ -369,7 +369,7 @@ class Order extends Service
     }
 
     /**
-     * @property $one|array , save one data .
+     * @param $one|array , save one data .
      * @return int 保存order成功后，返回保存的id。
      */
     protected function actionSave($one)
@@ -396,7 +396,7 @@ class Order extends Service
     }
 
     /**
-     * @property $ids | Int or Array
+     * @param $ids | Int or Array
      * @return bool
      *              如果传入的是id数组，则删除多个
      *              如果传入的是Int，则删除一个
@@ -435,7 +435,7 @@ class Order extends Service
     }
 
     /**
-     * @property $increment_id | String , 订单号
+     * @param $increment_id | String , 订单号
      * @return object （$this->_orderModel），返回 $this->_orderModel model
      *                通过订单号，得到订单以及订单产品信息。
      */
@@ -459,7 +459,7 @@ class Order extends Service
     }
 
     /**
-     * @property $token | String  , paypal 支付获取的token，订单生成后只有三个字段
+     * @param $token | String  , paypal 支付获取的token，订单生成后只有三个字段
      *       order_id, increment_id , payment_token ，目的就是将token对应到一个increment_id
      *       在paypal 点击continue的时候，可以通过token找到对应的订单。
      */
@@ -483,7 +483,7 @@ class Order extends Service
     }
 
     /**
-     * @property $token | String  , paypal 支付获取的token，
+     * @param $token | String  , paypal 支付获取的token，
      *   通过token 得到订单 Object
      */
     protected function actionGetByPaymentToken($token)
@@ -498,7 +498,7 @@ class Order extends Service
     }
     
     /**
-     * @property $reflush | boolean 是否从数据库中重新获取，如果是，则不会使用类变量中计算的值
+     * @param $reflush | boolean 是否从数据库中重新获取，如果是，则不会使用类变量中计算的值
      * 通过从session中取出来订单的increment_id
      * 在通过increment_id(订单编号)取出来订单信息。
      */
@@ -510,12 +510,12 @@ class Order extends Service
     }
 
     /**
-     * @property $address | Array 货运地址
-     * @property $shipping_method | String 货运快递方式
-     * @property $payment_method | Array 支付方式、
-     * @property $clearCartAndDeductStock | boolean 是否清空购物车，并扣除库存，这种情况是先 生成订单，在支付的情况下失败的处理方式。
-     * @property $token | string 代表 通过payment_token得到order，然后更新order信息的方式生成order，这个是paypal购物车express支付对应的功能
-     * @property $order_remark | string , 订单备注
+     * @param $address | Array 货运地址
+     * @param $shipping_method | String 货运快递方式
+     * @param $payment_method | Array 支付方式、
+     * @param $clearCartAndDeductStock | boolean 是否清空购物车，并扣除库存，这种情况是先 生成订单，在支付的情况下失败的处理方式。
+     * @param $token | string 代表 通过payment_token得到order，然后更新order信息的方式生成order，这个是paypal购物车express支付对应的功能
+     * @param $order_remark | string , 订单备注
      * @return bool 通过购物车的数据生成订单是否成功
      *              通过购物车中的产品信息，以及传递的货运地址，货运快递方式，支付方式生成订单。
      */
@@ -651,7 +651,7 @@ class Order extends Service
     }
 
     /**
-     * @property $order_increment_id | string，订单编号 increment_id
+     * @param $order_increment_id | string，订单编号 increment_id
      * 订单支付成功后，执行的代码，该代码只会在接收到支付成功信息后，才会执行。
      * 在调用该函数前，会对IPN支付成功消息做验证，一次，无论发送多少次ipn消息，该函数只会执行一次。
      * 您可以把订单支付成功需要做的事情都在这个函数里面完成。
@@ -674,8 +674,8 @@ class Order extends Service
     }
     
     /**
-     * @property $orderInfo | Object, 订单对象
-     * @property $cartInfo | Object，购物车对象
+     * @param $orderInfo | Object, 订单对象
+     * @param $cartInfo | Object，购物车对象
      * 根据传递的参数，得出trace系统的要求的order参数格式数组
      * 执行page trace services，将支付完成订单的数据传递给trace系统
      */
@@ -727,8 +727,8 @@ class Order extends Service
     }
 
     /**
-     * @property $myOrder | Object, 订单对象
-     * @property $products | Array，购物车产品数组
+     * @param $myOrder | Object, 订单对象
+     * @param $products | Array，购物车产品数组
      * 根据传递的参数，得出trace系统的要求的order参数格式数组，
      * 执行page trace services，将等待支付订单（刚刚生成的订单）的数据传递给trace系统
      */
@@ -780,7 +780,7 @@ class Order extends Service
     }
     
     /**
-     * @property $increment_id | String 每执行一次，version都会+1 （version默认为0）
+     * @param $increment_id | String 每执行一次，version都会+1 （version默认为0）
      * 执行完，查看version是否为1，如果不为1，则说明已经执行过了，返回false
      */
     public function checkOrderVersion($increment_id)
@@ -807,7 +807,7 @@ class Order extends Service
     }
 
     /**
-     * @property $increment_id | String ,order订单号
+     * @param $increment_id | String ,order订单号
      * 将生成的订单号写入session
      */
     protected function actionSetSessionIncrementId($increment_id)
@@ -824,8 +824,8 @@ class Order extends Service
     }
 
     /**
-     * @property $increment_id | String 订单号
-     * @property $token | String ，通过api支付的token
+     * @param $increment_id | String 订单号
+     * @param $token | String ，通过api支付的token
      * 通过订单号，更新订单的支付token
      */
     protected function actionUpdateTokenByIncrementId($increment_id, $token)
@@ -876,7 +876,7 @@ class Order extends Service
     }
 
     /**
-     * @property $increment_id | String
+     * @param $increment_id | String
      * @return bool
      *              取消订单，更新订单的状态为cancel。
      *              并且释放库存给产品
@@ -989,7 +989,7 @@ class Order extends Service
     }
 
     /**
-     * @property $days | Int 天数
+     * @param $days | Int 天数
      * 得到最近1个月的订单数据，包括：日期，订单支付状态，订单金额
      * 下面的数据是为了后台的订单统计
      */

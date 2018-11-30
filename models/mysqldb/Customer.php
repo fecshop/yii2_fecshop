@@ -50,7 +50,7 @@ class Customer extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @property $id | Int , 用户id
+     * @param $id | Int , 用户id
      * 通过id 找到identity（状态有效）
      */
     public static function findIdentity($id)
@@ -59,7 +59,7 @@ class Customer extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @property $token | String
+     * @param $token | String
      * 通过access_token 找到identity
      */
     public static function findIdentityByAccessToken($token, $type = null)

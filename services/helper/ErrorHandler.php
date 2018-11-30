@@ -36,14 +36,14 @@ class ErrorHandler extends Service
     }
 
     /**
-     * @property $code | Int, http 错误码
-     * @property $message | String, 错误的具体信息
-     * @property $file | string, 发生错误的文件
-     * @property $line | Int, 发生错误所在文件的代码行
-     * @property $created_at | Int, 发生错误的执行时间戳
-     * @property $ip | string, 访问人的ip
-     * @property $name | string, 错误的名字
-     * @property $trace_string | string, 错误的追踪信息
+     * @param $code | Int, http 错误码
+     * @param $message | String, 错误的具体信息
+     * @param $file | string, 发生错误的文件
+     * @param $line | Int, 发生错误所在文件的代码行
+     * @param $created_at | Int, 发生错误的执行时间戳
+     * @param $ip | string, 访问人的ip
+     * @param $name | string, 错误的名字
+     * @param $trace_string | string, 错误的追踪信息
      * @return 返回错误存储到mongodb的id，作为前端显示的错误编码
      * 该函数从errorHandler得到错误信息，然后保存到mongodb中。
      */

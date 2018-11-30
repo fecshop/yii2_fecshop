@@ -16,7 +16,7 @@ use Yii;
 /**
  * Product Price Services
  * Product Service is the component that you can get product info from it.
- * @property Image|\fecshop\services\Product\Image $image ,This property is read-only.
+ * @param Image|\fecshop\services\Product\Image $image ,This property is read-only.
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -34,7 +34,7 @@ class Price extends Service
     public $currentOff = 0;
     
     /**
-     * @property  $price 		 | Float  产品的价格
+     * @param  $price 		 | Float  产品的价格
      * 得到当前货币状态下的产品的价格信息。
      */
     protected function actionFormatPrice($price)
@@ -51,7 +51,7 @@ class Price extends Service
     }
 
     /**
-     * @property $price | Float 产品价格
+     * @param $price | Float 产品价格
      * @return String ， 带有相应货币符号的价格
      */
     protected function actionFormatSamplePrice($price)
@@ -65,12 +65,12 @@ class Price extends Service
 
     /**
      * 得到单个产品的最终价格。支持tier price 如果是tier price 需要把qty 以及tier Price传递过来.
-     * @property  $price 		 | Float  产品的价格
-     * @property  $special_price | Float  产品的特价
-     * @property  $special_from  | Int    产品的特检开始时间
-     * @property  $special_to    | Int    产品的特检结束时间
-     * @property  $qty    		 | Int 	  产品的个数，这个用于一次性购买多个产品的优惠，这些是用于批发客户
-     * @property  $tier_price    | Array  ，Example:
+     * @param  $price 		 | Float  产品的价格
+     * @param  $special_price | Float  产品的特价
+     * @param  $special_from  | Int    产品的特检开始时间
+     * @param  $special_to    | Int    产品的特检结束时间
+     * @param  $qty    		 | Int 	  产品的个数，这个用于一次性购买多个产品的优惠，这些是用于批发客户
+     * @param  $tier_price    | Array  ，Example:
      * $tier_price = [
      *		['qty'=>2,'price'=>33],
      *		['qty'=>4,'price'=>30],
@@ -99,10 +99,10 @@ class Price extends Service
     }
 
     /**
-     * @property $productId | String
-     * @property $qty | Int
-     * @property $custom_option_sku | String
-     * @property $format | Int , 返回的价格的格式，0代表为美元格式，1代表为当前货币格式，2代表美元和当前货币格式都有
+     * @param $productId | String
+     * @param $qty | Int
+     * @param $custom_option_sku | String
+     * @param $format | Int , 返回的价格的格式，0代表为美元格式，1代表为当前货币格式，2代表美元和当前货币格式都有
      * 通过产品以及个数，custonOptionSku 得到产品的最终价格
      */
     protected function actionGetCartPriceByProductId($productId, $qty, $custom_option_sku, $format = 1)
@@ -141,18 +141,18 @@ class Price extends Service
     // 产品加入购物车，得到相应个数的最终价格。
 
     /**
-     * @property $price | Float
-     * @property $special_price | Float
-     * @property $special_from | Int
-     * @property $special_to | Int
-     * @property $qty | Int
-     * @property $custom_option_price | Float
-     * @property $tier_price | Array ， 例子：
+     * @param $price | Float
+     * @param $special_price | Float
+     * @param $special_from | Int
+     * @param $special_to | Int
+     * @param $qty | Int
+     * @param $custom_option_price | Float
+     * @param $tier_price | Array ， 例子：
      * $tier_price = [
      *		['qty'=>2,'price'=>33],
      *		['qty'=>4,'price'=>30],
      *	];
-     * @property $format | Int , 返回的价格的格式，0代表为美元格式，1代表为当前货币格式，2代表美元和当前货币格式都有
+     * @param $format | Int , 返回的价格的格式，0代表为美元格式，1代表为当前货币格式，2代表美元和当前货币格式都有
      */
     protected function actionGetCartPrice(
         $price,
@@ -191,9 +191,9 @@ class Price extends Service
     }
 
     /**
-     * @property $qty | Int
-     * @property $price | Float 一个产品的单价(如果有特价，那么这个值是一个产品的特价)
-     * @property $tier_price_arr | Array  , example:
+     * @param $qty | Int
+     * @param $price | Float 一个产品的单价(如果有特价，那么这个值是一个产品的特价)
+     * @param $tier_price_arr | Array  , example:
      * $tier_price = [
      *		['qty'=>2,'price'=>33],
      *		['qty'=>4,'price'=>30],
@@ -232,10 +232,10 @@ class Price extends Service
      * 1. $special_price为空
      * 2. 产品的$special_price 大于 $price，并且，ifSpecialPriceGtPriceFinalPriceEqPrice设置为true
      * 3. 当前的时间不在 特价时间范围内.
-     * @property  $price 		 | Float  产品的价格
-     * @property  $special_price | Float  产品的特价
-     * @property  $special_from  | Int    产品的特检开始时间
-     * @property  $special_to    | Int    产品的特检结束时间
+     * @param  $price 		 | Float  产品的价格
+     * @param  $special_price | Float  产品的特价
+     * @param  $special_from  | Int    产品的特检开始时间
+     * @param  $special_to    | Int    产品的特检结束时间
      * @return bool
      */
     protected function actionSpecialPriceisActive($price, $special_price, $special_from, $special_to)
@@ -277,10 +277,10 @@ class Price extends Service
 
     /**
      * 通过该函数，得到产品的价格信息，如果特价是active的，则会有特价信息。
-     * @property  $price 		 | Float  产品的价格
-     * @property  $special_price | Float  产品的特价
-     * @property  $special_from  | Int    产品的特检开始时间
-     * @property  $special_to    | Int    产品的特检结束时间
+     * @param  $price 		 | Float  产品的价格
+     * @param  $special_price | Float  产品的特价
+     * @param  $special_from  | Int    产品的特检开始时间
+     * @param  $special_to    | Int    产品的特检结束时间
      * @return $return | Array  产品的价格信息
      */
     protected function actionGetCurrentCurrencyProductPriceInfo($price, $special_price, $special_from, $special_to)

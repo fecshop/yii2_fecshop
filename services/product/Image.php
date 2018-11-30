@@ -96,7 +96,7 @@ class Image extends Service
     }
 
     /**
-     * @property $param_img_file | Array .
+     * @param $param_img_file | Array .
      * upload image from web page , you can get image from $_FILE['XXX'] ,
      * $param_img_file is get from $_FILE['XXX'].
      * return , if success ,return image saved relative file path , like '/b/i/big.jpg'
@@ -126,10 +126,10 @@ class Image extends Service
     }
 
     /**
-     * @property $imageVal | String ，图片相对路径字符串。
-     * @property $imgResize | Array or Int ， 数组 [230,230] 代表生成的图片为230*230，如果宽度或者高度不够，则会用白色填充
+     * @param $imageVal | String ，图片相对路径字符串。
+     * @param $imgResize | Array or Int ， 数组 [230,230] 代表生成的图片为230*230，如果宽度或者高度不够，则会用白色填充
      *                  如果 $imgResize设置为 230， 则宽度不变，高度按照原始图的比例计算出来。
-     * @property $isWatered | Boolean ， 产品图片是否打水印。
+     * @param $isWatered | Boolean ， 产品图片是否打水印。
      * 获取相应尺寸的产品图片。
      */
     protected function actionGetResize($imageVal, $imgResize, $isWatered = false)
@@ -151,10 +151,10 @@ class Image extends Service
     }
 
     /**
-     * @property $imageVal | String ，图片相对路径字符串。
-     * @property $imgResize | Array or Int ， 数组 [230,230] 代表生成的图片为230*230，如果宽度或者高度不够，则会用白色填充
+     * @param $imageVal | String ，图片相对路径字符串。
+     * @param $imgResize | Array or Int ， 数组 [230,230] 代表生成的图片为230*230，如果宽度或者高度不够，则会用白色填充
      *                  如果 $imgResize设置为 230， 则宽度不变，高度按照原始图的比例计算出来。
-     * @property $isWatered | Boolean ， 产品图片是否打水印。
+     * @param $isWatered | Boolean ， 产品图片是否打水印。
      * 获取相应尺寸的产品图片。
      */
     protected function actionGetNewPathAndUrl($imageVal, $imgResize, $isWatered = false)
@@ -182,10 +182,10 @@ class Image extends Service
     }
 
     /**
-     * @property $imageVal | String ，图片相对路径字符串。
-     * @property $imgResize | Array or Int ， 数组 [230,230] 代表生成的图片为230*230，如果宽度或者高度不够，则会用白色填充
+     * @param $imageVal | String ，图片相对路径字符串。
+     * @param $imgResize | Array or Int ， 数组 [230,230] 代表生成的图片为230*230，如果宽度或者高度不够，则会用白色填充
      *                  如果 $imgResize设置为 230， 则宽度不变，高度按照原始图的比例计算出来。
-     * @property $waterImgPath | String ， 水印图片的路径
+     * @param $waterImgPath | String ， 水印图片的路径
      * 获取按照自定义尺寸获取的产品图片的文件绝对路径和完整url
      */
     protected function getProductNewPath($imageVal, $imgResize, $waterImgPath)

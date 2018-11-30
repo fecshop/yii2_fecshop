@@ -32,8 +32,8 @@ class Fecshoplang extends Service
     protected $_allLangCode;
 
     /**
-     * @property $attrName|string  , attr name ,like  : tilte , description ,name etc..
-     * @property $langCode|string , language 2 code, like :en ,fr ,es,
+     * @param $attrName|string  , attr name ,like  : tilte , description ,name etc..
+     * @param $langCode|string , language 2 code, like :en ,fr ,es,
      *  get language child language attr, like: title_fr
      */
     protected function actionGetLangAttrName($attrName, $langCode)
@@ -42,7 +42,7 @@ class Fecshoplang extends Service
     }
 
     /**
-     * @property $attrName | String 属性名称
+     * @param $attrName | String 属性名称
      * 得到默认语言的属性名称
      */
     protected function actionGetDefaultLangAttrName($attrName)
@@ -74,8 +74,8 @@ class Fecshoplang extends Service
     }
 
     /**
-     * @property $attrVal|array , language attr array , like   ['title_en' => 'xxxx','title_fr' => 'yyyy']
-     * @property $attrName|String, attribute name ,like: title ,description.
+     * @param $attrVal|array , language attr array , like   ['title_en' => 'xxxx','title_fr' => 'yyyy']
+     * @param $attrName|String, attribute name ,like: title ,description.
      * get default language attr value.
      * example getDefaultLangAttrVal(['title_en'=>'xx','title_fr'=>'yy'],'title');
      * 得到属性默认语言对应的值。上面是title属性默认语言的值。
@@ -91,9 +91,9 @@ class Fecshoplang extends Service
     }
 
     /**
-     * @property $attrVal|array , language attr array , like   ['title_en' => 'xxxx','title_fr' => 'yyyy']
-     * @property $attrName|String, attribute name ,like: title ,description.
-     * @property $lang | String , language.
+     * @param $attrVal|array , language attr array , like   ['title_en' => 'xxxx','title_fr' => 'yyyy']
+     * @param $attrName|String, attribute name ,like: title ,description.
+     * @param $lang | String , language.
      * if  object or array  attribute is a language attribute, you can get current
      * language value by this function.
      * if lang attribute in current store language is empty , default language attribute will be return.
@@ -116,8 +116,8 @@ class Fecshoplang extends Service
     }
 
     /**
-     * @property $attrVal|string  属性对应的值 一般是一个数组，里面包含各个语言的的属性值
-     * @property $attrName|string 属性名称，譬如:  name   title
+     * @param $attrVal|string  属性对应的值 一般是一个数组，里面包含各个语言的的属性值
+     * @param $attrName|string 属性名称，譬如:  name   title
      * @return 当前store 语言对应的值。
      */
     /*
@@ -130,7 +130,7 @@ class Fecshoplang extends Service
     */
 
     /**
-     * @property $language|string  like: en_US ,fr_FR,zh_CN
+     * @param $language|string  like: en_US ,fr_FR,zh_CN
      * @return string , like  en ,fr ,es ,  if  $language is not exist in $this->allLangCode
      *                empty will be return.
      */

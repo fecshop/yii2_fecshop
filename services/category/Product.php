@@ -27,7 +27,7 @@ class Product extends Service
     public $allowedNumPerPage;
 
     /**
-     * @property $filter | Array   example:
+     * @param $filter | Array   example:
      * [
      *     'category_id'    => 1,
      *     'pageNum'        => 2,
@@ -69,7 +69,7 @@ class Product extends Service
     }
 
     /**
-     * @property $filter | Array    和上面的函数 actionColl($filter) 类似。
+     * @param $filter | Array    和上面的函数 actionColl($filter) 类似。
      */
     protected function actionGetFrontList($filter)
     {

@@ -97,7 +97,7 @@ class Wxpay extends Service
     }
 
     /**
-     * @property $data | Array 数据格式如下：
+     * @param $data | Array 数据格式如下：
      *   array(18) {
      *       ["appid"]=> string(18) "wx426b3015555a46be"
      *       ["attach"]=>string(24) "微信支付测试产品"
@@ -354,9 +354,9 @@ class Wxpay extends Service
     /**
      * 微信 支付成功后，对订单的状态进行修改
      * 如果支付成功，则修改订单状态为支付成功状态。
-     * @property $out_trade_no | string ， fecshop的订单编号 increment_id
-     * @property $trade_no | 微信支付交易号
-     * @property isClearCart | boolean 是否清空购物车
+     * @param $out_trade_no | string ， fecshop的订单编号 increment_id
+     * @param $trade_no | 微信支付交易号
+     * @param isClearCart | boolean 是否清空购物车
      *
      */
     protected function updateOrderInfo($out_trade_no, $trade_no, $isClearCart=true)
@@ -377,8 +377,8 @@ class Wxpay extends Service
     }
 
     /**
-     * @property $increment_id | String 订单号
-     * @property $sendEmail | boolean 是否发送邮件
+     * @param $increment_id | String 订单号
+     * @param $sendEmail | boolean 是否发送邮件
      * 订单支付成功后，需要更改订单支付状态等一系列的处理。
      */
     protected function paymentSuccess($increment_id, $trade_no, $sendEmail = true)

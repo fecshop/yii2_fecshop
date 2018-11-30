@@ -418,7 +418,7 @@ class Product extends AppadminbaseBlock implements AppadminbaseBlockInterface
     }
 
     /**
-     * @property $data|array
+     * @param $data|array
      */
     public function getDbSearchBarHtml($data)
     {

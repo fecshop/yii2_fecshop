@@ -80,7 +80,7 @@ class StaticBlockMongodb extends Service implements StaticBlockInterface
     }
 
     /**
-     * @property $one|array
+     * @param $one|array
      * save $data to cms model,then,add url rewrite info to system service urlrewrite.
      */
     public function save($one)

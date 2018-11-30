@@ -95,7 +95,7 @@ class Paypal extends Service
     }
 
     /**
-     * @property $domain | string
+     * @param $domain | string
      * @return 得到证书crt文件的绝对路径
      */
     public function getCrtFile($domain)
@@ -175,8 +175,8 @@ class Paypal extends Service
     }
     
     /**
-     * @property $url | string, 请求的url
-     * @property $i | 请求的次数，因为curl可能存在失败的可能，当
+     * @param $url | string, 请求的url
+     * @param $i | 请求的次数，因为curl可能存在失败的可能，当
      * 失败后，就会通过递归的方式进行多次请求，这里设置的最大请求5次。
      * @return 返回请求url的return信息。
      */
@@ -275,7 +275,7 @@ class Paypal extends Service
     }
 
     /**
-     * @property $orderstatus | String 订单状态
+     * @param $orderstatus | String 订单状态
      * 根据接收的ipn消息，更改订单状态。
      */
     protected function updateOrderStatusByIpn($orderstatus = '')
@@ -403,7 +403,7 @@ class Paypal extends Service
     // express 部分
 
     /**
-     * @property $token | String , 通过 下面的 PPHttpPost5 方法返回的paypal express的token
+     * @param $token | String , 通过 下面的 PPHttpPost5 方法返回的paypal express的token
      * @return String，通过token得到跳转的 paypal url，通过这个url跳转到paypal登录页面，进行支付的开始
      */
     public function getExpressCheckoutUrl($token)
@@ -416,7 +416,7 @@ class Paypal extends Service
     }
     
     /**
-     * @property $token | String , 通过 下面的 PPHttpPost5 方法返回的paypal standard的token
+     * @param $token | String , 通过 下面的 PPHttpPost5 方法返回的paypal standard的token
      * @return String，通过token得到跳转的 paypal url，通过这个url跳转到paypal登录页面，进行支付的开始
      */
     public function getStandardCheckoutUrl($token)
@@ -429,9 +429,9 @@ class Paypal extends Service
     }
 
     /**
-     * @property $methodName_ | String，请求的方法，譬如： $methodName_ = "SetExpressCheckout";
-     * @property $nvpStr_ | String ，请求传递的购物车中的产品和总额部分的数据，组合成字符串的格式。
-     * @property $i | Int ， 限制递归次数的变量，当api获取失败的时候，可以通过递归的方式多次尝试，直至超过最大失败次数，才会返回失败
+     * @param $methodName_ | String，请求的方法，譬如： $methodName_ = "SetExpressCheckout";
+     * @param $nvpStr_ | String ，请求传递的购物车中的产品和总额部分的数据，组合成字符串的格式。
+     * @param $i | Int ， 限制递归次数的变量，当api获取失败的时候，可以通过递归的方式多次尝试，直至超过最大失败次数，才会返回失败
      * 此方法为获取token。返回的数据为数组，里面含有 ACK  TOKEN 等值。
      * 也就是和paypal进行初次的api账号密码验证，成功后返回token等信息。
      */
@@ -519,7 +519,7 @@ class Paypal extends Service
     }
 
     /**
-     * @property $nvp_array | Array, 各个配置参数
+     * @param $nvp_array | Array, 各个配置参数
      * 将数组里面的key和value，组合成url的字符串，生成nvp url
      */
     public function getRequestUrlStrByArray($nvp_array)
@@ -606,7 +606,7 @@ class Paypal extends Service
     }
 
     /**
-     * @property $landingPage | String ，访问api的类型，譬如login
+     * @param $landingPage | String ，访问api的类型，譬如login
      * 【paypal快捷支付部分】通过购物车中的数据，组合成访问paypal express api的url
      * 这里返回的的字符串，是快捷支付部分获取token和payerId的参数。
      * 将返回的参数，传递给Yii::$service->payment->paypal->PPHttpPost5($methodName_, $nvpStr_)
@@ -664,7 +664,7 @@ class Paypal extends Service
     }
     
     /**
-     * @property $landingPage | String ，访问api的类型，譬如login
+     * @param $landingPage | String ，访问api的类型，譬如login
      * 【paypal标准支付部分】通过订单中的数据，组合成访问paypal api的url
      * 这里返回的的字符串，是标准支付部分获取token和payerId的参数。
      *  通过 $checkoutReturn = Yii::$service->payment->paypal->PPHttpPost5($methodName_, $nvpStr_);
@@ -760,7 +760,7 @@ class Paypal extends Service
     }
 
     /**
-     * @property $doCheckoutReturn | Array ，
+     * @param $doCheckoutReturn | Array ，
      * paypal付款状态提交后，更新订单的支付部分的信息。
      */
     public function updateOrderPayment($doCheckoutReturn, $token)

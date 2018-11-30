@@ -21,8 +21,8 @@ use fecshop\services\Service;
 class Format extends Service
 {
     /**
-     * @property $number | Float
-     * @property $bits | Int
+     * @param $number | Float
+     * @param $bits | Int
      * @return $number | Float
      * 返回格式化形式的float小数，譬如2 会变成2.00
      */
@@ -36,7 +36,7 @@ class Format extends Service
     }
 
     /**
-     * @property $day | Int 多少天之前
+     * @param $day | Int 多少天之前
      * 返回最近xx天的日期数组
      */
     public function getPreDayDateArr($day)

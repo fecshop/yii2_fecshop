@@ -218,7 +218,7 @@ class UrlKey extends Service
 
     public $can_not_delete = 1;
     /**
-     * @property $one|array
+     * @param $one|array
      * save $data to cms model,then,add url rewrite info to system service urlrewrite.
      */
     public function save($one)

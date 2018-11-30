@@ -99,7 +99,7 @@ class Trace extends Service
     }
 
     /**
-     * @property $categoryName | String ， 填写分类的name，如果是多语言网站，那么这里填写默认语言的分类name
+     * @param $categoryName | String ， 填写分类的name，如果是多语言网站，那么这里填写默认语言的分类name
      * @return String, 分类页面的js Code
      */
     public function getTraceCategoryJsCode($categoryName)
@@ -115,7 +115,7 @@ class Trace extends Service
     }
 
     /**
-     * @property $sku | String ， 产品页面的sku编码
+     * @param $sku | String ， 产品页面的sku编码
      * @return String, 产品页面的js Code
      * <?= Yii::$service->page->trace->getTraceProductJsCode($sku)  ?>
      */
@@ -132,7 +132,7 @@ class Trace extends Service
     }
 
     /**
-     * @property $cart | String ， 购物车数据，示例JSON数据：
+     * @param $cart | String ， 购物车数据，示例JSON数据：
      * [
      * {
      * "sku":"grxjy56002622",
@@ -161,7 +161,7 @@ class Trace extends Service
     }
 
     /**
-     * @property $search | String ，搜索的json格式如下：
+     * @param $search | String ，搜索的json格式如下：
      * {
      * "text": "fashion handbag", // 搜索词
      * "result_qty":5  // 搜索的产品个数
@@ -275,7 +275,7 @@ class Trace extends Service
     }
 
     /**
-     * @property $data | Array，目前分类四类:loginEmail, registerEmail, paymentPendingOrder, paymentSuccessOrder,
+     * @param $data | Array，目前分类四类:loginEmail, registerEmail, paymentPendingOrder, paymentSuccessOrder,
      *
      *
      */
@@ -353,7 +353,7 @@ class Trace extends Service
     }
 
     /**
-     * @property $data | Array, 传递给统计系统的数据。
+     * @param $data | Array, 传递给统计系统的数据。
      * 通过curl函数，发送数据给统计系统，在使用前，您需要配置
      * `trace_api_url` `api_time_out` `access_token`
      */
@@ -397,7 +397,7 @@ class Trace extends Service
     }
 
     /**
-     * @property $order | String ， 订单数据，示例JSON数据：
+     * @param $order | String ， 订单数据，示例JSON数据：
      * {
      * "invoice": "500023149", // 订单号
      * "order_type": "standard or express", // standard（标准支付流程类型）express（基于api的支付类型，譬如paypal快捷支付。）
@@ -453,7 +453,7 @@ class Trace extends Service
     */
 
     /**
-     * @property $order | String ， 订单数据，示例JSON数据：
+     * @param $order | String ， 订单数据，示例JSON数据：
      * {
      * "invoice": "500023149", // 订单号
      * "order_type": "standard or express", // standard（标准支付流程类型）express（基于api的支付类型，譬如paypal快捷支付。）
@@ -508,7 +508,7 @@ class Trace extends Service
     }
     */
     /**
-     * @property $login_email | String ， 登录的email
+     * @param $login_email | String ， 登录的email
      * @return String, 登录页面的js Code
      */
     /* 改成api发送数据
@@ -524,7 +524,7 @@ class Trace extends Service
     }
     */
     /**
-     * @property $register_email | String ， 注册的email
+     * @param $register_email | String ， 注册的email
      * @return String, 注册页面的js Code
      */
     /* 改成api发送数据

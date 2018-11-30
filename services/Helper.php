@@ -37,7 +37,7 @@ class Helper extends Service
     }
 
     /**
-     * @property $var | String Or Array 需要进行Html::encode()操作的变量。
+     * @param $var | String Or Array 需要进行Html::encode()操作的变量。
      * @return $var | String Or Array 去除xss攻击字符后的变量
      */
     public function htmlEncode($var)
@@ -65,7 +65,7 @@ class Helper extends Service
     }
     
     /**
-     * @property $domain | String vue类型的appserver传递的domain
+     * @param $domain | String vue类型的appserver传递的domain
      * 这个是appservice发送邮件，在邮件里面的url链接地址，在这里保存
      */
     public function setAppServiceDomain($domain)

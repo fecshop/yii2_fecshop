@@ -124,7 +124,7 @@ class AppadminbaseBlock extends BaseObject
     }
 
     /**
-     * @property $data|Array, it was return by defined function getSearchArr();
+     * @param $data|Array, it was return by defined function getSearchArr();
      * generate search section html,
      */
     public function getSearchBarHtml($data)
@@ -155,9 +155,9 @@ class AppadminbaseBlock extends BaseObject
     }
 
     /**
-     * @property $name|string , html code select name.
-     * @property $data|Array,  select options key and value.
-     * @property $title|string , select title , as select default display.
+     * @param $name|string , html code select name.
+     * @param $data|Array,  select options key and value.
+     * @param $title|string , select title , as select default display.
      * generate html select code .
      * @return String, select html code.
      */
@@ -186,10 +186,10 @@ class AppadminbaseBlock extends BaseObject
     }
 
     /**
-     * @property $name|string , html code select name.
-     * @property $data|Array,  select options key and value.
-     * @property $title|string , select title , as select default display.
-     * @property $id|int , use for chosen select config, if you use this function muilt times , $id must be unique in each time
+     * @param $name|string , html code select name.
+     * @param $data|Array,  select options key and value.
+     * @param $title|string , select title , as select default display.
+     * @param $id|int , use for chosen select config, if you use this function muilt times , $id must be unique in each time
      * for example ,first time use this function set $id = 1, next time ,you can set $id=2,because is must be unique in front html.
      * generate html select code .
      * @return String, chosen select html code.
@@ -243,7 +243,7 @@ class AppadminbaseBlock extends BaseObject
     }
 
     /**
-     * @property $data|array
+     * @param $data|array
      */
     public function getDbSearchBarHtml($data)
     {
@@ -321,7 +321,7 @@ class AppadminbaseBlock extends BaseObject
     }
 
     /**
-     * @property $searchArr|Array.
+     * @param $searchArr|Array.
      * generate where Array by  $this->_param and $searchArr.
      * foreach $searchArr , check each one if it is exist in this->_param.
      */

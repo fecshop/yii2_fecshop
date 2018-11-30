@@ -41,7 +41,7 @@ class RewriteMysqldb extends Service implements RewriteInterface
     }
 
     /**
-     * @property $urlKey | string
+     * @param $urlKey | string
      * 通过重写后的urlkey字符串，去url_rewrite表中查询，找到重写前的url字符串。
      */
     public function getOriginUrl($urlKey)
@@ -114,7 +114,7 @@ class RewriteMysqldb extends Service implements RewriteInterface
     }
 
     /**
-     * @property $one|array
+     * @param $one|array
      * save $data to cms model,then,add url rewrite info to system service urlrewrite.
      */
     public function save($one)
@@ -137,7 +137,7 @@ class RewriteMysqldb extends Service implements RewriteInterface
     }
 
     /**
-     * @property $ids | Array or Int
+     * @param $ids | Array or Int
      * 删除相应的url rewrite 记录
      */
     public function remove($ids)
@@ -195,7 +195,7 @@ class RewriteMysqldb extends Service implements RewriteInterface
     }
 
     /**
-     * @property $time | Int
+     * @param $time | Int
      * 根据updated_at 更新时间，删除相应的url rewrite 记录
      */
     public function removeByUpdatedAt($time)

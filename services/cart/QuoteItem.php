@@ -106,7 +106,7 @@ class QuoteItem extends Service
     }
 
     /**
-     * @property $item | Array, example:
+     * @param $item | Array, example:
      * $item = [
      *		'product_id' 		=> 22222,
      *		'custom_option_sku' => red-xxl,
@@ -134,7 +134,7 @@ class QuoteItem extends Service
     }
 
     /**
-     * @property $item | Array, example:
+     * @param $item | Array, example:
      * $item = [
      *		'product_id' 		=> 22222,
      *		'custom_option_sku' => red-xxl,
@@ -194,7 +194,7 @@ class QuoteItem extends Service
     }
 
     /**
-     * @property $activeProduct | boolean , 是否只要active的产品
+     * @param $activeProduct | boolean , 是否只要active的产品
      * @return array ， foramt：
      *               [
      *               'products' 		=> $products, 				# 产品详细信息，详情参看代码中的$products。
@@ -299,7 +299,7 @@ class QuoteItem extends Service
     }
 
     /**
-     * @property $productOb | Object，类型：\fecshop\models\mongodb\Product
+     * @param $productOb | Object，类型：\fecshop\models\mongodb\Product
      * 得到产品的spu对应的属性以及值。
      * 概念 - spu options：当多个产品是同一个spu，但是不同的sku的时候，他们的产品表里面的
      * spu attr 的值是不同的，譬如对应鞋子，size 和 color 就是spu attr，对于同一款鞋子，他们
@@ -326,7 +326,7 @@ class QuoteItem extends Service
     }
 
     /**
-     * @property $item_id | Int ， quoteItem表的id
+     * @param $item_id | Int ， quoteItem表的id
      * @return bool
      *              将这个item_id对应的产品个数+1.
      */
@@ -363,7 +363,7 @@ class QuoteItem extends Service
     }
 
     /**
-     * @property $item_id | Int ， quoteItem表的id
+     * @param $item_id | Int ， quoteItem表的id
      * @return bool
      *              将这个item_id对应的产品个数-1.
      */
@@ -405,7 +405,7 @@ class QuoteItem extends Service
     }
 
     /**
-     * @property $item_id | Int ， quoteItem表的id
+     * @param $item_id | Int ， quoteItem表的id
      * @return bool
      *              将这个item_id对应的产品删除
      */
@@ -430,7 +430,7 @@ class QuoteItem extends Service
     }
     
     /**
-     * @property $item_id | Int ， quoteItem表的id
+     * @param $item_id | Int ， quoteItem表的id
      * @return bool
      *              将这个item_id对应的产品个数+1.
      */
@@ -464,7 +464,7 @@ class QuoteItem extends Service
     }
     
     /**
-     * @property $item_id | Int ， quoteItem表的id
+     * @param $item_id | Int ， quoteItem表的id
      * @return bool
      *              将这个item_id对应的产品个数+1.
      */
@@ -491,7 +491,7 @@ class QuoteItem extends Service
     }
     
     /**
-     * @property $cart_id | int 购物车id
+     * @param $cart_id | int 购物车id
      * 删除购物车中的所有的active产品。对于noActive产品保留
      * 注意：清空购物车并不是清空所有信息，仅仅是清空用户购物车中的产品。
      * 另外，购物车的数目更改后，需要更新cart中产品个数的信息。
@@ -516,7 +516,7 @@ class QuoteItem extends Service
     }
 
     /** 废弃，改为 removeNoActiveItemsByCartId()，因为购物车改为勾选下单方式。
-     * @property $cart_id | int 购物车id
+     * @param $cart_id | int 购物车id
      * 删除购物车中的所有产品。
      * 注意：清空购物车并不是清空所有信息，仅仅是清空用户购物车中的产品。
      * 另外，购物车的数目更改后，需要更新cart中产品个数的信息。
@@ -539,8 +539,8 @@ class QuoteItem extends Service
     }
 
     /**
-     * @property $new_cart_id | int 更新后的cart_id
-     * @property $cart_id | int 更新前的cart_id
+     * @param $new_cart_id | int 更新后的cart_id
+     * @param $cart_id | int 更新前的cart_id
      * 删除购物车中的所有产品。
      * 这里仅仅更改cart表的cart_id， 而不会做其他任何事情。
      */

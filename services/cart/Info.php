@@ -95,7 +95,7 @@ class Info extends Service
     }
 
     /**
-     * @property $item | Array , 数据格式为：
+     * @param $item | Array , 数据格式为：
      * [
      *    'product_id'  => xxxxx
      *    'qty'           => 55,
@@ -104,7 +104,7 @@ class Info extends Service
      *        'size'  => 'L',
      *    ]
      * ]
-     * @property $product | Product Model ， 产品的model对象
+     * @param $product | Product Model ， 产品的model对象
      * $product['custom_option'] 的数据格式如下：
      *  [
      *      "black-s-s2-s3": [
