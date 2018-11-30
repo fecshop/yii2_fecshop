@@ -13,7 +13,16 @@ namespace fecshop\services;
 use yii\base\InvalidConfigException;
 use Yii;
 /**
- * Cms services.
+ * Admin services.
+ *
+ * @property \fecshop\services\customer\UrlKey $urlKey
+ * @property \fecshop\services\customer\RoleUrlKey $roleUrlKey
+ * @property \fecshop\services\customer\Role $role
+ * @property \fecshop\services\customer\Config $config
+ * @property \fecshop\services\customer\UserRole $userRole
+ * @property \fecshop\services\customer\SystemLog $systemLog
+ * @property \fecshop\services\customer\Menu $menu
+ *
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */

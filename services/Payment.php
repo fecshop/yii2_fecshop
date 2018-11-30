@@ -14,6 +14,11 @@ use Yii;
 
 /**
  * Payment services.
+ *
+ * @property \fecshop\services\payment\Alipay $alipay alipay sub-service of url
+ * @property \fecshop\services\payment\Paypal $paypal paypal sub-service of url
+ * @property \fecshop\services\payment\Wxpay $wxpay wxpay sub-service of url
+ *
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */

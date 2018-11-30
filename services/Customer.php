@@ -15,8 +15,20 @@ use yii\web\IdentityInterface;
 
 /**
  * Customer service.
- * @property Image|\fecshop\services\Product\Image $image
+ * @property \fecshop\services\Customer\Address $address
  * @property \fecshop\services\customer\Newsletter $newsletter
+ * @property \fecshop\services\customer\Affiliate $affiliate
+ * @property \fecshop\services\customer\Coupon $coupon
+ * @property \fecshop\services\customer\DropShip $dropship
+ * @property \fecshop\services\customer\Favorite $favorite
+ * @property \fecshop\services\customer\Message $message
+ * @property \fecshop\services\customer\Order $order
+ * @property \fecshop\services\customer\Point $point
+ * @property \fecshop\services\customer\Review $review
+ * @property \fecshop\services\customer\Wholesale $wholesale
+ * @property \fecshop\services\customer\Facebook $facebook
+ * @property \fecshop\services\customer\Google $google
+ *
  * @method getPrimaryKey() see [[\fecshop\services\Customer::actionGetPrimaryKey()]]actionGetByPrimaryKey
  * @method \fecshop\models\mysqldb\Customer|null getByPrimarykey($val) see [[\fecshop\services\Customer::actionGetByPrimaryKey()]]
  * @method \fecshop\models\mysqldb\Customer|null getUserIdentityByEmail($email) see [[\fecshop\services\Customer::actionGetUserIdentityByEmail()]]

@@ -13,6 +13,11 @@ namespace fecshop\services;
 use Yii;
 
 /**
+ * Url Services
+ *
+ * @property \fecshop\services\url\Category $category category sub-service of url
+ * @property \fecshop\services\url\Rewrite $rewrite rewrite sub-service of url
+ *
  * Url Service
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0

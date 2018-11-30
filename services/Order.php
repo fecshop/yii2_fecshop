@@ -14,6 +14,9 @@ use Yii;
 
 /**
  * Order services.
+ *
+ * @property \fecshop\services\order\Item $item
+ *
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */

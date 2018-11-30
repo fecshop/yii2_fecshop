@@ -15,10 +15,16 @@ use Yii;
 /**
  * Helper service.
  *
+ * @property \fecshop\services\helper\Appapi $appapi
  * @property \fecshop\services\helper\Appserver $appserver appserver sub-service of helper service
- * @property \fecshop\services\helper\AR $ar ar sub-service of helper service
+ * @property \fecshop\services\helper\AR $ar
+ * @property \fecshop\services\helper\Captcha $captcha
+ * @property \fecshop\services\helper\Country $country
+ * @property \fecshop\services\helper\Echart $echart
+ * @property \fecshop\services\helper\ErrorHandler $errorHandler
  * @property \fecshop\services\helper\Errors $errors errors sub-service of helper service
- *
+ * @property \fecshop\services\helper\Format $format
+ * @property \fecshop\services\helper\MobileDetect $mobileDetect
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
