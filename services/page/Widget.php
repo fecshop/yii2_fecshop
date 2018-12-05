@@ -37,7 +37,7 @@ class Widget extends Service
      *    # view 为 必填 ， view可以用两种方式
      *    #  view 1 使用绝对地址的方式
      *    'view'  => '@fec/views/testmenu/index.php',
-     *        OR
+     *    OR
      *    #  view 2 使用相对地址，通过当前模板进行查找
      *    'view'  => 'cms/home/index.php',
      *
@@ -107,7 +107,7 @@ class Widget extends Service
     }
 
     /**
-     * @param $configKey | string ,使用配置中的widget，该参数对应相应的数组key
+     * @param $configKey | string , 标记，以及报错排查时使用的key。
      * @param $config,就是上面actionRender()方法中的参数，格式一样。
      * @param $parentThis | array or '' , 调用层传递的参数数组，可以在view中调用。
      *
