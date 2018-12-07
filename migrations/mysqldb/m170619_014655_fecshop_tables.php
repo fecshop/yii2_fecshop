@@ -9,9 +9,9 @@ class m170619_014655_fecshop_tables extends Migration
         $arr = [
             "
                 CREATE TABLE IF NOT EXISTS `product_flat_qty` (
-                `id` int(20) NOT NULL AUTO_INCREMENT,
+                `id` int(11) NOT NULL AUTO_INCREMENT,
                 `product_id` VARCHAR( 50 ) NOT NULL COMMENT '产品表的id',
-                `qty` INT( 20 ) NOT NULL COMMENT '产品表的个数',
+                `qty` INT( 11 ) NOT NULL COMMENT '产品表的个数',
                 PRIMARY KEY (`id`)
                 ) ENGINE = InnoDB;
             "
@@ -21,10 +21,10 @@ class m170619_014655_fecshop_tables extends Migration
             
             "
                 CREATE TABLE IF NOT EXISTS `product_custom_option_qty` (
-                `id` int(20) NOT NULL AUTO_INCREMENT,
+                `id` int(11) NOT NULL AUTO_INCREMENT,
                 `product_id` VARCHAR( 50 ) NOT NULL COMMENT '产品id',
                 `custom_option_sku` VARCHAR( 50 ) NOT NULL COMMENT '产品自定义属性sku',
-                `qty` INT( 20 ) NOT NULL COMMENT '产品个数。',
+                `qty` INT( 11 ) NOT NULL COMMENT '产品个数。',
                 PRIMARY KEY (`id`)
                 ) ENGINE = InnoDB;
             "

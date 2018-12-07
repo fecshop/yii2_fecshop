@@ -23,13 +23,13 @@ class m181025_090031_fecshop_tables extends Migration
 
             "
             CREATE TABLE IF NOT EXISTS `admin_url_key` (
-              `id` int(15) NOT NULL AUTO_INCREMENT,
+              `id` int(11) NOT NULL AUTO_INCREMENT,
               `name` varchar(150) DEFAULT NULL COMMENT 'url key 的名称',
               `tag` varchar(40) NOT NULL COMMENT 'tag名称，在同一个菜单里面的url_key可以设置成同一个Tag',
-              `tag_sort_order` int(10) DEFAULT '0',
+              `tag_sort_order` int(11) DEFAULT '0',
               `url_key` varchar(255) NOT NULL COMMENT '资源，可以是url_key, 也可以是某个字符串标示',
-              `created_at` int(20) DEFAULT NULL,
-              `updated_at` int(20) DEFAULT NULL,
+              `created_at` int(11) DEFAULT NULL,
+              `updated_at` int(11) DEFAULT NULL,
               `can_delete` int(5) DEFAULT '2' COMMENT '是否可以被删除，1代表不可以删除，2代表可以删除',
               PRIMARY KEY (`id`)
             ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=71 ;
@@ -108,11 +108,11 @@ class m181025_090031_fecshop_tables extends Migration
 
             "
             CREATE TABLE IF NOT EXISTS `admin_role_url_key` (
-              `id` int(20) NOT NULL AUTO_INCREMENT,
-              `role_id` int(20) NOT NULL,
-              `url_key_id` int(20) NOT NULL,
-              `created_at` int(20) DEFAULT NULL,
-              `updated_at` int(20) DEFAULT NULL,
+              `id` int(11) NOT NULL AUTO_INCREMENT,
+              `role_id` int(11) NOT NULL,
+              `url_key_id` int(11) NOT NULL,
+              `created_at` int(11) DEFAULT NULL,
+              `updated_at` int(11) DEFAULT NULL,
               PRIMARY KEY (`id`)
             ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2029 ;
             ",

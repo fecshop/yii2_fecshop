@@ -8,7 +8,7 @@ class m170228_072156_fecshop_tables extends Migration
     {
         $arr = [
             'CREATE TABLE IF NOT EXISTS `admin_config` (
-			  `id` int(20) NOT NULL AUTO_INCREMENT,
+			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `label` varchar(150) DEFAULT NULL,
 			  `key` varchar(255) DEFAULT NULL,
 			  `value` varchar(2555) DEFAULT NULL,
@@ -25,10 +25,10 @@ class m170228_072156_fecshop_tables extends Migration
 			(11, '11', '11', '11', '11', '2016-10-07 15:42:14', '2016-10-07 15:42:14', 'admin');
 			", "
 			CREATE TABLE IF NOT EXISTS `admin_menu` (
-			  `id` int(15) NOT NULL AUTO_INCREMENT,
+			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `name` varchar(150) DEFAULT NULL,
 			  `level` int(5) DEFAULT NULL,
-			  `parent_id` int(15) DEFAULT NULL,
+			  `parent_id` int(11) DEFAULT NULL,
 			  `url_key` varchar(255) DEFAULT NULL,
 			  `role_key` varchar(150) DEFAULT NULL COMMENT '权限key，也就是controller的路径，譬如/fecadmin/menu/managere,controller 是MenuController，当前的值为：/fecadmin/menu',
 			  `created_at` datetime DEFAULT NULL,
@@ -70,7 +70,7 @@ class m170228_072156_fecshop_tables extends Migration
 			(198, '订单管理', 3, 197, '/sales/orderinfo/manager', '/sales/orderinfo', '2016-12-12 20:54:01', '2016-12-12 21:43:18', 0, 2);
 			", "
 			CREATE TABLE IF NOT EXISTS `admin_role` (
-			  `role_id` int(15) NOT NULL AUTO_INCREMENT,
+			  `role_id` int(11) NOT NULL AUTO_INCREMENT,
 			  `role_name` varchar(100) CHARACTER SET utf8 DEFAULT NULL COMMENT '权限名字',
 			  `role_description` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '权限描述',
 			  PRIMARY KEY (`role_id`)
@@ -82,9 +82,9 @@ class m170228_072156_fecshop_tables extends Migration
 			(13, 'ceshi', 'ceshi');
 			", '
 			CREATE TABLE IF NOT EXISTS `admin_role_menu` (
-			  `id` int(15) NOT NULL AUTO_INCREMENT,
-			  `menu_id` int(15) NOT NULL,
-			  `role_id` int(15) NOT NULL,
+			  `id` int(11) NOT NULL AUTO_INCREMENT,
+			  `menu_id` int(11) NOT NULL,
+			  `role_id` int(11) NOT NULL,
 			  `created_at` datetime DEFAULT NULL,
 			  `updated_at` datetime DEFAULT NULL,
 			  KEY `role_id` (`role_id`),
@@ -147,7 +147,7 @@ class m170228_072156_fecshop_tables extends Migration
 			(123, 196, 4, '2016-12-12 21:35:22', '2016-12-12 21:35:22');
 			", "
 			CREATE TABLE IF NOT EXISTS `admin_user` (
-			  `id` int(20) unsigned NOT NULL AUTO_INCREMENT,
+			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `username` varchar(50) DEFAULT NULL COMMENT '用户名',
 			  `password_hash` varchar(80) DEFAULT NULL COMMENT '密码',
 			  `password_reset_token` varchar(60) DEFAULT NULL COMMENT '密码token',
@@ -156,12 +156,12 @@ class m170228_072156_fecshop_tables extends Migration
 			  `code` varchar(100) DEFAULT NULL,
 			  `auth_key` varchar(60) DEFAULT NULL,
 			  `status` int(5) DEFAULT NULL COMMENT '状态',
-			  `created_at` int(18) DEFAULT NULL COMMENT '创建时间',
-			  `updated_at` int(18) DEFAULT NULL COMMENT '更新时间',
+			  `created_at` int(11) DEFAULT NULL COMMENT '创建时间',
+			  `updated_at` int(11) DEFAULT NULL COMMENT '更新时间',
 			  `password` varchar(50) DEFAULT NULL COMMENT '密码',
 			  `access_token` varchar(60) DEFAULT NULL,
-			  `allowance` int(20) DEFAULT NULL,
-			  `allowance_updated_at` int(20) DEFAULT NULL,
+			  `allowance` int(11) DEFAULT NULL,
+			  `allowance_updated_at` int(11) DEFAULT NULL,
 			  `created_at_datetime` datetime DEFAULT NULL,
 			  `updated_at_datetime` datetime DEFAULT NULL,
 			  `birth_date` datetime DEFAULT NULL COMMENT '出生日期',
@@ -174,9 +174,9 @@ class m170228_072156_fecshop_tables extends Migration
 			(2, 'admin', '".'$2y$13$T5ZFrLpJdTEkAoAdnC6A/u8lh/pG.6M0qAZBo1lKE.6x6o3V6yvVG'."', NULL, '3727@qq.com', '超级管理员', '111', NULL, 1, 1468917063, 1468917063, '', NULL, NULL, NULL, '2016-01-11 09:41:52', '2016-06-26 01:40:55', NULL);
 			", '
 			CREATE TABLE IF NOT EXISTS `admin_user_role` (
-			  `id` int(20) NOT NULL AUTO_INCREMENT,
-			  `user_id` int(30) NOT NULL,
-			  `role_id` int(30) NOT NULL,
+			  `id` int(11) NOT NULL AUTO_INCREMENT,
+			  `user_id` int(11) NOT NULL,
+			  `role_id` int(11) NOT NULL,
 			  KEY `user_id` (`user_id`),
 			  PRIMARY KEY (`id`)
 			) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
@@ -186,7 +186,7 @@ class m170228_072156_fecshop_tables extends Migration
 			(2, 2, 12);
 			', "
 			CREATE TABLE IF NOT EXISTS `admin_visit_log` (
-			  `id` int(15) NOT NULL AUTO_INCREMENT,
+			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `account` varchar(25) DEFAULT NULL COMMENT '操作账号',
 			  `person` varchar(25) DEFAULT NULL COMMENT '操作人姓名',
 			  `created_at` datetime DEFAULT NULL COMMENT '操作时间',
@@ -205,9 +205,9 @@ class m170228_072156_fecshop_tables extends Migration
 			  `meta_description` text,
 			  `content` text,
 			  `status` int(5) DEFAULT '1' COMMENT '1代表激活，2代表关闭',
-			  `created_at` int(10) DEFAULT NULL,
-			  `updated_at` int(10) DEFAULT NULL,
-			  `created_user_id` int(20) DEFAULT NULL,
+			  `created_at` int(11) DEFAULT NULL,
+			  `updated_at` int(11) DEFAULT NULL,
+			  `created_user_id` int(11) DEFAULT NULL,
 			  KEY `url_key` (`url_key`),
 			  PRIMARY KEY (`id`)
 			) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=32 ;
@@ -222,7 +222,7 @@ class m170228_072156_fecshop_tables extends Migration
 			(31, '/61493194', NULL, NULL, NULL, NULL, 1, 1477539885, 1477539885, 2);
 			", "
 			CREATE TABLE IF NOT EXISTS `customer` (
-			  `id` int(20) unsigned NOT NULL AUTO_INCREMENT,
+			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `password_hash` varchar(80) DEFAULT NULL COMMENT '密码',
 			  `password_reset_token` varchar(60) DEFAULT NULL COMMENT '密码token',
 			  `email` varchar(60) DEFAULT NULL COMMENT '邮箱',
@@ -231,12 +231,12 @@ class m170228_072156_fecshop_tables extends Migration
 			  `is_subscribed` int(5) NOT NULL DEFAULT '2' COMMENT '1代表订阅，2代表不订阅邮件',
 			  `auth_key` varchar(60) DEFAULT NULL,
 			  `status` int(5) DEFAULT NULL COMMENT '状态',
-			  `created_at` int(18) DEFAULT NULL COMMENT '创建时间',
-			  `updated_at` int(18) DEFAULT NULL COMMENT '更新时间',
+			  `created_at` int(11) DEFAULT NULL COMMENT '创建时间',
+			  `updated_at` int(11) DEFAULT NULL COMMENT '更新时间',
 			  `password` varchar(50) DEFAULT NULL COMMENT '密码',
 			  `access_token` varchar(60) DEFAULT NULL,
 			  `birth_date` datetime DEFAULT NULL COMMENT '出生日期',
-			  `favorite_product_count` int(15) NOT NULL DEFAULT '0' COMMENT '用户收藏的产品的总数',
+			  `favorite_product_count` int(11) NOT NULL DEFAULT '0' COMMENT '用户收藏的产品的总数',
 			  `type` varchar(35) DEFAULT 'default' COMMENT '默认为default，如果是第三方登录，譬如google账号登录注册，那么这里的值为google',
 			  PRIMARY KEY (`id`),
 			  KEY `email` (`email`),
@@ -245,7 +245,7 @@ class m170228_072156_fecshop_tables extends Migration
 			", "
 
 			CREATE TABLE IF NOT EXISTS `customer_address` (
-			  `address_id` int(15) NOT NULL AUTO_INCREMENT,
+			  `address_id` int(11) NOT NULL AUTO_INCREMENT,
 			  `first_name` varchar(150) DEFAULT NULL,
 			  `email` varchar(155) DEFAULT NULL,
 			  `last_name` varchar(150) DEFAULT NULL,
@@ -258,9 +258,9 @@ class m170228_072156_fecshop_tables extends Migration
 			  `state` varchar(255) DEFAULT NULL,
 			  `zip` varchar(50) DEFAULT NULL,
 			  `country` varchar(50) DEFAULT NULL,
-			  `customer_id` int(20) DEFAULT NULL,
-			  `created_at` int(20) DEFAULT NULL,
-			  `updated_at` int(20) DEFAULT NULL,
+			  `customer_id` int(11) DEFAULT NULL,
+			  `created_at` int(11) DEFAULT NULL,
+			  `updated_at` int(11) DEFAULT NULL,
 			  `is_default` int(11) NOT NULL DEFAULT '2' COMMENT '1代表是默认地址，2代表不是',
 			  PRIMARY KEY (`address_id`),
 			  KEY `customer_id` (`customer_id`)
@@ -268,28 +268,28 @@ class m170228_072156_fecshop_tables extends Migration
 
 			", "
 			CREATE TABLE IF NOT EXISTS `ipn_message` (
-			  `ipn_id` int(15) unsigned NOT NULL AUTO_INCREMENT,
+			  `ipn_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `txn_id` varchar(20) DEFAULT NULL COMMENT 'transaction id',
 			  `payment_status` varchar(20) DEFAULT NULL COMMENT '支付状态',
-			  `updated_at` int(15) DEFAULT NULL COMMENT '更新时间',
+			  `updated_at` int(11) DEFAULT NULL COMMENT '更新时间',
 			  PRIMARY KEY (`ipn_id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 			", "
 			CREATE TABLE IF NOT EXISTS `sales_coupon` (
-			  `coupon_id` int(15) unsigned NOT NULL AUTO_INCREMENT,
-			  `created_at` int(15) DEFAULT NULL COMMENT '创建时间',
-			  `updated_at` int(15) DEFAULT NULL COMMENT '更新时间',
-			  `created_person` int(15) NOT NULL COMMENT '创建人的id',
+			  `coupon_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+			  `created_at` int(11) DEFAULT NULL COMMENT '创建时间',
+			  `updated_at` int(11) DEFAULT NULL COMMENT '更新时间',
+			  `created_person` int(11) NOT NULL COMMENT '创建人的id',
 			  `coupon_name` varchar(100) DEFAULT NULL COMMENT '优惠劵名称',
 			  `coupon_description` varchar(255) DEFAULT NULL COMMENT '优惠劵描述',
 			  `coupon_code` varchar(100) DEFAULT NULL COMMENT '优惠劵编号',
-			  `expiration_date` int(15) DEFAULT NULL COMMENT '过期时间',
-			  `users_per_customer` int(15) DEFAULT '0' COMMENT '优惠劵被每个客户使用的最大次数',
-			  `times_used` int(15) DEFAULT '0' COMMENT '优惠劵被使用了多少次',
+			  `expiration_date` int(11) DEFAULT NULL COMMENT '过期时间',
+			  `users_per_customer` int(11) DEFAULT '0' COMMENT '优惠劵被每个客户使用的最大次数',
+			  `times_used` int(11) DEFAULT '0' COMMENT '优惠劵被使用了多少次',
 			  `type` int(5) DEFAULT NULL COMMENT '优惠劵的类型，1代表按照百分比对产品打折，2代表在总额上减少多少',
-			  `conditions` int(15) DEFAULT NULL COMMENT '优惠劵使用的条件，如果类型为1，则没有条件，如果类型是2，则购物车中产品总额满足多少的时候进行打折。这里填写的是美元金额',
-			  `discount` int(15) DEFAULT NULL COMMENT '优惠劵的折扣，如果类型为1，这里填写的是百分比，如果类型是2，这里代表的是在总额上减少的金额，货币为美金',
+			  `conditions` int(11) DEFAULT NULL COMMENT '优惠劵使用的条件，如果类型为1，则没有条件，如果类型是2，则购物车中产品总额满足多少的时候进行打折。这里填写的是美元金额',
+			  `discount` int(11) DEFAULT NULL COMMENT '优惠劵的折扣，如果类型为1，这里填写的是百分比，如果类型是2，这里代表的是在总额上减少的金额，货币为美金',
 			  PRIMARY KEY (`coupon_id`),
 			  KEY `coupon_code` (`coupon_code`)
 			) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
@@ -298,10 +298,10 @@ class m170228_072156_fecshop_tables extends Migration
 			(4, 1481629639, 1481880122, 2, NULL, NULL, 'weqwwqw', 1543593600, 4, 452, 1, 11, 10);
 			", "
 			CREATE TABLE IF NOT EXISTS `sales_coupon_usage` (
-			  `id` int(15) NOT NULL AUTO_INCREMENT,
-			  `coupon_id` int(25) DEFAULT '0' COMMENT '客户id',
-			  `customer_id` int(25) DEFAULT '0' COMMENT '客户id',
-			  `times_used` int(15) DEFAULT '0' COMMENT '使用次数',
+			  `id` int(11) NOT NULL AUTO_INCREMENT,
+			  `coupon_id` int(11) DEFAULT '0' COMMENT '客户id',
+			  `customer_id` int(11) DEFAULT '0' COMMENT '客户id',
+			  `times_used` int(11) DEFAULT '0' COMMENT '使用次数',
 			  PRIMARY KEY (`id`),
 			  KEY `coupon_id` (`coupon_id`),
 			  KEY `customer_id` (`customer_id`)
@@ -316,12 +316,12 @@ class m170228_072156_fecshop_tables extends Migration
 			(11, 4, 46, 1);
 			', "
 			CREATE TABLE IF NOT EXISTS `sales_flat_cart` (
-			  `cart_id` int(15) unsigned NOT NULL AUTO_INCREMENT,
+			  `cart_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `store` varchar(100) DEFAULT NULL COMMENT 'store name',
-			  `created_at` int(15) DEFAULT NULL COMMENT '创建时间',
-			  `updated_at` int(15) DEFAULT NULL COMMENT '更新时间',
-			  `items_count` int(10) DEFAULT '0' COMMENT '购物车中产品的总个数，默认为0个',
-			  `customer_id` int(15) DEFAULT NULL COMMENT '客户id',
+			  `created_at` int(11) DEFAULT NULL COMMENT '创建时间',
+			  `updated_at` int(11) DEFAULT NULL COMMENT '更新时间',
+			  `items_count` int(11) DEFAULT '0' COMMENT '购物车中产品的总个数，默认为0个',
+			  `customer_id` int(11) DEFAULT NULL COMMENT '客户id',
 			  `customer_email` varchar(90) DEFAULT NULL COMMENT '客户邮箱',
 			  `customer_firstname` varchar(50) DEFAULT NULL COMMENT '客户名字',
 			  `customer_lastname` varchar(50) DEFAULT NULL COMMENT '客户名字',
@@ -331,7 +331,7 @@ class m170228_072156_fecshop_tables extends Migration
 			  `payment_method` varchar(20) DEFAULT NULL COMMENT '支付方式',
 			  `shipping_method` varchar(20) DEFAULT NULL COMMENT '货运方式',
 			  `customer_telephone` varchar(25) DEFAULT NULL COMMENT '客户电话',
-			  `customer_address_id` int(20) DEFAULT NULL COMMENT '客户地址id',
+			  `customer_address_id` int(11) DEFAULT NULL COMMENT '客户地址id',
 			  `customer_address_country` varchar(50) DEFAULT NULL COMMENT '客户国家',
 			  `customer_address_state` varchar(50) DEFAULT NULL COMMENT '客户省',
 			  `customer_address_city` varchar(50) DEFAULT NULL COMMENT '客户市',
@@ -346,13 +346,13 @@ class m170228_072156_fecshop_tables extends Migration
 
 			", "
 			CREATE TABLE IF NOT EXISTS `sales_flat_cart_item` (
-			  `item_id` int(15) unsigned NOT NULL AUTO_INCREMENT,
+			  `item_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `store` varchar(100) DEFAULT NULL COMMENT 'store name',
-			  `cart_id` int(15) DEFAULT NULL,
-			  `created_at` int(15) DEFAULT NULL COMMENT '创建时间',
-			  `updated_at` int(15) DEFAULT NULL COMMENT '更新时间',
+			  `cart_id` int(11) DEFAULT NULL,
+			  `created_at` int(11) DEFAULT NULL COMMENT '创建时间',
+			  `updated_at` int(11) DEFAULT NULL COMMENT '更新时间',
 			  `product_id` varchar(100) DEFAULT NULL COMMENT '产品id',
-			  `qty` int(10) DEFAULT NULL COMMENT '个数',
+			  `qty` int(11) DEFAULT NULL COMMENT '个数',
 			  `custom_option_sku` varchar(50) DEFAULT NULL COMMENT '产品的自定义属性',
 			  PRIMARY KEY (`item_id`),
 			  KEY `quote_id` (`cart_id`)
@@ -360,13 +360,13 @@ class m170228_072156_fecshop_tables extends Migration
 			", "
 
 			CREATE TABLE IF NOT EXISTS `sales_flat_order` (
-			  `order_id` int(15) unsigned NOT NULL AUTO_INCREMENT,
+			  `order_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `increment_id` varchar(25) DEFAULT NULL COMMENT '递增个数',
 			  `order_status` text COMMENT '订单状态',
 			  `store` varchar(100) DEFAULT NULL COMMENT 'store name',
-			  `created_at` int(15) DEFAULT NULL COMMENT '创建时间',
-			  `updated_at` int(15) DEFAULT NULL COMMENT '更新时间',
-			  `items_count` int(10) DEFAULT '0' COMMENT '订单中产品的总个数，默认为0个',
+			  `created_at` int(11) DEFAULT NULL COMMENT '创建时间',
+			  `updated_at` int(11) DEFAULT NULL COMMENT '更新时间',
+			  `items_count` int(11) DEFAULT '0' COMMENT '订单中产品的总个数，默认为0个',
 			  `total_weight` decimal(12,4) DEFAULT '0.0000' COMMENT '总重量',
 			  `order_currency_code` varchar(10) DEFAULT NULL COMMENT '当前货币',
 			  `order_to_base_rate` decimal(12,4) DEFAULT NULL COMMENT '当前货币和默认货币的比率',
@@ -378,7 +378,7 @@ class m170228_072156_fecshop_tables extends Migration
 			  `base_subtotal_with_discount` decimal(12,4) DEFAULT NULL COMMENT '当前订单的去掉的默认货币总额',
 			  `is_changed` int(5) DEFAULT '1' COMMENT '是否change，1代表是，2代表否',
 			  `checkout_method` varchar(20) DEFAULT NULL COMMENT 'guest，register，代表是游客还是登录客户。',
-			  `customer_id` int(15) DEFAULT NULL COMMENT '客户id',
+			  `customer_id` int(11) DEFAULT NULL COMMENT '客户id',
 			  `customer_group` varchar(20) DEFAULT NULL COMMENT '客户组id',
 			  `customer_email` varchar(90) DEFAULT NULL COMMENT '客户邮箱',
 			  `customer_firstname` varchar(50) DEFAULT NULL COMMENT '客户名字',
@@ -427,11 +427,11 @@ class m170228_072156_fecshop_tables extends Migration
 
             "
 			CREATE TABLE IF NOT EXISTS `sales_flat_order_item` (
-			  `item_id` int(15) unsigned NOT NULL AUTO_INCREMENT,
+			  `item_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `store` varchar(100) DEFAULT NULL COMMENT 'store name',
-			  `order_id` int(15) DEFAULT NULL COMMENT '产品对应的订单表id',
-			  `created_at` int(16) DEFAULT NULL COMMENT '创建时间',
-			  `updated_at` int(16) DEFAULT NULL COMMENT '更新时间',
+			  `order_id` int(11) DEFAULT NULL COMMENT '产品对应的订单表id',
+			  `created_at` int(11) DEFAULT NULL COMMENT '创建时间',
+			  `updated_at` int(11) DEFAULT NULL COMMENT '更新时间',
 			  `product_id` varchar(100) DEFAULT NULL COMMENT '产品id',
 			  `sku` varchar(100) DEFAULT NULL,
 			  `name` varchar(255) DEFAULT NULL,
@@ -458,7 +458,7 @@ class m170228_072156_fecshop_tables extends Migration
 			  `content` text,
 			  `created_at` int(11) DEFAULT NULL,
 			  `updated_at` int(11) DEFAULT NULL,
-			  `created_user_id` int(20) DEFAULT NULL,
+			  `created_user_id` int(11) DEFAULT NULL,
 			  KEY `identify` (`identify`),
 			  PRIMARY KEY (`id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

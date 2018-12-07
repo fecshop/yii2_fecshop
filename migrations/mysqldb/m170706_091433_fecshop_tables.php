@@ -9,12 +9,12 @@ class m170706_091433_fecshop_tables extends Migration
         $arr = [
             "
             CREATE TABLE IF NOT EXISTS `session_storage` (
-            `id` INT( 20 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+            `id` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
             `uuid` VARCHAR( 200 ) NULL COMMENT '用户唯一标示',
             `key` VARCHAR( 200 ) NULL COMMENT 'session key',
             `value` TEXT NULL COMMENT 'session value',
-            `timeout` INT( 20 ) NULL COMMENT '超时时间，秒',
-            `updated_at` INT( 20 ) NULL COMMENT '创建时间'
+            `timeout` INT( 11 ) NULL COMMENT '超时时间，秒',
+            `updated_at` INT( 11 ) NULL COMMENT '创建时间'
             ) ENGINE = InnoDB;
             "
             ,
