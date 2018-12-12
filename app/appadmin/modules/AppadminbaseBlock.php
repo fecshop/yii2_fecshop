@@ -520,7 +520,7 @@ class AppadminbaseBlock extends BaseObject
 
     public function getTableTbodyHtml($data)
     {
-        $fileds = $this->getTableFieldArr();
+        $fields = $this->getTableFieldArr();
         $str .= '';
         $csrfString = CRequest::getCsrfString();
         foreach ($data as $one) {
@@ -542,13 +542,13 @@ class AppadminbaseBlock extends BaseObject
                         foreach ($convert as $origin =>$to) {
                             if (strstr($origin, 'mongodate')) {
                                 if (isset($val->sec)) {
-                                    $timestramp = $val->sec;
+                                    $timestamp = $val->sec;
                                     if ($to == 'date') {
-                                        $val = date('Y-m-d', $timestramp);
+                                        $val = date('Y-m-d', $timestamp);
                                     } elseif ($to == 'datetime') {
-                                        $val = date('Y-m-d H:i:s', $timestramp);
+                                        $val = date('Y-m-d H:i:s', $timestamp);
                                     } elseif ($to == 'int') {
-                                        $val = $timestramp;
+                                        $val = $timestamp;
                                     }
                                     $display_title = $val;
                                 }
