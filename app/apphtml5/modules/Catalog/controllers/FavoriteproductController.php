@@ -17,7 +17,7 @@ use fecshop\app\apphtml5\modules\AppfrontController;
  */
 class FavoriteproductController extends AppfrontController
 {
-    public $enableCsrfValidation = true;
+    public $enableCsrfValidation = false;
     
     // 增加收藏
     public function actionAdd()
@@ -30,7 +30,7 @@ class FavoriteproductController extends AppfrontController
 
     public function actionLists()
     {
-        $data = $this->getBlock()->getLastData($editForm);
+        $data = $this->getBlock()->getLastData();
 
         return $this->render($this->action->id, $data);
     }

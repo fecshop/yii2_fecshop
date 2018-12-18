@@ -255,7 +255,9 @@
 				$data['custom_option'] 	= custom_option_json;
 				$data['product_id'] 	= "<?= $_id ?>";
 				$data['qty'] 			= qty;
-				$data[csrfName] 		= csrfVal;
+				if (csrfName && csrfVal) {
+					$data[csrfName] 		= csrfVal;
+				}
 				jQuery.ajax({
 					async:true,
 					timeout: 6000,
@@ -293,7 +295,9 @@
 				csrfVal  = $(".product_csrf").val();
                 param = {};
                 param["product_id"] = product_id;
-                param[csrfName] = csrfVal;
+				if (csrfName && csrfVal) {
+					param[csrfName] = csrfVal;
+				}
                 doPost(url, param);
 			}
 	   });
@@ -352,7 +356,6 @@
 	<?php $this->endBlock(); ?> 
 	<?php $this->registerJs($this->blocks['add_to_cart'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
 
-	
 	//tab 切换js
 	<?php $this->beginBlock('product_info_tab') ?> 
 	var navContainer = document.getElementById("nav-container");  

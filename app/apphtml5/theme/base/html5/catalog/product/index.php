@@ -290,7 +290,9 @@
 				$data['custom_option'] 	= custom_option_json;
 				$data['product_id'] 	= "<?= $_id ?>";
 				$data['qty'] 			= qty;
-				$data[csrfName] 		= csrfVal;
+				if (csrfName && csrfVal) {
+					$data[csrfName] 		= csrfVal;
+				}
 				$.ajax({
 					async:true,
 					timeout: 6000,

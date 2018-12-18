@@ -72,10 +72,10 @@ class AjaxController extends AppfrontController
             }
             if ($product_id) {
                 // 添加csrf数据
-                $csrfName = \fec\helpers\CRequest::getCsrfName();
-                $csrfVal = \fec\helpers\CRequest::getCsrfValue();
-                $result_arr['csrfName'] = $csrfName;
-                $result_arr['csrfVal'] = $csrfVal;
+                //$csrfName = \fec\helpers\CRequest::getCsrfName();
+                //$csrfVal = \fec\helpers\CRequest::getCsrfValue();
+                //$result_arr['csrfName'] = $csrfName;
+                //$result_arr['csrfVal'] = $csrfVal;
                 $result_arr['product_id'] = $product_id;
             }
         }

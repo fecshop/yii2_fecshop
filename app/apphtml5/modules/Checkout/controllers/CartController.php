@@ -19,6 +19,15 @@ use Yii;
 class CartController extends AppfrontController
 {
     public $enableCsrfValidation = true;
+    public $noCsrfActions = ['add'];
+
+    public function beforeAction($action)
+    {
+        if(in_array($action->id, $this->noCsrfActions)) {
+            $this->enableCsrfValidation = false;
+        }
+        return parent::beforeAction($action);
+    }
 
     public function actionIndex()
     {
