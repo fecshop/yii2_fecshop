@@ -209,7 +209,6 @@ appserver（手机app服务），appapi（erp，或者其他接口对接），
 
 ![](http://www.fecshop.com/weixin.png)
 
-
 [捐赠历史](http://www.fecshop.com/donate)：（捐助，建议写一下留言）
 
 | 捐赠人        | 金额      |  时间            |  方式           | 账户                       | 捐助者留言      |
