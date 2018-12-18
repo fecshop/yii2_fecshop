@@ -262,7 +262,7 @@ class Paypal extends Service
                 if ($order_currency_code == $mc_currency) {
                     // 核对订单总额
                     $currentCurrencyGrandTotal = $this->_order['grand_total'];
-                    if ((float) $currentCurrencyGrandTotal == (float) $mc_gross) {
+                    if (round($currentCurrencyGrandTotal, 2) == round($mc_gross, 2)) {
                         return true;
                     } else {
                     }

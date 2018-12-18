@@ -135,7 +135,7 @@ class Wxpay extends Service
             $order_total_amount = Yii::$service->page->currency->getCurrencyPrice($base_grand_total, 'CNY');
             \Yii::info('check order totla amouont['.($order_total_amount * 100).' == '.$total_fee.']', 'fecshop_debug');
             // 微信支付的人民币单位为分
-            if (($order_total_amount * 100) != $total_fee) {
+            if (round($order_total_amount * 100) != round($total_fee)) {
                 return false;
             }
             \Yii::info('updateOrderInfo', 'fecshop_debug');
