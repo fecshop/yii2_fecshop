@@ -521,12 +521,12 @@ class AppadminbaseBlock extends BaseObject
     public function getTableTbodyHtml($data)
     {
         $fields = $this->getTableFieldArr();
-        $str .= '';
+        $str = '';
         $csrfString = CRequest::getCsrfString();
         foreach ($data as $one) {
             $str .= '<tr target="sid_user" rel="'.$one[$this->_primaryKey].'">';
             $str .= '<td><input name="'.$this->_primaryKey.'s" value="'.$one[$this->_primaryKey].'" type="checkbox"></td>';
-            foreach ($fileds as $field) {
+            foreach ($fields as $field) {
                 $orderField = $field['orderField'];
                 $display = $field['display'];
                 $val = $one[$orderField];
