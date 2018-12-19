@@ -141,7 +141,7 @@ class Currency extends Service
         if (isset($this->currencys[$currencyCode]['rate'])) {
             $rate = $this->currencys[$currencyCode]['rate'];
             if ($rate) {
-                return ceil($price * $rate * 100) / 100;
+                return bcmul($price, $rate, 2);
             }
         }
     }
@@ -161,7 +161,7 @@ class Currency extends Service
         if (isset($this->currencys[$current_currency]['rate'])) {
             $rate = $this->currencys[$current_currency]['rate'];
             if ($rate) {
-                return ceil($current_price / $rate * 100) / 100;
+                return bcmul($current_price, $rate, 2);
             }
         }
     }

@@ -29,10 +29,6 @@ class Format extends Service
     public function number_format($number, $bits = 2)
     {
         return number_format($number, $bits, '.', '');
-        //$n = pow(10,$bits);
-        //$number = ceil ($number * $n ) / $n ;
-        //$number = number_format();
-        //return $number;
     }
 
     /**

@@ -40,9 +40,7 @@ class Price extends Service
     protected function actionFormatPrice($price)
     {
         $currencyInfo = $this->getCurrentInfo();
-        $price = $price * $currencyInfo['rate'];
-        $price = ceil($price * 100) / 100;
-
+        $price = Yii::$service->helper->format->number_format($price * $currencyInfo['rate']);
         return [
             'code'   => $currencyInfo['code'],
             'symbol' => $currencyInfo['symbol'],
