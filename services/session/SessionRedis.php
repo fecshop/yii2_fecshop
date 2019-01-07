@@ -89,9 +89,9 @@ class SessionRedis extends Service implements SessionInterface
     {
         return $uuid.'###^^###'.$key;
     }
-    
+
     /**
-     * Ïú»ÙËùÓÐ
+     * é”€æ¯æ‰€æœ‰
      */
     public function destroy()
     {
@@ -105,11 +105,7 @@ class SessionRedis extends Service implements SessionInterface
         $result = $this->_sessionModel->deleteAll([
             'session_uuid' => $uuid,
         ]);
-        $access_token_created_at = $identity->access_token_created_at;
-        $timeout = Yii::$service->session->timeout;
-        if ($access_token_created_at + $timeout > time()) {
-            return $accessToken;
-        }
+        
         return true;
     }
 

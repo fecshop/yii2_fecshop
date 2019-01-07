@@ -86,7 +86,7 @@
 		</div>
 	</div>
 	<div class="col-left ">
-		
+
 		<?php
 			# Refind By
 			$parentThis = [
@@ -132,9 +132,9 @@
 	<div class="clear"></div>
 </div>
 <script>
-<?php $this->beginBlock('category_product_filter') ?>  
+<?php $this->beginBlock('category_product_filter') ?>
 $(document).ready(function(){
-	$(".product_sort").change(function(){	
+	$(".product_sort").change(function(){
 		url = $(this).find("option:selected").attr('url');
 		window.location.href = url;
 	});
@@ -142,7 +142,7 @@ $(document).ready(function(){
 		url = $(this).find("option:selected").attr('url');
 		window.location.href = url;
 	});
-	
+
 	$(".filter_attr_info a").click(function(){
 		if($(this).hasClass("checked")){
 			$(this).removeClass("checked");
@@ -152,7 +152,7 @@ $(document).ready(function(){
 		}
 	});
 });
-<?php $this->endBlock(); ?>  
-</script>  
+<?php $this->endBlock(); ?>
+</script>
 <?php $this->registerJs($this->blocks['category_product_filter'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
 <?= Yii::$service->page->trace->getTraceCategoryJsCode($name_default_lang)  ?>

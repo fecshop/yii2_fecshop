@@ -99,11 +99,7 @@ class SessionMysqldb extends Service implements SessionInterface
         $result = $this->_sessionModel->deleteAll([
             'uuid' => $uuid,
         ]);
-        $access_token_created_at = $identity->access_token_created_at;
-        $timeout = Yii::$service->session->timeout;
-        if ($access_token_created_at + $timeout > time()) {
-            return $accessToken;
-        }
+        
         return true;
     }
 

@@ -48,7 +48,7 @@ class Login
         }
         if (is_array($param) && !empty($param)) {
             if (Yii::$service->customer->login($param)) {
-                // �����ʼ�
+                // 如果需要发送登陆邮件，则执行发送
                 if ($param['email']) {
                     $this->sendLoginEmail($param);
                 }
@@ -58,7 +58,7 @@ class Login
     }
 
     /**
-     * ���͵�¼�ʼ�.
+     * 发送用户登陆邮件
      */
     public function sendLoginEmail($param)
     {
