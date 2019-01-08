@@ -91,19 +91,21 @@ class ItemController extends Controller
                 ['in', 'order_id', $order_ids]
             ],
         ];
-        
+
         return Yii::$service->order->item->coll($filter);
     }
 
     public function getOrderData($pageNum = 0){
         $paymentOrderStatus = Yii::$service->order->getOrderPaymentedStatusArr();
+        $where = [];
         $orderProductSaleInMonths = Yii::$service->order->orderProductSaleInMonths;
-        $beginDate = strtotime('-'.$orderProductSaleInMonths.' months');
+        if ($orderProductSaleInMonths > 0) {
+            $beginDate = strtotime('-'.$orderProductSaleInMonths.' months');
+            $where[] = ['>', 'created_at', $beginDate];
+        }
+        $where[] = ['order_status' => $paymentOrderStatus];
         $filter = [
-            'where' => [
-                ['order_status' => $paymentOrderStatus],
-                ['>', 'created_at', $beginDate]
-            ],
+            'where' => $where,
         ];
         if ($pageNum) {
             $filter['numPerPage'] = $this->pageNum;
