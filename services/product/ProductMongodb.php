@@ -742,4 +742,8 @@ class ProductMongodb extends Service implements ProductInterface
             }
         }
     }
+
+    public function updateAllScoreToZero(){
+        return $this->_productModel->getCollection()->update([], ['score' => 0]);
+    }
 }

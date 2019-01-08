@@ -62,6 +62,11 @@ class Order extends Service
     // 订单号格式。
     public $increment_id = 1000000000;
 
+    // 计算销量的订单时间范围（将最近几个月内的订单中的产品销售个数累加，作为产品的销量值,譬如3代表计算最近3个月的订单产品）
+    // 0：代表计算订单表中所有的订单。
+    // 这个值用于console入口（脚本端），通过shell脚本执行，计算产品的销量，将订单中产品个数累加作为产品的销量，然后将这个值更新到产品表字段中，用于产品按照销量排序或者过滤
+    public $orderProductSaleInMonths = 3;
+
     // 将xx分钟内未支付的pending订单取消掉，并释放产品库存的设置
     public $minuteBeforeThatReturnPendingStock  = 60;
 

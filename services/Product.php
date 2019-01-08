@@ -503,4 +503,9 @@ class Product extends Service
     {
         return $this->_product->updateProductReviewInfo($spu, $avag_rate, $count, $lang_code, $avag_lang_rate, $lang_count, $rate_total_arr, $rate_lang_total_arr);
     }
+
+    public function updateAllScoreToZero()
+    {
+        return $this->_product->updateAllScoreToZero();
+    }
 }
