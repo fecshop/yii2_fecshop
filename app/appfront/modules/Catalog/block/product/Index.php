@@ -469,7 +469,7 @@ class Index
         ]);
         $this->_title = Yii::$service->store->getStoreAttrVal($product['meta_title'], 'meta_title');
         $name = Yii::$service->store->getStoreAttrVal($product['name'], 'name');
-        //$this->breadcrumbs($name);
+        $this->breadcrumbs($name);
         $this->_title = $this->_title ? $this->_title : $name;
         Yii::$app->view->title = $this->_title;
         //$this->_where = $this->initWhere();
@@ -489,15 +489,7 @@ class Index
     // 面包屑导航
     protected function breadcrumbs($name)
     {
-        if (Yii::$app->controller->module->params['category_breadcrumbs']) {
-            $parent_info = Yii::$service->category->getAllParentInfo($this->_category['parent_id']);
-            if (is_array($parent_info) && !empty($parent_info)) {
-                foreach ($parent_info as $info) {
-                    $parent_name = Yii::$service->store->getStoreAttrVal($info['name'], 'name');
-                    $parent_url = Yii::$service->url->getUrl($info['url_key']);
-                    Yii::$service->page->breadcrumbs->addItems(['name' => $parent_name, 'url' => $parent_url]);
-                }
-            }
+        if (Yii::$app->controller->module->params['product_breadcrumbs']) {
             Yii::$service->page->breadcrumbs->addItems(['name' => $name]);
         } else {
             Yii::$service->page->breadcrumbs->active = false;

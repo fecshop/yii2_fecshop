@@ -9,6 +9,7 @@
 ?>
 <div class="main container one-column">
 	<div class="col-main">
+		<?= Yii::$service->page->widget->render('breadcrumbs',$this); ?>
 		<div class="product_page">
 			<div class="product_view">
 				<input type="hidden" class="product_view_id" value="<?=  $_id ?>">
