@@ -179,8 +179,7 @@ class Appserver extends Service
      * @return array
      */
     public function getCors(){
-        $fecshop_uuid = Yii::$service->session->fecshop_uuid;
-        $cors_allow_headers = [$fecshop_uuid, 'fecshop-lang', 'fecshop-currency', 'access-token'];
+        $cors_allow_headers = $this->getCorsAllowHeaders();
         $cors = $this->appserver_cors;
         $corsFilterArr = [];
         if (is_array($cors) && !empty($cors)) {
@@ -193,21 +192,26 @@ class Appserver extends Service
             if (isset($cors['Access-Control-Max-Age']) && $cors['Access-Control-Max-Age']) {
                 $corsFilterArr['Access-Control-Max-Age'] = $cors['Access-Control-Max-Age'];
             }
-            if (isset($cors['Access-Control-Expose-Headers']) && $cors['Access-Control-Expose-Headers']) {
-                $cors_allow_headers = array_merge($cors_allow_headers, $cors['Access-Control-Expose-Headers']);
+            if (isset($cors['Access-Control-Allow-Headers']) && is_array($cors['Access-Control-Allow-Headers'])) {
+                $cors_allow_headers = array_merge($cors_allow_headers, $cors['Access-Control-Allow-Headers']);
+                $corsFilterArr['Access-Control-Request-Headers'] = $cors_allow_headers;
+                $corsFilterArr['Access-Control-Expose-Headers'] = $cors_allow_headers;
             }
-            $corsFilterArr['Access-Control-Expose-Headers'] = $cors_allow_headers;
         }
         return $corsFilterArr;
         
+    }
+
+    public function getCorsAllowHeaders() {
+        $fecshop_uuid = Yii::$service->session->fecshop_uuid;
+        return [$fecshop_uuid, 'fecshop-lang', 'fecshop-currency', 'access-token'];
     }
     /**
      * 用于vue端跨域访问的 customer token auth 的 cors设置
      * @return array
      */
     public function getYiiAuthCors(){
-        $fecshop_uuid = Yii::$service->session->fecshop_uuid;
-        $cors_allow_headers = [$fecshop_uuid, 'fecshop-lang', 'fecshop-currency', 'access-token'];
+        $cors_allow_headers = $this->getCorsAllowHeaders();
         $cors = $this->appserver_cors;
         $corsFilterArr = [];
         if (is_array($cors) && !empty($cors)) {
