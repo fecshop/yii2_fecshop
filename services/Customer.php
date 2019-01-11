@@ -580,7 +580,11 @@ class Customer extends Service
         if ($customer_one) {
             $loginStatus = \Yii::$app->user->login($customer_one);
             if ($loginStatus) {
-                return true;
+                $customer_one->generateAccessToken();
+                $customer_one->access_token_created_at = time();
+                $customer_one->save();
+
+                return $this->setHeaderAccessToken($customer_one->access_token);
             }
             // 不存在，注册。
         } else {
@@ -596,10 +600,7 @@ class Customer extends Service
             ];
             $registerStatus = Yii::$service->customer->register($registerData);
             if ($registerStatus) {
-                $loginStatus = Yii::$service->customer->login($registerData);
-                if ($loginStatus) {
-                    return true;
-                }
+                return Yii::$service->customer->loginAndGetAccessToken($registerData['email'], $registerData['password']);
             }
         }
 
