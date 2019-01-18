@@ -22,67 +22,37 @@ use fecshop\services\Service;
  */
 class SessionRedis extends Service implements SessionInterface
 {
-    protected $_sessionModelName = '\fecshop\models\redis\SessionStorage';
-
-    protected $_sessionModel;
+    protected $storageSession;
     
     public function init()
     {
         parent::init();
-        list($this->_sessionModelName, $this->_sessionModel) = \Yii::mapGet($this->_sessionModelName);
+        // SessionRedis 是单例模式，因此init只能执行一次，下面的也是只会执行一次。
+        $this->storageSession = new \yii\redis\Session;
     }
     
     public function set($key, $val, $timeout)
     {
         $uuid = Yii::$service->session->getUUID();
         $r_id = $this->getUuidKey($uuid, $key);
-        $one = $this->_sessionModel->find()->where([
-            'id' => $r_id,
-        ])->one();
-        if (!$one['id']) {
-            $one = new $this->_sessionModelName();
-            $one['session_uuid'] = $uuid;
-            $one['session_key']  = $key;
-            $one['id']  = $r_id;
-        }
-        $one['session_value']       = $val;
-        $one['session_timeout']     = $timeout;
-        $one['session_updated_at']  = time();
-        $one->save();
-        return true;
+
+        return $this->storageSession->set($r_id, $val, $timeout);
     }
 
     public function get($key, $reflush)
     {
         $uuid = Yii::$service->session->getUUID();
         $r_id = $this->getUuidKey($uuid, $key);
-        $one = $this->_sessionModel->find()->where([
-            'id' => $r_id,
-        ])->one();
-        if ($one['id']) {
-            $timeout = $one['session_timeout'];
-            $updated_at = $one['session_updated_at'];
-            if ($updated_at + $timeout > time()) {
-                if ($reflush) {
-                    $one['session_updated_at']  = time();
-                    $one->save();
-                }
-                return $one['session_value'];
-            }
-        }
+
+        return $this->storageSession->get($r_id);
     }
 
     public function remove($key)
     {
         $uuid = Yii::$service->session->getUUID();
         $r_id = $this->getUuidKey($uuid, $key);
-        $one = $this->_sessionModel->find()->where([
-            'id' => $r_id,
-        ])->one();
-        if ($one['id']) {
-            $one->delete();
-            return true;
-        }
+
+        return $this->storageSession->remove($r_id);
     }
     
     public function getUuidKey($uuid, $key)
@@ -95,40 +65,22 @@ class SessionRedis extends Service implements SessionInterface
      */
     public function destroy()
     {
-        if (!Yii::$app->user->isGuest) {
-            $identity = Yii::$app->user->identity;
-            $identity->access_token = '';
-            $identity->access_token_created_at = null;
-            $identity->save();
-        }
-        $uuid = Yii::$service->session->getUUID();
-        $result = $this->_sessionModel->deleteAll([
-            'session_uuid' => $uuid,
-        ]);
-        
-        return true;
+        return $this->storageSession->destroy();
     }
 
     public function setFlash($key, $val, $timeout)
     {
-        return $this->set($key, $val, $timeout);
+        $uuid = Yii::$service->session->getUUID();
+        $r_id = $this->getUuidKey($uuid, $key);
+
+        return $this->storageSession->setFlash($r_id, $val, $timeout);
     }
     
     public function getFlash($key)
     {
         $uuid = Yii::$service->session->getUUID();
         $r_id = $this->getUuidKey($uuid, $key);
-        $one = $this->_sessionModel->find()->where([
-            'id' => $r_id,
-        ])->one();
-        if ($one['id']) {
-            $timeout = $one['session_timeout'];
-            $updated_at = $one['session_updated_at'];
-            if ($updated_at + $timeout > time()) {
-                $val = $one['session_value'];
-                $one->delete();
-                return $val;
-            }
-        }
+
+        return $this->storageSession->getFlash($r_id);
     }
 }
