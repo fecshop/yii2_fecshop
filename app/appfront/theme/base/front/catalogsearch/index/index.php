@@ -63,7 +63,7 @@
 					<?php  if($i%$count != $end): ?>
 						</ul>
                     <?php  endif; ?>
-					
+
 				</div>
 				<div class="clear"></div>
 				<div class="panelBar">
@@ -87,17 +87,7 @@
 			];
 			echo Yii::$service->page->widget->renderContent('category_product_filter_refine_by',$config,$parentThis);
 		?>
-		<?php
-			# Category Left Filter subCategory
-			$parentThis = [
-				'filter_category' => $filter_category,
-				'current_category'=> $name,
-			];
-			$config = [
-				'view'  		=> 'catalog/category/index/filter/subcategory.php',
-			];
-			echo Yii::$service->page->widget->renderContent('category_product_filter_sub_category',$config,$parentThis);
-		?>
+		
 		<?php
 			# Category Left Filter Product Attributes
 			$parentThis = [

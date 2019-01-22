@@ -90,7 +90,7 @@ $cssOptions = [
 
     <?= Html::csrfMetaTags() ?>
     <title><?= $this->title ? Html::encode($this->title) : Yii::$service->page->translate->__('Fecshop Admin Manager System') ?></title>
-    <?php $this->head() ?>  
+    <?php $this->head() ?>
 <script> 
 
 　$(function(){
