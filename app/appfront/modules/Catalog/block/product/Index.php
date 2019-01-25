@@ -87,9 +87,10 @@ class Index
             'productImgMagnifier'       => $productImgMagnifier,
             'options'                   => $this->getSameSpuInfo(),
             'custom_option'             => $this->_product['custom_option'],
+            'short_description'         => Yii::$service->store->getStoreAttrVal($this->_product['short_description'], 'short_description'),
             'description'               => Yii::$service->store->getStoreAttrVal($this->_product['description'], 'description'),
             '_id'                       => $this->_product['_id'],
-            'buy_also_buy'              => $this->getProductBySkus($skus),
+            'buy_also_buy'              => $this->getProductBuyAlsoBuy(),
         ];
     }
     public function getGroupAttrArr($groupAttrInfo){
@@ -496,7 +497,7 @@ class Index
         }
     }
     // 买了的人还买了什么，通过产品字段取出来sku，然后查询得到。
-    protected function getProductBySkus($skus)
+    protected function getProductBuyAlsoBuy()
     {
         $buy_also_buy_sku = $this->_product['buy_also_buy_sku'];
         if ($buy_also_buy_sku) {
