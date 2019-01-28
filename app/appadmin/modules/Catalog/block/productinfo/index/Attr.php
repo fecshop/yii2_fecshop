@@ -301,7 +301,7 @@ class Attr
                 'label' => Yii::$service->page->translate->__('Special Begin'),
                 'name'  => 'special_from',
                 'display'=>[
-                    'type' => 'inputDate',
+                    'type' => 'inputDateTime',
                 ],
                 'require' => 0,
             ],
@@ -309,7 +309,7 @@ class Attr
                 'label' => Yii::$service->page->translate->__('Special End'),
                 'name'  => 'special_to',
                 'display'=>[
-                    'type' => 'inputDate',
+                    'type' => 'inputDateTime',
                 ],
                 'require' => 0,
             ],

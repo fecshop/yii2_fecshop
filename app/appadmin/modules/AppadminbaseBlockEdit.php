@@ -145,6 +145,17 @@ EOF;
 							<input type="text"  value="{$valueData}" size="30" name="{$this->_editFormData}[{$name}]" class="date textInput {$require} ">
 						</p>
 EOF;
+            } elseif ($display_type == 'inputDateTime') {
+                if ($value && !is_numeric($value)) {
+                    $value = strtotime($value);
+                }
+                $valueData = $value ? date('Y-m-d H:i:s', $value) : '';
+                $str .= <<<EOF
+						<p class="edit_p">
+							<label>{$label}：</label>
+							<input type="text" datefmt="yyyy-MM-dd HH:mm:ss"  value="{$valueData}" size="30" name="{$this->_editFormData}[{$name}]" class="date textInput {$require} ">
+						</p>
+EOF;
             } elseif ($display_type == 'inputEmail') {
                 $str .= <<<EOF
 						<p class="edit_p">
