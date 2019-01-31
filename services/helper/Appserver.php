@@ -197,6 +197,7 @@ class Appserver extends Service
                 $corsFilterArr['Access-Control-Request-Headers'] = $cors_allow_headers;
                 $corsFilterArr['Access-Control-Expose-Headers'] = $cors_allow_headers;
             }
+            $corsFilterArr['Access-Control-Allow-Credentials'] = true;
         }
         return $corsFilterArr;
         
