@@ -205,7 +205,7 @@ class Appserver extends Service
 
     public function getCorsAllowHeaders() {
         $fecshop_uuid = Yii::$service->session->fecshop_uuid;
-        return [$fecshop_uuid, 'fecshop-lang', 'fecshop-currency', 'access-token'];
+        return ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', $fecshop_uuid, 'fecshop-lang', 'fecshop-currency', 'access-token'];
     }
     /**
      * 用于vue端跨域访问的 customer token auth 的 cors设置
