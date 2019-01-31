@@ -228,6 +228,7 @@ class Appserver extends Service
             if (isset($cors['Access-Control-Allow-Methods']) && is_array($cors['Access-Control-Allow-Methods'])) {
                 $corsFilterArr[] = 'Access-Control-Allow-Methods: ' . implode(', ',$cors['Access-Control-Allow-Methods']);
             }
+            $corsFilterArr[] = 'Access-Control-Allow-Credentials: true';
         }
         return $corsFilterArr;
         
