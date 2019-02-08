@@ -101,7 +101,7 @@ class Store extends Service
         if (is_array($stores) && !empty($stores)) {
             foreach ($stores as $store_code => $store) {
                 if ($host[1] == $store_code) {
-                    $this->html5DevideCheckAndRedirect($store_code, $store);
+                    $this->html5DeviceCheckAndRedirect($store_code, $store);
                     Yii::$service->store->currentStore = $store_code;
                     $this->store = $store;
                     if (isset($store['language']) && !empty($store['language'])) {
@@ -131,7 +131,7 @@ class Store extends Service
                     }
                     Yii::$service->page->currency->initCurrency($currency);
                     /**
-                     * current domian is config is store config.
+                     * current domain is config is store config.
                      */
                     $init_complete = 1;
                     $this->thirdLogin = $store['thirdLogin'];
@@ -173,10 +173,10 @@ class Store extends Service
     /**
      * @param $store_code | String
      * @param $store | Array
-     * mobile devide url redirect.
+     * mobile device url redirect.
      * pc端自动跳转到html5端的检测
      */
-    protected function html5DevideCheckAndRedirect($store_code, $store)
+    protected function html5DeviceCheckAndRedirect($store_code, $store)
     {
         if (!isset($store['mobile'])) {
             return;
