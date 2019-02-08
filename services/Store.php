@@ -76,7 +76,11 @@ class Store extends Service
         }
     }
 
-    // 得到当前入口的名字
+
+    /**
+     * 得到当前入口的名字
+     * @return mixed
+     */
     public function getCurrentAppName()
     {
         return Yii::$app->params['appName'];
@@ -87,12 +91,13 @@ class Store extends Service
      *  if you not config this ,default class property will be set.
      *  if current store_code is not config , InvalidValueException will be throw.
      *	class property $currentStore will be set value $store_code.
+     * @param $app
      */
     protected function actionBootstrap($app)
     {
         $host = explode('//', $app->getHomeUrl());
         $stores = $this->stores;
-        $init_compelte = 0;
+        $init_complete = 0;
         if (is_array($stores) && !empty($stores)) {
             foreach ($stores as $store_code => $store) {
                 if ($host[1] == $store_code) {
@@ -128,7 +133,7 @@ class Store extends Service
                     /**
                      * current domian is config is store config.
                      */
-                    $init_compelte = 1;
+                    $init_complete = 1;
                     $this->thirdLogin = $store['thirdLogin'];
                     /**
                      * appserver 部分
@@ -160,7 +165,7 @@ class Store extends Service
                 }
             }
         }
-        if (!$init_compelte) {
+        if (!$init_complete) {
             throw new InvalidValueException('this domain is not config in store component');
         }
     }
