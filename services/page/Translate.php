@@ -60,6 +60,7 @@ class Translate extends Service
      */
     protected function actionSetLanguage($language)
     {
+        $language = str_replace('_', '-', $language);
         Yii::$app->language = $language;
     }
 }
