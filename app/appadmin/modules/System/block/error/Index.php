@@ -229,7 +229,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
                 $str .= '<td>'.$val.'</td>';
             }
             $str .= '<td>
-						<a title="编辑" target="dialog" class="btnEdit" mask="true" drawable="true" width="1000" height="580" href="'.$this->_editUrl.'?'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" >编辑</a>
+						<a title="编辑" target="dialog" class="btnEdit" mask="true" drawable="true" width="1200" height="680" href="'.$this->_editUrl.'?'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" ><i class="fa fa-pencil"></i></a>
 					</td>';
             $str .= '</tr>';
         }

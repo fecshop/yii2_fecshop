@@ -18,7 +18,7 @@ use Yii;
 class Index
 {
     public $pageNum;
-    public $numPerPage = 20;
+    public $numPerPage = 10;
     public $_page = 'p';
 
     public function initFavoriteParam()

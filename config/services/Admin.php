@@ -74,12 +74,7 @@ return [
                                         'label' => 'Product Reveiew',
                                         'url_key' => '/catalog/productreview/index',
                                     ],
-                                    // 三级类
-                                    'product_search_manager' => [
-                                        'label' => 'Product Search',
-                                        'url_key' => '/catalog/productsearch/index',
-                                    ],
-
+                                    
                                     'product_favorite_manager' => [
                                         'label' => 'Product Favorite',
                                         'url_key' => '/catalog/productfavorite/index',

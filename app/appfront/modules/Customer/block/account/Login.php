@@ -23,13 +23,23 @@ class Login
         $loginParam = \Yii::$app->getModule('customer')->params['login'];
         $loginPageCaptcha = isset($loginParam['loginPageCaptcha']) ? $loginParam['loginPageCaptcha'] : false;
         $email = isset($param['email']) ? $param['email'] : '';
-
+        $this->breadcrumbs(Yii::$service->page->translate->__('Login'));
         return [
             'loginPageCaptcha' => $loginPageCaptcha,
             'email' => $email,
             'googleLoginUrl' => Yii::$service->customer->google->getLoginUrl('customer/google/loginv'),
             'facebookLoginUrl' => Yii::$service->customer->facebook->getLoginUrl('customer/facebook/loginv'),
         ];
+    }
+
+    // 面包屑导航
+    protected function breadcrumbs($name)
+    {
+        if (Yii::$app->controller->module->params['login_breadcrumbs']) {
+            Yii::$service->page->breadcrumbs->addItems(['name' => $name]);
+        } else {
+            Yii::$service->page->breadcrumbs->active = false;
+        }
     }
 
     public function login($param)

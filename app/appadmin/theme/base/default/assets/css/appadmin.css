@@ -20,7 +20,7 @@ table.list .hover{
 }
 
 .pageFormContent p.edit_p{
-    margin:3px 0
+    margin:5px 0 10px;
     
 }
 .pageFormContent p.edit_p label{
@@ -41,3 +41,93 @@ table.list .hover{
     font-size: 10px;
 }
 
+.pagination li.jumpto{
+    display:none;
+}
+
+
+
+.panelBar .pages span{
+    float: left;
+    line-height: 26px;
+    margin: 0px 5px;
+}
+
+.dialog .dialogHeader, .dialog .dialogHeader_r,.dialog .dialogHeader_c{
+    background: #fff
+}
+
+.dialog .dialogContent{
+    background: #fff;
+    border:none;
+}
+
+.tabs .tabsContent, .tabs .tabsFooterContent,  .resizable_f_c,  .tabs, .tabs .tabsHeader, .tabs .tabsHeaderContent, .tabs .tabsHeader ul, .tabs .tabsHeader li,.tabs .tabsHeader li a , .tabs .tabsHeader li span {
+    background: #fff;
+}
+
+
+.tabs .tabsHeader li.selected {
+    border-top: 1px solid #b8d0d6;
+    border-left: 1px solid #b8d0d6;
+    border-right: 1px solid #b8d0d6;
+    border-bottom: none;
+}    
+
+.tabs .tabsHeader li{
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom:  1px solid #b8d0d6;
+}
+
+.tabs .tabsHeader{
+    border-bottom:  1px solid #b8d0d6;
+}
+
+.dialog .formBar{
+    border:none;
+}
+
+.dialog .pageContent{
+    border:none;
+}
+
+table.list thead tr{background:#fff}
+
+.custom_option_list table thead tr th{
+    background: #fff;
+}
+
+.tier_price table tfoot tr td a{
+    margin:10px 0 0 
+}
+
+.alert .alertContent, .alert .alertFooter_c, .alert .alertFooter_r, .alert .alertFooter{
+    background: #fff;
+    border:none;
+}
+
+#alertMsgBox{
+    border:1px solid #ccc;
+}
+
+.category-product-list .panelBar{
+    width:100%;
+}
+
+.fa-trash-o{
+    cursor:pointer;
+}
+
+.dialogBackground{
+    background:#ddd;
+}
+
+fieldset{
+    padding:3px 5px 10px 3px;
+}
+
+.grid .gridCol{
+    font-weight:100;
+}

@@ -230,8 +230,8 @@ class Appserver extends Service
             }
             $corsFilterArr[] = 'Access-Control-Allow-Credentials: true';
         }
-        return $corsFilterArr;
         
+        return $corsFilterArr;
     }
     /**
      * @param int $code 状态码

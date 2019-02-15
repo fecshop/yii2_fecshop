@@ -130,8 +130,8 @@ class Admin extends Service
     }
     
     public function setCurrentLangCode($code){
-        $allLangCode = Yii::$service->fecshoplang->getAllLangCode();
-        if (in_array($code, $allLangCode)) {
+        $adminLangCode = Yii::$service->fecshoplang->getAdminLangCode();
+        if (in_array($code, $adminLangCode)) {
             Yii::$service->session->set(self::ADMIN_CURRENT_LANG_CODE, $code);
             $this->_currentLangCode = $code;
             if ($this->setTranslateLang($code)) {
@@ -156,10 +156,10 @@ class Admin extends Service
     
     public function getLangArr(){
         $arr = [];
-        $allLangCode = Yii::$service->fecshoplang->allLangCode;
+        $adminLangCode = Yii::$service->fecshoplang->adminLangCode;
         
-        if (is_array($allLangCode)) {
-            foreach ($allLangCode as $one) {
+        if (is_array($adminLangCode)) {
+            foreach ($adminLangCode as $one) {
                 $arr[$one['code']] = $one['name'];
             }
         }

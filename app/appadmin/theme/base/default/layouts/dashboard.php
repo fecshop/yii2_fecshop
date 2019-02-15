@@ -69,6 +69,7 @@ $cssOptions = [
 	[
 		'css'	=>[
 			'css/appadmin.css',
+			'css/bootstrap-appadmin.css',
 		],
         // 将css放到最后面
         'options' => [
@@ -79,6 +80,7 @@ $cssOptions = [
 \Yii::$service->page->asset->jsOptions 	= \yii\helpers\ArrayHelper::merge($jsOptions, \Yii::$service->page->asset->jsOptions);
 \Yii::$service->page->asset->cssOptions = \yii\helpers\ArrayHelper::merge($cssOptions, \Yii::$service->page->asset->cssOptions);				
 \Yii::$service->page->asset->register($this);
+$logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/default/assets/images/blue_logo.png');
 ?>
 
 <?php $this->beginPage() ?>
@@ -90,7 +92,8 @@ $cssOptions = [
 
     <?= Html::csrfMetaTags() ?>
     <title><?= $this->title ? Html::encode($this->title) : Yii::$service->page->translate->__('Fecshop Admin Manager System') ?></title>
-    <?php $this->head() ?>
+	<link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" >
+	<?php $this->head() ?>
 <script> 
 
 　$(function(){
@@ -115,8 +118,9 @@ $cssOptions = [
 	<div id="layout">
 		<div id="header">
 			<div class="headerNav">
-				<a target="_blank" class="logo" href="http://www.fecshop.com">FECSHOP</a>
-				
+				<a target="_blank" class="logo" href="http://www.fecshop.com">
+					<img style="height:30px;" src="<?= Yii::getAlias($logoPath[1]); ?>" alt="Fecshop" />
+				</a>
                   <?php $currentLangCode = Yii::$service->admin->getCurrentLangCode() ?>
                   <?php $langArr = Yii::$service->admin->getLangArr() ?>
                   <select class="store_langs" style="font-size:10px;">
@@ -126,7 +130,7 @@ $cssOptions = [
                            </option>
                       <?php endforeach; ?>
                    </select>
-				<a style="color:#fff; display: block; height: 21px;position: absolute; right: 10px;top: 18px;z-index: 31;"
+				<a style="color:#777; display: block; height: 21px;position: absolute; right: 10px;top: 18px;z-index: 31;"
 				   doPost
 				   href='javascript:doPost("<?= Yii::$service->url->getUrl("fecadmin/logout") ?>", {"<?= CRequest::getCsrfName() ?>": "<?= CRequest::getCsrfValue() ?>", "islogout": "1"}) '>
 					<?= Yii::$service->page->translate->__('Logout'); ?>
@@ -140,7 +144,10 @@ $cssOptions = [
 				</div>
 			</div>
 			<div id="sidebar">
-				<div class="toggleCollapse"><h2><?= Yii::$service->page->translate->__('Main Menu'); ?></h2><div><?= Yii::$service->page->translate->__('Pull Back'); ?></div></div>
+				<div class="toggleCollapse">
+					<h2><?= Yii::$service->page->translate->__('Main Menu'); ?></h2>
+					<div><i class=”fa fa-list”></i></div>
+				</div>
 
 				<div class="accordion" fillSpace="sidebar">
 					<?= Yii::$service->admin->menu->getLeftMenuHtml();  ?>
@@ -201,7 +208,7 @@ $cssOptions = [
 <footer class="footer">
     <div class="container">
         <div style="position:absolute;z-index: 99999;" id="footer">
-            © 2015-2018 
+            © 2015-2019
             <a style="text-decoration:none" href="http://www.fecshop.com" target="_blank">
                 <?= Yii::$service->page->translate->__('Fecshop Team'); ?> - www.fecshop.com
             </a>

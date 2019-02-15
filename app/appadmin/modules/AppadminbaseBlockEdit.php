@@ -118,7 +118,7 @@ EOF;
 									</ul>
 								</div>
 							</div>
-							<div class="tabsContent" style="height:30px;">
+							<div class="tabsContent" style="">
 								{$tabLangInput}
 							</div>
 							<div class="tabsFooter">

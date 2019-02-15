@@ -152,7 +152,7 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
                         $this->_custom_option_list_str .= '<td rel="qty" val="'.$one['qty'].'">'.$one['qty'].'</td>';
                         $this->_custom_option_list_str .= '<td rel="price" val="'.$one['price'].'">'.$one['price'].'</td>';
                         $this->_custom_option_list_str .= '<td rel="image" ><img style="width:30px;" rel="'.$one['image'].'" src="'.Yii::$service->product->image->getUrl($one['image']).'"/></td>';
-                        $this->_custom_option_list_str .= '<td><a title="' . Yii::$service->page->translate->__('delete') . '"  href="javascript:void(0)" class="btnDel deleteCustomList">' . Yii::$service->page->translate->__('delete') . '</a></td>';
+                        $this->_custom_option_list_str .= '<td><a title="' . Yii::$service->page->translate->__('delete') . '"  href="javascript:void(0)" class="btnDel deleteCustomList"><i class="fa fa-trash-o"></i></a></td>';
                         $this->_custom_option_list_str .= '</tr>';
                     }
                 }
@@ -304,7 +304,7 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
                             </select>
                         </td>
                         
-                        <td style="padding:0 0 0 20px;"><a class="delete_img btnDel" href="javascript:void(0)">' . Yii::$service->page->translate->__('Delete') . '</a></td>
+                        <td style="padding:0 0 0 20px;"><a class="delete_img btnDel" href="javascript:void(0)"><i class="fa fa-trash-o"></i></a></td>
 					</tr>';
         }
         if (!empty($gallery_image) && is_array($gallery_image)) {
@@ -329,7 +329,7 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
                                             '.$this->getYesNoOptions($is_detail).'
                                         </select>
                                     </td>
-									<td style="padding:0 0 0 20px;"><a class="delete_img btnDel" href="javascript:void(0)">' . Yii::$service->page->translate->__('Delete') . '</a></td>
+									<td style="padding:0 0 0 20px;"><a class="delete_img btnDel" href="javascript:void(0)"><i class="fa fa-trash-o"></i></a></td>
 								</tr>';
                 $i++;
             }

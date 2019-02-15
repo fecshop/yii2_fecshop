@@ -20,9 +20,9 @@ use fecadmin\models\AdminRole;
 .dialog .pageContent {background:none;}
 .dialog .pageContent .pageFormContent{background:none;}
 .edit_p{display:block;height:35px;}
-.edit_p label{float:left;line-height: 20px;min-width:110px;}
+.edit_p label{float:left;line-height: 20px;min-width:200px;}
 .edit_p input{width:700px;}
-.tabsContent .tabsContent .edit_p label{min-width:104px;}
+.tabsContent .tabsContent .edit_p label{min-width:194px;}
 .edit_p .tier_price input{
 	width:100px;
 }
@@ -214,7 +214,7 @@ function thissubmit(thiss){
 					</ul>
 				</div>
 			</div>
-			<div class="tabsContent" style="height:450px;overflow:auto;">
+			<div class="tabsContent" style="height:550px;overflow:auto;">
 				<div>
 					<input type="hidden"  value="<?=  $product_id; ?>" size="30" name="product_id" class="textInput ">
 				
@@ -253,7 +253,7 @@ function thissubmit(thiss){
 												<input class="tier_price" type="text" value="<?= $one['price'] ?>">
 											</td>
 											<td>
-												<img src="<?= \Yii::$service->image->getImgUrl('/images/bkg_btn-close2.gif')  ?>">
+                                                <i class="fa fa-trash-o"></i>
 											</td>
 										</tr>
 										<?php } ?>
@@ -273,13 +273,13 @@ function thissubmit(thiss){
 								$(document).ready(function(){
 									$(".addProductTierPrice").click(function(){
 										str = "<tr>";
-										str +="<td><input class=\"tier_qty\" type=\"text\"   /> <?=  Yii::$service->page->translate->__('And Above') ?> </td>";
-										str +="<td><input class=\"tier_price\" type=\"text\"   /></td>";
-										str +="<td><img src=\"<?= \Yii::$service->image->getImgUrl('/images/bkg_btn-close2.gif')  ?>\" /></td>";
+										str +="<td><input class=\"tier_qty textInput \" type=\"text\"   /> <?=  Yii::$service->page->translate->__('And Above') ?> </td>";
+										str +="<td><input class=\"tier_price textInput\" type=\"text\"   /></td>";
+										str +="<td><i class='fa fa-trash-o'></i></td>";
 										str +="</tr>";
 										$(".tier_price table tbody").append(str);
 									});
-									$(".dialog").off("click").on("click",".tier_price table tbody tr td img",function(){
+									$(".dialog").off("click").on("click",".tier_price table tbody tr td .fa-trash-o",function(){
                                         $(this).parent().parent().remove();
                                     });
                                     
@@ -467,8 +467,8 @@ function thissubmit(thiss){
 								alert("<?= Yii::$service->page->translate->__('you must chose a image');  ?>");
 							}
 							$str += '<td rel="image"><img style="width:30px;" rel="'+chosened_img_rel+'" src="'+chosened_img_src+'"/></td>';
-							$str += '<td><a title="<?=  Yii::$service->page->translate->__('Delete') ?>"  href="javascript:void(0)" class="btnDel deleteCustomList"><?=  Yii::$service->page->translate->__('Delete') ?></a></td>'
-							//检查这个sku是否已经存在
+							$str += '<td><a title="<?=  Yii::$service->page->translate->__('Delete') ?>"  href="javascript:void(0)" class="btnDel deleteCustomList"><i class="fa fa-trash-o"></i></a></td>'
+							// 检查这个sku是否已经存在 
 							$(".custom_option_sku").each(function(){
 								sku = $(this).html();
 								if(sku == custom_option_sku){

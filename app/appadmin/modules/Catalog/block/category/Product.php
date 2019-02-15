@@ -82,6 +82,27 @@ class Product extends AppadminbaseBlock implements AppadminbaseBlockInterface
     }
 
     /**
+     * list pager, it contains  numPerPage , pageNum , totalNum.
+     */
+    public function getToolBar($numCount, $pageNum, $numPerPage)
+    {
+        return    '<div class="pages">
+					<span>' . Yii::$service->page->translate->__('Show') . '</span>
+					<select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value, rel:\"pagerForm2\"})">
+						<option '.($numPerPage == 2 ? 'selected' : '').' value="2">2</option>
+						<option '.($numPerPage == 6 ? 'selected' : '').' value="6">6</option>
+						<option '.($numPerPage == 20 ? 'selected' : '').' value="20">20</option>
+						<option '.($numPerPage == 50 ? 'selected' : '').'  value="50">50</option>
+						<option '.($numPerPage == 100 ? 'selected' : '').'  value="100">100</option>
+						<option '.($numPerPage == 200 ? 'selected' : '').'  value="200">200</option>
+					</select>
+					<span>' . Yii::$service->page->translate->__('Line, Total {numCount} Line', ['numCount' => $numCount]) . '</span>
+				</div>
+				<div class="pagination" targetType="navTab" totalCount="'.$numCount.'" numPerPage="'.$numPerPage.'" pageNumShown="10" currentPage="'.$pageNum.'"></div>
+				';
+    }
+
+    /**
      * get search bar Arr config.
      */
     public function getSearchArr()

@@ -20,7 +20,7 @@ LoginAsset::register($this);
 ?>
 
 <?php
-$login_logoPath = $this->assetManager->publish('@fecadmin/myassets/dwz_jui-master/themes/default/images/login_logo.gif');
+$logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/default/assets/images/blue_logo.png');
 $login_titlePath = $this->assetManager->publish('@fecadmin/myassets/dwz_jui-master/themes/default/images/login_title.png');
 $header_bgPath = $this->assetManager->publish('@fecadmin/myassets/dwz_jui-master/themes/default/images/header_bg.png');
 $login_bannerPath = $this->assetManager->publish('@fecadmin/myassets/dwz_jui-master/themes/default/images/login_banner.jpg');
@@ -50,9 +50,10 @@ $login_bannerPath = $this->assetManager->publish('@fecadmin/myassets/dwz_jui-mas
  <div id="login">
 		<div id="login_header">
 			<h1 class="login_logo">
-				<!--  <img src="<?= $login_logoPath[1] ?>" /> -->
 				<a href="<?= Yii::$app->getHomeUrl()  ?>" style="font-size:35px;text-decoration:none;
-				color:#6f8992;"><img src="<?= CUrl::getHomeUrl(); ?>/skin/default/images/blue_logo.png"></a>
+				color:#6f8992;">
+                    <img alt="Fecshop" src="<?= Yii::getAlias($logoPath[1]); ?>">
+                </a>
 			</h1>
 			<div class="login_headerContent">
 				<div class="navList">

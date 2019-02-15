@@ -17,6 +17,8 @@ return [
          * 模块内部的params配置。
          */
         'params'=> [
+            'login_breadcrumbs' => true,
+            'register_breadcrumbs' => true,
             'register' => [
                 // 账号注册成功后，是否自动登录
                 'successAutoLogin' => true,

@@ -24,7 +24,7 @@ use fec\helpers\CRequest;
 		</div>
 	</form>
 </div>
-<div class="pageContent">
+<div class="pageContent url-rewrite">
 	
 	<div class="panelBar">
 		<?= $toolBar; ?>
