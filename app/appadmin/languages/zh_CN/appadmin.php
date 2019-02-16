@@ -395,6 +395,7 @@ return [
     'Checkout Method' => '下单类型',
     'Ip' => 'Ip',
     'Order Grand Total' => '订单总金额(订单货币)',
+    'Grand Total' => '总计',
     'Product Subtotal' => '产品总金额(订单货币)',
     'Discount' => '折扣',
     'Shipping Total' => '运费',

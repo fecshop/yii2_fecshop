@@ -140,7 +140,7 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
             ],
             [
                 'orderField'   => 'order_status',
-                'label'          => Yii::$service->page->translate->__(' Order Status'),
+                'label'          => Yii::$service->page->translate->__('Order Status'),
                 'width'         => '50',
                 'align'          => 'left',
                 //'lang'        => true,
