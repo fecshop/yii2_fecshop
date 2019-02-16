@@ -12,7 +12,7 @@ table, caption, tbody, tfoot, thead, tr, th, td { padding:0; margin:0; font-size
 ul, ol { list-style:none;}
 img { border:0;}
 
-body {margin:0;text-align:center;background: #2196F3 url(http://demo.cssmoban.com/cssthemes5/twts_184_exclusivity/images/bg_3.jpg) no-repeat center;}
+body {margin:0;text-align:center;background: #2196F3 url(../images/bg_3.jpg) repeat center;}
 
 #login {display:block;width: 880px;margin: 7% auto;text-align:left;background: #fff;box-shadow: 0 0 10px #cac5c5;border-radius: 20px;position: relative;clear: both;}
 #login_header {display:block;padding-top:40px;/* height:80px; */}
@@ -25,7 +25,7 @@ body {margin:0;text-align:center;background: #2196F3 url(http://demo.cssmoban.co
 .navList a { display:block; white-space:nowrap; line-height:21px; color:#000; text-decoration:none;}
 .navList a:hover { text-decoration:underline;}
 
-#login_content {display:block;position:relative;clear: both;height: 300px;background: url(https://static.zcool.cn/git_z/z/images/qiangsafa.png) no-repeat 93px center;background-size: 30%;}
+#login_content {display:block;position:relative;clear: both;height: 300px;background: url(../images/qiangsafa.png) no-repeat 93px center;background-size: 30%;}
 .login_title { display:block; padding:25px 0 0 38px;}
 .loginForm {
     display: block;
@@ -54,5 +54,5 @@ body {margin:0;text-align:center;background: #2196F3 url(http://demo.cssmoban.co
 
 .login_inner { display:block; width:560px; padding:30px 20px 0 20px;}
 .login_inner p { margin:10px 0; line-height:150%; font-size:14px; color:#666;}
-
+.store_langs{height:20px; background:#fff;}
 #login_footer { clear:both; display:block; margin-bottom:20px; padding:10px; border-top:solid 1px #e2e5e8; color:#666; text-align:center;}
