@@ -13,6 +13,12 @@ return [
      */
     'catalog' => [
         'class' => '\fecshop\app\appfront\modules\Catalog\Module',
-
+        'params'=> [
+            'productImgSize' => [
+                'small_img_width'  => 80,  // 底部小图的宽度
+                'small_img_height' => 110,  // 底部小图的高度
+                'middle_img_width' => 400,  // 主图的宽度
+            ],
+        ],
     ],
 ];
