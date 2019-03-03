@@ -6,6 +6,8 @@
  * @copyright Copyright (c) 2016 FecShop Software LLC
  * @license http://www.fecshop.com/license/
  */
+ 
+use fec\helpers\CRequest;
 ?>
 <div class="main container two-columns-left">
 <?= Yii::$service->page->widget->render('flashmessage'); ?>
@@ -13,7 +15,8 @@
 		<div class="std">
 			<div>
 				<form class="addressedit" action="<?= Yii::$service->url->getUrl('customer/address/edit'); ?>" id="form-validate" method="post">
-					<input name="address[address_id]" value="<?= $address_id; ?>" type="hidden">
+					<?php echo CRequest::getCsrfInputHtml();  ?>
+                    <input name="address[address_id]" value="<?= $address_id; ?>" type="hidden">
 					<div class="">
 						<ul class="">
 							<li>

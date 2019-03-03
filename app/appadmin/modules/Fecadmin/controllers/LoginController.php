@@ -23,7 +23,7 @@ use fecadmin\models\AdminUser\AdminUserLogin;
  */
 class LoginController extends \fecadmin\controllers\LoginController
 {
-	public $enableCsrfValidation = false;
+	public $enableCsrfValidation = true;
     public $blockNamespace;
     
     public function actionIndex()
@@ -38,11 +38,10 @@ class LoginController extends \fecadmin\controllers\LoginController
             //$this->redirect("/",200);
             Yii::$app->getResponse()->redirect("/")->send();
             return;
-        }    
+        }
         $errors = '';
-        $loginParam = \fec\helpers\CRequest::param('login');
+        $loginParam = Yii::$app->request->post('login');
         if($loginParam){
-            //echo 1;exit; 
             $AdminUserLogin = new AdminUserLogin;
             $AdminUserLogin->attributes = $loginParam;
             if($AdminUserLogin->login()){
@@ -50,13 +49,13 @@ class LoginController extends \fecadmin\controllers\LoginController
                 Yii::$service->admin->systemLog->save();
                 //$this->redirect("/",200)->send();
                 Yii::$app->getResponse()->redirect("/")->send();
-                
+
                 return;
             }else{
                 $errors = CModel::getErrorStr($AdminUserLogin->errors);
             }
         }
-        
+
         return $this->render('index',[
             'error' => $errors,
         ]);
@@ -110,8 +109,8 @@ class LoginController extends \fecadmin\controllers\LoginController
     
 
     /**
-     * @property $view|string , (only) view file name ,by this module id, this controller id , generate view relative path.
-     * @property $params|Array,
+     * @param $view|string , (only) view file name ,by this module id, this controller id , generate view relative path.
+     * @param $params|Array,
      * 1.get exist view file from mutil theme by theme protity.
      * 2.get content by yii view compontent  function renderFile()  ,
      */

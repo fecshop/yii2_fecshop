@@ -1,0 +1,446 @@
+#header, #header .headerNav {
+    background: #fff;
+    border-color: #fff;
+}
+
+#header .logo {
+    color: #000000;
+    font-size: 18px;
+    padding-left: 35px;
+    z-index: 99;
+    position: relative;
+    padding-top: 13px;
+}
+
+#header .headerNav a:hover {
+    color:#575962;
+    text-decoration: underline;
+}
+
+#sidebar {
+    z-index: 4;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+#leftside {
+    padding-top:50px;
+    border-right: 1px solid #eee;
+    box-shadow: 6px 1px 20px rgba(69, 65, 78, 0.1);
+    background: #fff;
+}
+
+.accordion .accordionHeader, .accordion .accordionHeader h2, .accordion .accordionHeader h2 span {
+    background:none;
+}
+
+.toggleCollapse {
+    border: none;
+    background: none;
+    height: 40px;
+    line-height: 40px;
+}
+
+.toggleCollapse div {display:none;width: 100px;background: none;text-align: right;margin-right: 15px;}
+
+.accordion {
+    border: none;
+    padding-left: 15px;
+}
+
+.toggleCollapse h2 {
+    line-height: 40px;
+    font-size: 14px;
+    padding-left: 20px;
+    line-height: 40px;
+}
+
+body {
+    background: #fff;
+}
+
+
+
+#container {
+    background-color: #ffffff;
+    border: none;
+    /* border: 1px solid #b8d0d6; */
+}
+
+#sidebar_s .collapse {
+    height: 100%;
+}
+
+#sidebar_s .collapse {
+    border: none;
+    background: #fff;
+}
+
+#splitBar {
+    background: #dad8d8;
+}
+
+
+.toggleCollapse div .fa {
+    line-height: 40px;
+    font-size: 16px;
+}
+.accordion .accordionHeader h2 {
+    display: block;
+    overflow: hidden;
+    padding: 0 25px 0 5px;
+    height: 30px;
+    line-height: 30px;
+    color: #575962;
+}
+
+.accordion .accordionHeader h2 span {
+    text-indent: 0;
+    height: 30px;
+    line-height: 30px;
+    font-weight: normal;
+}
+
+#sidebar_s {
+    width: 30px;
+}
+
+#sidebar_s .toggleCollapse div {
+    margin-top: 5px;
+}
+
+.tree .file {
+    background: none;
+    width:5px;
+}
+
+
+
+.tabsPage .tabsPageHeader, .tabsPage .tabsPageHeader li, .tabsPage .tabsPageHeader li a, .tabsPage .tabsPageHeader li column-span {
+    background: none;
+}
+
+.grid .gridCol {
+    height: 40px;
+    line-height: 40px;
+    background: none;
+    font-size: 14px;
+}
+
+
+
+.grid .gridHeader, .grid .gridHeader th {
+    background: none;
+}
+
+.grid .gridHeader th {
+    border: none;
+    border-bottom: 2px solid #dee2e6;
+    border-top: 2px solid #dee2e6;
+}
+
+.tabsPage .tabsPageContent {
+    border: none;
+}
+
+td {}
+
+.grid .gridTbody td {
+    border: none;
+    border-bottom: solid 1px #ededed;
+}
+
+
+.panelBar {
+    background: #fff;
+    border-bottom: none;
+    /* height: 40px; */
+    float: left;
+    padding: 15px 0;
+    font-size: 14px;
+    width:50%;
+}
+.url-rewrite .panelBar {
+    width:100%;
+}
+
+.panelBar .toolBar span, .panelBar .toolBar li.hover span {
+    background: none;
+    padding: 0 5px;
+    line-height: 23px;
+    border: none;
+}
+
+.panelBar .toolBar span .fa {
+    font-size: 13px;
+    padding-right: 4px;
+}
+
+.combox .select a,.textInput,input.readonly, .textInput, input.focus, input.required, input.error, input.readonly, input.disabled {
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    padding: .375rem .75rem;
+}
+
+.textArea,   textarea.readonly, textarea.focus, textarea.required, textarea.error, textarea.readonly, textarea.disabled {
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+}
+
+.searchContent input {
+    width: 100px;
+    margin-left: 5px;
+}
+
+.combox .select a {
+    padding: 0 22px 0 6px;
+    line-height: 28px;
+    height: 27px;
+    background-position: 99% -48px;
+    width: auto;
+}
+
+.comboxop a {
+    display: inline-block;
+    word-break: initial;
+    width: 100px;
+    margin: 3px 5px;
+    padding: 5px;
+    color: #808080;
+}
+
+
+
+.comboxop {
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+
+.comboxop .selected,.comboxop a:hover {
+    background: #f5f5f5;
+    color: #2196F3;
+    border-radius: 3px;
+}
+
+.searchBar .subBar ul {
+    float: left;
+}
+
+.searchBar .subBar li {
+    margin-right: 10px;
+    margin-left: 0;
+}
+
+
+
+.button, .buttonActive, .buttonDisabled {
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: 2px 8px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    background: #607D8B !important;
+    color: #ffffff !important;
+}
+
+.button, .button span, .buttonDisabled, .buttonDisabled span, .buttonActive, .buttonActive span, .button .buttonContent, .buttonHover, .buttonHover .buttonContent, .buttonActive .buttonContent, .buttonActiveHover, .buttonActiveHover .buttonContent, .buttonDisabled .buttonContent {
+    background: none;
+    color: #fff;
+}
+
+.buttonActive .buttonContent {
+    padding: 0;
+}
+
+.button span, .buttonDisabled span, .buttonActive span, .button .buttonContent, .buttonHover, .buttonHover .buttonContent, .buttonActive .buttonContent, .buttonDisabled .buttonContent, .button button, .buttonHover button, .buttonActive button, .buttonDisabled button {
+    color: #fff;
+}
+
+.button span {
+    padding: 0;
+}
+
+a.btnAdd, a.btnDel, a.btnView, a.btnEdit, a.btnSelect, a.btnInfo, a.btnAssign, a.btnLook, a.btnAttach {
+    background: none;
+    text-indent: 0;
+    width: 16px;
+}
+
+.grid .gridTbody td div a {line-height: 21px;font-size: 14px;}
+
+.page .pageHeader, .formBar {
+    background: #fff;
+    border: none;
+}
+
+.panelBar .pages {
+    float: right;
+    margin-left: 15px;
+    height: 36px;
+    margin-top: 0;
+}
+
+.pagination {
+    background: none;
+    margin-top: 1px;
+}
+
+
+.pagination li.jumpto .goto {
+    margin-left: 5px;
+}
+
+.pagination li.selected a {
+    color: #2196F3;
+}
+
+.pagination a, .pagination li.hover a, .pagination li span {
+    font-size: 14px;
+}
+
+.accountInfo {
+    background: #f7f8fa;
+    color: #575962;
+    padding: 0.85rem 1.5rem;
+    border-radius: 4px;
+    margin: 10px 0;
+    height: auto;
+}
+
+.tabsPage .tabsPageHeader li, .tabsPage .tabsPageHeader li a,.tabsPage .tabsPageHeader li span {
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    background: none;
+}
+
+.tabsPage .tabsPageHeader .home_icon {
+    background: none;
+}
+
+.tabsPage .tabsPageHeader li.main span {
+    padding: 0;
+}
+
+.tabsPage .tabsPageHeaderContent {
+    height: 40px;
+    border-bottom: 1px solid #b8d0d6;
+
+}
+
+.tabsPage .tabsPageHeader {
+    height: 40px;
+    border: none;
+}
+
+div#navTab {
+    border:none;
+}
+
+.tabsPage .tabsPageHeader ul {
+    height: 40px;
+
+    border-top: 1px solid #b8d0d6;
+}
+
+.tabsPage .tabsPageHeader li.selected {
+    border-left: 1px solid #b8d0d6;
+    border-right: 1px solid #b8d0d6;
+    position:relative;
+}
+.tabsPage .tabsPageHeader li.selected:after{content:'';position:absolute;left:0;height: 5px;background: #ffffff;bottom: -4px;z-index: 999;width:100%;}
+.tabsPage .tabsPageHeader li:nth-child(1) {
+    border-left: none;
+}
+.tabsPage .tabsPageHeader li:nth-last-child(1) {
+    /* border-right: none; */
+}
+
+unitBox {}
+
+.searchContent {
+    padding-top: 10px;
+    /* margin-left: -10px; */
+}
+
+.page.unitBox {
+    border-top: 1px solid #b8d0d6;
+}
+
+.pages .combox a {
+    height: 24px;
+    width: 18px;
+}
+
+.searchBar .searchContent td {
+    padding-right: 15px;
+    padding-bottom: 5px;
+}
+
+#contextmenu ul {
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(234, 226, 226, 0.175);
+}
+
+#contextmenu li {
+    border-radius: 3px;
+    height: 24px;
+    line-height: 24px;
+}
+
+#contextmenu li.hover {
+    border: 1px solid transparent;
+    background-color: #f5f5f5;
+    color: #2196F3;
+
+}
+.panelBar, .toolBar li.hover, .toolBar li.hover a, .toolBar li.hover span, .toolBar span, .pagination, .pagination li.hover, .pagination li.hover a, .pagination li span, .pagination li.disabled span span, .panelBar .line, .pagination li.jumpto, .pagination li.jumpto .goto{/* background: #fff; */}
+
+.alert .error .alertInner {
+    border-width: 0;
+}
+
+.store_langs{
+    background: #fff;
+    height: 20px;
+}
+
+select{
+    background: #fff;
+}
+
+
+
+
+
+

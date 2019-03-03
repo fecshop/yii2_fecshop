@@ -66,64 +66,41 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
             'toolBar'	=> $toolBar,
         ];
     }
-
-
-
-
     # 定义搜索部分字段格式
     public function getSearchArr(){
         $data = [
             [	# 字符串类型
-                'type'=>'inputtext',
-                'title'=>'权限名称',
-                'name'=>'role_name' ,
+                'type' => 'inputtext',
+                'title' => Yii::$service->page->translate->__('Role Name'),
+                'name' => 'role_name' ,
                 'columns_type' =>'string'
             ],
         ];
         return $data;
     }
-
-
-
-
-
-
-
     # 定义表格显示部分的配置
     public function getTableFieldArr(){
         $table_th_bar = [
             [
                 'orderField' 	=> 'role_id',
-                'label'			=> 'ROLE ID',
+                'label'			=> Yii::$service->page->translate->__('Role Id'),
                 'width'			=> '110',
-                'align' 		=> 'left',
-
+                'align' 		    => 'left',
             ],
             [
-                'orderField'	=> 'role_name',
-                'label'			=> '权限名称',
+                'orderField'	    => 'role_name',
+                'label'			=> Yii::$service->page->translate->__('Role Name'),
                 'width'			=> '110',
-                'align' 		=> 'left',
+                'align' 		    => 'left',
             ],
             [
-                'orderField'	=> 'role_description',
+                'label'			=> Yii::$service->page->translate->__('Status'),
+                'orderField'	    => 'role_description',
                 'width'			=> '110',
-                'align' 		=> 'left',
+                'align' 		    => 'left',
             ],
-
-
         ];
         return $table_th_bar ;
     }
-
-
-
-
-
-
-
-
-
-
 
 }

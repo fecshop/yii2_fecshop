@@ -107,7 +107,7 @@ class MongoSearch extends Service implements SearchInterface
     }
 
     /**
-     * @property $product_ids |　Array ，里面的子项是MongoId类型。
+     * @param $product_ids |　Array ，里面的子项是MongoId类型。
      * 将产品表的数据同步到各个语言对应的搜索表中。
      */
     protected function actionSyncProductInfo($product_ids, $numPerPage)
@@ -161,7 +161,7 @@ class MongoSearch extends Service implements SearchInterface
     }
 
     /**
-     * @property $nowTimeStamp | int
+     * @param $nowTimeStamp | int
      * 批量更新过程中，被更新的产品都会更新字段sync_updated_at
      * 删除xunSearch引擎中sync_updated_at小于$nowTimeStamp的字段.
      */
@@ -205,11 +205,11 @@ class MongoSearch extends Service implements SearchInterface
     }
 
     /**
-     * @property $select | Array
-     * @property $where | Array
-     * @property $pageNum | Int
-     * @property $numPerPage | Array
-     * @property $product_search_max_count | Int ， 搜索结果最大产品数。
+     * @param $select | Array
+     * @param $where | Array
+     * @param $pageNum | Int
+     * @param $numPerPage | Array
+     * @param $product_search_max_count | Int ， 搜索结果最大产品数。
      * 对于上面的参数和以前的$filter类似，大致和下面的类似
      * [
      *	'category_id' 	=> 1,
@@ -349,7 +349,7 @@ class MongoSearch extends Service implements SearchInterface
     }
 
     /**
-     * @property $filter_attr | String 需要进行统计的字段名称
+     * @param $filter_attr | String 需要进行统计的字段名称
      * @propertuy $where | Array  搜索条件。这个需要些mongodb的搜索条件。
      * 得到的是个属性，以及对应的个数。
      * 这个功能是用于前端分类侧栏进行属性过滤。

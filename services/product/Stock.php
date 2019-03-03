@@ -59,7 +59,7 @@ class Stock extends Service
     }
 
     /**
-     * @property $productIds | Array ,  字符串数组
+     * @param $productIds | Array ,  字符串数组
      * @return  Array ，example
      * [
      *      'product_id'  => 'qty',
@@ -83,8 +83,8 @@ class Stock extends Service
     }
     
     /**
-     *  @property $product_id | String , mongodb中的产品id字符串
-     *  @property $one | Array ， data example：
+     *  @param $product_id | String , mongodb中的产品id字符串
+     *  @param $one | Array ， data example：
      *  $one = [
      *      'qty'           => 44,  # sku的库存个数
      *      'custom_option' => [
@@ -155,7 +155,7 @@ class Stock extends Service
     }
 
     /**
-     *  @property $product_id | String , mongodb中的产品id字符串
+     *  @param $product_id | String , mongodb中的产品id字符串
      *  产品做删除的时候，需要在mysql中删除掉库存
      */
     public function removeProductStock($product_id)
@@ -269,7 +269,7 @@ class Stock extends Service
     }
     
     /**
-     * @property $product_items | Array ， example:
+     * @param $product_items | Array ， example:
      * 	[
      *		[
      *			'product_id' => 'xxxxx',
@@ -309,9 +309,9 @@ class Stock extends Service
     }
 
     /**
-     * @property $product | Object,  Product Model
-     * @property $sale_qty | Int 需要出售的个数
-     * @property $custom_option_sku | String 产品custom option sku
+     * @param $product | Object,  Product Model
+     * @param $sale_qty | Int 需要出售的个数
+     * @param $custom_option_sku | String 产品custom option sku
      * @return bool
      *  查看产品库存
      */
@@ -377,7 +377,7 @@ class Stock extends Service
     
     
     /**
-     * @property $items | Array ， example:
+     * @param $items | Array ， example:
      * 	[
      *		[
      *			'product_id' => 'xxxxx',
@@ -523,7 +523,7 @@ class Stock extends Service
     
 
     /**
-     * @property $is_in_stock | Int,  状态
+     * @param $is_in_stock | Int,  状态
      * @return bool
      *              检查产品是否是上架上台
      */
@@ -537,7 +537,7 @@ class Stock extends Service
     }
     
     /**
-     * @property $product_id | String
+     * @param $product_id | String
      * 得到产品的库存个数（Flat Qty）
      */
     public function getProductFlatQty($product_id)
@@ -554,8 +554,8 @@ class Stock extends Service
     }
     
     /**
-     * @property $product_id | String
-     * @property $onlySku | boolean  返回数组是否只有 $custom_option_sku
+     * @param $product_id | String
+     * @param $onlySku | boolean  返回数组是否只有 $custom_option_sku
      * 得到产品的custom option 部分的库存
      */
     public function getProductCustomOptionQty($product_id, $onlySku=false)
@@ -577,7 +577,7 @@ class Stock extends Service
     }
 
     /**
-     * @property $product_id | String
+     * @param $product_id | String
      * 得到产品的所有custom_option_sku 数组
      */
     public function getProductCustomOptionSkuArr($product_id)
@@ -596,7 +596,7 @@ class Stock extends Service
     }
     
     /**
-     * @property $product_id | String
+     * @param $product_id | String
      * 得到产品的custom option 部分，相应的$custom_option_sku的库存
      */
     public function getProductCustomOptionSkuQty($product_id, $custom_option_sku)

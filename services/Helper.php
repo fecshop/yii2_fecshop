@@ -15,10 +15,16 @@ use Yii;
 /**
  * Helper service.
  *
+ * @property \fecshop\services\helper\Appapi $appapi
  * @property \fecshop\services\helper\Appserver $appserver appserver sub-service of helper service
- * @property \fecshop\services\helper\AR $ar ar sub-service of helper service
+ * @property \fecshop\services\helper\AR $ar
+ * @property \fecshop\services\helper\Captcha $captcha
+ * @property \fecshop\services\helper\Country $country
+ * @property \fecshop\services\helper\Echart $echart
+ * @property \fecshop\services\helper\ErrorHandler $errorHandler
  * @property \fecshop\services\helper\Errors $errors errors sub-service of helper service
- *
+ * @property \fecshop\services\helper\Format $format
+ * @property \fecshop\services\helper\MobileDetect $mobileDetect
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -37,7 +43,7 @@ class Helper extends Service
     }
 
     /**
-     * @property $var | String Or Array 需要进行Html::encode()操作的变量。
+     * @param $var | String Or Array 需要进行Html::encode()操作的变量。
      * @return $var | String Or Array 去除xss攻击字符后的变量
      */
     public function htmlEncode($var)
@@ -65,7 +71,7 @@ class Helper extends Service
     }
     
     /**
-     * @property $domain | String vue类型的appserver传递的domain
+     * @param $domain | String vue类型的appserver传递的domain
      * 这个是appservice发送邮件，在邮件里面的url链接地址，在这里保存
      */
     public function setAppServiceDomain($domain)

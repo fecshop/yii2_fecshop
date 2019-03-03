@@ -39,7 +39,7 @@ class Errors extends Service
     }
 
     /**
-     * @property $model_errors | Array
+     * @param $model_errors | Array
      * Yii2的model在使用rules验证数据格式的时候，报错保存在errors中
      * 本函数将errors的内容添加到errors services中。
      */
@@ -80,7 +80,7 @@ class Errors extends Service
     }
 
     /**
-     * @property $separator 如果是false，则返回数组，
+     * @param $separator 如果是false，则返回数组，
      *						如果是true则返回用| 分隔的字符串
      *						如果是传递的分隔符的值，譬如“,”，则返回用这个分隔符分隔的字符串
      */

@@ -73,30 +73,30 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
 
             [	# selecit的Int 类型
                 'type'=>'select',
-                'title'=>'状态',
+                'title'=> Yii::$service->page->translate->__('Status'),
                 'name'=>'status',
                 'columns_type' =>'int',  # int使用标准匹配， string使用模糊查询
                 'value'=> [					# select 类型的值
-                    Yii::$service->adminUser->adminUser->getActiveStatus() => '激活',
-                    Yii::$service->adminUser->adminUser->getDeleteStatus() => '关闭',
+                    Yii::$service->adminUser->adminUser->getActiveStatus() => Yii::$service->page->translate->__('Enable'),
+                    Yii::$service->adminUser->adminUser->getDeleteStatus() => Yii::$service->page->translate->__('Disable'),
                 ],
             ],
             [	# 字符串类型
                 'type'=>'inputtext',
-                'title'=>'用户名',
+                'title'=> Yii::$service->page->translate->__('User Name'),
                 'name'=>'username' ,
                 'columns_type' =>'string'
             ],
             [	# 字符串类型
                 'type'=>'inputtext',
-                'title'=>'员工编号',
+                'title'=>Yii::$service->page->translate->__('Worker No'),
                 'name'=>'code' ,
                 'columns_type' =>'string'
             ],
 
             [	# 字符串类型
                 'type'=>'inputtext',
-                'title'=>'邮箱',
+                'title'=>Yii::$service->page->translate->__('Email'),
                 'name'=>'email' ,
                 'columns_type' =>'string'
             ],
@@ -105,8 +105,8 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
                 'name'=> 'created_at_datetime',
                 'columns_type' =>'datetime',
                 'value'=>[
-                    'gte'=>'用户创建时间开始',
-                    'lt' =>'用户创建时间结束',
+                    'gte'=> Yii::$service->page->translate->__('Created Begin'),
+                    'lt' => Yii::$service->page->translate->__('Created End'),
                 ]
             ],
 
@@ -133,91 +133,53 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
             ],
             [
                 'orderField'	=> 'username',
-                'label'			=> '用户名称',
+                'label'			=> Yii::$service->page->translate->__('User Name'),
                 'width'			=> '110',
                 'align' 		=> 'center',
             ],
 
             [
                 'orderField'	=> 'person',
-                'label'			=> '姓名',
+                'label'			=> Yii::$service->page->translate->__('Name'),
                 'width'			=> '110',
                 'align' 		=> 'center',
             ],
             [
                 'orderField'	=> 'code',
-                'label'			=> '员工编号',
+                'label'			=> Yii::$service->page->translate->__('Worker No'),
                 'width'			=> '110',
                 'align' 		=> 'center',
             ],
-            /*
-            [
-                'orderField'	=> 'role',
-                'width'			=> '110',
-                'align' 		=> 'left',
-                'display'		=> AdminRole::getAdminRoleArr(),
-            ],
-            */
-
-
             [
                 'orderField'	=> 'email',
+                'label'			=> Yii::$service->page->translate->__('Email'),
                 'width'			=> '110',
                 'align' 		=> 'center',
             ],
             [
                 'orderField'	=> 'created_at_datetime',
-                //'label'			=> '用户名称',
+                'label'			=> Yii::$service->page->translate->__('Created At'),
                 'width'			=> '190',
                 'align' 		=> 'center',
                 //'convert'		=> ['datetime' =>'date'],
             ],
-
             [
                 'orderField'	=> 'updated_at_datetime',
-                //'label'			=> '用户名称',
+                'label'			=> Yii::$service->page->translate->__('Updated At'),
                 'width'			=> '190',
                 'align' 		=> 'center',
                 //'convert'		=> ['datetime' =>'date'],   # int  date datetime  显示的转换
             ],
-
-
-
             [
                 'orderField'	=> 'status',
-                //'label'			=> '用户名称',
+                'label'			=> Yii::$service->page->translate->__('Status'),
                 'width'			=> '60',
                 'align' 		=> 'center',
                 'display'		=> [       # 显示转换  ，譬如 值为1显示为激活，值为10显示为关闭
-                    '1'		=> '激活',
-                    '10'	=> '关闭',
+                    '1'		=> Yii::$service->page->translate->__('Enable'),
+                    '10'	=> Yii::$service->page->translate->__('Disable'),
                 ],
-
             ],
-
-
-
-            /*
-            [
-                'orderField'	=> 'allowance',
-                //'label'			=> '用户名称',
-                //'width'			=> '190',
-                'align' 		=> 'center',
-
-            ],
-
-
-            [
-                'orderField'	=> 'allowance_updated_at',
-                //'label'			=> '用户名称',
-                //'width'			=> '190',
-                'align' 		=> 'center',
-
-            ],
-            */
-
-
-
         ];
         return $table_th_bar ;
     }

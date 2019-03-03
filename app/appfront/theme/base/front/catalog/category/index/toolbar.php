@@ -7,17 +7,17 @@
  * @license http://www.fecshop.com/license/
  */
 ?>
-<?php   
-	$query_item 	= $parentThis['query_item'];
-	$product_page 	= $parentThis['product_page'];
+<?php
+$query_item 	= $parentThis['query_item'];
+$product_page 	= $parentThis['product_page'];
 ?>
 <div class="toolbar">
 	<div class="tb_le">
-		
+
 		<?php  $frontSort = $query_item['frontSort']; ?>
 		<?php if(is_array($frontSort) && !empty($frontSort)): ?>
 			<b><?=  Yii::$service->page->translate->__('Sort By'); ?>:</b>
-			<select class="product_sort">	
+			<select class="product_sort">
 				<?php foreach($frontSort as $np):   ?>
 					<?php $selected = $np['selected'] ? 'selected="selected"' : ''; ?>
 					<?php $url 		= $np['url'];  ?>
@@ -27,7 +27,7 @@
 		<?php endif; ?>
 		<?php  $frontNumPerPage = $query_item['frontNumPerPage']; ?>
 		<?php if(is_array($frontNumPerPage) && !empty($frontNumPerPage)): ?>
-			<select class="product_num_per_page">	
+			<select class="product_num_per_page">
 				<?php foreach($frontNumPerPage as $np):   ?>
 					<?php $selected = $np['selected'] ? 'selected="selected"' : ''; ?>
 					<?php $url 		= $np['url'];  ?>

@@ -9,6 +9,7 @@
 
 namespace fecshop\app\appadmin\modules\Catalog\helper;
 
+use Yii;
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
@@ -19,16 +20,16 @@ class Product
     public static function getStatusArr()
     {
         return [
-            1=>'激活',
-            2=>'关闭',
+            1 => Yii::$service->page->translate->__('Enable'),
+            2 => Yii::$service->page->translate->__('Disable'),
         ];
     }
 
     public static function getInStockArr()
     {
         return [
-            1=>'有货',
-            2=>'缺货',
+            1 => Yii::$service->page->translate->__('In stock'),
+            2 => Yii::$service->page->translate->__('out of stock'),
         ];
     }
 }

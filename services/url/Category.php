@@ -22,36 +22,40 @@ use yii\base\InvalidValueException;
 class Category extends Service
 {
     /**
-     * @property $strVal | String
+     * @param $strVal | String
      * 把属性值转换成url格式的字符串，用于生成url.
      */
     protected function actionAttrValConvertUrlStr($strVal)
     {
         if ($strVal) {
-            if (!preg_match('/^[A-Za-z0-9-_ &]+$/', $strVal)) {
-                throw new InvalidValueException('"'.$strVal .'":contain special str , you can only contain special string [A-Za-z0-9-_ &]');
-            }
-            $convert = $this->strUrlRelation();
-            foreach ($convert as $originStr => $nStr) {
-                $strVal = str_replace($originStr, $nStr, $strVal);
-            }
-
-            return $strVal;
+            return urlencode($strVal);
+            // 如果在其他url重写的需要，可以在这里添加一下字符串转换，添加后
+            // 函数actionUrlStrConvertAttrVal()也要做相应的转变
+            //if (!preg_match('/^[A-Za-z0-9-_ &]+$/', $strVal)) {
+            //    throw new InvalidValueException('"'.$strVal .'":contain special str , you can only contain special string [A-Za-z0-9-_ &]');
+            //}
+            //$convert = $this->strUrlRelation();
+            //foreach ($convert as $originStr => $nStr) {
+            //    $strVal = str_replace($originStr, $nStr, $strVal);
+            //}
+            //return $strVal;
         }
     }
 
     /**
-     * @property $urlStr | String
+     * @param $urlStr | String
      * 把url格式的字符串转换成属性值，用于解析url，得到相应的属性值
      */
     protected function actionUrlStrConvertAttrVal($urlStr)
     {
-        $convert = $this->strUrlRelation();
-        foreach ($convert as $originStr => $nStr) {
-            $urlStr = str_replace($nStr, $originStr, $urlStr);
-        }
-
-        return $urlStr;
+        return urldecode($urlStr);
+        // 如果在其他url重写的需要，可以在这里添加一下字符串转换，添加后
+        // 函数 actionAttrValConvertUrlStr()也要做相应的转变
+        //$convert = $this->strUrlRelation();
+        //foreach ($convert as $originStr => $nStr) {
+        //    $urlStr = str_replace($nStr, $originStr, $urlStr);
+        //}
+        //return $urlStr;
     }
 
     /**
@@ -67,10 +71,10 @@ class Category extends Service
 
     /**
      * 在分类侧栏点击过滤属性，得到选择这个属性的url.
-     * @property $attrUrlStr|string 属性的url处理后的字符串
-     * @property $val|string 属性对应的值。未url处理的值
-     * @property $p|string  在url中用来表示分页的参数，一般用p来标示。
-     * @property $pageBackToOne|bool 是否让p的页数回归第一页
+     * @param $attrUrlStr|string 属性的url处理后的字符串
+     * @param $val|string 属性对应的值。未url处理的值
+     * @param $p|string  在url中用来表示分页的参数，一般用p来标示。
+     * @param $pageBackToOne|bool 是否让p的页数回归第一页
      */
     protected function actionGetFilterChooseAttrUrl($attrUrlStr, $val, $p = 'p', $pageBackToOne = true)
     {
@@ -87,10 +91,9 @@ class Category extends Service
         }
 
         if ($currentRequestVal) {
-            $originAttrUrlStr = $attrUrlStr.'='.$currentRequestVal;
+            $originAttrUrlStr = $attrUrlStr . '=' . $this->attrValConvertUrlStr($currentRequestVal);
             $currentUrl = Yii::$service->url->getCurrentUrl();
             if ($originAttrUrlStr == $str) {
-                //return str_replace($originAttrUrlStr,$str,$currentUrl);
                 $url = $currentUrl;
                 if (strstr($currentUrl, '?'.$originAttrUrlStr.'&')) {
                     $url = str_replace('?'.$originAttrUrlStr.'&', '?', $currentUrl);
@@ -145,9 +148,9 @@ class Category extends Service
 
     /**
      * 得到排序的url.
-     * @property $arr|array sort的字段和值  dir的字段和值
-     * @property $p|string  在url中用来表示分页的参数，一般用p来标示。
-     * @property $pageBackToOne|bool 是否让p的页数回归第一页
+     * @param $arr|array sort的字段和值  dir的字段和值
+     * @param $p|string  在url中用来表示分页的参数，一般用p来标示。
+     * @param $pageBackToOne|bool 是否让p的页数回归第一页
      */
     protected function actionGetFilterSortAttrUrl($arr, $p = '', $pageBackToOne = true)
     {

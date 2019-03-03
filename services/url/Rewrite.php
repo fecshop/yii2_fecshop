@@ -51,7 +51,7 @@ class Rewrite extends Service
     }
 
     /**
-     * @property $urlKey | string
+     * @param $urlKey | string
      * 通过重写后的urlkey字符串，去url_rewrite表中查询，找到重写前的url字符串。
      */
     protected function actionGetOriginUrl($urlKey)
@@ -80,7 +80,7 @@ class Rewrite extends Service
     //}
 
     /**
-     * @property $filter|array
+     * @param $filter|array
      * get artile collection by $filter
      * example filter:
      * [
@@ -101,8 +101,8 @@ class Rewrite extends Service
     }
 
     /**
-     * @property $one|array , save one data .
-     * @property $originUrlKey|string , article origin url key.
+     * @param $one|array , save one data .
+     * @param $originUrlKey|string , article origin url key.
      * save $data to cms model,then,add url rewrite info to system service urlrewrite.
      */
     protected function actionSave($one)
@@ -111,7 +111,7 @@ class Rewrite extends Service
     }
 
     /**
-     * @property $ids | Array or String or Int
+     * @param $ids | Array or String or Int
      * 删除相应的url rewrite 记录
      */
     protected function actionRemove($ids)
@@ -120,7 +120,7 @@ class Rewrite extends Service
     }
 
     /**
-     * @property $time | Int
+     * @param $time | Int
      * 根据updated_at 更新时间，删除相应的url rewrite 记录
      */
     protected function actionRemoveByUpdatedAt($time)

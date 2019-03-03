@@ -28,28 +28,14 @@ class AppserverController extends Controller
         // 如果用户登录，会在header中传递access-token，这个函数就会登录用户。
         Yii::$service->customer->loginByAccessToken();
     }
-    
+
     public function behaviors()
     {
-        $fecshop_uuid = Yii::$service->session->fecshop_uuid;
-        $cors_allow_headers = [$fecshop_uuid,'fecshop-lang','fecshop-currency','access-token'];
         $behaviors = parent::behaviors();
         $behaviors['contentNegotiator']['formats']['text/html'] = Response::FORMAT_JSON;
         $behaviors["corsFilter"] = [
             'class' => \yii\filters\Cors::className(),
-            'cors' => [
-                // restrict access to
-                'Origin' => ['*'],
-                'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
-                // Allow only POST and PUT methods
-                'Access-Control-Request-Headers' => $cors_allow_headers,
-                // Allow only headers 'X-Wsse'
-                //'Access-Control-Allow-Credentials' => null,
-                // Allow OPTIONS caching
-                'Access-Control-Max-Age' => 86400,
-                // Allow the X-Pagination-Current-Page header to be exposed to the browser.
-                'Access-Control-Expose-Headers' => $cors_allow_headers,
-            ],
+            'cors' => Yii::$service->helper->appserver->getCors(),
         ];
         return $behaviors;
     }

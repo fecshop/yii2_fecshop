@@ -151,10 +151,10 @@ div.onestepcheckout-threecolumns div.onestepcheckout-column-left {
 }
 
 div.onestepcheckout-threecolumns div.onestepcheckout-column-middle {
-    width: 33%;
+    width: 31%;
     float: left;
     margin-right: 0px;
-    padding-right: 0px;
+    padding-right: 30px;
     background: transparent url(images/line-gradient.gif) no-repeat scroll
         right top;
     padding-top: 15px;

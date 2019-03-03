@@ -73,7 +73,7 @@ class Newsletter extends Service
     }
 
     /**
-     * @property $emailAddress | String
+     * @param $emailAddress | String
      * @return bool
      *              检查邮件是否之前被订阅过
      */
@@ -89,7 +89,7 @@ class Newsletter extends Service
     }
 
     /**
-     * @property $emailAddress | String
+     * @param $emailAddress | String
      * @return bool
      *              订阅邮件
      */

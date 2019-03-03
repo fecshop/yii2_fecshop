@@ -18,7 +18,7 @@ use Yii;
  */
 class ContactsController extends AppfrontController
 {
-    //protected $_registerSuccessRedirectUrlKey = 'customer/account';
+    public $enableCsrfValidation = true;
 
     public function init()
     {

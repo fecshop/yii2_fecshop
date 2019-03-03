@@ -17,6 +17,21 @@ return [
          * 模块内部的params配置。
          */
         'params'=> [
+            'login_breadcrumbs' => true,
+            'register_breadcrumbs' => true,
+            'forgot_password_breadcrumbs' => true,
+            'forgot_reset_password_breadcrumbs' => true,
+            'forgot_reset_password_success_breadcrumbs' => true,
+            'forgot_reset_password_submit_breadcrumbs' => true,
+            
+            'account_center_breadcrumbs' => true,
+            'account_information_breadcrumbs' => true,
+            'customer_address_breadcrumbs' => true,
+            'customer_address_edit_breadcrumbs' => true,
+            'customer_order_breadcrumbs' => true,
+            'customer_order_info_breadcrumbs' => true,
+            'customer_product_review_breadcrumbs' => true,
+            'customer_product_favorite_breadcrumbs' => true,
             'register' => [
                 // 账号注册成功后，是否自动登录
                 'successAutoLogin' => true,

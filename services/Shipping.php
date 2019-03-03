@@ -85,9 +85,9 @@ class Shipping extends Service
     }
 
     /**
-     * @property $long | Float ,长度，单位cm
-     * @property $width | Float ,宽度，单位cm
-     * @property $high | Float ,高度，单位cm
+     * @param $long | Float ,长度，单位cm
+     * @param $width | Float ,宽度，单位cm
+     * @param $high | Float ,高度，单位cm
      * @return 体积重，单位Kg
      */
     public function getVolumeWeight($long, $width, $high)
@@ -97,9 +97,9 @@ class Shipping extends Service
     }
 
     /**
-     * @property $long | Float ,长度，单位cm
-     * @property $width | Float ,宽度，单位cm
-     * @property $high | Float ,高度，单位cm
+     * @param $long | Float ,长度，单位cm
+     * @param $width | Float ,宽度，单位cm
+     * @param $high | Float ,高度，单位cm
      * @return 体积体积，单位cm
      */
     public function getVolume($long, $width, $high)
@@ -109,7 +109,7 @@ class Shipping extends Service
     
     /**
      * @proeprty $shipping_method 货运方式的key
-     * @property $shippingConfig Array （MIX），配置信息。
+     * @param $shippingConfig Array （MIX），配置信息。
      * @proeprty $weight 产品的总重量
      * @proeprty $country 货运国家
      * @proeprty $region  货运省份
@@ -223,7 +223,7 @@ class Shipping extends Service
     }
     
     /**
-     * @property $shipping_method | String
+     * @param $shipping_method | String
      * @return 得到货运方式的名字
      */
     protected function actionGetShippingLabelByMethod($shipping_method)
@@ -234,7 +234,7 @@ class Shipping extends Service
     }
     
     /**
-     * @property $shipping_method | String
+     * @param $shipping_method | String
      * @return bool 发货方式
      * 判断前端传递的shipping method是否有效（做安全性验证）
      */
@@ -249,9 +249,9 @@ class Shipping extends Service
     }
     
     /**
-     * @property $countryCode | String
-     * @property $region | String
-     * @property weight | Float
+     * @param $countryCode | String
+     * @param $region | String
+     * @param weight | Float
      * 将可用的shipping method数组的第一个取出来作为默认的shipping。
      */
     public function getDefaultShippingMethod($countryCode, $region, $weight)
@@ -263,10 +263,10 @@ class Shipping extends Service
     }
     
     /**
-     * @property $country | String 国家 如果没有国家，则传递空字符串
-     * @property $region | String 省市 如果没有省市，则传递空字符串
-     * @property $shipping_method | String 货运方式
-     * @property $weight | Float ，重量，如果某些物流存在重量限制，那么，重量不满足的将会被剔除
+     * @param $country | String 国家 如果没有国家，则传递空字符串
+     * @param $region | String 省市 如果没有省市，则传递空字符串
+     * @param $shipping_method | String 货运方式
+     * @param $weight | Float ，重量，如果某些物流存在重量限制，那么，重量不满足的将会被剔除
      * @return   $availableShipping | Array ，可用的shipping method
      * 在全部的shipping method，存在1.国家省市限制，2.重量限制
      * 不符合条件的被剔除，剩下的就是可用的shipping method
@@ -312,7 +312,7 @@ class Shipping extends Service
     }
     
     /**
-     * @property $shipping_method | String 货运方式的key
+     * @param $shipping_method | String 货运方式的key
      * @return array ，通过csv表格，得到对应的运费数组信息
      * 内部函数，将csv表格中的shipping数据读出来
      * 返回的数据格式为：
@@ -363,8 +363,8 @@ class Shipping extends Service
     }
     
     /**
-     * @property $countryLimit | Array 配置中的国家限制数组
-     * @property $countryCode | String 判断的国家code
+     * @param $countryLimit | Array 配置中的国家限制数组
+     * @param $countryCode | String 判断的国家code
      * 判断 $countryCode 是否存在国家方面的限制
      */
     protected function isCountryLimit($countryLimit, $countryCode)
@@ -388,9 +388,9 @@ class Shipping extends Service
     }
     
     /**
-     * @property $shippingConfig | Array ， shipping method对应的配置
-     * @property $countryCode | String 国家简码
-     * @property $region | String 省市
+     * @param $shippingConfig | Array ， shipping method对应的配置
+     * @param $countryCode | String 国家简码
+     * @param $region | String 省市
      * 根据csv content里面的配置，判断是否存在国家 省市限制
      */
     protected function isCsvCountryReginLimit($shippingConfig, $countryCode, $region)
@@ -415,8 +415,8 @@ class Shipping extends Service
     }
     
     /**
-     * @property $availableShipping | Array  ，shipping method 数组
-     * @property $weight | Float 重量
+     * @param $availableShipping | Array  ，shipping method 数组
+     * @param $weight | Float 重量
      * @return Array
      * 返回满足重量限制的shipping method
      */

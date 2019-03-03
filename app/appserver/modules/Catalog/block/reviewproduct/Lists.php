@@ -42,7 +42,7 @@ class Lists
         $reviewHelper::initReviewConfig();
     }
     /**
-     * @property $countTotal | Int
+     * @param $countTotal | Int
      * 得到toolbar的分页部分
      */
     protected function getProductPage($countTotal)
@@ -130,7 +130,7 @@ class Lists
         }
     }
     /**
-     * @property $spu  | String
+     * @param $spu  | String
      * 通过spu得到产品评论
      */
     public function getReviewsBySpu($spu)

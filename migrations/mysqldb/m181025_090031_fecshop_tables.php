@@ -23,13 +23,13 @@ class m181025_090031_fecshop_tables extends Migration
 
             "
             CREATE TABLE IF NOT EXISTS `admin_url_key` (
-              `id` int(15) NOT NULL AUTO_INCREMENT,
+              `id` int(11) NOT NULL AUTO_INCREMENT,
               `name` varchar(150) DEFAULT NULL COMMENT 'url key 的名称',
               `tag` varchar(40) NOT NULL COMMENT 'tag名称，在同一个菜单里面的url_key可以设置成同一个Tag',
-              `tag_sort_order` int(10) DEFAULT '0',
+              `tag_sort_order` int(11) DEFAULT '0',
               `url_key` varchar(255) NOT NULL COMMENT '资源，可以是url_key, 也可以是某个字符串标示',
-              `created_at` int(20) DEFAULT NULL,
-              `updated_at` int(20) DEFAULT NULL,
+              `created_at` int(11) DEFAULT NULL,
+              `updated_at` int(11) DEFAULT NULL,
               `can_delete` int(5) DEFAULT '2' COMMENT '是否可以被删除，1代表不可以删除，2代表可以删除',
               PRIMARY KEY (`id`)
             ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=71 ;
@@ -101,18 +101,18 @@ class m181025_090031_fecshop_tables extends Migration
                 (62, '保存分类', 'catalog_category_manager', 4, 'catalog/category/save', 1540782923, 1540782923, 1),
                 (63, '查看所有产品（默认仅可以查看自己创建的产品）', 'catalog_product_info_manager', 8, 'catalog_product_view_all', 1541061023, 1541065009, 1),
                 (64, '编辑查看所有产品（默认仅可以编辑自己创建的产品）', 'catalog_product_info_manager', 9, 'catalog_product_edit_all', 1541064880, 1541124984, 1),
-                (66, '删除所有产品（默认仅可以删除izji创建的产品）', 'catalog_product_info_manager', 15, 'catalog_product_remove_all', 1541064963, 1541125092, 1),
+                (66, '删除所有产品（默认仅可以删除自己创建的产品）', 'catalog_product_info_manager', 15, 'catalog_product_remove_all', 1541064963, 1541125092, 1),
                 (70, '保存所有产品（默认仅可以保存自己创建的产品）', 'catalog_product_info_manager', 10, 'catalog_product_save_all', 1541125009, 1541125031, 1);
 
             ",
 
             "
             CREATE TABLE IF NOT EXISTS `admin_role_url_key` (
-              `id` int(20) NOT NULL AUTO_INCREMENT,
-              `role_id` int(20) NOT NULL,
-              `url_key_id` int(20) NOT NULL,
-              `created_at` int(20) DEFAULT NULL,
-              `updated_at` int(20) DEFAULT NULL,
+              `id` int(11) NOT NULL AUTO_INCREMENT,
+              `role_id` int(11) NOT NULL,
+              `url_key_id` int(11) NOT NULL,
+              `created_at` int(11) DEFAULT NULL,
+              `updated_at` int(11) DEFAULT NULL,
               PRIMARY KEY (`id`)
             ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2029 ;
             ",

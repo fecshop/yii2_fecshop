@@ -20,25 +20,25 @@ class AccountController extends AppfrontController
 {
     //protected $_registerSuccessRedirectUrlKey = 'customer/account';
 
-    public $enableCsrfValidation = false;
+    public $enableCsrfValidation = true;
 
     public function init()
     {
         parent::init();
     }
 
-        /**
-         * 账户中心.
-         */
-        public function actionIndex()
-        {
-            if (Yii::$app->user->isGuest) {
-                return Yii::$service->url->redirectByUrlKey('customer/account/login');
-            }
-            $data = $this->getBlock()->getLastData();
-
-            return $this->render($this->action->id, $data);
+    /**
+     * 账户中心.
+     */
+    public function actionIndex()
+    {
+        if (Yii::$app->user->isGuest) {
+            return Yii::$service->url->redirectByUrlKey('customer/account/login');
         }
+        $data = $this->getBlock()->getLastData();
+
+        return $this->render($this->action->id, $data);
+    }
 
    /**
     * 登录.

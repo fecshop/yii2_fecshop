@@ -76,7 +76,11 @@ class Store extends Service
         }
     }
 
-    // 得到当前入口的名字
+
+    /**
+     * 得到当前入口的名字
+     * @return mixed
+     */
     public function getCurrentAppName()
     {
         return Yii::$app->params['appName'];
@@ -87,16 +91,17 @@ class Store extends Service
      *  if you not config this ,default class property will be set.
      *  if current store_code is not config , InvalidValueException will be throw.
      *	class property $currentStore will be set value $store_code.
+     * @param $app
      */
     protected function actionBootstrap($app)
     {
         $host = explode('//', $app->getHomeUrl());
         $stores = $this->stores;
-        $init_compelte = 0;
+        $init_complete = 0;
         if (is_array($stores) && !empty($stores)) {
             foreach ($stores as $store_code => $store) {
                 if ($host[1] == $store_code) {
-                    $this->html5DevideCheckAndRedirect($store_code, $store);
+                    $this->html5DeviceCheckAndRedirect($store_code, $store);
                     Yii::$service->store->currentStore = $store_code;
                     $this->store = $store;
                     if (isset($store['language']) && !empty($store['language'])) {
@@ -126,9 +131,9 @@ class Store extends Service
                     }
                     Yii::$service->page->currency->initCurrency($currency);
                     /**
-                     * current domian is config is store config.
+                     * current domain is config is store config.
                      */
-                    $init_compelte = 1;
+                    $init_complete = 1;
                     $this->thirdLogin = $store['thirdLogin'];
                     /**
                      * appserver 部分
@@ -160,18 +165,18 @@ class Store extends Service
                 }
             }
         }
-        if (!$init_compelte) {
+        if (!$init_complete) {
             throw new InvalidValueException('this domain is not config in store component');
         }
     }
 
     /**
-     * @property $store_code | String
-     * @property $store | Array
-     * mobile devide url redirect.
+     * @param $store_code | String
+     * @param $store | Array
+     * mobile device url redirect.
      * pc端自动跳转到html5端的检测
      */
-    protected function html5DevideCheckAndRedirect($store_code, $store)
+    protected function html5DeviceCheckAndRedirect($store_code, $store)
     {
         if (!isset($store['mobile'])) {
             return;
@@ -203,8 +208,8 @@ class Store extends Service
     }
 
     /**
-     * @property $store_code | String
-     * @property $redirectDomain | String
+     * @param $store_code | String
+     * @param $redirectDomain | String
      * 检测，html5端跳转检测
      */
     protected function redirectAppHtml5Mobile($store_code, $redirectDomain, $mobile_https)
@@ -259,7 +264,7 @@ class Store extends Service
     }
 
     /**
-     * @property $urlPath | String，跳转到vue端的url Path
+     * @param $urlPath | String，跳转到vue端的url Path
      * @return boolean, 生成vue端的url，然后进行跳转。
      */
     public function redirectAppServerMobile($urlPath)
@@ -281,8 +286,8 @@ class Store extends Service
     }
 
     /**
-     * @property $attrVal|array , language attr array , like   ['title_en' => 'xxxx','title_fr' => 'yyyy']
-     * @property $attrName|String, attribute name ,like: title ,description.
+     * @param $attrVal|array , language attr array , like   ['title_en' => 'xxxx','title_fr' => 'yyyy']
+     * @param $attrName|String, attribute name ,like: title ,description.
      * if  object or array  attribute is a language attribute, you can get current
      * language value by this function.
      * if lang attribute in current store language is empty , default language attribute will be return.
@@ -311,3 +316,4 @@ class Store extends Service
         return $topLang;
     }
 }
+

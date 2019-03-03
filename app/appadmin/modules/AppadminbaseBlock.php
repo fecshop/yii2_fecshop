@@ -10,6 +10,7 @@
 namespace fecshop\app\appadmin\modules;
 
 use fec\helpers\CUrl;
+use fec\helpers\CRequest;
 use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockInterface;
 use Yii;
 use yii\base\BaseObject;
@@ -81,7 +82,7 @@ class AppadminbaseBlock extends BaseObject
             echo  'Managere  must implements fecshop\app\appadmin\interfaces\base\AppadminbaseBlockInterface';
             exit;
         }
-        $param = \fec\helpers\CRequest::param();
+        $param = CRequest::param();
         $this->_primaryKey = $this->_service->getPrimaryKey();
         if (empty($param['pageNum'])) {
             $param['pageNum'] = $this->_pageNum;
@@ -123,7 +124,7 @@ class AppadminbaseBlock extends BaseObject
     }
 
     /**
-     * @property $data|Array, it was return by defined function getSearchArr();
+     * @param $data|Array, it was return by defined function getSearchArr();
      * generate search section html,
      */
     public function getSearchBarHtml($data)
@@ -154,9 +155,9 @@ class AppadminbaseBlock extends BaseObject
     }
 
     /**
-     * @property $name|string , html code select name.
-     * @property $data|Array,  select options key and value.
-     * @property $title|string , select title , as select default display.
+     * @param $name|string , html code select name.
+     * @param $data|Array,  select options key and value.
+     * @param $title|string , select title , as select default display.
      * generate html select code .
      * @return String, select html code.
      */
@@ -185,10 +186,10 @@ class AppadminbaseBlock extends BaseObject
     }
 
     /**
-     * @property $name|string , html code select name.
-     * @property $data|Array,  select options key and value.
-     * @property $title|string , select title , as select default display.
-     * @property $id|int , use for chosen select config, if you use this function muilt times , $id must be unique in each time
+     * @param $name|string , html code select name.
+     * @param $data|Array,  select options key and value.
+     * @param $title|string , select title , as select default display.
+     * @param $id|int , use for chosen select config, if you use this function muilt times , $id must be unique in each time
      * for example ,first time use this function set $id = 1, next time ,you can set $id=2,because is must be unique in front html.
      * generate html select code .
      * @return String, chosen select html code.
@@ -242,7 +243,7 @@ class AppadminbaseBlock extends BaseObject
     }
 
     /**
-     * @property $data|array
+     * @param $data|array
      */
     public function getDbSearchBarHtml($data)
     {
@@ -299,7 +300,7 @@ class AppadminbaseBlock extends BaseObject
 				<div class="subBar">
 					<ul>
 						<li><div class="buttonActive"><div class="buttonContent"><button type="submit">
-						'.Yii::$service->page->translate->__('search').'
+						'.Yii::$service->page->translate->__('Search').'
 						</button></div></div></li>
 						<!-- <li><a class="button" href="#" target="dialog" mask="true" title="查询框"><span>高级检索</span></a></li> -->
 					</ul>
@@ -320,7 +321,7 @@ class AppadminbaseBlock extends BaseObject
     }
 
     /**
-     * @property $searchArr|Array.
+     * @param $searchArr|Array.
      * generate where Array by  $this->_param and $searchArr.
      * foreach $searchArr , check each one if it is exist in this->_param.
      */
@@ -410,10 +411,10 @@ class AppadminbaseBlock extends BaseObject
         <li><a class="icon csvdownload"   href="'.$csvUrl.'" target="dwzExport" targetType="navTab" title="实要导出这些记录吗?"><span>导出EXCEL</span></a></li>
         */
         return '<ul class="toolBar">
-					<li><a class="add"   href="'.$this->_editUrl.'"  target="dialog" height="580" width="1000" drawable="true" mask="true"><span>' . Yii::$service->page->translate->__('Add') . '</span></a></li>
+					<li><a class="add"   href="'.$this->_editUrl.'"  target="dialog" height="680" width="1200" drawable="true" mask="true"><span>' . Yii::$service->page->translate->__('Add') . '</span></a></li>
 
-					<li><a target="dialog" height="580" width="1000" drawable="true" mask="true" class="edit" href="'.$this->_editUrl.'?'.$this->_primaryKey.'={sid_user}" ><span>' . Yii::$service->page->translate->__('Update') . '</span></a></li>
-					<li><a title="' . Yii::$service->page->translate->__('Are you sure you want to delete these records?') . '" target="selectedTodo" rel="'.$this->_primaryKey.'s" postType="string" href="'.$this->_deleteUrl.'" class="delete"><span>' . Yii::$service->page->translate->__('batch deletion') . '</span></a></li>
+					<li><a target="dialog" height="680" width="1200" drawable="true" mask="true" class="edit" href="'.$this->_editUrl.'?'.$this->_primaryKey.'={sid_user}" ><span>' . Yii::$service->page->translate->__('Update') . '</span></a></li>
+					<li><a  csrfName="' .CRequest::getCsrfName(). '" csrfVal="' .CRequest::getCsrfValue(). '" title="' . Yii::$service->page->translate->__('Are you sure you want to delete these records?') . '" target="selectedTodo" rel="'.$this->_primaryKey.'s" postType="string" href="'.$this->_deleteUrl.'" class="delete"><span>' . Yii::$service->page->translate->__('Batch Delete') . '</span></a></li>
 				</ul>';
     }
 
@@ -423,7 +424,7 @@ class AppadminbaseBlock extends BaseObject
     public function getToolBar($numCount, $pageNum, $numPerPage)
     {
         return    '<div class="pages">
-					<span>' . Yii::$service->page->translate->__('show') . '</span>
+					<span>' . Yii::$service->page->translate->__('Show') . '</span>
 					<select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
 						<option '.($numPerPage == 2 ? 'selected' : '').' value="2">2</option>
 						<option '.($numPerPage == 6 ? 'selected' : '').' value="6">6</option>
@@ -432,7 +433,7 @@ class AppadminbaseBlock extends BaseObject
 						<option '.($numPerPage == 100 ? 'selected' : '').'  value="100">100</option>
 						<option '.($numPerPage == 200 ? 'selected' : '').'  value="200">200</option>
 					</select>
-					<span>' . Yii::$service->page->translate->__('Line, total {numCount} line', ['numCount' => $numCount]) . '</span>
+					<span>' . Yii::$service->page->translate->__('Line, Total {numCount} Line', ['numCount' => $numCount]) . '</span>
 				</div>
 				<div class="pagination" targetType="navTab" totalCount="'.$numCount.'" numPerPage="'.$numPerPage.'" pageNumShown="10" currentPage="'.$pageNum.'"></div>
 				';
@@ -519,13 +520,13 @@ class AppadminbaseBlock extends BaseObject
 
     public function getTableTbodyHtml($data)
     {
-        $fileds = $this->getTableFieldArr();
-        $str .= '';
-        $csrfString = \fec\helpers\CRequest::getCsrfString();
+        $fields = $this->getTableFieldArr();
+        $str = '';
+        $csrfString = CRequest::getCsrfString();
         foreach ($data as $one) {
             $str .= '<tr target="sid_user" rel="'.$one[$this->_primaryKey].'">';
             $str .= '<td><input name="'.$this->_primaryKey.'s" value="'.$one[$this->_primaryKey].'" type="checkbox"></td>';
-            foreach ($fileds as $field) {
+            foreach ($fields as $field) {
                 $orderField = $field['orderField'];
                 $display = $field['display'];
                 $val = $one[$orderField];
@@ -541,13 +542,13 @@ class AppadminbaseBlock extends BaseObject
                         foreach ($convert as $origin =>$to) {
                             if (strstr($origin, 'mongodate')) {
                                 if (isset($val->sec)) {
-                                    $timestramp = $val->sec;
+                                    $timestamp = $val->sec;
                                     if ($to == 'date') {
-                                        $val = date('Y-m-d', $timestramp);
+                                        $val = date('Y-m-d', $timestamp);
                                     } elseif ($to == 'datetime') {
-                                        $val = date('Y-m-d H:i:s', $timestramp);
+                                        $val = date('Y-m-d H:i:s', $timestamp);
                                     } elseif ($to == 'int') {
-                                        $val = $timestramp;
+                                        $val = $timestamp;
                                     }
                                     $display_title = $val;
                                 }
@@ -585,8 +586,8 @@ class AppadminbaseBlock extends BaseObject
                 $str .= '<td><span title="'.$display_title.'">'.$val.'</span></td>';
             }
             $str .= '<td>
-						<a title="' . Yii::$service->page->translate->__('search') . '编辑" target="dialog" class="btnEdit" mask="true" drawable="true" width="1000" height="580" href="'.$this->_editUrl.'?'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" >' . Yii::$service->page->translate->__('search') . '编辑</a>
-						<a title="' . Yii::$service->page->translate->__('search') . '删除" target="ajaxTodo" href="'.$this->_deleteUrl.'?'.$csrfString.'&'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" class="btnDel">' . Yii::$service->page->translate->__('search') . '删除</a>
+						<a title="' . Yii::$service->page->translate->__('Edit') . '" target="dialog" class="btnEdit" mask="true" drawable="true" width="1200" height="680" href="'.$this->_editUrl.'?'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" ><i class="fa fa-pencil"></i></a>
+						<a title="' . Yii::$service->page->translate->__('Delete') . '" target="ajaxTodo" href="'.$this->_deleteUrl.'?'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" class="btnDel"  csrfName="' .CRequest::getCsrfName(). '" csrfVal="' .CRequest::getCsrfValue(). '"  ><i class="fa fa-trash-o"></i></a>
 					</td>';
             $str .= '</tr>';
         }

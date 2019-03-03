@@ -59,9 +59,9 @@ class Appapi extends Service
     public $account_no_login_or_login_token_timeout       = 1100003; // 登录：账户的token已经过期,或者没有登录
     
     /**
-     * @property $code | String 状态码
-     * @property $data | 混合状态，可以是数字，数组等格式，用于做返回给前端的数组。
-     * @property $message | String ，选填，如果不填写，则使用  函数 返回的内容作为message
+     * @param $code | String 状态码
+     * @param $data | 混合状态，可以是数字，数组等格式，用于做返回给前端的数组。
+     * @param $message | String ，选填，如果不填写，则使用  函数 返回的内容作为message
      */
     public function getResponseData($code, $data, $message = '')
     {
@@ -86,7 +86,7 @@ class Appapi extends Service
     }
     
     /**
-     * @property $code | String ，状态码
+     * @param $code | String ，状态码
      * 得到 code 对应 message的数组
      */
     public function getMessageByCode($code)

@@ -93,7 +93,7 @@ class RoleUrlKey extends Service
     }
 
     /**
-     * @property $one|array
+     * @param $one|array
      * save $data to cms model,then,add url rewrite info to system service urlrewrite.
      */
     public function save($one)
@@ -101,14 +101,14 @@ class RoleUrlKey extends Service
         $currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
         $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
         if (!($this->validateUrlKeyRoleId($one))) {
-            Yii::$service->helper->errors->add('url key 存在，您必须定义一个唯一的identify ');
+            Yii::$service->helper->errors->add('The url key && role id  exists, you must define a unique url key && role id');
 
             return;
         }
         if ($primaryVal) {
             $model = $this->_model->findOne($primaryVal);
             if (!$model) {
-                Yii::$service->helper->errors->add('static block '.$this->getPrimaryKey().' is not exist');
+                Yii::$service->helper->errors->add('Role Url Key {primaryKey} is not exist', ['primaryKey' => $this->getPrimaryKey()]);
 
                 return;
             }

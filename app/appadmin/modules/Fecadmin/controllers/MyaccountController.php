@@ -17,7 +17,7 @@ use fecshop\app\appadmin\modules\AppadminController;
  */
 class MyaccountController extends AppadminController
 {
-	public $enableCsrfValidation = false;
+	public $enableCsrfValidation = true;
     public $blockNamespace = 'fecshop\\app\\appadmin\\modules\\Fecadmin\\block';
     
     # 我的账户

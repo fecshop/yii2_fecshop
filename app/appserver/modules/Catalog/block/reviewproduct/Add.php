@@ -101,7 +101,7 @@ class Add
         return $responseData;
     }
     /**
-     * @property $editForm | Array
+     * @param $editForm | Array
      * @return boolean ，保存评论信息
      */
     public function saveReview($editForm)
@@ -121,7 +121,7 @@ class Add
         }
     }
     /**
-     * @property $product | String Or Object
+     * @param $product | String Or Object
      * 得到产品的价格信息
      */
     protected function getProductPriceInfo($product)

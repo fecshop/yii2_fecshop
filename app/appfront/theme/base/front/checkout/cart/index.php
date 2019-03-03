@@ -9,6 +9,7 @@
 ?>
 <?php
 use fecshop\app\appfront\helper\Format;
+use fec\helpers\CRequest;
 ?>
 <div class="main container one-column">
 	<div class="col-main">
@@ -86,7 +87,7 @@ use fecshop\app\appfront\helper\Format;
 										<ul>
 											<?php foreach($product_one['custom_option_info'] as $label => $val):  ?>
 												
-												<li><?= Yii::$service->page->translate->__(ucwords($label).':') ?><?= Yii::$service->page->translate->__($val) ?> </li>
+												<li><?= Yii::$service->page->translate->__(ucwords($label)).':' ?><?= Yii::$service->page->translate->__($val) ?> </li>
 												
 											<?php endforeach;  ?>
 										</ul>
@@ -284,6 +285,8 @@ use fecshop\app\appfront\helper\Format;
 <script>
 	// add to cart js	
 <?php $this->beginBlock('changeCartInfo') ?>
+csrfName = "<?= CRequest::getCsrfName() ?>";
+csrfVal = "<?= CRequest::getCsrfValue() ?>";
 $(document).ready(function(){
     // set select all checkbox
     selectall = "<?= Yii::$app->request->get('selectall') ?>";
@@ -315,11 +318,13 @@ $(document).ready(function(){
 				item_id:$item_id,
 				up_type:"less_one"
 			};
+            $data[csrfName] = csrfVal;
+            
 			jQuery.ajax({
 				async:true,
 				timeout: 6000,
 				dataType: 'json', 
-				type:'get',
+				type:'post',
 				data: $data,
 				url:updateCartInfoUrl,
 				success:function(data, textStatus){ 
@@ -338,11 +343,13 @@ $(document).ready(function(){
 			item_id:$item_id,
 			up_type:"add_one"
 		};
+        $data[csrfName] = csrfVal;
+        
 		$.ajax({
 			async:true,
 			timeout: 6000,
 			dataType: 'json', 
-			type:'get',
+			type:'post',
 			data: $data,
 			url:updateCartInfoUrl,
 			success:function(data, textStatus){ 
@@ -362,11 +369,13 @@ $(document).ready(function(){
 			item_id:$item_id,
 			up_type:"remove"
 		};
+        $data[csrfName] = csrfVal;
+        
 		$.ajax({
 			async:true,
 			timeout: 6000,
 			dataType: 'json', 
-			type:'get',
+			type:'post',
 			data: $data,
 			url:updateCartInfoUrl,
 			success:function(data, textStatus){ 
@@ -387,11 +396,13 @@ $(document).ready(function(){
 			item_id:$item_id,
 			checked:checked
 		};
+        $data[csrfName] = csrfVal;
+        
 		$.ajax({
 			async:true,
 			timeout: 6000,
 			dataType: 'json', 
-			type:'get',
+			type:'post',
 			data: $data,
 			url:selectOneProductUrl,
 			success:function(data, textStatus){ 
@@ -410,12 +421,14 @@ $(document).ready(function(){
 		$data = {
 			checked:checked
 		};
+        $data[csrfName] = csrfVal;
+        
         selectCurrentUrl = currentUrl + '?selectall=' + checked;
 		$.ajax({
 			async:true,
 			timeout: 6000,
 			dataType: 'json', 
-			type:'get',
+			type:'post',
 			data: $data,
 			url:selectAllProductUrl,
 			success:function(data, textStatus){ 
@@ -437,15 +450,17 @@ $(document).ready(function(){
 			coupon_url = "<?=  Yii::$service->url->getUrl('checkout/cart/cancelcoupon'); ?>";
 		}
 		if(!coupon_code){
-			alert("coupon can not empty!");
+			//alert("coupon can not empty!");
 		}
+        $data = {"coupon_code":coupon_code};
+        $data[csrfName] = csrfVal;
 		//coupon_url = $("#discount-coupon-form").attr("action");
 		$.ajax({
 			async:true,
 			timeout: 6000,
 			dataType: 'json', 
-			type:'post',
-			data: {"coupon_code":coupon_code},
+			type: 'post',
+			data: $data,
 			url:coupon_url,
 			success:function(data, textStatus){ 
 				if(data.status == 'success'){
@@ -458,7 +473,6 @@ $(document).ready(function(){
 			},
 			error:function (XMLHttpRequest, textStatus, errorThrown){}
 		});
-			
 		
 	});
 	

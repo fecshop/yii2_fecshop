@@ -34,11 +34,11 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
     public function getLastData()
     {
         return [
-            'editBar'    => $this->getEditBar(),
-            'review'    => $this->_one,
-            'textareas'    => $this->_textareas,
-            'lang_attr'    => $this->_lang_attr,
-            'saveUrl'    => $this->_saveUrl,
+            'editBar'     => $this->getEditBar(),
+            'review'      => $this->_one,
+            'textareas'  => $this->_textareas,
+            'lang_attr'   => $this->_lang_attr,
+            'saveUrl'     => $this->_saveUrl,
         ];
     }
 
@@ -55,34 +55,16 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
 
         return [
             [
-                'label'=>'Spu',
-                'name'=>'product_spu',
-                'display'=>[
-                    'type' => 'inputString',
-                ],
-                'require' => 1,
-            ],
-
-            [
-                'label'=>'产品ID',
-                'name'=>'product_id',
-                'display'=>[
-                    'type' => 'inputString',
-                ],
-                'require' => 1,
-            ],
-
-            [
-                'label'=>'评星',
-                'name'=>'rate_star',
-                'display'=>[
+                'label' => Yii::$service->page->translate->__('Rate Star'),
+                'name' => 'rate_star',
+                'display' => [
                     'type' => 'select',
                     'data' => [
-                        1    => '1星',
-                        2    => '2星',
-                        3    => '3星',
-                        4    => '4星',
-                        5    => '5星',
+                        1    => Yii::$service->page->translate->__('1 Star'),
+                        2    => Yii::$service->page->translate->__('2 Star'),
+                        3    => Yii::$service->page->translate->__('3 Star'),
+                        4    => Yii::$service->page->translate->__('4 Star'),
+                        5    => Yii::$service->page->translate->__('5 Star'),
                     ],
                 ],
                 'require' => 1,
@@ -90,8 +72,17 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
             ],
 
             [
-                'label'=>'评论人姓名',
-                'name'=>'name',
+                'label' => Yii::$service->page->translate->__('Review Person'),
+                'name' => 'name',
+                'display' => [
+                    'type' => 'inputString',
+                ],
+                'require' => 0,
+            ],
+
+            [
+                'label' => Yii::$service->page->translate->__('Summary'),
+                'name'=> 'summary',
                 'display'=>[
                     'type' => 'inputString',
                 ],
@@ -99,39 +90,28 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
             ],
 
             [
-                'label'=>'评论标题',
-                'name'=>'summary',
-                'display'=>[
-                    'type' => 'inputString',
-                ],
-                'require' => 0,
-            ],
-
-            [
-                'label'=>'评论内容',
-                'name'=>'review_content',
-                'display'=>[
+                'label'  => Yii::$service->page->translate->__('Review Content'),
+                'name' => 'review_content',
+                'display' => [
                     'type' => 'textarea',
-                    'rows'    => 14,
+                    'rows'   => 14,
                     'cols'    => 110,
                 ],
                 'require' => 0,
             ],
-
             [
-                'label'=>'审核状态',
-                'name'=>'status',
-                'display'=>[
+                'label'  => Yii::$service->page->translate->__('Review Status'),
+                'name' => 'status',
+                'display' => [
                     'type' => 'select',
                     'data' => [
-                        $noActiveStatus => '未审核',
-                        $activeStatus    => '审核通过',
-                        $refuseStatus    => '审核拒绝',
+                        $noActiveStatus => Yii::$service->page->translate->__('Pending Review'),
+                        $activeStatus     => Yii::$service->page->translate->__('Approved'),
+                        $refuseStatus    => Yii::$service->page->translate->__('Not Approved'),
                     ],
                 ],
                 'require' => 1,
             ],
-
         ];
     }
 
@@ -156,14 +136,14 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         $errors = Yii::$service->helper->errors->get();
         if (!$errors) {
             echo  json_encode([
-                'statusCode'=>'200',
-                'message'=>'save success',
+                'statusCode' => '200',
+                'message' => Yii::$service->page->translate->__('Save Success'),
             ]);
             exit;
         } else {
             echo  json_encode([
-                'statusCode'=>'300',
-                'message'=>$errors,
+                'statusCode' => '300',
+                'message' => $errors,
             ]);
             exit;
         }
@@ -182,8 +162,8 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         $errors = Yii::$service->helper->errors->get();
         if (!$errors) {
             echo  json_encode([
-                'statusCode'=>'200',
-                'message'=>'remove data  success',
+                'statusCode' => '200',
+                'message' => Yii::$service->page->translate->__('Remove Success'),
             ]);
             exit;
         } else {
@@ -208,8 +188,8 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         $errors = Yii::$service->helper->errors->get();
         if (!$errors) {
             echo  json_encode([
-                'statusCode'=>'200',
-                'message'=>'批量审核评论通过 - 成功',
+                'statusCode' => '200',
+                'message' => Yii::$service->page->translate->__('Batch review comments passed - successful'),
             ]);
             exit;
         } else {
@@ -234,8 +214,8 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         $errors = Yii::$service->helper->errors->get();
         if (!$errors) {
             echo  json_encode([
-                'statusCode'=>'200',
-                'message'=>'批量审核评论拒绝 - 成功',
+                'statusCode' => '200',
+                'message' => Yii::$service->page->translate->__('Bulk review comment rejection - successful'),
             ]);
             exit;
         } else {

@@ -15,14 +15,14 @@ class Headers implements BlockCache
         //$currentLang =
         //$currency = Yii::$service->page->currency->getCurrentCurrency();
         return [
-            'logoutUrl'            => $logoutUrl,
-            'homeUrl'            => Yii::$service->url->homeUrl(),
-            'currentBaseUrl'    => Yii::$service->url->getCurrentBaseUrl(),
-            'currentStore'        => Yii::$service->store->currentStore,
-            'currentStoreLang'    => Yii::$service->store->currentLangName,
-            'stores'            => Yii::$service->store->getStoresLang(),
-            'currency'            => Yii::$service->page->currency->getCurrencyInfo(),
-            'currencys'            => Yii::$service->page->currency->getCurrencys(),
+            'logoutUrl'             => $logoutUrl,
+            'homeUrl'               => Yii::$service->url->homeUrl(),
+            'currentBaseUrl'        => Yii::$service->url->getCurrentBaseUrl(),
+            'currentStore'          => Yii::$service->store->currentStore,
+            'currentStoreLang'      => Yii::$service->store->currentLangName,
+            'stores'                => Yii::$service->store->getStoresLang(),
+            'currency'              => Yii::$service->page->currency->getCurrencyInfo(),
+            'currencys'             => Yii::$service->page->currency->getCurrencys(),
         ];
     }
 

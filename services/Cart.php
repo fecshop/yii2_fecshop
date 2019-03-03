@@ -103,9 +103,9 @@ class Cart extends Service
     }
 
     /**
-     * @property $shipping_method | String 货运方式code
-     * @property $country | String 国家code
-     * @property $region | String 省市code
+     * @param $shipping_method | String 货运方式code
+     * @param $country | String 国家code
+     * @param $region | String 省市code
      * 得到购物车中的信息。详情参看调用的函数注释
      */
     protected function actionGetCartInfo($activeProduct = true, $shipping_method = '', $country = '', $region = '*')
@@ -114,7 +114,7 @@ class Cart extends Service
     }
 
     /**
-     * @property $item_id | Int 购物车产品表的id字段
+     * @param $item_id | Int 购物车产品表的id字段
      * 通过item id 将购物车中的某个产品的个数加一
      */
     protected function actionAddOneItem($item_id)
@@ -128,7 +128,7 @@ class Cart extends Service
     }
 
     /**
-     * @property $item_id | Int 购物车产品表的id字段
+     * @param $item_id | Int 购物车产品表的id字段
      * 通过item id 将购物车中的某个产品的个数减一
      */
     protected function actionLessOneItem($item_id)
@@ -142,7 +142,7 @@ class Cart extends Service
     }
 
     /**
-     * @property $item_id | Int 购物车产品表的id字段
+     * @param $item_id | Int 购物车产品表的id字段
      * 通过item id 删除购物车中的某个产品
      */
     protected function actionRemoveItem($item_id)
@@ -156,7 +156,7 @@ class Cart extends Service
     }
     
     /**
-     * @property $item_id | Int 购物车产品表的id字段
+     * @param $item_id | Int 购物车产品表的id字段
      * 通过item id 将购物车中的某个产品的个数加一
      */
     protected function actionSelectOneItem($item_id, $checked)
@@ -170,7 +170,7 @@ class Cart extends Service
     }
     
     /**
-     * @property $item_id | Int 购物车产品表的id字段
+     * @param $item_id | Int 购物车产品表的id字段
      * 通过item id 将购物车中的某个产品的个数加一
      */
     protected function actionSelectAllItem($checked)
@@ -195,9 +195,9 @@ class Cart extends Service
     }
 
     /**
-     * @property $address|array
-     * @property $shipping_method | String 发货方式
-     * @property $payment_method | String 支付方式
+     * @param $address|array
+     * @param $shipping_method | String 发货方式
+     * @param $payment_method | String 支付方式
      * 此函数对应的是保存游客用户的购物车数据。
      * 保存购物车中的货运地址保存购物车中的货运地址(姓名，电话，邮编，地址等)，货运方式，支付方式等信息。
      * 详细参看相应函数
@@ -208,9 +208,9 @@ class Cart extends Service
     }
 
     /**
-     * @property $address_id | Int
-     * @property $shipping_method | String 货运方式
-     * @property $payment_method | String 支付方式
+     * @param $address_id | Int
+     * @param $shipping_method | String 货运方式
+     * @param $payment_method | String 支付方式
      * 此函数对应的是登录用户的购物车数据的更新。
      */
     protected function actionUpdateLoginCart($address_id, $shipping_method, $payment_method)

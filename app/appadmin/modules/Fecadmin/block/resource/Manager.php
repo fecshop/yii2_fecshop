@@ -75,42 +75,40 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
 
         $data = [
             [    // selecit的Int 类型
-                'type'=>'select',
-                'title'=>'Tag',
-                'name'=>'tag',
-                'columns_type' =>'string',  // int使用标准匹配， string使用模糊查询
-                'value'=> Yii::$service->admin->urlKey->getTags(),
+                'type' => 'select',
+                'title' => Yii::$service->page->translate->__('Tag'),
+                'name' => 'tag',
+                'columns_type' => 'string',  // int使用标准匹配， string使用模糊查询
+                'value' => Yii::$service->admin->urlKey->getTags(),
             ],
 
             [    // 字符串类型
-                'type'=>'inputtext',
-                'title'=>'名称',
-                'name'=>'name',
-                'columns_type' =>'string',
+                'type' => 'inputtext',
+                'title' => Yii::$service->page->translate->__('Tag Name'),
+                'name' => 'name',
+                'columns_type' => 'string',
             ],
 
             [    // 字符串类型
-                'type'=>'inputtext',
-                'title'=>'Resource',
-                'name'=>'url_key',
-                'columns_type' =>'string',
+                'type' => 'inputtext',
+                'title' => Yii::$service->page->translate->__('Resource'),
+                'name' => 'url_key',
+                'columns_type' => 'string',
             ],
 
             [    // 时间区间类型搜索
-                'type'=>'inputdatefilter',
-                'name'=> 'created_at',
-                'columns_type' =>'int',
-                'value'=>[
-                    'gte'=>'用户创建时间开始',
-                    'lt' =>'用户创建时间结束',
+                'type' => 'inputdatefilter',
+                'name' => 'created_at',
+                'columns_type' => 'int',
+                'value' => [
+                    'gte' => Yii::$service->page->translate->__('Created Begin'),
+                    'lt'  => Yii::$service->page->translate->__('Created End'),
                 ],
             ],
-
         ];
 
         return $data;
     }
-
     /**
      * config function ,return table columns config.
      */
@@ -119,22 +117,21 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
         $table_th_bar = [
             [
                 'orderField'    => $this->_primaryKey,
-                'label'            => 'ID',
+                'label'            => Yii::$service->page->translate->__('Id'),
                 'width'            => '50',
                 'align'        => 'center',
 
             ],
             [
                 'orderField'    => 'name',
-                'label'            => 'name',
+                'label'            => Yii::$service->page->translate->__('Tag Name'),
                 'width'            => '50',
                 'align'        => 'left',
 
             ],
-
             [
                 'orderField'    => 'tag',
-                'label'            => 'tag',
+                'label'            => Yii::$service->page->translate->__('Tag'),
                 'width'            => '50',
                 'align'        => 'left',
                 'display'        => Yii::$service->admin->urlKey->getTags(),
@@ -142,34 +139,29 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
 
             [
                 'orderField'    => 'tag_sort_order',
-                'label'            => 'tag sort order',
+                'label'            => Yii::$service->page->translate->__('Tag Sort Order'),
                 'width'            => '50',
                 'align'        => 'left',
-
             ],
             [
                 'orderField'    => 'url_key',
-                'label'            => 'resource',
+                'label'            => Yii::$service->page->translate->__('Resource'),
                 'width'            => '60',
                 'align'        => 'left',
-
-            ],
-
-
-
-            [
-                'orderField'    => 'created_at',
-                'label'            => '创建时间',
-                'width'            => '110',
-                'align'        => 'center',
-                'convert'        => ['int' => 'datetime'],
             ],
             [
-                'orderField'    => 'updated_at',
-                'label'            => '更新时间',
+                'orderField'      => 'created_at',
+                'label'             => Yii::$service->page->translate->__('Created At'),
                 'width'            => '110',
-                'align'        => 'center',
-                'convert'        => ['int' => 'datetime'],
+                'align'             => 'center',
+                'convert'         => ['int' => 'datetime'],
+            ],
+            [
+                'orderField'      => 'updated_at',
+                'label'             => Yii::$service->page->translate->__('Updated At'),
+                'width'            => '110',
+                'align'             => 'center',
+                'convert'         => ['int' => 'datetime'],
             ],
 
         ];

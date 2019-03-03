@@ -60,34 +60,34 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 	public function getSearchArr(){
 		$data = [
 			[	# 字符串类型
-				'type'=>'inputtext',
-				'title'=>'账号',
-				'name'=>'account' ,
-				'columns_type' =>'string'
+				'type' => 'inputtext',
+				'title' => Yii::$service->page->translate->__('Account'),
+				'name' => 'account' ,
+				'columns_type' => 'string'
 			],
 			[	# 字符串类型
-				'type'=>'inputtext',
-				'title'=>'操作人',
-				'name'=>'person' ,
-				'columns_type' =>'string'
+				'type' => 'inputtext',
+				'title' => Yii::$service->page->translate->__('Name'),
+				'name' => 'person' ,
+				'columns_type' => 'string'
 			],
 			[	# selecit的Int 类型
-				'type'=>'select',	 
-				'title'=>'类型',
-				'name'=>'tj_type',
-				'columns_type' =>'int',  # int使用标准匹配， string使用模糊查询
-				'value'=> [					# select 类型的值
-					'账号登录'=>'账号登录',
-					''=>'全部操作',
+				'type' => 'select',	 
+				'title' => Yii::$service->page->translate->__('Type'),
+				'name' => 'tj_type',
+				'columns_type' => 'int',  # int使用标准匹配， string使用模糊查询
+				'value' => [					# select 类型的值
+					'login' => Yii::$service->page->translate->__('Login'),
+					'' => Yii::$service->page->translate->__('Visit All'),
 				],
 			],
 			[	# 时间区间类型搜索
-				'type'=>'inputdatefilter',
-				'name'=> 'created_at',
-				'columns_type' =>'datetime',
-				'value'=>[
-					'gte'=>'LOG时间开始',
-					'lt' =>'LOG时间结束',
+				'type' => 'inputdatefilter',
+				'name' => 'created_at',
+				'columns_type' => 'datetime',
+				'value' => [
+					'gte' => Yii::$service->page->translate->__('Created Begin'),
+					'lt' => Yii::$service->page->translate->__('Created End'),
 				]
 			],
 		];
@@ -98,20 +98,14 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 	public function getTableFieldArr(){
 		$table_th_bar = [
 			[	
-				'orderField' 	=> 'id',
-				'label'			=> 'ID',
-				'width'			=> '70',
-				'align' 		=> 'center',
-			],
-			[	
 				'orderField'	=> 'account',
-				'label'			=> '账号',
+				'label'			=> Yii::$service->page->translate->__('Account'),
 				'width'			=> '70',
 				'align' 		=> 'center',
 			],
 			[	
 				'orderField'	=> 'person',
-				'label'			=> '操作人',
+				'label'			=> Yii::$service->page->translate->__('Name'),
 				'width'			=> '70',
 				'align' 		=> 'left',
 			],
@@ -123,7 +117,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 			//],
 			[	
 				'orderField'	=> 'click_count',
-				'label'			=> '次数',
+				'label'			=> Yii::$service->page->translate->__('Count'),
 				'width'			=> '220',
 				'align' 		=> 'left',
 			],
@@ -149,8 +143,8 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 			$where []= " account = '$account' ";
 		if($person)
 			$where []= " person = '$person' ";
-		if($tj_type == '账号登录'){
-			$where []= " menu = '账号登录' ";
+		if($tj_type == 'login'){
+			$where []= " menu = 'login' ";
 			$group .=  " ,menu ";
 		}
 			
@@ -189,7 +183,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 		$csrfString = \fec\helpers\CRequest::getCsrfString();
 		foreach ($data as $one) {
 			$str .= '<tr target="sid_user" rel="'.$one[$primaryKey].'">';
-			$str .= '<td><input name="'.$primaryKey.'s" value="'.$one[$primaryKey].'" type="checkbox"></td>';
+			//$str .= '<td><input name="'.$primaryKey.'s" value="'.$one[$primaryKey].'" type="checkbox"></td>';
 			foreach ($fileds as $field) {
 				$orderField = $field['orderField'];
 				$display	= $field['display'];
@@ -242,7 +236,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 			}	
 		}
 		$str = '<thead><tr>';
-		$str .= '<th width="22"><input type="checkbox" group="'.$primaryKey.'s" class="checkboxCtrl"></th>';
+		//$str .= '<th width="22"><input type="checkbox" group="'.$primaryKey.'s" class="checkboxCtrl"></th>';
 		foreach ($table_th_bar as $b) {
 			$width = $b['width'];
 			$label = $b['label'];

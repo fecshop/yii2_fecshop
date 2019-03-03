@@ -58,12 +58,12 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
         $toolBar = $this->getToolBar($this->_param['numCount'], $this->_param['pageNum'], $this->_param['numPerPage']);
 
         return [
-            'pagerForm'        => $pagerForm,
-            'searchBar'        => $searchBar,
-            'editBar'        => $editBar,
-            'thead'        => $thead,
-            'tbody'        => $tbody,
-            'toolBar'    => $toolBar,
+            'pagerForm'    => $pagerForm,
+            'searchBar'     => $searchBar,
+            'editBar'         => $editBar,
+            'thead'           => $thead,
+            'tbody'           => $tbody,
+            'toolBar'         => $toolBar,
         ];
     }
 
@@ -77,40 +77,37 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 
         $data = [
             [    // selecit的Int 类型
-                'type'=>'select',
-                'title'=>'状态',
-                'name'=>'status',
+                'type' => 'select',
+                'title'  => Yii::$service->page->translate->__('Status'),
+                'name' => 'status',
                 'columns_type' =>'int',  // int使用标准匹配， string使用模糊查询
                 'value'=> [                    // select 类型的值
-                    $activeStatus =>'激活',
-                    $deleteStatus =>'关闭',
+                    $activeStatus => Yii::$service->page->translate->__('Enable'),
+                    $deleteStatus => Yii::$service->page->translate->__('Disable'),
                 ],
             ],
-
             [    // 字符串类型
-                'type'=>'inputtext',
-                'title'=>'邮箱',
-                'name'=>'email',
-                'columns_type' =>'string',
+                'type'  => 'inputtext',
+                'title'   => Yii::$service->page->translate->__('Email'),
+                'name' => 'email',
+                'columns_type' => 'string',
             ],
-            
             [    // 字符串类型
-                'type'=>'inputtext',
-                'title'=>'密码重置token',
-                'name'=>'password_reset_token',
-                'columns_type' =>'string',
+                'type' => 'inputtext',
+                'title'  => Yii::$service->page->translate->__('Password Reset Token'),
+                'name' => 'password_reset_token',
+                'columns_type' => 'string',
             ],
-
             [    // 时间区间类型搜索
-                'type'=>'inputdatefilter',
-                'name'=> 'created_at',
-                'columns_type' =>'int',
-                'value'=>[
-                    'gte'=>'用户创建时间开始',
-                    'lt' =>'用户创建时间结束',
+                'type'   => 'inputdatefilter',
+                 'title'  => Yii::$service->page->translate->__('Created At'),
+                'name' => 'created_at',
+                'columns_type' => 'int',
+                'value' => [
+                    'gte' => Yii::$service->page->translate->__('Created Begin'),
+                    'lt'    => Yii::$service->page->translate->__('Created End'),
                 ],
             ],
-
         ];
 
         return $data;
@@ -127,66 +124,58 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
         $table_th_bar = [
             [
                 'orderField'    => $this->_primaryKey,
-                'label'            => 'ID',
-                'width'            => '50',
-                'align'        => 'center',
-
+                'label'           => Yii::$service->page->translate->__('Id'),
+                'width'          => '50',
+                'align'           => 'center',
             ],
             [
                 'orderField'    => 'firstname',
-                'label'            => 'firstname',
-                'width'            => '50',
-                'align'        => 'left',
-
+                'label'           => Yii::$service->page->translate->__('First Name'),
+                'width'          => '50',
+                'align'           => 'left',
             ],
             [
                 'orderField'    => 'lastname',
-                'label'            => 'lastname',
-                'width'            => '50',
-                'align'        => 'left',
-
+                'label'           => Yii::$service->page->translate->__('Last Name'),
+                'width'          => '50',
+                'align'           => 'left',
             ],
             [
                 'orderField'    => 'email',
-                'label'            => 'email',
-                'width'            => '50',
-                'align'        => 'left',
-
+                'label'           => Yii::$service->page->translate->__('Email'),
+                'width'          => '50',
+                'align'           => 'left',
             ],
             [
                 'orderField'    => 'favorite_product_count',
-                'label'            => '收藏产品数',
-                'width'            => '60',
-                'align'        => 'left',
-
+                'label'           => Yii::$service->page->translate->__('Favorite Product Count'),
+                'width'          => '60',
+                'align'           => 'left',
             ],
-            
             [
                 'orderField'    => 'status',
-                'label'            => '状态',
-                'width'            => '50',
-                'align'        => 'center',
+                'label'           => Yii::$service->page->translate->__('Status'),
+                'width'          => '50',
+                'align'           => 'center',
                 'display'        => [
-                    $activeStatus =>'激活',
-                    $deleteStatus =>'关闭',
+                    $activeStatus => Yii::$service->page->translate->__('Enable'),
+                    $deleteStatus => Yii::$service->page->translate->__('Disable'),
                 ],
             ],
-
             [
                 'orderField'    => 'created_at',
-                'label'            => '创建时间',
-                'width'            => '110',
-                'align'        => 'center',
-                'convert'        => ['int' => 'datetime'],
+                'label'           => Yii::$service->page->translate->__('Created At'),
+                'width'          => '110',
+                'align'           => 'center',
+                'convert'       => ['int' => 'datetime'],
             ],
             [
                 'orderField'    => 'updated_at',
-                'label'            => '更新时间',
-                'width'            => '110',
-                'align'        => 'center',
-                'convert'        => ['int' => 'datetime'],
+                'label'           => Yii::$service->page->translate->__('Updated At'),
+                'width'          => '110',
+                'align'           => 'center',
+                'convert'       => ['int' => 'datetime'],
             ],
-
         ];
 
         return $table_th_bar;

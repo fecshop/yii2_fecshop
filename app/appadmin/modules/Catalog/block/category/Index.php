@@ -39,21 +39,21 @@ class Index extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInterf
             $errors = Yii::$service->helper->errors->get();
             if (!$errors) {
                 echo  json_encode([
-                    'statusCode'=>'200',
-                    'message'=>'delete success',
+                    'statusCode' => '200',
+                    'message' => Yii::$service->page->translate->__('Delete Success'),
                 ]);
                 exit;
             } else {
                 echo  json_encode([
-                    'statusCode'=>'300',
-                    'message'=>$errors,
+                    'statusCode' => '300',
+                    'message' => $errors,
                 ]);
                 exit;
             }
         }
         echo  json_encode([
-            'statusCode'=>'300',
-            'message'=>'您需要选择一个分类',
+            'statusCode' => '300',
+            'message' => Yii::$service->page->translate->__('You need to choose a category'),
         ]);
         exit;
     }
@@ -85,19 +85,6 @@ class Index extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInterf
         $str .= '</ul>';
 
         return $str;
-        /*
-        <ul class="tree treeFolder">
-                <li><a href="javascript:void(0);">11</a>
-                    <ul>
-                        <li><a href="javascript:void(0);" >22</a></li>
-                        <li><a href="javascript:void(0);" >33</a></li>
-                        <li><a href="javascript:void(0);" >44</a></li>
-                        <li><a href="javascript:void(0);" >55</a></li>
-                    </ul>
-                </li>
-
-             </ul>
-        */
     }
 
     public function saveCategory()
@@ -110,8 +97,8 @@ class Index extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInterf
                 || !($editFormData['name'][$defaultLangName])
             ) {
                 echo  json_encode([
-                    'statusCode'=>'300',
-                    'message'=>'分类的默认语言name不能为空',
+                    'statusCode' => '300',
+                    'message' => Yii::$service->page->translate->__('The category default language name cannot be empty'),
                 ]);
                 exit;
             }
@@ -127,8 +114,6 @@ class Index extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInterf
             $product_select_info = CRequest::param('product_select_info');
             $product_unselect_info = CRequest::param('product_unselect_info');
             $category_id = $editFormData[$cate_id];
-            //var_dump($editFormData);
-            //echo $category_id;exit;
             $addCateProductIdArr = explode(',', $product_select_info);
             $deleteCateProductIdArr = explode(',', $product_unselect_info);
             Yii::$service->product->addAndDeleteProductCategory($category_id, $addCateProductIdArr, $deleteCateProductIdArr);
@@ -142,14 +127,14 @@ class Index extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInterf
             $errors = Yii::$service->helper->errors->get();
             if (!$errors) {
                 echo  json_encode([
-                    'statusCode'=>'200',
-                    'message'=>'save success',
+                    'statusCode' => '200',
+                    'message' => Yii::$service->page->translate->__('Save Success'),
                 ]);
                 exit;
             } else {
                 echo  json_encode([
-                    'statusCode'=>'300',
-                    'message'=>$errors,
+                    'statusCode' => '300',
+                    'message' => $errors,
                 ]);
                 exit;
             }
@@ -162,13 +147,13 @@ class Index extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInterf
         $primaryVal = Yii::$app->request->get($primaryKey);
 
         return [
-            'thumbnail_image'    => $this->_one['thumbnail_image'],
-            'image'            => $this->_one['image'],
-            'thumbnail_imageurl'=> Yii::$service->category->image->getUrl($this->_one['thumbnail_image']),
-            'imageurl'            => Yii::$service->category->image->getUrl($this->_one['image']),
-            'product_url'        => CUrl::getUrl('catalog/category/product', [$primaryKey => $primaryVal]),
-            'base_info'        => $this->getBaseInfo(),
-            'meta_info'        => $this->getMetaInfo(),
+            'thumbnail_image'      => $this->_one['thumbnail_image'],
+            'image'                     => $this->_one['image'],
+            'thumbnail_imageurl'  => Yii::$service->category->image->getUrl($this->_one['thumbnail_image']),
+            'imageurl'                  => Yii::$service->category->image->getUrl($this->_one['image']),
+            'product_url'              => CUrl::getUrl('catalog/category/product', [$primaryKey => $primaryVal]),
+            'base_info'                 => $this->getBaseInfo(),
+            'meta_info'                => $this->getMetaInfo(),
         ];
     }
 
@@ -188,8 +173,8 @@ class Index extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInterf
         $this->_textareas = '';
         $editArr = [
             [
-                'label'=>'Title',
-                'name'=>'title',
+                'label' => Yii::$service->page->translate->__('Title'),
+                'name' => 'title',
                 'display'=>[
                     'type' => 'inputString',
                     'lang' => true,
@@ -197,17 +182,17 @@ class Index extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInterf
                 'require' => 0,
             ],
             [
-                'label'=>'Meta Keywords',
-                'name'=>'meta_keywords',
-                'display'=>[
+                'label' => Yii::$service->page->translate->__('Meta Keywords'),
+                'name' => 'meta_keywords',
+                'display' => [
                     'type' => 'inputString',
                     'lang' => true,
                 ],
                 'require' => 0,
             ],
             [
-                'label'=>'Meta Description',
-                'name'=>'meta_description',
+                'label' => Yii::$service->page->translate->__('Meta Description'),
+                'name' => 'meta_description',
                 'display'=>[
                     'type' => 'textarea',
                     'lang' => true,
@@ -216,7 +201,6 @@ class Index extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInterf
                 ],
                 'require' => 0,
             ],
-
         ];
 
         return $this->getEditBar($editArr).$this->_lang_attr.$this->_textareas;
@@ -228,9 +212,9 @@ class Index extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInterf
         $this->_textareas = '';
         $editArr = [
             [
-                'label'=>'分类名字',
-                'name'=>'name',
-                'display'=>[
+                'label' => Yii::$service->page->translate->__('Category Name'),
+                'name'  => 'name',
+                'display' => [
                     'type' => 'inputString',
                     'lang' => true,
                 ],
@@ -238,13 +222,13 @@ class Index extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInterf
             ],
 
             [
-                'label'=>'分类状态',
-                'name'=>'status',
+                'label' => Yii::$service->page->translate->__('Status'),
+                'name' => 'status',
                 'display'=>[
                     'type' => 'select',
                     'data' => [
-                        1    => '激活',
-                        2    => '关闭',
+                        1    => Yii::$service->page->translate->__('Enable'),
+                        2    => Yii::$service->page->translate->__('Disable'),
                     ],
                 ],
                 'require' => 1,
@@ -252,13 +236,13 @@ class Index extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInterf
             ],
             
             [
-                'label'=>'Menu是否显示',
-                'name'=>'menu_show',
+                'label' => Yii::$service->page->translate->__('Menu Show Status'),
+                'name' => 'menu_show',
                 'display'=>[
                     'type' => 'select',
                     'data' => [
-                        1    => '菜单中显示',
-                        2    => '菜单中不显示',
+                        1    => Yii::$service->page->translate->__('Show In Menu'),
+                        2    => Yii::$service->page->translate->__('Not Show In Menu'),
                     ],
                 ],
                 'require' => 1,
@@ -266,34 +250,34 @@ class Index extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInterf
             ],
 
             [
-                'label'=>'Url Key',
-                'name'=>'url_key',
-                'display'=>[
+                'label' => Yii::$service->page->translate->__('Url Key'),
+                'name' => 'url_key',
+                'display' => [
                     'type' => 'inputString',
                 ],
                 'require' => 0,
             ],
 
             [
-                'label'=>'分类产品过滤属性',
-                'name'=>'filter_product_attr_selected',
-                'display'=>[
+                'label' => Yii::$service->page->translate->__('Filter Attr'),
+                'name' => 'filter_product_attr_selected',
+                'display' => [
                     'type' => 'inputString',
                 ],
                 'require' => 0,
             ],
 
             [
-                'label'=>'分类产品非过滤属性',
-                'name'=>'filter_product_attr_unselected',
-                'display'=>[
+                'label' => Yii::$service->page->translate->__('No-Filter Attr'),
+                'name' => 'filter_product_attr_unselected',
+                'display' => [
                     'type' => 'inputString',
                 ],
                 'require' => 0,
             ],
             [
-                'label'=>'分类描述',
-                'name'=>'description',
+                'label' => Yii::$service->page->translate->__('Description'),
+                'name' => 'description',
                 'display'=>[
                     'type' => 'textarea',
                     'lang' => true,
@@ -304,9 +288,9 @@ class Index extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInterf
             ],
 
             [
-                'label'=>'菜单自定义部分',
-                'name'=>'menu_custom',
-                'display'=>[
+                'label' => Yii::$service->page->translate->__('Menu Custom'),
+                'name' => 'menu_custom',
+                'display' => [
                     'type' => 'textarea',
                     'lang' => true,
                     'rows'    => 14,

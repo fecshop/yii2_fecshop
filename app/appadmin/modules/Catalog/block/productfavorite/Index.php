@@ -49,15 +49,14 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
         $toolBar = $this->getToolBar($this->_param['numCount'], $this->_param['pageNum'], $this->_param['numPerPage']);
 
         return [
-            'pagerForm'        => $pagerForm,
-            'searchBar'        => $searchBar,
-            'editBar'        => $editBar,
-            'thead'        => $thead,
-            'tbody'        => $tbody,
-            'toolBar'    => $toolBar,
+            'pagerForm'     => $pagerForm,
+            'searchBar'     => $searchBar,
+            'editBar'       => $editBar,
+            'thead'         => $thead,
+            'tbody'         => $tbody,
+            'toolBar'       => $toolBar,
         ];
     }
-
     /**
      * get search bar Arr config.
      */
@@ -73,12 +72,12 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
             ],
             */
             [    // 时间区间类型搜索
-                'type'=>'inputdatefilter',
-                'name'=> 'created_at',
+                'type' => 'inputdatefilter',
+                'name' => 'created_at',
                 'columns_type' =>'int',
-                'value'=>[
-                    'gte'=>'用户创建时间开始',
-                    'lt' =>'用户创建时间结束',
+                'value' => [
+                    'gte' => Yii::$service->page->translate->__('Created Begin'),
+                    'lt'  => Yii::$service->page->translate->__('Created End'),
                 ],
             ],
         ];
@@ -94,44 +93,42 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
         $table_th_bar = [
             [
                 'orderField'    => $this->_primaryKey,
-                'label'            => 'ID',
-                'width'            => '50',
-                'align'        => 'center',
-
+                'label'         => Yii::$service->page->translate->__('Id'),
+                'width'         => '50',
+                'align'         => 'center',
             ],
             [
                 'orderField'    => 'product_id',
-                'label'            => 'product',
-                'width'            => '50',
-                'align'        => 'left',
+                'label'         => Yii::$service->page->translate->__('Product'),
+                'width'         => '50',
+                'align'         => 'left',
             ],
             [
                 'orderField'    => 'user_id',
-                'label'            => 'user',
-                'width'            => '110',
-                'align'        => 'center',
+                'label'         => Yii::$service->page->translate->__('User'),
+                'width'         => '110',
+                'align'         => 'center',
             ],
             [
                 'orderField'    => 'store',
-                'label'            => 'store',
-                'width'            => '110',
-                'align'        => 'center',
+                'label'         => Yii::$service->page->translate->__('Store'),
+                'width'         => '110',
+                'align'         => 'center',
             ],
             [
                 'orderField'    => 'created_at',
-                'label'            => '创建时间',
-                'width'            => '110',
-                'align'        => 'center',
-                'convert'        => ['int' => 'datetime'],
+                'label'         => Yii::$service->page->translate->__('Created At'),
+                'width'         => '110',
+                'align'         => 'center',
+                'convert'       => ['int' => 'datetime'],
             ],
             [
                 'orderField'    => 'updated_at',
-                'label'            => '更新时间',
-                'width'            => '110',
-                'align'        => 'center',
-                'convert'        => ['int' => 'datetime'],
+                'label'         => Yii::$service->page->translate->__('Updated At'),
+                'width'         => '110',
+                'align'         => 'center',
+                'convert'       => ['int' => 'datetime'],
             ],
-
         ];
 
         return $table_th_bar;
@@ -143,7 +140,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
     public function getTableTbodyHtml($data)
     {
         $fileds = $this->getTableFieldArr();
-        $str .= '';
+        $str = '';
         $csrfString = \fec\helpers\CRequest::getCsrfString();
         $user_ids = [];
         $product_ids = [];

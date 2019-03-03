@@ -10,6 +10,7 @@
 namespace fecshop\app\appadmin\modules\Sales\block\coupon;
 
 use fec\helpers\CUrl;
+use fec\helpers\CRequest;
 use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockInterface;
 use fecshop\app\appadmin\modules\AppadminbaseBlock;
 use Yii;
@@ -47,7 +48,6 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
 
     public function getLastData()
     {
-
         // hidden section ,that storage page info
         $pagerForm = $this->getPagerForm();
         // search section
@@ -62,12 +62,12 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
         $toolBar = $this->getToolBar($this->_param['numCount'], $this->_param['pageNum'], $this->_param['numPerPage']);
 
         return [
-            'pagerForm'        => $pagerForm,
-            'searchBar'        => $searchBar,
-            'editBar'        => $editBar,
-            'thead'        => $thead,
-            'tbody'        => $tbody,
-            'toolBar'    => $toolBar,
+            'pagerForm'     => $pagerForm,
+            'searchBar'      => $searchBar,
+            'editBar'          => $editBar,
+            'thead'            => $thead,
+            'tbody'            => $tbody,
+            'toolBar'          => $toolBar,
         ];
     }
 
@@ -79,18 +79,18 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
         $data = [
 
             [    // 字符串类型
-                'type'=>'inputtext',
-                'title'=>'优惠卷码',
-                'name'=>'coupon_code',
-                'columns_type' =>'string',
+                'type' => 'inputtext',
+                'title'  => Yii::$service->page->translate->__('Coupon Code'),
+                'name' => 'coupon_code',
+                'columns_type' => 'string',
             ],
             [    // 时间区间类型搜索
-                'type'=>'inputdatefilter',
-                'name'=> 'created_at',
-                'columns_type' =>'int',
-                'value'=>[
-                    'gte'=>'创建时间开始',
-                    'lt' =>'创建时间结束',
+                'type'  => 'inputdatefilter',
+                'name' => 'created_at',
+                'columns_type' => 'int',
+                'value' => [
+                    'gte' => Yii::$service->page->translate->__('Created Begin'),
+                    'lt'    => Yii::$service->page->translate->__('Created End'),
                 ],
             ],
         ];
@@ -105,92 +105,84 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
     {
         $table_th_bar = [
             [
-                'orderField'    => $this->_primaryKey,
-                'label'            => 'ID',
-                'width'            => '50',
-                'align'        => 'center',
-
+                'orderField'   => $this->_primaryKey,
+                'label'          => Yii::$service->page->translate->__('Id'),
+                'width'         => '50',
+                'align'          => 'center',
             ],
             [
                 'orderField'    => 'coupon_code',
-                'label'            => '优惠券',
-                'width'            => '50',
-                'align'        => 'left',
-                //'lang'			=> true,
+                'label'           => Yii::$service->page->translate->__('Coupon Code'),
+                'width'          => '50',
+                'align'           => 'left',
+                //'lang'		   => true,
             ],
-
             [
                 'orderField'    => 'users_per_customer',
-                'label'            => '每个用户的最大使用次数',
-                'width'            => '50',
-                'align'        => 'left',
-                //'lang'			=> true,
+                'label'           => Yii::$service->page->translate->__('Maximum usage per user'),
+                'width'          => '50',
+                'align'           => 'left',
+                //'lang'		   => true,
             ],
-
             [
                 'orderField'    => 'times_used',
-                'label'            => '使用次数',
-                'width'            => '50',
-                'align'        => 'left',
-                //'lang'			=> true,
+                'label'           => Yii::$service->page->translate->__('Usage count'),
+                'width'          => '50',
+                'align'           => 'left',
+                //'lang'		   => true,
             ],
-
             [
                 'orderField'    => 'type',
-                'label'            => '类型',
-                'width'            => '50',
-                'align'        => 'left',
-                'display'    => [
-                    $this->_type_percent => '百分比',
-                    $this->_type_direct  => '直接减',
+                'label'           => Yii::$service->page->translate->__('Type'),
+                'width'          => '50',
+                'align'           => 'left',
+                'display'        => [
+                    $this->_type_percent => Yii::$service->page->translate->__('Percentage'),
+                    $this->_type_direct    => Yii::$service->page->translate->__('Direct reduction'),
                 ]
                 //'lang'			=> true,
             ],
-
             [
                 'orderField'    => 'conditions',
-                'label'            => '条件',
-                'width'            => '50',
-                'align'        => 'left',
-                //'lang'			=> true,
+                'label'           => Yii::$service->page->translate->__('Conditions'),
+                'width'          => '50',
+                'align'           => 'left',
+                //'lang'		   => true,
             ],
-
             [
                 'orderField'    => 'discount',
-                'label'            => '折扣',
-                'width'            => '50',
-                'align'        => 'left',
-                //'lang'			=> true,
+                'label'           => Yii::$service->page->translate->__('Discount'),
+                'width'          => '50',
+                'align'           => 'left',
+                //'lang'		   => true,
             ],
-
             [
                 'orderField'    => 'expiration_date',
-                'label'            => '过期时间',
-                'width'            => '110',
-                'align'        => 'center',
-                'convert'        => ['int' => 'date'],
+                'label'           => Yii::$service->page->translate->__('Expiration Date'),
+                'width'          => '110',
+                'align'           => 'center',
+                'convert'       => ['int' => 'date'],
             ],
             [
                 'orderField'    => 'created_person',
-                'label'            => '创建人',
-                'width'            => '110',
-                'align'        => 'center',
+                'label'           => Yii::$service->page->translate->__('Created Person'),
+                'width'          => '110',
+                'align'           => 'center',
             ],
             [
                 'orderField'    => 'created_at',
-                'label'            => '创建时间',
-                'width'            => '110',
-                'align'        => 'center',
-                'convert'        => ['int' => 'datetime'],
+                'label'           => Yii::$service->page->translate->__('Created At'),
+                'width'          => '110',
+                'align'           => 'center',
+                'convert'       => ['int' => 'datetime'],
             ],
             [
                 'orderField'    => 'updated_at',
-                'label'            => '更新时间',
-                'width'            => '110',
-                'align'        => 'center',
-                'convert'        => ['int' => 'datetime'],
+                'label'           => Yii::$service->page->translate->__('Updated At'),
+                'width'          => '110',
+                'align'           => 'center',
+                'convert'       => ['int' => 'datetime'],
             ],
-
         ];
 
         return $table_th_bar;
@@ -265,7 +257,6 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
                             }
                         }
                     }
-
                     if (isset($field['lang']) && !empty($field['lang'])) {
                         //var_dump($val);
                         //var_dump($orderField);
@@ -275,8 +266,8 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
                 $str .= '<td>'.$val.'</td>';
             }
             $str .= '<td>
-						<a title="编辑" target="dialog" class="btnEdit" mask="true" drawable="true" width="1000" height="580" href="'.$this->_editUrl.'?'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" >编辑</a>
-						<a title="删除" target="ajaxTodo" href="'.$this->_deleteUrl.'?'.$csrfString.'&'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" class="btnDel">删除</a>
+						<a title="' . Yii::$service->page->translate->__('Edit')  . '" target="dialog" class="btnEdit" mask="true" drawable="true" width="1200" height="680" href="'.$this->_editUrl.'?'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" ><i class="fa fa-pencil"></i></a>
+						<a title="' . Yii::$service->page->translate->__('Remove')  . '" target="ajaxTodo" href="'.$this->_deleteUrl.'?'.$csrfString.'&'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" class="btnDel"     csrfName="' .CRequest::getCsrfName(). '" csrfVal="' .CRequest::getCsrfValue(). '"       ><i class="fa fa-trash-o"></i></a>
 					</td>';
             $str .= '</tr>';
         }

@@ -32,9 +32,9 @@ class Item extends Service
     }
 
     /**
-     * @property $product_id | string , 产品的id
-     * @property  $customer_id | int， 用户的id
-     * @property $month | int, 几个月内的订单
+     * @param $product_id | string , 产品的id
+     * @param  $customer_id | int， 用户的id
+     * @param $month | int, 几个月内的订单
      * 通过product_id和customerId，得到$month个月内下单支付成功的产品
      */
     protected function actionGetByProductIdAndCustomerId($product_id, $month, $customer_id = 0)
@@ -82,8 +82,8 @@ class Item extends Service
     }
 
     /**
-     * @property $order_id | Int
-     * @property $onlyFromTable | 从数据库取出不做处理
+     * @param $order_id | Int
+     * @param $onlyFromTable | 从数据库取出不做处理
      * @return array
      *               通过order_id 得到所有的items
      */
@@ -111,8 +111,8 @@ class Item extends Service
     }
 
     /**
-     * @property $product_one | Object, product model
-     * @property $item_one | Array , order item ，是订单产品表取出来的数据
+     * @param $product_one | Object, product model
+     * @param $item_one | Array , order item ，是订单产品表取出来的数据
      * 得到产品的图片。如果存在custom option image，则返回custom option image，如果不存在，则返回产品的主图
      */
     public function getProductImage($product_one, $item_one)
@@ -136,7 +136,7 @@ class Item extends Service
     }
 
     /**
-     * @property $item_one | Array , order item
+     * @param $item_one | Array , order item
      * 通过$item_one 的$item_one['custom_option_sku']，$item_one['custom_option'] , $item_one['spu_options']
      * 将spu的选择属性和自定义属性custom_option 组合起来，返回一个统一的数组
      */
@@ -166,7 +166,7 @@ class Item extends Service
     }
 
     /**
-     * @property $productOb | Object，类型：\fecshop\models\mongodb\Product
+     * @param $productOb | Object，类型：\fecshop\models\mongodb\Product
      * 得到产品的spu对应的属性以及值。
      * 概念 - spu options：当多个产品是同一个spu，但是不同的sku的时候，他们的产品表里面的
      * spu attr 的值是不同的，譬如对应鞋子，size 和 color 就是spu attr，对于同一款鞋子，他们
@@ -193,7 +193,7 @@ class Item extends Service
     }
 
     /**
-     * @property $items | Array , example:
+     * @param $items | Array , example:
      *	$itmes = [
      *		[
      *			'item_id' => $one['item_id'],
@@ -217,7 +217,7 @@ class Item extends Service
      *			'spu_options' 			=> $productSpuOptions,
      *		]
      *	];
-     * @property $order_id | Int
+     * @param $order_id | Int
      * 保存订单的item信息
      */
     protected function actionSaveOrderItems($items, $order_id, $store)
@@ -264,7 +264,7 @@ class Item extends Service
     }
     
     /**
-     * @property $filter|array
+     * @param $filter|array
      * @return Array;
      *              通过过滤条件，得到coupon的集合。
      *              example filter:

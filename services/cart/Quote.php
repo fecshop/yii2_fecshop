@@ -26,6 +26,9 @@ use Yii;
  */
 class Quote extends Service
 {
+    /**
+     * 购物车的个数计算，是否仅仅计算active状态的产品个数总和，如果设置false，则将购物车中所有的产品个数累加。
+     */
     const SESSION_CART_ID = 'current_session_cart_id';
 
     protected $_cart_id;
@@ -76,10 +79,10 @@ class Quote extends Service
     }
 
     /**
-     * @property $address|array 地址信息数组，详细参看下面函数显示的字段。
-     * @property $shipping_method | String 货运方式
-     * @property $payment_method | String 支付方式
-     * @property bool
+     * @param $address|array 地址信息数组，详细参看下面函数显示的字段。
+     * @param $shipping_method | String 货运方式
+     * @param $payment_method | String 支付方式
+     * @param bool
      * 更新游客购物车信息，用户下次下单 或者 重新下单，可以不需要重新填写货运地址信息。
      */
     public function updateGuestCart($address, $shipping_method, $payment_method)
@@ -105,10 +108,10 @@ class Quote extends Service
     }
 
     /**
-     * @property $address_id | int 用户customer address id
-     * @property $shipping_method 货运方式
-     * @property $payment_method  支付方式
-     * @property bool
+     * @param $address_id | int 用户customer address id
+     * @param $shipping_method 货运方式
+     * @param $payment_method  支付方式
+     * @param bool
      * 登录用户的cart信息，进行更新，更新cart的$address_id,$shipping_method,$payment_method。
      * 用途：对于登录用户，create new address（在下单页面），新创建的address会被保存，
      * 然后需要把address_id更新到cart中。
@@ -173,7 +176,7 @@ class Quote extends Service
     }
 
     /**
-     * @property $cart | $this->_cartModel Object
+     * @param $cart | $this->_cartModel Object
      * 设置$this->_cart 为 当前传递的$cart对象。
      */
     public function setCart($cart)
@@ -202,18 +205,21 @@ class Quote extends Service
     }
 
     /**
-     * @property $item_qty | Int
-     * 当$item_qty为null时，从cart items表中查询产品总数。
-     * 当$item_qty 不等于null时，代表已经知道购物车中产品的个数，不需要去cart_item表中查询，譬如清空购物车操作，直接就知道产品个数肯定为零。
+     * @param $item_qty | Int
+     * 当$active_item_qty为null时，从cart items表中查询产品总数。
+     * 当$item_qty 不等于null时，代表已经知道购物车中active产品的个数，不需要去cart_item表中查询，譬如清空购物车操作，直接就知道产品个数肯定为零。
      * 当购物车的产品变动后，会调用该函数，更新cart表的产品总数
      */
-    public function computeCartInfo($item_qty = null)
+    public function computeCartInfo($active_item_qty = null)
     {
-        if ($item_qty === null) {
-            $item_qty = Yii::$service->cart->quoteItem->getItemQty();
+        $items_all_count = 0;
+        if ($active_item_qty === null) {
+            $active_item_qty = Yii::$service->cart->quoteItem->getActiveItemQty();
         }
+        $items_all_count = Yii::$service->cart->quoteItem->getItemAllQty();
         $cart = $this->getCart();
-        $cart->items_count = $item_qty;
+        $cart->items_all_count = $items_all_count;
+        $cart->items_count = $active_item_qty;
         $cart->save();
 
         return true;
@@ -340,10 +346,10 @@ class Quote extends Service
     */
 
     /**
-     * @property $activeProduct | boolean , 是否只要active的产品
-     * @property $shipping_method | String  传递的货运方式
-     * @property $country | String 货运国家
-     * @property $region | String 省市
+     * @param $activeProduct | boolean , 是否只要active的产品
+     * @param $shipping_method | String  传递的货运方式
+     * @param $country | String 货运国家
+     * @param $region | String 省市
      * @return bool OR array ，如果存在问题返回false，对于返回的数组的格式参看下面$this->cartInfo[$cartInfoKey] 部分的数组。
      *              返回当前购物车的信息。包括购物车对应的产品信息。
      *              对于可选参数，如果不填写，就是返回当前的购物车的数据。
@@ -360,9 +366,11 @@ class Quote extends Service
                 return false;
             }
             $cart = $this->getCart();
-
-            $items_qty = $cart['items_count'];
-            if ($items_qty <= 0) {
+            // 购物车中所有的产品个数
+            $items_all_count = $cart['items_all_count'];
+            // 购物车中active状态的产品个数
+            $items_count = $cart['items_count'];
+            if ($items_count <=0 && $items_all_count <= 0) {
                 return false;
             }
             $coupon_code = $cart['coupon_code'];
@@ -426,7 +434,7 @@ class Quote extends Service
     }
 
     /**
-     * @property $shippingCost | Array ,example:
+     * @param $shippingCost | Array ,example:
      * 	[
      *		'currCost'   => 33.22, #当前货币的运费金额
      *		'baseCost'	 => 26.44,  #基础货币的运费金额
@@ -439,10 +447,10 @@ class Quote extends Service
     }
 
     /**
-     * @property $shipping_method | String 货运方式
-     * @property $weight | Float 产品重量
-     * @property $country | String 国家
-     * @property $region | String 省/市
+     * @param $shipping_method | String 货运方式
+     * @param $weight | Float 产品重量
+     * @param $country | String 国家
+     * @param $region | String 省/市
      * @return $this->_shipping_cost | Array ,format:
      *                               [
      *                               'currCost'   => 33.22, #当前货币的运费金额
@@ -477,7 +485,7 @@ class Quote extends Service
     }
 
     /**
-     * @property $coupon_code | String
+     * @param $coupon_code | String
      * 设置购物车的优惠券
      */
     public function setCartCoupon($coupon_code)
@@ -490,7 +498,7 @@ class Quote extends Service
     }
 
     /**
-     * @property $coupon_code | String
+     * @param $coupon_code | String
      * 取消购物车的优惠券
      */
     public function cancelCartCoupon($coupon_code)
@@ -558,7 +566,7 @@ class Quote extends Service
     }
 
     /**
-     * @property $customer_id | int
+     * @param $customer_id | int
      * @return $this->_cartModel Object。
      *                通过用户的customer_id，在cart表中找到对应的购物车
      */

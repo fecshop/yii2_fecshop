@@ -57,7 +57,7 @@ class Coupon extends Service
     }
 
     /**
-     * @property $primaryKey | Int
+     * @param $primaryKey | Int
      * @return Object($this->_couponModel)
      *                          通过id找到cupon的对象
      */
@@ -73,8 +73,8 @@ class Coupon extends Service
     }
 
     /**
-     * @property $customer_id | Int
-     * @property $coupon_id | Int
+     * @param $customer_id | Int
+     * @param $coupon_id | Int
      * 通过customer_id 和 coupon_id得到 Coupon Usage Model.
      */
     protected function actionGetCouponUsageModel($customer_id = '', $coupon_id = '')
@@ -103,7 +103,7 @@ class Coupon extends Service
     }
 
     /**
-     * @property $coupon_code | String
+     * @param $coupon_code | String
      * 根据 coupon_code 得到 coupon model
      */
     protected function actionGetCouponModel($coupon_code = '')
@@ -125,7 +125,7 @@ class Coupon extends Service
     }
 
     /**
-     * @property $filter|array
+     * @param $filter|array
      * @return Array;
      * 通过过滤条件，得到coupon的集合。
      * example filter:
@@ -153,7 +153,7 @@ class Coupon extends Service
     }
 
     /**
-     * @property $one|array , save one data .
+     * @param $one|array , save one data .
      * @return int 保存coupon成功后，返回保存的id。
      */
     protected function actionSave($one)
@@ -164,19 +164,9 @@ class Coupon extends Service
         if ($primaryVal) {
             $model = $this->_couponModel->findOne($primaryVal);
             if (!$model) {
-                Yii::$service->helper->errors->add('coupon '.$this->getPrimaryKey().' is not exist');
+                Yii::$service->helper->errors->add('coupon {primaryKey} is not exist' , ['primaryKey' => $this->getPrimaryKey()] );
 
                 return;
-            } else {
-                $o_one = $this->_couponModel->find()
-                    ->where(['coupon_code' =>$one['coupon_code']])
-                    ->andWhere(['!=', $primaryKey, $primaryVal])
-                    ->one();
-                if ($o_one[$primaryKey]) {
-                    Yii::$service->helper->errors->add('coupon_code must be unique');
-
-                    return;
-                }
             }
         } else {
             $o_one = $this->_couponModel->find()
@@ -198,15 +188,23 @@ class Coupon extends Service
                 }
             }
         }
-        $model->updated_at = time();
-        $model      = Yii::$service->helper->ar->save($model, $one);
-        $primaryVal = $model[$primaryKey];
+        $model->attributes = $one;
+        if ($model->validate()) {
+            $model->updated_at = time();
+            $model = Yii::$service->helper->ar->save($model, $one);
+            $primaryVal = $model[$primaryKey];
 
-        return $primaryVal;
+            return $primaryVal;
+        } else {
+            $errors = $model->errors;
+            Yii::$service->helper->errors->addByModelErrors($errors);
+
+            return false;
+        }
     }
 
     /**
-     * @property $ids | Int or Array
+     * @param $ids | Int or Array
      * @return bool
      *              如果传入的是id数组，则删除多个
      *              如果传入的是Int，则删除一个coupon
@@ -224,7 +222,7 @@ class Coupon extends Service
                 if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
                     $model->delete();
                 } else {
-                    Yii::$service->helper->errors->add("Coupon Remove Errors:ID $id is not exist.");
+                    Yii::$service->helper->errors->add('Coupon remove errors:ID {id} is not exist.', ['id' => $id]);
 
                     return false;
                 }
@@ -235,7 +233,7 @@ class Coupon extends Service
             if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
                 $model->delete();
             } else {
-                Yii::$service->helper->errors->add("Coupon Remove Errors:ID:$id is not exist.");
+                Yii::$service->helper->errors->add('Coupon remove errors:ID {id} is not exist.', ['id' => $id]);
 
                 return false;
             }
@@ -245,7 +243,7 @@ class Coupon extends Service
     }
 
     /**
-     * @property $coupon_code | String  优惠卷码
+     * @param $coupon_code | String  优惠卷码
      * 初始化对象变量，这个函数是在使用优惠券 和 取消优惠券的时候，
      * 调用相应方法前，通过这个函数初始化类变量
      * $_useCouponInit # 是否初始化过，如果初始化过了，则不会执行
@@ -277,7 +275,7 @@ class Coupon extends Service
     }
 
     /**
-     * @property $isGetDiscount | boolean, 是否是获取折扣信息，
+     * @param $isGetDiscount | boolean, 是否是获取折扣信息，
      *      1.如果值为true，说明该操作是获取cart 中的coupon的折扣操作步骤中的active判断，则只进行优惠券存在和是否过期判断，不对使用次数判断
      *      2.如果值为false，则是add coupon操作，除了优惠券是否存在， 是否过期判断，还需要对使用次数进行判断。
      * 查看coupon是否是可用的，如果可用，返回true，如果不可用，返回false
@@ -315,8 +313,8 @@ class Coupon extends Service
     }
 
     /**
-     * @property $coupon_code | String , coupon_code字符串
-     * @property $dc_price | Float 总价格
+     * @param $coupon_code | String , coupon_code字符串
+     * @param $dc_price | Float 总价格
      * 根据优惠券和总价格，计算出来打折后的价格。譬如原来10元，打八折后，是8元。
      */
     protected function actionGetDiscount($coupon_code, $dc_price)
@@ -348,7 +346,7 @@ class Coupon extends Service
     }
 
     /**
-     * @property $type | String     add or cancel
+     * @param $type | String     add or cancel
      * @return bool
      *              增加或者减少优惠券使用的次数
      */
@@ -405,7 +403,7 @@ class Coupon extends Service
     }
 
     /**
-     * @property $coupon_code | String 优惠卷码
+     * @param $coupon_code | String 优惠卷码
      * 检查当前购物车中是否存在优惠券，如果存在，则覆盖当前的优惠券
      * 如果当前购物车没有使用优惠券，则检查优惠券是否可以使用
      * 如果优惠券可以使用，则使用优惠券进行打折。更新购物车信息。
@@ -454,7 +452,7 @@ class Coupon extends Service
     }
 
     /**
-     * @property $coupon_code | String
+     * @param $coupon_code | String
      * 取消优惠券
      */
     protected function actionCancelCoupon($coupon_code)

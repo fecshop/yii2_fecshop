@@ -50,45 +50,40 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
     {
         return [
             [
-                'label'=>'name',
-                'name'=>'name',
-                'display'=>[
-                    'type' => 'inputString',
-
-                ],
-                'require' => 1,
-            ],
-
-
-            [
-                'label'=>'resource',
-                'name'=>'url_key',
-                'display'=>[
+                'label' => Yii::$service->page->translate->__('Tag Name'),
+                'name' => 'name',
+                'display' => [
                     'type' => 'inputString',
                 ],
                 'require' => 1,
             ],
             [
-                'label'=>'tag',
-                'name'=>'tag',
-                'display'=>[
+                'label' => Yii::$service->page->translate->__('Resource'),
+                'name' => 'url_key',
+                'display' => [
+                    'type' => 'inputString',
+                ],
+                'require' => 1,
+            ],
+            [
+                'label' => Yii::$service->page->translate->__('Tag'),
+                'name' => 'tag',
+                'display' => [
                     'type' => 'select',
                     'data' => Yii::$service->admin->urlKey->getTags(),
                 ],
                 'require' => 1,
             ],
-
             [
-                'label'=>'tag sort order',
-                'name'=>'tag_sort_order',
-                'display'=>[
+                'label' => Yii::$service->page->translate->__('Tag Sort Order'),
+                'name' => 'tag_sort_order',
+                'display' =>[
                     'type' => 'inputString',
                 ],
                 'require' => 0,
             ],
         ];
     }
-
     /**
      * save article data,  get rewrite url and save to article url key.
      */
@@ -104,8 +99,8 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         $errors = Yii::$service->helper->errors->get();
         if (!$errors) {
             echo  json_encode([
-                'statusCode'=>'200',
-                'message'=>'save success',
+                'statusCode' => '200',
+                'message' => Yii::$service->page->translate->__('Save Success'),
             ]);
             exit;
         } else {
@@ -130,14 +125,14 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         $errors = Yii::$service->helper->errors->get();
         if (!$errors) {
             echo  json_encode([
-                'statusCode'=>'200',
-                'message'=>'remove data  success',
+                'statusCode' => '200',
+                'message' => Yii::$service->page->translate->__('Remove Success'),
             ]);
             exit;
         } else {
             echo  json_encode([
-                'statusCode'=>'300',
-                'message'=>$errors,
+                'statusCode' => '300',
+                'message' => $errors,
             ]);
             exit;
         }

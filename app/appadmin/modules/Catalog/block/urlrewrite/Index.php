@@ -42,7 +42,6 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 
     public function getLastData()
     {
-
         // hidden section ,that storage page info
         $pagerForm = $this->getPagerForm();
         // search section
@@ -57,12 +56,12 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
         $toolBar = $this->getToolBar($this->_param['numCount'], $this->_param['pageNum'], $this->_param['numPerPage']);
 
         return [
-            'pagerForm'        => $pagerForm,
-            'searchBar'        => $searchBar,
-            'editBar'        => $editBar,
-            'thead'        => $thead,
-            'tbody'        => $tbody,
-            'toolBar'    => $toolBar,
+            'pagerForm'     => $pagerForm,
+            'searchBar'      => $searchBar,
+            'editBar'          => $editBar,
+            'thead'            => $thead,
+            'tbody'            => $tbody,
+            'toolBar'          => $toolBar,
         ];
     }
 
@@ -72,20 +71,18 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
     public function getSearchArr()
     {
         $data = [
-
             [    // 字符串类型
-                'type'=>'inputtext',
-                'title'=>'原始url',
-                'name'=>'origin_url',
-                'columns_type' =>'string',
+                'type' => 'inputtext',
+                'title'  => Yii::$service->page->translate->__('Origin Url'),
+                'name' => 'origin_url',
+                'columns_type' => 'string',
             ],
             [    // 字符串类型
-                'type'=>'inputtext',
-                'title'=>'自定义url',
-                'name'=>'custom_url_key',
-                'columns_type' =>'string',
+                'type' => 'inputtext',
+                'title'  => Yii::$service->page->translate->__('Custom Url'),
+                'name' => 'custom_url_key',
+                'columns_type' => 'string',
             ],
-
         ];
 
         return $data;
@@ -99,31 +96,30 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
         $table_th_bar = [
             [
                 'orderField'    => $this->_primaryKey,
-                'label'            => 'ID',
-                'width'            => '50',
-                'align'        => 'center',
+                'label'           => Yii::$service->page->translate->__('Id'),
+                'width'          => '50',
+                'align'           => 'center',
 
             ],
             [
                 'orderField'    => 'type',
-                'label'            => '类型',
-                'width'            => '50',
-                'align'        => 'left',
+                'label'           => Yii::$service->page->translate->__('Type'),
+                'width'          => '50',
+                'align'           => 'left',
 
             ],
             [
                 'orderField'    => 'custom_url_key',
-                'label'            => '自定义URL',
-                'width'            => '110',
-                'align'        => 'left',
+                'label'           => Yii::$service->page->translate->__('Custom Url'),
+                'width'          => '110',
+                'align'           => 'left',
             ],
             [
                 'orderField'    => 'origin_url',
-                'label'            => '原始URL',
-                'width'            => '110',
-                'align'        => 'left',
-                ],
-
+                'label'           => Yii::$service->page->translate->__('Origin Url'),
+                'width'          => '110',
+                'align'           => 'left',
+            ],
         ];
 
         return $table_th_bar;
@@ -234,7 +230,6 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
             $align = isset($b['align']) ? 'align="'.$b['align'].'"' : '';
             $str .= '<th width="'.$width.'" '.$align.' orderField="'.$orderField.'" class="'.$class.'">'.$label.'</th>';
         }
-        //$str .= '<th width="80" >编辑</th>';
         $str .= '</tr></thead>';
 
         return $str;

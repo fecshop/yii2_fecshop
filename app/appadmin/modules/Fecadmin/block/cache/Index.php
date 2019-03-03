@@ -9,6 +9,7 @@
 namespace fecshop\app\appadmin\modules\Fecadmin\block\cache;
 
 use fec\helpers\CUrl;
+use fec\helpers\CRequest;
 use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockInterface;
 use fecshop\app\appadmin\modules\AppadminbaseBlock;
 use Yii;
@@ -72,7 +73,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 		}
 
 		return '<ul class="toolBar">
-					<li><a title="确实要刷新?" target="selectedTodo" rel="ids" postType="string" href="'.$this->_currentUrl.'?method=reflush" class="edit"><span>刷新缓存</span></a></li>
+					<li><a csrfName="' .CRequest::getCsrfName(). '" csrfVal="' .CRequest::getCsrfValue(). '" title="'.Yii::$service->page->translate->__('Are you sure you want to refresh the cache?').'" target="selectedTodo" rel="ids" postType="string" href="'.$this->_currentUrl.'?method=reflush" class="edit"><span>' . Yii::$service->page->translate->__('Refresh Cache') . '</span></a></li>
 					<li class="line">line</li>
 				</ul>';
 	}
@@ -82,8 +83,8 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 			<thead>
 				<tr>
 					<th width="22"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
-					<th width="40">Cache名称</th>
-					<th width="110">Cache描述</th>
+					<th width="40">' . Yii::$service->page->translate->__('Cache Name')  . '</th>
+					<th width="110">' . Yii::$service->page->translate->__('Cache Description') . '</th>
 				</tr>
 			</thead>';
 	}
@@ -97,7 +98,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
                     $str .= '<tr target="sid_user" rel="'.$appName.'">
                         <td><input name="ids" value="'.$appName.'" type="checkbox"></td>
                         <td>'.$appName.'</td>
-                        <td>刷新入口全部缓存：'.$appName.'</td>
+                        <td> '. Yii::$service->page->translate->__('Refresh all caches') .'：'.$appName.'</td>
                     </tr>
                     ';
                 }
@@ -163,7 +164,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
             exit;
         }
         $successReflushAppNameArr = [];
-		$cacheAppNameStr = Yii::$app->request->get('ids');
+		$cacheAppNameStr = Yii::$app->request->post('ids');
 		$cacheAppNameArr = explode(",",$cacheAppNameStr);
         if (is_array($cacheAppNameArr)) {
             foreach ($cacheAppNameArr as $cacheAppName) {
@@ -178,8 +179,8 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 		# 刷新 配置 缓存
 		// \fecadmin\helpers\CConfig::flushCacheConfig();
         echo  json_encode([
-            "statusCode"=>"200",
-            "message"=>"reflush cache success, appName:".implode(',',$successReflushAppNameArr),
+            "statusCode" => "200",
+            "message" => Yii::$service->page->translate->__('Reflush cache success, AppName') . ":" . implode(',', $successReflushAppNameArr),
         ]);
         exit;
     }

@@ -13,15 +13,84 @@ namespace fecshop\services;
 use yii\base\InvalidConfigException;
 use Yii;
 /**
- * Cms services.
+ * Admin services.
+ *
+ * @property \fecshop\services\customer\UrlKey $urlKey
+ * @property \fecshop\services\customer\RoleUrlKey $roleUrlKey
+ * @property \fecshop\services\customer\Role $role
+ * @property \fecshop\services\customer\Config $config
+ * @property \fecshop\services\customer\UserRole $userRole
+ * @property \fecshop\services\customer\SystemLog $systemLog
+ * @property \fecshop\services\customer\Menu $menu
+ *
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
 class Admin extends Service
 {
+    public $xhEditorUploadImgUrl = 'cms/xeditor/imageupload';
+    public $xhEditorUploadImgForamt = 'jpg,jpeg,gif,png';
+
+    public $xhEditorUploadFlashUrl = 'cms/xeditor/flashupload';
+    public $xhEditorUploadFlashFormat = 'swf';
+
+    public $xhEditorUploadLinkUrl = 'cms/xeditor/linkupload';
+    public $xhEditorUploadLinkFormat = 'zip,rar,txt';
+
+    public $xhEditorUploadMediaUrl = 'cms/xeditor/mediaupload';
+    public $xhEditorUploadMediaFormat = 'avi';
+
     protected $_currentLangCode;
     const ADMIN_CURRENT_LANG_CODE = 'admin_current_lang_code';
 
+    /**
+     * @return string 得到编辑器上传图片upload url
+     */
+    public function getXhEditorUploadImgUrl(){
+        return $this->xhEditorUploadImgUrl;
+    }
+    /**
+     * @return string 得到编辑器上传图片允许的文件格式
+     */
+    public function getXhEditorUploadImgForamt(){
+        return $this->xhEditorUploadImgForamt;
+    }
+    /**
+     * @return string 得到编辑器上传Flash upload url
+     */
+    public function getXhEditorUploadFlashUrl(){
+        return $this->xhEditorUploadFlashUrl;
+    }
+    /**
+     * @return string 得到编辑器上传Flash允许的文件格式
+     */
+    public function getXhEditorUploadFlashFormat(){
+        return $this->xhEditorUploadFlashFormat;
+    }
+    /**
+     * @return string 得到编辑器上传Link upload url
+     */
+    public function getXhEditorUploadLinkUrl(){
+        return $this->xhEditorUploadLinkUrl;
+    }
+    /**
+     * @return string 得到编辑器上传Link允许的文件格式
+     */
+    public function getXhEditorUploadLinkFormat(){
+        return $this->xhEditorUploadLinkFormat;
+    }
+    /**
+     * @return string 得到编辑器上传Media upload url
+     */
+    public function getXhEditorUploadMediaUrl(){
+        return $this->xhEditorUploadMediaUrl;
+    }
+    /**
+     * @return string 得到编辑器上传Media允许的文件格式
+     */
+    public function getXhEditorUploadMediaFormat(){
+        return $this->xhEditorUploadMediaFormat;
+    }
     /**
      * @param $app
      * 在Yii2框架的初始化过程过程过程中执行的函数，将被组件（Yii2 components）Yii::$app->store->bootstrap() 调用
@@ -61,8 +130,8 @@ class Admin extends Service
     }
     
     public function setCurrentLangCode($code){
-        $allLangCode = Yii::$service->fecshoplang->getAllLangCode();
-        if (in_array($code, $allLangCode)) {
+        $adminLangCode = Yii::$service->fecshoplang->getAdminLangCode();
+        if (in_array($code, $adminLangCode)) {
             Yii::$service->session->set(self::ADMIN_CURRENT_LANG_CODE, $code);
             $this->_currentLangCode = $code;
             if ($this->setTranslateLang($code)) {
@@ -87,10 +156,10 @@ class Admin extends Service
     
     public function getLangArr(){
         $arr = [];
-        $allLangCode = Yii::$service->fecshoplang->allLangCode;
+        $adminLangCode = Yii::$service->fecshoplang->adminLangCode;
         
-        if (is_array($allLangCode)) {
-            foreach ($allLangCode as $one) {
+        if (is_array($adminLangCode)) {
+            foreach ($adminLangCode as $one) {
                 $arr[$one['code']] = $one['name'];
             }
         }

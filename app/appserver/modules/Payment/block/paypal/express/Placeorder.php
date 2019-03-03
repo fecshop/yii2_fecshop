@@ -182,7 +182,7 @@ class Placeorder
         return [];
     }
     /**
-     * @property $token | String 
+     * @param $token | String 
      * 通过paypal的api接口，进行支付下单
      */
     public function doCheckoutPayment($token)
@@ -210,7 +210,7 @@ class Placeorder
     }
 
     /**
-     * @property $post | Array
+     * @param $post | Array
      * 登录用户，保存货运地址到customer address ，然后把生成的
      * address_id 写入到cart中。
      * shipping method写入到cart中
@@ -235,7 +235,7 @@ class Placeorder
     */
 
     /**
-     * @property $post | Array
+     * @param $post | Array
      * @return bool
      *              检查前台传递的信息是否正确。同时初始化一部分类变量
      */
@@ -285,7 +285,7 @@ class Placeorder
         if ($order_remark && $orderRemarkStrMaxLen) {
             $order_remark_strlen = strlen($order_remark);
             if ($order_remark_strlen > $orderRemarkStrMaxLen) {
-                Yii::$service->helper->errors->add('order remark string length can not gt '.$orderRemarkStrMaxLen);
+                Yii::$service->helper->errors->add('order remark string length can not gt {orderRemarkStrMaxLen}', ['orderRemarkStrMaxLen' => $orderRemarkStrMaxLen]);
                 
                 return false;
             } else {

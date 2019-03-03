@@ -17,7 +17,7 @@ use Yii;
  */
 class OrderinfoController extends SalesController
 {
-    public $enableCsrfValidation = false;
+    public $enableCsrfValidation = true;
     
     public function actionManager()
     {

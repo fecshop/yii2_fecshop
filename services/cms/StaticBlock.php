@@ -106,7 +106,7 @@ class Staticblock extends Service
     }
 
     /**
-     * @property $filter|array
+     * @param $filter|array
      * get artile collection by $filter
      * example filter:
      * [
@@ -127,7 +127,7 @@ class Staticblock extends Service
     }
 
     /**
-     * @property $one|array , save one data .
+     * @param $one|array , save one data .
      * save $data to cms model,then,add url rewrite info to system service urlrewrite.
      */
     protected function actionSave($one)

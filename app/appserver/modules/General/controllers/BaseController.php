@@ -18,7 +18,47 @@ use Yii;
  */
 class BaseController extends AppserverController
 {
-    
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        $cacheName = 'appserver_left_menu';
+        if (Yii::$service->cache->isEnable($cacheName)) {
+            $timeout = Yii::$service->cache->timeout($cacheName);
+            $disableUrlParam = Yii::$service->cache->disableUrlParam($cacheName);
+            $cacheUrlParam = Yii::$service->cache->cacheUrlParam($cacheName);
+            $get_str = '';
+            $get = Yii::$app->request->get();
+            // 存在无缓存参数，则关闭缓存
+            if (isset($get[$disableUrlParam])) {
+                $behaviors[] =  [
+                    'enabled' => false,
+                    'class' => 'yii\filters\PageCache',
+                    'only' => ['menu'],
+                ];
+            }
+            if (is_array($get) && !empty($get) && is_array($cacheUrlParam)) {
+                foreach ($get as $k=>$v) {
+                    if (in_array($k, $cacheUrlParam)) {
+                        if ($k != 'p' && $v != 1) {
+                            $get_str .= $k.'_'.$v.'_';
+                        }
+                    }
+                }
+            }
+            $currentLangCode = Yii::$service->store->currentLangCode;
+            $behaviors[] =  [
+                'enabled' => true,
+                'class' => 'yii\filters\PageCache',
+                'only' => ['menu'],
+                'duration' => $timeout,
+                'variations' => [
+                    $currentLangCode,'F-E-C-S-h-o-p'
+                ],
+            ];
+        }
+        return $behaviors;
+    }
+
     public function actionMenu()
     {
         if(Yii::$app->request->getMethod() === 'OPTIONS'){

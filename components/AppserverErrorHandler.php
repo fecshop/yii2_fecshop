@@ -12,7 +12,7 @@ class AppserverErrorHandler extends ErrorHandler
 {
     /**
      * [renderException description]
-     * @property  $exception | Object 异常数据对象
+     * @param  $exception | Object 异常数据对象
      * 
      */
     public function renderException($exception)

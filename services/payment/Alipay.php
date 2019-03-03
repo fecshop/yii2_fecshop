@@ -128,10 +128,10 @@ class Alipay extends Service
     }
 
     /**
-     * @property $out_trade_no | String ，[支付宝传递过来的]fecshop站内订单号
-     * @property $total_amount | String ，[支付宝传递过来的]fecshop站内订单金额（CNY）
-     * @property $seller_id    | String ，[支付宝传递过来的]商家UID
-     * @property $auth_app_id  | String ，[支付宝传递过来的]商家appId
+     * @param $out_trade_no | String ，[支付宝传递过来的]fecshop站内订单号
+     * @param $total_amount | String ，[支付宝传递过来的]fecshop站内订单金额（CNY）
+     * @param $seller_id    | String ，[支付宝传递过来的]商家UID
+     * @param $auth_app_id  | String ，[支付宝传递过来的]商家appId
      * 验证订单数据是否正确，需要满足下面的条件：
      * 1、商户需要验证该通知数据中的out_trade_no是否为商户系统中创建的订单号
      * 2、判断total_amount是否确实为该订单的实际金额（即商户订单创建时的金额）
@@ -150,7 +150,7 @@ class Alipay extends Service
             Yii::$service->payment->setPaymentMethod($this->_order['payment_method']);
         }
         if (!$this->_order) {
-            Yii::$service->helper->errors->add('order increment id:'.$out_trade_no.' is not exist.');
+            Yii::$service->helper->errors->add('order increment id:{out_trade_no} is not exist.', ['out_trade_no' => $out_trade_no]);
             
             return false;
         }
@@ -158,7 +158,7 @@ class Alipay extends Service
         //$order_total_amount = Yii::$service->page->currency->getCurrencyPrice($base_grand_total,'CNY');
         $order_total_amount = $this->_order['grand_total'];
         if ($order_total_amount != $total_amount) {
-            Yii::$service->helper->errors->add('order increment id:'.$out_trade_no.' , total_amount('.$total_amount.') is not equal to order_total_amount('.$order_total_amount.')');
+            Yii::$service->helper->errors->add('order increment id:{out_trade_no} , total_amount({total_amount}) is not equal to order_total_amount({order_total_amount})', ['out_trade_no'=>$out_trade_no , 'total_amount'=>$total_amount , 'order_total_amount'=>$order_total_amount ]);
             
             return false;
         }
@@ -168,12 +168,12 @@ class Alipay extends Service
             return false;
         }
         if ($seller_id != $this->sellerId) {
-            Yii::$service->helper->errors->add('request sellerId('.$seller_id.') is not equle to config sellerId('.$this->sellerId.')');
+            Yii::$service->helper->errors->add('request sellerId({seller_id}) is not equle to config sellerId({this_seller_id})', ['seller_id'=>$seller_id , 'this_seller_id'=>$this->sellerId ]);
             
             return false;
         }
         if ($auth_app_id != $this->appId) {
-            Yii::$service->helper->errors->add('request auth_app_id('.$auth_app_id.') is not equle to config appId('.$this->appId.')');
+            Yii::$service->helper->errors->add('request auth_app_id({auth_app_id}) is not equle to config appId({app_id})', ['auth_app_id'=>$auth_app_id, 'app_id'=>$this->appId ]);
             
             return false;
         }
@@ -215,7 +215,7 @@ class Alipay extends Service
             
             return true;
         } else {
-            Yii::$service->helper->errors->add('alipay payment fail,resultCode:'.$resultCode);
+            Yii::$service->helper->errors->add('Alipay payment fail,resultCode: {result_code}', ['result_code' => $resultCode]);
             
             return false;
         }
@@ -270,8 +270,8 @@ class Alipay extends Service
     }
 
     /**
-     * @property $increment_id | String 订单号
-     * @property $sendEmail | boolean 是否发送邮件
+     * @param $increment_id | String 订单号
+     * @param $sendEmail | boolean 是否发送邮件
      * 订单支付成功后，需要更改订单支付状态等一系列的处理。
      */
     protected function paymentSuccess($increment_id, $trade_no, $sendEmail = true)

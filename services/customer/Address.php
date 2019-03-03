@@ -41,7 +41,7 @@ class Address extends Service
     }
 
     /**
-     * @property $primaryKey | Int
+     * @param $primaryKey | Int
      * @return Object(MyCoupon)
      *                          通过id找到customer address的对象
      */
@@ -57,8 +57,8 @@ class Address extends Service
     }
 
     /**
-     * @property $address_id | Int , address表的id
-     * @property $customer_id | Int ， 用户id
+     * @param $address_id | Int , address表的id
+     * @param $customer_id | Int ， 用户id
      * 在这里在主键查询的同时，加入customer_id，这样查询的肯定是这个用户的，
      * 这样就防止有的用户去查询其他用户的address信息。
      */
@@ -77,7 +77,7 @@ class Address extends Service
     }
 
     /**
-     * @property $filter|array
+     * @param $filter|array
      * @return Array;
      *  通过过滤条件，得到coupon的集合。
      *  example filter:
@@ -169,7 +169,7 @@ class Address extends Service
     }
 
     /**
-     * @property $one|array , 保存的address数组
+     * @param $one|array , 保存的address数组
      * @return int 返回保存的 address_id 的值。
      */
     protected function actionSave($one)
@@ -184,7 +184,7 @@ class Address extends Service
         if ($primaryVal) {
             $model = $this->_addressModel->findOne($primaryVal);
             if (!$model) {
-                Yii::$service->helper->errors->add('address '.$this->getPrimaryKey().' is not exist');
+                Yii::$service->helper->errors->add('address {primaryKey} is not exist', ['primaryKey' => $this->getPrimaryKey()]);
 
                 return false;
             }
@@ -226,7 +226,7 @@ class Address extends Service
     }
 
     /**
-     * @property $ids | Int or Array
+     * @param $ids | Int or Array
      * @return bool
      * 如果传入的是id数组，则删除多个address,如果传入的是Int，则删除一个address
      * 删除address的同时，删除掉购物车中的address_id
@@ -256,7 +256,7 @@ class Address extends Service
                     //    $model->delete();
                     //}
                 } else {
-                    Yii::$service->helper->errors->add("address Remove Errors:ID $id is not exist.");
+                    Yii::$service->helper->errors->add('Address Remove Errors:ID {id} is not exist', ['id' => $id]);
 
                     return false;
                 }
@@ -278,7 +278,7 @@ class Address extends Service
                 //    $model->delete();
                 //}
             } else {
-                Yii::$service->helper->errors->add("Address Remove Errors:ID:$id is not exist.");
+                Yii::$service->helper->errors->add('Address Remove Errors:ID:{id} is not exist', ['id'=> $id]);
 
                 return false;
             }
@@ -303,8 +303,8 @@ class Address extends Service
     }
 
     /**
-     * @property $customer_id | Int ,
-     * @property $address_id | Int，address id
+     * @param $customer_id | Int ,
+     * @param $address_id | Int，address id
      * 删除购物车中的address部分。
      */
     protected function removeCartAddress($customer_id, $address_id)
@@ -319,7 +319,7 @@ class Address extends Service
     }
 
     /*
-     * @property $customer_id | int 用户的id
+     * @param $customer_id | int 用户的id
      * @return Array Or ''
      * 得到customer的默认地址。
      */

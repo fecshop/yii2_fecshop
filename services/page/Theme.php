@@ -74,8 +74,8 @@ class Theme extends Service
     }
 
     /**
-     * @property $view | String ，view路径的字符串。
-     * @property $throwError | boolean，view文件找不到的时候是否抛出异常。
+     * @param $view | String ，view路径的字符串。
+     * @param $throwError | boolean，view文件找不到的时候是否抛出异常。
      * 根据模板路径的优先级，依次查找view文件，找到后，返回view文件的绝对路径。
      */
     protected function actionGetViewFile($view, $throwError = true)
@@ -115,7 +115,7 @@ class Theme extends Service
     }
 
     /**
-     * @property $dir | string 设置本地模板路径
+     * @param $dir | string 设置本地模板路径
      */
     protected function actionSetLocalThemeDir($dir)
     {
@@ -123,7 +123,7 @@ class Theme extends Service
     }
 
     /**
-     * @property $dir | string 设置第三方模板路径
+     * @param $dir | string 设置第三方模板路径
      */
     protected function actionSetThirdThemeDir($dir)
     {

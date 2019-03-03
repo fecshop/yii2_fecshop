@@ -15,13 +15,10 @@ use fec\helpers\CRequest;
 $this->title = 'Dashboard';
 ?>
 
-
 <script>
-
     function thissubmit(thiss){
         return validateCallback(thiss, dialogAjaxDoneCloseAndReflush);
     }
-
 </script>
 
 <style>
@@ -51,8 +48,8 @@ $this->title = 'Dashboard';
             <div class="tabsHeader">
                 <div class="tabsHeaderContent">
                     <ul>
-                        <li><a href="javascript:;"><span>基本信息</span></a></li>
-                        <li><a href="javascript:;"><span>Role</span></a></li>
+                        <li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Basic Info') ?></span></a></li>
+                        <li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Role') ?></span></a></li>
                     </ul>
                 </div>
             </div>
@@ -83,13 +80,9 @@ $this->title = 'Dashboard';
                                         </ul>
                                     </li>
                                 <?php endforeach; ?>
-
                             <?php endif;  ?>
                         </ul>
                     </div>
-
-
-
                 </div>
             </div>
             <div class="tabsFooter">
@@ -99,13 +92,12 @@ $this->title = 'Dashboard';
         <div class="formBar">
             <ul >
                 <!--<li><a class="buttonActive" href="javascript:;"><span>保存</span></a></li>-->
-                <li><div class="buttonActive"><div class="buttonContent"><button onclick="func('accept')"  value="accept" name="accept" type="submit">保存</button></div></div></li>
+                <li><div class="buttonActive"><div class="buttonContent"><button onclick="func('accept')"  value="accept" name="accept" type="submit"><?=  Yii::$service->page->translate->__('Save') ?></button></div></div></li>
 
                 <li>
-                    <div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+                    <div class="button"><div class="buttonContent"><button type="button" class="close"><?=  Yii::$service->page->translate->__('Cancel') ?></button></div></div>
                 </li>
             </ul>
         </div>
-
     </form>
 </div>

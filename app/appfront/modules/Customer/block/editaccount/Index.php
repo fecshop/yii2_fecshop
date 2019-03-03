@@ -20,7 +20,7 @@ class Index
     public function getLastData()
     {
         $identity = Yii::$app->user->identity;
-
+        $this->breadcrumbs(Yii::$service->page->translate->__('Account Information'));
         return [
             'firstname'    => $identity['firstname'],
             'email'        => $identity['email'],
@@ -28,9 +28,19 @@ class Index
             'actionUrl'        => Yii::$service->url->getUrl('customer/editaccount'),
         ];
     }
+    
+    // 面包屑导航
+    protected function breadcrumbs($name)
+    {
+        if (Yii::$app->controller->module->params['account_information_breadcrumbs']) {
+            Yii::$service->page->breadcrumbs->addItems(['name' => $name]);
+        } else {
+            Yii::$service->page->breadcrumbs->active = false;
+        }
+    }
 
     /**
-     * @property $editForm|array
+     * @param $editForm|array
      * 保存修改后的用户信息。
      */
     public function saveAccount($editForm)

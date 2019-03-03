@@ -19,7 +19,8 @@ use Yii;
 class EditaccountController extends AppfrontController
 {
     //protected $_registerSuccessRedirectUrlKey = 'customer/account';
-
+    public $enableCsrfValidation = true;
+    
     public function init()
     {
         parent::init();

@@ -18,7 +18,7 @@ use fecshop\app\appadmin\modules\AppadminController;
 class ConfigController extends AppadminController
 {
 	public $blockNamespace = 'fecshop\\app\\appadmin\\modules\\Fecadmin\\block';
-    public $enableCsrfValidation = false;
+    public $enableCsrfValidation = true;
     
     public function actionManager()
     {

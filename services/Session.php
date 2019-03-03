@@ -28,8 +28,12 @@ class Session extends Service
     // 设置session超时时间
     public $timeout;
 
-    // 当过期时间+session创建时间 - 当前事件 < $updateTimeLimit ,则更新session创建时间
+    // 当过期时间 + session创建时间 - 当前时间 < $updateTimeLimit ,则更新session创建时间
     public $updateTimeLimit = 600;
+
+    public function isUpdateTimeOut($createTime){
+        return (int)$this->timeout + (int)$createTime - time() < $this->updateTimeLimit;
+    }
     
     /**
      * $storage , $storagePath 为找到当前的storage而设置的配置参数

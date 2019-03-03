@@ -11,7 +11,7 @@ class m180212_075829_fecshop_tables extends Migration
     {
         $arr = [
             "
-            ALTER TABLE `sales_flat_order_item` ADD `customer_id` INT( 30 ) NULL COMMENT '用户的id' AFTER `order_id` , ADD INDEX ( `customer_id` ) 
+            ALTER TABLE `sales_flat_order_item` ADD `customer_id` INT( 11 ) NULL COMMENT '用户的id' AFTER `order_id` , ADD INDEX ( `customer_id` ) 
             "
             ,
             

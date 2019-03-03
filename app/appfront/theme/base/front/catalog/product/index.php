@@ -9,6 +9,7 @@
 ?>
 <div class="main container one-column">
 	<div class="col-main">
+		<?= Yii::$service->page->widget->render('breadcrumbs',$this); ?>
 		<div class="product_page">
 			<div class="product_view">
 				<input type="hidden" class="product_view_id" value="<?=  $_id ?>">
@@ -91,7 +92,7 @@
 							
 							<div class="myFavorite_nohove" id="myFavorite">
 								<i></i>
-								<a href="javascript:void(0)" url="<?= Yii::$service->url->getUrl('catalog/favoriteproduct/add',['product_id'=>$_id]); ?>" class="addheart" id="divMyFavorite" rel="nofollow" >
+								<a href="javascript:void(0)" url="<?= Yii::$service->url->getUrl('catalog/favoriteproduct/add'); ?>"  product_id="<?= $_id?>" class="addheart" id="divMyFavorite" rel="nofollow" >
 									<?= Yii::$service->page->translate->__('Add to Favorites'); ?>
 								</a>				
 							</div>
@@ -255,7 +256,9 @@
 				$data['custom_option'] 	= custom_option_json;
 				$data['product_id'] 	= "<?= $_id ?>";
 				$data['qty'] 			= qty;
-				$data[csrfName] 		= csrfVal;
+				if (csrfName && csrfVal) {
+					$data[csrfName] 		= csrfVal;
+				}
 				jQuery.ajax({
 					async:true,
 					timeout: 6000,
@@ -286,9 +289,17 @@
 			if($(this).hasClass('act')){
 				alert("<?= Yii::$service->page->translate->__('You already favorite this product'); ?>");
 			}else{
+                $(this).addClass('act');
 				url = $(this).attr('url');
-				$(this).addClass('act');
-				window.location.href = url;
+                product_id = $(this).attr('product_id');
+                csrfName = $(".product_csrf").attr("name");
+				csrfVal  = $(".product_csrf").val();
+                param = {};
+                param["product_id"] = product_id;
+				if (csrfName && csrfVal) {
+					param[csrfName] = csrfVal;
+				}
+                doPost(url, param);
 			}
 	   });
 	   // 改变个数的时候，价格随之变动
@@ -346,7 +357,6 @@
 	<?php $this->endBlock(); ?> 
 	<?php $this->registerJs($this->blocks['add_to_cart'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
 
-	
 	//tab 切换js
 	<?php $this->beginBlock('product_info_tab') ?> 
 	var navContainer = document.getElementById("nav-container");  

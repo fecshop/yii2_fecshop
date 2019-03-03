@@ -17,7 +17,7 @@ use fecshop\app\appadmin\modules\Cms\CmsController;
  */
 class ArticleController extends CmsController
 {
-    public $enableCsrfValidation = false;
+    public $enableCsrfValidation = true;
     
     public function actionIndex()
     {

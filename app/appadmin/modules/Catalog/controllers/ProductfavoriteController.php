@@ -17,7 +17,7 @@ use fecshop\app\appadmin\modules\Catalog\CatalogController;
  */
 class ProductfavoriteController extends CatalogController
 {
-    public $enableCsrfValidation = false;
+    public $enableCsrfValidation = true;
     public $blockNamespace = 'fecshop\\app\\appadmin\\modules\\Catalog\\block';
 
     public function actionIndex()

@@ -123,8 +123,8 @@ class Country extends Service
     }
 
     /**
-     * @property $countryCode |String 国家简码
-     * @property $stateCode | String 省市简码
+     * @param $countryCode |String 国家简码
+     * @param $stateCode | String 省市简码
      * @return string OR Array 如果不传递省市简码，那么返回的是该国家对应的省市数组
      *                如果传递省市简码，传递的是省市的名称
      */

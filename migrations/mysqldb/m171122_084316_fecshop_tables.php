@@ -8,7 +8,7 @@ class m171122_084316_fecshop_tables extends Migration
     {
         $arr = [
             "
-            ALTER TABLE `admin_user` ADD `access_token_created_at` INT( 20 ) NULL COMMENT 'access token 的创建时间，格式为Int类型的时间戳' AFTER `access_token` ;
+            ALTER TABLE `admin_user` ADD `access_token_created_at` INT( 11 ) NULL COMMENT 'access token 的创建时间，格式为Int类型的时间戳' AFTER `access_token` ;
             "
             ,
         ];

@@ -86,7 +86,7 @@ class Category extends Service
     }
 
     /**
-     * @property $primaryKey | String or Int , 主键
+     * @param $primaryKey | String or Int , 主键
      * 通过主键，得到category info
      */
     protected function actionGetByPrimaryKey($primaryKey)
@@ -95,7 +95,7 @@ class Category extends Service
     }
 
     /**
-     * @property $urlKey | String or Int , Url Key
+     * @param $urlKey | String or Int , Url Key
      * 通过主键，得到category info
      */
     protected function actionGetByUrlKey($urlKey)
@@ -140,8 +140,8 @@ class Category extends Service
     }
 
     /**
-     * @property $one|array , save one data . 分类数组
-     * @property $originUrlKey|string , 分类的在修改之前的url key.（在数据库中保存的url_key字段，如果没有则为空）
+     * @param $one|array , save one data . 分类数组
+     * @param $originUrlKey|string , 分类的在修改之前的url key.（在数据库中保存的url_key字段，如果没有则为空）
      * 保存分类，同时生成分类的伪静态url（自定义url），如果按照name生成的url或者自定义的urlkey存在，系统则会增加几个随机数字字符串，来增加唯一性。
      */
     protected function actionSave($one, $originUrlKey = 'catalog/category/index')
@@ -150,7 +150,7 @@ class Category extends Service
     }
 
     /**
-     * @property $id | String  主键值
+     * @param $id | String  主键值
      * 通过主键值找到分类，并且删除分类在url rewrite表中的记录
      * 查看这个分类是否存在子分类，如果存在子分类，则删除所有的子分类，以及子分类在url rewrite表中对应的数据。
      */
@@ -160,7 +160,7 @@ class Category extends Service
     }
 
     /**
-     * @property $parent_id|string
+     * @param $parent_id|string
      * 通过当前分类的parent_id字段（当前分类的上级分类id），得到所有的上级分类数组。
      * 里面包含的信息为：name，url_key。
      * 譬如一个分类为三级分类，将他的parent_id传递给这个函数，那么，他返回的数组信息为[一级分类的信息（name，url_key），二级分类的信息（name，url_key）].
@@ -172,8 +172,8 @@ class Category extends Service
     }
 
     /**
-     * @property $category_id|string  当前的分类_id
-     * @property $parent_id|string  当前的分类上级id parent_id
+     * @param $category_id|string  当前的分类_id
+     * @param $parent_id|string  当前的分类上级id parent_id
      * 这个功能是点击分类后，在产品分类页面侧栏的子分类菜单导航，详细的逻辑如下：
      * 1.如果level为一级，那么title部分为当前的分类，子分类为一级分类下的二级分类
      * 2.如果level为二级，那么将所有的二级分类列出，当前的二级分类，会列出来当前二级分类对应的子分类

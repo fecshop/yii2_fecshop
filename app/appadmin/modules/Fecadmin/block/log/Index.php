@@ -55,30 +55,30 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 	public function getSearchArr(){
 		$data = [
 			[	# 字符串类型
-				'type'=>'inputtext',
-				'title'=>'账号',
-				'name'=>'account' ,
-				'columns_type' =>'string'
+				'type' => 'inputtext',
+				'title' => Yii::$service->page->translate->__('Account'),
+				'name' => 'account' ,
+				'columns_type' => 'string'
 			],
 			[	# 字符串类型
-				'type'=>'inputtext',
-				'title'=>'操作人',
-				'name'=>'person' ,
-				'columns_type' =>'string'
+				'type' => 'inputtext',
+				'title' => Yii::$service->page->translate->__('User Name'),
+				'name' => 'person' ,
+				'columns_type' => 'string'
 			],
 			[	# 字符串类型
-				'type'=>'inputtext',
-				'title'=>'菜单',
-				'name'=>'menu' ,
-				'columns_type' =>'string'
+				'type' => 'inputtext',
+				'title' => Yii::$service->page->translate->__('Resource'),
+				'name' => 'menu' ,
+				'columns_type' => 'string'
 			],
 			[	# 时间区间类型搜索
-				'type'=>'inputdatefilter',
-				'name'=> 'created_at',
+				'type' => 'inputdatefilter',
+				'name' => 'created_at',
 				'columns_type' =>'datetime',
-				'value'=>[
-					'gte'=>'LOG时间开始',
-					'lt' =>'LOG时间结束',
+				'value' => [
+					'gte' => Yii::$service->page->translate->__('Created Begin'),
+					'lt' => Yii::$service->page->translate->__('Created End'),
 				]
 			],
 		];
@@ -89,40 +89,40 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 		$table_th_bar = [
 			[	
 				'orderField' 	=> 'id',
-				'label'			=> 'ID',
+				'label'			=> Yii::$service->page->translate->__('Id'),
 				'width'			=> '70',
-				'align' 		=> 'center',
+				'align' 		    => 'center',
 				
 			],
 			[	
-				'orderField'	=> 'account',
-				'label'			=> '账号',
+				'orderField'	    => 'account',
+				'label'			=> Yii::$service->page->translate->__('Account'),
 				'width'			=> '70',
-				'align' 		=> 'center',
+				'align' 		    => 'center',
 			],
 			[	
-				'orderField'	=> 'person',
-				'label'			=> '操作人',
+				'orderField'	    => 'person',
+				'label'			=> Yii::$service->page->translate->__('User Name'),
 				'width'			=> '70',
-				'align' 		=> 'left',
+				'align' 		    => 'left',
 			],
 			[	
-				'orderField'	=> 'menu',
-				'label'			=> '操作菜单',
+				'orderField'	    => 'menu',
+				'label'			=> Yii::$service->page->translate->__('Resource'),
 				'width'			=> '70',
-				'align' 		=> 'left',
+				'align' 		    => 'left',
 			],
 			[	
-				'orderField'	=> 'url',
-				'label'			=> 'URL',
+				'orderField'	    => 'url',
+				'label'			=> Yii::$service->page->translate->__('Url'),
 				'width'			=> '220',
-				'align' 		=> 'left',
+				'align' 		    => 'left',
 			],
 			[	
-				'orderField'	=> 'created_at',
-				'label'			=> '创建时间',
+				'orderField'	    => 'created_at',
+				'label'			=> Yii::$service->page->translate->__('Created At'),
 				'width'			=> '130',
-				'align' 		=> 'center',
+				'align' 		    => 'center',
 				//'convert'		=> ['datetime' =>'date'],   # int  date datetime  显示的转换
 			],
 		];
@@ -144,7 +144,12 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 				$val = $one[$orderField];
 				$originVal = $one[$orderField];
 				if ($val) {
-					if (isset($field['display']) && !empty($field['display'])) {
+					 if ($orderField == 'menu') {
+                        $valArr = explode(" ", $val, 2);
+                        $val1 = Yii::$service->page->translate->__($valArr[0]);
+                        $val2 = Yii::$service->page->translate->__($valArr[1]);
+                        $val = $val1 . ' ' . $val2;
+                    }else if (isset($field['display']) && !empty($field['display'])) {
 						$display = $field['display'];
 						$val = $display[$val] ? $display[$val] : $val;
 					}

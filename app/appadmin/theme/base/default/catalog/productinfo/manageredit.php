@@ -20,9 +20,9 @@ use fecadmin\models\AdminRole;
 .dialog .pageContent {background:none;}
 .dialog .pageContent .pageFormContent{background:none;}
 .edit_p{display:block;height:35px;}
-.edit_p label{float:left;line-height: 20px;min-width:110px;}
+.edit_p label{float:left;line-height: 20px;min-width:200px;}
 .edit_p input{width:700px;}
-.tabsContent .tabsContent .edit_p label{min-width:104px;}
+.tabsContent .tabsContent .edit_p label{min-width:194px;}
 .edit_p .tier_price input{
 	width:100px;
 }
@@ -103,7 +103,7 @@ function getCategoryData(product_id,i){
 			}
 		},
 		error:function(){
-			alert('加载分类信息出错');
+			alert("<?=  Yii::$service->page->translate->__('load category info error') ?>");
 		}
 	});
 }
@@ -111,16 +111,16 @@ function getCategoryData(product_id,i){
 function thissubmit(thiss){
 	// product image
 	main_image_image 		=  $('.productimg input[type=radio]:checked').val();
-	main_image_label 		=  $('.productimg input[type=radio]:checked').parent().parent().find(".image_label").val();
+	main_image_label 		    =  $('.productimg input[type=radio]:checked').parent().parent().find(".image_label").val();
 	main_image_sort_order 	=  $('.productimg input[type=radio]:checked').parent().parent().find(".sort_order").val();
-	main_image_is_thumbnails=  $('.productimg input[type=radio]:checked').parent().parent().find(".is_thumbnails").val();
-    main_image_is_detail 	=  $('.productimg input[type=radio]:checked').parent().parent().find(".is_detail").val();
+	main_image_is_thumbnails    =  $('.productimg input[type=radio]:checked').parent().parent().find(".is_thumbnails").val();
+    main_image_is_detail 	    =  $('.productimg input[type=radio]:checked').parent().parent().find(".is_detail").val();
     //alert(main_image_image+main_image_label+main_image_sort_order);
 	if(main_image_image){
 		image_main = main_image_image+'#####'+main_image_label+'#####'+main_image_sort_order  +'#####'+main_image_is_thumbnails  +'#####'+main_image_is_detail;
 		$(".tabsContent .image_main").val(image_main);
 	}else{
-		alert('您至少上传并选择一张主图');
+		alert('<?=  Yii::$service->page->translate->__('You upload and select at least one main image') ?>');
 		//DWZ.ajaxDone;
 		return false;
 	}
@@ -147,7 +147,7 @@ function thissubmit(thiss){
 			
 			if(rel != 'image'){
 				if(rel){
-					option_header[rel] = $(this).html();
+					option_header[rel] = $(this).attr('val');
 				}
 			}else{
 				rel = $(this).find("img").attr("rel");
@@ -202,24 +202,24 @@ function thissubmit(thiss){
 			<div class="tabsHeader">
 				<div class="tabsHeaderContent">
 					<ul>
-						<li><a href="javascript:;"><span>基本信息</span></a></li>
-						<li><a href="javascript:;"><span>Price信息</span></a></li>
-						<li><a href="javascript:;"><span>Meta信息</span></a></li>
-						<li><a href="javascript:;"><span>描述信息</span></a></li>
-						<li><a href="javascript:;"><span>图片信息</span></a></li>
-						<li><a href="javascript:;"><span>分类信息</span></a></li>
-						<li><a href="javascript:;"><span>属性组信息</span></a></li>
-						<li><a href="javascript:;"><span>自定义信息</span></a></li>
-						<li><a href="javascript:;"><span>相关产品信息</span></a></li>
+						<li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Basic Info') ?></span></a></li>
+						<li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Price Info') ?></span></a></li>
+						<li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Meta Info') ?></span></a></li>
+						<li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Description Info') ?></span></a></li>
+						<li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Image Info') ?></span></a></li>
+						<li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Category Info') ?></span></a></li>
+						<li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Attr Group') ?></span></a></li>
+						<li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Custom Option') ?></span></a></li>
+						<li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Relate Product') ?></span></a></li>
 					</ul>
 				</div>
 			</div>
-			<div class="tabsContent" style="height:450px;overflow:auto;">
+			<div class="tabsContent" style="height:550px;overflow:auto;">
 				<div>
 					<input type="hidden"  value="<?=  $product_id; ?>" size="30" name="product_id" class="textInput ">
 				
 					<fieldset id="fieldset_table_qbe">
-						<legend style="color:#cc0000">产品属性组切换：编辑前请先切换相应的产品属性组</legend>
+						<legend style="color:#cc0000"><?=  Yii::$service->page->translate->__('Product attribute group switching: Please switch the product attribute group before editing') ?></legend>
 						<div>
 							<p class="edit_p">
 								<?= $attrGroup ?>
@@ -231,15 +231,15 @@ function thissubmit(thiss){
 				<div>
 					<?= $priceInfo ?>
 					<div class="edit_p">
-						<label>Tier Price：</label>
+						<label><?=  Yii::$service->page->translate->__('Tier Price') ?>：</label>
 						<input type="hidden" name="editFormData[tier_price]" class="tier_price_input"  />
 						<div class="tier_price" style="float:left;width:700px;">
 							<table style="">
 								<thead>
 									<tr>
-										<th>Qty</th>
-										<th>Price</th>
-										<th>Action</th>
+										<th><?=  Yii::$service->page->translate->__('Qty') ?></th>
+										<th><?=  Yii::$service->page->translate->__('Price') ?></th>
+										<th><?=  Yii::$service->page->translate->__('Action') ?></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -247,13 +247,13 @@ function thissubmit(thiss){
 										<?php foreach($tier_price as $one){ ?>
 										<tr>
 											<td>
-												<input class="tier_qty" type="text" value="<?= $one['qty'] ?>"> and above 
+												<input class="tier_qty" type="text" value="<?= $one['qty'] ?>"> <?=  Yii::$service->page->translate->__('And Above') ?>
 											</td>
 											<td>
 												<input class="tier_price" type="text" value="<?= $one['price'] ?>">
 											</td>
 											<td>
-												<img src="<?= \Yii::$service->image->getImgUrl('/images/bkg_btn-close2.gif')  ?>">
+                                                <i class="fa fa-trash-o"></i>
 											</td>
 										</tr>
 										<?php } ?>
@@ -263,7 +263,7 @@ function thissubmit(thiss){
 									<tr>
 										<td colspan="100" style="text-align:right;">						
 											<a rel="2" style="text-align:right;" href="javascript:void(0)" class="addProductTierPrice button">
-												<span>增加TierPrice</span>
+												<span><?=  Yii::$service->page->translate->__('Add Tier Price') ?></span>
 											</a>					
 										</td>				
 									</tr>			
@@ -273,13 +273,13 @@ function thissubmit(thiss){
 								$(document).ready(function(){
 									$(".addProductTierPrice").click(function(){
 										str = "<tr>";
-										str +="<td><input class=\"tier_qty\" type=\"text\"   /> and above </td>";
-										str +="<td><input class=\"tier_price\" type=\"text\"   /></td>";
-										str +="<td><img src=\"<?= \Yii::$service->image->getImgUrl('/images/bkg_btn-close2.gif')  ?>\" /></td>";
+										str +="<td><input class=\"tier_qty textInput \" type=\"text\"   /> <?=  Yii::$service->page->translate->__('And Above') ?> </td>";
+										str +="<td><input class=\"tier_price textInput\" type=\"text\"   /></td>";
+										str +="<td><i class='fa fa-trash-o'></i></td>";
 										str +="</tr>";
 										$(".tier_price table tbody").append(str);
 									});
-									$(".dialog").off("click").on("click",".tier_price table tbody tr td img",function(){
+									$(".dialog").off("click").on("click",".tier_price table tbody tr td .fa-trash-o",function(){
                                         $(this).parent().parent().remove();
                                     });
                                     
@@ -298,14 +298,14 @@ function thissubmit(thiss){
 					<input type="hidden" name="image_main" class="image_main"  />
 					<input type="hidden" name="image_gallery" class="image_gallery"  />
 					<?=  $img_html ?>	
-					<div id="addpicContainer">
+					<div id="addpicContainer" style="padding-bottom:20px;">
 						<!-- 利用multiple="multiple"属性实现添加多图功能 -->
 						<!-- position: absolute;left: 10px;top: 5px;只针对本用例将input隐至图片底下。-->
 						<!-- height:0;width:0;z-index: -1;是为了隐藏input，因为Chrome下不能使用display:none，否则无法添加文件 -->
 						<!-- onclick="getElementById('inputfile').click()" 点击图片时则点击添加文件按钮 -->
-						<button style="" onclick="getElementById('inputfile').click()" class="scalable" type="button" title="Duplicate" id=""><span><span><span>Browse Files</span></span></span></button>
+						<button style="" onclick="getElementById('inputfile').click()" class="scalable" type="button" title="Duplicate" id=""><span><span><span><?=  Yii::$service->page->translate->__('Browse Files') ?></span></span></span></button>
 						
-						<input type="file" multiple="multiple" id="inputfile" style="height:0;width:0;z-index: -1; position: absolute;left: 10px;top: 5px;"/>
+						<input type="file" multiple="multiple" id="inputfile" style="margin:10px;height:0;width:0;z-index: -1; position: absolute;left: 10px;top: 5px;"/>
 						<span class="loading"></span>
 					</div>
 					<script>
@@ -338,9 +338,7 @@ function thissubmit(thiss){
 								});
 								//$(".loading").show();	//显示加载图片
 								//发送数据
-								
-							
-									
+								data.append("<?= CRequest::getCsrfName() ?>", "<?= CRequest::getCsrfValue() ?>");
 								$.ajax({
 									url:'<?= CUrl::getUrl('catalog/productinfo/imageupload')  ?>',
 									type:'POST',
@@ -366,7 +364,7 @@ function thissubmit(thiss){
 										//$(".loading").hide();	//加载成功移除加载图片
 									},
 									error:function(){
-										alert('上传出错');
+										alert('<?=  Yii::$service->page->translate->__('Upload Error') ?>');
 										//$(".loading").hide();	//加载失败移除加载图片
 									}
 								});
@@ -377,15 +375,15 @@ function thissubmit(thiss){
 				<div>
 					<script>
 									
-									$(document).ready(function(){
-										id = '<?= $product_id; ?>' ;
-										
-										getCategoryData(id,0);  
-									});
-								</script>
-								<input type="hidden" value="" name="category"  class="inputcategory"/>
-								<ul class="category_tree tree treeFolder treeCheck expand" >
-																	</ul>
+                        $(document).ready(function(){
+                            id = '<?= $product_id; ?>' ;
+                            
+                            getCategoryData(id,0);  
+                        });
+                    </script>
+                    <input type="hidden" value="" name="category"  class="inputcategory"/>
+                    <ul class="category_tree tree treeFolder treeCheck expand" >
+                    </ul>
 				</div>
 				<div >
 					<?= $groupAttr ?>
@@ -434,11 +432,12 @@ function thissubmit(thiss){
 							$(".custom_option_attr").each(function(){
 								attr = $(this).attr("atr");
 								val = $(this).val();
+                                label_v = $(this).find("option:selected").text();
 								if(!val){
 									i = 1;
-									alert("select can not empty");
+									alert("<?=  Yii::$service->page->translate->__('can not select empty') ?>");
 								}
-								$str += '<td rel="'+attr+'">'+val+'</td>';
+								$str += '<td rel="'+attr+'" val="'+val+'" >'+label_v+'</td>';
 								val = val.replace(/ /g, "*")
 								if(!general_sku){
 									general_sku = val;
@@ -449,32 +448,32 @@ function thissubmit(thiss){
 							custom_option_sku = general_sku;
 							custom_option_sku = custom_option_sku.toLowerCase();   
 							$(".custom_option_sku").val(custom_option_sku);
-							$str += '<td class="custom_option_sku" rel="sku">'+custom_option_sku+'</td>';
+							$str += '<td class="custom_option_sku" rel="sku" val="'+custom_option_sku+'">'+custom_option_sku+'</td>';
 							custom_option_qty = $(".custom_option_qty").val();
 							if(!custom_option_qty){
 								custom_option_qty = 99999;
 							}
-							$str += '<td rel="qty">'+custom_option_qty+'</td>';
+							$str += '<td rel="qty" val="'+custom_option_qty+'" >'+custom_option_qty+'</td>';
 							custom_option_price = $(".custom_option_price").val();
 							if(!custom_option_price){
 								custom_option_price = 0;
 							}
 							$(".custom_option_price").val(custom_option_price);
-							$str += '<td rel="price">'+custom_option_price+'</td>';
+							$str += '<td rel="price" val="'+custom_option_price+'" >'+custom_option_price+'</td>';
 							chosened_img_src = $(".chosened_img img").attr('src');
 							chosened_img_rel = $(".chosened_img img").attr('rel');
 							if(!chosened_img_src || !chosened_img_rel){
 								i = 1;
-								alert("you must chose a image");
+								alert("<?= Yii::$service->page->translate->__('you must chose a image');  ?>");
 							}
 							$str += '<td rel="image"><img style="width:30px;" rel="'+chosened_img_rel+'" src="'+chosened_img_src+'"/></td>';
-							$str += '<td><a title="删除"  href="javascript:void(0)" class="btnDel deleteCustomList">删除</a></td>'
-							//检查这个sku是否已经存在
+							$str += '<td><a title="<?=  Yii::$service->page->translate->__('Delete') ?>"  href="javascript:void(0)" class="btnDel deleteCustomList"><i class="fa fa-trash-o"></i></a></td>'
+							// 检查这个sku是否已经存在 
 							$(".custom_option_sku").each(function(){
 								sku = $(this).html();
 								if(sku == custom_option_sku){
 									i = 1;
-									alert('this custom_option sku is exist');
+									alert("<?= Yii::$service->page->translate->__('this custom_option sku is exist');  ?>");
 								}
 							});
 							if(!i){
@@ -484,14 +483,8 @@ function thissubmit(thiss){
 						});
 						
 					});
-					
 					</script>
-					
-					
-					
-					
 				</div>
-				
 				<div class="relation_list" style="margin:20px 2px;">
 						<?= $relation ?>	
 				</div>
@@ -503,9 +496,9 @@ function thissubmit(thiss){
 		<div class="formBar">
 			<ul>
 				<!--<li><a class="buttonActive" href="javascript:;"><span>保存</span></a></li>-->
-				<li><div class="buttonActive"><div class="buttonContent"><button onclick=""  value="accept" name="accept" type="submit">保存</button></div></div></li>
+				<li><div class="buttonActive"><div class="buttonContent"><button onclick=""  value="accept" name="accept" type="submit"><?=  Yii::$service->page->translate->__('Save') ?></button></div></div></li>
 				<li>
-					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+					<div class="button"><div class="buttonContent"><button type="button" class="close"><?=  Yii::$service->page->translate->__('Cancel') ?></button></div></div>
 				</li>
 			</ul>
 		</div>

@@ -29,7 +29,7 @@ class Widget extends Service
     public $widgetConfig;
 
     /**
-     * @property configKey   String or Array
+     * @param configKey   String or Array
      * 如果传递的是一个配置数组，内容格式如下：
      * [
      *    # class 选填
@@ -37,7 +37,7 @@ class Widget extends Service
      *    # view 为 必填 ， view可以用两种方式
      *    #  view 1 使用绝对地址的方式
      *    'view'  => '@fec/views/testmenu/index.php',
-     *        OR
+     *    OR
      *    #  view 2 使用相对地址，通过当前模板进行查找
      *    'view'  => 'cms/home/index.php',
      *
@@ -69,9 +69,9 @@ class Widget extends Service
     }
 
     /**
-     * @property $configKey | string ,使用配置中的widget，该参数对应相应的数组key
-     * @property $config,就是上面actionRender()方法中的参数，格式一样。
-     * @property $parentThis | array or '' , 调用层传递的参数数组，可以在view中调用。
+     * @param $configKey | string ,使用配置中的widget，该参数对应相应的数组key
+     * @param $config,就是上面actionRender()方法中的参数，格式一样。
+     * @param $parentThis | array or '' , 调用层传递的参数数组，可以在view中调用。
      *
      */
     protected function actionRenderContentHtml($configKey, $config, $parentThis = '')
@@ -107,9 +107,9 @@ class Widget extends Service
     }
 
     /**
-     * @property $configKey | string ,使用配置中的widget，该参数对应相应的数组key
-     * @property $config,就是上面actionRender()方法中的参数，格式一样。
-     * @property $parentThis | array or '' , 调用层传递的参数数组，可以在view中调用。
+     * @param $configKey | string , 标记，以及报错排查时使用的key。
+     * @param $config,就是上面actionRender()方法中的参数，格式一样。
+     * @param $parentThis | array or '' , 调用层传递的参数数组，可以在view中调用。
      *
      */
     protected function actionRenderContent($configKey, $config, $parentThis = '')
@@ -135,7 +135,7 @@ class Widget extends Service
             }
         }
         // 查看 $config['class'] 是否在YiiRewriteMap重写中存在配置，如果存在，则替换
-        $config['class'] = Yii::mapGetClassName($config['class']);
+        !isset($config['class']) || $config['class'] = Yii::mapGetClassName($config['class']);
         $content = $this->renderContentHtml($configKey, $config, $parentThis);
 
         return $content;

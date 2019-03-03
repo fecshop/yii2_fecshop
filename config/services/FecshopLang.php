@@ -18,16 +18,16 @@ return [
             ],
             'de_DE' => [
                 'code' 					=> 'de',
-            ],,
+            ],
             'es_ES' => [
                 'code' 					=> 'es',
-            ],,
+            ],
             'ru_RU' => [
                 'code' 					=> 'ru',
-            ],,
+            ],
             'pt_PT' => [
                 'code' 					=> 'pt',
-            ],,
+            ],
             'zh_CN' => [
                 'code' 					=> 'zh',
             ],

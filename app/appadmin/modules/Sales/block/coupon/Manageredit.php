@@ -38,10 +38,10 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
     public function getLastData()
     {
         return [
-            'editBar'    => $this->getEditBar(),
+            'editBar'       => $this->getEditBar(),
             'textareas'    => $this->_textareas,
             'lang_attr'    => $this->_lang_attr,
-            'saveUrl'    => $this->_saveUrl,
+            'saveUrl'       => $this->_saveUrl,
         ];
     }
 
@@ -54,68 +54,58 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
     {
         return [
             [
-                'label'=>'优惠卷码',
-                'name'=>'coupon_code',
-                'display'=>[
-                    'type' => 'inputString',
-
-                ],
-                'require' => 1,
-            ],
-
-            [
-                'label'=>'每个用户使用最大数',
-                'name'=>'users_per_customer',
-                'display'=>[
+                'label'  => Yii::$service->page->translate->__('Coupon Code'),
+                'name' => 'coupon_code',
+                'display'  => [
                     'type' => 'inputString',
                 ],
                 'require' => 1,
             ],
-
             [
-                'label'=>'类型',
-                'name'=>'type',
-                'display'=>[
+                'label'  => Yii::$service->page->translate->__('Maximum usage per user'),
+                'name' => 'users_per_customer',
+                'display'  => [
+                    'type' => 'inputString',
+                ],
+                'require' => 1,
+            ],
+            [
+                'label'  => Yii::$service->page->translate->__('Type'),
+                'name' => 'type',
+                'display' => [
                     'type' => 'select',
                     'data' => [
-                        $this->_type_percent => '百分比',
-                        $this->_type_direct  => '直接减',
+                        $this->_type_percent => Yii::$service->page->translate->__('Percentage'),
+                        $this->_type_direct  => Yii::$service->page->translate->__('Direct reduction'),
                     ],
                 ],
                 'require' => 1,
                 'default' => 1,
             ],
-
             [
-                'label'=>'金额>?才可使用',
-                'name'=>'conditions',
-                'display'=>[
+                'label'  => Yii::$service->page->translate->__('Amount >? can be used'),
+                'name' => 'conditions',
+                'display' => [
                     'type' => 'inputString',
-
                 ],
                 'require' => 1,
             ],
-
             [
-                'label'=>'折扣',
-                'name'=>'discount',
-                'display'=>[
+                'label'  => Yii::$service->page->translate->__('Discount'),
+                'name' => 'discount',
+                'display' => [
                     'type' => 'inputString',
-
                 ],
                 'require' => 1,
             ],
-
             [
-                'label'=>'过期时间',
-                'name'=>'expiration_date',
-                'display'=>[
+                'label'  => Yii::$service->page->translate->__('Expiration Date'),
+                'name' => 'expiration_date',
+                'display' => [
                     'type' => 'inputDate',
-
                 ],
                 'require' => 1,
             ],
-
         ];
     }
 
@@ -135,19 +125,19 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         $errors = Yii::$service->helper->errors->get();
         if (!$errors) {
             echo  json_encode([
-                'statusCode'=>'200',
-                'message'=>'save success',
+                'statusCode' => '200',
+                'message'    => Yii::$service->page->translate->__('Save Success'),
             ]);
             exit;
         } else {
             echo  json_encode([
-                'statusCode'=>'300',
-                'message'=>$errors,
+                'statusCode' => '300',
+                'message'    => $errors,
             ]);
             exit;
         }
     }
-
+    
     // 批量删除
     public function delete()
     {
@@ -161,14 +151,14 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         $errors = Yii::$service->helper->errors->get();
         if (!$errors) {
             echo  json_encode([
-                'statusCode'=>'200',
-                'message'=>'remove data  success',
+                'statusCode' => '200',
+                'message'    => Yii::$service->page->translate->__('Remove Success'),
             ]);
             exit;
         } else {
             echo  json_encode([
-                'statusCode'=>'300',
-                'message'=>$errors,
+                'statusCode' => '300',
+                'message'    => $errors,
             ]);
             exit;
         }

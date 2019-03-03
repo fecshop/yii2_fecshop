@@ -17,7 +17,7 @@ use fecshop\app\appadmin\modules\AppadminController;
  */
 class ResourceController extends AppadminController
 {
-    public $enableCsrfValidation = false;
+    public $enableCsrfValidation = true;
     public $blockNamespace = 'fecshop\\app\\appadmin\\modules\\Fecadmin\\block';
 
     public function init()

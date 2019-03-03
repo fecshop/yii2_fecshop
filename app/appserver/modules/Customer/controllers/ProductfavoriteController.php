@@ -117,7 +117,7 @@ class ProductfavoriteController extends AppserverTokenController
     }
 
     /**
-     * @property $favorite_id|string
+     * @param $favorite_id|string
      */
     public function actionRemove()
     {

@@ -34,7 +34,7 @@ class Echart extends Service
     protected $i = 0;
 
     /**
-     *  @property $data | Array, 用来展示图标的数据。 - 折线
+     *  @param $data | Array, 用来展示图标的数据。 - 折线
      *  $data = [
      * '最高气温' => [
      *     '周1' => 11,
@@ -56,11 +56,11 @@ class Echart extends Service
      * ],
      *
      *  ];
-     * @property $yPrex | String, 在Y轴的值加一个后缀，譬如问题加 °C
-     * @property $legend | boolean, 是否显示 legend
-     * @property $title | String，标题
-     * @property $width | Int，图表的长度
-     * @property $height | Int，图标的高度
+     * @param $yPrex | String, 在Y轴的值加一个后缀，譬如问题加 °C
+     * @param $legend | boolean, 是否显示 legend
+     * @param $title | String，标题
+     * @param $width | Int，图表的长度
+     * @param $height | Int，图标的高度
      * @return string 返回X-Y线性图表
      *
      */

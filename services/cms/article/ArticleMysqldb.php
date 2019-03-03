@@ -65,7 +65,7 @@ class ArticleMysqldb extends Service implements ArticleInterface
     }
 
     /**
-     * @property $urlKey | String ,  对应表的url_key字段
+     * @param $urlKey | String ,  对应表的url_key字段
      * 根据url_key 查询得到article model
      */
     public function getByUrlKey($urlKey)
@@ -118,7 +118,7 @@ class ArticleMysqldb extends Service implements ArticleInterface
     }
 
     /**
-     * @property $one|array
+     * @param $one|array
      * save $data to cms model,then,add url rewrite info to system service urlrewrite.
      */
     public function save($one, $originUrlKey)
@@ -128,7 +128,7 @@ class ArticleMysqldb extends Service implements ArticleInterface
         if ($primaryVal) {
             $model = $this->_articleModel->findOne($primaryVal);
             if (!$model) {
-                Yii::$service->helper->errors->add('article '.$this->getPrimaryKey().' is not exist');
+                Yii::$service->helper->errors->add('article {primaryKey} is not exist' , ['primaryKey' => $this->getPrimaryKey()]);
 
                 return;
             }
@@ -193,7 +193,7 @@ class ArticleMysqldb extends Service implements ArticleInterface
                         $model->delete();
                     } else {
                         // throw new InvalidValueException("ID:$id is not exist.");
-                        Yii::$service->helper->errors->add("Article Remove Errors:ID $id is not exist.");
+                        Yii::$service->helper->errors->add('Article Remove Errors:ID {id} is not exist.', ['id' => $id]);
                         $innerTransaction->rollBack();
 
                         return false;
@@ -221,7 +221,7 @@ class ArticleMysqldb extends Service implements ArticleInterface
                     $innerTransaction->rollBack();
                 }
             } else {
-                Yii::$service->helper->errors->add("Article Remove Errors:ID:$id is not exist.");
+                Yii::$service->helper->errors->add('Article Remove Errors:ID {id} is not exist.', ['id' => $id]);
 
                 return false;
             }

@@ -51,7 +51,7 @@ class Search extends Service
     }
 
     /**
-     * @property  $product_ids | Array  产品id数组
+     * @param  $product_ids | Array  产品id数组
      * 批量处理，将所有产品批量同步到搜索工具的库里面。
      */
     protected function actionSyncProductInfo($product_ids, $numPerPage = 20)
@@ -66,7 +66,7 @@ class Search extends Service
     }
 
     /**
-     * @property $nowTimeStamp | int
+     * @param $nowTimeStamp | int
      * 批量更新过程中，被更新的产品都会更新字段sync_updated_at
      * 删除xunSearch引擎中sync_updated_at小于$nowTimeStamp的字段.
      */
@@ -82,11 +82,11 @@ class Search extends Service
     }
 
     /**
-     * @property $select | Array
-     * @property $where | Array
-     * @property $pageNum | Int
-     * @property $numPerPage | Array
-     * @property $product_search_max_count | Int ， 搜索结果最大产品数。
+     * @param $select | Array
+     * @param $where | Array
+     * @param $pageNum | Int
+     * @param $numPerPage | Array
+     * @param $product_search_max_count | Int ， 搜索结果最大产品数。
      * 对于上面的参数和以前的$filter类似，大致和下面的类似
      * [
      *	'category_id' 	=> 1,
@@ -105,11 +105,12 @@ class Search extends Service
     protected function actionGetSearchProductColl($select, $where, $pageNum, $numPerPage, $product_search_max_count, $filterAttr = [])
     {
         $currentLangCode = Yii::$service->store->currentLangCode;
-
         if (!$currentLangCode) {
+            Yii::$service->helper->errors->add('current language code is empty');
             return;
         }
         $searchEngineList = $this->getAllChildServiceName();
+        // 根据当前store的语言，选择相应的搜索引擎
         if (is_array($searchEngineList) && !empty($searchEngineList)) {
             foreach ($searchEngineList as $sE) {
                 $service = $this->{$sE};
@@ -117,7 +118,6 @@ class Search extends Service
                 if (is_array($searchLang) && !empty($searchLang)) {
                     $searchLangCode = array_keys($searchLang);
                     // 如果当前store的语言，在当前的搜索引擎中支持，则会使用这个搜索，作为支持。
-
                     if (in_array($currentLangCode, $searchLangCode)) {
                         return $service->getSearchProductColl($select, $where, $pageNum, $numPerPage, $product_search_max_count, $filterAttr);
                     }
@@ -128,8 +128,8 @@ class Search extends Service
 
     /**
      * 得到搜索的sku列表侧栏的过滤.
-     * @property $filter_attr | Array
-     * @property $where | Array , like
+     * @param $filter_attr | Array
+     * @param $where | Array , like
      *  [
      *		['>','price',11],
      *		['<','price',22],
@@ -160,7 +160,7 @@ class Search extends Service
 
     /**
      * 通过product_id删除搜索数据.
-     * @property $product_id | \mongoId
+     * @param $product_id | \mongoId
      */
     protected function actionRemoveByProductId($product_id)
     {

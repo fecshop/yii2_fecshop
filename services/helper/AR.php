@@ -82,8 +82,8 @@ class AR extends Service
     }
 
     /**
-     * @property $model | Object , 数据库model
-     * @property $one | Array ， 数据数组，对model进行赋值
+     * @param $model | Object , 数据库model
+     * @param $one | Array ， 数据数组，对model进行赋值
      * 通过循环的方式，对$model对象的属性进行赋值。
      * 并保存，保存成功后，返回保存后的model对象
      */

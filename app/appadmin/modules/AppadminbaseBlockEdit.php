@@ -10,7 +10,6 @@
 namespace fecshop\app\appadmin\modules;
 
 use fec\helpers\CRequest;
-use fec\helpers\CUrl;
 use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockEditInterface;
 use Yii;
 use yii\base\BaseObject;
@@ -54,6 +53,17 @@ class AppadminbaseBlockEdit extends BaseObject
     {
         $langs = Yii::$service->fecshoplang->getAllLangCode();
         $defaultLangCode = Yii::$service->fecshoplang->defaultLangCode;
+        // xhEditor编辑器里面上传图片和其他的类型的url以及允许的文件类型
+        // fecshop只实现了image的上传，其他类型的自己实现。
+        $upImgUrl = Yii::$service->admin->getXhEditorUploadImgUrl();
+        $upImgFormat = Yii::$service->admin->getXhEditorUploadImgForamt();
+        $upFlashUrl = Yii::$service->admin->getXhEditorUploadFlashUrl();
+        $upFlashFormat = Yii::$service->admin->getXhEditorUploadFlashFormat();
+        $upLinkUrl = Yii::$service->admin->getXhEditorUploadLinkUrl();
+        $upLinkFormat = Yii::$service->admin->getXhEditorUploadLinkFormat();
+        $upMediaUrl = Yii::$service->admin->getXhEditorUploadMediaUrl();
+        $upMediaFormat = Yii::$service->admin->getXhEditorUploadMediaFormat();
+
         if (empty($editArr)) {
             $editArr = $this->getEditArr();
         }
@@ -108,7 +118,7 @@ EOF;
 									</ul>
 								</div>
 							</div>
-							<div class="tabsContent" style="height:30px;">
+							<div class="tabsContent" style="">
 								{$tabLangInput}
 							</div>
 							<div class="tabsFooter">
@@ -133,6 +143,17 @@ EOF;
 						<p class="edit_p">
 							<label>{$label}：</label>
 							<input type="text"  value="{$valueData}" size="30" name="{$this->_editFormData}[{$name}]" class="date textInput {$require} ">
+						</p>
+EOF;
+            } elseif ($display_type == 'inputDateTime') {
+                if ($value && !is_numeric($value)) {
+                    $value = strtotime($value);
+                }
+                $valueData = $value ? date('Y-m-d H:i:s', $value) : '';
+                $str .= <<<EOF
+						<p class="edit_p">
+							<label>{$label}：</label>
+							<input type="text" datefmt="yyyy-MM-dd HH:mm:ss"  value="{$valueData}" size="30" name="{$this->_editFormData}[{$name}]" class="date textInput {$require} ">
 						</p>
 EOF;
             } elseif ($display_type == 'inputEmail') {
@@ -180,10 +201,11 @@ EOF;
                 $rows = isset($display['rows']) ? $display['rows'] : 15;
                 $cols = isset($display['cols']) ? $display['cols'] : 110;
                 $isLang = isset($display['lang']) ? $display['lang'] : false;
-                $uploadImgUrl = 'upimgurl="'.CUrl::getUrl('cms/staticblock/imageupload').'" upimgext="jpg,jpeg,gif,png"';
-                $uploadFlashUrl = 'upflashurl="'.CUrl::getUrl('cms/staticblock/flashupload').'" upflashext="swf"';
-                $uploadLinkUrl = 'uplinkurl="'.CUrl::getUrl('cms/staticblock/linkupload').'" uplinkext="zip,rar,txt"';
-                $uploadMediaUrl = 'upmediaurl="'.CUrl::getUrl('cms/staticblock/mediaupload').'" upmediaext:"avi"="" ';
+
+                $uploadImgUrl = 'upimgurl="'.Yii::$service->url->getUrl($upImgUrl).'" upimgext="' . $upImgFormat . '"';
+                $uploadFlashUrl = 'upflashurl="'.Yii::$service->url->getUrl($upFlashUrl).'" upflashext="' . $upFlashFormat . '"';
+                $uploadLinkUrl = 'uplinkurl="'.Yii::$service->url->getUrl($upLinkUrl).'" uplinkext="' . $upLinkFormat . '"';
+                $uploadMediaUrl = 'upmediaurl="'.Yii::$service->url->getUrl($upMediaUrl).'" upmediaext:"' . $upMediaFormat . '" ';
 
                 if ($isLang && is_array($langs) && !empty($langs)) {
                     $tabLangTitle = '';

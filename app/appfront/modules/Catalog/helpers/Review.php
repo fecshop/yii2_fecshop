@@ -29,7 +29,7 @@ class Review
     }
 
     /**
-     * @property $product | Object
+     * @param $product | Object
      * @return array
      *               通过service的配置，是否通过语言进行过滤产品的总个数
      *               如果不通过语言，则直接将产品的属性	review_count 		reviw_rate_star_average 返回

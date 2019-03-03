@@ -50,4 +50,8 @@ class TestController extends AppfrontController
         
     }
 
+    public function actionTest(){
+        echo 12;exit;
+    }
+
 }

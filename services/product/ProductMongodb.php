@@ -57,8 +57,8 @@ class ProductMongodb extends Service implements ProductInterface
     }
 
     /**
-     * @property $sku|array
-     * @property $returnArr|bool 返回的数据是否是数组格式，如果设置为
+     * @param $sku|array
+     * @param $returnArr|bool 返回的数据是否是数组格式，如果设置为
      *		false，则返回的是对象数据
      * @return array or Object
      *               通过sku 获取产品，一个产品
@@ -81,8 +81,8 @@ class ProductMongodb extends Service implements ProductInterface
     }
 
     /**
-     * @property $spu|array
-     * @property $returnArr|bool 返回的数据是否是数组格式，如果设置为
+     * @param $spu|array
+     * @param $returnArr|bool 返回的数据是否是数组格式，如果设置为
      *		false，则返回的是对象数据
      * @return array or Object
      *               通过spu 获取产品数组
@@ -150,7 +150,7 @@ class ProductMongodb extends Service implements ProductInterface
     }
 
     /**
-     * @property $primaryKey | String 主键
+     * @param $primaryKey | String 主键
      * @return  array ，和getByPrimaryKey()的不同在于，该方式不走active record，因此可以获取产品的所有数据的。
      */
     public function apiGetByPrimaryKey($primaryKey)
@@ -166,7 +166,7 @@ class ProductMongodb extends Service implements ProductInterface
     }
 
     /**
-     * @property $product_one | String 产品数据数组。这个要和mongodb里面保存的产品数据格式一致。
+     * @param $product_one | String 产品数据数组。这个要和mongodb里面保存的产品数据格式一致。
      * 通过api保存产品
      */
     public function apiSave($product_one)
@@ -178,7 +178,7 @@ class ProductMongodb extends Service implements ProductInterface
     }
 
     /**
-     * @property $primaryKey | String
+     * @param $primaryKey | String
      * 通过api删除产品
      */
     public function apiDelete($primaryKey)
@@ -190,7 +190,7 @@ class ProductMongodb extends Service implements ProductInterface
     }
 
     /*
-     * @property $filter | Array ， example filter:
+     * @param $filter | Array ， example filter:
      * [
      * 		'numPerPage' 	=> 20,
      * 		'pageNum'		=> 1,
@@ -213,8 +213,8 @@ class ProductMongodb extends Service implements ProductInterface
     }
 
     /**
-     * @property  $product_id_arr | Array
-     * @property  $category_id | String
+     * @param  $product_id_arr | Array
+     * @param  $category_id | String
      * 在给予的产品id数组$product_id_arr中，找出来那些产品属于分类 $category_id
      * 该功能是后台分类编辑中，对应的分类产品列表功能
      * 也就是在当前的分类下，查看所有的产品，属于当前分类的产品，默认被勾选。
@@ -243,7 +243,7 @@ class ProductMongodb extends Service implements ProductInterface
     }
 
     /**
-     * @property $attr_group | String
+     * @param $attr_group | String
      * 根据产品的属性组名，得到属性数组，然后将属性数组附加到Product(model)的属性中。
      */
     public function addGroupAttrs($attr_group)
@@ -256,8 +256,8 @@ class ProductMongodb extends Service implements ProductInterface
     }
 
     /**
-     * @property $one|array , 产品数据数组
-     * @property $originUrlKey|string , 产品的原来的url key ，也就是在前端，分类的自定义url。
+     * @param $one|array , 产品数据数组
+     * @param $originUrlKey|string , 产品的原来的url key ，也就是在前端，分类的自定义url。
      * 保存产品（插入和更新），以及保存产品的自定义url
      * 如果提交的数据中定义了自定义url，则按照自定义url保存到urlkey中，如果没有自定义urlkey，则会使用name进行生成。
      */
@@ -272,7 +272,7 @@ class ProductMongodb extends Service implements ProductInterface
         if ($primaryVal) {
             $model = $this->_productModel->findOne($primaryVal);
             if (!$model) {
-                Yii::$service->helper->errors->add('Product '.$this->getPrimaryKey().' is not exist');
+                Yii::$service->helper->errors->add('Product {primaryKey} is not exist', ['primaryKey'=>$this->getPrimaryKey()]);
 
                 return false;
             }
@@ -284,7 +284,7 @@ class ProductMongodb extends Service implements ProductInterface
                 'sku' => $one['sku'],
             ])->one();
             if ($product_one['sku']) {
-                Yii::$service->helper->errors->add('Product Sku 已经存在，请使用其他的sku');
+                Yii::$service->helper->errors->add('Product Sku is exist，please use other sku');
 
                 return false;
             }
@@ -299,7 +299,7 @@ class ProductMongodb extends Service implements ProductInterface
                 'sku' => $one['sku'],
             ])->one();
             if ($product_one['sku']) {
-                Yii::$service->helper->errors->add('Product Sku 已经存在，请使用其他的sku');
+                Yii::$service->helper->errors->add('Product Sku is exist，please use other sku');
 
                 return false;
             }
@@ -347,7 +347,7 @@ class ProductMongodb extends Service implements ProductInterface
     }
 
     /**
-     * @property $one|array
+     * @param $one|array
      * 对保存的数据进行数据验证
      * sku  spu   默认语言name ， 默认语言description不能为空。
      */
@@ -359,34 +359,34 @@ class ProductMongodb extends Service implements ProductInterface
             $PrimaryVal = 0;
         }
         if (!$PrimaryVal && (!isset($one['sku']) || empty($one['sku']))) {
-            Yii::$service->helper->errors->add(' sku 必须存在 ');
+            Yii::$service->helper->errors->add('sku must exist');
 
             return false;
         }
         if (!$PrimaryVal && (!isset($one['spu']) || empty($one['spu']))) {
-            Yii::$service->helper->errors->add(' spu 必须存在 ');
+            Yii::$service->helper->errors->add('spu must exist');
 
             return false;
         }
         $defaultLangName = \Yii::$service->fecshoplang->getDefaultLangAttrName('name');
         if ($PrimaryVal && $one['name'] && empty($one['name'][$defaultLangName])) {
-            Yii::$service->helper->errors->add(' name '.$defaultLangName.' 不能为空 ');
+            Yii::$service->helper->errors->add('name {default_lang_name} can not empty', ['default_lang_name' => $defaultLangName]);
 
             return false;
         }
         if (!isset($one['name'][$defaultLangName]) || empty($one['name'][$defaultLangName])) {
-            Yii::$service->helper->errors->add(' name '.$defaultLangName.' 不能为空 ');
+            Yii::$service->helper->errors->add('name {default_lang_name} can not empty', ['default_lang_name' => $defaultLangName]);
 
             return false;
         }
         $defaultLangDes = \Yii::$service->fecshoplang->getDefaultLangAttrName('description');
         if ($PrimaryVal && $one['description'] && empty($one['description'][$defaultLangDes])) {
-            Yii::$service->helper->errors->add(' description '.$defaultLangDes.' 不能为空 ');
+            Yii::$service->helper->errors->add('description {default_lang_des} can not empty', ['default_lang_des' => $defaultLangDes]);
 
             return false;
         }
         if (!isset($one['description'][$defaultLangDes]) || empty($one['description'][$defaultLangDes])) {
-            Yii::$service->helper->errors->add(' description '.$defaultLangDes.'不能为空 ');
+            Yii::$service->helper->errors->add('description {default_lang_des} can not empty', ['default_lang_des' => $defaultLangDes]);
 
             return false;
         }
@@ -403,7 +403,7 @@ class ProductMongodb extends Service implements ProductInterface
     }
 
     /**
-     * @property $ids | Array or String
+     * @param $ids | Array or String
      * 删除产品，如果ids是数组，则删除多个产品，如果是字符串，则删除一个产品
      * 在产品产品的同时，会在url rewrite表中删除对应的自定义url数据。
      */
@@ -428,7 +428,7 @@ class ProductMongodb extends Service implements ProductInterface
                     $model->delete();
                 //$this->removeChildCate($id);
                 } else {
-                    Yii::$service->helper->errors->add("Product Remove Errors:ID:$id is not exist.");
+                    Yii::$service->helper->errors->add('Product Remove Errors:ID:{id} is not exist', ['id'=>$id]);
                     $removeAll = 0;
                 }
             }
@@ -448,7 +448,7 @@ class ProductMongodb extends Service implements ProductInterface
                 $model->delete();
             //$this->removeChildCate($id);
             } else {
-                Yii::$service->helper->errors->add("Product Remove Errors:ID:$id is not exist.");
+                Yii::$service->helper->errors->add('Product Remove Errors:ID:{id} is not exist.', ['id'=>$id]);
 
                 return false;
             }
@@ -458,9 +458,9 @@ class ProductMongodb extends Service implements ProductInterface
     }
 
     /**
-     * @property $category_id | String  分类的id的值
-     * @property $addCateProductIdArr | Array 分类中需要添加的产品id数组，也就是给这个分类增加这几个产品。
-     * @property $deleteCateProductIdArr | Array 分类中需要删除的产品id数组，也就是在这个分类下面去除这几个产品的对应关系。
+     * @param $category_id | String  分类的id的值
+     * @param $addCateProductIdArr | Array 分类中需要添加的产品id数组，也就是给这个分类增加这几个产品。
+     * @param $deleteCateProductIdArr | Array 分类中需要删除的产品id数组，也就是在这个分类下面去除这几个产品的对应关系。
      * 这个函数是后台分类编辑功能中使用到的函数，在分类中可以一次性添加多个产品，也可以删除多个产品，产品和分类是多对多的关系。
      */
     public function addAndDeleteProductCategory($category_id, $addCateProductIdArr, $deleteCateProductIdArr)
@@ -536,8 +536,53 @@ class ProductMongodb extends Service implements ProductInterface
 
         return $query->all();
     }
-
     /**
+     * 得到分类页面的产品列表
+     * $filter 参数的详细，参看函数 getFrontCategoryProductsGroupBySpu($filter);
+     */
+    public function getFrontCategoryProducts($filter){
+        if (Yii::$service->product->productSpuShowOnlyOneSku) {
+            
+            return $this->getFrontCategoryProductsGroupBySpu($filter);
+        } else {
+            
+            return $this->getFrontCategoryProductsAll($filter);
+        }
+    }
+    /**
+     * 得到分类页面的产品（All）
+     * $filter 参数的详细，参看函数 getFrontCategoryProductsGroupBySpu($filter);
+     */
+    public function getFrontCategoryProductsAll($filter){
+        $where = $filter['where'];
+        if (empty($where)) {
+            return [];
+        }
+        if (!isset($where['status'])) {
+            $where['status'] = $this->getEnableStatus();
+        }
+        $orderBy = $filter['orderBy'];
+        $pageNum = $filter['pageNum'];
+        $numPerPage = $filter['numPerPage'];
+        $select = $filter['select'];
+        $where_c = [];
+        foreach ($where as $k => $v) {
+            $where_c[] = [$k => $v];
+        }
+        $filter = [
+            'numPerPage' 	=> $numPerPage,
+     		'pageNum'		    => $pageNum,
+      		'orderBy'	        => $orderBy,
+      		'where'			    => $where_c,
+      	    'asArray'           => true,
+        ];
+        
+        return $this->coll($filter);
+    }
+    
+    
+    /**
+     * 相同spu下面的所有sku，只显示一个，取score值最高的那个显示
      *[
      *	'category_id' 	=> 1,
      *	'pageNum'		=> 2,
@@ -560,7 +605,7 @@ class ProductMongodb extends Service implements ProductInterface
      *   不过，对于一般的用户来说，这个不会成为瓶颈问题，一般一个分类下的产品不会出现几十万的情况。
      * 4.最后就得到spu唯一的产品列表（多个spu相同，sku不同的产品，只要score最高的那个）.
      */
-    public function getFrontCategoryProducts($filter)
+    public function getFrontCategoryProductsGroupBySpu($filter)
     {
         $where = $filter['where'];
         if (empty($where)) {
@@ -624,7 +669,7 @@ class ProductMongodb extends Service implements ProductInterface
     }
 
     /**
-     * @property $filter_attr | String 需要进行统计的字段名称
+     * @param $filter_attr | String 需要进行统计的字段名称
      * @propertuy $where | Array  搜索条件。这个需要些mongodb的搜索条件。
      * 得到的是个属性，以及对应的个数。
      * 这个功能是用于前端分类侧栏进行属性过滤。
@@ -660,14 +705,14 @@ class ProductMongodb extends Service implements ProductInterface
     }
 
     /**
-     * @property $spu | String
-     * @property $avag_rate | Int ，平均评星
-     * @property $count | Int ，评论次数
-     * @property $lang_code | String ，语言简码
-     * @property $avag_lang_rate | Int ，语言下平均评星
-     * @property $lang_count | Int ， 语言下评论次数。
-     * @property $rate_total_arr | Array, 各个评星对应的个数
-     * @property $rate_lang_total_arr | Array, 该语言下各个评星对应的个数
+     * @param $spu | String
+     * @param $avag_rate | Int ，平均评星
+     * @param $count | Int ，评论次数
+     * @param $lang_code | String ，语言简码
+     * @param $avag_lang_rate | Int ，语言下平均评星
+     * @param $lang_count | Int ， 语言下评论次数。
+     * @param $rate_total_arr | Array, 各个评星对应的个数
+     * @param $rate_lang_total_arr | Array, 该语言下各个评星对应的个数
      */
     public function updateProductReviewInfo($spu, $avag_rate, $count, $lang_code, $avag_lang_rate, $lang_count, $rate_total_arr, $rate_lang_total_arr)
     {
@@ -696,5 +741,9 @@ class ProductMongodb extends Service implements ProductInterface
                 $one->save();
             }
         }
+    }
+
+    public function updateAllScoreToZero(){
+        return $this->_productModel->getCollection()->update([], ['score' => 0]);
     }
 }

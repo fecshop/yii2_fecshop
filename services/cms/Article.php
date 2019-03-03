@@ -78,7 +78,7 @@ class Article extends Service
     }
 
     /**
-     * @property $urlKey | String ,  对应表的url_key字段
+     * @param $urlKey | String ,  对应表的url_key字段
      * 根据url_key 查询得到article model
      */
     protected function actionGetByUrlKey($urlKey)
@@ -95,7 +95,7 @@ class Article extends Service
     }
 
     /**
-     * @property $filter|array
+     * @param $filter|array
      * get artile collection by $filter
      * example filter:
      * [
@@ -116,8 +116,8 @@ class Article extends Service
     }
 
     /**
-     * @property $one|array , save one data .
-     * @property $originUrlKey|string , article origin url key.
+     * @param $one|array , save one data .
+     * @param $originUrlKey|string , article origin url key.
      * save $data to cms model,then,add url rewrite info to system service urlrewrite.
      */
     protected function actionSave($one, $originUrlKey)

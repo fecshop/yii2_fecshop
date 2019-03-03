@@ -9,9 +9,9 @@ class m170706_050701_fecshop_tables extends Migration
     {
         $arr = [
             "
-            ALTER TABLE `customer` ADD `access_token_created_at` INT( 20 ) NULL COMMENT '创建token的时间',
-            ADD `allowance` INT( 20 ) NULL COMMENT '限制次数访问',
-            ADD `allowance_updated_at` INT( 20 ) NULL 
+            ALTER TABLE `customer` ADD `access_token_created_at` INT( 11 ) NULL COMMENT '创建token的时间',
+            ADD `allowance` INT( 11 ) NULL COMMENT '限制次数访问',
+            ADD `allowance_updated_at` INT( 11 ) NULL 
             "
             ,
             

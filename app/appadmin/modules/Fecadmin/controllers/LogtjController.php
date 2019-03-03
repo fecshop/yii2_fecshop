@@ -17,7 +17,7 @@ use fecshop\app\appadmin\modules\AppadminController;
  */
 class LogtjController extends AppadminController
 {
-	public $enableCsrfValidation = false;
+	public $enableCsrfValidation = true;
     public $blockNamespace = 'fecshop\\app\\appadmin\\modules\\Fecadmin\\block';
     
     public function actionIndex()

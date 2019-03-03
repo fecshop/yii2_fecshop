@@ -19,6 +19,7 @@ use Yii;
 class FacebookController extends AppfrontController
 {
     // http://fecshop.appfront.fancyecommerce.com/customer/facebook/loginv
+    public $enableCsrfValidation = false;
     /**
      * facebook 账号在facebook确认后，返回网站的url地址。
      */

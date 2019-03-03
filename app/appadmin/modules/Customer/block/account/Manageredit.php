@@ -34,10 +34,10 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
     public function getLastData()
     {
         return [
-            'editBar'    => $this->getEditBar(),
-            'textareas'    => $this->_textareas,
-            'lang_attr'    => $this->_lang_attr,
-            'saveUrl'    => $this->_saveUrl,
+            'editBar'      => $this->getEditBar(),
+            'textareas'   => $this->_textareas,
+            'lang_attr'   => $this->_lang_attr,
+            'saveUrl'     => $this->_saveUrl,
         ];
     }
 
@@ -53,50 +53,46 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
 
         return [
             [
-                'label'=>'firstname',
-                'name'=>'firstname',
-                'display'=>[
+                'label'  => Yii::$service->page->translate->__('First Name'),
+                'name' => 'firstname',
+                'display' => [
                     'type' => 'inputString',
 
                 ],
                 'require' => 0,
             ],
-
             [
-                'label'=>'lastname',
-                'name'=>'lastname',
-                'display'=>[
+                'label'  => Yii::$service->page->translate->__('Last Name'),
+                'name' => 'lastname',
+                'display' => [
                     'type' => 'inputString',
                 ],
                 'require' => 0,
             ],
-
             [
-                'label'=>'email',
-                'name'=>'email',
-                'display'=>[
+                'label'  => Yii::$service->page->translate->__('Email'),
+                'name' => 'email',
+                'display' => [
                     'type' => 'inputString',
                 ],
                 'require' => 1,
             ],
-
             [
-                'label'=>'Password',
-                'name'=>'password',
-                'display'=>[
+                'label'  => Yii::$service->page->translate->__('Password'),
+                'name' => 'password',
+                'display' => [
                     'type' => 'inputPassword',
                 ],
                 'require' => 0,
             ],
-
             [
-                'label'=>'用户状态',
-                'name'=>'status',
-                'display'=>[
+                'label'  => Yii::$service->page->translate->__('Status'),
+                'name' => 'status',
+                'display' => [
                     'type' => 'select',
                     'data' => [
-                        $activeStatus    => '激活',
-                        $deleteStatus    => '关闭',
+                        $activeStatus    => Yii::$service->page->translate->__('Enable'),
+                        $deleteStatus    => Yii::$service->page->translate->__('Disable'),
                     ],
                 ],
                 'require' => 1,
@@ -120,14 +116,14 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         $errors = Yii::$service->helper->errors->get();
         if (!$errors) {
             echo  json_encode([
-                'statusCode'=>'200',
-                'message'=>'save success',
+                'statusCode' => '200',
+                'message'    => Yii::$service->page->translate->__('Save Success'),
             ]);
             exit;
         } else {
             echo  json_encode([
-                'statusCode'=>'300',
-                'message'=>$errors,
+                'statusCode' => '300',
+                'message'    => $errors,
             ]);
             exit;
         }
@@ -146,14 +142,14 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         $errors = Yii::$service->helper->errors->get();
         if (!$errors) {
             echo  json_encode([
-                'statusCode'=>'200',
-                'message'=>'remove data  success',
+                'statusCode' => '200',
+                'message'    => Yii::$service->page->translate->__('Remove Success'),
             ]);
             exit;
         } else {
             echo  json_encode([
-                'statusCode'=>'300',
-                'message'=>$errors,
+                'statusCode' => '300',
+                'message'    => $errors,
             ]);
             exit;
         }

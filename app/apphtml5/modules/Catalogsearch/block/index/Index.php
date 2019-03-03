@@ -86,7 +86,7 @@ class Index
         }
     }
     /**
-     * @property $products | Array ，产品数组
+     * @param $products | Array ，产品数组
      * 得到分类产品数据
      */
     protected function getAjaxProductHtml($products)

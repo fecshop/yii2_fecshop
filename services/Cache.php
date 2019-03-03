@@ -28,7 +28,7 @@ class Cache extends Service
     public $enable;
 
     /**
-     * @property $cacheKey | String , 具体的缓存名字，譬如 product  category
+     * @param $cacheKey | String , 具体的缓存名字，譬如 product  category
      * @return boolean, 如果enable为true，则返回为true
      * 根据传递的$cacheKey，从配置中读取是否开启cache
      */
@@ -42,7 +42,7 @@ class Cache extends Service
     }
 
     /**
-     * @property $cacheKey | String , 具体的缓存名字，譬如 product  category
+     * @param $cacheKey | String , 具体的缓存名字，譬如 product  category
      * @return int, 如果enable为true，则返回为true
      * 得到$cacheKey 对应的超时时间
      */
@@ -56,7 +56,7 @@ class Cache extends Service
     }
 
     /**
-     * @property $cacheKey | String , 具体的缓存名字，譬如 product  category
+     * @param $cacheKey | String , 具体的缓存名字，譬如 product  category
      * @return string, 如果enable为true，则返回为true
      */
     public function disableUrlParam($cacheKey)
@@ -69,7 +69,7 @@ class Cache extends Service
     }
 
     /**
-     * @property $cacheKey | String , 具体的缓存名字，譬如 product  category
+     * @param $cacheKey | String , 具体的缓存名字，譬如 product  category
      * @return string, 如果enable为true，则返回为true
      *                 url的参数，哪一些参数作为缓存唯一的依据，譬如p（分页的值）
      */

@@ -15,8 +15,20 @@ use yii\web\IdentityInterface;
 
 /**
  * Customer service.
- * @property Image|\fecshop\services\Product\Image $image
+ * @property \fecshop\services\Customer\Address $address
  * @property \fecshop\services\customer\Newsletter $newsletter
+ * @property \fecshop\services\customer\Affiliate $affiliate
+ * @property \fecshop\services\customer\Coupon $coupon
+ * @property \fecshop\services\customer\DropShip $dropship
+ * @property \fecshop\services\customer\Favorite $favorite
+ * @property \fecshop\services\customer\Message $message
+ * @property \fecshop\services\customer\Order $order
+ * @property \fecshop\services\customer\Point $point
+ * @property \fecshop\services\customer\Review $review
+ * @property \fecshop\services\customer\Wholesale $wholesale
+ * @property \fecshop\services\customer\Facebook $facebook
+ * @property \fecshop\services\customer\Google $google
+ *
  * @method getPrimaryKey() see [[\fecshop\services\Customer::actionGetPrimaryKey()]]actionGetByPrimaryKey
  * @method \fecshop\models\mysqldb\Customer|null getByPrimarykey($val) see [[\fecshop\services\Customer::actionGetByPrimaryKey()]]
  * @method \fecshop\models\mysqldb\Customer|null getUserIdentityByEmail($email) see [[\fecshop\services\Customer::actionGetUserIdentityByEmail()]]
@@ -312,8 +324,8 @@ class Customer extends Service
     }
 
     /**
-     * @property $password|string
-     * @property $customerId|int or String or Object
+     * @param $password|string
+     * @param $customerId|int or String or Object
      * change  customer password.
      * 更改密码，然后，清空token
      */
@@ -403,7 +415,7 @@ class Customer extends Service
     }
 
     /**
-     * @property $url|string
+     * @param $url|string
      * **注意**：该方法不能在接口类型里面使用
      * 在一些功能中，需要用户进行登录操作，等用户操作成功后，应该跳转到相应的页面中，这里通过session存储需要跳转到的url。
      * 某些页面 ， 譬如评论页面，需要用户登录后才能进行登录操作，那么可以通过这个方法把url set 进去，登录成功
@@ -415,7 +427,7 @@ class Customer extends Service
     }
 
     /**
-     * @property $url|string
+     * @param $url|string
      * **注意**：该方法不能在接口类型里面使用
      * **注意**：该方法不能在接口类型里面使用
      * 在一些功能中，需要用户进行登录操作，等用户操作成功后，应该跳转到相应的页面中，这里通过session得到需要跳转到的url。
@@ -428,7 +440,7 @@ class Customer extends Service
     }
 
     /**
-     * @property $urlKey | String
+     * @param $urlKey | String
      * **注意**：该方法不能在接口类型里面使用
      * 登录用户成功后，进行url跳转。
      */
@@ -527,7 +539,7 @@ class Customer extends Service
     }
     
     /**
-     * @property $user_ids | Array ， 子项为Int类型
+     * @param $user_ids | Array ， 子项为Int类型
      * @return Array ，数据格式为：
      * ['id' => 'email']
      * 得到customer id 和customer email的对应数组。
@@ -552,9 +564,9 @@ class Customer extends Service
     //2. 创建第三方用户的账户，密码自动生成
 
     /**
-     * @property  $user | Array ,example:
+     * @param  $user | Array ,example:
      * ['first_name' => $first_name,'last_name' => $last_name,'email' => $email,]
-     * @property  $type | String 代表第三方登录的名称，譬如google，facebook
+     * @param  $type | String 代表第三方登录的名称，譬如google，facebook
      * @return bool
      * 如果用户emai存在，则直接登录，成功后返回true
      * 如果用户不存在，则注册用户，然后直接登录，成功后返回true
@@ -568,7 +580,11 @@ class Customer extends Service
         if ($customer_one) {
             $loginStatus = \Yii::$app->user->login($customer_one);
             if ($loginStatus) {
-                return true;
+                $customer_one->generateAccessToken();
+                $customer_one->access_token_created_at = time();
+                $customer_one->save();
+
+                return $this->setHeaderAccessToken($customer_one->access_token);
             }
             // 不存在，注册。
         } else {
@@ -584,10 +600,7 @@ class Customer extends Service
             ];
             $registerStatus = Yii::$service->customer->register($registerData);
             if ($registerStatus) {
-                $loginStatus = Yii::$service->customer->login($registerData);
-                if ($loginStatus) {
-                    return true;
-                }
+                return Yii::$service->customer->loginAndGetAccessToken($registerData['email'], $registerData['password']);
             }
         }
 
@@ -611,8 +624,8 @@ class Customer extends Service
     }
 
     /** AppServer 部分使用的函数
-     * @property $email | String
-     * @property $password | String
+     * @param $email | String
+     * @param $password | String
      * 无状态登录，通过email 和password进行登录
      * 登录成功后，合并购物车，返回accessToken
      * ** 该函数是未登录用户，通过参数进行登录需要执行的函数。
@@ -719,7 +732,7 @@ class Customer extends Service
     }
     
     /**
-     * @property $days | Int 天数
+     * @param $days | Int 天数
      * 得到最近X天的注册用户
      * 下面的数据是为了后台的customer 注册数统计
      */

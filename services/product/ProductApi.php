@@ -37,7 +37,7 @@ class ProductApi extends Service
     }
     
     /**
-     * @property $post | Array , 数组
+     * @param $post | Array , 数组
      * 检查产品数据的必填以及数据的初始化
      * 1. 产品必填数据是否填写，不填写就报错
      * 2. 产品选填信息如果没有填写，如果可以初始化，那么就初始化

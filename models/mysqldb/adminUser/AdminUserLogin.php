@@ -55,7 +55,7 @@ class AdminUserLogin extends Model
     }
 
     /**
-     * @property $duration | Int
+     * @param $duration | Int
      * 对于参数$duration：
      * 1. 当不开启cookie时，$duration的设置是无效的，yii2只会从user组件Yii::$app->user->authTimeout
      *    中读取过期时间

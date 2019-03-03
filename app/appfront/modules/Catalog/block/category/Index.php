@@ -95,7 +95,7 @@ class Index
         return $filter_category;
     }
     /**
-     * @property $filter_category | Array
+     * @param $filter_category | Array
      * 通过递归的方式，得到分类以及子分类的html。
      */
     protected function getFilterCategoryHtml($filter_category = '')
@@ -316,7 +316,7 @@ class Index
         return $str;
     }
     /**
-     * @property $str | String
+     * @param $str | String
      * 字符串转换成数组。
      */
     protected function getFilterArr($str)
@@ -421,7 +421,7 @@ class Index
                 'sku', 'spu', 'name', 'image',
                 'price', 'special_price',
                 'special_from', 'special_to',
-                'url_key', 'score',
+                'url_key', 'score', 'reviw_rate_star_average', 'review_count'
             ];
         $category_query = Yii::$app->getModule('catalog')->params['category_query'];
         if (is_array($category_query['sort'])) {

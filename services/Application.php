@@ -17,6 +17,7 @@ use yii\base\InvalidConfigException;
  * 此对象就是Yii::$service,通过魔术方法__get ， 得到服务对象，服务对象是单例模式。
  * @see http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-service-abc.html
  *
+ * @property \fecshop\services\Admin $admin admin service
  * @property \fecshop\services\AdminUser $adminUser adminUser service
  * @property \fecshop\services\Cache $cache cache service
  * @property \fecshop\services\Cart $cart cart service
@@ -81,7 +82,7 @@ class Application
      */
     public function getChildService($childServiceName)
     {
-        if (!$this->_childService[$childServiceName]) {
+        if (!isset($this->_childService[$childServiceName]) || !$this->_childService[$childServiceName]) {
             $childService = $this->childService;
             if (isset($childService[$childServiceName])) {
                 $service = $childService[$childServiceName];
@@ -95,7 +96,7 @@ class Application
             }
         }
 
-        return $this->_childService[$childServiceName];
+        return isset($this->_childService[$childServiceName]) ? $this->_childService[$childServiceName] : null;
     }
 
     /**

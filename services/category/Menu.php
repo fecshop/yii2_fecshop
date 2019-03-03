@@ -33,7 +33,7 @@ class Menu extends Service
     }
 
     /**
-     * @property $parentId | int
+     * @param $parentId | int
      * 得到分类的目录信息
      */
     protected function actionGetCategoryMenuArr($parentId = '')
@@ -72,7 +72,7 @@ class Menu extends Service
     }
 
     /**
-     * @property $categoryId|array
+     * @param $categoryId|array
      * check if cateogry has child .
      */
     protected function hasChild($categoryId)

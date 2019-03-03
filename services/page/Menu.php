@@ -82,7 +82,7 @@ class Menu extends Service
     }
 
     /**
-     * @property $customMenu | Array , 自定义菜单部分数组，从配置中取出
+     * @param $customMenu | Array , 自定义菜单部分数组，从配置中取出
      * @return Array，获取处理后的自定义菜单数组
      */
     protected function customMenuInit($customMenu)

@@ -14,6 +14,10 @@ use Yii;
 
 /**
  * AdminUser services. 用来给后台的用户提供数据。
+ *
+ * @property \fecshop\services\customer\AdminUser $adminUser
+ * @property \fecshop\services\customer\UserLogin $userLogin
+ *
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -26,7 +30,7 @@ class AdminUser extends Service
     }
 
     /**
-     * @property $data|array
+     * @param $data|array
      * 数组格式：['username'=>'xxx@xxx.com','password'=>'xxxx']
      */
     protected function actionLogin($data)
@@ -35,7 +39,7 @@ class AdminUser extends Service
     }
 
     /**
-     * @property $ids | Int Array
+     * @param $ids | Int Array
      * @return 得到相应用户的数组。
      */
     public function getIdAndNameArrByIds($ids)
@@ -62,7 +66,7 @@ class AdminUser extends Service
     }
 
     /** AppServer 部分使用的函数
-     * @property $type | null or  Object
+     * @param $type | null or  Object
      * 从request headers中获取access-token，然后执行登录
      * 如果登录成功，然后验证时间是否过期
      * 如果不过期，则返回identity

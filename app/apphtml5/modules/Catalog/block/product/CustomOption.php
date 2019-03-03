@@ -74,16 +74,16 @@ class CustomOption
             foreach ($custom_option_attr_info as $attr => $info) {
                 if (isset($info['display']['type']) && ($info['display']['type'] == 'select')) {
                     if (isset($info['display']['data']) && is_array($info['display']['data'])) {
-                        foreach ($info['display']['data'] as $key=>$val) {
-                            if (is_array($my_arr[$attr]) && in_array($key, $my_arr[$attr])) {
+                        foreach ($info['display']['data'] as $val) {
+                            if (is_array($my_arr[$attr]) && in_array($val, $my_arr[$attr])) {
                                 $t_arr = [
-                                    'key' => $key,
+                                    'key' => $val,
                                     'val' => $val,
                                 ];
                                 $require = isset($info['require']) ? $info['require'] : 0;
                                 if (isset($info['showAsImg']) && $info['showAsImg']) {
-                                    if (isset($img_arr[$key])) {
-                                        $t_arr['image'] = $img_arr[$key];
+                                    if (isset($img_arr[$val])) {
+                                        $t_arr['image'] = $img_arr[$val];
                                     }
                                 }
                                 $arr[$attr]['info'][] = $t_arr;

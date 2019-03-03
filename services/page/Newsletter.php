@@ -31,7 +31,7 @@ class Newsletter extends Service
     }
 
     /**
-     * @property $email | String
+     * @param $email | String
      * newsletter subscription.
      */
     protected function actionSubscription($email)
@@ -64,7 +64,7 @@ class Newsletter extends Service
     }
 
     /**
-     * @property $filter|array
+     * @param $filter|array
      * get subscription email collection
      */
     protected function actionGetSubscriptionList($filter)

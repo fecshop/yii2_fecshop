@@ -30,7 +30,7 @@ class Index
     }
     
     /**
-     * @property $cart_info | Array, example data:
+     * @param $cart_info | Array, example data:
         [
             {
                 "sku":"grxjy56002622",

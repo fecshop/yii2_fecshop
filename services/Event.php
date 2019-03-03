@@ -23,8 +23,8 @@ class Event extends Service
     public $eventList; //Array
 
     /**
-     * @property $eventName | String , 时间的名字
-     * @property $data | Array ， 数据数组，将各个数据以数组的方式传递过来。
+     * @param $eventName | String , 时间的名字
+     * @param $data | Array ， 数据数组，将各个数据以数组的方式传递过来。
      * 从配置中找到相应的event，然后执行event。
      * event 相当于插代码的感觉。
      */

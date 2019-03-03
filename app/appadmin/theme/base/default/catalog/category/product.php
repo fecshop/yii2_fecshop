@@ -33,7 +33,7 @@ use fec\helpers\CRequest;
 		</div>
 	</div>
 </div>
-<div class="pageContent">
+<div class="pageContent category-product-list">
 	
 	<div class="panelBar">
 		<?= $toolBar; ?>
@@ -188,6 +188,7 @@ $(document).ready(function(){
 			url: url,
 			type: 'POST',
 			data:  {	
+                <?=  CRequest::getCsrfName(); ?>: "<?= CRequest::getCsrfValue(); ?>"
 			},
 			success: function(data, textStatus, jqXHR)
 			{

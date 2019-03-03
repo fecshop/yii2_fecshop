@@ -59,7 +59,7 @@ class CategoryController extends AppserverController
         $cacheName = 'category';
         if (Yii::$service->cache->isEnable($cacheName)) {
             $timeout = Yii::$service->cache->timeout($cacheName);
-            $disableUrlParam = Yii::$service->cache->timeout($cacheName);
+            $disableUrlParam = Yii::$service->cache->disableUrlParam($cacheName);
             $cacheUrlParam = Yii::$service->cache->cacheUrlParam($cacheName);
             $get_str = '';
             $get = Yii::$app->request->get();
@@ -403,7 +403,7 @@ class CategoryController extends AppserverController
         return $str;
     }
     /**
-     * @property $str | String
+     * @param $str | String
      * 字符串转换成数组。
      */
     protected function getFilterArr($str)

@@ -26,7 +26,7 @@ class Customer extends Service
     public $emailTheme;
 
     /**
-     * @property $emailInfo | Array  ，数组格式格式如下：
+     * @param $emailInfo | Array  ，数组格式格式如下：
      * [ 'email' => 'xx@xx.com' , [...] ] 其中email是必须有的数组key，对于其他的，
      * 可以根据功能添加，添加后，可以在邮件模板的$params中调用，譬如调用email为 $params['email']
      * @return boolean , 如果发送成功，则返回true。
@@ -64,7 +64,7 @@ class Customer extends Service
     }
 
     /**
-     * @property $emailInfo | Array  ，数组格式格式如下：
+     * @param $emailInfo | Array  ，数组格式格式如下：
      * [ 'email' => 'xx@xx.com' , [...] ] 其中email是必须有的数组key，对于其他的，
      * 可以根据功能添加，添加后，可以在邮件模板的$params中调用，譬如调用email为 $params['email']
      * @return boolean , 如果发送成功，则返回true。
@@ -101,7 +101,7 @@ class Customer extends Service
     }
 
     /**
-     * @property $emailInfo | Array  ，数组格式格式如下：
+     * @param $emailInfo | Array  ，数组格式格式如下：
      * [ 'email' => 'xx@xx.com' , [...] ] 其中email是必须有的数组key，对于其他的，
      * 可以根据功能添加，添加后，可以在邮件模板的$params中调用，譬如调用email为 $params['email']
      * @return boolean , 如果发送成功，则返回true。
@@ -149,7 +149,7 @@ class Customer extends Service
     }
 
     /**
-     * @property $emailInfo | Array  ，数组格式格式如下：
+     * @param $emailInfo | Array  ，数组格式格式如下：
      * [ 'email' => 'xx@xx.com' , [...] ] 其中email是必须有的数组key，对于其他的，
      * 可以根据功能添加，添加后，可以在邮件模板的$params中调用，譬如调用email为 $params['email']
      * @return boolean , 如果发送成功，则返回true。
@@ -191,7 +191,7 @@ class Customer extends Service
     }
 
     /**
-     * @property $emailInfo | Array  ，数组格式格式如下：
+     * @param $emailInfo | Array  ，数组格式格式如下：
      * [ 'email' => 'xx@xx.com' , [...] ] 其中email是必须有的数组key，对于其他的，
      * 可以根据功能添加，添加后，可以在邮件模板的$params中调用，譬如调用email为 $params['email']
      * @return boolean , 如果发送成功，则返回true。
