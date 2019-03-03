@@ -87,7 +87,7 @@ use fec\helpers\CRequest;
 										<ul>
 											<?php foreach($product_one['custom_option_info'] as $label => $val):  ?>
 												
-												<li><?= Yii::$service->page->translate->__(ucwords($label).':') ?><?= Yii::$service->page->translate->__($val) ?> </li>
+												<li><?= Yii::$service->page->translate->__(ucwords($label)).':' ?><?= Yii::$service->page->translate->__($val) ?> </li>
 												
 											<?php endforeach;  ?>
 										</ul>
