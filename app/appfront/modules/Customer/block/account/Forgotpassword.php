@@ -22,10 +22,20 @@ class Forgotpassword
     {
         $forgotPasswordParam = \Yii::$app->getModule('customer')->params['forgotPassword'];
         $forgotCaptcha = isset($forgotPasswordParam['forgotCaptcha']) ? $forgotPasswordParam['forgotCaptcha'] : false;
-
+        $this->breadcrumbs(Yii::$service->page->translate->__('Forgot Password'));
         return [
             'forgotCaptcha' => $forgotCaptcha,
         ];
+    }
+    
+    // 面包屑导航
+    protected function breadcrumbs($name)
+    {
+        if (Yii::$app->controller->module->params['forgot_password_breadcrumbs']) {
+            Yii::$service->page->breadcrumbs->addItems(['name' => $name]);
+        } else {
+            Yii::$service->page->breadcrumbs->active = false;
+        }
     }
 
     public function sendForgotPasswordMailer($editForm)
