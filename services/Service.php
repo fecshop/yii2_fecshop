@@ -66,13 +66,11 @@ class Service extends BaseObject
     public function getChildService($childServiceName)
     {
         //var_dump($this->childService['xunSearch']);exit;
-        if (!$this->_childService[$childServiceName]) {
-            
-            //var_dump($this->_childService['xunSearch']);exit;
+        if (!isset($this->_childService[$childServiceName]) || !$this->_childService[$childServiceName]) {
             $childService = $this->childService;
             if (isset($childService[$childServiceName])) {
                 $service = $childService[$childServiceName];
-                if ($service['enableService'] !== false) {
+                if (!isset($service['enableService']) || $service['enableService'] !== false) {
                     $this->_childService[$childServiceName] = Yii::createObject($service);
                 } else {
                     throw new InvalidConfigException('Child Service ['.$childServiceName.'] is disable in '.get_called_class().', you must config it! ');
@@ -80,9 +78,9 @@ class Service extends BaseObject
             } else {
                 throw new InvalidConfigException('Child Service ['.$childServiceName.'] is not find in '.get_called_class().', you must config it! ');
             }
-        }
+        } 
 
-        return $this->_childService[$childServiceName];
+        return isset($this->_childService[$childServiceName]) ? $this->_childService[$childServiceName] : null;
     }
 
     /**
