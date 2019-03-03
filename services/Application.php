@@ -82,7 +82,7 @@ class Application
      */
     public function getChildService($childServiceName)
     {
-        if (!$this->_childService[$childServiceName]) {
+        if (!isset($this->_childService[$childServiceName]) || !$this->_childService[$childServiceName]) {
             $childService = $this->childService;
             if (isset($childService[$childServiceName])) {
                 $service = $childService[$childServiceName];
@@ -96,7 +96,7 @@ class Application
             }
         }
 
-        return $this->_childService[$childServiceName];
+        return isset($this->_childService[$childServiceName]) ? $this->_childService[$childServiceName] : null;
     }
 
     /**
