@@ -175,13 +175,38 @@ class QuoteItem extends Service
      * 在购物车中产品有变动后，使用这个函数得到产品总数，更新购物车中
      * 的产品总数。
      */
-    public function getItemQty()
+    public function getItemAllQty()
     {
         $cart_id = Yii::$service->cart->quote->getCartId();
         $item_qty = 0;
         if ($cart_id) {
             $data = $this->_itemModel->find()->asArray()->where([
                 'cart_id' => $cart_id,
+            ])->all();
+            if (is_array($data) && !empty($data)) {
+                foreach ($data as $one) {
+                    $item_qty += $one['qty'];
+                }
+            }
+        }
+
+        return $item_qty;
+    }
+    
+    /**
+     * 通过quoteItem表，计算得到所有产品的总数
+     * 得到购物车中产品的总数，不要使用这个函数，这个函数的作用：
+     * 在购物车中产品有变动后，使用这个函数得到产品总数，更新购物车中
+     * 的产品总数。
+     */
+    public function getActiveItemQty()
+    {
+        $cart_id = Yii::$service->cart->quote->getCartId();
+        $item_qty = 0;
+        if ($cart_id) {
+            $data = $this->_itemModel->find()->asArray()->where([
+                'cart_id' => $cart_id,
+                'active' => $this->activeStatus,
             ])->all();
             if (is_array($data) && !empty($data)) {
                 foreach ($data as $one) {
