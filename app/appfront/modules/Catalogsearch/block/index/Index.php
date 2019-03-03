@@ -333,7 +333,7 @@ class Index
             'product_id','sku', 'spu', 'name', 'image',
             'price', 'special_price',
             'special_from', 'special_to',
-            'url_key', 'score',
+            'url_key', 'score', 'reviw_rate_star_average', 'review_count'
         ];
         $where = $this->_where;
         $search_text = Yii::$app->controller->module->params['search_query'];
