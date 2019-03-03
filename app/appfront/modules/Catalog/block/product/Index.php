@@ -71,6 +71,7 @@ class Index
             'image_thumbnails'          => $this->_image_thumbnails,
             'image_detail'              => $this->_image_detail,
             'sku'                       => $this->_product['sku'],
+            'is_in_stock'                     => $this->_product['is_in_stock'],
             'package_number'            => $this->_product['package_number'],
             'spu'                       => $this->_product['spu'],
             'attr_group'                => $this->_product['attr_group'],
@@ -507,7 +508,7 @@ class Index
                     'sku', 'spu', 'name', 'image',
                     'price', 'special_price',
                     'special_from', 'special_to',
-                    'url_key', 'score',
+                    'url_key', 'score', 'reviw_rate_star_average', 'review_count'
                 ];
                 $filter['where'] = ['in', 'sku', $skus];
                 $products = Yii::$service->product->getProducts($filter);
