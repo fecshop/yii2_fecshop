@@ -50,7 +50,7 @@ class Index
                 $coll[$k]['url_key'] = $productModel['url_key'];
             }
         }
-
+        $this->breadcrumbs(Yii::$service->page->translate->__('Customer Product Review'));
         return [
             'pageToolBar'    => $pageToolBar,
             'coll'            => $coll,
@@ -58,6 +58,16 @@ class Index
             'refuseStatus'  => Yii::$service->product->review->refuseStatus(),
             'activeStatus'  => Yii::$service->product->review->activeStatus(),
         ];
+    }
+    
+    // 面包屑导航
+    protected function breadcrumbs($name)
+    {
+        if (Yii::$app->controller->module->params['customer_product_review_breadcrumbs']) {
+            Yii::$service->page->breadcrumbs->addItems(['name' => $name]);
+        } else {
+            Yii::$service->page->breadcrumbs->active = false;
+        }
     }
 
     protected function getProductPage($countTotal)

@@ -20,13 +20,23 @@ class Index
     public function getLastData()
     {
         $identity = Yii::$app->user->identity;
-
+        $this->breadcrumbs(Yii::$service->page->translate->__('Account Information'));
         return [
             'firstname'    => $identity['firstname'],
             'email'        => $identity['email'],
             'lastname'        => $identity['lastname'],
             'actionUrl'        => Yii::$service->url->getUrl('customer/editaccount'),
         ];
+    }
+    
+    // 面包屑导航
+    protected function breadcrumbs($name)
+    {
+        if (Yii::$app->controller->module->params['account_information_breadcrumbs']) {
+            Yii::$service->page->breadcrumbs->addItems(['name' => $name]);
+        } else {
+            Yii::$service->page->breadcrumbs->active = false;
+        }
     }
 
     /**

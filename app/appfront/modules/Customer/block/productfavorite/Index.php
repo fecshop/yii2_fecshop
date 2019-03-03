@@ -51,13 +51,23 @@ class Index
         $count = $data['count'];
         $pageToolBar = $this->getProductPage($count);
         $product_arr = $this->getProductInfo($coll);
-
+        $this->breadcrumbs(Yii::$service->page->translate->__('Customer Product Favorite'));
         return [
             'coll' => $product_arr,
             'pageToolBar'    => $pageToolBar,
         ];
     }
-
+    
+    // 面包屑导航
+    protected function breadcrumbs($name)
+    {
+        if (Yii::$app->controller->module->params['customer_product_favorite_breadcrumbs']) {
+            Yii::$service->page->breadcrumbs->addItems(['name' => $name]);
+        } else {
+            Yii::$service->page->breadcrumbs->active = false;
+        }
+    }
+    
     // 得到产品的一些信息，来显示Favorite 的产品列表。
     public function getProductInfo($coll)
     {

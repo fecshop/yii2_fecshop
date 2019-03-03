@@ -21,10 +21,20 @@ class View
     {
         $order_id = Yii::$app->request->get('order_id');
         $order_info = $this->getCustomerOrderInfo($order_id);
-
+        $this->breadcrumbs(Yii::$service->page->translate->__('Customer Order Info'));
         return $order_info;
     }
-
+    
+    // 面包屑导航
+    protected function breadcrumbs($name)
+    {
+        if (Yii::$app->controller->module->params['customer_order_info_breadcrumbs']) {
+            Yii::$service->page->breadcrumbs->addItems(['name' => $name]);
+        } else {
+            Yii::$service->page->breadcrumbs->active = false;
+        }
+    }
+    
     public function getCustomerOrderInfo($order_id)
     {
         if ($order_id) {

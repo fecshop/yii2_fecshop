@@ -55,8 +55,18 @@ class Index
             $pageToolBar = $this->getProductPage($count);
             $return_arr['pageToolBar'] = $pageToolBar;
         }
-
+        $this->breadcrumbs(Yii::$service->page->translate->__('Customer Order'));
         return $return_arr;
+    }
+    
+    // 面包屑导航
+    protected function breadcrumbs($name)
+    {
+        if (Yii::$app->controller->module->params['customer_order_breadcrumbs']) {
+            Yii::$service->page->breadcrumbs->addItems(['name' => $name]);
+        } else {
+            Yii::$service->page->breadcrumbs->active = false;
+        }
     }
 
     protected function getProductPage($countTotal)

@@ -164,8 +164,18 @@ class AccountController extends AppfrontController
                 Yii::$service->url->redirect($redirectUrl);
             }
         }
-
+        $this->breadcrumbs(Yii::$service->page->translate->__('Reset Password Submit'));
         return $this->render($this->action->id, $data);
+    }
+    
+     // 面包屑导航
+    protected function breadcrumbs($name)
+    {
+        if (Yii::$app->controller->module->params['forgot_reset_password_submit_breadcrumbs']) {
+            Yii::$service->page->breadcrumbs->addItems(['name' => $name]);
+        } else {
+            Yii::$service->page->breadcrumbs->active = false;
+        }
     }
 
     public function actionResetpassword()
