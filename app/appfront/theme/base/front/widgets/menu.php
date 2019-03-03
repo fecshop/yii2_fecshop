@@ -17,14 +17,14 @@
 			<?php foreach($categoryArr as $category1): ?>
 				<li>		
 				<a href="<?= $category1['url'] ?>" class="nav_t"><?= $category1['name'] ?></a>	
-				<?php $childMenu1 = $category1['childMenu'];   ?>
+				<?php $childMenu1 = isset($category1['childMenu']) ? $category1['childMenu'] : null;   ?>
 				<?php if(is_array($childMenu1) && !empty($childMenu1)): ?>
 					<div class="sub_menu big_sub_menu clearfix">
 						<div class="trends_item clearfix">
 							<?php foreach($childMenu1 as $category2): ?>
 								<dl>
 									<dt><a href="<?= $category2['url'] ?>"><?= $category2['name'] ?></dt>
-									<?php $childMenu2 = $category2['childMenu'];   ?>
+									<?php $childMenu2 = isset($category2['childMenu']) ? $category2['childMenu'] : null;   ?>
 									<?php if(is_array($childMenu2) && !empty($childMenu2)): ?>
 										<?php foreach($childMenu2 as $category3): ?>
 											<dd><a href="<?= $category3['url'] ?>"><?= $category3['name'] ?></a></dd>
@@ -34,7 +34,7 @@
 							<?php endforeach; ?>
 						</div>
 						<div class="trends_img">
-							<?= $category1['menu_custom'];  ?>
+							<?= isset($category1['menu_custom']) ? $category1['menu_custom'] : '';  ?>
 						</div>
 					</div>
 				<?php endif; ?>
