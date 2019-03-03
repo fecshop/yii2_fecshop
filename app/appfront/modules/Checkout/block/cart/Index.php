@@ -22,7 +22,7 @@ class Index
         $this->initHead();
         $currency_info = Yii::$service->page->currency->getCurrencyInfo();
         $cart_info = $this->getCartInfo(false);
-        //var_dump($cart_info );
+        $this->breadcrumbs(Yii::$service->page->translate->__('Checkout Cart'));
         return [
             'cart_info'         => $cart_info,
             'currency_info'     => $currency_info,
@@ -30,6 +30,15 @@ class Index
         ];
     }
     
+    // 面包屑导航
+    protected function breadcrumbs($name)
+    {
+        if (Yii::$app->controller->module->params['checkout_cart_breadcrumbs']) {
+            Yii::$service->page->breadcrumbs->addItems(['name' => $name]);
+        } else {
+            Yii::$service->page->breadcrumbs->active = false;
+        }
+    }
     /**
      * @param $cart_info | Array, example data:
         [

@@ -41,7 +41,7 @@ class Index
         $this->initState();
         $shippings = $this->getShippings();
         $last_cart_info = $this->getCartInfo(true, $this->_shipping_method, $this->_country, $this->_state);
-        
+        $this->breadcrumbs(Yii::$service->page->translate->__('Checkout Onepage'));
         return [
             'payments'                 => $this->getPayment(),
             'shippings'                => $shippings,
@@ -57,7 +57,17 @@ class Index
             'state_html'               => $this->_stateHtml,
         ];
     }
-
+    
+    // 面包屑导航
+    protected function breadcrumbs($name)
+    {
+        if (Yii::$app->controller->module->params['checkout_onepage_breadcrumbs']) {
+            Yii::$service->page->breadcrumbs->addItems(['name' => $name]);
+        } else {
+            Yii::$service->page->breadcrumbs->active = false;
+        }
+    }
+    
     /**
      * 初始化地址信息，首先从当前用户里面取值，然后从cart表中取数据覆盖
      * 1. 初始化 $this->_address，里面保存的各个地址信息。
