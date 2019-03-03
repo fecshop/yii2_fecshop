@@ -80,7 +80,7 @@ class Asset extends Service
                                 if (file_exists($jsAbsoluteDir)) {
                                     $assetArr[$dir]['jsOptions'][] = [
                                         'js'        =>  $jsPath,
-                                        'options'    =>  $this->initOptions($jsOption['options']),
+                                        'options'    =>  isset($jsOption['options']) ? $this->initOptions($jsOption['options']) : null,
                                     ];
                                     break;
                                 }
@@ -100,7 +100,7 @@ class Asset extends Service
                                 if (file_exists($cssAbsoluteDir)) {
                                     $assetArr[$dir]['cssOptions'][] = [
                                         'css'        =>  $cssPath,
-                                        'options'    =>  $this->initOptions($cssOption['options']),
+                                        'options'    =>  isset($cssOption['options']) ? $this->initOptions($cssOption['options']) : null,
                                     ];
                                     break;
                                 }
