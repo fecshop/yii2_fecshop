@@ -75,6 +75,7 @@ class Product extends Service
     {
         $filter['group'] = '$spu';
         $coll = Yii::$service->product->getFrontCategoryProducts($filter);
+        
         $collection = $coll['coll'];
         $count = $coll['count'];
         $arr = $this->convertToCategoryInfo($collection);
@@ -107,14 +108,16 @@ class Product extends Service
                 }
                 list($price, $special_price) = $this->getPrices($one['price'], $one['special_price'], $one['special_from'], $one['special_to']);
                 $arr[] = [
-                    'name'          => $name,
-                    'sku'           => $one['sku'],
-                    '_id'           => (string)$one['product_id'],
-                    'image'         => $image,
-                    'price'         => $price,
-                    'special_price' => $special_price,
-                    'url'           => Yii::$service->url->getUrl($url_key),
-                    'product_id'    => (string)$one['_id'],
+                    'name'              => $name,
+                    'sku'                 => $one['sku'],
+                    'reviw_rate_star_average' => isset($one['reviw_rate_star_average']) ? $one['reviw_rate_star_average'] : 0,
+                    'review_count'   => isset($one['review_count']) ? $one['review_count'] : 0,
+                    '_id'                  => (string)$one['_id'],
+                    'image'              => $image,
+                    'price'                => $price,
+                    'special_price'     => $special_price,
+                    'url'                   => Yii::$service->url->getUrl($url_key),
+                    'product_id'        => (string)$one['_id'],
                 ];
             }
         }
