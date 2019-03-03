@@ -80,8 +80,18 @@ class Edit
             $this->_address = [];
         }
         $this->getIsDefault();
-
+        $this->breadcrumbs(Yii::$service->page->translate->__('Customer Address Edit'));
         return $this->_address;
+    }
+    
+    // 面包屑导航
+    protected function breadcrumbs($name)
+    {
+        if (Yii::$app->controller->module->params['customer_address_edit_breadcrumbs']) {
+            Yii::$service->page->breadcrumbs->addItems(['name' => $name]);
+        } else {
+            Yii::$service->page->breadcrumbs->active = false;
+        }
     }
 
     public function getIsDefault()

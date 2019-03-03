@@ -33,12 +33,22 @@ class Index
         $this->pageNum = ($this->pageNum >= 1) ? $this->pageNum : 1;
         $this->orderBy = ['updated_at' => SORT_DESC];
         $data = $this->coll();
+        $this->breadcrumbs(Yii::$service->page->translate->__('Customer Address'));
         return [
             'coll' => $data['coll'],
             'pageToolBar' => $data['pageToolBar'],
         ];
     }
-
+    // 面包屑导航
+    protected function breadcrumbs($name)
+    {
+        if (Yii::$app->controller->module->params['customer_address_breadcrumbs']) {
+            Yii::$service->page->breadcrumbs->addItems(['name' => $name]);
+        } else {
+            Yii::$service->page->breadcrumbs->active = false;
+        }
+    }
+    
     public function coll()
     {
         $identity = Yii::$app->user->identity;
