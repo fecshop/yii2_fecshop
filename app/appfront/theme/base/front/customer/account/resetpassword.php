@@ -8,7 +8,8 @@
  */
 ?>
 <div class="main container one-column">
-<?= Yii::$service->page->widget->render('flashmessage'); ?>
+    <?= Yii::$service->page->widget->render('breadcrumbs',$this); ?>
+    <?= Yii::$service->page->widget->render('flashmessage'); ?>
 <?php  if(!empty($identity)):  ?>
 	<div class="account-create">
 		<div class="page-title">

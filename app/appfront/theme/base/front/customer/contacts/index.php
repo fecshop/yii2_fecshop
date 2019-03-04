@@ -77,7 +77,7 @@
 					</ul>
 				</div>
 			<div class="buttons-set">
-			   <button type="submit" title="Save" class="button" ><span><span><?= Yii::$service->page->translate->__('Contact Us'); ?></span></span></button>
+			   <button type="submit" title="Save" class="button " ><span><span><?= Yii::$service->page->translate->__('Contact Us'); ?></span></span></button>
 			</div>
 		</form>
 		</div>

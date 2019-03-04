@@ -8,7 +8,9 @@
  */
 ?>
 <div class="main container one-column">
-<?= Yii::$service->page->widget->render('flashmessage'); ?>
+    <?= Yii::$service->page->widget->render('breadcrumbs',$this); ?>
+    <?= Yii::$service->page->widget->render('flashmessage'); ?>
+    
 	<div class="account-login">
 		<div class="page-title">
 			<h1><?= Yii::$service->page->translate->__('Login or Create an Account'); ?></h1>
