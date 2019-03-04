@@ -10,6 +10,7 @@ use fec\helpers\CRequest;
 ?>
 <div class="main container one-column">
 	<div class="col-main">
+        <?= Yii::$service->page->widget->render('breadcrumbs',$this); ?>
 		<?= Yii::$service->page->widget->render('flashmessage'); ?>
 		<form action="<?= Yii::$service->url->getUrl('checkout/onepage'); ?>" method="post" id="onestepcheckout-form">
 			<?= CRequest::getCsrfInputHtml(); ?>
