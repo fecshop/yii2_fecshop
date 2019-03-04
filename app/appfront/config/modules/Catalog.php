@@ -19,6 +19,8 @@ return [
                 'small_img_height' => 110,  // 底部小图的高度
                 'middle_img_width' => 400,  // 主图的宽度
             ],
+            'category_breadcrumbs' => true,
+            'product_breadcrumbs' => true,
         ],
     ],
 ];

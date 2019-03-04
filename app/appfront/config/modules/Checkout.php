@@ -18,8 +18,8 @@ return [
          */
         'params'=> [
             'guestOrder' => true, // 是否支持游客下单
-            'checkout_cart_breadcrumbs' => true,
-            'checkout_onepage_breadcrumbs' => true,
+            'checkout_cart_breadcrumbs' => false,
+            'checkout_onepage_breadcrumbs' => false,
         ],
     ],
 ];
