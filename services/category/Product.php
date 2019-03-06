@@ -107,17 +107,24 @@ class Product extends Service
                     $image = $defaultImg;
                 }
                 list($price, $special_price) = $this->getPrices($one['price'], $one['special_price'], $one['special_from'], $one['special_to']);
+                $product_id = '';
+                
+                if (isset($one['product_id']) && $one['product_id']) {
+                    $product_id = (string)$one['product_id'];
+                } else {
+                    $product_id = (string)$one['_id'];
+                }
                 $arr[] = [
                     'name'              => $name,
                     'sku'                 => $one['sku'],
                     'reviw_rate_star_average' => isset($one['reviw_rate_star_average']) ? $one['reviw_rate_star_average'] : 0,
                     'review_count'   => isset($one['review_count']) ? $one['review_count'] : 0,
-                    '_id'                  => (string)$one['_id'],
+                    '_id'                  => $product_id,
                     'image'              => $image,
                     'price'                => $price,
                     'special_price'     => $special_price,
                     'url'                   => Yii::$service->url->getUrl($url_key),
-                    'product_id'        => (string)$one['_id'],
+                    'product_id'        => $product_id,
                 ];
             }
         }
