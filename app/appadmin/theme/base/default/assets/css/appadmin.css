@@ -131,3 +131,7 @@ fieldset{
 .grid .gridCol{
     font-weight:100;
 }
+.accordion .accordionHeader h2 span {
+    background: none;
+    display: none;
+}
