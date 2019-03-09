@@ -184,8 +184,8 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
     /**
      * get edit html bar, it contains  add ,eidt ,delete  button.
      */
-    public function getEditBar()
-    {
-        return '';
-    }
+    //public function getEditBar()
+    //{
+    //    return '';
+    //}
 }

@@ -107,8 +107,8 @@ class Product extends Service
                     $image = $defaultImg;
                 }
                 list($price, $special_price) = $this->getPrices($one['price'], $one['special_price'], $one['special_from'], $one['special_to']);
-                $product_id = '';
                 
+                $product_id = '';
                 if (isset($one['product_id']) && $one['product_id']) {
                     $product_id = (string)$one['product_id'];
                 } else {

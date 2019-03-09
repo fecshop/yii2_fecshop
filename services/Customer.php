@@ -237,6 +237,13 @@ class Customer extends Service
         $primaryKey = $this->getPrimaryKey();
         $primaryVal = isset($param[$primaryKey]) ? $param[$primaryKey] : '';
         if ($primaryVal) {
+            $model = $this->_customerRegisterModel;
+            $model->attributes = $param;
+            if (!$model->validate()) {
+                $errors = $model->errors;
+                Yii::$service->helper->errors->addByModelErrors($errors);
+                return false;
+            }
             $model = $this->getByPrimaryKey($primaryVal);
             if ($model[$primaryKey]) {
                 unset($param[$primaryKey]);
@@ -255,6 +262,10 @@ class Customer extends Service
 
                     return false;
                 }
+            }
+        } else {
+            if ($this->register($param)) {
+                return true;
             }
         }
         return false;

@@ -30,6 +30,7 @@ class CustomerRegister extends Customer
     {
         $parent_rules = parent::rules();
         $current_rules = [
+            ['id', 'filter', 'filter' => 'trim'],
             ['email', 'filter', 'filter' => 'trim'],
             ['email', 'email'],
             ['email', 'validateEmail'],
