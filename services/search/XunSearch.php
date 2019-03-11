@@ -182,12 +182,22 @@ class XunSearch extends Service implements SearchInterface
             $XunSearchQuery->limit($product_search_max_count);
             $XunSearchQuery->offset(0);
             $search_data = $XunSearchQuery->all();
-
+            /**
+             * 在搜索页面, spu相同的sku，是否只显示其中score高的sku，其他的sku隐藏
+             * 如果设置为true，那么在搜索结果页面，spu相同，sku不同的产品，只会显示score最高的那个产品
+             * 如果设置为false，那么在搜索结果页面，所有的sku都显示。
+             * 这里做设置的好处，譬如服装，一个spu的不同颜色尺码可能几十个产品，都显示出来会占用很多的位置，对于这种产品您可以选择设置true
+             * 这个针对的京东模式的产品
+             */
             $data = [];
-            foreach ($search_data as $one) {
-                if (!isset($data[$one['spu']])) {
-                    $data[$one['spu']] = $one;
+            if (Yii::$service->search->productSpuShowOnlyOneSku) {
+                foreach ($search_data as $one) {
+                    if (!isset($data[$one['spu']])) {
+                        $data[$one['spu']] = $one;
+                    }
                 }
+            } else {
+                $data = $search_data;
             }
 
             $count = count($data);

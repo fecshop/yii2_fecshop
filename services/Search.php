@@ -24,6 +24,14 @@ class Search extends Service
      * 在搜索页面侧栏的搜索过滤属性字段.
      */
     public $filterAttr;
+    /**
+     * 在搜索页面, spu相同的sku，是否只显示其中score高的sku，其他的sku隐藏
+     * 如果设置为true，那么在搜索结果页面，spu相同，sku不同的产品，只会显示score最高的那个产品
+     * 如果设置为false，那么在搜索结果页面，所有的sku都显示。
+     * 这里做设置的好处，譬如服装，一个spu的不同颜色尺码可能几十个产品，都显示出来会占用很多的位置，对于这种产品您可以选择设置true
+     * 这个针对的京东模式的产品
+     */
+    public $productSpuShowOnlyOneSku = true;
 
     public function init()
     {
