@@ -135,3 +135,11 @@ fieldset{
     background: none;
     display: none;
 }
+
+.edit_p{
+    position: relative;
+}
+
+span.error{
+    width:51px;
+}
