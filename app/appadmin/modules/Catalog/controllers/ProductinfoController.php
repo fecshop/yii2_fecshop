@@ -100,8 +100,14 @@ class ProductinfoController extends CatalogController
         $removeAllKey = Yii::$service->admin->role->productRemoveAllRoleKey;
         $primaryKey = Yii::$service->product->getPrimaryKey();
         $product_id = Yii::$app->request->get($primaryKey);
-        $product_ids = Yii::$app->request->get($primaryKey.'s');
-        if ($product_id && (!is_array($resources) || !isset($resources[$removeAllKey]) || !$resources[$removeAllKey])) {
+        $product_ids = Yii::$app->request->post($primaryKey.'s');
+        if (!$product_id && !$product_ids) {
+            echo json_encode([
+                'statusCode' => '300',
+                'message' => Yii::$service->page->translate->__('You do not have role to remove this product') ,
+            ]);
+            exit;
+        }else if ($product_id && (!is_array($resources) || !isset($resources[$removeAllKey]) || !$resources[$removeAllKey])) {
             $product = Yii::$service->product->getByPrimaryKey($product_id);
             if ($product['sku']) {
                 $user = Yii::$app->user->identity;
