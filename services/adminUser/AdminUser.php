@@ -53,6 +53,7 @@ class AdminUser extends Service
             
             return true;
         } else {
+            $errors = $this->_userPassResetModel->errors;
 			Yii::$service->helper->errors->addByModelErrors($errors);
             
             return false;
