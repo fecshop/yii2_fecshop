@@ -149,6 +149,9 @@ class XunSearch extends Service implements SearchInterface
         if ($productM && $enableStatus == $productM['status']) {
             $productIds[] = $productM['_id'];
         } else {
+            if (!isset($where['status'])) {
+                $where['status'] = Yii::$service->product->getEnableStatus();
+            }
             $XunSearchQuery = $this->_searchModel->find()->asArray();
             $XunSearchQuery->fuzzy($this->fuzzy);
             $XunSearchQuery->synonyms($this->synonyms);
