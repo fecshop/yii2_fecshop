@@ -52,8 +52,8 @@ class Search extends Service
         $searchEngineList = $this->getAllChildServiceName();
         if (is_array($searchEngineList) && !empty($searchEngineList)) {
             foreach ($searchEngineList as $sE) {
-                $model = $this->{$sE};
-                $model->initFullSearchIndex();
+                $service = $this->{$sE};
+                $service->initFullSearchIndex();
             }
         }
     }
@@ -67,8 +67,8 @@ class Search extends Service
         $searchEngineList = $this->getAllChildServiceName();
         if (is_array($searchEngineList) && !empty($searchEngineList)) {
             foreach ($searchEngineList as $sE) {
-                $model = $this->{$sE};
-                $model->syncProductInfo($product_ids, $numPerPage);
+                $service = $this->{$sE};
+                $service->syncProductInfo($product_ids, $numPerPage);
             }
         }
     }
@@ -83,8 +83,8 @@ class Search extends Service
         $searchEngineList = $this->getAllChildServiceName();
         if (is_array($searchEngineList) && !empty($searchEngineList)) {
             foreach ($searchEngineList as $sE) {
-                $model = $this->{$sE};
-                $model->deleteNotActiveProduct($nowTimeStamp);
+                $service = $this->{$sE};
+                $service->deleteNotActiveProduct($nowTimeStamp);
             }
         }
     }
