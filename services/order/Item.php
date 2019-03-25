@@ -243,7 +243,7 @@ class Item extends Service
                 $myOrderItem['qty'] = $item['qty'];
                 $myOrderItem['row_weight'] = $item['product_row_weight'];
                 $myOrderItem['price'] = $item['product_price'];
-                $myOrderItem['base_price'] = $item['product_row_price'];
+                $myOrderItem['base_price'] = $item['base_product_price'];
                 $myOrderItem['row_total'] = $item['product_row_price'];
                 $myOrderItem['base_row_total'] = $item['base_product_row_price'];
                 $myOrderItem['redirect_url'] = $item['product_url'];
