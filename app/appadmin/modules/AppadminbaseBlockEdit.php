@@ -163,6 +163,13 @@ EOF;
 							<input type="text"  value="{$value}" size="30" name="{$this->_editFormData}[{$name}]" class="email textInput {$require} ">
 						</p>
 EOF;
+            } elseif ($display_type == 'stringText') {
+                $str .= <<<EOF
+						<p class="edit_p">
+							<label>{$label}：</label>
+							{$value}
+						</p>
+EOF;
             } elseif ($display_type == 'inputPassword') {
                 $str .= <<<EOF
 						<p class="edit_p">
