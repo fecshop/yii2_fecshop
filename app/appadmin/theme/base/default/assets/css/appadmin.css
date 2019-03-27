@@ -164,4 +164,4 @@ span.error{
 .panelBar .toolBar li, .panelBar .toolBar li.hover{
     background:none;
 }
-
+.page .panelBar{padding:10px 0}
