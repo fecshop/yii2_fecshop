@@ -143,3 +143,25 @@ fieldset{
 span.error{
     width:51px;
 }
+
+.panelBar .toolBar a{
+    background-color: #eee;
+    border: 1px solid #ccc;
+    background-image:none;
+}
+
+ .panelBar .toolBar li.hover a{
+    background-color: #ddd;
+    border: 1px solid #bbb; 
+    background-image:none;
+ }
+
+.panelBar .toolBar span, .panelBar .toolBar li.hover span{
+    height:21px;
+    background-image:none;
+}
+
+.panelBar .toolBar li, .panelBar .toolBar li.hover{
+    background:none;
+}
+
