@@ -43,7 +43,7 @@ class PhpMessageSource extends YiiPhpMessageSource
                     }
                 }
                 if (is_array($messages)) {
-                    $message_merge = array_merge($message_merge, $messages);
+                    $message_merge = array_merge($messages, $message_merge);
                 }
             }
             //var_dump($message_merge);exit;
