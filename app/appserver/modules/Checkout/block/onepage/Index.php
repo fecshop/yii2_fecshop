@@ -388,7 +388,7 @@ class Index
         $current_shipping_method = Yii::$service->shipping->getCurrentShippingMethod($custom_shipping_method, $cartShippingMethod, $country, $region, $product_final_weight);
         $this->_shipping_method = $current_shipping_method;
         // 得到所有，有效的shipping method
-        $shippingArr = $this->getShippingArr($product_final_weight, $current_shipping_method, $country, $region = '*');
+        $shippingArr = $this->getShippingArr($product_final_weight, $current_shipping_method, $country, $region);
         
         return $shippingArr;
     }
