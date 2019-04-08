@@ -50,6 +50,9 @@ Fecshop QQ群号（新）：782387676，入群验证：fecshop
  
 [Fecshop](http://www.fecshop.com) Github地址: https://github.com/fancyecommerce/yii2_fecshop
 
+[Fecshop](http://www.fecshop.com) 码云地址: https://gitee.com/fecshopsoft/yii2_fecshop
+
+
 Fecshop开源协议：[Fecshop 授权协议](http://www.fecshop.com/license)
 
 Fecshop线上项目案例：http://www.fecshop.com/topic/55
