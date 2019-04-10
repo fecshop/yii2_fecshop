@@ -37,6 +37,8 @@ class HomeController extends AppfrontController
                     'only' => ['index'],
 
                 ];
+                
+                return $behaviors;
             }
             $store = Yii::$service->store->currentStore;
             $currency = Yii::$service->page->currency->getCurrentCurrency();
