@@ -35,6 +35,7 @@ $jsOptions = [
 	[
 		'js'	=>[
 			'js/appadmin.js',
+            'js/jquery-editable-select.js',
 		],
         // js 放到尾部
         'options' => [
@@ -70,6 +71,7 @@ $cssOptions = [
 		'css'	=>[
 			'css/appadmin.css',
 			'css/bootstrap-appadmin.css',
+            'css/jquery-editable-select.css',
 		],
         // 将css放到最后面
         'options' => [

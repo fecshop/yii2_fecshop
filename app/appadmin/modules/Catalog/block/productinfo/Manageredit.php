@@ -242,11 +242,15 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         if (!empty($editArr) && is_array($editArr)) {
             foreach ($editArr as $k => $v) {
                 $editArr[$k]['label'] = Yii::$service->page->translate->__($k);
-                if (isset($v['display']['type']) && $v['display']['type'] == 'select') {
+                if (isset($v['display']['type']) && in_array($v['display']['type'], ['select', 'editSelect'])) {
                     if (isset($v['display']['data']) && is_array($v['display']['data'])) {
                         $select_data = [];
                         foreach ($v['display']['data'] as $v2) {
-                            $select_data[$v2] = Yii::$service->page->translate->__($v2);
+                            if ($v['display']['type'] == 'select') {
+                                $select_data[$v2] = Yii::$service->page->translate->__($v2);
+                            } else {
+                                $select_data[$v2] = $v2;
+                            }
                         }
                         $editArr[$k]['display']['data'] = $select_data;
                     }
