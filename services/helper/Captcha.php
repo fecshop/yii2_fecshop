@@ -129,9 +129,9 @@ class Captcha extends Service
         $this->createCode();
         $this->createLine();
         $this->createFont();
-        $this->outPut();
         $this->setSessionCode();
         session_commit();
+        $this->outPut();
     }
 
     public function setSessionCode()
