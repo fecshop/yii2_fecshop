@@ -45,6 +45,11 @@ class AppadminController extends Controller
         if($localThemeDir){
             Yii::$service->page->theme->setLocalThemeDir($localThemeDir);
         }
+        // 设置third模板路径
+        $thirdThemeDir = Yii::$app->params['thirdThemeDir'];
+        if($thirdThemeDir){
+            Yii::$service->page->theme->setThirdThemeDir($thirdThemeDir);
+        }
         /*
          *  set i18n translate category.
          */
