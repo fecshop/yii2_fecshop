@@ -729,6 +729,8 @@ class Customer extends Service
                 $identity->save();
             }
             $userComponent->switchIdentity(null);
+            // 刷新uuid
+            Yii::$service->session->reflushUUID();
         }
 
         return $userComponent->getIsGuest();

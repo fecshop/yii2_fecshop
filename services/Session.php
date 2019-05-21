@@ -108,6 +108,14 @@ class Session extends Service
         return $this->_uuid;
     }
     
+    // 刷新uuid（帐号退出后，需要刷新uuid）
+    public function reflushUUID()
+    {
+        $uuid1 = Uuid::uuid1();
+        $this->_uuid = $uuid1->toString();
+        Yii::$app->response->getHeaders()->set($this->fecshop_uuid, $this->_uuid);
+    }
+    
     public function set($key, $val, $timeout='')
     {
         if (!$timeout && (Yii::$app->user->enableSession == false)) {

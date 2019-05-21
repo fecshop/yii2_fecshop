@@ -74,7 +74,7 @@ class AccountController extends AppserverTokenController
             return $responseData;
         }
         Yii::$service->customer->logoutByAccessToken();
-        Yii::$service->cart->clearCart();
+        //Yii::$service->cart->clearCart();
         $code = Yii::$service->helper->appserver->status_success;
         $data = [];
         $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
