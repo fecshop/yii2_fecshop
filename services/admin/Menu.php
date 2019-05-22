@@ -48,6 +48,10 @@ class Menu extends Service
     public function getLeftMenuTreeHtml($treeArr='', $i=1){
         $str = '';
         foreach($treeArr as $node){
+            // 二次开发的过程中，如果fecshop后台的某些菜单想不显示，那么可以在配置中将active设置成false
+            if (isset($node['active']) && $node['active'] === false) {
+                continue;
+            }
             $name = Yii::$service->page->translate->__($node["label"]);
             $url_key = $node["url_key"];
             $roleUrlKeys = $this->getRoleUrlKey();
