@@ -70,8 +70,20 @@ class Register
     public function sendRegisterEmail($param)
     {
         if ($param) {
-            //Email::sendRegisterEmail($param);
-            Yii::$service->email->customer->sendRegisterEmail($param);
+            //Email::sendRegisterEmail($param); 
+            if (Yii::$service->email->customer->registerAccountIsNeedEnableByEmail) {
+                $registerEnableToken = Yii::$service->customer->generateRegisterEnableToken($param['email']);
+                if ($registerEnableToken) {
+                    $param['register_enable_token'] = $registerEnableToken;
+                    
+                    Yii::$service->email->customer->sendRegisterEmail($param);
+                    return true;
+                }
+            } else {
+                Yii::$service->email->customer->sendRegisterEmail($param);
+                return true;
+            }
+            
         }
     }
 }

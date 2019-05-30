@@ -134,7 +134,32 @@ $passwordMatchValidate 		= Yii::$service->page->translate->__('Please make sure 
 <script>
 <?php $this->beginBlock('customer_account_register') ?>  
 $(document).ready(function(){
-	
+	$(".email_register_resend").click(function(){
+        emailRegisterResendUrl = "<?= Yii::$service->url->getUrl('customer/account/resendregisteremail') ?>";
+        $.ajax({
+            async:true,
+            timeout: 6000,
+            dataType: 'json', 
+            type:'get',
+            data: {
+                "email": "<?= $email ?>"
+            },
+            url:emailRegisterResendUrl,
+            success:function(data, textStatus){ 
+                // 
+                if (data.resendStatus == 'success') {
+                    //$(".resend_text").html('resend register email success');
+                    alert("<?= Yii::$service->page->translate->__('resend register email success') ?>")
+                } else {
+                    //$(".resend_text").html('resend register email fail');
+                    alert("<?= Yii::$service->page->translate->__('resend register email fail') ?>")
+                }
+            },
+            error:function (XMLHttpRequest, textStatus, errorThrown){}
+        });
+        
+        
+    });
 	$("#js_registBtn").click(function(){
 		validate = 1;
 		$(".validation-advice").remove();

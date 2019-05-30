@@ -73,18 +73,24 @@ class Register
         }
     }
 
-    /**
+   /**
      * 发送登录邮件.
      */
     public function sendRegisterEmail($param)
     {
         if ($param) {
             //Email::sendRegisterEmail($param); 
-            $registerEnableToken = Yii::$service->customer->generateRegisterEnableToken($param['email']);
-            if ($registerEnableToken) {
-                $param['register_enable_token'] = $registerEnableToken;
-                
+            if (Yii::$service->email->customer->registerAccountIsNeedEnableByEmail) {
+                $registerEnableToken = Yii::$service->customer->generateRegisterEnableToken($param['email']);
+                if ($registerEnableToken) {
+                    $param['register_enable_token'] = $registerEnableToken;
+                    
+                    Yii::$service->email->customer->sendRegisterEmail($param);
+                    return true;
+                }
+            } else {
                 Yii::$service->email->customer->sendRegisterEmail($param);
+                return true;
             }
             
         }

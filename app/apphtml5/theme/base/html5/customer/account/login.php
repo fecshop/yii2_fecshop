@@ -85,14 +85,41 @@
 			</div>
 		</div>
 	</form>
-</div>	  
+</div>	
+  
 <script type="text/javascript">	
-	<?php $this->beginBlock('customer_login') ?>
+<?php $this->beginBlock('customer_account_login') ?> 
 
 	$(document).ready(function(){
 		$("#js_registBtn").click(function(){
 			$("#login-form").submit();
 		});
+        $(".email_register_resend").click(function(){
+            emailRegisterResendUrl = "<?= Yii::$service->url->getUrl('customer/account/resendregisteremail') ?>";
+            $.ajax({
+                async:true,
+                timeout: 6000,
+                dataType: 'json', 
+                type:'get',
+                data: {
+                    "email": "<?= $email ?>"
+                },
+                url:emailRegisterResendUrl,
+                success:function(data, textStatus){ 
+                    // 
+                    if (data.resendStatus == 'success') {
+                        //$(".resend_text").html('resend register email success');
+                        alert("<?= Yii::$service->page->translate->__('resend register email success') ?>")
+                    } else {
+                        //$(".resend_text").html('resend register email fail');
+                        alert("<?= Yii::$service->page->translate->__('resend register email fail') ?>")
+                    }
+                },
+                error:function (XMLHttpRequest, textStatus, errorThrown){}
+            });
+            
+            
+        });
 	});
 	var newwindow;
 	var intId;
@@ -140,9 +167,9 @@
 	  return false;
 	}
 	
- <?php $this->endBlock(); ?>  
-	<?php $this->registerJs($this->blocks['customer_login'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
-</script> 
+<?php $this->endBlock(); ?>  
+</script>  
+<?php $this->registerJs($this->blocks['customer_account_login'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
  
  
  
