@@ -24,6 +24,14 @@ class Customer extends Service
      * 邮件模板部分配置.
      */
     public $emailTheme;
+     /**
+     * 注册账户是否需要邮件激活
+     */
+    public $registerAccountIsNeedEnableByEmail = true;
+     /**
+     * 注册账户激活邮件的token的过期时间。
+     */
+    public $registerAccountEnableTokenExpire = 86400;
 
     /**
      * @param $emailInfo | Array  ，数组格式格式如下：
@@ -146,6 +154,14 @@ class Customer extends Service
         if (isset($forgotPasswordInfo['passwordResetTokenExpire']) && $forgotPasswordInfo['passwordResetTokenExpire']) {
             return $forgotPasswordInfo['passwordResetTokenExpire'];
         }
+    }
+    
+    /**
+     * 超时时间: 注册账户激活邮件的token的过去时间
+     */
+    public function getRegisterEnableTokenExpire()
+    {
+        return $this->registerAccountEnableTokenExpire;
     }
 
     /**

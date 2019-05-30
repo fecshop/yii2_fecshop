@@ -22,6 +22,18 @@ class Body extends BodyBase
     public function getLastData()
     {
         $identity = $this->params;
+        $registerEnableUrl = '';
+        if (Yii::$service->email->customer->registerAccountIsNeedEnableByEmail) {
+            $registerEnableUrl = Yii::$service->url->getUrl('customer/account/registerenable', ['enableToken'=>$identity['register_enable_token']]);
+            if (Yii::$service->store->isApiStore()) {
+                if ($homeUrl = Yii::$service->helper->getAppServiceDomain()) {
+                } else {
+                    $homeUrl = Yii::$service->url->getUrl('/');
+                }
+                $registerEnableUrl = $homeUrl.'#/customer/account/registerenable/'.$identity['register_enable_token'];
+            }
+        }
+        
         return [
             'name'                  => $identity['firstname'].' '. $identity['lastname'],
             'email'                 => $identity['email'],
@@ -34,6 +46,7 @@ class Body extends BodyBase
             'loginUrl'              => Yii::$service->url->getUrl('customer/account/index'),
             'accountUrl'            => Yii::$service->url->getUrl('customer/account/index'),
             'identity'              => $identity,
+            'registerEnableUrl' => $registerEnableUrl,
         ];
     }
 }

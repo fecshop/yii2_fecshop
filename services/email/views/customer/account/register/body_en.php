@@ -17,6 +17,9 @@
                         <td valign="top">
                             <h1 style="font-size:22px; font-weight:normal; line-height:22px; margin:0 0 11px 0;"">Dear <?= $name ?>,</h1>
                             <p style="font-size:12px; line-height:16px; margin:0 0 16px 0;">Welcome to <?= $storeName ?>. To log in when visiting our site just click <a href="<?= $loginUrl ?>" style="color:#1E7EC8;">Login</a> or <a href="<?= $accountUrl ?>" style="color:#1E7EC8;">My Account</a> at the top of every page, and then enter your e-mail address and password.</p>
+                            <?php if ($registerEnableUrl): ?>
+                            <p style="font-size: 12px; line-height: 16px; margin: 0 0 8px 0;">please click on the following link to enable your register account: <a href="<?= $registerEnableUrl ?>" style="color:#1E7EC8;"><?= $registerEnableUrl ?></a></p>
+                            <?php endif; ?>
                             <p style="border:1px solid #E0E0E0; font-size:12px; line-height:16px; margin:0; padding:13px 18px; background:#f9f9f9;">
                                 Use the following values when prompted to log in:<br/>
                                 <strong>E-mail</strong>: <?= $email; ?><br/>

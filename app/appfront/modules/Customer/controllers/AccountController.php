@@ -83,24 +83,52 @@ class AccountController extends AppfrontController
             //echo $registerStatus;exit;
             if ($registerStatus) {
                 $params_register = Yii::$app->getModule('customer')->params['register'];
-                // 注册成功后，是否自动登录
-                if (isset($params_register['successAutoLogin']) && $params_register['successAutoLogin']) {
-                    Yii::$service->customer->login($param);
-                }
-                if (!Yii::$app->user->isGuest) {
-                    // 注册成功后，跳转的页面，如果值为false， 则不跳转。
-                    $urlKey = 'customer/account';
-                    if (isset($params_register['loginSuccessRedirectUrlKey']) && $params_register['loginSuccessRedirectUrlKey']) {
-                        $urlKey = $params_register['loginSuccessRedirectUrlKey'];
+                // 是否需要邮件激活？
+                if (Yii::$service->email->customer->registerAccountIsNeedEnableByEmail) {
+                    $correctMessage = Yii::$service->page->translate->__("Your account registration is successful, we sent an email to your email, you need to login to your email and click the activation link to activate your account. If you have not received the email, you can resend the email by {url_click_here_before}clicking here{url_click_here_end} {end_text}", ['url_click_here_before' => '<span  class="email_register_resend" >',  'url_click_here_end' => '</span>', 'end_text'=> '<span class="resend_text"></span>' ]);
+                    Yii::$service->page->message->AddCorrect($correctMessage);                  
+                } else { // 如果不需要邮件激活？
+                    // 注册成功后，是否自动登录
+                    if (isset($params_register['successAutoLogin']) && $params_register['successAutoLogin']) {
+                        Yii::$service->customer->login($param);
                     }
+                    if (!Yii::$app->user->isGuest) {
+                        // 注册成功后，跳转的页面，如果值为false， 则不跳转。
+                        $urlKey = 'customer/account';
+                        if (isset($params_register['loginSuccessRedirectUrlKey']) && $params_register['loginSuccessRedirectUrlKey']) {
+                            $urlKey = $params_register['loginSuccessRedirectUrlKey'];
+                        }
 
-                    return Yii::$service->customer->loginSuccessRedirect($urlKey);
+                        return Yii::$service->customer->loginSuccessRedirect($urlKey);
+                    }
                 }
+                
             }
         }
         $data = $this->getBlock()->getLastData($param);
 
         return $this->render($this->action->id, $data);
+    }
+    
+    
+    public function actionResendregisteremail()
+    {
+        $email = Yii::$app->request->get('email');
+        $identity = Yii::$service->customer->getAvailableUserIdentityByEmail($email);
+        
+        if ($identity['status'] != $identity::STATUS_REGISTER_DISABLE) {
+            echo json_encode([
+                'resendStatus' => 'fail',
+            ]);
+            exit;
+        }
+        
+        $this->getBlock('register')->sendRegisterEmail($identity);
+        
+        echo json_encode([
+            'resendStatus' => 'success',
+        ]);
+        exit;
     }
 
     /**
@@ -193,6 +221,15 @@ class AccountController extends AppfrontController
 
         return $this->render($this->action->id, $data);
     }
+    
+    // registerenable?enableToken
+    public function actionRegisterenable()
+    {
+        $data = $this->getBlock()->getLastData();
+
+        return $this->render($this->action->id, $data);
+    }
+    
 
     public function actionResetpasswordsuccess()
     {
