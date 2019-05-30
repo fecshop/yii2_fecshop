@@ -27,7 +27,7 @@ class Customer extends Service
      /**
      * 注册账户是否需要邮件激活
      */
-    public $registerAccountIsNeedEnableByEmail = true;
+    public $registerAccountIsNeedEnableByEmail = false;
      /**
      * 注册账户激活邮件的token的过期时间。
      */

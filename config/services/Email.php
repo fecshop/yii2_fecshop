@@ -70,7 +70,14 @@ return [
              */
             'customer' => [
                 'class' => 'fecshop\services\email\Customer',
-
+                 /**
+                  * 注册账户是否需要邮件激活
+                  */
+                'registerAccountIsNeedEnableByEmail' => false,
+                /**
+                 * 注册账户激活邮件的token的过期时间，只有当 registerAccountIsNeedEnableByEmail 为true的时候有效。
+                 */
+                'registerAccountEnableTokenExpire' = 86400,
                 // 各个邮件的模板部分：
                 'emailTheme' => [
                     // 注册账户发送的邮件的模板配置
