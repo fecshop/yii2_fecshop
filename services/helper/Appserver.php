@@ -94,6 +94,11 @@ class Appserver extends Service
 
     public $account_address_save_fail                     = 1100018;
     
+    public $account_register_disable       = 1100019; // 注册后，账户disable，需要邮件激活
+    public $account_register_resend_email_success       = 1100020; // 登录：账户的邮箱或者密码不正确
+    public $account_register_send_email_fail       = 1100021; // 注册后，账户disable，需要邮件激活
+    public $account_register_enable_token_invalid = 1100022;
+    
     /**
      * category状态码
      */
@@ -381,6 +386,20 @@ class Appserver extends Service
             $this->account_address_save_fail => [
                 'message' => 'account address save fail',
             ],
+            $this->account_register_disable => [
+                'message' => 'account register is disable',
+            ],
+            $this->account_register_resend_email_success => [
+                'message' => 'account register resend email success',
+            ],
+            $this->account_register_send_email_fail => [
+                'message' => 'account_register_send_email_fail',
+            ],
+            $this->account_register_enable_token_invalid => [
+                'message' => 'account_register_enable_token_invalid',
+            ],
+            
+            
             
             $this->account_address_edit_param_invaild => [
                 'message' => 'account address edit param is invalid',

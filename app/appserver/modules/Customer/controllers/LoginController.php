@@ -51,6 +51,26 @@ class LoginController extends AppserverController
                 return $responseData;
             }
         }
+        if (Yii::$service->email->customer->registerAccountIsNeedEnableByEmail) {
+            $identity = Yii::$service->customer->getAvailableUserIdentityByEmail($email);
+            if (!$identity['email']) {
+                $code = Yii::$service->helper->appserver->account_login_invalid_email_or_password;
+                $data = [];
+                $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
+                
+                return $responseData;
+            }
+            // 账户未激活
+            if ($identity['status'] == $identity::STATUS_REGISTER_DISABLE) {
+                
+                $code = Yii::$service->helper->appserver->account_register_disable;
+                $data = [];
+                $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
+                
+                return $responseData;
+            
+            }
+        }
         $accessToken = Yii::$service->customer->loginAndGetAccessToken($email,$password);
         if($accessToken){
             $code = Yii::$service->helper->appserver->status_success;

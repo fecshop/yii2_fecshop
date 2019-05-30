@@ -24,6 +24,10 @@
                             来访问我们的网站， 
                             然后，输入您的邮箱账户和密码即可。
                             </p>
+                            <?php if ($registerEnableUrl): ?>
+                            <p style="font-size: 12px; line-height: 16px; margin: 0 0 8px 0;">请点击该链接激活您的账户: <a href="<?= $registerEnableUrl ?>" style="color:#1E7EC8;"><?= $registerEnableUrl ?></a></p>
+                            <?php endif; ?>
+                            
                             <p style="border:1px solid #E0E0E0; font-size:12px; line-height:16px; margin:0; padding:13px 18px; background:#f9f9f9;">
                                 提示登录时使用以下值：<br/>
                                 <strong>邮箱账户</strong>: <?= $email; ?><br/>
