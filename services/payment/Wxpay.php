@@ -69,15 +69,17 @@ class Wxpay extends Service
         //交易类型
         //JSAPI--公众号支付、NATIVE--原生扫码支付、APP--app支付，统一下单接口trade_type的传参可参考这里
         //MICROPAY--刷卡支付，刷卡支付有单独的支付接口，不调用统一下单接口
-       
-        if ($this->devide == 'wap') {
-            $this->tradeType     = 'MWEB';
-        } elseif ($this->devide == 'pc') {
-            $this->tradeType = "NATIVE";
-        } else {
-            throw new InvalidConfigException('you must config param [devide] in payment wxpay service');
-            return ;
+        if (!$this->tradeType) {
+            if ($this->devide == 'wap') {
+                $this->tradeType     = 'MWEB';
+            } elseif ($this->devide == 'pc') {
+                $this->tradeType = "NATIVE";
+            } else {
+                throw new InvalidConfigException('you must config param [devide] in payment wxpay service');
+                return ;
+            }
         }
+        
         $this->_allowChangOrderStatus = [
             Yii::$service->order->payment_status_pending,
             Yii::$service->order->payment_status_processing,
@@ -91,6 +93,7 @@ class Wxpay extends Service
     {
         $notifyFile       = Yii::getAlias('@fecshop/services/payment/wxpay/notify.php');
         require_once($notifyFile);
+        
         \Yii::info('begin ipn', 'fecshop_debug');
         $notify = new \PayNotifyCallBack();
         $notify->Handle(false);
