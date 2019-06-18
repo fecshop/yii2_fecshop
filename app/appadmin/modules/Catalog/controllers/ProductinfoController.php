@@ -88,6 +88,7 @@ class ProductinfoController extends CatalogController
                 }
             }
         }
+        
         $data = $this->getBlock('manageredit')->save();
 
         return $this->render($this->action->id, $data);

@@ -52,13 +52,14 @@ class StandardController extends AppfrontController
     }
     
     
-    /**
+    /** 废弃
      * IPN，微信消息接收部分
+     * pc扫码通过js轮询查询支付状态，不需要ipn接受异步支付消息
      */
     public function actionIpn()
     {
-        exit;
-        Yii::$service->payment->wxpay->ipn();
+        //exit;
+        //Yii::$service->payment->wxpay->ipn();
     }
     
     /**
