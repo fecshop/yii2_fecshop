@@ -73,7 +73,7 @@ return [
                  /**
                   * 注册账户是否需要邮件激活
                   */
-                'registerAccountIsNeedEnableByEmail' => false,
+                'registerAccountIsNeedEnableByEmail' => true,
                 /**
                  * 注册账户激活邮件的token的过期时间，只有当 registerAccountIsNeedEnableByEmail 为true的时候有效。
                  */
