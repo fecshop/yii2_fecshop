@@ -72,7 +72,7 @@
 	</script>
 </head>
 <body>
-    <br/>
+    
     <font color="#9ACD32"><b>订单号:<span style="color:#777;font-size:15px"><?= $increment_id ?></span></b></font><br/><br/>
 	<br/>
     <font color="#9ACD32"><b>订单支付金额：<span style="color:#f00;font-size:20px"><?= $total_amount ?></span></b></font><br/><br/>

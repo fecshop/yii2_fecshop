@@ -141,10 +141,16 @@ class WxpayJsApi extends Service
         }
     }
     
+    public function getOpenidUrl($baseUrl)
+    {
+        $tools = new \JsApiPay();
+        return $tools->GetOpenidUrl($baseUrl);
+    }
+    
     /**
-     * 
+     * @param $code | string  传递的微信code
      */
-    public function getScanCodeStart()
+    public function getScanCodeStart($code = "")
     {
         // 根据订单得到json格式的微信支付参数。
         $trade_info = $this->getStartBizContentAndSetPaymentMethod();
@@ -156,7 +162,13 @@ class WxpayJsApi extends Service
         
         //①、获取用户openid
         $tools = new \JsApiPay();
-        $openId = $tools->GetOpenid();
+        if (!$code) {
+            $openId = $tools->GetOpenid();
+        } else {
+            $openId = $tools->GetOpenidByCode($code);
+        }
+        //echo $openId;exit;
+        
         //②、统一下单
         $input = new \WxPayUnifiedOrder();
         $notify_url = Yii::$service->url->getUrl("payment/wxpayjsapi/ipn");    ////获取支付配置中的返回ipn url
@@ -179,14 +191,19 @@ class WxpayJsApi extends Service
         $input->SetTrade_type($this->tradeType);
         $input->SetProduct_id($trade_info['product_ids']); //此为二维码中包含的商品ID
         $input->SetOpenid($openId);
-        
+        //var_dump($input);
         $order = \WxPayApi::unifiedOrder($input);
         //echo '<font color="#f00"><b>统一下单支付单信息</b></font><br/>';
         //$this->printf_info($order);
-        $jsApiParameters = $tools->GetJsApiParameters($order);
-
+        $isJsonFormat = true;
+        if ($code) {
+            $isJsonFormat = false;
+        }
+        $jsApiParameters = $tools->GetJsApiParameters($order, $isJsonFormat);
+        //var_dump($jsApiParameters);
         //获取共享收货地址js函数参数
-        $editAddress = $tools->GetEditAddressParameters();
+        $editAddress = $tools->GetEditAddressParameters($isJsonFormat);
+        //var_dump($editAddress);
         //echo '3333333333333333<br>';
         return [
             'jsApiParameters' => $jsApiParameters,

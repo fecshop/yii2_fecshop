@@ -54,6 +54,18 @@ class JsApiPay
 			return $openid;
 		}
 	}
+    
+    public function GetOpenidByCode($code)
+	{
+		$openid = $this->getOpenidFromMp($code);
+        return $openid;
+	}
+    
+    public function GetOpenidUrl($baseUrl)
+	{
+		$baseUrl = urlencode($baseUrl);
+        return $this->__CreateOauthUrlForCode($baseUrl);
+	}
 	
 	/**
 	 * 
@@ -63,7 +75,7 @@ class JsApiPay
 	 * 
 	 * @return json数据，可直接填入js函数作为参数
 	 */
-	public function GetJsApiParameters($UnifiedOrderResult)
+	public function GetJsApiParameters($UnifiedOrderResult, $isJsonFormat = true)
 	{
 		if(!array_key_exists("appid", $UnifiedOrderResult)
 		|| !array_key_exists("prepay_id", $UnifiedOrderResult)
@@ -79,9 +91,17 @@ class JsApiPay
 		$jsapi->SetPackage("prepay_id=" . $UnifiedOrderResult['prepay_id']);
 		$jsapi->SetSignType("MD5");
 		$jsapi->SetPaySign($jsapi->MakeSign());
-		$parameters = json_encode($jsapi->GetValues());
+        $values = $jsapi->GetValues();
+        if ($isJsonFormat) {
+            $parameters = json_encode($values);
+        } else {
+            $parameters = $values;
+        }
+		
 		return $parameters;
 	}
+    
+    
 	
 	/**
 	 * 
@@ -144,7 +164,7 @@ class JsApiPay
 	 * 
 	 * @return 获取共享收货地址js函数需要的参数，json格式可以直接做参数使用
 	 */
-	public function GetEditAddressParameters()
+	public function GetEditAddressParameters($isJsonFormat = true)
 	{	
 		$getData = $this->data;
 		$data = array();
@@ -166,7 +186,12 @@ class JsApiPay
 			"timeStamp" => $data["timestamp"],
 			"nonceStr" => $data["noncestr"]
 		);
-		$parameters = json_encode($afterData);
+        if ($isJsonFormat) {
+            $parameters = json_encode($afterData);
+        } else {
+            $parameters = $afterData;
+        }
+		
 		return $parameters;
 	}
 	
