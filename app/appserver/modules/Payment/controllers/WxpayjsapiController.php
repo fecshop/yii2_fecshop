@@ -18,19 +18,20 @@ use Yii;
  */
 class WxpayjsapiController extends PaymentController
 {
-    
     public $enableCsrfValidation = false;
-    
-    public function init(){
-        
-    }
-    
     /**
      *  通过微信回传的code，进而获取相关的信息
      */
     public function actionStart()
     {
-        parent::init();
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
+        $checkOrder = $this->checkOrder();
+        if($checkOrder !== true){
+            return $checkOrder;
+        }
+        
         $code = Yii::$app->request->post('code');
         // 获取相关的code
         $data = Yii::$service->payment->wxpayJsApi->getScanCodeStart($code);

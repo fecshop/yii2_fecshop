@@ -170,6 +170,8 @@ class Appserver extends Service
     public $order_alipay_payment_fail                      = 1500019;           // Order: 下订单，支付宝支付订单失败
     
     public $order_payment_paypal_express_error             = 1500020;
+    
+    public $order_wxpay_payment_fail                      = 1500021;
 
     /**
      * cms
@@ -529,6 +531,10 @@ class Appserver extends Service
             $this->order_alipay_payment_fail => [
                 'message' => 'order pay by alipay payment fail',
             ],
+            $this->order_wxpay_payment_fail => [
+                'message' => 'order pay by wxpay payment fail',
+            ],
+            
             
             /**
              * cms
