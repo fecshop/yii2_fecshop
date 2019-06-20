@@ -21,7 +21,7 @@ use Monolog\Handler\IFTTTHandler;
  * @author Alex Chang<1692576541@qq.com>
  * @since 1.0
  */
-class Wxpay extends Service
+class WxpayH5 extends Service
 {
     public $devide;
 
@@ -31,7 +31,7 @@ class Wxpay extends Service
 
     public $tradeType;
 
-    public $scanCodeBody = '微信支付';
+    public $scanCodeBody = '微信H5支付';
 
     public $deviceInfo = 'WEB';
 
@@ -56,29 +56,21 @@ class Wxpay extends Service
         //$wxpayDataFile      = Yii::getAlias('@fecshop/lib/wxpay/lib/WxPay.Data.php');
         $wxpayNotifyFile    = Yii::getAlias('@fecshop/lib/wxpay/lib/WxPay.Notify.php');
         //$wxpayExceptionFile = Yii::getAlias('@fecshop/lib/wxpay/lib/WxPay.Exception.php');
-        
-        $wxpayNativePayFile = Yii::getAlias('@fecshop/lib/wxpay/example/WxPay.NativePay.php');
+        $wxpayJsApiPayPayFile = Yii::getAlias('@fecshop/lib/wxpay/example/WxPay.JsApiPay.php');
+        //$wxpayNativePayFile = Yii::getAlias('@fecshop/lib/wxpay/example/WxPay.NativePay.php');
         $wxpayLogFile       = Yii::getAlias('@fecshop/lib/wxpay/example/log.php');
         
         require_once($wxpayApiFile);
         //require_once($wxpayDataFile);
         require_once($wxpayNotifyFile);
         //require_once($wxpayExceptionFile);
-        require_once($wxpayNativePayFile);
+        require_once($wxpayJsApiPayPayFile);
         require_once($wxpayLogFile);
         //交易类型
         //JSAPI--公众号支付、NATIVE--原生扫码支付、APP--app支付，统一下单接口trade_type的传参可参考这里
         //MICROPAY--刷卡支付，刷卡支付有单独的支付接口，不调用统一下单接口
-        if (!$this->tradeType) {
-            if ($this->devide == 'wap') {
-                $this->tradeType     = 'MWEB';
-            } elseif ($this->devide == 'pc') {
-                $this->tradeType = "NATIVE";
-            } else {
-                throw new InvalidConfigException('you must config param [devide] in payment wxpay service');
-                return ;
-            }
-        }
+        $this->tradeType     = 'MWEB';
+        
         
         $this->_allowChangOrderStatus = [
             Yii::$service->order->payment_status_pending,
@@ -93,7 +85,6 @@ class Wxpay extends Service
     {
         $notifyFile       = Yii::getAlias('@fecshop/services/payment/wxpay/notify.php');
         require_once($notifyFile);
-        
         \Yii::info('begin ipn', 'fecshop_debug');
         $notify = new \PayNotifyCallBack();
         $notify->Handle(false);
@@ -150,13 +141,46 @@ class Wxpay extends Service
         }
     }
     
-    /**
-     * PC端微信支付的信息获取
-     * 在下单页面点击place order按钮，跳转到微信的时候，执行该函数。
-     * @return Array 相应的订单和支付方面的信息，详细参看下面的注释
-     */
-    public function getScanCodeStart()
+    public function getOpenidUrl($baseUrl)
     {
+        $tools = new \JsApiPay();
+        return $tools->GetOpenidUrl($baseUrl);
+    }
+    
+    
+    function postXmlCurl($xml,$url,$second = 30){
+            $ch = curl_init();
+            //设置超时
+            curl_setopt($ch, CURLOPT_TIMEOUT, $second);
+            curl_setopt($ch,CURLOPT_URL, $url);
+            curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,FALSE);
+            curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,FALSE);
+            //设置 header
+            curl_setopt($ch, CURLOPT_HEADER, FALSE);
+            //要求结果为字符串且输出到屏幕上
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+            //post 提交方式
+            curl_setopt($ch, CURLOPT_POST, TRUE);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
+            //运行 curl
+            $data = curl_exec($ch);
+            //返回结果
+            if($data){
+                curl_close($ch);
+                return $data;
+            }else{
+                $error = curl_errno($ch);
+                curl_close($ch);
+                echo "curl 出错，错误码:$error"."<br>";
+            }
+        }
+    
+    /**
+     * @param $code | string  传递的微信code
+     */
+    public function getScanCodeStart($code = "")
+    {
+        
         // 根据订单得到json格式的微信支付参数。
         $trade_info = $this->getStartBizContentAndSetPaymentMethod();
         if (!$trade_info) {
@@ -164,11 +188,116 @@ class Wxpay extends Service
            
             return false;
         }
-         
-        $notify_url = Yii::$service->payment->getStandardIpnUrl();    ////获取支付配置中的返回ipn url
-        //$notify_url = Yii::$service->url->getUrl("payment/wxpay/standard/ipn");    ////获取支付配置中的返回ipn url
-        $notify = new \NativePay();
-        $input  = new \WxPayUnifiedOrder();
+        
+        $money= $trade_info['total_amount'] * 100; //微信支付的单位为分,所以要乘以100;                     //充值金额 微信支付单位为分
+        $userip = Yii::$service->helper->getCustomerIp();;     //获得用户设备 IP
+        $appid  = \WxPayConfig::APPID  ;                  //应用 APPID
+        $mch_id = \WxPayConfig::MCHID;                  //微信支付商户号
+        $key    = \WxPayConfig::KEY;                 //微信商户 API 密钥
+        $out_trade_no = $trade_info['increment_id'];//平台内部订单号
+        $nonce_str = Yii::$service->helper->createNoncestr();//随机字符串
+        $body = $this->scanCodeBody;//内容
+        $total_fee = $money; //金额
+        $spbill_create_ip = $userip; //IP
+        $notify_url = Yii::$service->payment->getStandardIpnUrl();  //回调地址
+        $trade_type = $this->tradeType;//交易类型 具体看 API 里面有详细介绍
+        //$scene_info ='{"h5_info":{"type":"Wap","wap_url":"http://qq52o.me","wap_name":"支付"}}';//场景信息 必要参数
+        //echo $openId;exit;
+        $wap_url = Yii::$service->url->homeUrl(); 
+        $scene_info ='{"h5_info":{"type":"Wap","wap_url":"'.$wap_url.'","wap_name":"'.$this->scanCodeBody.'"}}';//场景信息 必要参数
+
+        $signA ="appid=$appid&attach=$out_trade_no&body=$body&mch_id=$mch_id&nonce_str=$nonce_str&notify_url=$notify_url&out_trade_no=$out_trade_no&scene_info=$scene_info&spbill_create_ip=$spbill_create_ip&total_fee=$total_fee&trade_type=$trade_type";
+        $strSignTmp = $signA."&key=$key"; //拼接字符串  注意顺序微信有个测试网址 顺序按照他的来 直接点下面的校正测试 包括下面 XML  是否正确
+        $sign = strtoupper(MD5($strSignTmp)); // MD5 后转换成大写
+        $post_data = "<xml>
+                            <appid>$appid</appid>
+                            <mch_id>$mch_id</mch_id>
+                            <body>$body</body>
+                            <out_trade_no>$out_trade_no</out_trade_no>
+                            <total_fee>$total_fee</total_fee>
+                            <spbill_create_ip>$spbill_create_ip</spbill_create_ip>
+                            <notify_url>$notify_url</notify_url>
+                            <trade_type>$trade_type</trade_type>
+                            <scene_info>$scene_info</scene_info>
+                            <attach>$out_trade_no</attach>
+                            <nonce_str>$nonce_str</nonce_str>
+                            <sign>$sign</sign>
+                    </xml>";//拼接成 XML 格式
+        $url = "https://api.mch.weixin.qq.com/pay/unifiedorder";//微信传参地址
+        $dataxml = $this->postXmlCurl($post_data,$url); //后台 POST 微信传参地址  同时取得微信返回的参数 
+        
+        $objectxml = (array)simplexml_load_string($dataxml, 'SimpleXMLElement', LIBXML_NOCDATA); //将微信返回的 XML 转换成数组
+        
+        return $objectxml;
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        /*
+        
+        // 根据订单得到json格式的微信支付参数。
+        $trade_info = $this->getStartBizContentAndSetPaymentMethod();
+        if (!$trade_info) {
+            Yii::$service->helper->errors->add('generate wxpay bizContent error');
+           
+            return false;
+        }
+
+        $client_ip = Yii::$service->helper->getCustomerIp();
+        //①、获取用户openid
+        $tools = new \JsApiPay();
+        if (!$code) {
+            $openId = $tools->GetOpenid();
+        } else {
+            $openId = $tools->GetOpenidByCode($code);
+        }
+        //echo $openId;exit;
+        $wap_url = Yii::$service->url->homeUrl(); 
+        $wap_name = '微信H5支付';
+        $scene_info ='{"h5_info":{"type":"Wap","wap_url":"'.$wap_url.'","wap_name":"'.wap_name.'"}}';//场景信息 必要参数
+
+
+        //②、统一下单
+        $input = new \WxPayUnifiedOrder();
+        //$notify_url = Yii::$service->url->getUrl("payment/wxpayjsapi/ipn");    ////获取支付配置中的返回ipn url
+        $notify_url = Yii::$service->payment->getStandardIpnUrl(); 
+        //$notify = new \NativePay();
+        //$input  = new \WxPayUnifiedOrder();
         $input->SetBody($this->scanCodeBody);
         //$input->SetAttach("商店的额外的自定义数据");
         $input->SetAttach($trade_info['subject']);
@@ -184,51 +313,23 @@ class Wxpay extends Service
         $input->SetTime_expire($this->getShangHaiExpireTime($this->expireTime));
         $input->SetNotify_url($notify_url); //通知地址 改成自己接口通知的接口，要有公网域名,测试时直接行动此接口会产生日志
         $input->SetTrade_type($this->tradeType);
+        $input->SetSpbill_create_ip($client_ip);
+        $input->SetSceneInfo($scene_info);
         $input->SetProduct_id($trade_info['product_ids']); //此为二维码中包含的商品ID
-        $result = $notify->GetPayUrl($input);
-        //var_dump($result);exit;
-        /**
-         * var_dump($result);
-         * array(11) {
-         *     ["appid"]=> string(18) "wx426b3015555a46be"
-         *     ["code_url"]=> string(35) "weixin://wxpay/bizpayurl?pr=Pnu1DAZ"
-         *     ["device_info"]=> string(3) "WEB"
-         *     ["mch_id"]=> string(10) "1900009851"
-         *     ["nonce_str"]=> string(16) "4L2t8gFjJ5qjXE0L"
-         *     ["prepay_id"]=> string(36) "wx201711070845443ca4736bb20972889642"
-         *     ["result_code"]=> string(7) "SUCCESS"
-         *     ["return_code"]=> string(7) "SUCCESS"
-         *     ["return_msg"]=> string(2) "OK"
-         *     ["sign"]=> string(32) "07BCF5B7B1D06DBF8E676EEBA6512082"
-         *     ["trade_type"]=> string(6) "NATIVE"
-         * }
-         **/
-        //商户根据实际情况处理流程
-        //var_dump($result);exit;
-        if ($result['return_code'] == "FAIL") {
-            Yii::$service->helper->errors->add('Api error: {return_msg}',  ['return_msg' => $result['return_msg']]);
-            
-            return false;
-        } elseif (!$result['code_url']) {
-            Yii::$service->helper->errors->add('code_url is empty');
-            
-            return false;
+        //$input->SetOpenid($openId);
+        //var_dump($input);
+        $result = \WxPayApi::wapUnifiedOrder($input);
+        
+        return $result;
+        */
+    }
+    
+    //打印输出数组信息
+    function printf_info($data)
+    {
+        foreach($data as $key=>$value){
+            echo "<font color='#00ff55;'>$key</font> : $value <br/>";
         }
-        $scanCodeImgUrl =Yii::$service->url->getUrl('payment/wxpay/standard/qrcode', ['data' => urlencode($result['code_url'])]);
-        return [
-            // 二维码图片的url
-            'scan_code_img_url' => $scanCodeImgUrl,
-            // 订单号
-            'increment_id'   => $trade_info['increment_id'],
-            // 订单金额（RMB）
-            'total_amount'   => $trade_info['total_amount'],
-            // 订单标题
-            'subject'   => $trade_info['subject'],
-            // 订单优惠券
-            'coupon_code'   => $trade_info['coupon_code'],
-            // 字符串拼接的订单产品id（逗号隔开）
-            'product_ids'   => $trade_info['product_ids'],
-        ];
     }
     
     public function getShangHaiExpireTime($expire_time)
@@ -330,10 +431,10 @@ class Wxpay extends Service
             Yii::$service->helper->errors->add('request return_code is not equle to SUCCESS');
             return false;
         }
-        //if ($trade_type != 'NATIVE') {
-        //    Yii::$service->helper->errors->add('request trade_type is not equle to NATIVE');
-        //    return false;
-        //}
+        if ($trade_type != 'NATIVE') {
+            Yii::$service->helper->errors->add('request trade_type is not equle to NATIVE');
+            return false;
+        }
         if (!$this->_order) {
             $this->_order = Yii::$service->order->getByIncrementId($out_trade_no);
             Yii::$service->payment->setPaymentMethod($this->_order['payment_method']);
