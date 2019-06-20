@@ -58,8 +58,7 @@ class StandardController extends AppfrontController
      */
     public function actionIpn()
     {
-        //exit;
-        //Yii::$service->payment->wxpay->ipn();
+        Yii::$service->payment->wxpay->ipn();
     }
     
     /**

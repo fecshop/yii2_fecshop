@@ -166,6 +166,7 @@ class Wxpay extends Service
         }
          
         $notify_url = Yii::$service->payment->getStandardIpnUrl();    ////获取支付配置中的返回ipn url
+        //$notify_url = Yii::$service->url->getUrl("payment/wxpay/standard/ipn");    ////获取支付配置中的返回ipn url
         $notify = new \NativePay();
         $input  = new \WxPayUnifiedOrder();
         $input->SetBody($this->scanCodeBody);
