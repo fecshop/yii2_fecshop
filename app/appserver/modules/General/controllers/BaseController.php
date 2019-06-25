@@ -85,6 +85,70 @@ class BaseController extends AppserverController
         }
         return $arr ;
     }
+    
+    public function actionWxmenu()
+    {
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
+        $arr = [];
+        $firstDisplay = 0;
+        $currentLangCode = Yii::$service->store->currentLangCode;
+        $treeArr = Yii::$service->category->getTreeArr('',$currentLangCode,true);
+        //var_dump( $treeArr);exit;
+        $categories = [
+            [ 'id' => 0, 'name' => '所有分类'],
+        ];
+        if (is_array($treeArr)) {
+            foreach ($treeArr as $k=>$v) {
+                
+                $categories[] = [
+                    'id' => $v['_id'],
+                    'name' => $v['name'],
+                    'level' => 1,
+                ];
+                if (is_array($v['child']) && !empty($v['child'])) {
+                    //var_dump($v['child']);
+                    foreach ($v['child'] as $k2 => $v2) {
+                        $categorieslist[] = [
+                            'pid' => $v['_id'],
+                            'id' => $v2['_id'],
+                            'name' => $v2['name'],
+                            'level' => 2,
+                            'icon' => $v2['thumbnail_image'] ? Yii::$service->category->image->getUrl($v2['thumbnail_image']) : 'https://cdn.it120.cc/apifactory/2019/01/26/8fe77acb4d09ab1e101b97158adbba3e.jpg',
+                            // 'icon' => 'https://cdn.it120.cc/apifactory/2019/01/26/8fe77acb4d09ab1e101b97158adbba3e.jpg',
+                            // 
+                        ];
+                    }
+                }
+                
+                
+            }
+        }
+        
+        $banners = [
+            [
+                'linkUrl'  => '',
+                'picUrl'   => 'https://cdn.it120.cc/apifactory/2019/01/26/0a55dcdf491b8fe9fdae6195cdf3438d.jpg',
+                'productId' => '444444444444',
+            ],
+            [
+                'linkUrl'  => '',
+                'picUrl'   => 'https://cdn.it120.cc/apifactory/2019/01/26/0a55dcdf491b8fe9fdae6195cdf3438d.jpg',
+                'productId' => '444444444444',
+            ],
+        ];
+        $code = Yii::$service->helper->appserver->status_success;
+        $data = [
+            'categories'     => $categories,
+            'categorieslist' => $categorieslist,
+            'banners'  => $banners,
+        ];
+        $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
+        return $responseData;
+    }
+    
+    
     // 语言
     public function actionLang()
     {

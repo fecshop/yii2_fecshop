@@ -263,6 +263,7 @@ class CategoryMongodb extends Service implements CategoryInterface
                     $idKey    => $idVal,
                     'level'   => $level,
                     'name'    => Yii::$service->fecshoplang->getLangAttrVal($cate['name'], 'name', $lang),
+                    'thumbnail_image' => $cate['thumbnail_image'],
                 ];
                 if ($appserver) {
                     $arr[$idVal]['url'] = '/catalog/category/'.$idVal;

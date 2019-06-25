@@ -190,6 +190,20 @@ class HomeController extends AppserverController
         
         //{"barCode":"","categoryId":29582,"characteristic":"测试支付专用，不发货，不退款","commission":5.00,"commissionType":1,"dateAdd":"2018-09-14 00:00:00","dateStart":"2019-01-20 21:38:39","dateUpdate":"2019-06-24 21:54:58","gotScore":0,"gotScoreType":0,"id":115289,"kanjia":false,"kanjiaPrice":0.00,"logisticsId":3728,"miaosha":false,"minPrice":0.01,"minScore":0,"name":"支付测试专用","numberFav":3,"numberGoodReputation":6,"numberOrders":13,"numberSells":13,"originalPrice":1.00,"paixu":1,"pic":"https://cdn.it120.cc/apifactory/2019/05/21/36b3f8c1-72cb-4bad-a89d-1412fa75669a.jpg","pingtuan":false,"pingtuanPrice":0.00,"recommendStatus":1,"recommendStatusStr":"推荐","shopId":0,"status":0,"statusStr":"上架","stores":999986,"userId":9436,"videoId":"","views":330,"weight":0.00}
         
+        $currencys = Yii::$service->page->currency->getCurrencys();
+        $currentCurrencyCode = Yii::$service->page->currency->getCurrentCurrency();
+        $currencyList = [];
+        $currencyCodeList = [];
+        foreach ($currencys as $currency) {
+            $currencyList[] = $currency['symbol']. '' . $currency['code'];
+            $currencyCodeList[] = $currency['code'];
+        }
+        $currency = [
+            'currencyList' => $currencyList,
+            'currencyCodeList' => $currencyCodeList,
+            'currentCurrency' => $currentCurrencyCode
+        ];
+        
         
         $data = [
             'home' => $homeData,
@@ -200,6 +214,7 @@ class HomeController extends AppserverController
                 'value'  => '人气推荐',
             ],
             'hot'  => $hotData,
+            'currency'  => $currency,
         ];
         $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
         
