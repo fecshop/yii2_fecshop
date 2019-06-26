@@ -69,7 +69,7 @@ class Helper extends Service
 
         return $var;
     }
-    
+
     /**
      * @param $domain | String vue类型的appserver传递的domain
      * 这个是appservice发送邮件，在邮件里面的url链接地址，在这里保存
@@ -79,7 +79,7 @@ class Helper extends Service
         $this->_param['appServiceDomain'] = $domain;
         return true;
     }
-    
+
     public function getAppServiceDomain()
     {
         return isset($this->_param['appServiceDomain']) ? $this->_param['appServiceDomain'] : false;
@@ -98,16 +98,17 @@ class Helper extends Service
             return false;
         }
     }
-    
+
     public function getCustomerIp()
     {
         return Yii::$app->request->userIP;
     }
-    
-    
-    function createNoncestr( $length = 32 ){
+
+
+    public function createNoncestr( $length = 32 )
+    {
         $chars = "abcdefghijklmnopqrstuvwxyz0123456789";
-        $str ="";
+        $str = "";
         for ( $i = 0; $i < $length; $i++ )  {
             $str.= substr($chars, mt_rand(0, strlen($chars)-1), 1);
         }
