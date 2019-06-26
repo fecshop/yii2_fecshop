@@ -148,6 +148,53 @@ class CategoryController extends AppserverController
         
         return $responseData;
     }
+    // 微信分类部分数据
+    public function actionWxindex(){
+        
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
+        // 每页显示的产品个数，进行安全验证，如果个数不在预先设置的值内，则会报错。
+        // 这样是为了防止恶意攻击，也就是发送很多不同的页面个数的链接，绕开缓存。
+        $this->getNumPerPage();
+        //echo Yii::$service->page->translate->__('fecshop,{username}', ['username' => 'terry']);
+        if(!$this->initCategory()){
+            $code = Yii::$service->helper->appserver->category_not_exist;
+            $data = [];
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
+            
+            return $responseData;
+        }
+        
+        // change current layout File.
+        //Yii::$service->page->theme->layoutFile = 'home.php';
+
+        $productCollInfo = $this->getWxCategoryProductColl();
+        $products = $productCollInfo['coll'];
+        $this->_productCount = $productCollInfo['count'];
+        $p = Yii::$app->request->get('p');
+        $p = (int)$p;
+        $query_item = $this->getQueryItem();
+        $page_count = $this->getProductPageCount();
+        $this->category_name = Yii::$service->store->getStoreAttrVal($this->_category['name'], 'name');
+        $code = Yii::$service->helper->appserver->status_success;
+        $data = [
+            'name'              => $this->category_name ,
+            'name_default_lang' => Yii::$service->fecshoplang->getDefaultLangAttrVal($this->_category['name'], 'name'),
+            'title'             => $this->_title,
+            'image'             => $this->_category['image'] ? Yii::$service->category->image->getUrl($this->_category['image']) : '',
+            'products'          => $products,
+            'query_item'        => $query_item,
+            'refine_by_info'    => $this->getRefineByInfo(),
+            'filter_info'       => $this->getFilterInfo(),
+            'filter_price'      => $this->getFilterPrice(),
+            'filter_category'   => $this->getFilterCategory(),
+            'page_count'        => $page_count,
+        ];
+        $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
+        
+        return $responseData;
+    }
     
     public function actionProduct()
     {
@@ -571,6 +618,59 @@ class CategoryController extends AppserverController
         $productList['coll'] = $product_return;
         return $productList;
     }
+    
+     /**
+     * 得到当前分类的产品
+     */
+    protected function getWxCategoryProductColl()
+    {
+        $select = [
+                'sku', 'spu', 'name', 'image',
+                'price', 'special_price',
+                'special_from', 'special_to',
+                'url_key', 'score',
+            ];
+        $category_query = Yii::$app->getModule('catalog')->params['category_query'];
+        if (is_array($category_query['sort'])) {
+            foreach ($category_query['sort'] as $sort_item) {
+                $select[] = $sort_item['db_columns'];
+            }
+        }
+        $filter = [
+            'pageNum'      => $this->getPageNum(),
+            'numPerPage'  => $this->getNumPerPage(),
+            'orderBy'      => $this->getOrderBy(),
+            'where'          => $this->_where,
+            'select'      => $select,
+        ];
+        
+        $productList = Yii::$service->category->product->getFrontList($filter);
+        
+        $i = 1;
+        $product_return = [];
+        $products = $productList['coll'];
+        if(is_array($products) && !empty($products)){
+            
+            foreach($products as $k=>$v){
+                $priceInfo = Yii::$service->product->price->getCurrentCurrencyProductPriceInfo($v['price'], $v['special_price'],$v['special_from'],$v['special_to']);
+                $price = isset($priceInfo['price']) ? $priceInfo['price'] : '';
+                $special_price = isset($priceInfo['special_price']) ? $priceInfo['special_price'] : '';
+                
+                
+                $product_return[] = [
+                    'name' => $v['name'],
+                    'pic'  => Yii::$service->product->image->getResize($v['image'],296,false),
+                    'special_price'  => $special_price,
+                    'price'  => $price,
+                    'id'  => $v['product_id'],
+                ];
+            }
+            
+        }
+        $productList['coll'] = $product_return;
+        return $productList;
+    }
+    
     /**
      * 得到用于查询的where数组。
      */

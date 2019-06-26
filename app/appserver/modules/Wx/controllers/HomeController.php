@@ -211,7 +211,7 @@ class HomeController extends AppserverController
             'products' => $productData,
             'topgoods'  => [
                 'remark' => '备注',
-                'value'  => '人气推荐',
+                'value'  => Yii::$service->page->translate->__('Feature Product'),  //'人气推荐',
             ],
             'hot'  => $hotData,
             'currency'  => $currency,

@@ -97,7 +97,7 @@ class BaseController extends AppserverController
         $treeArr = Yii::$service->category->getTreeArr('',$currentLangCode,true);
         //var_dump( $treeArr);exit;
         $categories = [
-            [ 'id' => 0, 'name' => '所有分类'],
+            [ 'id' => 0, 'name' => Yii::$service->page->translate->__('All Category')],
         ];
         if (is_array($treeArr)) {
             foreach ($treeArr as $k=>$v) {

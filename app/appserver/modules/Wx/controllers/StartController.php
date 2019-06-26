@@ -28,15 +28,10 @@ class StartController extends AppserverController
         $data = [
             [
                 'businessId' => 115781,
-                'dateAdd' => '2019-06-22 07:49:37',
-                'id' => 25407,
-                'paixu' => 0,
                 'picUrl' => "https://cdn.it120.cc/apifactory/2019/06/22/249199f1-6d15-4de2-9e90-94633586056c.jpg",
-                'status' => 0,
-                'statusStr' => '显示',
                 'title' => 'fecshop',
-                'type' => 'start',
-                'userId' => 16619,
+                'remark' => Yii::$service->page->translate->__('Wx Micro Program'),
+                
             ],
             
         ];

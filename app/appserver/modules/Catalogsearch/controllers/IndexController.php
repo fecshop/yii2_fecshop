@@ -71,6 +71,36 @@ class IndexController extends AppserverController
         return $responseData;
     }
     
+    public function actionWxindex()
+    {
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
+        $this->getNumPerPage();
+        //echo Yii::$service->page->translate->__('fecshop,{username}', ['username' => 'terry']);
+        $this->initSearch();
+        // change current layout File.
+        //Yii::$service->page->theme->layoutFile = 'home.php';
+
+        $productCollInfo = $this->getWxSearchProductColl();
+        $products = $productCollInfo['coll'];
+        $this->_productCount = $productCollInfo['count'];
+        //echo $this->_productCount;
+        $data = [
+            'searchText'       => $this->_searchText,
+            'searchCount'       => $this->_productCount,
+            'products'         => $products,
+            //'query_item'       => $this->getQueryItem(),
+            'refine_by_info'   => $this->getRefineByInfo(),
+            'filter_info'      => $this->getFilterInfo(),
+            'filter_price'     => $this->getFilterPrice(),
+        ];
+        $code = Yii::$service->helper->appserver->status_success;
+        $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
+        
+        return $responseData;
+    }
+    
     
     public function actionProduct()
     {
@@ -344,6 +374,53 @@ class IndexController extends AppserverController
                 $product_return[] = [
                     'one' => $arr,
                     'two' => [],
+                ];
+            }
+        }
+        $productList['coll'] = $product_return;
+        return $productList;
+    
+    
+    
+    }
+    
+    /**
+     * 得到搜索的产品collection
+     */
+    protected function getWxSearchProductColl()
+    {
+       /////////////////************
+        $select = [
+            'product_id','sku', 'spu', 'name', 'image',
+            'price', 'special_price',
+            'special_from', 'special_to',
+            'url_key', 'score',
+        ];
+        $where = $this->_where;
+        $search_text = Yii::$app->controller->module->params['search_query'];
+        $pageNum = $this->getPageNum();
+        $numPerPage = $this->getNumPerPage();
+        
+        $product_search_max_count = Yii::$app->controller->module->params['product_search_max_count'];
+        $filterAttr = $this->getFilterAttr();
+        $productList = Yii::$service->search->getSearchProductColl($select, $where, $pageNum, $numPerPage, $product_search_max_count, $filterAttr);
+    
+        $i = 1;
+        $product_return = [];
+        $products = $productList['coll'];
+        if(is_array($products) && !empty($products)){
+            foreach($products as $k=>$v){
+                $priceInfo = Yii::$service->product->price->getCurrentCurrencyProductPriceInfo($v['price'], $v['special_price'],$v['special_from'],$v['special_to']);
+                $price = isset($priceInfo['price']) ? $priceInfo['price'] : '';
+                $special_price = isset($priceInfo['special_price']) ? $priceInfo['special_price'] : '';
+                
+                
+                $product_return[] = [
+                    'name' => $v['name'],
+                    'pic'  => Yii::$service->product->image->getResize($v['image'],296,false),
+                    'special_price'  => $special_price,
+                    'price'  => $price,
+                    'id'  => $v['product_id'],
                 ];
             }
         }
