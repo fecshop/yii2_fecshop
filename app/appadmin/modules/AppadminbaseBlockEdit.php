@@ -109,6 +109,8 @@ EOF;
                         $tabLangTitle .= '<li><a href="javascript:;"><span>'.$lang.'</span></a></li>';
                         $langAttrName = Yii::$service->fecshoplang->getLangAttrName($name, $lang);
                         $t_val = isset($value[$langAttrName]) ? $value[$langAttrName] : '';
+                        // 对于含有 " 的字符串进行处理
+                        $t_val =  str_replace('"', '&quot;', $t_val) ;
                         $tabLangInput .= '<div>
 								<p class="edit_p">
 									<label>'.$label.'['.$lang.']：</label>
@@ -135,6 +137,8 @@ EOF;
 						</div>
 EOF;
                 } else {
+                    // 对于含有 " 的字符串进行处理
+                    $value =  str_replace('"', '&quot;', $value) ;
                     $str .= <<<EOF
 							<p class="edit_p">
 								<label>{$label}：</label>
