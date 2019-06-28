@@ -36,6 +36,11 @@ return [
                 ],
             ],
             */
+            'wx' => [
+                'class' => 'fecshop\services\helper\Wx',
+                'microProgramAppId'    => 'wxedc77529191bc54f', 
+                'microProgramSecret'    => '3b97c3fb4edeb0ca25e5386d753347a9', 
+            ],
             'errors' => [
                 'class' => 'fecshop\services\helper\Errors',
             ],
