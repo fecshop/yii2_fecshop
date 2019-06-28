@@ -70,7 +70,7 @@ class Appserver extends Service
 
     public $account_is_logined                            = 1100006; // 登录：用户已经登录
 
-    public $account_register_fail                         = 1100007; // 注册：邮箱已经存在
+    public $account_register_fail                         = 1100007; // 注册：失败
 
     public $account_email_not_exist                       = 1100008; // 账户中该email不存在
 
@@ -99,7 +99,15 @@ class Appserver extends Service
     public $account_register_send_email_fail       = 1100021; // 注册后，账户disable，需要邮件激活
     public $account_register_enable_token_invalid = 1100022;
     
-    /**
+    public $account_wx_get_user_info_fail = 1100023;  // 基于code，请求微信获取用户信息失败
+    public $account_wx_user_login_fail = 1100024;   // wx登陆失败
+    public $account_wx_get_customer_by_openid_fail = 1100025; // 通过openid 查找customer
+    
+    public $no_account_openid_and_session_key = 1100026;  // session中找不到 account_openid and session_key
+    public $account_has_account_openid = 1100027;  //  openid 已经有存在的账户了
+    public $account_login_and_get_access_token_fail = 1100028; // 登陆账户获取access_token失败
+    public $account_register_email_exit                         = 1100029; // 注册：邮箱已经存在
+    /** 
      * category状态码
      */
     public $category_not_exist                             = 1200000; // 分类：分类不存在
@@ -400,7 +408,30 @@ class Appserver extends Service
             $this->account_register_enable_token_invalid => [
                 'message' => 'account_register_enable_token_invalid',
             ],
+            $this->account_wx_get_user_info_fail => [
+                'message' => 'use wxCode to get user info  fail',
+            ],
+            $this->account_wx_user_login_fail => [
+                'message' => 'wx user login account fail',
+            ],
+            $this->account_wx_get_customer_by_openid_fail => [
+                'message' => 'you should bind wx openid with one account',
+            ],
             
+            
+            
+            $this->no_account_openid_and_session_key => [
+                'message' => 'no_account_openid_and_session_key',
+            ],
+            $this->account_has_account_openid => [
+                'message' => 'account_has_account_openid',
+            ],
+            $this->account_login_and_get_access_token_fail => [
+                'message' => 'account_login_and_get_access_token_fail',
+            ],
+            $this->account_register_email_exit => [
+                'message' => 'account_register_email_exit',
+            ],
             
             
             $this->account_address_edit_param_invaild => [
