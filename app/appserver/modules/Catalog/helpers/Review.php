@@ -47,6 +47,11 @@ class Review
             $data = $this->getReviewsBySpu($this->spu);
             $count = $data['count'];
             $coll = $data['coll'];
+            if (is_array($coll) && !empty($coll)) {
+                foreach ($coll as $k => $v) {
+                    $coll[$k]['review_date_str'] = date('Y-m-d H:i:s', $v['review_date']);
+                }
+            }
             return [
                 '_id' => $this->product_id,
                 'spu' => $this->spu,

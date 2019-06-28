@@ -188,11 +188,14 @@ class ProductController extends AppserverController
         $reviewHelper->spu = $this->_product['spu'];
         $productReview = $reviewHelper->getLastData();
         $code = Yii::$service->helper->appserver->status_success;
+        $productImage = isset($this->_product['image']['main']['image']) ? $this->_product['image']['main']['image'] : '' ;
+                
         $data = [
             'product' => [
                 'groupAttrArr'              => $groupAttrArr,
                 'name'                      => Yii::$service->store->getStoreAttrVal($this->_product['name'], 'name'),
                 'sku'                       => $this->_product['sku'],
+                'main_image' => Yii::$service->product->image->getResize($productImage,[120, 120],false),
                 'package_number'            => $this->_product['package_number'],
                 'spu'                       => $this->_product['spu'],
                 'thumbnail_img'             => $thumbnail_img,
@@ -451,7 +454,7 @@ class ProductController extends AppserverController
         //var_dump($this->_productSpuAttrArr);exit;
         $this->_spuAttrShowAsImg = Yii::$service->product->getSpuImgAttr($this->_product['attr_group']);
         if (!is_array($this->_productSpuAttrArr) || empty($this->_productSpuAttrArr)) {
-            return;
+            return [];
         }
         // 当前的spu属性对应值数组 $['color'] = 'red'
 
@@ -462,7 +465,7 @@ class ProductController extends AppserverController
                 $this->_currentSpuAttrValArr[$spuAttr] = $spuAttrVal;
             } else {
                 // 如果某个spuAttr的值为空，则退出，这个说明产品数据有问题。
-                return;
+                return [];
             }
         }
         // 得到当前的spu下面的所有的值
@@ -562,7 +565,7 @@ class ProductController extends AppserverController
         if ($active) {
             $return['active'] = 'current';
         }
-
+        $return['_id'] = (string)$return['_id'];
         return $return;
     }
 
