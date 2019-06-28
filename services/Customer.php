@@ -780,6 +780,33 @@ class Customer extends Service
         }
         return null;
     }
+    
+    /**
+     * @param $openid | string 
+     * 通过微信的openid 得到 user
+     */
+    protected function actionGetByWxOpenid($openid)
+    {
+        $one = $this->_customerModel->findOne(['wx_openid' => $openid]);
+        $primaryKey = $this->getPrimaryKey();
+        if ($one[$primaryKey]) {
+            
+            return $one;
+        } 
+        
+        return null;
+    }
+    
+    // 通过identity 进行登陆账户
+    public function loginByIdentity($identity, $duration = 0)
+    {
+        if (!$duration) {
+            if (Yii::$service->session->timeout) {
+                $duration = Yii::$service->session->timeout;
+            }
+        }
+        return \Yii::$app->user->login($identity, $duration);
+    }
 
     /**
      * 通过accessToek的方式，进行登出从操作。
