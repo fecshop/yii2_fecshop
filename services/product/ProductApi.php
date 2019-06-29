@@ -329,22 +329,22 @@ class ProductApi extends Service
         
         // 选填
         $remark = $post['remark'];
-        if (!$remark) {
+        if ($remark) {
             $this->_param['remark'] = $remark;
         }
         // 选填
         $relation_sku = $post['relation_sku'];
-        if (!$relation_sku) {
+        if ($relation_sku) {
             $this->_param['relation_sku'] = $relation_sku;
         }
         // 选填
         $buy_also_buy_sku = $post['buy_also_buy_sku'];
-        if (!$buy_also_buy_sku) {
+        if ($buy_also_buy_sku) {
             $this->_param['buy_also_buy_sku'] = $buy_also_buy_sku;
         }
         // 选填
         $see_also_see_sku = $post['see_also_see_sku'];
-        if (!$see_also_see_sku) {
+        if ($see_also_see_sku) {
             $this->_param['see_also_see_sku'] = $see_also_see_sku;
         }
         
@@ -359,7 +359,7 @@ class ProductApi extends Service
         $this->_param['status'] = $status;
         // 选填 产品的url key
         $url_key = $post['url_key'];
-        if (!$url_key) {
+        if ($url_key) {
             $this->_param['url_key'] = $url_key;
         }
         
