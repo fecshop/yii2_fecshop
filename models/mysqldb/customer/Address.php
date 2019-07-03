@@ -39,8 +39,8 @@ class Address extends ActiveRecord
             ['first_name', 'string', 'length' => [1, 50]],
             
             ['last_name', 'filter', 'filter' => 'trim'],
-            ['last_name', 'required'],
-            ['last_name', 'string', 'length' => [1, 50]],
+            //['last_name', 'required'],
+            ['last_name', 'string', 'length' => [0, 50]],
             
             ['telephone', 'filter', 'filter' => 'trim'],
             ['telephone', 'required'],

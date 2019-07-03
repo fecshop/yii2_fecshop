@@ -107,6 +107,7 @@ class Appserver extends Service
     public $account_has_account_openid = 1100027;  //  openid 已经有存在的账户了
     public $account_login_and_get_access_token_fail = 1100028; // 登陆账户获取access_token失败
     public $account_register_email_exit                         = 1100029; // 注册：邮箱已经存在
+    public $account_address_set_default_fail                         = 1100030; // 用户设置默认地址失败
     /** 
      * category状态码
      */
@@ -433,6 +434,9 @@ class Appserver extends Service
                 'message' => 'account_register_email_exit',
             ],
             
+            $this->account_address_set_default_fail => [
+                'message' => 'account_address_set_default_fail',
+            ],
             
             $this->account_address_edit_param_invaild => [
                 'message' => 'account address edit param is invalid',
