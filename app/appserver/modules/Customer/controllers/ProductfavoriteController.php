@@ -21,7 +21,7 @@ class ProductfavoriteController extends AppserverTokenController
 {
     public $enableCsrfValidation = false ;
     public $pageNum;
-    public $numPerPage = 20;
+    public $numPerPage = 50;
     public $_page = 'p';
 
     public function initFavoriteParam()

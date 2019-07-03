@@ -173,6 +173,30 @@ class Favorite extends Service
     {
         return $this->list($filter);
     }
+    
+    /**
+     * @param $favorite_id | string
+     * 通过id删除favorite
+     */
+    public function removeByProductIdAndUserId($product_id, $user_id)
+    {
+        $identity = Yii::$app->user->identity;
+        $user_id = $identity['id'];
+
+        $one = $this->_favoriteModel->findOne([
+            //'_id'        => new \MongoDB\BSON\ObjectId($favorite_id),
+            'user_id'    => $user_id,
+            'product_id' => $product_id,
+        ]);
+        if ($one['_id']) {
+            $one->delete();
+            $this->updateUserFavoriteCount($user_id);
+            $product_id = (string) $one['_id'];
+            $this->updateProductFavoriteCount($product_id);
+
+            return true;
+        }
+    }
 
     /**
      * @param $favorite_id | string
