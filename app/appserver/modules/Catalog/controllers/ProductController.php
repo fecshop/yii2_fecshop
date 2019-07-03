@@ -93,6 +93,37 @@ class ProductController extends AppserverController
         return $behaviors;
     }
     
+    public function actionGetfav()
+    {
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
+        if(Yii::$app->user->isGuest){
+            $code = Yii::$service->helper->appserver->account_no_login_or_login_token_timeout;
+            $data = [];
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
+            
+            return $responseData;
+        }
+        $product_id = Yii::$app->request->get('product_id');
+        $customer_id = Yii::$app->user->identity->id;
+        if ($product_id && $customer_id) {
+            $one = Yii::$service->product->favorite->getByProductIdAndUserId($product_id, $customer_id);
+            $fav = 1;
+            if (!$one['product_id']) {
+                $fav = 2;
+            }
+            $code = Yii::$service->helper->appserver->status_success;
+            $data = [
+                'fav' => $fav,
+            ];
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
+            
+            return $responseData;
+        }
+        
+    }
+    
     public function actionFavorite(){
         if(Yii::$app->request->getMethod() === 'OPTIONS'){
             return [];
@@ -105,25 +136,48 @@ class ProductController extends AppserverController
             return $responseData;
         }
         $product_id = Yii::$app->request->get('product_id');
+        $favType = Yii::$app->request->get('type');
         $identity   = Yii::$app->user->identity;
         $user_id    = $identity->id;
-        $addStatus = Yii::$service->product->favorite->add($product_id, $user_id);
-        if (!$addStatus) {
-            $code = Yii::$service->helper->appserver->product_favorite_fail;
-            $data = [];
-            $message = Yii::$service->helper->errors->get(true);
-            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data,$message);
-            
-            return $responseData;
-        }else{
-            $code = Yii::$service->helper->appserver->status_success;
-            $data = [
-                'content' => 'success',
-            ];
-            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
-            
-            return $responseData;
+        if ($favType == 'del') {
+            $delStatus = Yii::$service->product->favorite->removeByProductIdAndUserId($product_id, $user_id);
+            if (!$delStatus) {
+                $code = Yii::$service->helper->appserver->product_favorite_fail;
+                $data = [];
+                $message = Yii::$service->helper->errors->get(true);
+                $responseData = Yii::$service->helper->appserver->getResponseData($code, $data,$message);
+                
+                return $responseData;
+            }else{
+                $code = Yii::$service->helper->appserver->status_success;
+                $data = [
+                    'content' => 'success',
+                ];
+                $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
+                
+                return $responseData;
+            }
+        } else {
+            $addStatus = Yii::$service->product->favorite->add($product_id, $user_id);
+            if (!$addStatus) {
+                $code = Yii::$service->helper->appserver->product_favorite_fail;
+                $data = [];
+                $message = Yii::$service->helper->errors->get(true);
+                $responseData = Yii::$service->helper->appserver->getResponseData($code, $data,$message);
+                
+                return $responseData;
+            }else{
+                $code = Yii::$service->helper->appserver->status_success;
+                $data = [
+                    'content' => 'success',
+                ];
+                $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
+                
+                return $responseData;
+            }
         }
+        
+        
         // 收藏失败，需要登录
         
         
