@@ -61,6 +61,8 @@ class Order extends Service
     
     // 订单号格式。
     public $increment_id = 1000000000;
+    
+    public $createdOrder;
 
     // 计算销量的订单时间范围（将最近几个月内的订单中的产品销售个数累加，作为产品的销量值,譬如3代表计算最近3个月的订单产品）
     // 0：代表计算订单表中所有的订单。
@@ -648,6 +650,7 @@ class Order extends Service
             if (!Yii::$app->user->isGuest && $clearCart) {
                 Yii::$service->cart->clearCartProductAndCoupon();
             }
+            $this->createdOrder = $myOrder;
             // 执行成功，则在session中设置increment_id
             $this->setSessionIncrementId($increment_id);
             return true;
@@ -889,13 +892,18 @@ class Order extends Service
      *              取消订单，更新订单的状态为cancel。
      *              并且释放库存给产品
      */
-    protected function actionCancel($increment_id = '')
+    protected function actionCancel($increment_id = '', $customer_id = '')
     {
         if (!$increment_id) {
             $increment_id = $this->getSessionIncrementId();
         }
         if ($increment_id) {
             $order = $this->getByIncrementId($increment_id);
+            if ($customer_id && $order['customer_id'] != $customer_id) {
+                Yii::$service->helper->errors->add('do not have role to cancel this order');
+                
+                return false;
+            }
             if ($order) {
                 $order->order_status    = $this->payment_status_canceled;
                 $order->updated_at      = time();
@@ -911,6 +919,30 @@ class Order extends Service
 
         return false;
     }
+    
+    
+    
+    // 用户确认收货
+    public function delivery($incrementId, $customerId)
+    {
+        $updateComules = $this->_orderModel->updateAll(
+            [
+                'order_status' => $this->status_completed,
+            ],
+            [
+                'increment_id'  => $incrementId,
+                'order_status' => $this->status_dispatched,
+                'customer_id' => $customerId,
+            ]
+        );
+        if (empty($updateComules)) {
+            Yii::$service->helper->errors->add('customer delivery order fail');
+            return false;
+        }
+        return true;
+        
+    }
+    
 
     /**
      * 将xx时间内未支付的pending订单取消掉，并释放产品库存。

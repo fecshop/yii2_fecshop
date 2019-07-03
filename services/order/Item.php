@@ -109,6 +109,35 @@ class Item extends Service
 
         return $items;
     }
+    
+    /**
+     * @param $order_ids | array
+     * @param $onlyFromTable | 从数据库取出不做处理
+     * @return array
+     *               通过order_id 得到所有的items
+     */
+    protected function actionGetByOrderIds($order_ids, $onlyFromTable = false)
+    {
+        $items = $this->_itemModel->find()->asArray()->where([
+            'in', 'order_id', $order_ids,
+        ])->all();
+        if ($onlyFromTable) {
+            return $items;
+        }
+        foreach ($items as $k=>$one) {
+            $product_id = $one['product_id'];
+            $product_one = Yii::$service->product->getByPrimaryKey($product_id);
+
+            $productSpuOptions = $this->getProductSpuOptions($product_one);
+            //var_dump($productSpuOptions);
+            $items[$k]['spu_options'] = $productSpuOptions;
+            $items[$k]['custom_option'] = $product_one['custom_option'];
+            $items[$k]['custom_option_info'] = $this->getProductOptions($items[$k]);
+            $items[$k]['image'] = $this->getProductImage($product_one, $one);
+        }
+
+        return $items;
+    }
 
     /**
      * @param $product_one | Object, product model

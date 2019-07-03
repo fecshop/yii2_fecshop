@@ -341,7 +341,10 @@ class QuoteItem extends Service
             if (is_array($spuArr) && !empty($spuArr)) {
                 foreach ($spuArr as $spu_attr) {
                     if (isset($productOb[$spu_attr]) && !empty($productOb[$spu_attr])) {
-                        $custom_option_info_arr[$spu_attr] = $productOb[$spu_attr];
+                        // 进行翻译。
+                        $spu_attr_label = Yii::$service->page->translate->__($spu_attr);
+                        $spu_attr_val = Yii::$service->page->translate->__($productOb[$spu_attr]);
+                        $custom_option_info_arr[$spu_attr_label] = $spu_attr_val;
                     }
                 }
             }

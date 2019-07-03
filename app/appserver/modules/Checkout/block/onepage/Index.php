@@ -32,7 +32,9 @@ class Index
     protected $is_empty_cart = false;
     public function getLastData()
     {
-        $cartInfo = Yii::$service->cart->getCartInfo(true);
+        //$shipping_method = 'middle_shipping';
+        $shipping_method = Yii::$app->request->get('shipping_method');
+        $cartInfo = Yii::$service->cart->getCartInfo(true, $shipping_method);
         if (!isset($cartInfo['products']) || !is_array($cartInfo['products']) || empty($cartInfo['products'])) {
             $code = Yii::$service->helper->appserver->order_generate_cart_product_empty;
             $data = [];
@@ -44,7 +46,7 @@ class Index
         $this->initAddress();
         $this->initCountry();
         //$this->initState();
-        $shippings = $this->getShippings();
+        $shippings = $this->getShippings($shipping_method);
         $last_cart_info = $this->getCartInfo(true, $this->_shipping_method, $this->_country, $this->_state);
         $isGuest = 1;
         if(!Yii::$app->user->isGuest){
