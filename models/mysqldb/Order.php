@@ -52,8 +52,8 @@ class Order extends ActiveRecord
             ['customer_firstname', 'string', 'length' => [1, 50]],
             
             ['customer_lastname', 'filter', 'filter' => 'trim'],
-            ['customer_lastname', 'required'],
-            ['customer_lastname', 'string', 'length' => [1, 50]],
+            //['customer_lastname', 'required'],
+            ['customer_lastname', 'string', 'length' => [0, 50]],
             
             ['customer_telephone', 'filter', 'filter' => 'trim'],
             ['customer_telephone', 'required'],

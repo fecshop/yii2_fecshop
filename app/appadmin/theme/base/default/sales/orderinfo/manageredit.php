@@ -194,7 +194,12 @@ use fecshop\app\appfront\helper\Format;
                                 <input type="text" name="editForm[tracking_number]" value="<?= $order['tracking_number'] ?>" />
                             </span>
 						</p>
-                        
+                        <p class="edit_p">
+							<label><?= Yii::$service->page->translate->__('Tracking Company')  ?>：</label>
+                            <span>
+                                <input type="text" name="editForm[tracking_company]" value="<?= $order['tracking_company'] ?>" />
+                            </span>
+						</p>
 						<p class="edit_p">
 							<label><?= Yii::$service->page->translate->__('Telephone')  ?>: </label>
 							<span>
