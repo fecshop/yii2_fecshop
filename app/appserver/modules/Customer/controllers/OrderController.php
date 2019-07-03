@@ -24,7 +24,87 @@ class OrderController extends AppserverTokenController
     protected $orderBy;
     protected $customer_id;
     protected $_page = 'p';
+    
+    public function initWxWhere($where)
+    {
+        $wxRequestOrderStatus = Yii::$app->request->get("wxRequestOrderStatus");
+        $this->numPerPage = 100;
+        
+        if ($wxRequestOrderStatus == 'all') {
+            return $where;
+        }
+        if ($wxRequestOrderStatus == 0) {
+            $where[] = ['in', 'order_status', [
+                Yii::$service->order->payment_status_pending,
+                Yii::$service->order->payment_status_processing,
+            ]]; 
+        } else if ($wxRequestOrderStatus == 1) {
+            $where[] = ['in', 'order_status', [
+                Yii::$service->order->payment_status_confirmed,
+                Yii::$service->order->status_processing,
+            ]]; 
+        } else if ($wxRequestOrderStatus == 2) {
+            $where[] = ['order_status' => Yii::$service->order->status_dispatched];
+            
+        } else if ($wxRequestOrderStatus == 3) {
+            $where[] = ['in', 'order_status', [
+                Yii::$service->order->status_refunded,
+                Yii::$service->order->status_completed,
+            ]]; 
+            
+        }
+        
+        return $where;
+    }
+    
+    public function actionDelivery()
+    {
+        $increment_id = Yii::$app->request->get('orderId');
+        $identity = Yii::$app->user->identity;
+        $customer_id = $identity->id;
+        if (Yii::$service->order->delivery($increment_id, $customer_id)) {
+            $code = Yii::$service->helper->appserver->status_success;
+            $data = [];
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
 
+            return $responseData;
+        }
+        
+    }
+    
+    public function actionCancel()
+    {
+        $increment_id = Yii::$app->request->get('orderId');
+        $identity = Yii::$app->user->identity;
+        $customer_id = $identity->id;
+        if (!$increment_id) {
+            $code = Yii::$service->helper->appserver->status_invalid_param;
+            $data = [
+                'errors' => 'request orderId is empty',
+            ];
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
+
+            return $responseData;
+        }
+        if (!$customer_id){
+            $code = Yii::$service->helper->appserver->status_invalid_param;
+            $data = [
+                'errors' => 'not login account',
+            ];
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
+
+            return $responseData;
+        }
+        if (Yii::$service->order->cancel($increment_id, $customer_id)) {
+            $code = Yii::$service->helper->appserver->status_success;
+            $data = [];
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
+
+            return $responseData;
+        }
+        
+    }
+    
     public function actionIndex()
     {
         if(Yii::$app->request->getMethod() === 'OPTIONS'){
@@ -36,14 +116,18 @@ class OrderController extends AppserverTokenController
         $this->pageNum = ($this->pageNum >= 1) ? $this->pageNum : 1;
         $this->orderBy = ['created_at' => SORT_DESC];
         $return_arr = [];
+        // 订单信息，是否包含产品信息
+        $orderWithItems = Yii::$app->request->get('withItems');
+        // 微信订单过滤
+        $where[] = ['customer_id' => $this->customer_id];
+        $where = $this->initWxWhere($where);
+        
         if ($this->customer_id) {
             $filter = [
                 'numPerPage'    => $this->numPerPage,
                 'pageNum'        => $this->pageNum,
                 'orderBy'        => $this->orderBy,
-                'where'            => [
-                    ['customer_id' => $this->customer_id],
-                ],
+                'where'            => $where,
                 'asArray' => true,
             ];
 
@@ -51,11 +135,27 @@ class OrderController extends AppserverTokenController
             $order_list = $customer_order_list['coll'];
             $count = $customer_order_list['count'];
             $orderArr = [];
+            $orderIds = [];
             if(is_array($order_list)){
                 foreach($order_list as $k=>$order){
                     $currencyCode = $order['order_currency_code'];
                     $order['currency_symbol'] = Yii::$service->page->currency->getSymbol($currencyCode);
                     $orderArr[] = $this->getOrderArr($order);
+                    $orderIds[] = $order['order_id'];
+                }
+            }
+            // 包含订单产品信息
+            $orderItems = [];
+            if ($orderWithItems == 1) {
+                $items = Yii::$service->order->item->getByOrderIds($orderIds, true);
+                if (is_array($items) && !empty($items)) {
+                    foreach ($items as $item) {
+                        $item['pic'] = Yii::$service->product->image->getUrl($item['image']);
+                        $orderItems[$item['order_id']][] = $item;
+                    }
+                }
+                foreach($orderArr as $k=>$order){
+                    $orderArr[$k]['item_products'] = $orderItems[$order['order_id']];
                 }
             }
             $code = Yii::$service->helper->appserver->status_success;
@@ -97,6 +197,7 @@ class OrderController extends AppserverTokenController
         $orderInfo['payment_method'] = $order['payment_method'];
         $orderInfo['shipping_method'] = $order['shipping_method'];
         $orderInfo['tracking_number'] = $order['tracking_number'];
+        $orderInfo['tracking_company'] = $order['tracking_company'];
 
         $orderInfo['shipping_total'] = $order['shipping_total'];
         $orderInfo['base_shipping_total'] = $order['base_shipping_total'];
@@ -142,6 +243,59 @@ class OrderController extends AppserverTokenController
                                 'row_total' => $product['row_total'],
                                 'product_id' => $product['product_id'],
                                 'custom_option_info' => $product['custom_option_info'],
+                            ];
+
+                        }
+                    }
+                    $order_info['products'] = $productArr;
+                    $code = Yii::$service->helper->appserver->status_success;
+                    $data = [
+                        'order'=> $order_info,
+                    ];
+                    $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
+
+                    return $responseData;
+
+                }
+            }
+        }
+
+
+    }
+    
+    public function actionWxview(){
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
+        $increment_id = Yii::$app->request->get('increment_id');
+        if ($increment_id) {
+            $order_info = Yii::$service->order->getOrderInfoByIncrementId($increment_id);
+            if (isset($order_info['customer_id']) && !empty($order_info['customer_id'])) {
+                $identity = Yii::$app->user->identity;
+                $customer_id = $identity->id;
+                if ($order_info['customer_id'] == $customer_id) {
+                    $order_info = $this->getOrderArr($order_info);
+                    $productArr = [];
+                    //var_dump($order_info);exit;
+                    if(is_array($order_info['products'])){
+                        foreach($order_info['products'] as $product){
+                            $custom_option_info_arr = [];
+                            if (is_array($product['custom_option_info'])) {
+                                foreach ($product['custom_option_info'] as $attr => $val) {
+                                    $custom_option_info_arr[] = Yii::$service->page->translate->__($attr) .':'. Yii::$service->page->translate->__($val);
+                                }
+                            }
+                            $custom_option_info_str = implode(',', $custom_option_info_arr);
+                            $productArr[] = [
+                                'imgUrl' => Yii::$service->product->image->getResize($product['image'],[100,100],false),
+                                'name' => $product['name'],
+                                'sku' => $product['sku'],
+                                'qty' => $product['qty'],
+                                'row_total' => $product['row_total'],
+                                'price' => $product['price'],
+                                'product_id' => $product['product_id'],
+                                'custom_option_info' => $product['custom_option_info'],
+                                'custom_option_info_str' =>$custom_option_info_str,
                             ];
 
                         }

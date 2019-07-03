@@ -73,9 +73,11 @@ class AddressController extends AppserverTokenController
         $stateIsSelect = 0;
         if(!empty($stateArr)){
             $stateIsSelect = 1;
+            
         }
         $address['stateArr'] = $stateArr;
         $address['stateIsSelect'] = $stateIsSelect;
+        $address['stateStr'] = isset($stateArr[$state]) ? $stateArr[$state] : $state;
         
         $code = Yii::$service->helper->appserver->status_success;
         $data = [
@@ -173,11 +175,12 @@ class AddressController extends AppserverTokenController
         $address_id         = Yii::$app->request->post('address_id'); 
         $first_name         = Yii::$app->request->post('first_name'); 
         $last_name          = Yii::$app->request->post('last_name'); 
-        $email              = Yii::$app->request->post('email'); 
+        //$email              = Yii::$app->request->post('email'); 
         $telephone          = Yii::$app->request->post('telephone'); 
         $addressCountry     = Yii::$app->request->post('addressCountry'); 
         $addressState       = Yii::$app->request->post('addressState'); 
         $city               = Yii::$app->request->post('city'); 
+        $area               = Yii::$app->request->post('area'); 
         $street1            = Yii::$app->request->post('street1'); 
         $street2            = Yii::$app->request->post('street2'); 
         $zip                = Yii::$app->request->post('zip'); 
@@ -194,23 +197,25 @@ class AddressController extends AppserverTokenController
                 return $responseData;
             }
         }
+        $identity = Yii::$app->user->identity;
         // 地址信息
         $address = [
             'address_id' => $address_id,
             'first_name' => $first_name,
             'last_name'  => $last_name,
-            'email'      => $email,
+            'email'      => $identity['email'],
             'country'    => $addressCountry,
             'state'      => $addressState,
             'telephone'  => $telephone,
             'city'       => $city,
+            'area'       => $area,
             'street1'    => $street1,
             'street2'    => $street2,
             'zip'        => $zip,
             'is_default' => $isDefaultActive,
         ];
         $addressInfo = \Yii::$service->helper->htmlEncode($address);
-        $identity = Yii::$app->user->identity;
+        
         $addressInfo['customer_id'] = $identity['id'];
         $saveStatus = Yii::$service->customer->address->save($addressInfo);
         if (!$saveStatus) {
@@ -226,6 +231,26 @@ class AddressController extends AppserverTokenController
         
         return $responseData;
     }
-    
+    // 设置默认地址
+    public function actionChangedefault()
+    {
+        $address_id = Yii::$app->request->post('address_id');
+        $identity = Yii::$app->user->identity;
+        $customerId = $identity->id;
+        $setStatus = Yii::$service->customer->address->setDefault($customerId, $address_id);
+        if (!$setStatus) {
+            $code = Yii::$service->helper->appserver->account_address_set_default_fail;
+            $data = [ ];
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
+            
+            return $responseData;
+        } 
+        
+        $code = Yii::$service->helper->appserver->status_success;
+        $data = [ ];
+        $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
+        
+        return $responseData;
+    }
    
 }

@@ -699,7 +699,50 @@ class Customer extends Service
         //return $authnum;
         return $authnum;
     }
-
+    
+    /**
+      * @param $identity | Object， customer model
+      * #param $duration 
+      * 通过identity 进行登陆账户
+      * 通过
+      */
+    public function loginByIdentityAndGetAccessToken($identity, $wx_session_key='', $duration = 0)
+    {
+        $header = Yii::$app->request->getHeaders();
+        if (isset($header['access-token']) && $header['access-token']) {
+            $accessToken = $header['access-token'];
+        }
+        // 如果request header中有access-token，则查看这个 access-token 是否有效
+        if ($accessToken) {
+            $access_token_identity = Yii::$app->user->loginByAccessToken($accessToken);
+            if ($access_token_identity !== null) {
+                $access_token_created_at = $access_token_identity->access_token_created_at;
+                $timeout = Yii::$service->session->timeout;
+                if ($access_token_created_at + $timeout > time()) {
+                    return $accessToken;
+                }
+            }
+        }
+        // 执行登陆
+        if (!$duration) {
+            if (Yii::$service->session->timeout) {
+                $duration = Yii::$service->session->timeout;
+            }
+        }
+        //var_dump($identity);exit;
+        if (\Yii::$app->user->login($identity, $duration)) {
+            $identity->generateAccessToken();
+            $identity->access_token_created_at = time();
+            $identity->wx_session_key = $wx_session_key;
+            $identity->save();
+            // 执行购物车合并等操作。
+            Yii::$service->cart->mergeCartAfterUserLogin();
+            $this->setHeaderAccessToken($identity->access_token);
+            return $identity->access_token;
+            
+        }
+    }
+    
     /** AppServer 部分使用的函数
      * @param $email | String
      * @param $password | String
@@ -797,16 +840,7 @@ class Customer extends Service
         return null;
     }
     
-    // 通过identity 进行登陆账户
-    public function loginByIdentity($identity, $duration = 0)
-    {
-        if (!$duration) {
-            if (Yii::$service->session->timeout) {
-                $duration = Yii::$service->session->timeout;
-            }
-        }
-        return \Yii::$app->user->login($identity, $duration);
-    }
+    
 
     /**
      * 通过accessToek的方式，进行登出从操作。

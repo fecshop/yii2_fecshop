@@ -138,11 +138,29 @@ class Address extends Service
                         $street2 = $one['street2'];
                         $is_default = $one['is_default'];
                         $city = $one['city'];
-
-                        //$state = Yii::$service->helper->country->getStateByContryCode($one['country'],$one['state']);
                         $state = $one['state'];
                         $zip = $one['zip'];
+                        $area = $one['area'];
                         $country = Yii::$service->helper->country->getCountryNameByKey($one['country']);
+                        $state = Yii::$service->helper->country->getStateByContryCode($one['country'],$one['state']);
+                        
+                        $address_info = [
+                            'address_id' => $address_id,
+                            'first_name' => $first_name,
+                            'last_name' => $last_name,
+                            'email' => $email,
+                            'telephone' => $telephone,
+                            'street1' => $street1,
+                            'is_default' => $is_default,
+                            'city' => $city,
+                            'state' => $state,
+                            'zip' => $zip,
+                            'area' => $area,
+                        ];
+
+                        //$state = Yii::$service->helper->country->getStateByContryCode($one['country'],$one['state']);
+                        
+                        
                         $str = $first_name.' '.$last_name.' '.$email.' '.
                                 $street1.' '.$street2.' '.$city.' '.$state.' '.$country.' '.
                                 $zip.' '.$telephone;
@@ -152,6 +170,7 @@ class Address extends Service
                         $arr[$address_id] = [
                             'address' => $str,
                             'is_default'=>$is_default,
+                            'address_info' => $address_info,
                         ];
                     }
                     if (!$ii) {
@@ -202,6 +221,7 @@ class Address extends Service
                 return false;
             }
         } else {
+            
             $errors = $model->errors;
             Yii::$service->helper->errors->addByModelErrors($errors);
 
@@ -316,6 +336,62 @@ class Address extends Service
                 $cart->save();
             }
         }
+    }
+    
+    /**
+     * @param $customer_id | int 用户id
+     * @param $address_id | int 用户地址id
+     * @return boolean
+     * 将某个address_id对应的地址数据，设置成默认地址
+     */
+    public function setDefault($customer_id, $address_id)
+    {
+        $primaryKey = $this->getPrimaryKey();
+        // 当前的设置成1
+        $address_one = $this->_addressModel->findOne([
+            'customer_id' => $customer_id,
+            $primaryKey  => $address_id,
+        ]);
+        if (!$address_one[$primaryKey]) {
+            Yii::$service->helper->errors->add('customer address is empty');
+            
+            return false;
+        }
+        $address_one->is_default = 1;
+        $address_one->updated_at = time();
+        $address_one->save();
+        
+        // 将其他的设置成2
+        $this->_addressModel->updateAll(
+            ['is_default'=>2],  // $attributes
+            'customer_id = :customer_id and  '.$primaryKey.' != :primaryVal ',      // $condition
+            [
+                'customer_id' => $customer_id,
+                'primaryVal'  => $address_id,
+            ]
+        );
+        
+        return true;
+        
+    }
+    
+    public function getDefualtAddressId($customer_id = '')
+    {
+        if(!$customer_id){
+            $identity = Yii::$app->user->identity;
+            $customer_id = $identity['id'];
+        }
+        if (!$customer_id) {
+            return null;
+        }
+        $addressOne = $this->_addressModel->find()->asArray()
+                            ->where(['customer_id' => $customer_id,'is_default' => 1])
+                            ->one();
+        if($addressOne['address_id']){
+            return $addressOne['address_id'];
+        }
+        
+        return null;
     }
 
     /*

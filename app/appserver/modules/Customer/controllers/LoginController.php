@@ -151,17 +151,11 @@ class LoginController extends AppserverController
     }
     
     // 登陆用户
-    public function loginByIdentity($identity, $session_key)
+    public function loginByIdentity($identity, $wx_session_key)
     {
         // 进行用户登陆
-        if (Yii::$service->customer->loginByIdentity($identity)) {
-             // 保存微信的
-            $identity->wx_session_key = $session_key;
-            
-            return $identity->save();
-        }
-       
-        return false;
+        return Yii::$service->customer->loginByIdentityAndGetAccessToken($identity, $wx_session_key);
+        
     }
     // 绑定账户
     public function actionBindaccount()
