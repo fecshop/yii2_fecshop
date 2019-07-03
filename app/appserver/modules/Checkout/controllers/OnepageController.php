@@ -56,8 +56,23 @@ class OnepageController extends AppserverController
         } 
         
         return $this->getBlock('placeorder')->getLastData();
+    }
+    
+    
+    public function actionWxsubmitorder(){
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
+        $guestOrder = Yii::$app->controller->module->params['guestOrder'];
+        if(!$guestOrder && Yii::$app->user->isGuest){
+            $code = Yii::$service->helper->appserver->account_no_login_or_login_token_timeout;
+            $data = [];
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
+            
+            return $responseData;
+        } 
         
-        
+        return $this->getBlock('wxplaceorder')->getLastData();
         
     }
 
@@ -76,4 +91,61 @@ class OnepageController extends AppserverController
         }
         return $this->getBlock('index')->ajaxUpdateOrderAndShipping();
     }
+    
+    public function actionChangeshippingmethod()
+    {
+        if(Yii::$app->request->getMethod() === 'OPTIONS'){
+            return [];
+        }
+        $shipping_method = Yii::$app->request->post('shipping_method');
+        //echo $shipping_method;
+        //echo 2; exit;
+        if (!Yii::$service->cart->quote->updateLoginCartShippingMethod($shipping_method)) {
+            $code = Yii::$service->helper->appserver->cart_update_default_shipping_method_fail;
+            $data = [
+                // 'errors' => Yii::$service->helper->errors->get(),
+            ];
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
+            
+            return $responseData;
+        }
+        
+        $code = Yii::$service->helper->appserver->status_success;
+        $data = [];
+        $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
+        
+        return $responseData;
+        
+    }
+    
+    // 得到customer address
+    public function actionGetaddresslist()
+    {
+        //$identity = Yii::$app->user->identity;
+        $addressList = Yii::$service->customer->address->currentAddressList();
+        
+        $code = Yii::$service->helper->appserver->status_success;
+        $data = [
+            'addressList' => $addressList,
+        ];
+        $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
+        
+        return $responseData;
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
