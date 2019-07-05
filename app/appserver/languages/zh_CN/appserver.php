@@ -377,7 +377,7 @@ return [
  'Password length must be less than or equal to {passwdMaxLength}' => '密码长度必须小于或等于{passwdMaxLength}',
  'The passwords are inconsistent' => '密码不一致',
  'All Category'                        => '全部分类',
- 'Follow'                        => '关注我们',
+ 'Product Name: {product_name}, The product is not in stock'                        => '产品名称: {product_name}, 产品没有库存了',
  'Follow'                        => '关注我们',
  'Follow'                        => '关注我们',
  'Follow'                        => '关注我们',
