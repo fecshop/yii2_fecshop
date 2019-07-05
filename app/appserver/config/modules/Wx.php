@@ -10,6 +10,7 @@ return [
     'wx' => [
         'class' => '\fecshop\app\appserver\modules\Wx\Module',
         'params'=> [
+            
         ],
     ]
 ];
