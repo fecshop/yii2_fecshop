@@ -478,9 +478,10 @@ class Stock extends Service
                 'product_id' => $product_id
             ])->one();
             if (!$productFlatQty['qty']) {
+                $productName = Yii::$service->store->getStoreAttrVal($product['name'], 'name');
                 Yii::$service->helper->errors->add(
-                    'Product Id: {product_id}, The product has no qty',
-                    ['product_id' => $product['_id']]
+                    'Product Name: {product_name}, The product is not in stock',
+                    ['product_name' => $productName]
                 );
                 
                 return false;
