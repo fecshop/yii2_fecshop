@@ -43,7 +43,7 @@ Fecshop支持多语言，多货币，架构上支持pc，手机web，手机app�
 
 [Fecshop](http://www.fecshop.com) 【已完成】微信小程序(Appserver,前后端彻底分离模式)：微信小程序搜索：Fecmall查看demo，或者扫下面的小程序码：
 
-![wx_xiaochengxu_fecmall](wx_xiaochengxu_fecmall.png)
+![wx_xiaochengxu_fecmall](wx_xiaochengxu_fecmall2.png)
 
 
 [Fecshop](http://www.fecshop.com) 后台演示地址：加QQ群，在群公告里面有后台演示地址，账号密码等信息
