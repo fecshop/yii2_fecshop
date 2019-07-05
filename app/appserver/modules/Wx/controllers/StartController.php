@@ -25,12 +25,15 @@ class StartController extends AppserverController
             return [];
         }
         $code = Yii::$service->helper->appserver->status_success;
+        $startConfig = Yii::$app->controller->module->params['startConfig'];
+        
+        $startImageUrl = Yii::$service->image->getImgUrl($startConfig['picUrl']);
         $data = [
             [
                 'businessId' => 115781,
-                'picUrl' => "https://cdn.it120.cc/apifactory/2019/06/22/249199f1-6d15-4de2-9e90-94633586056c.jpg",
-                'title' => 'fecshop',
-                'remark' => Yii::$service->page->translate->__('Wx Micro Program'),
+                'picUrl' => $startImageUrl,
+                'title' => Yii::$service->page->translate->__($startConfig['title']),  // '',
+                'remark' => Yii::$service->page->translate->__($startConfig['remark']),
                 
             ],
             
