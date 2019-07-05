@@ -95,7 +95,7 @@ class AddressController extends AppserverTokenController
         if(Yii::$app->request->getMethod() === 'OPTIONS'){
             return [];
         }
-        $address_id = Yii::$app->request->post('address_id');
+        $address_id = Yii::$app->request->get('address_id');
         if($address_id){
             $this->removeAddressById($address_id);
             
@@ -109,6 +109,7 @@ class AddressController extends AppserverTokenController
             $data = [];
             $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
             
+            return $responseData;
         }
     }
     
