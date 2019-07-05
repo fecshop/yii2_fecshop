@@ -22,13 +22,13 @@ use Yii;
 class Wx extends Service
 {
     public $wxApiBaseUrl = 'https://api.weixin.qq.com';
-    //public $configFile;
+    public $configFile;
     
     // APPID：绑定支付的APPID
     public $microProgramAppId ;
     // 小程序secert
     public $microProgramSecret;
-    /*
+    
     public function init()
     {
         parent::init();
@@ -37,12 +37,11 @@ class Wx extends Service
             throw new InvalidConfigException('wxpay config file:['.$wxpayConfigFile.'] is not exist');
         }
         require_once($wxpayConfigFile);
-        $this->appId = \WxPayConfig::APPID;
-        $this->mchID = \WxPayConfig::MCHID;
-        $this->appSecret = \WxPayConfig::APPSECRET;
-        $this->paymentKey = \WxPayConfig::KEY;
+        // 通过上面的小程序，设置配置信息
+        $this->microProgramAppId = \WxPayConfig::APPID;
+        $this->microProgramSecret = \WxPayConfig::APPSECRET;
     }
-    */
+    
     
     /**
      * @param $code | string, 微信登陆的code

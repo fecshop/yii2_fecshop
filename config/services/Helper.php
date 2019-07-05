@@ -38,8 +38,7 @@ return [
             */
             'wx' => [
                 'class' => 'fecshop\services\helper\Wx',
-                'microProgramAppId'    => 'wxedc77529191bc54f', 
-                'microProgramSecret'    => '3b97c3fb4edeb0ca25e5386d753347a9', 
+                'configFile'    => '@common/config/payment/wxpay/lib/WxPay.Micro.Config.php',
             ],
             'errors' => [
                 'class' => 'fecshop\services\helper\Errors',
