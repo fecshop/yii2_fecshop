@@ -97,9 +97,33 @@ class Wx extends Service
         return Yii::$service->session->get('wx_openid');
     }
     
-    
-    
-    
+    /*
+    public function createQRCode()
+    {
+        
+        /cgi-bin/wxaapp/createwxaqrcode?access_token=ACCESS_TOKEN
+        
+        $urlKey = '/sns/jscode2session';
+        $apiId = $this->microProgramAppId;
+        $secret = $this->microProgramSecret;
+        $grant_type = 'authorization_code';
+        
+        $url = $this->wxApiBaseUrl .  $urlKey . "?appid=$apiId&secret=$secret&js_code=$code&grant_type=$grant_type";
+        // echo $url;
+        $returnStr =  \fec\helpers\CApi::getCurlData($url);
+        $wxUserInfo = json_decode($returnStr, true);
+        if (!isset($wxUserInfo['session_key']) || !isset($wxUserInfo['openid']) ) {
+            return null;
+        }
+        // 保存到session
+        Yii::$service->helper->wx->setWxSessionKeyAndOpenid($wxUserInfo['session_key'], $wxUserInfo['openid']);
+            
+        return $wxUserInfo;
+        
+        
+        
+    }
+    */
     
     
     
