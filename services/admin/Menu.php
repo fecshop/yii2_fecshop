@@ -60,7 +60,9 @@ class Menu extends Service
             }
             if($i == 1){
                 $str .=	'<div class="accordionHeader">
-							<h2><span>Folder</span>'.$name .'</h2>
+							<h2><span>Folder</span>'.$name .'
+                                <span class="first_collapsable"></span>
+                            </h2>
 						</div>
 						<div class="accordionContent">';
                 if($this->hasChild($node)){

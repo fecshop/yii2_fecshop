@@ -37,7 +37,7 @@ table.list .hover{
     float: right;
     right: 70px;
     position: absolute;
-    margin: 15px 0 0;
+    margin: 5px 0 0;
     font-size: 10px;
 }
 
@@ -165,3 +165,363 @@ span.error{
     background:none;
 }
 .page .panelBar{padding:10px 0}
+
+
+
+
+
+
+
+#layout #sidebar{
+        background: #20222A;
+        left:0px;
+        border:none;
+        padding-top:0px;
+}
+#sidebar  .accordion {
+        background: #20222A;
+        padding-left:0;
+}
+
+#sidebar  .tree ul{
+        background: #20222A;
+}
+
+
+
+#sidebar  .tree .selected{
+        background: #009688 !important
+}
+
+#sidebar .tree li a, #sidebar .tree li span {
+    color: #ddd;
+    font-size:14px;
+    font-weight:400;
+}
+
+#sidebar  .accordion .accordionHeader h2{
+    color:#ddd;
+    height: 40px;
+    line-height: 40px;
+    font-size:14px;
+    font-weight:400;
+}
+
+#sidebar  .toggleCollapse h2{
+    color:#ddd;
+}
+
+#sidebar  .tree .hover{
+    background:none;
+}
+
+#sidebar  .tree .hover a{
+    color:#fff;
+}
+
+#sidebar .tree .folder_collapsable, #sidebar .tree .folder_expandable, #sidebar .tree .file{
+    background:none;
+}
+
+#sidebar .tree div div{
+    background:none;
+}
+
+#sidebar{
+    width:220px;
+}
+
+
+#splitBar{
+    width:0px;
+}
+
+#container{
+    left:220px;
+}
+
+.page.unitBox{
+    
+}
+
+#leftside , #container{
+    top:0px;
+}
+
+#container  .page.unitBox {
+    border: none;
+}
+
+
+#container .tabsPageHeader{
+    border-bottom: 1px solid #b8d0d6;
+}
+
+
+
+
+.tabsPage .tabsPageContent::-webkit-scrollbar {/*滚动条整体样式*/
+            width: 1px;     /*高宽分别对应横竖滚动条的尺寸*/
+            height: 1px;
+        }
+        .tabsPage .tabsPageContent::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+            border-radius: 1px;
+            -webkit-box-shadow: inset 0 0 1px  #b8d0d6;
+            background:  #b8d0d6;
+        }
+        .tabsPage .tabsPageContent::-webkit-scrollbar-track {/*滚动条里面轨道*/
+            -webkit-box-shadow: inset 0 0 1px  #b8d0d6;
+            border-radius: 0;
+            background:  #b8d0d6;
+        }
+
+.accordion .accordionContent{
+    background-color:rgba(0,0,0,.3)!important;
+    border:none;
+    padding-top:5px;
+}
+
+#layout #sidebar .tree ul{
+    background:none;
+}
+
+#sidebar .toggleCollapse h2{
+    font-size: 25px;
+    font-weight: 100;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.15);
+    width: 100%;
+}
+#sidebar .toggleCollapse{
+    height:60px;
+}
+
+#sidebar .tree .first_collapsable{
+    float:right;
+    content: '';
+    width: 0;
+    height: 0;
+    border-style: solid dashed dashed;
+    border-color: #fff transparent transparent;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all .2s;
+    -webkit-transition: all .2s;
+    position: absolute;
+    top: 40%;
+    right: 13px;
+    margin-top: -1px;
+    border-width: 6px;
+    border-top-color: rgba(255,255,255,.7);
+}
+body .background{
+    opacity: 0;
+}
+
+#sidebar .tree .first_expandable{
+    
+    content: '';
+    width: 0;
+    height: 0;
+    border-style: solid dashed dashed;
+    border-color: #fff transparent transparent;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all .2s;
+    -webkit-transition: all .2s;
+    position: absolute;
+    top: 40%;
+    right: 13px;
+    margin-top: -4px;
+    border-width: 6px;
+    border-top-color: rgba(255,255,255,.7);
+    
+    /* border-style: dashed dashed solid; */
+    border-color: transparent transparent #fff;
+    
+}
+
+
+#sidebar .accordion .accordionHeader h2{
+    position:relative
+}
+
+
+.accordion .accordionHeader h2 span.first_collapsable{
+    display:block;
+    float:right;
+    content: '';
+    width: 0;
+    height: 0;
+    border-style: solid dashed dashed;
+    border-color: #fff transparent transparent;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all .2s;
+    -webkit-transition: all .2s;
+    position: absolute;
+    top: 40%;
+    right: 13px;
+    margin-top: -1px;
+    border-width: 6px;
+    border-top-color: rgba(255,255,255,.7);
+}
+
+.accordion .accordionHeader h2.collapsable span.first_collapsable{
+    content: '';
+    width: 0;
+    height: 0;
+    border-style: solid dashed dashed;
+    border-color: #fff transparent transparent;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all .2s;
+    -webkit-transition: all .2s;
+    position: absolute;
+    top: 40%;
+    right: 13px;
+    margin-top: -4px;
+    border-width: 6px;
+    border-top-color: rgba(255,255,255,.7);
+    
+    /* border-style: dashed dashed solid; */
+    border-color: transparent transparent #fff;
+}
+
+
+
+
+.accordionContent .treeFolder > li > div {
+    position: relative;
+}
+
+#sidebar .tree li a{
+    height: 40px;
+    line-height: 40px;
+    padding-left: 25px;
+    padding-right: 10px;
+}
+
+.tree div, .tree a, .tree span{
+    height: auto;
+}
+
+
+.accordion .accordionHeader{
+    height: 40px;
+    line-height: 40px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.accountInfo{
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.15);
+    width: 96%;
+}
+
+
+#container .tabsPage .tabsPageHeader{
+    height: 30px;
+}
+
+#container .tabsPage .tabsPageHeaderContent{
+    height: 30px;
+}
+
+#container .tabsPage .tabsPageHeader ul{
+    height: 30px;
+}
+
+#container .tabsPage .tabsPageHeader li, #container  .tabsPage .tabsPageHeader li a, #container  .tabsPage .tabsPageHeader li span{
+    height: 30px;
+    line-height: 30px;
+    font-size: 10px;
+}
+
+
+
+.layui-icon {
+    font-family: layui-icon!important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    position: absolute;
+    padding: 5px;
+    right: 10px;
+    top: 12px;
+    color: #fff;
+    cursor: pointer;
+}
+
+
+.alert .error .alertInner{
+    border-color: none;
+    background: none;
+}
+.alert .correct .alertInner, .alert .info .alertInner { 
+    border-color: none;
+    background: none;
+    border-width: 0;
+}
+.alert .confirm .alertInner {
+    border-color: none;
+    background: none;
+    border-width: 0;
+}
+.alert .warn .alertInner{
+    border-color: none;
+    background: none;
+    border-width: 0;
+}
+.alert .alertContent{
+    border:none;
+    border-width: 0;
+}
+
+.searchContent{
+    float: left;
+}
+.searchBar .subBar {
+    height: 25px;
+    float: right;
+    margin: 6px 20px 0 0;
+}
+
+.upload-image{
+    margin: 10px 0 0;
+    background: #009688;
+    border: none;
+    color: #fff;
+    border-radius: .25rem;
+    height: 20px;
+    padding: 0 19px;
+}
+
+.upload-image:hover{
+    opacity:0.8
+}
+
+.grid .gridHeader th.hover, .grid .gridHeader th.thSelected{ 
+    border-color: #009688
+}
+
+
+.btnEdit:hover .fa-pencil:before{
+    color: #009688;
+}
+
+.btnDel:hover .fa-trash-o:before {
+    color: #009688;
+}
+
+.btnEdit:hover .fa-copy:before, .btnEdit:hover  .fa-files-o:before {
+    color: #009688;
+}
+
+.pageContent .panelBar{
+    border-color:#eee;
+}
+
+
+
+

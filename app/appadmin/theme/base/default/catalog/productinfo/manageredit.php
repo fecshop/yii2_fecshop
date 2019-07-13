@@ -303,7 +303,7 @@ function thissubmit(thiss){
 						<!-- position: absolute;left: 10px;top: 5px;只针对本用例将input隐至图片底下。-->
 						<!-- height:0;width:0;z-index: -1;是为了隐藏input，因为Chrome下不能使用display:none，否则无法添加文件 -->
 						<!-- onclick="getElementById('inputfile').click()" 点击图片时则点击添加文件按钮 -->
-						<button style="" onclick="getElementById('inputfile').click()" class="scalable" type="button" title="Duplicate" id=""><span><span><span><?=  Yii::$service->page->translate->__('Browse Files') ?></span></span></span></button>
+						<button style="" onclick="getElementById('inputfile').click()" class="scalable upload-image" type="button" title="Duplicate" id=""><span><span><span><?=  Yii::$service->page->translate->__('Browse Files') ?></span></span></span></button>
 						
 						<input type="file" multiple="multiple" id="inputfile" style="margin:10px;height:0;width:0;z-index: -1; position: absolute;left: 10px;top: 5px;"/>
 						<span class="loading"></span>

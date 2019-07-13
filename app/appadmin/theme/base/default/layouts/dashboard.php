@@ -118,56 +118,50 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
 <body>
 <?php $this->beginBody() ?>
 	<div id="layout">
-		<div id="header">
-			<div class="headerNav">
-				<a target="_blank" class="logo" href="http://www.fecshop.com">
-					<img style="height:30px;" src="<?= Yii::getAlias($logoPath[1]); ?>" alt="Fecshop" />
-				</a>
-                  <?php $currentLangCode = Yii::$service->admin->getCurrentLangCode() ?>
-                  <?php $langArr = Yii::$service->admin->getLangArr() ?>
-                  <select class="store_langs" style="font-size:10px;">
-                       <?php foreach ($langArr as $code => $name): ?>
-                           <option  value="<?= $code ?>" <?= ($code == $currentLangCode) ? 'selected="selected"' : ''  ?>>
-                               <?= $name ?>
-                           </option>
-                      <?php endforeach; ?>
-                   </select>
-				<a style="color:#777; display: block; height: 21px;position: absolute; right: 10px;top: 18px;z-index: 31;"
-				   doPost
-				   href='javascript:doPost("<?= Yii::$service->url->getUrl("fecadmin/logout") ?>", {"<?= CRequest::getCsrfName() ?>": "<?= CRequest::getCsrfValue() ?>", "islogout": "1"}) '>
-					<?= Yii::$service->page->translate->__('Logout'); ?>
-				</a>
-			</div>
-		</div>
 		<div id="leftside">
-			<div id="sidebar_s">
-				<div class="collapse">
-					<div class="toggleCollapse"><div></div></div>
-				</div>
-			</div>
+			
 			<div id="sidebar">
-				<div class="toggleCollapse">
-					<h2><?= Yii::$service->page->translate->__('Main Menu'); ?></h2>
+				<div class="toggleCollapse" style="background:#20222A !important;overflow: visible;">
+					<h2 style="font-size:20px;font-weight:100;    padding-top: 10px;padding-bottom: 10px;"><?= Yii::$service->page->translate->__('Fecshop'); ?></h2>
 					<div><i class=”fa fa-list”></i></div>
+                    
 				</div>
 
 				<div class="accordion" fillSpace="sidebar">
+                    
 					<?= Yii::$service->admin->menu->getLeftMenuHtml();  ?>
 				</div>
 			</div>
 		</div>
 		<div id="container">
-			<div id="navTab" class="tabsPage">
+			<div id="navTab" class="tabsPage" style="position: relative;">
 				<div class="tabsPageHeader">
 					<div class="tabsPageHeaderContent"><!-- 显示左右控制时添加 class="tabsPageHeaderMargin" -->
 						<ul class="navTab-tab">
 							<li tabid="main" class="main"><a href="javascript:;"><span><span class="home_icon"><?= Yii::$service->page->translate->__('My Main Page'); ?></span></span></a></li>
 						</ul>
 					</div>
-					<div class="tabsLeft">left</div><!-- 禁用只需要添加一个样式 class="tabsLeft tabsLeftDisabled" -->
-					<div class="tabsRight">right</div><!-- 禁用只需要添加一个样式 class="tabsRight tabsRightDisabled" -->
-					<div class="tabsMore">more</div>
+					
 				</div>
+                
+                <div class="headerNav" style="position: absolute;right: 25px; top: 0; width: 200px;  height: 30px; z-index: 999999;">
+				
+                      <?php $currentLangCode = Yii::$service->admin->getCurrentLangCode() ?>
+                      <?php $langArr = Yii::$service->admin->getLangArr() ?>
+                      <select class="store_langs" style="font-size:10px;">
+                           <?php foreach ($langArr as $code => $name): ?>
+                               <option  value="<?= $code ?>" <?= ($code == $currentLangCode) ? 'selected="selected"' : ''  ?>>
+                                   <?= $name ?>
+                               </option>
+                          <?php endforeach; ?>
+                       </select>
+                    <a style="color:#777; display: block; height: 21px;position: absolute; right: 5px;top: 10px;z-index: 31;"
+                       doPost
+                       href='javascript:doPost("<?= Yii::$service->url->getUrl("fecadmin/logout") ?>", {"<?= CRequest::getCsrfName() ?>": "<?= CRequest::getCsrfValue() ?>", "islogout": "1"}) '>
+                        <?= Yii::$service->page->translate->__('Logout'); ?>
+                    </a>
+                </div>
+                
 				<ul class="tabsMoreList">
 					<li><a href="javascript:;"><?= Yii::$service->page->translate->__('My Main Page'); ?></a></li>
 				</ul>

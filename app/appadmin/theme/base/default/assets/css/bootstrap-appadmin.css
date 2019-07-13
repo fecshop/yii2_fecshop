@@ -135,8 +135,8 @@ body {
 
 .grid .gridHeader th {
     border: none;
-    border-bottom: 2px solid #dee2e6;
-    border-top: 2px solid #dee2e6;
+    border-bottom: 1px solid #dee2e6;
+    border-top: 1px solid #dee2e6;
 }
 
 .tabsPage .tabsPageContent {
@@ -263,10 +263,15 @@ td {}
     line-height: 1.5;
     border-radius: .25rem;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-    background: #607D8B !important;
+    background: #009688  !important;
     color: #ffffff !important;
 }
 
+
+.button:hover, .buttonActive:hover, .buttonDisabled:hover{
+    background: #009688  !important;
+    opacity:.8;
+}
 .button, .button span, .buttonDisabled, .buttonDisabled span, .buttonActive, .buttonActive span, .button .buttonContent, .buttonHover, .buttonHover .buttonContent, .buttonActive .buttonContent, .buttonActiveHover, .buttonActiveHover .buttonContent, .buttonDisabled .buttonContent {
     background: none;
     color: #fff;
@@ -315,7 +320,7 @@ a.btnAdd, a.btnDel, a.btnView, a.btnEdit, a.btnSelect, a.btnInfo, a.btnAssign, a
 }
 
 .pagination li.selected a {
-    color: #2196F3;
+    color: #009688;
 }
 
 .pagination a, .pagination li.hover a, .pagination li span {
@@ -327,7 +332,7 @@ a.btnAdd, a.btnDel, a.btnView, a.btnEdit, a.btnSelect, a.btnInfo, a.btnAssign, a
     color: #575962;
     padding: 0.85rem 1.5rem;
     border-radius: 4px;
-    margin: 10px 0;
+    margin: 10px;
     height: auto;
 }
 
@@ -348,7 +353,7 @@ a.btnAdd, a.btnDel, a.btnView, a.btnEdit, a.btnSelect, a.btnInfo, a.btnAssign, a
 
 .tabsPage .tabsPageHeaderContent {
     height: 40px;
-    border-bottom: 1px solid #b8d0d6;
+    border-bottom: 1px solid #eee;
 
 }
 
@@ -364,7 +369,6 @@ div#navTab {
 .tabsPage .tabsPageHeader ul {
     height: 40px;
 
-    border-top: 1px solid #b8d0d6;
 }
 
 .tabsPage .tabsPageHeader li.selected {
