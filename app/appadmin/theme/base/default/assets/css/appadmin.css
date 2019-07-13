@@ -522,6 +522,36 @@ body .background{
     border-color:#eee;
 }
 
+.dialog .pageContent .pageFormContent{
+    border-color: #ccc;
+}
+
+
+fieldset legend {
+    padding: 2px;
+    border: 1px dotted #009688;
+    font-weight: bold;
+}
+
+.dialog .pageFormContent, .dialog .viewInfo{
+    border-color: #ccc;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -43,21 +43,21 @@ use fecadmin\models\AdminRole;
         <div style="clear:both"></div>
     </div>
     <div>
-        <label><?= Yii::$service->page->translate->__('Url') ?>：</label>
-         <input value="<?= $url  ?>"  style="width:80%"   />
+        <label ><?= Yii::$service->page->translate->__('Url') ?>：</label>
+         <input value="<?= $url  ?>"  style="width:80%; margin-left: 4px;" class="textInput"   />
     </div>
     
     <div style="clear:both"></div>
     <br/>
     <div>
         <label><?= Yii::$service->page->translate->__('File') ?>File：</label>
-         <input value="<?= $file  ?>"  style="width:80%"   />
+         <input value="<?= $file  ?>"  style="width:80%; margin-left: 4px;"  class="textInput"   />
     </div>
     <div style="clear:both"></div>
     <br/>
     <div>
         <label><?= Yii::$service->page->translate->__('Message') ?>: </label>
-         <input value="<?= $message  ?>"  style="width:80%"   />
+         <input value="<?= $message  ?>"  style="width:80%; margin-left: 4px;"  class="textInput"   />
     </div>
     <div style="clear:both"></div>
     <div style="padding:10px 0">

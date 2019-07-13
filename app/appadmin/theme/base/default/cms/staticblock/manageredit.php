@@ -26,7 +26,7 @@ use fecadmin\models\AdminRole;
 		<div layouth="56" class="pageFormContent" style="height: 240px; overflow: auto;">
                 <input type="hidden"  value="<?=  $product_id; ?>" size="30" name="product_id" class="textInput ">
 				<fieldset id="fieldset_table_qbe">
-					<legend style="color:#cc0000"><?= Yii::$service->page->translate->__('Edit Info') ?></legend>
+					<legend style="color:#009688"><?= Yii::$service->page->translate->__('Edit Info') ?></legend>
 					<div>
 						<?= $editBar; ?>
 					</div>

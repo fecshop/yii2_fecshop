@@ -104,12 +104,15 @@ class Index extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInterf
             }
             $thumbnail_image = CRequest::param('thumbnail_image');
             $image = CRequest::param('image');
-            if ($thumbnail_image) {
-                $editFormData['thumbnail_image'] = $thumbnail_image;
-            }
-            if ($image) {
-                $editFormData['image'] = $image;
-            }
+            // 分类图片加入删除功能，为空可能代表删除。
+            $editFormData['thumbnail_image'] = $thumbnail_image;
+            $editFormData['image'] = $image;
+            //if ($thumbnail_image) {
+            //    $editFormData['thumbnail_image'] = $thumbnail_image;
+            //}
+            //if ($image) {
+            //    $editFormData['image'] = $image;
+            //}
 
             $product_select_info = CRequest::param('product_select_info');
             $product_unselect_info = CRequest::param('product_unselect_info');

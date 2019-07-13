@@ -25,7 +25,6 @@ use fec\helpers\CRequest;
 		<?php echo $editBar;  ?>
 	</div>
 	<div class="panelBar">
-		<?= $toolBar; ?>
 	</div>
 	<table class="table" width="100%" layoutH="138">
 		<?= $thead; ?>

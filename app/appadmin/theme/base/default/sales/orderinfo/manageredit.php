@@ -29,7 +29,7 @@ use fecshop\app\appfront\helper\Format;
 				<input type="hidden"  value="<?=  $order['order_id']; ?>" size="30" name="editForm[order_id]" class="textInput ">
 				
 				<fieldset id="fieldset_table_qbe">
-					<legend style="color:#cc0000"><?= Yii::$service->page->translate->__('Order Info')  ?></legend>
+					<legend style="color:#009688"><?= Yii::$service->page->translate->__('Order Info')  ?></legend>
 					<div>
 						<p class="edit_p">
 							<label><?= Yii::$service->page->translate->__('Increment Id')  ?>：</label>
@@ -138,7 +138,7 @@ use fecshop\app\appfront\helper\Format;
 				</fieldset>
 				
 				<fieldset id="fieldset_table_qbe">
-					<legend style="color:#cc0000"><?= Yii::$service->page->translate->__('Order Customer Info')  ?></legend>
+					<legend style="color:#009688"><?= Yii::$service->page->translate->__('Order Customer Info')  ?></legend>
 					<div>
 				
 						<p class="edit_p">
@@ -177,7 +177,7 @@ use fecshop\app\appfront\helper\Format;
 				</fieldset>
 				
 				<fieldset id="fieldset_table_qbe">
-					<legend style="color:#cc0000"><?= Yii::$service->page->translate->__('Order Shipping Info')  ?></legend>
+					<legend style="color:#009688"><?= Yii::$service->page->translate->__('Order Shipping Info')  ?></legend>
 					<div>
 				
 						<p class="edit_p">
@@ -293,14 +293,14 @@ use fecshop\app\appfront\helper\Format;
 				</fieldset>
 				
                 <fieldset id="fieldset_table_qbe">
-					<legend style="color:#cc0000"><?= Yii::$service->page->translate->__('Order Customer Remark')  ?></legend>
+					<legend style="color:#009688"><?= Yii::$service->page->translate->__('Order Customer Remark')  ?></legend>
 					<div>
                         <textarea style="width:98%;height:100px;"><?= $order['order_remark'] ?></textarea>
                     </div>
                 </fieldset>   
 				
 				<fieldset id="fieldset_table_qbe">
-					<legend style="color:#cc0000"><?= Yii::$service->page->translate->__('Order Product Info')  ?></legend>
+					<legend style="color:#009688"><?= Yii::$service->page->translate->__('Order Product Info')  ?></legend>
 					<div>
 						<table summary="Items Ordered" id="my-orders-table" class="data-table list" style="width:100%;table-layout: auto;">
 							<colgroup><col>
