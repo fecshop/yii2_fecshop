@@ -129,7 +129,7 @@ Fecshop Trace Demo: http://trace.fecshop.com
 
 扫一扫添加Terry的微信：
 
-![weixin](http://www.fecshop.com/terry_fecshop_weixin.png)
+![weixin](http://www.fecshop.com/weixin_terry.jpg)
 
 
 
