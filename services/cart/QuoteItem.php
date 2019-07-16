@@ -239,6 +239,7 @@ class QuoteItem extends Service
         $base_product_total = 0;
         $product_volume = 0;
         $product_qty_total = 0;
+        $productPrimaryKey = Yii::$service->product->getPrimaryKey();
         if ($cart_id) {
             if (!isset($this->_cart_product_info[$cart_id])) {
                 $data = $this->_itemModel->find()->where([
@@ -252,7 +253,7 @@ class QuoteItem extends Service
                         }
                         $product_id     = $one['product_id'];
                         $product_one    = Yii::$service->product->getByPrimaryKey($product_id);
-                        if ($product_one['_id']) {
+                        if ($product_one[$productPrimaryKey]) {
                             $qty                = $one['qty'];
                             
                             $custom_option_sku  = $one['custom_option_sku'];
@@ -333,23 +334,39 @@ class QuoteItem extends Service
     protected function getProductSpuOptions($productOb)
     {
         $custom_option_info_arr = [];
+        $productPrimaryKey = Yii::$service->product->getPrimaryKey();
+        $productAttrGroup = $productOb['attr_group'];
         if (isset($productOb['attr_group']) && !empty($productOb['attr_group'])) {
-            $productAttrGroup = $productOb['attr_group'];
-            Yii::$service->product->addGroupAttrs($productAttrGroup);
-            $productOb  = Yii::$service->product->getByPrimaryKey((string) $productOb['_id']);
             $spuArr     = Yii::$service->product->getSpuAttr($productAttrGroup);
-            if (is_array($spuArr) && !empty($spuArr)) {
-                foreach ($spuArr as $spu_attr) {
-                    if (isset($productOb[$spu_attr]) && !empty($productOb[$spu_attr])) {
-                        // 进行翻译。
-                        $spu_attr_label = Yii::$service->page->translate->__($spu_attr);
-                        $spu_attr_val = Yii::$service->page->translate->__($productOb[$spu_attr]);
-                        $custom_option_info_arr[$spu_attr_label] = $spu_attr_val;
+            //var_dump($productOb['attr_group_info']);
+            // mysql存储
+            if (isset($productOb['attr_group_info']) && is_array($productOb['attr_group_info'])) {
+                $attr_group_info = $productOb['attr_group_info'];
+                if (is_array($spuArr) && !empty($spuArr)) {
+                    foreach ($spuArr as $spu_attr) {
+                        if (isset($attr_group_info[$spu_attr]) && !empty($attr_group_info[$spu_attr])) {
+                            // 进行翻译。
+                            $spu_attr_label = Yii::$service->page->translate->__($spu_attr);
+                            $spu_attr_val = Yii::$service->page->translate->__($attr_group_info[$spu_attr]);
+                            $custom_option_info_arr[$spu_attr_label] = $spu_attr_val;
+                        }
+                    }
+                }
+            } else { // mongodb类型
+                Yii::$service->product->addGroupAttrs($productAttrGroup);
+                $productOb  = Yii::$service->product->getByPrimaryKey((string) $productOb[$productPrimaryKey ]);
+                if (is_array($spuArr) && !empty($spuArr)) {
+                    foreach ($spuArr as $spu_attr) {
+                        if (isset($productOb[$spu_attr]) && !empty($productOb[$spu_attr])) {
+                            // 进行翻译。
+                            $spu_attr_label = Yii::$service->page->translate->__($spu_attr);
+                            $spu_attr_val = Yii::$service->page->translate->__($productOb[$spu_attr]);
+                            $custom_option_info_arr[$spu_attr_label] = $spu_attr_val;
+                        }
                     }
                 }
             }
         }
-
         return $custom_option_info_arr;
     }
 
