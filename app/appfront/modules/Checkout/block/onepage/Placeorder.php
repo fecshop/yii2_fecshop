@@ -55,6 +55,7 @@ class Placeorder
             if($post['payment_method'] == $wxpay_payment_key){
                 Yii::$service->page->currency->setCurrentCurrency2CNY(); 
             }
+            
 	    // 检查前台传递的数据的完整
             if ($this->checkOrderInfoAndInit($post)) {
                 
@@ -62,7 +63,6 @@ class Placeorder
                 $gus_status = $this->guestCreateAndLoginAccount($post);
                 $save_address_status = $this->updateAddress($post);
                 if ($gus_status && $save_address_status) {
-                    
                     // 更新Cart信息
                     //$this->updateCart();
                     // 设置checkout type
@@ -73,8 +73,10 @@ class Placeorder
                     
                     $innerTransaction = Yii::$app->db->beginTransaction();
                     try {
+                        
                         # 生成订单，扣除库存，但是，不清空购物车。
                         $genarateStatus = Yii::$service->order->generateOrderByCart($this->_billing, $this->_shipping_method, $this->_payment_method, false, '', $this->_order_remark);
+                        
                         if ($genarateStatus) {
                             // 得到当前的订单信息
                             //$orderInfo = Yii::$service->order->getCurrentOrderInfo();
