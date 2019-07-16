@@ -11,11 +11,11 @@
 namespace fecshop\services\product;
 
 use fecshop\services\Service;
-
+use yii\db\Query;
 use Yii;
 
 /**
- * Product ProductMysqldb Service Î´¿ª·¢¡£
+ * Product ProductMysqldb Service æœªå¼€å‘ã€‚
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -27,19 +27,50 @@ class ProductMysqldb extends Service implements ProductInterface
 
     protected $_productModel;
     
+    protected $_categoryProductModelName = '\fecshop\models\mysqldb\CategoryProduct';
+
+    protected $_categoryProductModel;
+    
+    protected $serializeAttrs = [
+        'name',
+        'meta_title',
+        'tier_price',
+        
+        'meta_keywords',
+        'meta_description',
+        'image',
+        'description',
+        'short_description',
+        'custom_option',
+        'remark',
+        'relation_sku',
+        'buy_also_buy_sku',
+        
+        'see_also_see_sku',
+        'attr_group_info',
+        'reviw_rate_star_average_lang',
+        'review_count_lang',
+        'reviw_rate_star_info',
+        'reviw_rate_star_info_lang',
+    ];
+    
     public function init()
     {
         parent::init();
         list($this->_productModelName, $this->_productModel) = \Yii::mapGet($this->_productModelName);
+        list($this->_categoryProductModelName, $this->_categoryProductModel) = \Yii::mapGet($this->_categoryProductModelName);
+        
     }
     
     public function getPrimaryKey()
     {
         return 'id';
     }
+    
+    
 
     /**
-     * µÃµ½·ÖÀà¼¤»î×´Ì¬µÄÖµ
+     * å¾—åˆ°åˆ†ç±»æ¿€æ´»çŠ¶æ€çš„å€¼
      */
     public function getEnableStatus()
     {
@@ -50,18 +81,21 @@ class ProductMysqldb extends Service implements ProductInterface
     public function getByPrimaryKey($primaryKey = null)
     {
         if ($primaryKey) {
-            return $this->_productModel->findOne($primaryKey);
+            $one = $this->_productModel->findOne($primaryKey);
+            return $this->unserializeData($one) ;
         } else {
             return new $this->_productModelName();
         }
     }
+    
+    
 
     /**
      * @param $sku|array
-     * @param $returnArr|bool ·µ»ØµÄÊı¾İÊÇ·ñÊÇÊı×é¸ñÊ½£¬Èç¹ûÉèÖÃÎª
-     *		false£¬Ôò·µ»ØµÄÊÇ¶ÔÏóÊı¾İ
+     * @param $returnArr|bool è¿”å›çš„æ•°æ®æ˜¯å¦æ˜¯æ•°ç»„æ ¼å¼ï¼Œå¦‚æœè®¾ç½®ä¸º
+     *		falseï¼Œåˆ™è¿”å›çš„æ˜¯å¯¹è±¡æ•°æ®
      * @return array or Object
-     *               Í¨¹ısku »ñÈ¡²úÆ·£¬Ò»¸ö²úÆ·
+     *               é€šè¿‡sku è·å–äº§å“ï¼Œä¸€ä¸ªäº§å“
      */
     public function getBySku($sku, $returnArr = true)
     {
@@ -75,17 +109,17 @@ class ProductMysqldb extends Service implements ProductInterface
             }
             $primaryKey = $this->getPrimaryKey();
             if (isset($product[$primaryKey]) && !empty($product[$primaryKey])) {
-                return $product;
+                return $this->unserializeData($product) ;
             }
         }
     }
 
     /**
      * @param $spu|array
-     * @param $returnArr|bool ·µ»ØµÄÊı¾İÊÇ·ñÊÇÊı×é¸ñÊ½£¬Èç¹ûÉèÖÃÎª
-     *		false£¬Ôò·µ»ØµÄÊÇ¶ÔÏóÊı¾İ
+     * @param $returnArr|bool è¿”å›çš„æ•°æ®æ˜¯å¦æ˜¯æ•°ç»„æ ¼å¼ï¼Œå¦‚æœè®¾ç½®ä¸º
+     *		falseï¼Œåˆ™è¿”å›çš„æ˜¯å¯¹è±¡æ•°æ®
      * @return array or Object
-     *               Í¨¹ıspu »ñÈ¡²úÆ·Êı×é
+     *               é€šè¿‡spu è·å–äº§å“æ•°ç»„
      */
     public function getBySpu($spu, $returnArr = true)
     {
@@ -120,17 +154,57 @@ class ProductMysqldb extends Service implements ProductInterface
     {
         $query = $this->_productModel->find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
-
+        
+        $coll = $query->all();
+        $arr = [];
+        foreach ($coll as $one) {
+            $arr[] = $this->unserializeData($one) ;
+        }
         return [
-            'coll' => $query->all(),
+            'coll' => $arr,
             'count'=> $query->limit(null)->offset(null)->count(),
         ];
     }
+    
+    public function spuCollData($select, $spuAttrArr, $spu)
+    {
+        $select[] = 'attr_group_info';
+        //var_dump($select);exit;
+        $filter = [
+            'select'    => $select,
+            'where'            => [
+                ['spu' => $spu],
+            ],
+            'asArray' => true,
+        ];
+        
+        $data = Yii::$service->product->coll($filter);
+        
+        $coll = $data['coll'];
+        $arr = [];
+        foreach ($coll as $one) {
+            $ar = [];
+            foreach ($one as $k=>$v) {
+                if ($k != 'attr_group_info') {
+                    $ar[$k] = $v;
+                } else {
+                    if (is_array($v)) {
+                        foreach ($v as $k2=>$v2) {
+                            $ar[$k2] = $v2;
+                        }
+                    }
+                }
+            }
+            $arr[] = $ar;
+        }
+        
+        return $arr;
+    }
 
     /**
-     * ºÍcoll()µÄ²»Í¬ÔÚÓÚ£¬¸Ã·½Ê½²»×ßactive record£¬Òò´Ë¿ÉÒÔ»ñÈ¡²úÆ·µÄËùÓĞÊı¾İµÄ¡£
-     * ×ßÕâÖÖ·½Ê½£¬¿ÉÒÔÈÆ¹ı²úÆ·ÊôĞÔ×é£¬ÒòÎª²úÆ·ÊôĞÔ×éĞèÒª¸ù¾İ²»Í¬µÄ
-     * ÊôĞÔ×é£¬ÔÚactive record ÉÏÃæ¸½¼ÓÏàÓ¦µÄÊôĞÔ£¬¶ÔapiÕâÖÖ²»ÊÊºÏ¡£
+     * å’Œcoll()çš„ä¸åŒåœ¨äºï¼Œè¯¥æ–¹å¼ä¸èµ°active recordï¼Œå› æ­¤å¯ä»¥è·å–äº§å“çš„æ‰€æœ‰æ•°æ®çš„ã€‚
+     * èµ°è¿™ç§æ–¹å¼ï¼Œå¯ä»¥ç»•è¿‡äº§å“å±æ€§ç»„ï¼Œå› ä¸ºäº§å“å±æ€§ç»„éœ€è¦æ ¹æ®ä¸åŒçš„
+     * å±æ€§ç»„ï¼Œåœ¨active record ä¸Šé¢é™„åŠ ç›¸åº”çš„å±æ€§ï¼Œå¯¹apiè¿™ç§ä¸é€‚åˆã€‚
      */
     public function apicoll()
     {
@@ -150,8 +224,8 @@ class ProductMysqldb extends Service implements ProductInterface
     }
 
     /**
-     * @param $primaryKey | String Ö÷¼ü
-     * @return  array £¬ºÍgetByPrimaryKey()µÄ²»Í¬ÔÚÓÚ£¬¸Ã·½Ê½²»×ßactive record£¬Òò´Ë¿ÉÒÔ»ñÈ¡²úÆ·µÄËùÓĞÊı¾İµÄ¡£
+     * @param $primaryKey | String ä¸»é”®
+     * @return  array ï¼Œå’ŒgetByPrimaryKey()çš„ä¸åŒåœ¨äºï¼Œè¯¥æ–¹å¼ä¸èµ°active recordï¼Œå› æ­¤å¯ä»¥è·å–äº§å“çš„æ‰€æœ‰æ•°æ®çš„ã€‚
      */
     public function apiGetByPrimaryKey($primaryKey)
     {
@@ -166,8 +240,8 @@ class ProductMysqldb extends Service implements ProductInterface
     }
 
     /**
-     * @param $product_one | String ²úÆ·Êı¾İÊı×é¡£Õâ¸öÒªºÍmongodbÀïÃæ±£´æµÄ²úÆ·Êı¾İ¸ñÊ½Ò»ÖÂ¡£
-     * Í¨¹ıapi±£´æ²úÆ·
+     * @param $product_one | String äº§å“æ•°æ®æ•°ç»„ã€‚è¿™ä¸ªè¦å’Œmongodbé‡Œé¢ä¿å­˜çš„äº§å“æ•°æ®æ ¼å¼ä¸€è‡´ã€‚
+     * é€šè¿‡apiä¿å­˜äº§å“
      */
     public function apiSave($product_one)
     {
@@ -179,7 +253,7 @@ class ProductMysqldb extends Service implements ProductInterface
 
     /**
      * @param $primaryKey | String
-     * Í¨¹ıapiÉ¾³ı²úÆ·
+     * é€šè¿‡apiåˆ é™¤äº§å“
      */
     public function apiDelete($primaryKey)
     {
@@ -190,7 +264,7 @@ class ProductMysqldb extends Service implements ProductInterface
     }
 
     /*
-     * @param $filter | Array £¬ example filter:
+     * @param $filter | Array ï¼Œ example filter:
      * [
      * 		'numPerPage' 	=> 20,
      * 		'pageNum'		=> 1,
@@ -202,7 +276,7 @@ class ProductMysqldb extends Service implements ProductInterface
      * 		],
      * 	    'asArray' => true,
      * ]
-     * µÃµ½×ÜÊı¡£
+     * å¾—åˆ°æ€»æ•°ã€‚
      */
     public function collCount($filter = [])
     {
@@ -215,22 +289,19 @@ class ProductMysqldb extends Service implements ProductInterface
     /**
      * @param  $product_id_arr | Array
      * @param  $category_id | String
-     * ÔÚ¸øÓèµÄ²úÆ·idÊı×é$product_id_arrÖĞ£¬ÕÒ³öÀ´ÄÇĞ©²úÆ·ÊôÓÚ·ÖÀà $category_id
-     * ¸Ã¹¦ÄÜÊÇºóÌ¨·ÖÀà±à¼­ÖĞ£¬¶ÔÓ¦µÄ·ÖÀà²úÆ·ÁĞ±í¹¦ÄÜ
-     * Ò²¾ÍÊÇÔÚµ±Ç°µÄ·ÖÀàÏÂ£¬²é¿´ËùÓĞµÄ²úÆ·£¬ÊôÓÚµ±Ç°·ÖÀàµÄ²úÆ·£¬Ä¬ÈÏ±»¹´Ñ¡¡£
+     * åœ¨ç»™äºˆçš„äº§å“idæ•°ç»„$product_id_arrä¸­ï¼Œæ‰¾å‡ºæ¥é‚£äº›äº§å“å±äºåˆ†ç±» $category_id
+     * è¯¥åŠŸèƒ½æ˜¯åå°åˆ†ç±»ç¼–è¾‘ä¸­ï¼Œå¯¹åº”çš„åˆ†ç±»äº§å“åˆ—è¡¨åŠŸèƒ½
+     * ä¹Ÿå°±æ˜¯åœ¨å½“å‰çš„åˆ†ç±»ä¸‹ï¼ŒæŸ¥çœ‹æ‰€æœ‰çš„äº§å“ï¼Œå±äºå½“å‰åˆ†ç±»çš„äº§å“ï¼Œé»˜è®¤è¢«å‹¾é€‰ã€‚
      */
     public function getCategoryProductIds($product_id_arr, $category_id)
     {
+        $category_product_ids = $this->getProductIdsByCategoryId($category_id);
+        $product_ids = array_intersect($category_product_ids, $product_id_arr);
+        
         $id_arr = [];
-        if (is_array($product_id_arr) && !empty($product_id_arr)) {
+        if (is_array($product_ids) && !empty($product_ids)) {
             $query = $this->_productModel->find()->asArray();
-            $mongoIds = [];
-            foreach ($product_id_arr as $id) {
-                $mongoIds[] = new \MongoDB\BSON\ObjectId($id);
-            }
-            //var_dump($mongoIds);
-            $query->where(['in', $this->getPrimaryKey(), $mongoIds]);
-            $query->andWhere(['category'=>$category_id]);
+            $query->where(['in', $this->getPrimaryKey(), $product_ids]);
             $data = $query->all();
             if (is_array($data) && !empty($data)) {
                 foreach ($data as $one) {
@@ -244,7 +315,7 @@ class ProductMysqldb extends Service implements ProductInterface
 
     /**
      * @param $attr_group | String
-     * ¸ù¾İ²úÆ·µÄÊôĞÔ×éÃû£¬µÃµ½ÊôĞÔÊı×é£¬È»ºó½«ÊôĞÔÊı×é¸½¼Óµ½Product(model)µÄÊôĞÔÖĞ¡£
+     * æ ¹æ®äº§å“çš„å±æ€§ç»„åï¼Œå¾—åˆ°å±æ€§æ•°ç»„ï¼Œç„¶åå°†å±æ€§æ•°ç»„é™„åŠ åˆ°Product(model)çš„å±æ€§ä¸­ã€‚
      */
     public function addGroupAttrs($attr_group)
     {
@@ -256,19 +327,21 @@ class ProductMysqldb extends Service implements ProductInterface
     }
 
     /**
-     * @param $one|array , ²úÆ·Êı¾İÊı×é
-     * @param $originUrlKey|string , ²úÆ·µÄÔ­À´µÄurl key £¬Ò²¾ÍÊÇÔÚÇ°¶Ë£¬·ÖÀàµÄ×Ô¶¨Òåurl¡£
-     * ±£´æ²úÆ·£¨²åÈëºÍ¸üĞÂ£©£¬ÒÔ¼°±£´æ²úÆ·µÄ×Ô¶¨Òåurl
-     * Èç¹ûÌá½»µÄÊı¾İÖĞ¶¨ÒåÁË×Ô¶¨Òåurl£¬Ôò°´ÕÕ×Ô¶¨Òåurl±£´æµ½urlkeyÖĞ£¬Èç¹ûÃ»ÓĞ×Ô¶¨Òåurlkey£¬Ôò»áÊ¹ÓÃname½øĞĞÉú³É¡£
+     * @param $one|array , äº§å“æ•°æ®æ•°ç»„
+     * @param $originUrlKey|string , äº§å“çš„åŸæ¥çš„url key ï¼Œä¹Ÿå°±æ˜¯åœ¨å‰ç«¯ï¼Œåˆ†ç±»çš„è‡ªå®šä¹‰urlã€‚
+     * ä¿å­˜äº§å“ï¼ˆæ’å…¥å’Œæ›´æ–°ï¼‰ï¼Œä»¥åŠä¿å­˜äº§å“çš„è‡ªå®šä¹‰url
+     * å¦‚æœæäº¤çš„æ•°æ®ä¸­å®šä¹‰äº†è‡ªå®šä¹‰urlï¼Œåˆ™æŒ‰ç…§è‡ªå®šä¹‰urlä¿å­˜åˆ°urlkeyä¸­ï¼Œå¦‚æœæ²¡æœ‰è‡ªå®šä¹‰urlkeyï¼Œåˆ™ä¼šä½¿ç”¨nameè¿›è¡Œç”Ÿæˆã€‚
      */
     public function save($one, $originUrlKey = 'catalog/product/index')
     {
         if (!$this->initSave($one)) {
             return false;
         }
-        $one['min_sales_qty'] = (int)$one['min_sales_qty'];
+        //var_dump($one['category']);exit;
+        $one['min_sales_qty'] = $one['min_sales_qty'];
         $currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
         $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
+        
         if ($primaryVal) {
             $model = $this->_productModel->findOne($primaryVal);
             if (!$model) {
@@ -277,79 +350,161 @@ class ProductMysqldb extends Service implements ProductInterface
                 return false;
             }
 
-            //ÑéÖ¤sku ÊÇ·ñÖØ¸´
+            //éªŒè¯sku æ˜¯å¦é‡å¤
             $product_one = $this->_productModel->find()->asArray()->where([
-                '<>', $this->getPrimaryKey(), (new \MongoDB\BSON\ObjectId($primaryVal)),
+                '<>', $this->getPrimaryKey(), $primaryVal,
             ])->andWhere([
                 'sku' => $one['sku'],
             ])->one();
             if ($product_one['sku']) {
-                Yii::$service->helper->errors->add('Product Sku is exist£¬please use other sku');
+                Yii::$service->helper->errors->add('Product Sku is existï¼Œplease use other sku');
 
                 return false;
             }
         } else {
+            
             $model = new $this->_productModelName();
             $model->created_at = time();
             $model->created_user_id = \fec\helpers\CUser::getCurrentUserId();
-            $primaryVal = new \MongoDB\BSON\ObjectId();
-            $model->{$this->getPrimaryKey()} = $primaryVal;
-            //ÑéÖ¤sku ÊÇ·ñÖØ¸´
+            //$primaryVal = new \MongoDB\BSON\ObjectId();
+            //$model->{$this->getPrimaryKey()} = $primaryVal;
+            //éªŒè¯sku æ˜¯å¦é‡å¤
+            
             $product_one = $this->_productModel->find()->asArray()->where([
                 'sku' => $one['sku'],
             ])->one();
+            
             if ($product_one['sku']) {
-                Yii::$service->helper->errors->add('Product Sku is exist£¬please use other sku');
+                Yii::$service->helper->errors->add('Product Sku is existï¼Œplease use other sku');
 
                 return false;
             }
+            
         }
+        
         $model->updated_at = time();
-        // ¼ÆËã³öÀ´²úÆ·µÄ×îÖÕ¼Û¸ñ¡£
+        // è®¡ç®—å‡ºæ¥äº§å“çš„æœ€ç»ˆä»·æ ¼ã€‚
         $one['final_price'] = Yii::$service->product->price->getFinalPrice($one['price'], $one['special_price'], $one['special_from'], $one['special_to']);
         $one['score'] = (int) $one['score'];
-        unset($one['_id']);
+        unset($one['id']);
         /**
-         * ±£´æ²úÆ·
-         */
-        $saveStatus = Yii::$service->helper->ar->save($model, $one);
-        /**
-         * Èç¹û $one['custom_option'] ²»Îª¿Õ£¬Ôò¼ÆËã³öÀ´¿â´æ×ÜÊı£¬ÌîĞ´µ½qty
+         * å¦‚æœ $one['custom_option'] ä¸ä¸ºç©ºï¼Œåˆ™è®¡ç®—å‡ºæ¥åº“å­˜æ€»æ•°ï¼Œå¡«å†™åˆ°qty
          */
         if (is_array($one['custom_option']) && !empty($one['custom_option'])) {
             $custom_option_qty = 0;
             foreach ($one['custom_option'] as $co_one) {
                 $custom_option_qty += $co_one['qty'];
             }
-            $model->qty = $custom_option_qty;
+            $one['qty'] = $custom_option_qty;
         }
+        
+        
+        /**
+         * ä¿å­˜äº§å“
+         */
+        $one = $this->serializeSaveData($one);
         $saveStatus = Yii::$service->helper->ar->save($model, $one);
-        // ×Ô¶¨Òåurl²¿·Ö
+        $product_id = $model->{$this->getPrimaryKey()};
+        // ä¿å­˜åˆ†ç±»
+        
+        $this->updateProductCategory($one['category'], $product_id);
+        // è‡ªå®šä¹‰urléƒ¨åˆ†
         if ($originUrlKey) {
-            $originUrl = $originUrlKey.'?'.$this->getPrimaryKey() .'='. $primaryVal;
+            $originUrl = $originUrlKey.'?'.$this->getPrimaryKey() .'='. $product_id;
             $originUrlKey = isset($one['url_key']) ? $one['url_key'] : '';
             $defaultLangTitle = Yii::$service->fecshoplang->getDefaultLangAttrVal($one['name'], 'name');
             $urlKey = Yii::$service->url->saveRewriteUrlKeyByStr($defaultLangTitle, $originUrl, $originUrlKey);
             $model->url_key = $urlKey;
             $model->save();
         }
-        $product_id = $model->{$this->getPrimaryKey()};
+        
+        
+        
         /**
-         * ¸üĞÂ²úÆ·¿â´æ¡£
+         * æ›´æ–°äº§å“åº“å­˜ã€‚
          */
         Yii::$service->product->stock->saveProductStock($product_id, $one);
         /**
-         * ¸üĞÂ²úÆ·ĞÅÏ¢µ½ËÑË÷±í¡£
+         * æ›´æ–°äº§å“ä¿¡æ¯åˆ°æœç´¢è¡¨ã€‚
          */
         Yii::$service->search->syncProductInfo([$product_id]);
-
+        
         return $model;
+    }
+    
+    // ä¿å­˜çš„æ•°æ®è¿›è¡Œserializeåºåˆ—åŒ–
+    protected function serializeSaveData($one) 
+    {
+        // å¾—åˆ°
+        $attr_group = $one['attr_group'];
+        $groupAttrs = Yii::$service->product->getGroupAttr($attr_group);
+        $groupArr = [];
+        foreach ($one as $k => $v) {
+            if (in_array($k, $this->serializeAttrs)) {
+                $one[$k] = serialize($v);
+            }
+            if (is_array($groupAttrs) && in_array($k, $groupAttrs)) {
+                $groupArr[$k] = $v;
+                unset($one[$k]);
+            }
+        }
+        
+        $one['attr_group_info'] = serialize($groupArr);
+        return $one;
+    }
+    
+    // ä¿å­˜çš„æ•°æ®è¿›è¡Œserializeåºåˆ—åŒ–
+    protected function unserializeData($one, $withCategory = false) 
+    {
+        
+        if (!is_array($one) && !is_object($one)) {
+            return $one;
+        }
+        foreach ($one as $k => $v) {
+            if (in_array($k, $this->serializeAttrs)) {
+                $one[$k] = unserialize($v);
+            }
+        }
+        if ($withCategory) {
+            $one['category'] = $this->getCategoryIdsByProductId($one['id']);
+        }
+        return $one;
+    }
+    
+    public function getCategoryIdsByProductId($product_id)
+    {
+        $coll = $this->_categoryProductModel->find()
+            ->asArray()
+            ->where([
+                'product_id' => $product_id
+            ])->all();
+        $arr = [];
+        foreach ($coll as $one) {
+            $arr[] = $one['category_id'];
+        }
+        
+        return $arr;
+    }
+    
+    public function getProductIdsByCategoryId($category_id)
+    {
+        $coll = $this->_categoryProductModel->find()
+            ->asArray()
+            ->where([
+                'category_id' => $category_id
+            ])->all();
+        $arr = [];
+        foreach ($coll as $one) {
+            $arr[] = $one['product_id'];
+        }
+        
+        return $arr;
     }
 
     /**
      * @param $one|array
-     * ¶Ô±£´æµÄÊı¾İ½øĞĞÊı¾İÑéÖ¤
-     * sku  spu   Ä¬ÈÏÓïÑÔname £¬ Ä¬ÈÏÓïÑÔdescription²»ÄÜÎª¿Õ¡£
+     * å¯¹ä¿å­˜çš„æ•°æ®è¿›è¡Œæ•°æ®éªŒè¯
+     * sku  spu   é»˜è®¤è¯­è¨€name ï¼Œ é»˜è®¤è¯­è¨€descriptionä¸èƒ½ä¸ºç©ºã€‚
      */
     protected function initSave(&$one)
     {
@@ -404,8 +559,8 @@ class ProductMysqldb extends Service implements ProductInterface
 
     /**
      * @param $ids | Array or String
-     * É¾³ı²úÆ·£¬Èç¹ûidsÊÇÊı×é£¬ÔòÉ¾³ı¶à¸ö²úÆ·£¬Èç¹ûÊÇ×Ö·û´®£¬ÔòÉ¾³ıÒ»¸ö²úÆ·
-     * ÔÚ²úÆ·²úÆ·µÄÍ¬Ê±£¬»áÔÚurl rewrite±íÖĞÉ¾³ı¶ÔÓ¦µÄ×Ô¶¨ÒåurlÊı¾İ¡£
+     * åˆ é™¤äº§å“ï¼Œå¦‚æœidsæ˜¯æ•°ç»„ï¼Œåˆ™åˆ é™¤å¤šä¸ªäº§å“ï¼Œå¦‚æœæ˜¯å­—ç¬¦ä¸²ï¼Œåˆ™åˆ é™¤ä¸€ä¸ªäº§å“
+     * åœ¨äº§å“äº§å“çš„åŒæ—¶ï¼Œä¼šåœ¨url rewriteè¡¨ä¸­åˆ é™¤å¯¹åº”çš„è‡ªå®šä¹‰urlæ•°æ®ã€‚
      */
     public function remove($ids)
     {
@@ -420,9 +575,9 @@ class ProductMysqldb extends Service implements ProductInterface
                 $model = $this->_productModel->findOne($id);
                 if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
                     $url_key = $model['url_key'];
-                    // É¾³ıÔÚÖØĞ´urlÀïÃæµÄÊı¾İ¡£
+                    // åˆ é™¤åœ¨é‡å†™urlé‡Œé¢çš„æ•°æ®ã€‚
                     Yii::$service->url->removeRewriteUrlKey($url_key);
-                    // É¾³ıÔÚËÑË÷±í£¨¸÷¸öÓïÑÔ£©ÀïÃæµÄÊı¾İ
+                    // åˆ é™¤åœ¨æœç´¢è¡¨ï¼ˆå„ä¸ªè¯­è¨€ï¼‰é‡Œé¢çš„æ•°æ®
                     Yii::$service->search->removeByProductId($id);
                     Yii::$service->product->stock->removeProductStock($id);
                     $model->delete();
@@ -440,9 +595,9 @@ class ProductMysqldb extends Service implements ProductInterface
             $model = $this->_productModel->findOne($id);
             if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
                 $url_key = $model['url_key'];
-                // É¾³ıÔÚÖØĞ´urlÀïÃæµÄÊı¾İ¡£
+                // åˆ é™¤åœ¨é‡å†™urlé‡Œé¢çš„æ•°æ®ã€‚
                 Yii::$service->url->removeRewriteUrlKey($url_key);
-                // É¾³ıÔÚËÑË÷ÀïÃæµÄÊı¾İ
+                // åˆ é™¤åœ¨æœç´¢é‡Œé¢çš„æ•°æ®
                 Yii::$service->search->removeByProductId($model[$this->getPrimaryKey()]);
                 Yii::$service->product->stock->removeProductStock($id);
                 $model->delete();
@@ -456,69 +611,64 @@ class ProductMysqldb extends Service implements ProductInterface
 
         return true;
     }
-
+    
+    public function updateProductCategory($category_ids, $product_id)
+    {
+        if (!is_array($category_ids)) {
+            return ;
+        }
+        $one = $this->_categoryProductModel->deleteAll([
+            'product_id' => $product_id,
+        ]);
+        foreach ($category_ids as $category_id) {
+            $m = new $this->_categoryProductModelName;
+            $m->product_id = $product_id;
+            $m->category_id = $category_id;
+            $m->created_at = time();
+            $m->save();
+        }
+        
+        return ;
+    }
+    
     /**
-     * @param $category_id | String  ·ÖÀàµÄidµÄÖµ
-     * @param $addCateProductIdArr | Array ·ÖÀàÖĞĞèÒªÌí¼ÓµÄ²úÆ·idÊı×é£¬Ò²¾ÍÊÇ¸øÕâ¸ö·ÖÀàÔö¼ÓÕâ¼¸¸ö²úÆ·¡£
-     * @param $deleteCateProductIdArr | Array ·ÖÀàÖĞĞèÒªÉ¾³ıµÄ²úÆ·idÊı×é£¬Ò²¾ÍÊÇÔÚÕâ¸ö·ÖÀàÏÂÃæÈ¥³ıÕâ¼¸¸ö²úÆ·µÄ¶ÔÓ¦¹ØÏµ¡£
-     * Õâ¸öº¯ÊıÊÇºóÌ¨·ÖÀà±à¼­¹¦ÄÜÖĞÊ¹ÓÃµ½µÄº¯Êı£¬ÔÚ·ÖÀàÖĞ¿ÉÒÔÒ»´ÎĞÔÌí¼Ó¶à¸ö²úÆ·£¬Ò²¿ÉÒÔÉ¾³ı¶à¸ö²úÆ·£¬²úÆ·ºÍ·ÖÀàÊÇ¶à¶Ô¶àµÄ¹ØÏµ¡£
+     * @param $category_id | String  åˆ†ç±»çš„idçš„å€¼
+     * @param $addCateProductIdArr | Array åˆ†ç±»ä¸­éœ€è¦æ·»åŠ çš„äº§å“idæ•°ç»„ï¼Œä¹Ÿå°±æ˜¯ç»™è¿™ä¸ªåˆ†ç±»å¢åŠ è¿™å‡ ä¸ªäº§å“ã€‚
+     * @param $deleteCateProductIdArr | Array åˆ†ç±»ä¸­éœ€è¦åˆ é™¤çš„äº§å“idæ•°ç»„ï¼Œä¹Ÿå°±æ˜¯åœ¨è¿™ä¸ªåˆ†ç±»ä¸‹é¢å»é™¤è¿™å‡ ä¸ªäº§å“çš„å¯¹åº”å…³ç³»ã€‚
+     * è¿™ä¸ªå‡½æ•°æ˜¯åå°åˆ†ç±»ç¼–è¾‘åŠŸèƒ½ä¸­ä½¿ç”¨åˆ°çš„å‡½æ•°ï¼Œåœ¨åˆ†ç±»ä¸­å¯ä»¥ä¸€æ¬¡æ€§æ·»åŠ å¤šä¸ªäº§å“ï¼Œä¹Ÿå¯ä»¥åˆ é™¤å¤šä¸ªäº§å“ï¼Œäº§å“å’Œåˆ†ç±»æ˜¯å¤šå¯¹å¤šçš„å…³ç³»ã€‚
      */
     public function addAndDeleteProductCategory($category_id, $addCateProductIdArr, $deleteCateProductIdArr)
     {
-        // ÔÚ addCategoryIdArr ²é¿´ÄÄĞ©²úÆ·£¬·ÖÀàidÔÚproductÖĞÒÑ¾­´æÔÚ£¬
-        $idKey = $this->getPrimaryKey();
-        //var_dump($addCateProductIdArr);
-        if (is_array($addCateProductIdArr) && !empty($addCateProductIdArr) && $category_id) {
-            $addCateProductIdArr = array_unique($addCateProductIdArr);
-            foreach ($addCateProductIdArr as $product_id) {
-                if (!$product_id) {
-                    continue;
-                }
-                $product = $this->_productModel->findOne($product_id);
-                if (!$product[$idKey]) {
-                    continue;
-                }
-                $category = $product->category;
-                $category = ($category && is_array($category)) ? $category : [];
-                //echo $category_id;
-                if (!in_array($category_id, $category)) {
-                    //echo $category_id;
-                    $category[] = $category_id;
-                    $product->category = $category;
-                    $product->save();
-                }
+        // åˆ é™¤
+        $this->_categoryProductModel->deleteAll([
+            'and',
+            ['category_id' => $category_id],
+            ['in','product_id',$deleteCateProductIdArr]
+        ]);
+        
+        // æ·»åŠ 
+        foreach ($addCateProductIdArr as $product_id) {
+            $one = $this->_categoryProductModel->findOne([
+                'category_id' => $category_id,
+                'product_id' => $product_id,
+            ]);
+            if (!$one['id']) {
+                $m = new $this->_categoryProductModelName;
+                $m->product_id = $product_id;
+                $m->category_id = $category_id;
+                $m->created_at = time();
+                $m->save();
             }
         }
-
-        if (is_array($deleteCateProductIdArr) && !empty($deleteCateProductIdArr) && $category_id) {
-            $deleteCateProductIdArr = array_unique($deleteCateProductIdArr);
-            foreach ($deleteCateProductIdArr as $product_id) {
-                if (!$product_id) {
-                    continue;
-                }
-                $product = $this->_productModel->findOne($product_id);
-                if (!$product[$idKey]) {
-                    continue;
-                }
-                $category = $product->category;
-                if (in_array($category_id, $category)) {
-                    $arr = [];
-                    foreach ($category as $c) {
-                        if ($category_id != $c) {
-                            $arr[] = $c;
-                        }
-                    }
-                    $product->category = $arr;
-                    $product->save();
-                }
-            }
-        }
+        
+        
+        return true;
     }
 
     /**
-     * Í¨¹ıwhereÌõ¼ş ºÍ ²éÕÒµÄselect ×Ö¶ÎĞÅÏ¢£¬µÃµ½²úÆ·µÄÁĞ±íĞÅÏ¢£¬
-     * ÕâÀïÒ»°ãÊÇÓÃÓÚÇ°Ì¨µÄÇø¿éĞÔµÄ²»·ÖÒ³µÄ²úÆ·²éÕÒ¡£
-     * ½á¹ûÊı¾İÃ»ÓĞ½øĞĞ½øÒ»²½´¦Àí£¬ĞèÒªÇ°¶Ë»ñÈ¡Êı¾İºóÔÚ´¦Àí¡£
+     * é€šè¿‡whereæ¡ä»¶ å’Œ æŸ¥æ‰¾çš„select å­—æ®µä¿¡æ¯ï¼Œå¾—åˆ°äº§å“çš„åˆ—è¡¨ä¿¡æ¯ï¼Œ
+     * è¿™é‡Œä¸€èˆ¬æ˜¯ç”¨äºå‰å°çš„åŒºå—æ€§çš„ä¸åˆ†é¡µçš„äº§å“æŸ¥æ‰¾ã€‚
+     * ç»“æœæ•°æ®æ²¡æœ‰è¿›è¡Œè¿›ä¸€æ­¥å¤„ç†ï¼Œéœ€è¦å‰ç«¯è·å–æ•°æ®ååœ¨å¤„ç†ã€‚
      */
     public function getProducts($filter)
     {
@@ -537,8 +687,8 @@ class ProductMysqldb extends Service implements ProductInterface
         return $query->all();
     }
     /**
-     * µÃµ½·ÖÀàÒ³ÃæµÄ²úÆ·ÁĞ±í
-     * $filter ²ÎÊıµÄÏêÏ¸£¬²Î¿´º¯Êı getFrontCategoryProductsGroupBySpu($filter);
+     * å¾—åˆ°åˆ†ç±»é¡µé¢çš„äº§å“åˆ—è¡¨
+     * $filter å‚æ•°çš„è¯¦ç»†ï¼Œå‚çœ‹å‡½æ•° getFrontCategoryProductsGroupBySpu($filter);
      */
     public function getFrontCategoryProducts($filter){
         if (Yii::$service->product->productSpuShowOnlyOneSku) {
@@ -550,8 +700,8 @@ class ProductMysqldb extends Service implements ProductInterface
         }
     }
     /**
-     * µÃµ½·ÖÀàÒ³ÃæµÄ²úÆ·£¨All£©
-     * $filter ²ÎÊıµÄÏêÏ¸£¬²Î¿´º¯Êı getFrontCategoryProductsGroupBySpu($filter);
+     * å¾—åˆ°åˆ†ç±»é¡µé¢çš„äº§å“ï¼ˆAllï¼‰
+     * $filter å‚æ•°çš„è¯¦ç»†ï¼Œå‚çœ‹å‡½æ•° getFrontCategoryProductsGroupBySpu($filter);
      */
     public function getFrontCategoryProductsAll($filter){
         $where = $filter['where'];
@@ -561,19 +711,29 @@ class ProductMysqldb extends Service implements ProductInterface
         if (!isset($where['status'])) {
             $where['status'] = $this->getEnableStatus();
         }
+        // whereæ¡ä»¶å¤„ç†
+        if ($categoryId = $where['category']) {
+            $productIds = $this->getProductIdsByCategoryId($categoryId);
+            unset($where['category']);
+            $arr = [];
+            $whereArr = [
+                ['in', 'id', $productIds]
+            ];
+            foreach ($where as $k=>$v) {
+                $whereArr[] = [$k =>$v];
+            }
+            $where = $whereArr;
+        }
         $orderBy = $filter['orderBy'];
         $pageNum = $filter['pageNum'];
         $numPerPage = $filter['numPerPage'];
         $select = $filter['select'];
-        $where_c = [];
-        foreach ($where as $k => $v) {
-            $where_c[] = [$k => $v];
-        }
+        
         $filter = [
             'numPerPage' 	=> $numPerPage,
      		'pageNum'		    => $pageNum,
       		'orderBy'	        => $orderBy,
-      		'where'			    => $where_c,
+      		'where'			    => $where,
       	    'asArray'           => true,
         ];
         
@@ -582,7 +742,7 @@ class ProductMysqldb extends Service implements ProductInterface
     
     
     /**
-     * ÏàÍ¬spuÏÂÃæµÄËùÓĞsku£¬Ö»ÏÔÊ¾Ò»¸ö£¬È¡scoreÖµ×î¸ßµÄÄÇ¸öÏÔÊ¾
+     * ç›¸åŒspuä¸‹é¢çš„æ‰€æœ‰skuï¼Œåªæ˜¾ç¤ºä¸€ä¸ªï¼Œå–scoreå€¼æœ€é«˜çš„é‚£ä¸ªæ˜¾ç¤º
      *[
      *	'category_id' 	=> 1,
      *	'pageNum'		=> 2,
@@ -595,18 +755,23 @@ class ProductMysqldb extends Service implements ProductInterface
      *	'select'		=> ['xx','yy'],
      *	'group'			=> '$spu',
      * ]
-     * µÃµ½·ÖÀàÏÂµÄ²úÆ·£¬ÔÚÕâÀïĞèÒª×¢ÒâµÄÊÇ£º
-     * 1.Í¬Ò»¸öspuµÄ²úÆ·£¬ÓĞºÜ¶àsku£¬µ«ÊÇÖ»ÏÔÊ¾score×î¸ßµÄ²úÆ·£¬Õâ¸öscore¿ÉÒÔÍ¨¹ı½Å±¾È¡¶©µ¥µÄÏúÁ¿£¨×î½üÒ»¸öÔÂ£¬»òÕß
-     *   ×î½üÈı¸öÔÂµÈµÈ£©£¬»òÕß×Ô¶¨Òå¶¼¿ÉÒÔ¡£
-     * 2.½á¹û°´ÕÕfilterÀïÃæµÄorderByÅÅĞò
-     * 3.ÓÉÓÚÊ¹ÓÃµÄÊÇmongodbµÄaggregate(¹ÜµÀ)º¯Êı£¬Òò´Ë£¬´Ëº¯ÊıÓĞÒ»¶¨µÄÏŞÖÆ£¬¾ÍÊÇ¸Ãº¯Êı
-     *   ´¦ÀíºóµÄ½á¹û²»ÄÜ´óÔ¼32MB£¬Òò´Ë£¬Èç¹ûÒ»¸ö·ÖÀàÏÂÃæµÄ²úÆ·¼¸Ê®ÍòµÄÊ±ºò¿ÉÄÜ¾Í»á³öÏÖÎÊÌâ£¬
-     *   ÕâÖÖÇé¿ö¿ÉÒÔÓÃ×¨ÒµµÄËÑË÷ÒıÇæ×ö¾ÛºÏ¹¤¾ß¡£
-     *   ²»¹ı£¬¶ÔÓÚÒ»°ãµÄÓÃ»§À´Ëµ£¬Õâ¸ö²»»á³ÉÎªÆ¿¾±ÎÊÌâ£¬Ò»°ãÒ»¸ö·ÖÀàÏÂµÄ²úÆ·²»»á³öÏÖ¼¸Ê®ÍòµÄÇé¿ö¡£
-     * 4.×îºó¾ÍµÃµ½spuÎ¨Ò»µÄ²úÆ·ÁĞ±í£¨¶à¸öspuÏàÍ¬£¬sku²»Í¬µÄ²úÆ·£¬Ö»Òªscore×î¸ßµÄÄÇ¸ö£©.
+     * å¾—åˆ°åˆ†ç±»ä¸‹çš„äº§å“ï¼Œåœ¨è¿™é‡Œéœ€è¦æ³¨æ„çš„æ˜¯ï¼š
+     * 1.åŒä¸€ä¸ªspuçš„äº§å“ï¼Œæœ‰å¾ˆå¤šskuï¼Œä½†æ˜¯åªæ˜¾ç¤ºscoreæœ€é«˜çš„äº§å“ï¼Œè¿™ä¸ªscoreå¯ä»¥é€šè¿‡è„šæœ¬å–è®¢å•çš„é”€é‡ï¼ˆæœ€è¿‘ä¸€ä¸ªæœˆï¼Œæˆ–è€…
+     *   æœ€è¿‘ä¸‰ä¸ªæœˆç­‰ç­‰ï¼‰ï¼Œæˆ–è€…è‡ªå®šä¹‰éƒ½å¯ä»¥ã€‚
+     * 2.ç»“æœæŒ‰ç…§filteré‡Œé¢çš„orderByæ’åº
+     * 3.ç”±äºä½¿ç”¨çš„æ˜¯mongodbçš„aggregate(ç®¡é“)å‡½æ•°ï¼Œå› æ­¤ï¼Œæ­¤å‡½æ•°æœ‰ä¸€å®šçš„é™åˆ¶ï¼Œå°±æ˜¯è¯¥å‡½æ•°
+     *   å¤„ç†åçš„ç»“æœä¸èƒ½å¤§çº¦32MBï¼Œå› æ­¤ï¼Œå¦‚æœä¸€ä¸ªåˆ†ç±»ä¸‹é¢çš„äº§å“å‡ åä¸‡çš„æ—¶å€™å¯èƒ½å°±ä¼šå‡ºç°é—®é¢˜ï¼Œ
+     *   è¿™ç§æƒ…å†µå¯ä»¥ç”¨ä¸“ä¸šçš„æœç´¢å¼•æ“åšèšåˆå·¥å…·ã€‚
+     *   ä¸è¿‡ï¼Œå¯¹äºä¸€èˆ¬çš„ç”¨æˆ·æ¥è¯´ï¼Œè¿™ä¸ªä¸ä¼šæˆä¸ºç“¶é¢ˆé—®é¢˜ï¼Œä¸€èˆ¬ä¸€ä¸ªåˆ†ç±»ä¸‹çš„äº§å“ä¸ä¼šå‡ºç°å‡ åä¸‡çš„æƒ…å†µã€‚
+     * 4.æœ€åå°±å¾—åˆ°spuå”¯ä¸€çš„äº§å“åˆ—è¡¨ï¼ˆå¤šä¸ªspuç›¸åŒï¼Œskuä¸åŒçš„äº§å“ï¼Œåªè¦scoreæœ€é«˜çš„é‚£ä¸ªï¼‰.
      */
     public function getFrontCategoryProductsGroupBySpu($filter)
     {
+        $orderBy = $filter['orderBy'];
+        $pageNum = $filter['pageNum'];
+        $numPerPage = $filter['numPerPage'];
+        $select = $filter['select'];
+        
         $where = $filter['where'];
         if (empty($where)) {
             return [];
@@ -614,54 +779,48 @@ class ProductMysqldb extends Service implements ProductInterface
         if (!isset($where['status'])) {
             $where['status'] = $this->getEnableStatus();
         }
-        $orderBy = $filter['orderBy'];
-        $pageNum = $filter['pageNum'];
-        $numPerPage = $filter['numPerPage'];
-        $select = $filter['select'];
-        $group['_id'] = $filter['group'];
-        $project = [];
-        foreach ($select as $column) {
-            $project[$column] = 1;
-            $group[$column] = ['$first' => '$'.$column];
+        // whereæ¡ä»¶å¤„ç†
+        if ($categoryId = $where['category']) {
+            $productIds = $this->getProductIdsByCategoryId($categoryId);
+            unset($where['category']);
+            $arr = [];
+            $whereArr = [
+                'and',
+                ['in', 'id', $productIds]
+            ];
+            foreach ($where as $k=>$v) {
+                $whereArr[] = [$k =>$v];
+            }
+            $where = $whereArr;
         }
-        $group['product_id'] = ['$first' => '$product_id'];
-        $langCode = Yii::$service->store->currentLangCode;
-        
-        $name_lang  = Yii::$service->fecshoplang->getLangAttrName('name', $langCode);
-        $default_name_lang  = Yii::$service->fecshoplang->GetDefaultLangAttrName('name');
-        $project['name'] = [
-            $default_name_lang => 1,
-            $name_lang => 1,
-        ];
-        $project['product_id'] = '$_id';
-        $pipelines = [
-            [
-                '$match'    => $where,
-            ],
-            [
-                '$sort' => [
-                    'score' => -1,
-                ],
-            ],
-            [
-                '$project'    => $project,
-            ],
-            [
-                '$group'    => $group,
-            ],
-            [
-                '$sort'    => $orderBy,
-            ],
-            [
-                '$limit'    => Yii::$service->product->categoryAggregateMaxCount,
-            ],
-        ];
-        // ['cursor' => ['batchSize' => 2]]
-        $product_data = $this->_productModel->getCollection()->aggregate($pipelines);
-        $product_total_count = count($product_data);
-        $pageOffset = ($pageNum - 1) * $numPerPage;
-        $products = array_slice($product_data, $pageOffset, $numPerPage);
-
+        // spu è¿›è¡Œgroup
+        $subQuery = $this->_productModel->find()
+                    ->select($select)
+                    ->where($where)
+                    ->orderBy(['score' => SORT_DESC])
+                    ->groupBy('spu')
+                    ;
+        // æ€»æ•°    
+        $product_total_count = $this->_productModel->find()
+                    ->select($select)
+                    ->where($where)
+                    ->orderBy(['score' => SORT_DESC])
+                    ->groupBy('spu')
+                    ->count();
+                    
+        // è¿›è¡ŒæŸ¥è¯¢coll
+        $products = (new Query())  //->select($field)
+			->from(['product' => $subQuery]) // åœ¨è¿™é‡Œä½¿ç”¨äº†å­æŸ¥è¯¢
+            ->orderBy($orderBy)
+            ->offset(($pageNum -1) * $numPerPage)
+            ->limit($numPerPage)
+			->createCommand()
+            //->getRawSql();  //
+            ->queryAll();
+        foreach ($products as $k => $product) {
+            $products[$k]['name'] = unserialize($product['name']);
+            $products[$k]['image'] = unserialize($product['image']);
+        }
         return [
             'coll' => $products,
             'count' => $product_total_count,
@@ -669,10 +828,16 @@ class ProductMysqldb extends Service implements ProductInterface
     }
 
     /**
-     * @param $filter_attr | String ĞèÒª½øĞĞÍ³¼ÆµÄ×Ö¶ÎÃû³Æ
-     * @propertuy $where | Array  ËÑË÷Ìõ¼ş¡£Õâ¸öĞèÒªĞ©mongodbµÄËÑË÷Ìõ¼ş¡£
-     * µÃµ½µÄÊÇ¸öÊôĞÔ£¬ÒÔ¼°¶ÔÓ¦µÄ¸öÊı¡£
-     * Õâ¸ö¹¦ÄÜÊÇÓÃÓÚÇ°¶Ë·ÖÀà²àÀ¸½øĞĞÊôĞÔ¹ıÂË¡£
+     * @param $filter_attr | String éœ€è¦è¿›è¡Œç»Ÿè®¡çš„å­—æ®µåç§°
+     * @propertuy $where | Array  æœç´¢æ¡ä»¶ã€‚è¿™ä¸ªéœ€è¦äº›mongodbçš„æœç´¢æ¡ä»¶ã€‚
+     * å¾—åˆ°çš„æ˜¯ä¸ªå±æ€§ï¼Œä»¥åŠå¯¹åº”çš„ä¸ªæ•°ã€‚
+     * è¿™ä¸ªåŠŸèƒ½æ˜¯ç”¨äºå‰ç«¯åˆ†ç±»ä¾§æ è¿›è¡Œå±æ€§è¿‡æ»¤ã€‚
+     * @return 
+         [
+            ['_id' => 'white', 'count' => 3],
+            ['_id' => 'multicolor', 'count' => 6],
+            ['_id' => 'black', 'count' => 13],
+        ]
      */
     public function getFrontCategoryFilter($filter_attr, $where)
     {
@@ -682,37 +847,47 @@ class ProductMysqldb extends Service implements ProductInterface
         if (!isset($where['status'])) {
             $where['status'] = $this->getEnableStatus();
         }
-        $group['_id'] = '$'.$filter_attr;
-        $group['count'] = ['$sum'=> 1];
-        $project = [$filter_attr => 1];
-        $pipelines = [
-            [
-                '$match'    => $where,
-            ],
-            [
-                '$project'    => $project,
-            ],
-            [
-                '$group'    => $group,
-            ],
-            [
-                '$limit'    => Yii::$service->product->categoryAggregateMaxCount,
-            ],
-        ];
-        $filter_data = $this->_productModel->getCollection()->aggregate($pipelines);
-
+        if (!$this->_productModel->hasAttribute($filter_attr)) {
+            return [];
+        }
+        
+        // whereæ¡ä»¶å¤„ç†
+        if ($categoryId = $where['category']) {
+            $productIds = $this->getProductIdsByCategoryId($categoryId);
+            unset($where['category']);
+            $arr = [];
+            $whereArr = [
+                'and',
+                ['in', 'id', $productIds]
+            ];
+            foreach ($where as $k=>$v) {
+                $whereArr[] = [$k =>$v];
+            }
+            $where = $whereArr;
+        }
+        
+        // æ€»æ•°    
+        $filter_data = $this->_productModel->find()
+                    ->select($filter_attr.' as _id ,   COUNT(*) as count')
+                    ->where($where)
+                    ->groupBy($filter_attr)
+                    ->all();
+        
         return $filter_data;
     }
+    
+    
+    
 
     /**
      * @param $spu | String
-     * @param $avag_rate | Int £¬Æ½¾ùÆÀĞÇ
-     * @param $count | Int £¬ÆÀÂÛ´ÎÊı
-     * @param $lang_code | String £¬ÓïÑÔ¼òÂë
-     * @param $avag_lang_rate | Int £¬ÓïÑÔÏÂÆ½¾ùÆÀĞÇ
-     * @param $lang_count | Int £¬ ÓïÑÔÏÂÆÀÂÛ´ÎÊı¡£
-     * @param $rate_total_arr | Array, ¸÷¸öÆÀĞÇ¶ÔÓ¦µÄ¸öÊı
-     * @param $rate_lang_total_arr | Array, ¸ÃÓïÑÔÏÂ¸÷¸öÆÀĞÇ¶ÔÓ¦µÄ¸öÊı
+     * @param $avag_rate | Int ï¼Œå¹³å‡è¯„æ˜Ÿ
+     * @param $count | Int ï¼Œè¯„è®ºæ¬¡æ•°
+     * @param $lang_code | String ï¼Œè¯­è¨€ç®€ç 
+     * @param $avag_lang_rate | Int ï¼Œè¯­è¨€ä¸‹å¹³å‡è¯„æ˜Ÿ
+     * @param $lang_count | Int ï¼Œ è¯­è¨€ä¸‹è¯„è®ºæ¬¡æ•°ã€‚
+     * @param $rate_total_arr | Array, å„ä¸ªè¯„æ˜Ÿå¯¹åº”çš„ä¸ªæ•°
+     * @param $rate_lang_total_arr | Array, è¯¥è¯­è¨€ä¸‹å„ä¸ªè¯„æ˜Ÿå¯¹åº”çš„ä¸ªæ•°
      */
     public function updateProductReviewInfo($spu, $avag_rate, $count, $lang_code, $avag_lang_rate, $lang_count, $rate_total_arr, $rate_lang_total_arr)
     {

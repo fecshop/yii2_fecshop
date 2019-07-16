@@ -126,6 +126,22 @@ class ProductMongodb extends Service implements ProductInterface
             'count'=> $query->limit(null)->offset(null)->count(),
         ];
     }
+    
+    public function spuCollData($select, $spuAttrArr, $spu)
+    {
+        $select = array_merge($select, $spuAttrArr);
+        //var_dump($select);exit;
+        $filter = [
+            'select'    => $select,
+            'where'            => [
+                ['spu' => $spu],
+            ],
+            'asArray' => true,
+        ];
+        $data = Yii::$service->product->coll($filter);
+        
+        return $data['coll'];
+    }
 
     /**
      * 和coll()的不同在于，该方式不走active record，因此可以获取产品的所有数据的。
@@ -310,10 +326,6 @@ class ProductMongodb extends Service implements ProductInterface
         $one['score'] = (int) $one['score'];
         unset($one['_id']);
         /**
-         * 保存产品
-         */
-        $saveStatus = Yii::$service->helper->ar->save($model, $one);
-        /**
          * 如果 $one['custom_option'] 不为空，则计算出来库存总数，填写到qty
          */
         if (is_array($one['custom_option']) && !empty($one['custom_option'])) {
@@ -321,9 +333,13 @@ class ProductMongodb extends Service implements ProductInterface
             foreach ($one['custom_option'] as $co_one) {
                 $custom_option_qty += $co_one['qty'];
             }
-            $model->qty = $custom_option_qty;
+            $one['qty'] = $custom_option_qty;
         }
+        /**
+         * 保存产品
+         */
         $saveStatus = Yii::$service->helper->ar->save($model, $one);
+        
         // 自定义url部分
         if ($originUrlKey) {
             $originUrl = $originUrlKey.'?'.$this->getPrimaryKey() .'='. $primaryVal;
@@ -345,7 +361,15 @@ class ProductMongodb extends Service implements ProductInterface
 
         return $model;
     }
+    public function getCategoryIdsByProductId($product_id)
+    {
+        $product = Yii::$service->product->getByPrimaryKey($product_id);
+        if (isset($product['category']) && !empty($product['category']) && is_array($product['category'])) {
+            return $product['category'];
+        }
 
+        return [];
+    }
     /**
      * @param $one|array
      * 对保存的数据进行数据验证
@@ -700,7 +724,7 @@ class ProductMongodb extends Service implements ProductInterface
             ],
         ];
         $filter_data = $this->_productModel->getCollection()->aggregate($pipelines);
-
+        
         return $filter_data;
     }
 
