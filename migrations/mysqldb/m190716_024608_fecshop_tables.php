@@ -68,6 +68,17 @@ class m190716_024608_fecshop_tables extends Migration
               KEY `spu` (`spu`)
             ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
             ",
+            
+            "
+                CREATE TABLE IF NOT EXISTS `category_product` (
+                  `id` int(11) NOT NULL AUTO_INCREMENT,
+                  `category_id` varchar(50) NOT NULL,
+                  `product_id` varchar(50) NOT NULL,
+                  `created_at` int(11) NOT NULL,
+                  PRIMARY KEY (`id`),
+                  KEY `category_id` (`category_id`,`product_id`)
+                ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=233 ;
+            ",
         ];
 
         foreach ($arr as $sql) {
