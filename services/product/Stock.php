@@ -426,8 +426,9 @@ class Stock extends Service
      */
     protected function actionProductIsInStock($product, $sale_qty, $custom_option_sku, $checkDbQty = true)
     {
+        $productPrimaryKey = Yii::$service->product->getPrimaryKey();
         $is_in_stock = $product['is_in_stock'];
-        $product_id = $product['_id'];
+        $product_id = $product[$productPrimaryKey];
         $product_name       = Yii::$service->store->getStoreAttrVal($product['name'], 'name');
         // 查看产品状态（产品如果disabled，则意味产品被清除）
         if ($product['status'] != Yii::$service->product->getEnableStatus()) {
