@@ -263,6 +263,20 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
 
         return '';
     }
+    
+    public function getVal($name, $column){
+        if (isset ($this->_one[$name]) ) {
+            
+            return ($this->_one[$name] || $this->_one[$name] === 0) ? $this->_one[$name] : $column['default'];
+        } else if($this->_one['attr_group_info']) { //  mysql model类型
+            $attr_group_info = $this->_one['attr_group_info'];
+            if (isset($attr_group_info[$name])) {
+                return $attr_group_info[$name];
+            } else {
+                return '';
+            }
+        }
+    }  
 
     public function getImgHtml()
     {
@@ -401,8 +415,9 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         // var_dump()
 
         if (Yii::$app->request->post('operate') == 'copy') {
-            if (isset($this->_param['_id'])) {
-                unset($this->_param['_id']);
+            $productPrimaryKey = Yii::$service->product->getPrimaryKey();
+            if (isset($this->_param[$productPrimaryKey])) {
+                unset($this->_param[$productPrimaryKey]);
                 //echo 111;
                 //var_dump($this->_param);
                 //exit;

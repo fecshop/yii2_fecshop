@@ -270,9 +270,16 @@ class Product extends AppadminbaseBlock implements AppadminbaseBlockInterface
         $where[] = ['status' => 1];
         if (CRequest::param('productfiltertype') == 'reset') {
         } else {
-            $where[] = ['category' => CRequest::param(Yii::$service->category->getPrimaryKey())];
+            if (Yii::$service->product->storage == 'ProductMongodb') {
+                $where[] = ['category' => CRequest::param(Yii::$service->category->getPrimaryKey())];
+            } else {
+                $category_id = CRequest::param(Yii::$service->category->getPrimaryKey());
+                $productPrimaryKey = Yii::$service->product->getPrimaryKey();
+                $productIds = Yii::$service->product->getProductIdsByCategoryId($category_id);
+                $where[] = ['in', $productPrimaryKey, $productIds];
+            }
         }
-        //var_dump($where);
+        //var_dump($where);exit;
         return $where;
     }
 
