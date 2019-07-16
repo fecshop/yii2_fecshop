@@ -30,9 +30,9 @@ class XunSearch extends Service implements SearchInterface
 
     public $synonyms = false;
 
-    protected $_productModelName = '\fecshop\models\mongodb\Product';
+    //protected $_productModelName = '\fecshop\models\mongodb\Product';
 
-    protected $_productModel;
+    //protected $_productModel;
 
     protected $_searchModelName  = '\fecshop\models\xunsearch\Search';
 
@@ -41,7 +41,7 @@ class XunSearch extends Service implements SearchInterface
     public function init()
     {
         parent::init();
-        list($this->_productModelName, $this->_productModel) = \Yii::mapGet($this->_productModelName);
+        //list($this->_productModelName, $this->_productModel) = \Yii::mapGet($this->_productModelName);
         list($this->_searchModelName, $this->_searchModel) = \Yii::mapGet($this->_searchModelName);
     }
 
@@ -51,7 +51,32 @@ class XunSearch extends Service implements SearchInterface
     protected function actionInitFullSearchIndex()
     {
     }
-
+    protected function getProductSelectData()
+    {
+        $productPrimaryKey = Yii::$service->product->getPrimaryKey(); 
+        //echo $productPrimaryKey;exit;
+        return [
+            $productPrimaryKey,
+            'name',
+            'spu',
+            'sku',
+            'score',
+            'status',
+            'is_in_stock',
+            'url_key',
+            'price',
+            'cost_price',
+            'special_price',
+            'special_from',
+            'special_to',
+            'final_price',   // 算出来的最终价格。这个通过脚本赋值。
+            'image',
+            'short_description',
+            'description',
+            'created_at',
+        ];
+        
+    }
     /**
      * 将产品信息同步到xunSearch引擎中.
      */
@@ -60,22 +85,38 @@ class XunSearch extends Service implements SearchInterface
         if (is_array($product_ids) && !empty($product_ids)) {
             $productPrimaryKey    = Yii::$service->product->getPrimaryKey();
             $xunSearchModel       = new $this->_searchModelName();
-            $filter['select']     = $xunSearchModel->attributes();
+            $filter['select']     = $this->getProductSelectData();
             $filter['asArray']    = true;
             $filter['where'][]    = ['in', $productPrimaryKey, $product_ids];
             $filter['numPerPage'] = $numPerPage;
             $filter['pageNum']    = 1;
             $coll = Yii::$service->product->coll($filter);
+            $productPrimaryKey = Yii::$service->product->getPrimaryKey();
             if (is_array($coll['coll']) && !empty($coll['coll'])) {
                 foreach ($coll['coll'] as $one) {
+                    $one['_id'] = $one[$productPrimaryKey];
+                    $one['status'] = (int)$one['status'];
+                    $one['score'] = (int)$one['score'];
+                    $one['is_in_stock'] = (int)$one['is_in_stock'];
+                    $one['created_at'] = (int)$one['created_at'];
+                    
+                    $one['price'] = (float)$one['price'];
+                    $one['cost_price'] = (float)$one['cost_price'];
+                    $one['special_price'] = (float)$one['special_price'];
+                    $one['special_from'] = (int)$one['special_from'];
+                    $one['special_to'] = (int)$one['special_to'];
+                    $one['final_price'] = (float)$one['final_price'];
+                    //unset($one[$productPrimaryKey]);
+                    
                     $one_name = $one['name'];
                     $one_description = $one['description'];
                     $one_short_description = $one['short_description'];
                     if (!empty($this->searchLang) && is_array($this->searchLang)) {
+                        
                         foreach ($this->searchLang as $langCode => $langName) {
                             //echo $langCode;
                             $xunSearchModel = new $this->_searchModelName();
-                            $xunSearchModel->_id = (string) $one['_id'];
+                            $xunSearchModel->_id = (string) $one[$productPrimaryKey];
                             $one['name'] = Yii::$service->fecshoplang->getLangAttrVal($one_name, 'name', $langCode);
                             $one['description'] = Yii::$service->fecshoplang->getLangAttrVal($one_description, 'description', $langCode);
                             $one['short_description'] = Yii::$service->fecshoplang->getLangAttrVal($one_short_description, 'short_description', $langCode);
@@ -85,7 +126,7 @@ class XunSearch extends Service implements SearchInterface
                             Yii::$service->helper->ar->save($xunSearchModel, $one, $serialize);
                             if ($errors = Yii::$service->helper->errors->get()) {
                                 // 报错。
-                                echo  $errors;
+                                var_dump($errors);
                                 //return false;
                             }
                         }
@@ -146,8 +187,9 @@ class XunSearch extends Service implements SearchInterface
         $searchText = $where['$text']['$search'];
         $productM = Yii::$service->product->getBySku($searchText);
         $productIds = [];
+        $productPrimaryKey = Yii::$service->product->getPrimaryKey();
         if ($productM && $enableStatus == $productM['status']) {
-            $productIds[] = $productM['_id'];
+            $productIds[] = $productM[$productPrimaryKey];
         } else {
             if (!isset($where['status'])) {
                 $where['status'] = Yii::$service->product->getEnableStatus();
@@ -202,32 +244,48 @@ class XunSearch extends Service implements SearchInterface
             } else {
                 $data = $search_data;
             }
-
             $count = count($data);
             $offset = ($pageNum - 1) * $numPerPage;
             $limit = $numPerPage;
             $productIds = [];
             foreach ($data as $d) {
-                $productIds[] = new \MongoDB\BSON\ObjectId($d['_id']);
+                if ($productPrimaryKey == '_id') {
+                    if (strlen($d['_id']) == 24) {
+                        $productIds[] = new \MongoDB\BSON\ObjectId($d['_id']);
+                    }
+                } else {
+                    $productIds[] = $d['_id'];
+                }
+                
             }
             $productIds = array_slice($productIds, $offset, $limit);
         }
         
+        $productPrimaryKey = Yii::$service->product->getPrimaryKey();
         if (!empty($productIds)) {
-            $query = $this->_productModel->find()->asArray()
-                    ->select($select)
-                    ->where([
-                        '_id'       => ['$in'=>$productIds],
-                        'status'    => Yii::$service->product->getEnableStatus(),
-                    ]);
-            $data = $query->all();
+            //
+            foreach ($select as $sk => $se) {
+                if ($se == 'product_id') {
+                    unset($select[$sk]);
+                }
+            }
+            $select[] = $productPrimaryKey;
+            $filter = [
+                'select' => $select,
+                'where' => [
+                    [ 'in', $productPrimaryKey, $productIds]
+                ],
+            ];
+            $collData = Yii::$service->product->coll($filter);
+            $data = $collData['coll'];
             /**
              * 下面的代码的作用：将结果按照上面in查询的顺序进行数组的排序，使结果和上面的搜索结果排序一致（_id）。
              */
+            //var_dump($data);exit;
             $s_data = [];
             foreach ($data as $one) {
-                $_id = (string) $one['_id'];
-                if ($_id) {
+                if ($one[$productPrimaryKey]) {
+                    $_id = (string) $one[$productPrimaryKey];
                     $s_data[$_id] = $one;
                 }
             }
@@ -238,11 +296,13 @@ class XunSearch extends Service implements SearchInterface
                     $return_data[] = $s_data[$pid];
                 }
             }
+            
             return [
                 'coll' => $return_data,
                 'count'=> $count,
             ];
         }
+        
     }
 
     /**
