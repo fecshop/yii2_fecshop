@@ -20,7 +20,7 @@ return [
           * true： 代表只显示一个sku
           * false: 代表产品全部显示
           */
-        'productSpuShowOnlyOneSku' => true,
+        'productSpuShowOnlyOneSku' => false,
         // 'customAttrGroup' => [], 详细参看@common/config/fecshop_local_services/Product.php 里面的配置
         // 子服务
         'childService' => [

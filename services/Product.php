@@ -49,7 +49,7 @@ class Product extends Service
      * $storagePrex , $storage , $storagePath 为找到当前的storage而设置的配置参数
      * 可以在配置中更改，更改后，就会通过容器注入的方式修改相应的配置值
      */
-    public $storage     = 'ProductMongodb';   // 当前的storage，如果在config中配置，那么在初始化的时候会被注入修改
+    public $storage     = 'ProductMysqldb';   // ProductMysqldb | ProductMongodb 当前的storage，如果在config中配置，那么在初始化的时候会被注入修改
 
     /**
      * 设置storage的path路径，
@@ -243,6 +243,17 @@ class Product extends Service
     {
         return $this->_product->getPrimaryKey();
     }
+    
+    public function getCategoryIdsByProductId($product_id)
+    {
+        return $this->_product->getCategoryIdsByProductId($product_id);
+    }
+    
+    public function getProductIdsByCategoryId($category_id)
+    {
+        return $this->_product->getProductIdsByCategoryId($category_id);
+    }
+    
 
     /**
      * get Product model by primary key.
@@ -250,6 +261,14 @@ class Product extends Service
     protected function actionGetByPrimaryKey($primaryKey)
     {
         return $this->_product->getByPrimaryKey($primaryKey);
+    }
+    
+    /**
+     * get Product model by primary key.
+     */
+    protected function actionGetArrByPrimaryKey($primaryKey)
+    {
+        return $this->_product->getArrByPrimaryKey($primaryKey);
     }
 
     /**
@@ -389,6 +408,11 @@ class Product extends Service
     protected function actionRemove($ids)
     {
         return $this->_product->remove($ids);
+    }
+    
+    public function spuCollData($select, $spuAttrArr, $spu)
+    {
+        return $this->_product->spuCollData($select, $spuAttrArr, $spu);
     }
 
     /**
