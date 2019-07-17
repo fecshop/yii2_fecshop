@@ -50,7 +50,8 @@ class SearchController extends Controller
      */
     public function actionSyncdata($pageNum)
     {
-        $filter['select'] = ['_id'];
+        $productPrimaryKey = Yii::$service->product->getPrimaryKey();
+        $filter['select'] = [ $productPrimaryKey ];
         $filter['where'][] = ['is_in_stock' => 1];
         $filter['where'][] = ['status' => 1];
         $filter['numPerPage'] = $this->_numPerPage;
@@ -58,10 +59,8 @@ class SearchController extends Controller
         $products = Yii::$service->product->coll($filter);
         $product_ids = [];
         foreach ($products['coll'] as $p) {
-            $product_ids[] = $p['_id'];
+            $product_ids[] = $p[ $productPrimaryKey ];
         }
-
-        //echo count($product_ids);
         Yii::$service->search->syncProductInfo($product_ids, $this->_numPerPage);
     }
 
@@ -70,7 +69,8 @@ class SearchController extends Controller
      */
     public function actionSynccount()
     {
-        $filter['select'] = ['_id'];
+        $productPrimaryKey = Yii::$service->product->getPrimaryKey();
+        $filter['select'] = [ $productPrimaryKey ];
         $filter['where'][] = ['is_in_stock' => 1];
         $filter['where'][] = ['status' => 1];
         $count = Yii::$service->product->collCount($filter);
@@ -79,7 +79,8 @@ class SearchController extends Controller
 
     public function actionSyncpagenum()
     {
-        $filter['select'] = ['_id'];
+        $productPrimaryKey = Yii::$service->product->getPrimaryKey();
+        $filter['select'] = [ $productPrimaryKey ];
         $filter['where'][] = ['is_in_stock' => 1];
         $filter['where'][] = ['status' => 1];
         $count = Yii::$service->product->collCount($filter);
