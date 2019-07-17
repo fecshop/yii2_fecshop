@@ -74,6 +74,21 @@ class Product extends Service
         $currentService = $this->getStorageService($this);
         $this->_product = new $currentService();
     }
+    // 动态更改为mongodb model
+    public function changeToMongoStorage()
+    {
+        $this->storage     = 'ProductMongodb';
+        $currentService = $this->getStorageService($this);
+        $this->_product = new $currentService();
+    }
+    
+    // 动态更改为mongodb model
+    public function changeToMysqlStorage()
+    {
+        $this->storage     = 'ProductMysqldb';
+        $currentService = $this->getStorageService($this);
+        $this->_product = new $currentService();
+    }
 
     protected function actionGetEnableStatus()
     {
@@ -395,9 +410,9 @@ class Product extends Service
      * 保存产品（插入和更新），以及保存产品的自定义url
      * 如果提交的数据中定义了自定义url，则按照自定义url保存到urlkey中，如果没有自定义urlkey，则会使用name进行生成。
      */
-    protected function actionSave($one, $originUrlKey = 'catalog/product/index')
+    protected function actionSave($one, $originUrlKey = 'catalog/product/index', $isLoginUser=true)
     {
-        return $this->_product->save($one, $originUrlKey);
+        return $this->_product->save($one, $originUrlKey, $isLoginUser);
     }
 
     /**
@@ -453,6 +468,11 @@ class Product extends Service
     {
         return $this->_product->getFrontCategoryProducts($filter);
     }
+    public function actionSync($arr)
+    {
+        return $this->_product->sync($arr);
+    }
+    
 
     /**
      * @param $filter_attr | String 需要进行统计的字段名称

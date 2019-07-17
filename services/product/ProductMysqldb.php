@@ -365,7 +365,8 @@ class ProductMysqldb extends Service implements ProductInterface
             
             $model = new $this->_productModelName();
             $model->created_at = time();
-            $model->created_user_id = \fec\helpers\CUser::getCurrentUserId();
+            $created_user_id = Yii::$app->user->identity->id;
+            $model->created_user_id = $created_user_id ;
             //$primaryVal = new \MongoDB\BSON\ObjectId();
             //$model->{$this->getPrimaryKey()} = $primaryVal;
             //验证sku 是否重复
@@ -432,6 +433,73 @@ class ProductMysqldb extends Service implements ProductInterface
         return $model;
     }
     
+    
+    /**
+     * @param $one|array , 产品数据数组
+     * 用于将mongodb的数据，同步到mysql中
+     */
+    public function sync($one)
+    {
+        if (!$this->initSave($one)) {
+            return false;
+        }
+        $defaultLangTitle = Yii::$service->fecshoplang->getDefaultLangAttrVal($one['name'], 'name');
+        $product_one = $this->_productModel->find()->where([
+            'sku' => $one['sku'],
+        ])->one();
+        if ($product_one['sku']) {
+            $model = $product_one;
+        } else {
+            $model = new $this->_productModelName();
+            $model->created_at = time();
+        }
+        
+        $model->updated_at = time();
+        // 计算出来产品的最终价格。
+        $one['final_price'] = Yii::$service->product->price->getFinalPrice($one['price'], $one['special_price'], $one['special_from'], $one['special_to']);
+        $one['score'] = (int) $one['score'];
+        unset($one['_id']);
+        /**
+         * 如果 $one['custom_option'] 不为空，则计算出来库存总数，填写到qty
+         */
+        if (is_array($one['custom_option']) && !empty($one['custom_option'])) {
+            $custom_option_qty = 0;
+            foreach ($one['custom_option'] as $co_one) {
+                $custom_option_qty += $co_one['qty'];
+            }
+            $one['qty'] = $custom_option_qty;
+        }
+        
+        /**
+         * 保存产品
+         */
+        $one = $this->serializeSaveData($one);
+        $saveStatus = Yii::$service->helper->ar->save($model, $one);
+        $product_id = $model->{$this->getPrimaryKey()};
+        // 保存分类
+        
+        $this->updateProductCategory($one['category'], $product_id);
+        // 自定义url部分
+        $originUrlKey = 'catalog/product/index';
+        $originUrl = $originUrlKey.'?'.$this->getPrimaryKey() .'='. $product_id;
+        $originUrlKey = isset($one['url_key']) ? $one['url_key'] : '';
+        //var_dump([$defaultLangTitle, $originUrl, $originUrlKey]);
+        //echo $defaultLangTitle;
+        $urlKey = Yii::$service->url->saveRewriteUrlKeyByStr($defaultLangTitle, $originUrl, $originUrlKey);
+        $model->url_key = $urlKey;
+        $model->save();
+        /**
+         * 更新产品库存。
+         */
+        Yii::$service->product->stock->saveProductStock($product_id, $one);
+        /**
+         * 更新产品信息到搜索表。
+         */
+        Yii::$service->search->syncProductInfo([$product_id]);
+        
+        return $model;
+    }
+    
     // 保存的数据进行serialize序列化
     protected function serializeSaveData($one) 
     {
@@ -439,6 +507,9 @@ class ProductMysqldb extends Service implements ProductInterface
         $attr_group = $one['attr_group'];
         $groupAttrs = Yii::$service->product->getGroupAttr($attr_group);
         $groupArr = [];
+        if (is_array($one['attr_group_info']) && !empty($one['attr_group_info'])) {
+            $groupArr = $one['attr_group_info'];
+        }
         foreach ($one as $k => $v) {
             if (in_array($k, $this->serializeAttrs)) {
                 $one[$k] = serialize($v);
@@ -684,7 +755,13 @@ class ProductMysqldb extends Service implements ProductInterface
             $query->select($select);
         }
 
-        return $query->all();
+        $coll = $query->all();
+        $arr = [];
+        foreach ($coll as $one) {
+            $arr[] = $this->unserializeData($one) ;
+        }
+        
+        return $arr;
     }
     /**
      * 得到分类页面的产品列表

@@ -79,6 +79,38 @@ class m190716_024608_fecshop_tables extends Migration
                   KEY `category_id` (`category_id`,`product_id`)
                 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=233 ;
             ",
+            
+            "
+            ALTER TABLE  `url_rewrite` ADD  `created_at` INT( 12 ) NULL ,
+            ADD  `updated_at` INT( 12 ) NULL
+            ",
+            
+            "
+            CREATE TABLE IF NOT EXISTS `full_search_product` (
+              `id` int(11) NOT NULL AUTO_INCREMENT,
+              `lang` varchar(20) DEFAULT NULL COMMENT '语言简码',
+              `product_id` varchar(50) DEFAULT NULL COMMENT '产品id',
+              `name` varchar(255) DEFAULT NULL COMMENT '产品name',
+              `spu` varchar(100) DEFAULT NULL COMMENT 'spu',
+              `sku` varchar(100) DEFAULT NULL COMMENT 'sku',
+              `score` int(11) DEFAULT NULL COMMENT '产品分值',
+              `status` int(5) DEFAULT NULL COMMENT '产品状态',
+              `is_in_stock` int(5) DEFAULT NULL COMMENT '产品库存状态',
+              `url_key` varchar(255) DEFAULT NULL COMMENT '产品url key',
+              `price` decimal(12,2) DEFAULT NULL COMMENT '产品价格',
+              `cost_price` decimal(12,2) DEFAULT NULL COMMENT '产品成本价',
+              `special_price` decimal(12,2) DEFAULT NULL COMMENT '产品特价',
+              `special_from` int(12) DEFAULT NULL COMMENT '产品特价开始时间',
+              `special_to` int(12) DEFAULT NULL COMMENT '产品特价结束时间',
+              `final_price` decimal(12,2) DEFAULT NULL COMMENT '产品最终时间',
+              `image` text COMMENT '产品图片',
+              `short_description` text COMMENT '产品简短描述',
+              `description` text COMMENT '产品描述',
+              `created_at` int(12) DEFAULT NULL COMMENT '产品创建时间',
+              `sync_updated_at` int(12) DEFAULT NULL COMMENT '产品同步时间',
+              PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+            ",
         ];
 
         foreach ($arr as $sql) {

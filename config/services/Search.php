@@ -45,6 +45,22 @@ return [
                 ],
                 */
             ],
+            'mysqlSearch'  => [
+                'class'        => 'fecshop\services\search\MysqlSearch',
+                'enableService'        => true,
+                /*
+                'searchLang'  => [
+                    'en' => 'english',
+                    'fr'  => 'french',
+                    'de' => 'german',
+                    'es' => 'spanish',
+                    'ru' => 'russian',
+                    'pt' => 'portuguese',
+                    'it'  =>  'italian',
+                    'zh' => 'chinese',
+                ],
+                */
+            ],
         ],
     ],
 ];
