@@ -111,6 +111,34 @@ class m190716_024608_fecshop_tables extends Migration
               PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
             ",
+            
+            "
+            CREATE TABLE IF NOT EXISTS `category` (
+              `id` int(12) NOT NULL AUTO_INCREMENT,
+              `created_at` int(12) DEFAULT NULL COMMENT '创建时间',
+              `created_user_id` int(12) DEFAULT NULL COMMENT '创建分类的userId',
+              `updated_at` int(12) DEFAULT NULL COMMENT '更新时间',
+              `parent_id` int(12) DEFAULT NULL COMMENT '上级分类id，一级分类的值为0',
+              `name` text COMMENT '分类名称',
+              `status` int(5) DEFAULT NULL COMMENT '分类状态',
+              `url_key` varchar(255) DEFAULT NULL COMMENT '分类url key',
+              `description` text COMMENT '分类描述',
+              `menu_custom` text,
+              `title` text COMMENT '分类页面meta title',
+              `meta_description` text COMMENT '分类页面meta description',
+              `meta_keywords` text COMMENT '分类页面meta keywords',
+              `level` int(5) DEFAULT NULL COMMENT '分类等级',
+              `filter_product_attr_selected` varchar(255) DEFAULT NULL COMMENT '分类页面进行过滤的属性',
+              `filter_product_attr_unselected` varchar(255) DEFAULT NULL COMMENT '分类页面不进行过滤的属性',
+              `menu_show` int(5) DEFAULT NULL COMMENT '是否在菜单中显示该分类',
+              `thumbnail_image` varchar(255) DEFAULT NULL COMMENT '缩略图',
+              `image` varchar(255) DEFAULT NULL COMMENT '分类图',
+              `origin_mongo_id` varchar(100) DEFAULT NULL COMMENT '同步数据使用的字段：作为mongodb和mysql，在services切换的时候进行数据同步的id',
+              `origin_mongo_parent_id` varchar(100) DEFAULT NULL COMMENT '同步数据使用的字段：mongo中的上级分类id',
+              PRIMARY KEY (`id`),
+              KEY `parent_id` (`parent_id`,`menu_show`)
+            ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+            ",
         ];
 
         foreach ($arr as $sql) {
