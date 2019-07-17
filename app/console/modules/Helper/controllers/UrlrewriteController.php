@@ -57,6 +57,7 @@ class UrlrewriteController extends Controller
         $products = Yii::$service->product->coll($filter);
         $product_ids = [];
         foreach ($products['coll'] as $one) {
+            //var_dump($one);
             Yii::$service->product->save($one);
         }
     }

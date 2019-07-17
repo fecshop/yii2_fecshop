@@ -14,7 +14,7 @@ return [
         'childService' => [
             'rewrite' => [
                 'class' => 'fecshop\services\url\Rewrite',
-                'storage' => 'RewriteMongodb',
+                'storage' => 'RewriteMysqldb',  // RewriteMongodb |  RewriteMysqldb
             ],
             'category' => [
                 'class' => 'fecshop\services\url\Category',
