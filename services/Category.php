@@ -27,7 +27,7 @@ class Category extends Service
      * $storagePrex , $storage , $storagePath 为找到当前的storage而设置的配置参数
      * 可以在配置中更改，更改后，就会通过容器注入的方式修改相应的配置值
      */
-    public $storage     = 'CategoryMongodb';   // 当前的storage，如果在config中配置，那么在初始化的时候会被注入修改
+    public $storage     = 'CategoryMysqldb';   //  CategoryMongodb | CategoryMysqldb  当前的storage，如果在config中配置，那么在初始化的时候会被注入修改
 
     /**
      * 设置storage的path路径，
@@ -128,6 +128,33 @@ class Category extends Service
     {
         return $this->_category->coll($filter);
     }
+    
+    public function apiColl($filter = [])
+    {
+        return $this->_category->apiColl($filter);
+    }
+    
+    public function findOne($where)
+    {
+        return $this->_category->findOne($where);
+    }
+    
+    
+    // 动态更改为mongodb model
+    public function changeToMongoStorage()
+    {
+        $this->storage     = 'CategoryMongodb';
+        $currentService = $this->getStorageService($this);
+        $this->_category = new $currentService();
+    }
+    
+    // 动态更改为mongodb model
+    public function changeToMysqlStorage()
+    {
+        $this->storage     = 'CategoryMysqldb';
+        $currentService = $this->getStorageService($this);
+        $this->_category = new $currentService();
+    }
 
     /**
      *  得到分类的树数组。
@@ -147,6 +174,13 @@ class Category extends Service
     protected function actionSave($one, $originUrlKey = 'catalog/category/index')
     {
         return $this->_category->save($one, $originUrlKey);
+    }
+    /**
+     *
+     */
+    public function sync($arr)
+    {
+        return $this->_category->sync($arr);
     }
 
     /**
