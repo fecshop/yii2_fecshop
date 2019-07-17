@@ -436,7 +436,7 @@ class ProductMysqldb extends Service implements ProductInterface
     
     /**
      * @param $one|array , 产品数据数组
-     * 用于将mongodb的数据，同步到mysql中
+     * 用于将mongodb的数据，同步到mysql中 
      */
     public function sync($one)
     {
@@ -478,7 +478,7 @@ class ProductMysqldb extends Service implements ProductInterface
         $product_id = $model->{$this->getPrimaryKey()};
         // 保存分类
         
-        $this->updateProductCategory($one['category'], $product_id);
+        $this->syncProductCategory($one['category'], $product_id);
         // 自定义url部分
         $originUrlKey = 'catalog/product/index';
         $originUrl = $originUrlKey.'?'.$this->getPrimaryKey() .'='. $product_id;
@@ -498,6 +498,36 @@ class ProductMysqldb extends Service implements ProductInterface
         Yii::$service->search->syncProductInfo([$product_id]);
         
         return $model;
+    }
+    /**
+     * @param $category_ids | array,  mongodb表中的产品对应的分类id（分类id是mongo表的，在下面的代码可以看到，需要转换成mysql的categoryId）
+     * @param $product_id | int, mysql 表中的产品id
+     */
+    protected function syncProductCategory($category_ids, $product_id)
+    {
+        if (!is_array($category_ids)) {
+            return ;
+        }
+        Yii::$service->category->changeToMysqlStorage();
+        $one = $this->_categoryProductModel->deleteAll([
+            'product_id' => $product_id,
+        ]);
+        $categoryPrimaryKey = Yii::$service->category->getPrimaryKey();
+        foreach ($category_ids as $mongo_category_id) {
+            $category_id = '';
+            // 通过mongodb中的categoryId，查找到对应的mysql中的categoryId
+            $category = Yii::$service->category->findOne(['origin_mongo_id' => $mongo_category_id]);
+            if ($category[$categoryPrimaryKey]) {
+                $category_id = $category[$categoryPrimaryKey];
+            }
+            $m = new $this->_categoryProductModelName;
+            $m->product_id = $product_id;
+            $m->category_id = $category_id;
+            $m->created_at = time();
+            $m->save();
+        }
+        
+        return ;
     }
     
     // 保存的数据进行serialize序列化
@@ -710,28 +740,32 @@ class ProductMysqldb extends Service implements ProductInterface
      */
     public function addAndDeleteProductCategory($category_id, $addCateProductIdArr, $deleteCateProductIdArr)
     {
-        // 删除
-        $this->_categoryProductModel->deleteAll([
-            'and',
-            ['category_id' => $category_id],
-            ['in','product_id',$deleteCateProductIdArr]
-        ]);
         
-        // 添加
-        foreach ($addCateProductIdArr as $product_id) {
-            $one = $this->_categoryProductModel->findOne([
-                'category_id' => $category_id,
-                'product_id' => $product_id,
+        // 删除
+        if (is_array($deleteCateProductIdArr) && !empty($deleteCateProductIdArr) && $category_id) {
+            $this->_categoryProductModel->deleteAll([
+                'and',
+                ['category_id' => $category_id],
+                ['in','product_id',$deleteCateProductIdArr]
             ]);
-            if (!$one['id']) {
-                $m = new $this->_categoryProductModelName;
-                $m->product_id = $product_id;
-                $m->category_id = $category_id;
-                $m->created_at = time();
-                $m->save();
-            }
         }
         
+        // 添加
+        if (is_array($addCateProductIdArr) && !empty($addCateProductIdArr) && $category_id) {
+            foreach ($addCateProductIdArr as $product_id) {
+                $one = $this->_categoryProductModel->findOne([
+                    'category_id' => $category_id,
+                    'product_id' => $product_id,
+                ]);
+                if (!$one['id']) {
+                    $m = new $this->_categoryProductModelName;
+                    $m->product_id = $product_id;
+                    $m->category_id = $category_id;
+                    $m->created_at = time();
+                    $m->save();
+                }
+            }
+        }
         
         return true;
     }

@@ -42,7 +42,15 @@ class CategoryMongodb extends Service implements CategoryInterface
             return new $this->_categoryModelName;
         }
     }
-    
+    /**
+     * 通过主键，得到Category对象。
+     */
+    public function findOne($where)
+    {
+        $one = $this->_categoryModel->findOne($where);
+        
+        return $one;
+    }
     /**
      * 通过url_key，得到Category对象。
      */
@@ -105,6 +113,11 @@ class CategoryMongodb extends Service implements CategoryInterface
             'coll' => $query->all(),
             'count'=> $query->limit(null)->offset(null)->count(),
         ];
+    }
+    
+    public function apiColl($filter = '')
+    {
+        return $this->coll($filter);
     }
 
     /**
