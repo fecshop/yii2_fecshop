@@ -18,7 +18,7 @@ use Yii;
 class Index
 {
     public $pageNum;
-    public $numPerPage = 20;
+    public $numPerPage = 10;
     public $_page = 'p';
 
     public function initFavoriteParam()
@@ -51,32 +51,47 @@ class Index
         $count = $data['count'];
         $pageToolBar = $this->getProductPage($count);
         $product_arr = $this->getProductInfo($coll);
-
+        $this->breadcrumbs(Yii::$service->page->translate->__('Customer Product Favorite'));
+        
         return [
             'coll' => $product_arr,
             'pageToolBar'    => $pageToolBar,
         ];
     }
-
+    
+    // 面包屑导航
+    protected function breadcrumbs($name)
+    {
+        if (Yii::$app->controller->module->params['customer_product_favorite_breadcrumbs']) {
+            Yii::$service->page->breadcrumbs->addItems(['name' => $name]);
+        } else {
+            Yii::$service->page->breadcrumbs->active = false;
+        }
+    }
+    
     // 得到产品的一些信息，来显示Favorite 的产品列表。
     public function getProductInfo($coll)
     {
         $product_ids = [];
         $favorites = [];
+        $favoritePrimaryKey = Yii::$service->product->favorite->getPrimaryKey();
+        
         foreach ($coll as $one) {
             $p_id = (string)$one['product_id'];
             $product_ids[] = $one['product_id'];
             $favorites[$p_id] = [
                 'updated_at' => $one['updated_at'],
-                'favorite_id' => (string) $one['_id'],
+                'favorite_id' => (string) $one[$favoritePrimaryKey],
             ];
         }
+        $productPrimaryKey = Yii::$service->product->getPrimaryKey();
         // 得到产品的信息
         $product_filter = [
             'where'            => [
-                ['in', '_id', $product_ids],
+                ['in', $productPrimaryKey, $product_ids],
             ],
             'select' => [
+                $productPrimaryKey,
                 'name', 'image',
                 'price', 'special_price',
                 'special_from', 'special_to',
@@ -84,17 +99,18 @@ class Index
             ],
             'asArray' => true,
         ];
+        
         $data = Yii::$service->product->coll($product_filter);
         $product_arr = [];
         if (is_array($data['coll']) && !empty($data['coll'])) {
             foreach ($data['coll'] as $one) {
-                $p_id = (string) $one['_id'];
+                $p_id = (string) $one[$productPrimaryKey];
+                
                 $one['updated_at'] = $favorites[$p_id]['updated_at'];
                 $one['favorite_id'] = $favorites[$p_id]['favorite_id'];
                 $product_arr[] = $one;
             }
         }
-
         return \fec\helpers\CFunc::array_sort($product_arr, 'updated_at', 'desc');
     }
 
@@ -112,7 +128,7 @@ class Index
             return '';
         }
         $config = [
-            'class'        => 'fecshop\app\apphtml5\widgets\Page',
+            'class'        => 'fecshop\app\appfront\widgets\Page',
             'view'        => 'widgets/page.php',
             'pageNum'        => $this->pageNum,
             'numPerPage'    => $this->numPerPage,

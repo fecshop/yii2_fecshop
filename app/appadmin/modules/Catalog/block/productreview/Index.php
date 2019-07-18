@@ -122,10 +122,10 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
         $activeStatus = Yii::$service->product->review->activeStatus();
         $refuseStatus = Yii::$service->product->review->refuseStatus();
         $noActiveStatus = Yii::$service->product->review->noActiveStatus();
-
+        $reviewPrimaryKey = Yii::$service->product->review->getPrimaryKey();
         $table_th_bar = [
             [
-                'orderField'    => '_id',
+                'orderField'    => $reviewPrimaryKey,
                 'label'           => Yii::$service->page->translate->__('Id'),
                 'width'          => '50',
                 'align'           => 'left',
