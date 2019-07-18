@@ -17,7 +17,7 @@ use yii\mongodb\ActiveRecord;
  */
 class Review extends ActiveRecord
 {
-    public static $_customAttrs;
+    //public static $_customAttrs;
     // 评论默认状态，也就是用户添加了评论后的状态（前面是客户的评论信息需要审核的前提下，如果客户信息不需要审核的话，则就是ACTIVE_STATUS）
     const NOACTIVE_STATUS = 10;
     // 审核通过的状态
@@ -46,10 +46,10 @@ class Review extends ActiveRecord
     }
 
     // 动态增加字段。
-    public static function addCustomAttrs($attrs)
-    {
-        self::$_customAttrs = $attrs;
-    }
+    //public static function addCustomAttrs($attrs)
+    //{
+    //    self::$_customAttrs = $attrs;
+    //}
     /**
      * mongodb是没有表结构的，因此不能像mysql那样取出来表结构的字段作为model的属性
      * 因此，需要自己定义model的属性，下面的方法就是这个作用
@@ -74,9 +74,9 @@ class Review extends ActiveRecord
             'audit_user',        // 审核账号
             'audit_date',        // 审核时间
         ];
-        if (is_array(self::$_customAttrs) && !empty(self::$_customAttrs)) {
-            $origin = array_merge($origin, self::$_customAttrs);
-        }
+        //if (is_array(self::$_customAttrs) && !empty(self::$_customAttrs)) {
+        //    $origin = array_merge($origin, self::$_customAttrs);
+        //}
 
         return $origin;
     }
