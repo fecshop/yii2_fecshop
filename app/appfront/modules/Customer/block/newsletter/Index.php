@@ -22,6 +22,7 @@ class Index
     {
         $email = Yii::$app->request->get('email');
         $email = \Yii::$service->helper->htmlEncode($email);
+        
         $status = Yii::$service->customer->newsletter->subscribe($email);
         $message = Yii::$service->helper->errors->get();
         if (!$message) {
