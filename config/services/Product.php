@@ -43,7 +43,7 @@ return [
                   * 范围：1-100，数越大，质量越高，图片文件的容量越大, 数越低，图片越模糊，容量越小
                   */
                 'jpegQuality' => 80,
-                //'allowImgType' 	=> [ # 允许的图片类型
+                //    'allowImgType' 	=> [ # 允许的图片类型
                 //    'image/jpeg',
                 //    'image/gif',
                 //    'image/png',

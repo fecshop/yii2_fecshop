@@ -79,7 +79,37 @@ class ProductMongodb extends Service implements ProductInterface
             }
         }
     }
+    /**
+     * @param $ids | Array
+     * 通过产品ids得到产品sku
+     */
+    public function getSkusByIds($ids)
+    {
+        $skus = [];
+        $_id = $this->getPrimaryKey();
+        if (!empty($ids) && is_array($ids)) {
+            $ids_ob_arr = [];
+            foreach ($ids as $id) {
+                $ids_ob_arr[] = new \MongoDB\BSON\ObjectId($id);
+            }
+            $filter = [
+                'where'            => [
+                    ['in', $_id, $ids_ob_arr],
 
+                ],
+                'asArray' => true,
+            ];
+            $coll = $this->coll($filter);
+            $data = $coll['coll'];
+            if (!empty($data) && is_array($data)) {
+                foreach ($data as $one) {
+                    $skus[(string) $one[$_id]] = $one['sku'];
+                }
+            }
+        }
+
+        return $skus;
+    }
     /**
      * @param $spu|array
      * @param $returnArr|bool 返回的数据是否是数组格式，如果设置为
@@ -764,6 +794,16 @@ class ProductMongodb extends Service implements ProductInterface
                 $one['reviw_rate_star_info_lang']   = $c;
                 $one->save();
             }
+        }
+    }
+    
+    public function updateProductFavoriteCount($product_id, $count)
+    {
+        $product = $this->_productModel->findOne($product_id);
+        $productPrimaryKey = Yii::$service->product->getPrimaryKey();
+        if ($product[$productPrimaryKey]) {
+            $product->favorite_count = $count;
+            $product->save();
         }
     }
 

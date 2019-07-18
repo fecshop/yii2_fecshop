@@ -88,7 +88,37 @@ class ProductMysqldb extends Service implements ProductInterface
         }
     }
     
-    
+    /**
+     * @param $ids | Array
+     * 通过产品ids得到产品sku
+     */
+    public function getSkusByIds($ids)
+    {
+        $skus = [];
+        $_id = $this->getPrimaryKey();
+        if (!empty($ids) && is_array($ids)) {
+            $ids_ob_arr = [];
+            foreach ($ids as $id) {
+                $ids_ob_arr[] = $id;
+            }
+            $filter = [
+                'where'            => [
+                    ['in', $_id, $ids_ob_arr],
+
+                ],
+                'asArray' => true,
+            ];
+            $coll = $this->coll($filter);
+            $data = $coll['coll'];
+            if (!empty($data) && is_array($data)) {
+                foreach ($data as $one) {
+                    $skus[(string) $one[$_id]] = $one['sku'];
+                }
+            }
+        }
+
+        return $skus;
+    }
 
     /**
      * @param $sku|array
@@ -391,6 +421,7 @@ class ProductMysqldb extends Service implements ProductInterface
         /**
          * 如果 $one['custom_option'] 不为空，则计算出来库存总数，填写到qty
          */
+        
         if (is_array($one['custom_option']) && !empty($one['custom_option'])) {
             $custom_option_qty = 0;
             foreach ($one['custom_option'] as $co_one) {
@@ -416,6 +447,7 @@ class ProductMysqldb extends Service implements ProductInterface
             $defaultLangTitle = Yii::$service->fecshoplang->getDefaultLangAttrVal($one['name'], 'name');
             $urlKey = Yii::$service->url->saveRewriteUrlKeyByStr($defaultLangTitle, $originUrl, $originUrlKey);
             $model->url_key = $urlKey;
+             
             $model->save();
         }
         
@@ -428,6 +460,7 @@ class ProductMysqldb extends Service implements ProductInterface
         /**
          * 更新产品信息到搜索表。
          */
+         
         Yii::$service->search->syncProductInfo([$product_id]);
         
         return $model;
@@ -453,7 +486,8 @@ class ProductMysqldb extends Service implements ProductInterface
             $model = new $this->_productModelName();
             $model->created_at = time();
         }
-        
+        // 保存mongodb表中的产品id到字段origin_mongo_id
+        $model->origin_mongo_id = $one['_id'];
         $model->updated_at = time();
         // 计算出来产品的最终价格。
         $one['final_price'] = Yii::$service->product->price->getFinalPrice($one['price'], $one['special_price'], $one['special_from'], $one['special_to']);
@@ -1015,17 +1049,27 @@ class ProductMysqldb extends Service implements ProductInterface
                 $one['reviw_rate_star_average'] = $avag_rate;
                 $one['review_count']            = $count;
                 $a                              = $one['reviw_rate_star_average_lang'];
-                $a[$review_star_lang]           = $avag_lang_rate;
+                //$a[$review_star_lang]           = $avag_lang_rate;
                 $b                              = $one['review_count_lang'];
-                $b[$review_count_lang]          = $lang_count;
+                //$b[$review_count_lang]          = $lang_count;
                 $one['reviw_rate_star_average_lang'] = $a;
                 $one['review_count_lang']           = $b;
                 $one['reviw_rate_star_info']        = $rate_total_arr;
                 $c                                  = $one['reviw_rate_star_info_lang'];
-                $c[$reviw_rate_star_info_lang]      = $rate_lang_total_arr;
+                //$c[$reviw_rate_star_info_lang]      = $rate_lang_total_arr;
                 $one['reviw_rate_star_info_lang']   = $c;
                 $one->save();
             }
+        }
+    }
+    
+    public function updateProductFavoriteCount($product_id, $count)
+    {
+        $product = $this->_productModel->findOne($product_id);
+        $productPrimaryKey = Yii::$service->product->getPrimaryKey();
+        if ($product[$productPrimaryKey]) {
+            $product->favorite_count = $count;
+            $product->save();
         }
     }
 
