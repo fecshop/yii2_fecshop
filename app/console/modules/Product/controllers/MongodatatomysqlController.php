@@ -53,9 +53,6 @@ class MongodatatomysqlController extends Controller
         foreach ($coll as $product) {
             $arr = [];
             foreach ($product as $k => $v) {
-                if ($k == '_id') {
-                    continue;
-                }
                 $arr[$k] = $v;
             }
             
