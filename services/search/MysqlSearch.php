@@ -140,7 +140,7 @@ class MysqlSearch extends Service implements SearchInterface
                             Yii::$service->helper->ar->save($searchModel, $one);
                             if ($errors = Yii::$service->helper->errors->get()) {
                                 // 报错。
-                                echo  $errors;
+                                var_dump($errors);
                                 //return false;
                             }
                         }
