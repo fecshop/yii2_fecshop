@@ -77,6 +77,7 @@ class ArticleMysqldb extends Service implements ArticleInterface
                 $model['title'] = unserialize($model['title']);
                 $model['meta_keywords'] = unserialize($model['meta_keywords']);
                 $model['meta_description'] = unserialize($model['meta_description']);
+                var_dump($model);
                 return $model;
             }
         }
@@ -110,7 +111,7 @@ class ArticleMysqldb extends Service implements ArticleInterface
                 $coll[$k] = $one;
             }
         }
-        //var_dump($one);
+        //var_dump($coll);
         return [
             'coll' => $coll,
             'count'=> $query->limit(null)->offset(null)->count(),
@@ -125,6 +126,7 @@ class ArticleMysqldb extends Service implements ArticleInterface
     {
         $currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
         $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
+        
         if ($primaryVal) {
             $model = $this->_articleModel->findOne($primaryVal);
             if (!$model) {
@@ -137,20 +139,23 @@ class ArticleMysqldb extends Service implements ArticleInterface
             $model->created_at = time();
             $model->created_user_id = \fec\helpers\CUser::getCurrentUserId();
         }
+        
         $model->updated_at = time();
         foreach ($this->_lang_attr as $attrName) {
             if (is_array($one[$attrName]) && !empty($one[$attrName])) {
                 $one[$attrName] = serialize($one[$attrName]);
             }
         }
+        unset($one['id']);
         $primaryKey = $this->getPrimaryKey();
-        $model      = Yii::$service->helper->ar->save($model, $one);
+        $saveStatus  = Yii::$service->helper->ar->save($model, $one);
         $primaryVal = $model[$primaryKey];
 
         $originUrl = $originUrlKey.'?'.$this->getPrimaryKey() .'='. $primaryVal;
         $originUrlKey = isset($one['url_key']) ? $one['url_key'] : '';
         $defaultLangTitle = Yii::$service->fecshoplang->getDefaultLangAttrVal($one['title'], 'title');
         $urlKey = Yii::$service->url->saveRewriteUrlKeyByStr($defaultLangTitle, $originUrl, $originUrlKey);
+        
         $model->url_key = $urlKey;
         $this->initStatus($model);
         $model->save();
