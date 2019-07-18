@@ -26,7 +26,7 @@ class Staticblock extends Service
      * $storagePrex , $storage , $storagePath 为找到当前的storage而设置的配置参数
      * 可以在配置中更改，更改后，就会通过容器注入的方式修改相应的配置值
      */
-    public $storage     = 'StaticBlockMongodb';   // 当前的storage，如果在config中配置，那么在初始化的时候会被注入修改
+    public $storage     = 'StaticBlockMysqldb';   // StaticBlockMongodb | StaticBlockMysqldb 当前的storage，如果在config中配置，那么在初始化的时候会被注入修改
 
     /**
      * 设置storage的path路径，
