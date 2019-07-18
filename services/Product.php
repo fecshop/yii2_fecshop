@@ -327,6 +327,12 @@ class Product extends Service
     {
         return $this->_product->apiDelete($primaryKey);
     }
+    
+    public function updateProductFavoriteCount($product_id, $count)
+    {
+        return $this->_product->updateProductFavoriteCount($product_id, $count);
+    }
+    
 
     /**
      * 得到Product model的全名.
@@ -508,34 +514,10 @@ class Product extends Service
      * @param $ids | Array
      * 通过产品ids得到产品sku
      */
-    protected function actionGetSkusByIds($ids)
+    public function getSkusByIds($ids)
     {
-        $skus = [];
-        $_id = $this->getPrimaryKey();
-        if (!empty($ids) && is_array($ids)) {
-            $ids_ob_arr = [];
-            foreach ($ids as $id) {
-                $ids_ob_arr[] = new \MongoDB\BSON\ObjectId($id);
-            }
-            $filter = [
-                'where'            => [
-                    ['in', $_id, $ids_ob_arr],
-
-                ],
-                'asArray' => true,
-            ];
-            $coll = $this->coll($filter);
-            $data = $coll['coll'];
-            if (!empty($data) && is_array($data)) {
-                foreach ($data as $one) {
-                    $skus[(string) $one[$_id]] = $one['sku'];
-                }
-            }
-        }
-
-        return $skus;
+        return $this->_product->getSkusByIds($ids);
     }
-
     /**
      * @param $spu | String
      * @param $avag_rate | Int 产品的总平均得分
