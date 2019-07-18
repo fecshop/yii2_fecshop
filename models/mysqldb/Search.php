@@ -10,6 +10,7 @@
 namespace fecshop\models\mysqldb;
 
 use yii\db\ActiveRecord;
+use yii\base\InvalidValueException;
 
 /**
  * @author Terry Zhao <2358269014@qq.com>
@@ -20,5 +21,15 @@ class Search extends ActiveRecord
     public static function tableName()
     {
         return '{{%full_search_product}}';
+    }
+    
+    public function beforeSave($insert)
+    {
+        foreach ($this->attributes() as $attr) {
+            if (is_array($this->{$attr})) {
+                throw new InvalidValueException('search model save fail,  attribute ['.$attr. '] is array, you must serialize it before save ');
+            }
+        }
+        return parent::beforeSave($insert);
     }
 }
