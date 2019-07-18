@@ -21,31 +21,53 @@ use Yii;
  */
 class Newsletter extends Service
 {
-    public $numPerPage = 20;
+    /**
+     * $storagePrex , $storage , $storagePath 为找到当前的storage而设置的配置参数
+     * 可以在配置中更改，更改后，就会通过容器注入的方式修改相应的配置值
+     */
+    public $storage     = 'NewsletterMysqldb';   // NewsletterMysqldb | NewsletterMongodb 当前的storage，如果在config中配置，那么在初始化的时候会被注入修改
 
-    protected $_newsletterModelName = '\fecshop\models\mongodb\customer\Newsletter';
-
-    protected $_newsletterModel;
+    /**
+     * 设置storage的path路径，
+     * 如果不设置，则系统使用默认路径
+     * 如果设置了路径，则使用自定义的路径
+     */
+    public $storagePath = '';
+    protected $_newsletter;
     
     public function init()
     {
         parent::init();
-        list($this->_newsletterModelName, $this->_newsletterModel) = Yii::mapGet($this->_newsletterModelName);
+        $currentService = $this->getStorageService($this);
+        $this->_newsletter = new $currentService();
     }
-
+    
+    // 动态更改为mongodb model
+    public function changeToMongoStorage()
+    {
+        $this->storage     = 'ReviewMongodb';
+        $currentService = $this->getStorageService($this);
+        $this->_newsletter = new $currentService();
+    }
+    
+    // 动态更改为mongodb model
+    public function changeToMysqlStorage()
+    {
+        $this->storage     = 'ReviewMysqldb';
+        $currentService = $this->getStorageService($this);
+        $this->_newsletter = new $currentService();
+    }
+    
     public function getPrimaryKey()
     {
-        return '_id';
+        return $this->_newsletter->getPrimaryKey();
     }
-
+    
     public function getByPrimaryKey($primaryKey)
     {
-        if ($primaryKey) {
-            return $this->_newsletterModel->findOne($primaryKey);
-        } else {
-            return new $this->_newsletterModelName();
-        }
+        return $this->_newsletter->getByPrimaryKey($primaryKey);
     }
+    
 
     /*
      * example filter:
@@ -63,13 +85,7 @@ class Newsletter extends Service
      */
     public function coll($filter = '')
     {
-        $query = $this->_newsletterModel->find();
-        $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
-
-        return [
-            'coll' => $query->all(),
-            'count'=> $query->limit(null)->offset(null)->count(),
-        ];
+        return $this->_newsletter->coll($filter);
     }
 
     /**
@@ -77,48 +93,19 @@ class Newsletter extends Service
      * @return bool
      *              检查邮件是否之前被订阅过
      */
-    protected function emailIsExist($emailAddress)
+    public function emailIsExist($emailAddress)
     {
-        $primaryKey = $this->_newsletterModel->primaryKey();
-        $one = $this->_newsletterModel->findOne(['email' => $emailAddress]);
-        if ($one[$primaryKey]) {
-            return true;
-        }
-
-        return false;
+        return $this->_newsletter->emailIsExist($emailAddress);
     }
-
+    
     /**
      * @param $emailAddress | String
      * @return bool
      *              订阅邮件
      */
-    protected function actionSubscribe($emailAddress, $isRegister = false)
+    public function subscribe($emailAddress, $isRegister = false)
     {
-        if (!$emailAddress) {
-            Yii::$service->helper->errors->add('newsletter email address is empty');
-
-            return;
-        } elseif (!Yii::$service->email->validateFormat($emailAddress)) {
-            Yii::$service->helper->errors->add('The email address format is incorrect!');
-
-            return;
-        } elseif ($this->emailIsExist($emailAddress)) {
-            if ($isRegister) {
-                return true;
-            } else {
-                Yii::$service->helper->errors->add('ERROR,Your email address has subscribe , Please do not repeat the subscription');
-
-                return;
-            }
-        }
-        $model = $this->_newsletterModel;
-        $newsletterModel = new $this->_newsletterModelName();
-        $newsletterModel->email = $emailAddress;
-        $newsletterModel->created_at = time();
-        $newsletterModel->status = $model::ENABLE_STATUS;
-        $newsletterModel->save();
-
-        return true;
+        return $this->_newsletter->subscribe($emailAddress, $isRegister);
     }
+    
 }
