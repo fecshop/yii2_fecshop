@@ -20,20 +20,48 @@ use Yii;
  */
 class ErrorHandler extends Service
 {
-    protected $_errorHandlerModelName = '\fecshop\models\mongodb\ErrorHandlerLog';
+    /**
+     * $storagePrex , $storage , $storagePath 为找到当前的storage而设置的配置参数
+     * 可以在配置中更改，更改后，就会通过容器注入的方式修改相应的配置值
+     */
+    public $storage     = 'ErrorHandlerMysqldb';   // ErrorHandlerMysqldb | ErrorHandlerMongodb 当前的storage，如果在config中配置，那么在初始化的时候会被注入修改
 
-    protected $_errorHandlerModel;
+    /**
+     * 设置storage的path路径，
+     * 如果不设置，则系统使用默认路径
+     * 如果设置了路径，则使用自定义的路径
+     */
+    public $storagePath = '';
+    protected $_errorHandler;
     
     public function init()
     {
         parent::init();
-        list($this->_errorHandlerModelName, $this->_errorHandlerModel) = \Yii::mapGet($this->_errorHandlerModelName);
+        $currentService = $this->getStorageService($this);
+        $this->_errorHandler = new $currentService();
+    }
+    
+    // 动态更改为mongodb model
+    public function changeToMongoStorage()
+    {
+        $this->storage     = 'ErrorHandlerMongodb';
+        $currentService = $this->getStorageService($this);
+        $this->_errorHandler = new $currentService();
+    }
+    
+    // 动态更改为mongodb model
+    public function changeToMysqlStorage()
+    {
+        $this->storage     = 'ErrorHandlerMysqldb';
+        $currentService = $this->getStorageService($this);
+        $this->_errorHandler = new $currentService();
     }
     
     public function getPrimaryKey()
     {
-        return '_id';
+        return $this->_errorHandler->getPrimaryKey();
     }
+    
 
     /**
      * @param $code | Int, http 错误码
@@ -58,22 +86,9 @@ class ErrorHandler extends Service
         $trace_string,
         $url,
         $req_info=[]
-    ) {
-        $category = Yii::$service->helper->getAppName();
-        $model = new $this->_errorHandlerModelName();
-        $model->category     = $category;
-        $model->code         = $code;
-        $model->message      = $message;
-        $model->file         = $file;
-        $model->line         = $line;
-        $model->created_at   = $created_at;
-        $model->ip           = $ip;
-        $model->name         = $name;
-        $model->url          = $url;
-        $model->request_info = $req_info;
-        $model->trace_string = $trace_string;
-        $model->save();
-        return (string)$model[$this->getPrimaryKey()];
+    ) 
+    {
+        return $this->_errorHandler->saveByErrorHandler($code,$message,$file,$line,$created_at,$ip,$name,$trace_string,$url,$req_info);
     }
     
     /**
@@ -81,9 +96,7 @@ class ErrorHandler extends Service
      */
     public function getByPrimaryKey($primaryKey)
     {
-        if ($primaryKey) {
-            return $this->_errorHandlerModel->findOne($primaryKey);
-        }
+        return $this->_errorHandler->getByPrimaryKey($primaryKey);
     }
     
     /*
@@ -100,19 +113,8 @@ class ErrorHandler extends Service
      * 	'asArray' => true,
      * ]
      */
-    public function coll($filter = '')
+    public function coll($filter)
     {
-        $query = $this->_errorHandlerModel->find();
-        $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
-        $coll = $query->all();
-        if (!empty($coll)) {
-            foreach ($coll as $k => $one) {
-                $coll[$k] = $one;
-            }
-        }
-        return [
-            'coll' => $coll,
-            'count'=> $query->limit(null)->offset(null)->count(),
-        ];
+        return $this->_errorHandler->coll($filter);
     }
 }
