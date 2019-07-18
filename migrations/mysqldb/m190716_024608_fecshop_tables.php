@@ -139,6 +139,78 @@ class m190716_024608_fecshop_tables extends Migration
               KEY `parent_id` (`parent_id`,`menu_show`)
             ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
             ",
+            
+            "
+                ALTER TABLE  `product_flat` ADD  `origin_mongo_id` VARCHAR( 80 ) NULL COMMENT  'mongodb表的产品id'
+            ",
+            
+            "
+                CREATE TABLE IF NOT EXISTS `review` (
+                  `id` int(12) NOT NULL AUTO_INCREMENT,
+                  `product_spu` varchar(100) DEFAULT NULL,
+                  `product_sku` varchar(100) DEFAULT NULL,
+                  `product_id` varchar(50) DEFAULT NULL,
+                  `rate_star` int(5) DEFAULT NULL COMMENT '评星',
+                  `name` varchar(255) DEFAULT NULL COMMENT '评论人姓名',
+                  `user_id` int(12) DEFAULT NULL COMMENT '评论人userId',
+                  `ip` varchar(50) DEFAULT NULL COMMENT '评论人ip',
+                  `summary` varchar(255) DEFAULT NULL COMMENT '评论标题',
+                  `review_content` text COMMENT '评论内容',
+                  `review_date` int(12) DEFAULT NULL COMMENT '评论日期',
+                  `store` varchar(100) DEFAULT NULL COMMENT 'store',
+                  `lang_code` varchar(20) DEFAULT NULL COMMENT '语言简码',
+                  `status` int(5) DEFAULT NULL COMMENT '状态',
+                  
+                  `audit_user` int(12) DEFAULT NULL COMMENT '评论审核用户id',
+                  `audit_date` int(12) DEFAULT NULL COMMENT '评论审核时间',
+                  `origin_mongo_id` varchar(50) DEFAULT NULL COMMENT 'mongodb review的id（数据同步）',
+                  PRIMARY KEY (`id`),
+                  KEY `product_spu` (`product_spu`,`product_id`),
+                  KEY `product_sku` (`product_sku`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+
+            ",
+            "
+            CREATE TABLE IF NOT EXISTS `newsletter` (
+              `id` int(12) NOT NULL AUTO_INCREMENT,
+              `email` varchar(150) NOT NULL,
+              `created_at` int(12) NOT NULL,
+              `status` int(5) NOT NULL,
+              PRIMARY KEY (`id`),
+              UNIQUE KEY `email` (`email`)
+            ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+            ",
+            
+            "
+                CREATE TABLE IF NOT EXISTS `favorite` (
+                  `id` int(12) NOT NULL AUTO_INCREMENT,
+                  `product_id` varchar(50) DEFAULT NULL,
+                  `user_id` int(12) DEFAULT NULL,
+                  `created_at` int(12) DEFAULT NULL,
+                  `updated_at` int(12) DEFAULT NULL,
+                  `store` varchar(255) DEFAULT NULL,
+                  PRIMARY KEY (`id`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+            ",
+            
+            "
+            CREATE TABLE IF NOT EXISTS `error_handler_log` (
+              `id` int(11) NOT NULL AUTO_INCREMENT,
+              `category` varchar(100) DEFAULT NULL,
+              `code` int(12) DEFAULT NULL,
+              `message` varchar(255) DEFAULT NULL,
+              `file` varchar(255) DEFAULT NULL,
+              `line` int(12) DEFAULT NULL,
+              `created_at` int(12) DEFAULT NULL,
+              `ip` varchar(100) DEFAULT NULL,
+              `name` varchar(255) DEFAULT NULL,
+              `url` varchar(255) DEFAULT NULL,
+              `request_info` text,
+              `trace_string` text,
+              PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+            ",
         ];
 
         foreach ($arr as $sql) {
