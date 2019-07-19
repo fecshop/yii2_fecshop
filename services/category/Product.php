@@ -112,7 +112,8 @@ class Product extends Service
                 if (isset($one['product_id']) && $one['product_id']) {
                     $product_id = (string)$one['product_id'];
                 } else {
-                    $product_id = (string)$one['_id'];
+                    $productPrimaryKey = Yii::$service->product->getPrimaryKey();
+                    $product_id = (string)$one[$productPrimaryKey];
                 }
                 $arr[] = [
                     'name'              => $name,
