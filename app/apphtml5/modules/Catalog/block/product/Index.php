@@ -56,6 +56,7 @@ class Index
             Yii::$service->url->redirect404();
             return;
         }
+        $productPrimaryKey = Yii::$service->product->getPrimaryKey();
         $reviewHelper = $this->_reviewHelper;
         $reviewHelper::initReviewConfig();
         list($review_count, $reviw_rate_star_average, $reviw_rate_star_info) = $reviewHelper::getReviewAndStarCount($this->_product);
@@ -85,7 +86,7 @@ class Index
             'options'                   => $this->getSameSpuInfo(),
             'custom_option'             => $this->_product['custom_option'],
             'description'               => Yii::$service->store->getStoreAttrVal($this->_product['description'], 'description'),
-            '_id'                       => $this->_product['_id'],
+            '_id'                       => $this->_product[$productPrimaryKey],
             'buy_also_buy'              => $this->getProductBySkus($skus),
         ];
     }
@@ -236,18 +237,7 @@ class Index
     protected function getSpuData($select)
     {
         $spu = $this->_product['spu'];
-        $select = array_merge($select, $this->_productSpuAttrArr);
-
-        $filter = [
-            'select'    => $select,
-            'where'            => [
-                ['spu' => $spu],
-            ],
-            'asArray' => true,
-        ];
-        $coll = Yii::$service->product->coll($filter);
-
-        return $coll['coll'];
+        return Yii::$service->product->spuCollData($select, $this->_productSpuAttrArr, $spu);
     }
 
     /**
@@ -270,7 +260,12 @@ class Index
 
         $this->_currentSpuAttrValArr = [];
         foreach ($this->_productSpuAttrArr as $spuAttr) {
-            $spuAttrVal = $this->_product[$spuAttr];
+            if (isset($this->_product['attr_group_info']) && $this->_product['attr_group_info']) {  // mysql
+                $attr_group_info = $this->_product['attr_group_info'];
+                $spuAttrVal = $attr_group_info[$spuAttr];
+            } else {
+                $spuAttrVal = $this->_product[$spuAttr];
+            }
             if ($spuAttrVal) {
                 $this->_currentSpuAttrValArr[$spuAttr] = $spuAttrVal;
             } else {
