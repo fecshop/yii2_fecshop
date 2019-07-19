@@ -238,7 +238,7 @@ class Price extends Service
      */
     protected function actionSpecialPriceisActive($price, $special_price, $special_from, $special_to)
     {
-        if (!$special_price) {
+        if (!$special_price || $special_price == 0.00) {  // 浮点数需要这样判断float 0
             return false;
         }
         if ($this->ifSpecialPriceGtPriceFinalPriceEqPrice) {
