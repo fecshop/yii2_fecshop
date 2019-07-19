@@ -90,15 +90,7 @@ use fecshop\app\apphtml5\helper\Format;
 		</div>
 	</div>
 	
-	<div class="col-left ">
-		<?php
-			$leftMenu = [
-				'class' => 'fecshop\app\apphtml5\modules\Customer\block\LeftMenu',
-				'view'	=> 'customer/leftmenu.php'
-			];
-		?>
-		<?= Yii::$service->page->widget->render($leftMenu,$this); ?>
-	</div>
+	
 	<div class="clear"></div>
 </div>
 <script>
