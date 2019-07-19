@@ -187,6 +187,37 @@ class CategoryMongodb extends Service implements CategoryInterface
 
         return $model;
     }
+     /** 
+     * @param $arr | array
+     * 用于同步mysql数据库到mongodb数据库中
+     */
+    public function sync($arr)
+    {
+        $originUrlKey = 'catalog/category/index';
+        $origin_mysql_parent_id = $arr['parent_id'];
+        $origin_mysql_id = $arr['id'];
+        unset($arr['parent_id']);
+        unset($arr['id']);
+        $model = $this->_categoryModel->findOne([
+            'origin_mysql_id' => $origin_mysql_id
+        ]);
+        if (!$model['origin_mysql_id']) {
+            $model = new $this->_categoryModelName;
+            $model->created_at = time();
+        }
+        
+        $model->origin_mysql_id = $origin_mysql_id;
+        $model->origin_mysql_parent_id = $origin_mysql_parent_id;
+        //$arr = $this->serializeSaveData($arr);
+        $saveStatus = Yii::$service->helper->ar->save($model, $arr);
+        
+        $originUrl = $originUrlKey.'?'.$this->getPrimaryKey() .'='. $model->_id;
+        $originUrlKey = isset($model['url_key']) ? $model['url_key'] : '';
+        $defaultLangTitle = Yii::$service->fecshoplang->getDefaultLangAttrVal($arr['name'], 'name');
+        $urlKey = Yii::$service->url->saveRewriteUrlKeyByStr($defaultLangTitle, $originUrl, $originUrlKey);
+        $model->url_key = $urlKey;
+        $model->save();
+    }
 
     /**
      * @param $id | String  主键值

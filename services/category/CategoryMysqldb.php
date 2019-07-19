@@ -244,7 +244,10 @@ class CategoryMysqldb extends Service implements CategoryInterface
     
         return $model;
     }
-    
+    /** 
+     * @param $arr | array
+     * 用于同步mongodb数据库到mysql数据库中
+     */
     public function sync($arr)
     {
         $originUrlKey = 'catalog/category/index';
