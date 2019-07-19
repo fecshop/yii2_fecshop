@@ -190,6 +190,7 @@ class ProductController extends AppserverController
         if(Yii::$app->request->getMethod() === 'OPTIONS'){
             return [];
         }
+        $productPrimaryKey = Yii::$service->product->getPrimaryKey();
         /**
          * 通过Yii::mapGet() 得到重写后的class类名以及对象。Yii::mapGet是在文件@fecshop\yii\Yii.php中
          */
@@ -204,6 +205,7 @@ class ProductController extends AppserverController
             
             return $responseData;
         }
+        $productPrimaryKey = Yii::$service->product->getPrimaryKey();
         $reviewHelper = $this->_reviewHelper;
         $reviewHelper::initReviewConfig();
         $ReviewAndStarCount = $reviewHelper::getReviewAndStarCount($this->_product);
@@ -238,7 +240,7 @@ class ProductController extends AppserverController
         }
         $custom_option = $this->getCustomOption($this->_product['custom_option'],$middle_img_width); 
         $reviewHelper = new ReviewHelper;
-        $reviewHelper->product_id = $this->_product['_id'];
+        $reviewHelper->product_id = $this->_product[$productPrimaryKey];
         $reviewHelper->spu = $this->_product['spu'];
         $productReview = $reviewHelper->getLastData();
         $code = Yii::$service->helper->appserver->status_success;
@@ -265,7 +267,7 @@ class ProductController extends AppserverController
                 'options'                   => $this->getSameSpuInfo(),
                 'custom_option'             => $custom_option,
                 'description'               => Yii::$service->store->getStoreAttrVal($this->_product['description'], 'description'),
-                '_id'                       => (string)$this->_product['_id'],
+                '_id'                       => (string)$this->_product[$productPrimaryKey],
                 'buy_also_buy'              => $this->getProductBySkus(),
             ]
         ];
@@ -480,18 +482,7 @@ class ProductController extends AppserverController
     protected function getSpuData($select)
     {
         $spu = $this->_product['spu'];
-        $select = array_merge($select, $this->_productSpuAttrArr);
-
-        $filter = [
-            'select'    => $select,
-            'where'            => [
-                ['spu' => $spu],
-            ],
-            'asArray' => true,
-        ];
-        $coll = Yii::$service->product->coll($filter);
-
-        return $coll['coll'];
+        return Yii::$service->product->spuCollData($select, $this->_productSpuAttrArr, $spu);
     }
 
     /**
@@ -514,7 +505,12 @@ class ProductController extends AppserverController
 
         $this->_currentSpuAttrValArr = [];
         foreach ($this->_productSpuAttrArr as $spuAttr) {
-            $spuAttrVal = $this->_product[$spuAttr];
+            if (isset($this->_product['attr_group_info']) && $this->_product['attr_group_info']) {  // mysql
+                $attr_group_info = $this->_product['attr_group_info'];
+                $spuAttrVal = $attr_group_info[$spuAttr];
+            } else {
+                $spuAttrVal = $this->_product[$spuAttr];
+            }
             if ($spuAttrVal) {
                 $this->_currentSpuAttrValArr[$spuAttr] = $spuAttrVal;
             } else {
@@ -523,8 +519,10 @@ class ProductController extends AppserverController
             }
         }
         // 得到当前的spu下面的所有的值
-        $select = ['name', 'image', 'url_key'];
+        $productPrimaryKey = Yii::$service->product->getPrimaryKey();
+        $select = [$productPrimaryKey, 'name', 'image', 'url_key'];
         $data = $this->getSpuData($select);
+        //var_dump($data);
         $spuValColl = [];
         // 通过值，找到spu。
         $reverse_val_spu = [];
@@ -538,7 +536,7 @@ class ProductController extends AppserverController
 
                 //$active = 'class="active"';
                 $one['main_img'] = isset($one['image']['main']['image']) ? $one['image']['main']['image'] : '';
-                $one['url'] = '/catalog/product/'.(string)$one['_id'];
+                $one['url'] = '/catalog/product/'.(string)$one[$productPrimaryKey];
                 $reverse_val_spu[$reverse_key] = $one;
                 $showAsImgVal = $one[$this->_spuAttrShowAsImg];
                 if ($showAsImgVal) {
@@ -619,7 +617,8 @@ class ProductController extends AppserverController
         if ($active) {
             $return['active'] = 'current';
         }
-        $return['_id'] = (string)$return['_id'];
+        $productPrimaryKey = Yii::$service->product->getPrimaryKey();
+        $return['_id'] = (string)$return[$productPrimaryKey];
         return $return;
     }
 
