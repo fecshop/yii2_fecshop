@@ -37,7 +37,7 @@ class Wx extends Service
             throw new InvalidConfigException('wxpay config file:['.$wxpayConfigFile.'] is not exist');
         }
         require_once($wxpayConfigFile);
-        // 通过上面的小程序，设置配置信息
+        // 通过上面的小程序，设置配置信息 
         $this->microProgramAppId = \WxPayConfig::APPID;
         $this->microProgramSecret = \WxPayConfig::APPSECRET;
     }
