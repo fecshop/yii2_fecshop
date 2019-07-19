@@ -91,6 +91,7 @@ class BaseController extends AppserverController
         if(Yii::$app->request->getMethod() === 'OPTIONS'){
             return [];
         }
+        $productPrimaryKey = Yii::$service->product->getPrimaryKey();
         $arr = [];
         $firstDisplay = 0;
         $currentLangCode = Yii::$service->store->currentLangCode;
@@ -103,7 +104,7 @@ class BaseController extends AppserverController
             foreach ($treeArr as $k=>$v) {
                 
                 $categories[] = [
-                    'id' => $v['_id'],
+                    'id' => $v[$productPrimaryKey],
                     'name' => $v['name'],
                     'level' => 1,
                 ];
@@ -111,8 +112,8 @@ class BaseController extends AppserverController
                     //var_dump($v['child']);
                     foreach ($v['child'] as $k2 => $v2) {
                         $categorieslist[] = [
-                            'pid' => $v['_id'],
-                            'id' => $v2['_id'],
+                            'pid' => $v[$productPrimaryKey],
+                            'id' => $v2[$productPrimaryKey],
                             'name' => $v2['name'],
                             'level' => 2,
                             'icon' => $v2['thumbnail_image'] ? Yii::$service->category->image->getUrl($v2['thumbnail_image']) : 'https://cdn.it120.cc/apifactory/2019/01/26/8fe77acb4d09ab1e101b97158adbba3e.jpg',
