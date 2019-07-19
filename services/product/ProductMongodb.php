@@ -391,6 +391,119 @@ class ProductMongodb extends Service implements ProductInterface
 
         return $model;
     }
+    
+    
+    /**
+     * @param $one|array , 产品数据数组
+     * 用于将mysql的数据，同步到mongodb中 
+     */
+    public function sync($one)
+    {
+        if (!$this->initSave($one)) {
+            return false;
+        }
+        $defaultLangTitle = Yii::$service->fecshoplang->getDefaultLangAttrVal($one['name'], 'name');
+        $product_one = $this->_productModel->find()->where([
+            'sku' => $one['sku'],
+        ])->one();
+        if ($product_one['sku']) {
+            $model = $product_one;
+        } else {
+            $model = new $this->_productModelName();
+            $model->created_at = time();
+            $primaryVal = new \MongoDB\BSON\ObjectId();
+            $model->{$this->getPrimaryKey()} = $primaryVal;
+        }
+        if (isset($one['attr_group']) && $one['attr_group']) {
+            $this->addGroupAttrs($one['attr_group']);
+        }
+        
+        // 保存mongodb表中的产品id到字段origin_mongo_id
+        $origin_mysql_id = $one['id'];
+        $model->origin_mysql_id = $origin_mysql_id;
+        $model->updated_at = time();
+        // 计算出来产品的最终价格。
+        $one['final_price'] = Yii::$service->product->price->getFinalPrice($one['price'], $one['special_price'], $one['special_from'], $one['special_to']);
+        $one['score'] = (int) $one['score'];
+        unset($one['id']);
+        /**
+         * 如果 $one['custom_option'] 不为空，则计算出来库存总数，填写到qty
+         */
+        if (is_array($one['custom_option']) && !empty($one['custom_option'])) {
+            $custom_option_qty = 0;
+            foreach ($one['custom_option'] as $co_one) {
+                $custom_option_qty += $co_one['qty'];
+            }
+            $one['qty'] = $custom_option_qty;
+        }
+        
+        /**
+         * 保存产品
+         */
+        //$one = $this->serializeSaveData($one);
+        // 得到对应的mongodb的分类id数组
+        if ($c = $this->syncGetProductCategorys($one['category'])){
+            var_dump($c);
+            $one['category'] = $c;
+        }
+        
+        $saveStatus = Yii::$service->helper->ar->save($model, $one);
+        $product_id = (string)$model->{$this->getPrimaryKey()};
+        
+        
+        // 自定义url部分
+        $originUrlKey = 'catalog/product/index';
+        $originUrl = $originUrlKey.'?'.$this->getPrimaryKey() .'='. $product_id;
+        $originUrlKey = isset($one['url_key']) ? $one['url_key'] : '';
+        //var_dump([$defaultLangTitle, $originUrl, $originUrlKey]);
+        //echo $defaultLangTitle;
+        $urlKey = Yii::$service->url->saveRewriteUrlKeyByStr($defaultLangTitle, $originUrl, $originUrlKey);
+        $model->url_key = $urlKey;
+        $model->save();
+        /**
+         * 更新产品库存。
+         */
+        Yii::$service->product->stock->saveProductStock($product_id, $one);
+        /**
+         * 更新产品信息到搜索表。
+         */
+        Yii::$service->search->syncProductInfo([$product_id]);
+        
+        return $model;
+    }
+    
+    /**
+     * @param $mysqlCategorys
+     * 同步数据，得到mongodb category arr
+     */
+    protected function syncGetProductCategorys($mysqlCategorys)
+    {
+        if (empty($mysqlCategorys) || !is_array($mysqlCategorys)) {
+            return null;
+        }
+        
+        Yii::$service->category->changeToMongoStorage();
+        $filter = [
+            'where' => [
+                ['in', 'origin_mysql_id', $mysqlCategorys]
+            ],
+            'numPerPage' 	=> 10000,
+     		'pageNum'		=> 1,
+        ];
+        $data = Yii::$service->category->coll($filter);
+        $cIds = [];
+        if (is_array($data['coll']) || !empty($data['coll'])) {
+            foreach ($data['coll'] as $one) {
+                $cIds[] = (string)$one['_id'];
+            }
+        }
+        return $cIds;
+    }
+    
+    
+    
+    
+    
     public function getCategoryIdsByProductId($product_id)
     {
         $product = Yii::$service->product->getByPrimaryKey($product_id);

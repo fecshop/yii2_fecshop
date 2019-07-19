@@ -232,23 +232,33 @@ class ProductMysqldb extends Service implements ProductInterface
     }
 
     /**
-     * 和coll()的不同在于，该方式不走active record，因此可以获取产品的所有数据的。
-     * 走这种方式，可以绕过产品属性组，因为产品属性组需要根据不同的
-     * 属性组，在active record 上面附加相应的属性，对api这种不适合。
+     * 
      */
     public function apicoll()
     {
-        $collection = $this->_productModel->find()->getCollection();
-        $cursor = $collection->find();
-        $count = $collection->count();
-        $arr = [];
-        foreach ($cursor as $k =>$v) {
-            $v['_id'] = (string) $v['_id'];
-            $arr[$k] = $v;
+        $data = $this->coll();
+        $coll = $data['coll'];
+        $count = $data['count'];
+        $collArr = [];
+        if (is_array($coll)) {
+            foreach ($coll as $one) {
+                $arr = [];
+                foreach ($one as $k=>$v) {
+                    if ($k != 'attr_group_info') {
+                        $arr[$k] = $v;
+                    } else if (is_array($v)){
+                        foreach ($v as $spu_attr=>$spu_val) {
+                            $arr[$spu_attr] = $spu_val;
+                        }
+                    }
+                    
+                }
+                $collArr[] = $arr;
+            }
         }
-
+        
         return [
-            'coll' => $arr,
+            'coll' => $collArr,
             'count'=> $count,
         ];
     }
@@ -275,8 +285,7 @@ class ProductMysqldb extends Service implements ProductInterface
      */
     public function apiSave($product_one)
     {
-        $collection = $this->_productModel->find()->getCollection();
-        $collection->save($product_one);
+        $this->save($product_one);
 
         return true;
     }
@@ -287,8 +296,7 @@ class ProductMysqldb extends Service implements ProductInterface
      */
     public function apiDelete($primaryKey)
     {
-        $collection = $this->_productModel->find()->getCollection();
-        $collection->remove(['_id' => $primaryKey]);
+        $this->remove($primaryKey);
 
         return true;
     }
@@ -615,7 +623,7 @@ class ProductMysqldb extends Service implements ProductInterface
             ])->all();
         $arr = [];
         foreach ($coll as $one) {
-            $arr[] = $one['category_id'];
+            $arr[] = (int)$one['category_id'];
         }
         
         return $arr;
