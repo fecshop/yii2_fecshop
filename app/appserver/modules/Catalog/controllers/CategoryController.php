@@ -559,12 +559,14 @@ class CategoryController extends AppserverController
      */
     protected function getCategoryProductColl()
     {
+        $productPrimaryKey = Yii::$service->product->getPrimaryKey();
         $select = [
-                'sku', 'spu', 'name', 'image',
-                'price', 'special_price',
-                'special_from', 'special_to',
-                'url_key', 'score',
-            ];
+            $productPrimaryKey,
+            'sku', 'spu', 'name', 'image',
+            'price', 'special_price',
+            'special_from', 'special_to',
+            'url_key', 'score',
+        ];
         $category_query = Yii::$app->getModule('catalog')->params['category_query'];
         if (is_array($category_query['sort'])) {
             foreach ($category_query['sort'] as $sort_item) {
@@ -624,12 +626,14 @@ class CategoryController extends AppserverController
      */
     protected function getWxCategoryProductColl()
     {
+        $productPrimaryKey = Yii::$service->product->getPrimaryKey();
         $select = [
-                'sku', 'spu', 'name', 'image',
-                'price', 'special_price',
-                'special_from', 'special_to',
-                'url_key', 'score',
-            ];
+            $productPrimaryKey ,
+            'sku', 'spu', 'name', 'image',
+            'price', 'special_price',
+            'special_from', 'special_to',
+            'url_key', 'score',
+        ];
         $category_query = Yii::$app->getModule('catalog')->params['category_query'];
         if (is_array($category_query['sort'])) {
             foreach ($category_query['sort'] as $sort_item) {
