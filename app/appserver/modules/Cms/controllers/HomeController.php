@@ -108,8 +108,10 @@ class HomeController extends AppserverController
 
     public function getProductBySkus($skus)
     {
+        $productPrimaryKey = Yii::$service->product->getPrimaryKey();
         if (is_array($skus) && !empty($skus)) {
             $filter['select'] = [
+                $productPrimaryKey,
                 'sku', 'spu', 'name', 'image',
                 'price', 'special_price',
                 'special_from', 'special_to',
