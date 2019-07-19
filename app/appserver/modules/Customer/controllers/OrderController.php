@@ -30,7 +30,7 @@ class OrderController extends AppserverTokenController
         $wxRequestOrderStatus = Yii::$app->request->get("wxRequestOrderStatus");
         $this->numPerPage = 100;
         
-        if ($wxRequestOrderStatus == 'all') {
+        if (!$wxRequestOrderStatus || $wxRequestOrderStatus == 'all') {
             return $where;
         }
         if ($wxRequestOrderStatus == 0) {
@@ -121,7 +121,7 @@ class OrderController extends AppserverTokenController
         // 微信订单过滤
         $where[] = ['customer_id' => $this->customer_id];
         $where = $this->initWxWhere($where);
-        
+        //var_dump($where);
         if ($this->customer_id) {
             $filter = [
                 'numPerPage'    => $this->numPerPage,
