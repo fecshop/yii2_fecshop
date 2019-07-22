@@ -778,6 +778,7 @@ class ProductMongodb extends Service implements ProductInterface
         if (empty($where)) {
             return [];
         }
+        //var_dump($filter);
         if (!isset($where['status'])) {
             $where['status'] = $this->getEnableStatus();
         }
@@ -788,10 +789,16 @@ class ProductMongodb extends Service implements ProductInterface
         $group['_id'] = $filter['group'];
         $project = [];
         foreach ($select as $column) {
+            if ($column == '_id'){
+                continue;
+            }
             $project[$column] = 1;
             $group[$column] = ['$first' => '$'.$column];
         }
         $group['product_id'] = ['$first' => '$product_id'];
+        
+        //var_dump($group);
+        //exit;
         $langCode = Yii::$service->store->currentLangCode;
         
         $name_lang  = Yii::$service->fecshoplang->getLangAttrName('name', $langCode);
@@ -823,6 +830,7 @@ class ProductMongodb extends Service implements ProductInterface
                 '$limit'    => Yii::$service->product->categoryAggregateMaxCount,
             ],
         ];
+        //var_dump($pipelines);exit;
         // ['cursor' => ['batchSize' => 2]]
         $product_data = $this->_productModel->getCollection()->aggregate($pipelines);
         $product_total_count = count($product_data);
