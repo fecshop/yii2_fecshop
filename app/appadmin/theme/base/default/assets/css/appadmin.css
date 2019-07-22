@@ -295,7 +295,7 @@ span.error{
     height:60px;
 }
 
-#sidebar .tree .first_collapsable{
+#sidebar .tree .first_collapsable, #sidebar .tree .collapsable, #sidebar .tree .last_collapsable{
     float:right;
     content: '';
     width: 0;
@@ -317,7 +317,7 @@ body .background{
     opacity: 0;
 }
 
-#sidebar .tree .first_expandable{
+#sidebar .tree .first_expandable, #sidebar .tree .expandable, #sidebar .tree .last_expandable{
     
     content: '';
     width: 0;
