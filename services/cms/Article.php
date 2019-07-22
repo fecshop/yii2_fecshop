@@ -26,7 +26,7 @@ class Article extends Service
      * $storagePrex , $storage , $storagePath 为找到当前的storage而设置的配置参数
      * 可以在配置中更改，更改后，就会通过容器注入的方式修改相应的配置值
      */
-    public $storage     = 'ArticleMysqldb';   //  ArticleMongodb | ArticleMysqldb 当前的storage，如果在config中配置，那么在初始化的时候会被注入修改
+    public $storage; //     = 'ArticleMysqldb';   //  ArticleMongodb | ArticleMysqldb 当前的storage，如果在config中配置，那么在初始化的时候会被注入修改
 
     /**
      * 设置storage的path路径，
@@ -40,17 +40,14 @@ class Article extends Service
     public function init()
     {
         parent::init();
-        $currentService = $this->getStorageService($this);
-         
-        $this->_article = new $currentService();
-       
-        /*
-        if ($this->storage == 'mongodb') {
-            $this->_article = new ArticleMongodb();
-        } elseif ($this->storage == 'mysqldb') {
-            $this->_article = new ArticleMysqldb();
+        // 从数据库配置中得到值, 设置成当前service存储，是Mysqldb 还是 Mongodb
+        $config = Yii::$app->store->get('service_db', 'article_and_staticblock');
+        $this->storage = 'ArticleMysqldb';
+        if ($config == Yii::$app->store->serviceMongodbName) {
+            $this->storage = 'ArticleMongodb';
         }
-        */
+        $currentService = $this->getStorageService($this);
+        $this->_article = new $currentService();
     }
 
     /**
