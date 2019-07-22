@@ -13,7 +13,7 @@ namespace fecshop\services\url;
 use fecshop\services\Service;
 use fecshop\services\url\rewrite\RewriteMongodb;
 use fecshop\services\url\rewrite\RewriteMysqldb;
-
+use Yii;
 /**
  * Url Rewrite services.
  * @author Terry Zhao <2358269014@qq.com>
@@ -25,7 +25,7 @@ class Rewrite extends Service
      * $storagePrex , $storage , $storagePath 为找到当前的storage而设置的配置参数
      * 可以在配置中更改，更改后，就会通过容器注入的方式修改相应的配置值
      */
-    public $storage     = 'RewriteMongodb';   // 当前的storage，如果在config中配置，那么在初始化的时候会被注入修改
+    public $storage; //     = 'RewriteMongodb';   // RewriteMongodb | RewriteMysqldb 当前的storage，如果在config中配置，那么在初始化的时候会被注入修改
 
     /**
      * 设置storage的path路径，
@@ -39,15 +39,14 @@ class Rewrite extends Service
     public function init()
     {
         parent::init();
+        // 从数据库配置中得到值, 设置成当前service存储，是Mysqldb 还是 Mongodb
+        $config = Yii::$app->store->get('service_db', 'url_rewrite');
+        $this->storage = 'RewriteMysqldb';
+        if ($config == Yii::$app->store->serviceMongodbName) {
+            $this->storage = 'RewriteMongodb';
+        }
         $currentService = $this->getStorageService($this);
         $this->_urlRewrite = new $currentService();
-        /*
-        if ($this->storage == 'mongodb') {
-            $this->_urlRewrite = new RewriteMongodb();
-        } elseif ($this->storage == 'mysqldb') {
-            $this->_urlRewrite = new RewriteMysqldb();
-        }
-        */
     }
 
     /**
