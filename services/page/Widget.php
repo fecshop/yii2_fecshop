@@ -120,12 +120,12 @@ class Widget extends Service
             } elseif ($ob = new $config['class']()) {
                 if ($ob instanceof BlockCache) {
                     $cacheKey = $ob->getCacheKey();
-                    if (!($content = CCache::get($cacheKey))) {
+                    if (!($content = Yii::$app->cache->get($cacheKey))) {
                         $cache = $config['cache'];
                         $timeout = isset($cache['timeout']) ? $cache['timeout'] : 0;
                         unset($config['cache']);
                         $content = $this->renderContentHtml($configKey, $config, $parentThis);
-                        CCache::set($cacheKey, $content, $timeout);
+                        Yii::$app->cache->set($cacheKey, $content, $timeout);
                     }
 
                     return $content;
