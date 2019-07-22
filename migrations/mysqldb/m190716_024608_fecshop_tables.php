@@ -211,6 +211,18 @@ class m190716_024608_fecshop_tables extends Migration
               PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
             ",
+            
+            "
+                CREATE TABLE IF NOT EXISTS `store_base_config` (
+                  `id` int(12) NOT NULL AUTO_INCREMENT,
+                  `key` varchar(100) NOT NULL,
+                  `value` text NOT NULL,
+                  `created_at` int(12) NOT NULL,
+                  `updated_at` int(12) NOT NULL,
+                  PRIMARY KEY (`id`),
+                  UNIQUE KEY `key` (`key`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+            ",
         ];
 
         foreach ($arr as $sql) {
