@@ -31,7 +31,12 @@ class Fecshoplang extends Service
 
     protected $_allLangCode;
     protected $_adminLangCode;
-
+    
+    public function init()
+    {
+        
+        
+    }
     /**
      * @param $attrName|string  , attr name ,like  : tilte , description ,name etc..
      * @param $langCode|string , language 2 code, like :en ,fr ,es,
