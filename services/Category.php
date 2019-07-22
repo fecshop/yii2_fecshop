@@ -10,6 +10,7 @@
 
 namespace fecshop\services;
 
+use Yii;
 /**
  * Category service.
  *
@@ -27,7 +28,7 @@ class Category extends Service
      * $storagePrex , $storage , $storagePath 为找到当前的storage而设置的配置参数
      * 可以在配置中更改，更改后，就会通过容器注入的方式修改相应的配置值
      */
-    public $storage     = 'CategoryMongodb';   //  CategoryMongodb | CategoryMysqldb  当前的storage，如果在config中配置，那么在初始化的时候会被注入修改
+    public $storage; //     = 'CategoryMysqldb';   //  CategoryMongodb | CategoryMysqldb  当前的storage，如果在config中配置，那么在初始化的时候会被注入修改
 
     /**
      * 设置storage的path路径，
@@ -48,15 +49,15 @@ class Category extends Service
     public function init()
     {
         parent::init();
+        // 从数据库配置中得到值, 设置成当前service存储，是Mysqldb 还是 Mongodb
+        $config = Yii::$app->store->get('service_db', 'category_and_product');
+        $this->storage = 'CategoryMysqldb';
+        if ($config == Yii::$app->store->serviceMongodbName) {
+            $this->storage = 'CategoryMongodb';
+        }
         $currentService = $this->getStorageService($this);
         $this->_category = new $currentService();
-        /*
-        if ($this->storage == 'mongodb') {
-            $this->_category = new CategoryMongodb();
-        //}else if($this->storage == 'mysqldb'){
-            //$this->_category = new CategoryMysqldb;
-        }
-        */
+        
     }
     // 动态更改为mongodb model
     public function changeToMongoStorage()
