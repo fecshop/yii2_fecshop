@@ -83,6 +83,7 @@ EOF;
         $idsji = 0;
         foreach ($editArr as $column) {
             $name = $column['name'];
+            $remark = Yii::$service->page->translate->__($column['remark']);
             $require = $column['require'] ? 'required' : '';
             $label = $column['label'] ? $column['label'] : $this->_one->getAttributeLabel($name);
             $display = isset($column['display']) ? $column['display'] : '';
@@ -115,7 +116,8 @@ EOF;
 								<p class="edit_p">
 									<label>'.$label.'['.$lang.']：</label>
 									<input type="text"  value="'.$t_val.'" size="30" name="'.$this->_editFormData.'['.$name.']['.$langAttrName.']" class="textInput '.$inputStringLangRequire.' ">
-								</p>
+                                    <span class="remark-text">'.$remark .'</span>
+                                </p>
 
 							</div>';
                     }
@@ -143,7 +145,8 @@ EOF;
 							<p class="edit_p">
 								<label>{$label}：</label>
 								<input type="text"  value="{$value}" size="30" name="{$this->_editFormData}[{$name}]" class="textInput {$require} ">
-							</p>
+                                <span class="remark-text">{$remark}</span>
+                            </p>
 EOF;
                 }
             } elseif ($display_type == 'inputDate') {
@@ -155,7 +158,8 @@ EOF;
 						<p class="edit_p">
 							<label>{$label}：</label>
 							<input type="text"  value="{$valueData}" size="30" name="{$this->_editFormData}[{$name}]" class="date textInput {$require} ">
-						</p>
+                            <span class="remark-text">{$remark}</span>
+                        </p>
 EOF;
             } elseif ($display_type == 'inputDateTime') {
                 if ($value && !is_numeric($value)) {
@@ -166,20 +170,23 @@ EOF;
 						<p class="edit_p">
 							<label>{$label}：</label>
 							<input type="text" datefmt="yyyy-MM-dd HH:mm:ss"  value="{$valueData}" size="30" name="{$this->_editFormData}[{$name}]" class="date textInput {$require} ">
-						</p>
+                            <span class="remark-text">{$remark}</span>
+                        </p>
 EOF;
             } elseif ($display_type == 'inputEmail') {
                 $str .= <<<EOF
 						<p class="edit_p">
 							<label>{$label}：</label>
 							<input type="text"  value="{$value}" size="30" name="{$this->_editFormData}[{$name}]" class="email textInput {$require} ">
-						</p>
+                            <span class="remark-text">{$remark}</span>
+                        </p>
 EOF;
             } elseif ($display_type == 'stringText') {
                 $str .= <<<EOF
 						<p class="edit_p">
 							<label>{$label}：</label>
 							{$value}
+                            <span class="remark-text">{$remark}</span>
 						</p>
 EOF;
             } elseif ($display_type == 'inputPassword') {
@@ -187,7 +194,8 @@ EOF;
 						<p class="edit_p">
 							<label>{$label}：</label>
 							<input type="password"  value="" size="30" name="{$this->_editFormData}[{$name}]" class=" textInput {$require} ">
-						</p>
+                            <span class="remark-text">{$remark}</span>
+                        </p>
 EOF;
             } elseif ($display_type == 'select') {
                 $data = isset($display['data']) ? $display['data'] : '';
@@ -214,6 +222,7 @@ EOF;
 						<p class="edit_p">
 							<label>{$label}：</label>
 								{$select_str}
+                                <span class="remark-text">{$remark}</span>
 						</p>
 EOF;
             } elseif ($display_type == 'editSelect') {
@@ -248,6 +257,7 @@ EOF;
 						<p class="edit_p">
 							<label>{$label}：</label>
 								{$select_str}
+                                <span class="remark-text">{$remark}</span>
 						</p>
                         <script type="text/javascript">
                             $('#{$selectId}').editableSelect(
@@ -299,6 +309,7 @@ EOF;
 							</div>
 							<div class="tabsContent" style="">
 								{$tabLangTextarea}
+                                <span class="remark-text">{$remark}</span>
 							</div>
 							<div class="tabsFooter">
 								<div class="tabsFooterContent"></div>
@@ -311,7 +322,8 @@ EOF;
 							<legend style="color:#009688">{$label}：</legend>
 							<div>
 								<textarea  class="editor" name="{$this->_editFormData}[{$name}]" rows="{$rows}" cols="{$cols}" name="{$this->_editFormData}[{$name}]"  {$uploadImgUrl}  {$uploadFlashUrl}  {$uploadLinkUrl}   {$uploadMediaUrl} >{$value}</textarea>
-							</div>
+                                <span class="remark-text">{$remark}</span>
+                            </div>
 						</fieldset>
 EOF;
                 }
