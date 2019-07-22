@@ -35,7 +35,8 @@ return [
 					'dashboard_cache' 							    => 'Dashboard-Cache',
 					'dashboard_config' 							    => 'Dashboard-Config',
 					'dashboard_error_handler'					=> 'Dashboard-ErrorHandler',
-
+                    'config_base_manager' 					    => 'Config-Base',
+                    'config_appfront_manager' 					    => 'Config-Appfront',
 				],
             ],
             'roleUrlKey' => [
@@ -69,6 +70,10 @@ return [
                                         'label' => 'Product Info',
                                         'url_key' => '/catalog/productinfo/index',
                                     ],
+                                    'product_attr_group_manager' => [
+                                        'label' => '产品属性组管理',
+                                        'url_key' => '/catalog/productinfo/index',
+                                    ],
                                     // 三级类
                                     'product_review_manager' => [
                                         'label' => 'Product Reveiew',
@@ -83,7 +88,17 @@ return [
                             ],
                             'category_manager' => [
                                 'label' => 'Manager Category',
-                                'url_key' => '/catalog/category/index',
+                                'child' => [
+                                    // 三级类
+                                    'category_info_manager' => [
+                                        'label' => 'Category Info',
+                                        'url_key' => '/catalog/category/index',
+                                    ],
+                                    'category_info_config' => [
+                                        'label' => '分类配置',
+                                        'url_key' => '/catalog/category/index',
+                                    ],
+                                ],  
                             ],
                             'urlrewrite_manager' => [
                                 'label' => 'URL Rewrite',
@@ -101,6 +116,10 @@ return [
                                         'label' => 'Manager Order',
                                         'url_key' => '/sales/orderinfo/manager',
                                     ],
+                                    'order_config' => [
+                                        'label' => '订单参数配置',
+                                        'url_key' => '/sales/orderinfo/manager',
+                                    ],
                                 ],
                             ],
                             'coupon' => [
@@ -108,6 +127,74 @@ return [
                                 'url_key' => '/sales/coupon/manager',
                             ],
                         ],
+                    ],
+                    'config' => [
+                        'label' => '网站配置',
+                        'child' => [
+                            'services' => [
+                                'label' => '基础配置',
+                                'child' => [
+                                    'service_manager' => [
+                                        'label' => 'Service数据库配置',
+                                        'url_key' => '/config/service/db',
+                                    ],
+                                    'search' => [
+                                        'label' => '搜索引擎配置',
+                                        'url_key' => '/config/search/manager',
+                                    ],
+                                    'mutillang' => [
+                                        'label' => '多语言配置',
+                                        'url_key' => '/config/mutillang/manager',
+                                    ],
+                                    'currency' => [
+                                        'label' => '货币配置',
+                                        'url_key' => '/config/currency/manager',
+                                    ],
+                                    'store' => [
+                                        'label' => 'Store配置',
+                                        'url_key' => '/config/store/manager',
+                                    ],
+                                ],
+                            ],
+                            
+                            'appfront_config' => [
+                                'label' => 'Appfront配置',
+                                'child' => [
+                                    'cache' => [
+                                        'label' => '缓存配置',
+                                        'url_key' => '/config/appfrontcache/manager',
+                                    ],
+                                    'theme' => [
+                                        'label' => '模板配置',
+                                        'url_key' => '/sales/orderinfo/manager',
+                                    ],
+                                    'theme' => [
+                                        'label' => '菜单配置',
+                                        'url_key' => '/sales/orderinfo/manager',
+                                    ],
+                                    'payment' => [
+                                        'label' => '支付配置',
+                                        'url_key' => '/sales/orderinfo/manager',
+                                    ],
+                                    'wx' => [
+                                        'label' => '微信小程序配置',
+                                        'url_key' => '/sales/orderinfo/manager',
+                                    ],
+                                    'email' => [
+                                        'label' => '邮件配置',
+                                        'url_key' => '/sales/orderinfo/manager',
+                                    ],
+                                    'yanzhengma' => [
+                                        'label' => '验证码配置',
+                                        'url_key' => '/sales/orderinfo/manager',
+                                    ],
+                                    
+                                    
+                                ],
+                            ],
+                        ],
+                        
+                        
                     ],
                     'customer' => [
                         'label' => 'Manager User',
