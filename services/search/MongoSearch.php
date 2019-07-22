@@ -24,9 +24,28 @@ class MongoSearch extends Service implements SearchInterface
 {
     public $searchIndexConfig;
 
-    public $searchLang;
+    //public $searchLang;
 
     public $enable;
+    
+    // https://docs.mongodb.com/manual/reference/text-search-languages/#text-search-languages
+    public $searchLanguages = [
+        'da' => 'danish',
+        'nl' => 'dutch',
+        'en' => 'english',
+        'fi' => 'finnish',
+        'fr' => 'french',
+        'de' => 'german',
+        'hu' => 'hungarian',
+        'it' => 'italian',
+        'nb' => 'norwegian',
+        'pt' => 'portuguese',
+        'ro' => 'romanian',
+        'ru' => 'russian',
+        'es' => 'spanish',
+        'sv' => 'swedish',
+        'tr' => 'turkish',
+    ];
 
     //protected $_productModelName = '\fecshop\models\mongodb\Product';
 
@@ -54,6 +73,23 @@ class MongoSearch extends Service implements SearchInterface
             $sModel::$_filterColumns = $filterAttr;
         }
     }
+    
+    protected $_searchLang;
+    
+    protected function getActiveLangConfig()
+    {
+        if (!$this->_searchLang) {
+            $langArr = Yii::$app->store->get('mutil_lang');
+            foreach ($langArr as $one) {
+                if ($one['search_engine'] == 'mongoSearch') {
+                    $langCode = $one['lang_code'];
+                    $langName = isset($this->searchLanguages[$langCode]) ? $this->searchLanguages[$langCode] : $this->searchLanguages['en'];
+                    $this->_searchLang[$langCode] = $langName;
+                }
+            }
+        }
+        return $this->_searchLang;
+    }
 
     /**
      * 创建索引.
@@ -72,8 +108,9 @@ class MongoSearch extends Service implements SearchInterface
         }
 
         //$langCodes = Yii::$service->fecshoplang->allLangCode;
-        if (!empty($this->searchLang) && is_array($this->searchLang)) {
-            foreach ($this->searchLang as $langCode => $mongoSearchLangName) {
+        $searchLang = $this->getActiveLangConfig();
+        if (!empty($searchLang) && is_array($searchLang)) {
+            foreach ($searchLang as $langCode => $mongoSearchLangName) {
                 /*
                  * 如果语言不存在，譬如中文，mongodb的fullSearch是不支持中文的，
                  * 这种情况是不能搜索的。
@@ -88,22 +125,6 @@ class MongoSearch extends Service implements SearchInterface
                 }
             }
         }
-        /*
-        $searchModel->getCollection()->ensureIndex(
-            [
-                'name' => 'text',
-                'description' => 'text',
-            ],
-            [
-
-                'weights' => [
-                    'name' => 10,
-                    'description' => 5,
-                ],
-                'default_language'=>$store,
-            ]
-        );
-        */
     }
     // 
     protected function getProductSelectData()
@@ -174,8 +195,9 @@ class MongoSearch extends Service implements SearchInterface
                     $one_name = $one['name'];
                     $one_description = $one['description'];
                     $one_short_description = $one['short_description'];
-                    if (!empty($this->searchLang) && is_array($this->searchLang)) {
-                        foreach ($this->searchLang as $langCode => $mongoSearchLangName) {
+                    $searchLang = $this->getActiveLangConfig();
+                    if (!empty($searchLang) && is_array($searchLang)) {
+                        foreach ($searchLang as $langCode => $mongoSearchLangName) {
                             $sModel::$_lang = $langCode;
                             $searchModel = $this->_searchModel->findOne(['product_id' => $one['product_id']]);
                             
@@ -214,8 +236,9 @@ class MongoSearch extends Service implements SearchInterface
         //$langCodes = Yii::$service->fecshoplang->allLangCode;
         //if(!empty($langCodes) && is_array($langCodes)){
         //	foreach($langCodes as $langCodeInfo){
-        if (!empty($this->searchLang) && is_array($this->searchLang)) {
-            foreach ($this->searchLang as $langCode => $mongoSearchLangName) {
+        $searchLang = $this->getActiveLangConfig();
+        if (!empty($searchLang) && is_array($searchLang)) {
+            foreach ($searchLang as $langCode => $mongoSearchLangName) {
                 $sModel::$_lang = $langCode;
                 // 更新时间方式删除。
                 $this->_searchModel->deleteAll([
@@ -234,8 +257,9 @@ class MongoSearch extends Service implements SearchInterface
     protected function actionRemoveByProductId($product_id)
     {
         $sModel = $this->_searchModel;
-        if (!empty($this->searchLang) && is_array($this->searchLang)) {
-            foreach ($this->searchLang as $langCode => $mongoSearchLangName) {
+        $searchLang = $this->getActiveLangConfig();
+        if (!empty($searchLang) && is_array($searchLang)) {
+            foreach ($searchLang as $langCode => $mongoSearchLangName) {
                 $sModel::$_lang = $langCode;
                 $this->_searchModel->deleteAll([
                     '_id' => $product_id,

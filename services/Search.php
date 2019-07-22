@@ -32,6 +32,10 @@ class Search extends Service
      * 这个针对的京东模式的产品
      */
     public $productSpuShowOnlyOneSku = true;
+    
+    
+    // 当前有效的子services
+    protected $_childServiceNames;
 
     public function init()
     {
@@ -56,6 +60,34 @@ class Search extends Service
                 $service->initFullSearchIndex();
             }
         }
+    }
+    
+    
+    
+    public function getAllChildServiceName()
+    {
+        if (!$this->_childServiceNames) {
+            $childServiceName = parent::getAllChildServiceName();
+            // 从数据库配置中得到值, 设置成当前service存储，是Mysqldb 还是 Mongodb
+            $searchConfig = Yii::$app->store->get('search_engine');
+            $enableSearch = [];
+            if (is_array($searchConfig)) {
+                foreach ($searchConfig as $engine => $status) {
+                    if ($status == Yii::$app->store->enable) {
+                        $enableSearch[] = $engine;
+                    }
+                }
+            }
+            // 当前的子search service，查看哪些是enable的
+            if (is_array($childServiceName) && !empty($childServiceName)) {
+                foreach ($childServiceName as $sE) {
+                    if (in_array($sE, $enableSearch)) {
+                        $this->_childServiceNames[] = $sE;
+                    }
+                }
+            }
+        }
+        return $this->_childServiceNames;
     }
 
     /**
@@ -112,26 +144,15 @@ class Search extends Service
      */
     protected function actionGetSearchProductColl($select, $where, $pageNum, $numPerPage, $product_search_max_count, $filterAttr = [])
     {
-        $currentLangCode = Yii::$service->store->currentLangCode;
-        if (!$currentLangCode) {
-            Yii::$service->helper->errors->add('current language code is empty');
-            return;
-        }
+        // 当前有效的搜索引擎
         $searchEngineList = $this->getAllChildServiceName();
-        // 根据当前store的语言，选择相应的搜索引擎
-        if (is_array($searchEngineList) && !empty($searchEngineList)) {
-            foreach ($searchEngineList as $sE) {
-                $service = $this->{$sE};
-                $searchLang = $service->searchLang;
-                if (is_array($searchLang) && !empty($searchLang)) {
-                    $searchLangCode = array_keys($searchLang);
-                    // 如果当前store的语言，在当前的搜索引擎中支持，则会使用这个搜索，作为支持。
-                    if (in_array($currentLangCode, $searchLangCode)) {
-                        return $service->getSearchProductColl($select, $where, $pageNum, $numPerPage, $product_search_max_count, $filterAttr);
-                    }
-                }
-            }
+        // 语言对应
+        $currentSearchEngine = $this->getCurrentSearchEngine();
+        if (in_array($currentSearchEngine, $searchEngineList)) {
+            $service = $this->{$currentSearchEngine};
+            return $service->getSearchProductColl($select, $where, $pageNum, $numPerPage, $product_search_max_count, $filterAttr);
         }
+        
     }
 
     /**
@@ -145,25 +166,39 @@ class Search extends Service
      */
     protected function actionGetFrontSearchFilter($filter_attr, $where)
     {
-        $currentLangCode = Yii::$service->store->currentLangCode;
-        if (!$currentLangCode) {
-            return;
-        }
+        
+        // 当前有效的搜索引擎
         $searchEngineList = $this->getAllChildServiceName();
-        if (is_array($searchEngineList) && !empty($searchEngineList)) {
-            foreach ($searchEngineList as $sE) {
-                $service = $this->{$sE};
-                $searchLang = $service->searchLang;
-                if (is_array($searchLang) && !empty($searchLang)) {
-                    $searchLangCode = array_keys($searchLang);
-                    // 如果当前store的语言，在当前的搜索引擎中支持，则会使用这个搜索，作为支持。
-
-                    if (in_array($currentLangCode, $searchLangCode)) {
-                        return $service->getFrontSearchFilter($filter_attr, $where);
-                    }
-                }
-            }
+        // 语言对应
+        $currentSearchEngine = $this->getCurrentSearchEngine();
+        if (in_array($currentSearchEngine, $searchEngineList)) {
+            $service = $this->{$currentSearchEngine};
+            return $service->getFrontSearchFilter($filter_attr, $where);
         }
+    }
+    
+    protected $_currentSearchEngine;
+    // 得到当前语言对应的搜索引擎
+    public function getCurrentSearchEngine()
+    {
+        if (!$this->_currentSearchEngine) {
+            $currentLangCode = Yii::$service->store->currentLangCode;
+            if (!$currentLangCode) {
+                return null;
+            }
+            $langArr = Yii::$app->store->get('mutil_lang');
+            $langCodeAndEngine = [];
+            foreach ($langArr as $one) {
+                $langCodeAndEngine[$one['lang_code']] = $one['search_engine']; 
+            }
+            if (!isset($langCodeAndEngine[$currentLangCode])) {
+                return null;
+            }
+            $this->_currentSearchEngine = $langCodeAndEngine[$currentLangCode];
+        }
+        
+        return $this->_currentSearchEngine;
+        
     }
 
     /**

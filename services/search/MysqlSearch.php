@@ -24,7 +24,7 @@ class MysqlSearch extends Service implements SearchInterface
 {
     public $searchIndexConfig;
 
-    public $searchLang;
+    //public $searchLang;
 
     public $enable;
 
@@ -78,7 +78,20 @@ class MysqlSearch extends Service implements SearchInterface
         ];
         
     }
-
+    protected $_searchLangCode;
+    // 从配置中得到当前的搜索引擎对应的有效语言。
+    protected function getActiveLangCode()
+    {
+        if (!$this->_searchLangCode) {
+            $langArr = Yii::$app->store->get('mutil_lang');
+            foreach ($langArr as $one) {
+                if ($one['search_engine'] == 'xunSearch') {
+                    $this->_searchLangCode[] = $one['lang_code'];
+                }
+            }
+        }
+        return $this->_searchLangCode;
+    }
     /**
      * @param $product_ids |　Array ，里面的子项是MongoId类型。
      * 将产品表的数据同步到各个语言对应的搜索表中。
@@ -120,8 +133,9 @@ class MysqlSearch extends Service implements SearchInterface
                     $one_name = $one['name'];
                     $one_description = $one['description'];
                     $one_short_description = $one['short_description'];
-                    if (!empty($this->searchLang) && is_array($this->searchLang)) {
-                        foreach ($this->searchLang as $langCode => $mongoSearchLangName) {
+                    $searchLangCode = $this->getActiveLangCode();
+                    if (!empty($searchLangCode) && is_array($searchLangCode)) {
+                        foreach ($searchLangCode as $langCode) {
                             $one['lang'] = $langCode;
                             $one['image'] = serialize($one['image']);
                             
@@ -162,11 +176,9 @@ class MysqlSearch extends Service implements SearchInterface
     {
         $sModel = $this->_searchModel;
         echo "begin delete Mongodb Search Date \n";
-        //$langCodes = Yii::$service->fecshoplang->allLangCode;
-        //if(!empty($langCodes) && is_array($langCodes)){
-        //	foreach($langCodes as $langCodeInfo){
-        if (!empty($this->searchLang) && is_array($this->searchLang)) {
-            foreach ($this->searchLang as $langCode => $mongoSearchLangName) {
+        $searchLangCode = $this->getActiveLangCode();
+        if (!empty($searchLangCode) && is_array($searchLangCode)) {
+            foreach ($searchLangCode as $langCode) {
                 //$sModel::$_lang = $langCode;
                 // 更新时间方式删除。
                 $this->_searchModel->deleteAll([

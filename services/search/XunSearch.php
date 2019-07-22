@@ -24,7 +24,7 @@ class XunSearch extends Service implements SearchInterface
 {
     public $searchIndexConfig;
 
-    public $searchLang;
+    //public $searchLang;
 
     public $fuzzy = false;
 
@@ -77,6 +77,20 @@ class XunSearch extends Service implements SearchInterface
         ];
         
     }
+    protected $_searchLangCode;
+    
+    protected function getActiveLangCode()
+    {
+        if (!$this->_searchLangCode) {
+            $langArr = Yii::$app->store->get('mutil_lang');
+            foreach ($langArr as $one) {
+                if ($one['search_engine'] == 'xunSearch') {
+                    $this->_searchLangCode[] = $one['lang_code'];
+                }
+            }
+        }
+        return $this->_searchLangCode;
+    }
     /**
      * 将产品信息同步到xunSearch引擎中.
      */
@@ -111,9 +125,9 @@ class XunSearch extends Service implements SearchInterface
                     $one_name = $one['name'];
                     $one_description = $one['description'];
                     $one_short_description = $one['short_description'];
-                    if (!empty($this->searchLang) && is_array($this->searchLang)) {
-                        
-                        foreach ($this->searchLang as $langCode => $langName) {
+                    $searchLangCode = $this->getActiveLangCode();
+                    if (!empty($searchLangCode) && is_array($searchLangCode)) {
+                        foreach ($searchLangCode as $langCode) {
                             //echo $langCode;
                             $xunSearchModel = new $this->_searchModelName();
                             $xunSearchModel->_id = (string) $one[$productPrimaryKey];
