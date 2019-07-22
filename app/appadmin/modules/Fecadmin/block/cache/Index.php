@@ -91,7 +91,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 	
 	public function getTableTbody(){
 		$str = '';
-        $reflushRedisCache = \Yii::$app->controller->module->params['cacheRedisConfigFile'];
+        $reflushRedisCache = \Yii::$app->controller->module->params['cacheConfigFile'];
         if (is_array($reflushRedisCache)) {
             foreach ($reflushRedisCache as $appName => $c) {
                 if ($appName != $this->commonConfigKey) {
@@ -113,31 +113,43 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
      *       然后和common的redis配置合并，得到入口最终的redis配置，然后实例化redis component，然后清空redis缓存
      */
     public function getRedisCacheConfig(){
-        $arr = \Yii::$app->controller->module->params['cacheRedisConfigFile'];
+        $arr = \Yii::$app->controller->module->params['cacheConfigFile'];
         if (is_array($arr)) {
             // 加载common公用基础redis配置
             if (!isset($arr[$this->commonConfigKey]) || !$arr[$this->commonConfigKey]) {
-                $this->errors = 'module config: cacheRedisConfigFile[commonConfig] can not empty';
+                $this->errors = 'module config: cacheConfigFile[commonConfig] can not empty';
                 
                 return false;
             }
             $file = Yii::getAlias($arr[$this->commonConfigKey]);
             $config = require($file);
-            if (!isset($config['components']['cache']['redis']) || !$config['components']['cache']['redis']) {
+            if (!isset($config['components']['cache']['class']) || !$config['components']['cache']['class'] || $config['components']['cache']['class'] != 'yii\redis\Cache') {
                 $this->errors = 'can not find  $config[\'components\'][\'cache\'][\'redis\'] in '.$file;
                 
                 return false;
             }
             
-            if (!isset($config['components']['redis']['class']) || !$config['components']['redis']['class']) {
-                $this->errors = 'can not find  $config[\'components\'][\'redis\'][\'class\'] in '.$file;
-                
-                return false;
+            $baseConfig = isset($config['components']['redis']) ? $config['components']['redis'] : [];
+            // 加载各个入口的redis配置
+            foreach ($arr as $app => $appFile) {
+                if ($app != $this->commonConfigKey) {
+                    $file = Yii::getAlias($appFile);
+                    $config = require($file);
+                    $appRedisConfig = isset($config['components']['redis']) ? $config['components']['redis'] : [];
+                    if (!empty($appRedisConfig)) {
+                        $this->appRedisCache[$app] = \yii\helpers\ArrayHelper::merge($baseConfig, $appRedisConfig);
+                    } else {
+                        $this->appRedisCache[$app] = $baseConfig;
+                    
+                    }
+                }
+            }
+            $baseCacheConfig = isset($config['components']['cache']['redis']) ? $config['components']['cache']['redis'] : [];
+            foreach ($this->appRedisCache as $app => $config) {
+                $this->appRedisCache[$app] = \yii\helpers\ArrayHelper::merge($config, $baseCacheConfig);
             }
             
-            $baseConfig = isset($config['components']['cache']['redis']) ? $config['components']['cache']['redis'] : [];
-            $redisClass = $config['components']['redis']['class'];
-            $baseConfig['class'] = $redisClass;
+            
             // 加载各个入口的redis配置
             foreach ($arr as $app => $appFile) {
                 if ($app != $this->commonConfigKey) {
@@ -145,24 +157,91 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
                     $config = require($file);
                     $appRedisConfig = isset($config['components']['cache']['redis']) ? $config['components']['cache']['redis'] : [];
                     if (!empty($appRedisConfig)) {
-                        $this->appRedisCache[$app] = \yii\helpers\ArrayHelper::merge($baseConfig, $appRedisConfig);
+                        $this->appRedisCache[$app] = \yii\helpers\ArrayHelper::merge($this->appRedisCache[$app], $appRedisConfig);
                     }
                 }
             }
         }
+        
+        
         return true;
     }
+    // 判断是否是文件cache
+    public function isFileCache()
+    {
+        $arr = \Yii::$app->controller->module->params['cacheConfigFile'];
+        if (is_array($arr)) {
+            // 加载common公用基础redis配置
+            if (!isset($arr[$this->commonConfigKey]) || !$arr[$this->commonConfigKey]) {
+                $this->errors = 'module config: cacheFileConfigFile[commonConfig] can not empty';
+                
+                return false;
+            }
+            $file = Yii::getAlias($arr[$this->commonConfigKey]);
+            $config = require($file);
+            if (!isset($config['components']['cache']['class']) || !$config['components']['cache']['class'] || $config['components']['cache']['class'] != 'yii\caching\FileCache') {
+                $this->errors = 'can not find  $config[\'components\'][\'cache\'][\'fileCache\'] in '.$file;
+                
+                return false;
+            }
+            
+            return true;
+        }
+        
+        return false;
+    }
+    
+    // 刷新文件缓存
+    public function flushFileCache()
+    {
+        $cachePath = Yii::$app->cache->cachePath;
+        $cacheAppNameStr = Yii::$app->request->post('ids');
+        $cacheAppNameArr = explode(",",$cacheAppNameStr);
+        $successReflushAppNameArr = [];
+        if (is_array($cacheAppNameArr)) {
+            foreach ($cacheAppNameArr as $cacheAppName) {
+                $cacheAppName = strtolower($cacheAppName);
+                $appCachePath = str_replace('appadmin', $cacheAppName, $cachePath);
+                //echo $cachePath;
+                Yii::$app->cache->cachePath = $appCachePath;
+                Yii::$app->cache->flush();
+                $successReflushAppNameArr[] = $cacheAppName;
+            }
+        }
+        
+         echo  json_encode([
+            "statusCode" => "200",
+            "message" => Yii::$service->page->translate->__('Reflush cache success, AppName') . ":" . implode(',', $successReflushAppNameArr),
+        ]);
+    }
+    
     /**
      * 清空选择的入口的所有缓存。
      */
 	public function reflush(){
+        // 如果是文件缓存
+        if ($this->isFileCache()) {
+            $this->flushFileCache();
+            exit;
+        }
+        // flush redis cache
+        $this->flushRedisCache();
+        exit;
+    }
+    
+    // 刷新redis缓存
+    public function flushRedisCache()
+    {
+        
+        // redis cache
         if (!$this->getRedisCacheConfig()) {
             echo  json_encode([
                 "statusCode"    => "300",
                 "message"       => $this->errors,
             ]);
-            exit;
+            return ;
         }
+        
         $successReflushAppNameArr = [];
 		$cacheAppNameStr = Yii::$app->request->post('ids');
 		$cacheAppNameArr = explode(",",$cacheAppNameStr);
@@ -170,6 +249,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
             foreach ($cacheAppNameArr as $cacheAppName) {
                 $cacheAppName = trim($cacheAppName);
                 if (isset($this->appRedisCache[$cacheAppName]) && $this->appRedisCache[$cacheAppName]) {
+                    
                     $redisComponent = Yii::createObject($this->appRedisCache[$cacheAppName]);
                     $redisComponent->executeCommand('FLUSHDB');
                     $successReflushAppNameArr[] = $cacheAppName;
@@ -182,7 +262,6 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
             "statusCode" => "200",
             "message" => Yii::$service->page->translate->__('Reflush cache success, AppName') . ":" . implode(',', $successReflushAppNameArr),
         ]);
-        exit;
     }
 }
 

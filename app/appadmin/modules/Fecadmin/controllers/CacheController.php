@@ -17,7 +17,7 @@ use fecshop\app\appadmin\modules\AppadminController;
  */
 class CacheController extends AppadminController
 {
-	public $enableCsrfValidation = true;
+	public $enableCsrfValidation = false;
 	public $blockNamespace = 'fecshop\\app\\appadmin\\modules\\Fecadmin\\block';
 	# 刷新缓存
     public function actionIndex()
