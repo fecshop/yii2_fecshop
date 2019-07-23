@@ -8,22 +8,5 @@
 return [
     'store' => [
         'class' => 'fecshop\services\Store',
-        'stores' => [
-            /*
-            'demo.www.fecshop.com' => [
-                'language' 		=> 'en',
-                'themePackage'	=> 'default',
-                'theme'	=> 'default',
-                'currency' => 'USD',
-            ],
-            'admin.fancyecommerce.com' => [
-                'language' 		=> 'cn',
-                'themePackage'	=> 'default',
-                'theme'	=> 'default',
-                'currency' => 'RMB',
-            ],
-            */
-        ],
-
     ],
 ];
