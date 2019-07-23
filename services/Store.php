@@ -193,6 +193,8 @@ class Store extends Service
                 'CLIENT_SECRET' => $google_login_client_secret,
             ];
         }
+        // 初始化语言。
+        $this->stores[$storeKey]['serverLangs'] = Yii::$app->store->get('appserver_store_lang');
         //var_dump($this->stores);exit;
         return true;
     }
