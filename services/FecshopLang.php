@@ -34,8 +34,20 @@ class Fecshoplang extends Service
     
     public function init()
     {
+        parent::init();
+        // init default lang
+        $this->defaultLangCode = Yii::$app->store->get('base_info', 'default_lang');
+        // init all langs
+        $mutil_langs = Yii::$app->store->get('mutil_lang');
+        if (is_array($mutil_langs)) {
+            foreach ($mutil_langs as $lang) {
+                $lang_name = $lang['lang_name'];
+                $lang_code = $lang['lang_code'];
+                $this->allLangCode[$lang_name] = ['code' => $lang_code];
+            }
+        }
         
-        
+          
     }
     /**
      * @param $attrName|string  , attr name ,like  : tilte , description ,name etc..
@@ -101,7 +113,20 @@ class Fecshoplang extends Service
 
         return $this->_allLangCode;
     }
-
+    
+    public function getAllLangName()
+    {
+        $arr = [];
+        if (empty($this->allLangCode) || !is_array($this->allLangCode)) {
+            return [];
+        }
+        foreach ($this->allLangCode as  $langName =>$codeInfo) {
+            $arr[] = $langName;
+        }
+        
+        return $arr;
+    }
+    
     /**
      * @param $attrVal|array , language attr array , like   ['title_en' => 'xxxx','title_fr' => 'yyyy']
      * @param $attrName|String, attribute name ,like: title ,description.
