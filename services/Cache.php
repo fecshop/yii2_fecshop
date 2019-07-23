@@ -10,6 +10,7 @@
 
 namespace fecshop\services;
 
+use Yii;
 /**
  * Cart services. 此部分是缓存配置的读取，各个页面譬如首页，产品，分类页面
  * 调用这里的方法读取具体配置，然后来决定缓存的开启和过期时间。
@@ -25,8 +26,39 @@ class Cache extends Service
     public $cacheConfig;
 
     // cache 总开关
-    public $enable;
+    protected $enable = false;
+    // 在store config中的cache配置
+    protected $_cache_config;
+    // 各个页面对应的 store cache config的key
+    public $cacheArr = [
+        'category'  => 'categoryPageCache',
+        'product'   => 'productPageCache',
+        'home'      => 'homePageCache',
+        'article'     => 'articlePageCache',
+    ];
 
+    /**
+     * 得到当前的入口对应的cache的配置信息
+     *
+     */
+    public function getCacheConfig()
+    {
+        $appName = Yii::$service->helper->getAppName();
+        $cacheConfig = Yii::$app->store->get($appName.'_cache');
+        if (!$cacheConfig || !is_array($cacheConfig)) {
+            return null;
+        }
+        if (isset($cacheConfig['allPageCache']) && $cacheConfig['allPageCache'] == Yii::$app->store->enable) {
+             $this->enable = true;
+        }
+        $this->_cache_config = $cacheConfig;
+        return true;
+    }
+    public function init()
+    {
+        parent::init();
+        $this->getCacheConfig();
+    }
     /**
      * @param $cacheKey | String , 具体的缓存名字，譬如 product  category
      * @return boolean, 如果enable为true，则返回为true
@@ -34,8 +66,11 @@ class Cache extends Service
      */
     public function isEnable($cacheKey)
     {
-        if ($this->enable && isset($this->cacheConfig[$cacheKey]['enable'])) {
-            return $this->cacheConfig[$cacheKey]['enable'];
+        $cacheConfigKey = $this->cacheArr[$cacheKey];
+        if ($this->enable && isset($this->_cache_config[$cacheConfigKey]) &&
+            $this->_cache_config[$cacheConfigKey] == Yii::$app->store->enable
+        ) {
+            return true;
         } else {
             return false;
         }
