@@ -50,7 +50,7 @@ class Currency extends Service
      * 后台产品统一使用的美元填写产品价格，但是我的网站前端的默认货币为人民币。
      * 该值需要在配置文件中进行配置.
      */
-    public $defaultCurrency = 'USD';
+    public $defaultCurrency;
 
     /**
      * 当前的货币简码
@@ -61,7 +61,29 @@ class Currency extends Service
      * 根据配置，保存所有货币的配置信息。
      */
     protected $_currencys;
-
+    
+    public function init()
+    {
+        parent::init();
+        // init default and base currency
+        $this->defaultCurrency = Yii::$app->store->get('base_info', 'default_currency');
+        $this->baseCurrecy = Yii::$app->store->get('base_info', 'base_currency');
+        
+        // init all currency
+        $currencys = Yii::$app->store->get('currency');
+        if (is_array($currencys)) {
+            foreach ($currencys as $currency) {
+                $currency_code = $currency['currency_code'];
+                $currency_symbol = $currency['currency_symbol'];
+                $currency_rate = $currency['currency_rate'];
+                $this->currencys[$currency_code] = [
+                    'rate' => $currency_rate,
+                    'symbol' => $currency_symbol
+                ];
+            }
+        }
+    }
+    
     /**
      * @param $currencyCode | string 货币简码，譬如USD,RMB等
      * @return array

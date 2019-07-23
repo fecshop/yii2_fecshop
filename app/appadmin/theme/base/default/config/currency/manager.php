@@ -27,13 +27,13 @@ function thissubmit(thiss){
     
 	var fill = true;
 	langs_input = "";
-	$(".langs table tbody tr").each(function(){
-		lang_name = $(this).find(".lang_name").val();
-		lang_code = $(this).find(".lang_code").val();
-        search_engine = $(this).find(".search_engine").val();
+	$(".currencys table tbody tr").each(function(){
+		currency_code = $(this).find(".currency_code").val();
+		currency_symbol = $(this).find(".currency_symbol").val();
+        currency_rate = $(this).find(".currency_rate").val();
         //alert(search_engine);
-		if (lang_name && lang_code && search_engine){
-			langs_input += lang_name+'##'+lang_code+'##'+search_engine + "||";
+		if (currency_code && currency_symbol && currency_rate){
+			langs_input += currency_code+'##'+currency_symbol+'##'+currency_rate + "||";
 		} else {
             fill = false
         }
@@ -54,42 +54,29 @@ function thissubmit(thiss){
         
             <div class="edit_p">
                 <label><?=  Yii::$service->page->translate->__('Currency') ?>：</label>
-                <input type="hidden" name="editFormData[langs]" class="langs_input"  />
-                <div class="langs" style="float:left;width:700px;">
+                <input type="hidden" name="editFormData[currencys]" class="langs_input"  />
+                <div class="currencys" style="float:left;width:700px;">
                     <table style="">
                         <thead>
                             <tr>
-                                <th><?=  Yii::$service->page->translate->__('Lang Name') ?></th>
-                                <th><?=  Yii::$service->page->translate->__('Lang Code') ?></th>
-                                <th><?=  Yii::$service->page->translate->__('Search Engine') ?></th>
+                                <th><?=  Yii::$service->page->translate->__('Currency Code') ?></th>
+                                <th><?=  Yii::$service->page->translate->__('Currency Symbol') ?></th>
+                                <th><?=  Yii::$service->page->translate->__('Currency Rate') ?></th>
                                 <th><?=  Yii::$service->page->translate->__('Action') ?></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if(is_array($langs) && !empty($langs)){  ?>
-                                <?php foreach($langs as $one){ ?>
+                            <?php if(is_array($currencys) && !empty($currencys)){  ?>
+                                <?php foreach($currencys as $one){ ?>
                                 <tr>
                                     <td>
-                                        <input class="lang_name" type="text" value="<?= $one['lang_name'] ?>">
+                                        <input class="currency_code" type="text" value="<?= $one['currency_code'] ?>">
                                     </td>
                                     <td>
-                                        <input class="lang_code" type="text" value="<?= $one['lang_code'] ?>">
+                                        <input class="currency_symbol" type="text" value="<?= $one['currency_symbol'] ?>">
                                     </td>
                                     <td>
-                                        <select class="search_engine">
-                                            <?php if (is_array($search_engines)): ?>
-                                                <?php foreach ($search_engines as $search_engine): ?>
-                                                        
-                                                    <?php if ($one['search_engine'] == $search_engine): ?>
-                                                        <option  selected="selected" value="<?= $search_engine?>"><?= Yii::$service->page->translate->__($search_engine) ?></option>
-                                                    <?php else: ?>
-                                                        <option value="<?= $search_engine?>"><?= Yii::$service->page->translate->__($search_engine) ?></option>
-                                                    <?php endif; ?>
-                                                    
-                                                <?php endforeach; ?>
-                                            <?php endif; ?>
-                                            
-                                        </select>
+                                        <input class="currency_rate" type="text" value="<?= $one['currency_rate'] ?>">
                                     </td>
                                     <td>
                                         <i class="fa fa-trash-o"></i>
@@ -101,8 +88,8 @@ function thissubmit(thiss){
                         <tfoot style="text-align:right;">
                             <tr>
                                 <td colspan="100" style="text-align:right;">						
-                                    <a rel="2" style="text-align:right;margin-top:15px;" href="javascript:void(0)" class="addLanguage button">
-                                        <span><?=  Yii::$service->page->translate->__('Add Language') ?></span>
+                                    <a rel="2" style="text-align:right;margin-top:15px;" href="javascript:void(0)" class="addCurrency button">
+                                        <span><?=  Yii::$service->page->translate->__('Add Currency') ?></span>
                                     </a>					
                                 </td>				
                             </tr>			
@@ -110,16 +97,16 @@ function thissubmit(thiss){
                     </table>
                     <script>
                         $(document).ready(function(){
-                            $(".addLanguage").click(function(){
+                            $(".addCurrency").click(function(){
                                 str = "<tr>";
-                                str +="<td><input class=\"lang_name textInput \" type=\"text\"   /></td>";
-                                str +="<td><input class=\"lang_code textInput\" type=\"text\"   /></td>";
-                                str +="<td><?= $search_engines_select ?></td>";
+                                str +="<td><input class=\"currency_code textInput \" type=\"text\"   /></td>";
+                                str +="<td><input class=\"currency_symbol textInput\" type=\"text\"   /></td>";
+                                str +="<td><input class=\"currency_rate textInput\" type=\"text\"   /></td>";
                                 str +="<td><i class='fa fa-trash-o'></i></td>";
                                 str +="</tr>";
-                                $(".langs table tbody").append(str);
+                                $(".currencys table tbody").append(str);
                             });
-                            $(".systemConfig").off("click").on("click",".langs table tbody tr td .fa-trash-o",function(){
+                            $(".systemConfig").off("click").on("click",".currencys table tbody tr td .fa-trash-o",function(){
                                 $(this).parent().parent().remove();
                             });
                             
@@ -131,22 +118,6 @@ function thissubmit(thiss){
 
             <div class="edit_remark" style="width:500px;margin-right:50px;float:right;font-size:14px;">
                 <p > 
-                    1.此处为语言编辑部分，可以添加或者编辑<b>语言</b>，并为每个语言指定相应的<b>搜索引擎</b>，
-                    您可以在<b>搜索引擎配置</b>部分，开启相应搜索引擎。
-                </p>  
-                <p >            
-                    2.保存后，在<b>Store设置</b>中，为Store指定相应的语言，因为<b>语言和搜索引擎是绑定的</b>，因此
-                    在指定语言的同时，也指定了相应的搜索引擎
-                </p >  
-                <p > 
-                    3.更改设置后，您需要跑一下<b>同步数据</b>的脚本   ./vendor/fancyecommerce/fecshop/shell/search/fullSearchSync.sh
-                 </p>  
-                <p >    
-                    4.如果是xunsearch，里面有一些其他的历史数据，您可以通过脚本 ./vendor/fancyecommerce/fecshop/shell/search/deleteXunSearchAllData.sh
-                    来清空xunsearch里面的数据。
-                </p>  
-                <p >    
-                    5.如果您没有安装mongodb和xunsearch，那么您只能使用<b>mysql搜索</b>，mysql的搜索使用的是like的模糊匹配。
                 </p>
             
             </div>
@@ -171,7 +142,7 @@ function thissubmit(thiss){
 
 
 <style>
-.edit_p .langs input{
+.edit_p .currencys input{
 	width:100px;
 }
 .edit_remark p{
@@ -180,14 +151,14 @@ function thissubmit(thiss){
     height:auto;
     color:#777;
 }
-.langs table thead tr th{
+.currencys table thead tr th{
 	 background: #ddd none repeat scroll 0 0;
     border: 1px solid #ccc;
     padding: 4px 10px;
     width: 100px;
 }
 
-.langs table tbody tr td{
+.currencys table tbody tr td{
 	background: #fff;
     border-right: 1px solid #ccc;
 	border-bottom: 1px solid #ccc;
@@ -195,7 +166,7 @@ function thissubmit(thiss){
     width: 100px;
 }
 
-.edit_p .langs input{width:100px;}
+.edit_p .currencys input{width:100px;}
 </style>
 
 

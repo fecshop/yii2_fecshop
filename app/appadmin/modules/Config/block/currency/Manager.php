@@ -51,27 +51,11 @@ class Manager extends \yii\base\BaseObject
         if (isset($this->_one['id'])) {
            $id = $this->_one['id'];
         } 
-        $search_engines = Yii::$service->search->getAllChildServiceName();
-        $search_engines_select = $this->getSearchSelect($search_engines);
         return [
-            'id'            =>   $id, 
-            'search_engines'  => $search_engines,
-            'search_engines_select' => $search_engines_select,
-            'langs'      => $this->_one['value'],
+            'id'            =>   $id,
+            'currencys'      => $this->_one['value'],
             'saveUrl' => $this->_saveUrl ,
         ];
-    }
-    public function getSearchSelect($search_engines)
-    {
-        $str = '<select class=\"search_engine\">';
-        if (is_array($search_engines)){
-            foreach ($search_engines as $search_engine){
-                $str .= '<option value=\"'.$search_engine.'\">' . Yii::$service->page->translate->__($search_engine).'</option>';
-            }
-        }
-        $str .= '</select>';
-        
-        return $str;
     }
     public function setService()
     {
@@ -79,18 +63,18 @@ class Manager extends \yii\base\BaseObject
     }
     
     
-    public function getEditParam($langs)
+    public function getEditParam($currencys)
     {
         $arr = [];
-        $langArr = explode('||', $langs);
-        foreach ($langArr as $one) {
+        $currencyArr = explode('||', $currencys);
+        foreach ($currencyArr as $one) {
             if ($one) {
-                list($lang_name, $lang_code, $search_engine) = explode('##', $one);
-                if ($lang_name && $lang_code && $search_engine) {
+                list($currency_code, $currency_symbol, $currency_rate) = explode('##', $one);
+                if ($currency_code && $currency_symbol && $currency_rate) {
                     $arr[] = [
-                        'lang_name' => $lang_name,
-                        'lang_code' => $lang_code,
-                        'search_engine' => $search_engine,
+                        'currency_code' => $currency_code,
+                        'currency_symbol' => $currency_symbol,
+                        'currency_rate' => $currency_rate,
                     ];
                 }
             }
@@ -108,9 +92,9 @@ class Manager extends \yii\base\BaseObject
     public function save()
     {
         $editFormData = Yii::$app->request->post('editFormData');
-        $langs = $editFormData['langs'];
+        $currencys = $editFormData['currencys'];
         
-        $saveData = $this->getEditParam($langs);
+        $saveData = $this->getEditParam($currencys);
         /*
          * if attribute is date or date time , db storage format is int ,by frontend pass param is int ,
          * you must convert string datetime to time , use strtotime function.
