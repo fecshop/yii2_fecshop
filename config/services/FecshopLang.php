@@ -32,7 +32,6 @@ return [
                 'code' 					=> 'zh',
             ],
         ],
-        'defaultLangCode' => 'en',
         */
     ],
 ];
