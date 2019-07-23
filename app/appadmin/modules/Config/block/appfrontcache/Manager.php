@@ -7,7 +7,7 @@
  * @license http://www.fecshop.com/license/
  */
 
-namespace fecshop\app\appadmin\modules\Config\block\search;
+namespace fecshop\app\appadmin\modules\Config\block\appfrontcache;
 
 use fec\helpers\CUrl;
 use fec\helpers\CRequest;
@@ -24,19 +24,26 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
 {
     public $_saveUrl;
     // 需要配置
-    public $_key = 'search_engine';
+    public $_key = 'appfront_cache';
     public $_type;
     protected $_attrArr = [
-        'mysqlSearch',
-        'mongoSearch',
-        'xunSearch',
+        'allPageCache',
+        'homePageCache',
+        'categoryPageCache',
+        'productPageCache',
+        'articlePageCache',
+        
+        'headBlockCache',
+        'headerBlockCache',
+        'menuBlockCache',
+        'footerBlockCache',
     ];
     
     public function init()
     {
         
          // 需要配置
-        $this->_saveUrl = CUrl::getUrl('config/search/managersave');
+        $this->_saveUrl = CUrl::getUrl('config/appfrontcache/managersave');
         $this->_editFormData = 'editFormData';
         $this->setService();
         $this->_param = CRequest::param();
@@ -73,11 +80,12 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
     {
         $deleteStatus = Yii::$service->customer->getStatusDeleted();
         $activeStatus = Yii::$service->customer->getStatusActive();
+        
         return [
             // 需要配置
             [
-                'label' => Yii::$service->page->translate->__('Mysqldb Engine'),
-                'name'  => 'mysqlSearch',
+                'label' => Yii::$service->page->translate->__('All PageCache'),
+                'name'  => 'allPageCache',
                 'display' => [
                     'type' => 'select',
                     'data' => [
@@ -85,12 +93,12 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
                         Yii::$app->store->disable => 'Disable',
                     ],
                 ],
-                'remark' => 'After you enbale it, you must config it in store, and run fullSearchSync.sh'
+                'remark' => 'After you disable it, all pageCache will disabled, Even if it set to enable, it only work for pageCache'
             ],
             
             [
-                'label' => Yii::$service->page->translate->__('Mongodb Engine'),
-                'name'  => 'mongoSearch',
+                'label' => Yii::$service->page->translate->__('Home PageCache'),
+                'name'  => 'homePageCache',
                 'display' => [
                     'type' => 'select',
                     'data' => [
@@ -98,11 +106,11 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
                         Yii::$app->store->disable => 'Disable',
                     ],
                 ],
-                'remark' => 'After you enbale it, you must config it in store, and run fullSearchSync.sh'
+                'remark' => 'it will be enabel, after HomePageCache and AllPageCache set to enable'
             ],
             [
-                'label' => Yii::$service->page->translate->__('Xunsearch Engine'),
-                'name'  => 'xunSearch',
+                'label' => Yii::$service->page->translate->__('Category PageCache'),
+                'name'  => 'categoryPageCache',
                 'display' => [
                     'type' => 'select',
                     'data' => [
@@ -110,10 +118,88 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
                         Yii::$app->store->disable => 'Disable',
                     ],
                 ],
-                'remark' => 'After you enbale it, you must config it in store, and run fullSearchSync.sh'
+                'remark' => 'it will be enabel, after CategoryPageCache and AllPageCache set to enable'
             ],
             
+            [
+                'label' => Yii::$service->page->translate->__('Product PageCache'),
+                'name'  => 'productPageCache',
+                'display' => [
+                    'type' => 'select',
+                    'data' => [
+                        Yii::$app->store->enable => 'Enable',
+                        Yii::$app->store->disable => 'Disable',
+                    ],
+                ],
+                'remark' => 'it will be enabel, after ProductPageCache and AllPageCache set to enable'
+            ],
             
+            [
+                'label' => Yii::$service->page->translate->__('Article PageCache'),
+                'name'  => 'articlePageCache',
+                'display' => [
+                    'type' => 'select',
+                    'data' => [
+                        Yii::$app->store->enable => 'Enable',
+                        Yii::$app->store->disable => 'Disable',
+                    ],
+                ],
+                'remark' => 'it will be enabel, after ArticlePageCache and AllPageCache set to enable'
+            ],
+            
+            [
+                'label' => Yii::$service->page->translate->__('Head BlockCache'),
+                'name'  => 'headBlockCache',
+                'display' => [
+                    'type' => 'select',
+                    'data' => [
+                        Yii::$app->store->enable => 'Enable',
+                        Yii::$app->store->disable => 'Disable',
+                    ],
+                ],
+                'remark' => 'BlockCache for html head section'
+            ],
+            
+            [
+                'label' => Yii::$service->page->translate->__('Header BlockCache'),
+                'name'  => 'headerBlockCache',
+                'display' => [
+                    'type' => 'select',
+                    'data' => [
+                        Yii::$app->store->enable => 'Enable',
+                        Yii::$app->store->disable => 'Disable',
+                    ],
+                ],
+                'remark' => 'BlockCache for html header section'
+            ],
+            
+           
+            
+            [
+                'label' => Yii::$service->page->translate->__('Menu BlockCache'),
+                'name'  => 'menuBlockCache',
+                'display' => [
+                    'type' => 'select',
+                    'data' => [
+                        Yii::$app->store->enable => 'Enable',
+                        Yii::$app->store->disable => 'Disable',
+                    ],
+                ],
+                'remark' => 'BlockCache for html menu section'
+            ],
+            
+            [
+                'label' => Yii::$service->page->translate->__('Footer BlockCache'),
+                'name'  => 'footerBlockCache',
+                'display' => [
+                    'type' => 'select',
+                    'data' => [
+                        Yii::$app->store->enable => 'Enable',
+                        Yii::$app->store->disable => 'Disable',
+                    ],
+                ],
+                'remark' => 'BlockCache for html footer section'
+            ],
         ];
     }
     
