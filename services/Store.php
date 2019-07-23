@@ -64,7 +64,14 @@ class Store extends Service
     public $serverLangs;
     
     public $apiAppNameArr = ['appserver','appapi'];
-
+    
+    public function init()
+    {
+        parent::init();
+        
+        $this->initCurrentStoreConfig();
+    }
+    
     // 是否是api入口
     public function isApiStore()
     {
@@ -76,14 +83,118 @@ class Store extends Service
         }
     }
 
-
     /**
      * 得到当前入口的名字
      * @return mixed
      */
     public function getCurrentAppName()
     {
-        return Yii::$app->params['appName'];
+        return Yii::$service->helper->getAppName();
+    }
+    // 初始化store配置
+    public function initCurrentStoreConfig()
+    {
+        $currentAppName = $this->getCurrentAppName();
+        if ($currentAppName == 'appserver') {
+            return $this->initAppserverCurrentStoreConfig(); 
+        }
+        $coll = Yii::$service->storeDomain->getCollByAppName($currentAppName);
+        if (is_array($coll)) {
+            foreach ($coll as $one) {
+                $storeKey = $one['key'];
+                $lang = $one['lang'];
+                $lang_name = $one['lang_name'];
+                $local_theme_dir = $one['local_theme_dir'];
+                $third_theme_dir = $one['third_theme_dir'] ? explode(',',$one['third_theme_dir']) : '';
+                $currency = $one['currency'];
+                $mobile_enable = $one['mobile_enable'] == 1 ? true : false;
+                $mobile_condition = $one['mobile_condition'] ? explode(',',$one['mobile_condition']) : '';
+                $mobile_redirect_domain = $one['mobile_redirect_domain'];
+                $mobile_https_enable = $one['mobile_https_enable'] == 1 ? true : false;
+                $mobile_type = $one['mobile_type'];
+                $facebook_login_app_id = $one['facebook_login_app_id'];
+                $facebook_login_app_secret = $one['facebook_login_app_secret'];
+                $google_login_client_id = $one['google_login_client_id'];
+                $google_login_client_secret = $one['google_login_client_secret'];
+                $https_enable = $one['https_enable'] == 1 ? true : false;
+                $sitemap_dir = $one['sitemap_dir'];
+                // set config stores
+                $this->stores[$storeKey] = [
+                    'language'         => $lang,        // 语言简码需要在@common/config/fecshop_local_services/FecshopLang.php 中定义。
+                    'languageName'     => $lang_name,    // 语言简码对应的文字名称，将会出现在语言切换列表中显示。
+                    'localThemeDir'    => $local_theme_dir, // 设置当前store对应的模板路径。关于多模板的方面的知识，您可以参看fecshop多模板的知识。
+                    'thirdThemeDir'    => $third_theme_dir, // 第三方模板路径，数组，可以多个路径
+                    'currency'         => $currency, // 当前store的默认货币,这个货币简码，必须在货币配置中配置
+                    // 用于sitemap生成中域名。
+                    'https'            => $https_enable,
+                    // sitemap的路径。
+                    'sitemapDir' => $sitemap_dir,
+                ];
+                if ($mobile_condition && $mobile_redirect_domain && $mobile_type) {
+                    $this->stores[$storeKey]['mobile'] = [
+                        'enable'             => $mobile_enable,
+                        'condition'         => $mobile_condition, // phone 代表手机，tablet代表平板，当都填写，代表手机和平板都会进行跳转
+                        'redirectDomain'    => $mobile_redirect_domain,    // 如果是移动设备访问进行域名跳转，这里填写的值为store key
+                        'https'               => $mobile_https_enable,  // 手机端url是否支持https,如果支持，设置https为true，如果不支持，设置为false
+                        'type'                => $mobile_type,  //  填写值选择：[apphtml5, appserver]，如果是 apphtml5 ， 则表示跳转到html5入口，如果是appserver，则表示跳转到vue这种appserver对应的入口
+                    ];
+                }
+                // 第三方账号登录配置
+                if ($facebook_login_app_id && $facebook_login_app_secret)  {
+                    $this->stores[$storeKey]['thirdLogin']['facebook'] = [
+                        'facebook_app_id'     => $facebook_login_app_id,
+                        'facebook_app_secret' => $facebook_login_app_secret,
+                    ];
+                }
+                // 第三方账号登录配置
+                if ($google_login_client_id && $google_login_client_secret)  {
+                    $this->stores[$storeKey]['thirdLogin']['google'] = [
+                        'CLIENT_ID'     => $google_login_client_id,
+                        'CLIENT_SECRET' => $google_login_client_secret,
+                    ];
+                }
+            }
+        }
+        
+        return true;
+    }
+    // 如果入口是appserver，那么通过这个函数初始化
+    public function initAppserverCurrentStoreConfig()
+    {
+        $appserver_store_config = Yii::$app->store->get('appserver_store');
+        $storeKey = $appserver_store_config['key'];
+        $lang = $appserver_store_config['lang'];
+        $lang_name = $appserver_store_config['lang_name'];
+        $currency = $appserver_store_config['currency'];
+        $facebook_login_app_id = $appserver_store_config['facebook_login_app_id'];
+        $facebook_login_app_secret = $appserver_store_config['facebook_login_app_secret'];
+        $google_login_client_id = $appserver_store_config['google_login_client_id'];
+        $google_login_client_secret = $appserver_store_config['google_login_client_secret'];
+        $https_enable = $appserver_store_config['https_enable'] == 1 ? true : false;
+        // set config stores
+        $this->stores[$storeKey] = [
+            'language'         => $lang,        // 语言简码需要在@common/config/fecshop_local_services/FecshopLang.php 中定义。
+            'languageName'     => $lang_name,    // 语言简码对应的文字名称，将会出现在语言切换列表中显示。
+            'currency'         => $currency, // 当前store的默认货币,这个货币简码，必须在货币配置中配置
+            // 用于sitemap生成中域名。
+            'https'            => $https_enable,
+        ];
+        // 第三方账号登录配置
+        if ($facebook_login_app_id && $facebook_login_app_secret)  {
+            $this->stores[$storeKey]['thirdLogin']['facebook'] = [
+                'facebook_app_id'     => $facebook_login_app_id,
+                'facebook_app_secret' => $facebook_login_app_secret,
+            ];
+        }
+        // 第三方账号登录配置
+        if ($google_login_client_id && $google_login_client_secret)  {
+            $this->stores[$storeKey]['thirdLogin']['google'] = [
+                'CLIENT_ID'     => $google_login_client_id,
+                'CLIENT_SECRET' => $google_login_client_secret,
+            ];
+        }
+        //var_dump($this->stores);exit;
+        return true;
     }
     
     /**
@@ -110,9 +221,9 @@ class Store extends Service
                         Yii::$service->store->currentLangName = $store['languageName'];
                         Yii::$service->page->translate->setLanguage($store['language']);
                     }
-                    if (isset($store['theme']) && !empty($store['theme'])) {
-                        Yii::$service->store->currentTheme = $store['theme'];
-                    }
+                    //if (isset($store['theme']) && !empty($store['theme'])) {
+                    //    Yii::$service->store->currentTheme = $store['theme'];
+                    //}
                     // set local theme dir.
                     if (isset($store['localThemeDir']) && $store['localThemeDir']) {
                         //Yii::$service->page->theme->localThemeDir = $store['localThemeDir'];
@@ -166,7 +277,7 @@ class Store extends Service
             }
         }
         if (!$init_complete) {
-            throw new InvalidValueException('this domain is not config in store component');
+            throw new InvalidValueException('this domain is not config in store service, you must config it in admin store config');
         }
     }
 
