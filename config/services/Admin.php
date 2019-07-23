@@ -227,6 +227,11 @@ return [
                                         'label' => 'Store配置',
                                         'url_key' => '/config/appserverstore/manager',
                                     ],
+                                    'store_lang' => [
+                                        'label' => 'Store语言配置',
+                                        'url_key' => '/config/appserverstorelang/manager',
+                                    ],
+                                    
                                 ],
                             ],
                         ],
