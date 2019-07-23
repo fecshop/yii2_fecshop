@@ -223,6 +223,35 @@ class m190716_024608_fecshop_tables extends Migration
                   UNIQUE KEY `key` (`key`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
             ",
+            
+            "
+                CREATE TABLE IF NOT EXISTS `store_domain` (
+                  `id` int(12) NOT NULL AUTO_INCREMENT,
+                  `key` varchar(255) DEFAULT NULL COMMENT 'store的domain key，譬如：fecshop.appfront.fancyecommerce.com',
+                  `app_name` varchar(50) DEFAULT NULL COMMENT 'App入口的名字，譬如appfront，apphtml5',
+                  `lang` varchar(20) DEFAULT NULL COMMENT 'store对应的语言code',
+                  `lang_name` varchar(50) DEFAULT NULL COMMENT 'store语言简码对应的文字名称，将会出现在语言切换列表中显示',
+                  `local_theme_dir` varchar(255) DEFAULT NULL COMMENT '设置store对应的本地local模板路径',
+                  `third_theme_dir` text COMMENT '序列化字段：设置store对应的第三方模板路径，该字段存储将会序列化',
+                  `currency` varchar(20) DEFAULT NULL COMMENT 'store对应的默认货币',
+                  `mobile_enable` int(5) DEFAULT NULL COMMENT '是否开启移动设备访问跳转，1是，2否',
+                  `mobile_condition` varchar(255) DEFAULT NULL COMMENT '序列化字段：进行跳转的条件：phone 代表手机，tablet代表平板，当都填写，代表手机和平板都会进行跳转',
+                  `mobile_redirect_domain` varchar(255) DEFAULT NULL COMMENT '移动设备访问跳转的域名',
+                  `mobile_https_enable` int(5) DEFAULT NULL COMMENT '跳转的域名是否是https，1是，2否',
+                  `mobile_type` varchar(50) DEFAULT NULL COMMENT '填写值选择：[apphtml5, appserver]，如果是 apphtml5 ， 则表示跳转到html5入口，如果是appserver，则表示跳转到vue这种appserver对应的入口',
+                  `facebook_login_app_id` varchar(100) DEFAULT NULL COMMENT 'facebook帐号登陆的appId',
+                  `facebook_login_app_secret` varchar(100) DEFAULT NULL COMMENT 'facebook帐号登陆的appSecret',
+                  `google_login_client_id` varchar(150) DEFAULT NULL COMMENT 'google帐号登陆的clientId',
+                  `google_login_client_secret` varchar(100) DEFAULT NULL COMMENT 'google帐号登陆的client secret',
+                  `https_enable` int(5) DEFAULT NULL COMMENT '当前store是否使用https，1是，2否',
+                  `sitemap_dir` varchar(255) DEFAULT NULL COMMENT 'sitemap地址，譬如：@appfront/web/sitemap.xml',
+                  `created_at` int(12) DEFAULT NULL COMMENT '创建时间',
+                  `updated_at` int(12) DEFAULT NULL COMMENT '更新时间',
+                  `status` int(5) DEFAULT NULL COMMENT 'store状态，1为激活，2为关闭',
+                  PRIMARY KEY (`id`),
+                  KEY `app_name` (`app_name`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+            ",
         ];
 
         foreach ($arr as $sql) {
