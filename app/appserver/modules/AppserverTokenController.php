@@ -27,7 +27,7 @@ use yii\filters\RateLimiter;
  */
 class AppserverTokenController extends Controller
 {
-    
+    public $blockNamespace;
     public $enableCsrfValidation = false ;
     
     public function init()
