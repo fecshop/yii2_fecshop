@@ -34,7 +34,8 @@ class StandardController extends AppserverController
         //echo '支付宝支付跳转中...';
         //Yii::$service->payment->alipay->devide = 'wap';
         $return_url = Yii::$app->request->post('return_url');
-       
+        $increment_id = Yii::$app->request->post('increment_id');
+        Yii::$service->order->setCurrentOrderIncrementId($increment_id);
         $code = Yii::$service->helper->appserver->status_success;
         $data = [
             'redirectUrl'  => Yii::$service->payment->alipay->start($return_url,'GET'),

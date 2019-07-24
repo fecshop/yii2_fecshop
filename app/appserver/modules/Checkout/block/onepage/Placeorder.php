@@ -97,9 +97,11 @@ class Placeorder
                     // 得到支付跳转前的准备页面。
                     $startUrl = Yii::$service->payment->getStandardStartUrl('','appserver');
                     $innerTransaction->commit();
+                    $createdOrder = Yii::$service->order->createdOrder;
                     $code = Yii::$service->helper->appserver->status_success;
                     $data = [
-                            'redirectUrl' => $startUrl,
+                        'redirectUrl' => $startUrl,
+                        'incrementId' => $createdOrder['increment_id'],
                     ];
                     $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
                     
