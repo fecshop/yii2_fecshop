@@ -269,7 +269,7 @@ class Index
                 $attr_group_info = $this->_product['attr_group_info'];
                 $spuAttrVal = $attr_group_info[$spuAttr];
             } else {
-                $spuAttrVal = $this->_product[$spuAttr];
+                $spuAttrVal = isset($this->_product[$spuAttr]) ? $this->_product[$spuAttr] : '';
             }
             
             if ($spuAttrVal) {
