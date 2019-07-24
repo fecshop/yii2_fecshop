@@ -51,9 +51,11 @@ class Start
                     return $responseData;
                 }
                 $redirectUrl = Yii::$service->payment->paypal->getExpressCheckoutUrl($token);
+                $createdOrder = Yii::$service->order->createdOrder;
                 $code = Yii::$service->helper->appserver->status_success;
                 $data = [
                     'redirectUrl' => $redirectUrl,
+                    'increment_id' => $createdOrder['increment_id'],
                 ];
                 $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
                 

@@ -77,6 +77,7 @@ class Placeorder
             } catch (\Exception $e) {
                 $innerTransaction->rollBack();
             }
+            $createdOrder = Yii::$service->order->createdOrder;
             //echo 22;
             if ($genarateStatus) {
                 // 得到当前的订单信息
@@ -84,7 +85,7 @@ class Placeorder
                 //echo $doCheckoutReturn;exit;
                 //echo 333;
                 if ($doCheckoutReturn) {
-                    $increment_id = Yii::$service->order->getSessionIncrementId();
+                    $increment_id = $createdOrder['increment_id'];
                     $innerTransaction = Yii::$app->db->beginTransaction();
                     try {
                         // 插件这个订单是否被支付过，如果被支付过，则回滚
