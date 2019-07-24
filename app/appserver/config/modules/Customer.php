@@ -16,18 +16,30 @@ return [
             'register' => [
                 // 账号注册成功后，是否自动登录
                 'successAutoLogin' => true,
-                // 注册页面的验证码是否开启
-                'registerPageCaptcha' => true,
+                /**
+                  * 1.注册页面的验证码是否开启
+                  * 2.对于appserver 端，是基于api，默认验证码不可用，必须再@common/config/main-local.php中配置redis
+                  *    验证码才可用，否则，强行开启会导致报错。
+                  */
+                'registerPageCaptcha' => false,
 
             ],
             'login' => [
-                // 登录页面的验证码是否开启
+                /**
+                  * 1.登陆页面的验证码是否开启
+                  * 2.对于appserver 端，是基于api，默认验证码不可用，必须再@common/config/main-local.php中配置redis
+                  *    验证码才可用，否则，强行开启会导致报错。
+                  */
                 'loginPageCaptcha' => false,
 
             ],
             'forgotPassword' => [
-                // 忘记密码页面的验证码是否开启
-                'forgotCaptcha' => true,
+                /**
+                  * 1.忘记密码页面的验证码是否开启
+                  * 2.对于appserver 端，是基于api，默认验证码不可用，必须再@common/config/main-local.php中配置redis
+                  *    验证码才可用，否则，强行开启会导致报错。
+                  */
+                'forgotCaptcha' => false,
 
             ],
 
@@ -41,8 +53,12 @@ return [
             ],
 
             'contacts'    => [
-                // 联系我们页面的验证码是否开启
-                'contactsCaptcha' => true,
+                /**
+                  * 1.联系我们页面的验证码是否开启
+                  * 2.对于appserver 端，是基于api，默认验证码不可用，必须再@common/config/main-local.php中配置redis
+                  *    验证码才可用，否则，强行开启会导致报错。
+                  */
+                'contactsCaptcha' => false,
                 // 设置联系我们邮箱，如果不设置，则从email service配置中读取。
                 //'address' => '',
             ],
