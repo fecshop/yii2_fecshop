@@ -84,13 +84,14 @@ class CategoryController extends AppserverController
             }
             $store = Yii::$service->store->currentStore;
             $currency = Yii::$service->page->currency->getCurrentCurrency();
+            $langCode = Yii::$service->store->currentLangCode;
             $behaviors[] =  [
                 'enabled' => true,
                 'class' => 'yii\filters\PageCache',
                 'only' => ['index'],
                 'duration' => $timeout,
                 'variations' => [
-                    $store, $currency, $get_str, $category_id,
+                    $store, $currency, $get_str, $category_id,$langCode
                 ],
                 //'dependency' => [
                 //	'class' => 'yii\caching\DbDependency',
@@ -559,12 +560,16 @@ class CategoryController extends AppserverController
      */
     protected function getCategoryProductColl()
     {
+        $productPrimaryKey = Yii::$service->product->getPrimaryKey();
         $select = [
             'sku', 'spu', 'name', 'image',
                 'price', 'special_price',
                 'special_from', 'special_to',
                 'url_key', 'score', 'reviw_rate_star_average', 'review_count'
         ];
+        if ($productPrimaryKey == 'id') {
+            $select[] = 'id';
+        }
         $category_query = Yii::$app->getModule('catalog')->params['category_query'];
         if (is_array($category_query['sort'])) {
             foreach ($category_query['sort'] as $sort_item) {
