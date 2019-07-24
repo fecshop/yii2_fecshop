@@ -24,7 +24,9 @@ class PaymentController extends AppserverController
     public function checkOrder()
     {
         //$homeUrl = Yii::$service->url->homeUrl();
-        $this->_increment_id = Yii::$service->order->getSessionIncrementId();
+        $this->_increment_id = Yii::$app->request->post('increment_id');
+        Yii::$service->order->setCurrentOrderIncrementId($this->_increment_id);
+        //$this->_increment_id = Yii::$service->order->getSessionIncrementId();
         if (!$this->_increment_id) {
             
             $code = Yii::$service->helper->appserver->order_not_find_increment_id_from_dbsession;
