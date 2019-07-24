@@ -62,7 +62,7 @@ class Wx extends Service
             return null;
         }
         // 保存到session
-        Yii::$service->helper->wx->setWxSessionKeyAndOpenid($wxUserInfo['session_key'], $wxUserInfo['openid']);
+        //Yii::$service->helper->wx->setWxSessionKeyAndOpenid($wxUserInfo['session_key'], $wxUserInfo['openid']);
             
         return $wxUserInfo;
     }
@@ -72,29 +72,29 @@ class Wx extends Service
      * @param $openid | string, 微信登陆返回的openid
      * @return bolean，将值保存到session中
      */ 
-    public function setWxSessionKeyAndOpenid($session_key, $openid)
-    {
-        $openidStatus = Yii::$service->session->set('wx_openid', $openid);
-        $sessionKeyStatus = Yii::$service->session->set('wx_session_key', $session_key);
+    //public function setWxSessionKeyAndOpenid($session_key, $openid)
+    //{
+    //    $openidStatus = Yii::$service->session->set('wx_openid', $openid);
+    //    $sessionKeyStatus = Yii::$service->session->set('wx_session_key', $session_key);
         //var_dump([Yii::$service->session->get('wx_session_key'), Yii::$service->session->get('wx_openid')]);
         //exit;
-        return $openidStatus && $sessionKeyStatus;
-    }
+    //    return $openidStatus && $sessionKeyStatus;
+    //}
     /**
      * @return string， 从session中取出来session_key
      */ 
-    public function getWxSessionKey()
-    {
-        return Yii::$service->session->get('wx_session_key');
-    }
+    //public function getWxSessionKey()
+    //{
+    //    return Yii::$service->session->get('wx_session_key');
+    //}
     
     /**
      * @return string， 从session中取出来 openid
      */ 
-    public function getWxOpenid()
-    {
-        return Yii::$service->session->get('wx_openid');
-    }
+    //public function getWxOpenid()
+    //{
+    //    return Yii::$service->session->get('wx_openid');
+    //}
     
     /*
     public function createQRCode()
