@@ -171,8 +171,6 @@ class WxpayMicro extends Service
         $identity = Yii::$app->user->identity;
         $openId = $identity->wx_openid;
         
-        //echo $openId;exit;
-        
         //②、统一下单
         $input = new \WxPayUnifiedOrder();
         $notify_url = Yii::$service->url->getUrl("payment/wxpayjsapi/ipn");    ////获取支付配置中的返回ipn url
@@ -201,6 +199,7 @@ class WxpayMicro extends Service
         //echo '<font color="#f00"><b>统一下单支付单信息</b></font><br/>';
         //$this->printf_info($order);
         $isJsonFormat = false;
+        //var_dump($order);exit;
         $jsApiParameters = $tools->GetJsApiParameters($order, $isJsonFormat);
         //var_dump($jsApiParameters);
         //获取共享收货地址js函数参数
