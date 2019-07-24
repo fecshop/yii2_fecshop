@@ -60,19 +60,35 @@ class Quote extends Service
     public function getCartId()
     {
         if (!$this->_cart_id) {
-            $cart_id = Yii::$service->session->get(self::SESSION_CART_ID);
-
-            if (! $cart_id) {
-                if (! Yii::$app->user->isGuest) {
-                    $customerId = Yii::$app->user->getId();
-                    $cart = $this->getCartByCustomerId($customerId);
-                    if ($cart && $cart['cart_id']) {
-                        $this->setCartId($cart['cart_id']);
-                    }
+            if (Yii::$service->store->isAppserver()) {
+                // appserver 必须登陆用户才能加入购物车
+                if (Yii::$app->user->isGuest) {
+                    Yii::$service->helper->errors->add('appserver get cart id must login account');
+                    
+                    return false;
+                }
+                $customerId = Yii::$app->user->getId();
+                $cart = $this->getCartByCustomerId($customerId);
+                if ($cart && $cart['cart_id']) {
+                    $this->setCartId($cart['cart_id']);
                 }
             } else {
-                $this->_cart_id = $cart_id;
+                $cart_id = Yii::$service->session->get(self::SESSION_CART_ID);
+
+                if (! $cart_id) {
+                    if (! Yii::$app->user->isGuest) {
+                        $customerId = Yii::$app->user->getId();
+                        $cart = $this->getCartByCustomerId($customerId);
+                        if ($cart && $cart['cart_id']) {
+                            $this->setCartId($cart['cart_id']);
+                        }
+                    }
+                } else {
+                    $this->_cart_id = $cart_id;
+                }
             }
+            
+            
         }
 
         return $this->_cart_id;
@@ -233,8 +249,10 @@ class Quote extends Service
     protected function actionSetCartId($cart_id)
     {
         $this->_cart_id = $cart_id;
-
-        Yii::$service->session->set(self::SESSION_CART_ID, $cart_id);
+        if (!Yii::$service->store->isAppserver()) {
+            Yii::$service->session->set(self::SESSION_CART_ID, $cart_id);
+        }
+        
     }
 
     /**
