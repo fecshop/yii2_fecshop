@@ -9,14 +9,14 @@
 
 namespace fecshop\app\appserver\modules\Payment\controllers\paypal;
 
-use fecshop\app\appserver\modules\AppserverController;
+use fecshop\app\appserver\modules\AppserverTokenController;
 use Yii;
 
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class ExpressController extends AppserverController
+class ExpressController extends AppserverTokenController
 {
     public $enableCsrfValidation = false;
 
