@@ -503,7 +503,10 @@ class Order extends Service
             $increment_id = $this->generateIncrementIdByOrderId($order_id);
             $myOrder['increment_id'] = $increment_id;
             $myOrder->save();
-            $this->setSessionIncrementId($increment_id);
+            $this->createdOrder = $myOrder;
+            if (!Yii::$service->store->isAppserver()) {  // appserver入口，没有session机制。
+                $this->setSessionIncrementId($increment_id);
+            }
             return true;
         } else {
             Yii::$service->helper->errors->add('generate order fail');
