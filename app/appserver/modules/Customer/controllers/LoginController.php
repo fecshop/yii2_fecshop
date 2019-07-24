@@ -160,9 +160,23 @@ class LoginController extends AppserverController
     // 绑定账户
     public function actionBindaccount()
     {
-        // 获取 WxOpenid，查询是否存在账户，如果存在，则返回false
-        $wx_openid = Yii::$service->helper->wx->getWxOpenid();
-        $wx_session_key = Yii::$service->helper->wx->getWxSessionKey();
+        $wxCode = Yii::$app->request->post('code');
+        //echo $wxCode;
+        // 通过code 和 微信的一些验证信息，得到微信的信息uid
+        $wxUserInfo = Yii::$service->helper->wx->getUserInfoByCode($wxCode);
+        // 如果通过code获取微信信息（api获取）失败
+        if (!$wxUserInfo) {
+            // code  获取openid失败
+            $code = Yii::$service->helper->appserver->account_wx_get_user_info_fail;
+            $data = [ ];
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
+            
+            return $responseData;
+        }
+        
+        // 得到 openid  和  session_key
+        $wx_openid = $wxUserInfo['openid'];
+        $wx_session_key = $wxUserInfo['session_key'];
         
         if (!$wx_openid || !$wx_session_key) {
             $code = Yii::$service->helper->appserver->no_account_openid_and_session_key;
