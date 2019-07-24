@@ -8,14 +8,14 @@
  */
 namespace fecshop\app\appserver\modules\Checkout\controllers;
 
-use fecshop\app\appserver\modules\AppserverController;
+use fecshop\app\appserver\modules\AppserverTokenController;
 use Yii;
 
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class CartController extends AppserverController
+class CartController extends AppserverTokenController
 {
     public $enableCsrfValidation = false;
 
