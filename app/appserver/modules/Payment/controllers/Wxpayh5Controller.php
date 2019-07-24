@@ -63,7 +63,7 @@ class Wxpayh5Controller extends PaymentController
             return $checkOrder;
         }
         
-        $out_trade_no = Yii::$service->order->getSessionIncrementId();
+        $out_trade_no = $this->_increment_id;
         $reviewStatus = Yii::$service->payment->wxpay->scanCodeCheckTradeIsSuccess($out_trade_no);
         if($reviewStatus){
             $data = [
