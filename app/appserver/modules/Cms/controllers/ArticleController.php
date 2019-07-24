@@ -79,14 +79,14 @@ class ArticleController extends AppserverController
             }
             $store = Yii::$service->store->currentStore;
             $currency = Yii::$service->page->currency->getCurrentCurrency();
-
+            $langCode = Yii::$service->store->currentLangCode;
             $behaviors[] =  [
                 'enabled' => true,
                 'class' => 'yii\filters\PageCache',
                 'only' => ['index'],
                 'duration' => $timeout,
                 'variations' => [
-                    $store, $currency, $get_str, $article_id,
+                    $store, $currency, $get_str, $article_id,$langCode
                 ],
                 //'dependency' => [
                 //	'class' => 'yii\caching\DbDependency',
