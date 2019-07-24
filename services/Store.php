@@ -82,6 +82,17 @@ class Store extends Service
             return false;
         }
     }
+    
+    public function isAppserver()
+    {
+        $appServerArr = ['appserver'];
+        $currentAppName = $this->getCurrentAppName();
+        if (in_array($currentAppName, $appServerArr)) {
+            return true;
+        }
+        
+        return false;
+    }
 
     /**
      * 得到当前入口的名字
@@ -95,7 +106,7 @@ class Store extends Service
     public function initCurrentStoreConfig()
     {
         $currentAppName = $this->getCurrentAppName();
-        if ($currentAppName == 'appserver') {
+        if ($this->isAppserver()) {
             return $this->initAppserverCurrentStoreConfig(); 
         }
         $coll = Yii::$service->storeDomain->getCollByAppName($currentAppName);
@@ -195,7 +206,9 @@ class Store extends Service
         }
         // 初始化语言。
         $this->stores[$storeKey]['serverLangs'] = Yii::$app->store->get('appserver_store_lang');
-        //var_dump($this->stores);exit;
+        // 通过该方法，初始化货币services，直接从headers中取出来currency。进行set，这样currency就不会从session中读取（fecshop-2版本对于appserver已经抛弃session servcies）
+        Yii::$service->page->currency->appserverSetCurrentCurrency();
+        
         return true;
     }
     
@@ -264,20 +277,23 @@ class Store extends Service
                                     Yii::$service->store->currentLang = $one['language'];
                                     Yii::$service->store->currentLangName = $one['languageName'];
                                     Yii::$service->page->translate->setLanguage($one['language']);
+                                    break;
                                 }
                             }
                         }
+                        
                     }
-                    if (isset($headers['fecshop-currency']) && $headers['fecshop-currency']) {
-                        $currentC = Yii::$service->page->currency->getCurrentCurrency();
-                        if ($currentC != $headers['fecshop-currency']) {
-                            Yii::$service->page->currency->setCurrentCurrency($headers['fecshop-currency']);
-                        }
-                    }
+                    //if (isset($headers['fecshop-currency']) && $headers['fecshop-currency']) {
+                    //    $currentC = Yii::$service->page->currency->getCurrentCurrency();
+                    //    if ($currentC != $headers['fecshop-currency']) {
+                    //        Yii::$service->page->currency->setCurrentCurrency($headers['fecshop-currency']);
+                    ///    }
+                    //}
                     break;
                 }
             }
         }
+        
         if (!$init_complete) {
             throw new InvalidValueException('this domain is not config in store service, you must config it in admin store config');
         }
