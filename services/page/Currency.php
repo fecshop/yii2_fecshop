@@ -141,7 +141,7 @@ class Currency extends Service
     {
         $currencyCode  = $this->getCurrentCurrency();
         $currencyPrice = $this->getCurrencyPrice($price, $currencyCode);
-        if ($currencyPrice) {
+        if ($currencyPrice !== null) {
             return $currencyPrice;
         }
         /*
@@ -166,6 +166,8 @@ class Currency extends Service
                 return bcmul($price, $rate, 2);
             }
         }
+        
+        return null;
     }
 
     /**
@@ -251,10 +253,37 @@ class Currency extends Service
             $currencyCode = $this->defaultCurrency;
         }
         if ($currencyCode) {
-            Yii::$service->session->set(self::CURRENCY_CURRENT, $currencyCode);
+            if (!Yii::$service->store->isAppserver()) {
+                Yii::$service->session->set(self::CURRENCY_CURRENT, $currencyCode);
+            }
             $this->_currentCurrencyCode = $currencyCode;
             return true;
         }
+    }
+    
+    protected $appserverCurrencyHeaderName = 'fecshop-currency';
+    /**
+     * appserver端初始化currency
+     * 初始化货币services，直接从headers中取出来currency。进行set，这样currency就不会从session中读取
+     * fecshop-2版本对于appserver已经抛弃session servcies
+     */
+    public function appserverSetCurrentCurrency()
+    {
+        if ($this->_currentCurrencyCode) {
+            return true;
+        }
+        $header = Yii::$app->request->getHeaders();
+        $currentCurrencyCode = $header[$this->appserverCurrencyHeaderName];
+        
+        if (!$currentCurrencyCode) {
+            $currentCurrencyCode = $this->defaultCurrency;
+        }
+        if (!$this->isCorrectCurrency($currentCurrencyCode)) {
+            $currentCurrencyCode = $this->defaultCurrency;
+        }
+        $this->_currentCurrencyCode = $currentCurrencyCode;
+        
+        Yii::$app->response->getHeaders()->set($this->appserverCurrencyHeaderName, $this->_currentCurrencyCode);
     }
 
     /**
