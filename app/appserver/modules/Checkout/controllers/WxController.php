@@ -24,10 +24,14 @@ class WxController extends AppserverController
     public function actionVerifyinfo()
     {
         $orderIncrementId = Yii::$app->request->post('orderId');
-        if ($orderIncrementId) {
-
-            Yii::$service->order->setSessionIncrementId($orderIncrementId);
+        if (!$orderIncrementId) {
+            $data = [];
+            $code = Yii::$service->helper->appserver->status_invalid_param;
+            $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
+            
+            return $responseData;
         }
+        Yii::$service->order->setCurrentOrderIncrementId($orderIncrementId);
         $info = Yii::$service->payment->wxpayMicro->getScanCodeStart();
         
         $code = Yii::$service->helper->appserver->status_success;
