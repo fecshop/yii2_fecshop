@@ -256,7 +256,16 @@ class Order extends Service
             return false;
         }
     }
-
+    
+    protected $_currentOrderIncrementId = '';
+    public function setCurrentOrderIncrementId($increment_id)
+    {
+        $this->_currentOrderIncrementId = $increment_id;
+    }
+    public function getCurrentOrderIncrementId()
+    {
+        return $this->_currentOrderIncrementId;
+    }
     /**
      * @param $reflush | boolean 是否从数据库中重新获取，如果是，则不会使用类变量中计算的值
      * 获取当前的订单信息，原理为：
@@ -266,8 +275,18 @@ class Order extends Service
     protected function actionGetCurrentOrderInfo($reflush = false)
     {
         if (!$this->_currentOrderInfo || $reflush) {
-            $increment_id = Yii::$service->order->getSessionIncrementId();
-            $this->_currentOrderInfo = Yii::$service->order->getOrderInfoByIncrementId($increment_id);
+            if (Yii::$service->store->isAppserver()) {
+                $increment_id = $this->getCurrentOrderIncrementId();
+                if (!$increment_id) {
+                    Yii::$service->helper->errors->add('current increment id is empty, you must setCurrentOrderIncrementId');
+                    
+                    return null;
+                }
+                $this->_currentOrderInfo = Yii::$service->order->getOrderInfoByIncrementId($increment_id);
+            } else {
+                $increment_id = Yii::$service->order->getSessionIncrementId();
+                $this->_currentOrderInfo = Yii::$service->order->getOrderInfoByIncrementId($increment_id);
+            }
         }
 
         return $this->_currentOrderInfo;
@@ -622,6 +641,7 @@ class Order extends Service
 
             return false;
         }
+        
         // 保存订单
         $saveOrderStatus = $myOrder->save();
         if (!$saveOrderStatus) {
@@ -637,6 +657,7 @@ class Order extends Service
                 return false;
             }
         }
+        
         Yii::$service->event->trigger($afterEventName, $myOrder);
         if ($myOrder[$this->getPrimaryKey()]) {
             // 保存订单产品
@@ -652,7 +673,10 @@ class Order extends Service
             }
             $this->createdOrder = $myOrder;
             // 执行成功，则在session中设置increment_id
-            $this->setSessionIncrementId($increment_id);
+            if (!Yii::$service->store->isAppserver()) {  // appserver入口，没有session机制。
+                $this->setSessionIncrementId($increment_id);
+            }
+            
             return true;
         } else {
             Yii::$service->helper->errors->add('generate order fail');
