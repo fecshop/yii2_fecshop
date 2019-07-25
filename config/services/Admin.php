@@ -15,6 +15,8 @@ return [
                 'urlKeyTags' => [
 					'dashboard_main' 								=> 'Dashboard-Main',
 					'catalog_product_info_manager' 			=> 'Catalog-Product',
+                    'catalog_product_attr_manager' 		    => 'Catalog-Product-Attr',
+                    'catalog_product_attr_group_manager' 		=> 'Catalog-Product-Attr-Group',
 					'catalog_product_review_manager' 		=> 'Catalog-Product-Review',
 					'catalog_product_search_manager' 		=> 'Catalog-Product-Search',
 					'catalog_product_favorite_manager' 	=> 'Catalog-Product-Favorite',
@@ -74,9 +76,13 @@ return [
                                         'label' => 'Product Info',
                                         'url_key' => '/catalog/productinfo/index',
                                     ],
+                                    'product_attr_manager' => [
+                                        'label' => '产品属性管理',
+                                        'url_key' => '/catalog/productattr/manager',
+                                    ],
                                     'product_attr_group_manager' => [
                                         'label' => '产品属性组管理',
-                                        'url_key' => '/catalog/productinfo/index',
+                                        'url_key' => '/catalog/productattrgroup/manager',
                                     ],
                                     // 三级类
                                     'product_review_manager' => [
