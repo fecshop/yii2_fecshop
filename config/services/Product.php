@@ -64,6 +64,12 @@ return [
                 // 订单创建后，多久内可以进行评论，超过这个期限将不能评论产品（单位为月）, 当 reviewOnlyOrderedProduct 设置为true时有效。
                 'reviewMonth' => 6,
             ],
+            'attr' => [
+                'class' => 'fecshop\services\product\Attr',
+            ],
+            'attrGroup' => [
+                'class' => 'fecshop\services\product\AttrGroup',
+            ],
             'favorite' => [
                 'class' => 'fecshop\services\product\Favorite',
             ],
