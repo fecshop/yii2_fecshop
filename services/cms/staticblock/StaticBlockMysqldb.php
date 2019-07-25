@@ -180,10 +180,8 @@ class StaticBlockMysqldb extends Service implements StaticBlockInterface
             }
         } else {
             $id = $ids;
-            foreach ($ids as $id) {
-                $model = $this->_staticBlockModel->findOne($id);
-                $model->delete();
-            }
+            $model = $this->_staticBlockModel->findOne($id);
+            $model->delete();
         }
 
         return true;
