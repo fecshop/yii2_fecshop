@@ -49,19 +49,20 @@ class UrlKey extends Service
     }
 
     public function getTags($translate = true){
-        if (!$this->_urlKeyTags) {
+        $key = $translate ? 1 : 2;
+        if (!$this->_urlKeyTags[$key]) {
             if (is_array($this->urlKeyTags)) {
                 foreach ($this->urlKeyTags as $k => $v) {
                     if ($translate) {
-                        $this->_urlKeyTags[$k] = Yii::$service->page->translate->__($v);
+                        $this->_urlKeyTags[$key][$k] = Yii::$service->page->translate->__($v);
                     } else {
-                        $this->_urlKeyTags[$k] = $v;
+                        $this->_urlKeyTags[$key][$k] = $v;
                     }
                     
                 }
             }
         }
-        return $this->_urlKeyTags;
+        return $this->_urlKeyTags[$key];
     }
 
     public function getPrimaryKey()
