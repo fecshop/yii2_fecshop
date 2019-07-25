@@ -48,6 +48,7 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
 
     public function getEditArr()
     {
+        //var_dump(Yii::$service->admin->urlKey->getTags());
         return [
             [
                 'label' => Yii::$service->page->translate->__('Tag Name'),
@@ -56,6 +57,7 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
                     'type' => 'inputString',
                 ],
                 'require' => 1,
+                'translate' => true,
             ],
             [
                 'label' => Yii::$service->page->translate->__('Resource'),
