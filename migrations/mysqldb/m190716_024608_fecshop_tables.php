@@ -252,6 +252,38 @@ class m190716_024608_fecshop_tables extends Migration
                   KEY `app_name` (`app_name`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
             ",
+            
+            "
+                CREATE TABLE IF NOT EXISTS `product_attribute` (
+              `id` int(11) NOT NULL AUTO_INCREMENT,
+              `attr_type` varchar(50) DEFAULT NULL COMMENT '属性类型，general_attr or  spu_attr',
+              `name` varchar(50) DEFAULT NULL COMMENT '属性名称',
+              `status` int(5) DEFAULT NULL COMMENT '属性状态，1代表激活，2代表关闭',
+              `db_type` varchar(50) DEFAULT NULL COMMENT '属性值的字符类型，string，int等',
+              `show_as_img` int(5) DEFAULT NULL COMMENT '是否以图片的方式显示，1代表是，2代表否',
+              `display_type` varchar(50) DEFAULT NULL COMMENT '显示方式：select ， inputString，inputEmail，inputDate等',
+              `display_data` text COMMENT '显示对应的值',
+              `is_require` int(5) DEFAULT NULL COMMENT '是否必填值，1代表是，2代表否',
+              `default` varchar(150) DEFAULT NULL COMMENT '默认值',
+              `created_at` int(11) DEFAULT NULL COMMENT '创建时间',
+              `updated_at` int(11) DEFAULT NULL COMMENT '更新时间',
+              PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+            ",
+            
+            "
+                CREATE TABLE IF NOT EXISTS `product_attribute_group` (
+                  `id` int(12) NOT NULL AUTO_INCREMENT,
+                  `name` varchar(50) DEFAULT NULL COMMENT '属性组名称',
+                  `attr_ids` text COMMENT '属性ids',
+                  `status` int(5) DEFAULT NULL COMMENT '状态，1代表激活，2代表关闭',
+                  `created_at` int(12) DEFAULT NULL COMMENT '创建时间',
+                  `updated_at` int(12) DEFAULT NULL COMMENT '更新时间',
+                  PRIMARY KEY (`id`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+            ",
         ];
 
         foreach ($arr as $sql) {
