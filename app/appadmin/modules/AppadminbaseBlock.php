@@ -529,6 +529,7 @@ class AppadminbaseBlock extends BaseObject
             foreach ($fields as $field) {
                 $orderField = $field['orderField'];
                 $display = $field['display'];
+                $translate = $field['translate'];
                 $val = $one[$orderField];
                 $display_title = '';
                 if ($val) {
@@ -582,6 +583,9 @@ class AppadminbaseBlock extends BaseObject
                     if (isset($field['lang']) && !empty($field['lang'])) {
                         $val = Yii::$service->fecshoplang->getDefaultLangAttrVal($val, $orderField);
                     }
+                }
+                if ($translate) {
+                    $val = Yii::$service->page->translate->__($val);
                 }
                 $str .= '<td><span title="'.$display_title.'">'.$val.'</span></td>';
             }
