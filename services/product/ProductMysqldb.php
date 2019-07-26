@@ -41,7 +41,7 @@ class ProductMysqldb extends Service implements ProductInterface
         'image',
         'description',
         'short_description',
-        'custom_option',
+        //'custom_option',
         'remark',
         'relation_sku',
         'buy_also_buy_sku',
@@ -426,17 +426,18 @@ class ProductMysqldb extends Service implements ProductInterface
         $one['final_price'] = Yii::$service->product->price->getFinalPrice($one['price'], $one['special_price'], $one['special_from'], $one['special_to']);
         $one['score'] = (int) $one['score'];
         unset($one['id']);
+        unset($one['custom_option']);
         /**
          * 如果 $one['custom_option'] 不为空，则计算出来库存总数，填写到qty
          */
         
-        if (is_array($one['custom_option']) && !empty($one['custom_option'])) {
-            $custom_option_qty = 0;
-            foreach ($one['custom_option'] as $co_one) {
-                $custom_option_qty += $co_one['qty'];
-            }
-            $one['qty'] = $custom_option_qty;
-        }
+        //if (is_array($one['custom_option']) && !empty($one['custom_option'])) {
+        //    $custom_option_qty = 0;
+        //    foreach ($one['custom_option'] as $co_one) {
+        //        $custom_option_qty += $co_one['qty'];
+        //    }
+        //    $one['qty'] = $custom_option_qty;
+        //}
         
         
         /**
@@ -501,16 +502,17 @@ class ProductMysqldb extends Service implements ProductInterface
         $one['final_price'] = Yii::$service->product->price->getFinalPrice($one['price'], $one['special_price'], $one['special_from'], $one['special_to']);
         $one['score'] = (int) $one['score'];
         unset($one['_id']);
+        unset($one['custom_option']);
         /**
          * 如果 $one['custom_option'] 不为空，则计算出来库存总数，填写到qty
          */
-        if (is_array($one['custom_option']) && !empty($one['custom_option'])) {
-            $custom_option_qty = 0;
-            foreach ($one['custom_option'] as $co_one) {
-                $custom_option_qty += $co_one['qty'];
-            }
-            $one['qty'] = $custom_option_qty;
-        }
+        //if (is_array($one['custom_option']) && !empty($one['custom_option'])) {
+        //    $custom_option_qty = 0;
+        //    foreach ($one['custom_option'] as $co_one) {
+        //        $custom_option_qty += $co_one['qty'];
+        //    }
+        //    $one['qty'] = $custom_option_qty;
+        //}
         
         /**
          * 保存产品
@@ -688,14 +690,14 @@ class ProductMysqldb extends Service implements ProductInterface
 
             return false;
         }
-        if (is_array($one['custom_option']) && !empty($one['custom_option'])) {
-            $new_custom_option = [];
-            foreach ($one['custom_option'] as $k=>$v) {
-                $k = preg_replace('/[^A-Za-z0-9\-_]/', '', $k);
-                $new_custom_option[$k] = $v;
-            }
-            $one['custom_option'] = $new_custom_option;
-        }
+        //if (is_array($one['custom_option']) && !empty($one['custom_option'])) {
+        //    $new_custom_option = [];
+        //    foreach ($one['custom_option'] as $k=>$v) {
+        //        $k = preg_replace('/[^A-Za-z0-9\-_]/', '', $k);
+        //        $new_custom_option[$k] = $v;
+        //    }
+        //    $one['custom_option'] = $new_custom_option;
+        //}
 
         return true;
     }
