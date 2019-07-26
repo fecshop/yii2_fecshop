@@ -296,7 +296,7 @@ EOF;
 								<legend style="color:#009688">'.$label.'['.$lang.']：</legend>
 								<div>
 									<div class="unit">
-										<textarea '.$uploadImgUrl.' '.$uploadFlashUrl.'  '.$uploadLinkUrl.'  '.$uploadMediaUrl.'  class="'.$edittorClass.' '.$inputStringLangRequire.'"  rows="'.$rows.'" cols="'.$cols.'" name="'.$this->_editFormData.'['.$name.']['.$langAttrName.']" >'.$value[$langAttrName].'</textarea>
+										<textarea '.$uploadImgUrl.' '.$uploadFlashUrl.'  '.$uploadLinkUrl.'  '.$uploadMediaUrl.'  class="'.$edittorClass.' '.$inputStringLangRequire.'"  rows="'.$rows.'" cols="'.$cols.'" name="'.$this->_editFormData.'['.$name.']['.$langAttrName.']"  style="width:98%" >'.$value[$langAttrName].'</textarea>
 									</div>
 								</div>
 							</fieldset>
