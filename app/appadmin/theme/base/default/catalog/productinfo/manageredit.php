@@ -136,32 +136,33 @@ function thissubmit(thiss){
 			image_gallery += gallery_image_image+'#####'+gallery_image_label+'#####'+gallery_image_sort_order +'#####'+gallery_image_is_thumbnails  +'#####'+gallery_image_is_detail+'|||||';
 		}
 	});
+    
 	$(".tabsContent .image_gallery").val(image_gallery);
 	//custom_option
-	i = 0;
-	custom_option = new Object();
-	jQuery(".custom_option_list tbody tr").each(function(){
-		option_header = new Object();
-		$(this).find("td").each(function(){
-			rel = $(this).attr("rel");
-			
-			if(rel != 'image'){
-				if(rel){
-					option_header[rel] = $(this).attr('val');
-				}
-			}else{
-				rel = $(this).find("img").attr("rel");
-				option_header['image'] = rel;
-			}
-			
-		});
-		custom_option[i] = option_header;
-		i++;
-	});
-		
-	custom_option = JSON.stringify(custom_option);
+	//i = 0;
+	//custom_option = new Object();
+	//jQuery(".custom_option_list tbody tr").each(function(){
+	//	option_header = new Object();
+	//	$(this).find("td").each(function(){
+	//		rel = $(this).attr("rel");
+	//		
+	//		if(rel != 'image'){
+	//			if(rel){
+	//				option_header[rel] = $(this).attr('val');
+	//			}
+	//		}else{
+	//			rel = $(this).find("img").attr("rel");
+	//			option_header['image'] = rel;
+	//		}
+	//		
+	//	});
+	//	custom_option[i] = option_header;
+	//	i++;
+	//});
+	//	
+	//custom_option = JSON.stringify(custom_option);
 	//alert(custom_option);
-	jQuery(".custom_option_value").val(custom_option);
+	//jQuery(".custom_option_value").val(custom_option);
 	
 	cate_str = "";
 	jQuery(".category_tree div.ckbox.checked").each(function(){
@@ -209,8 +210,9 @@ function thissubmit(thiss){
 						<li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Image Info') ?></span></a></li>
 						<li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Category Info') ?></span></a></li>
 						<li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Attr Group') ?></span></a></li>
-						<li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Custom Option') ?></span></a></li>
-						<li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Relate Product') ?></span></a></li>
+						<!--<li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Custom Option') ?></span></a></li>
+						-->
+                        <li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Relate Product') ?></span></a></li>
 					</ul>
 				</div>
 			</div>
@@ -387,103 +389,6 @@ function thissubmit(thiss){
 				</div>
 				<div >
 					<?= $groupAttr ?>
-				</div>
-				<div class="custom_option">
-					<div>
-						<?= $custom_option_add ?>
-					</div>
-					<div style="clear:both"></div>
-					<div class="custom_option_img_list" style="display:none;border: 1px dashed #888;margin: 15px 0;padding: 8px 0;">
-						<?=  $custom_option_img  ?>
-					</div>
-					<div style="clear:both"></div>
-					
-					<div class="custom_option_list" style="margin:20px 2px;">
-						<?= $custom_option_list ?>
-						
-					</div>
-					<input type="hidden" class="custom_option_value" name="custom_option"  value=""  />
-					<script>
-					$(document).ready(function(){
-						jQuery(document).off("click",".chose_custom_op_img");
-						jQuery(document).on("click",".chose_custom_op_img",function(){
-							$(".custom_option_img_list").slideDown("slow");
-							
-						});
-						jQuery(document).off("click",".custom_option_img_list img");
-						jQuery(document).on("click",".custom_option_img_list img",function(){
-							rel = $(this).attr('rel');
-							src = $(this).attr('src');
-							$(".chosened_img").html('<img style="width:80px;" rel="'+rel+'" src="'+src+'">');
-							$(".custom_option_img_list").slideUp("slow");
-						});
-						
-						
-						jQuery(document).off("click",".deleteCustomList");
-						jQuery(document).on("click",".deleteCustomList",function(){
-							$(this).parent().parent().remove();
-							
-						});
-						jQuery(document).off("click",".add_custom_option");
-						jQuery(document).on("click",".add_custom_option",function(){
-							i = 0;
-							$str = '<tr>';
-							general_sku = '';
-							$(".custom_option_attr").each(function(){
-								attr = $(this).attr("atr");
-								val = $(this).val();
-                                label_v = $(this).find("option:selected").text();
-								if(!val){
-									i = 1;
-									alert("<?=  Yii::$service->page->translate->__('can not select empty') ?>");
-								}
-								$str += '<td rel="'+attr+'" val="'+val+'" >'+label_v+'</td>';
-								val = val.replace(/ /g, "*")
-								if(!general_sku){
-									general_sku = val;
-								}else{
-									general_sku += "-"+val;
-								}
-							});
-							custom_option_sku = general_sku;
-							custom_option_sku = custom_option_sku.toLowerCase();   
-							$(".custom_option_sku").val(custom_option_sku);
-							$str += '<td class="custom_option_sku" rel="sku" val="'+custom_option_sku+'">'+custom_option_sku+'</td>';
-							custom_option_qty = $(".custom_option_qty").val();
-							if(!custom_option_qty){
-								custom_option_qty = 99999;
-							}
-							$str += '<td rel="qty" val="'+custom_option_qty+'" >'+custom_option_qty+'</td>';
-							custom_option_price = $(".custom_option_price").val();
-							if(!custom_option_price){
-								custom_option_price = 0;
-							}
-							$(".custom_option_price").val(custom_option_price);
-							$str += '<td rel="price" val="'+custom_option_price+'" >'+custom_option_price+'</td>';
-							chosened_img_src = $(".chosened_img img").attr('src');
-							chosened_img_rel = $(".chosened_img img").attr('rel');
-							if(!chosened_img_src || !chosened_img_rel){
-								i = 1;
-								alert("<?= Yii::$service->page->translate->__('you must chose a image');  ?>");
-							}
-							$str += '<td rel="image"><img style="width:30px;" rel="'+chosened_img_rel+'" src="'+chosened_img_src+'"/></td>';
-							$str += '<td><a title="<?=  Yii::$service->page->translate->__('Delete') ?>"  href="javascript:void(0)" class="btnDel deleteCustomList"><i class="fa fa-trash-o"></i></a></td>'
-							// 检查这个sku是否已经存在 
-							$(".custom_option_sku").each(function(){
-								sku = $(this).html();
-								if(sku == custom_option_sku){
-									i = 1;
-									alert("<?= Yii::$service->page->translate->__('this custom_option sku is exist');  ?>");
-								}
-							});
-							if(!i){
-								//alert(11);
-								$(".custom_option_list table tbody").append($str);
-							}
-						});
-						
-					});
-					</script>
 				</div>
 				<div class="relation_list" style="margin:20px 2px;">
 						<?= $relation ?>	

@@ -53,6 +53,16 @@ class ProductinfoController extends CatalogController
 
         return $this->render($this->action->id, $data);
     }
+    
+    public function actionManagerbatchedit()
+    {
+        
+        $data = $this->getBlock()->getLastData();
+
+        return $this->render($this->action->id, $data);
+    }
+    
+    
 
     // catalog
     public function actionImageupload()
@@ -65,7 +75,16 @@ class ProductinfoController extends CatalogController
     {
         $this->getBlock()->getProductCategory();
     }
+    
+    
+    public function actionManagerbatcheditsave()
+    {
+        
+        $data = $this->getBlock('managerbatchedit')->save();
 
+        return $this->render($this->action->id, $data);
+    }
+    
     public function actionManagereditsave()
     {
         // save role,通过resource，判断当前用户是否有保存所有产品的权限，默认，用户只有保存自己发布的产品，而不能保存其他用户创建的的产品
