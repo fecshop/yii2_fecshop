@@ -266,7 +266,7 @@ class ProductApi extends Service
          *  6. 数组的key，需要和sku相等，譬如 red-l-s2-s3 要等于下面的  "sku": "red-l-s2-s3"
          *
          */
-        
+        /*
         $custom_option = $post['custom_option'];
         if (!empty($custom_option) && is_array($custom_option) && isset($customAttrGroup[$attr_group]['custom_options']) && $customAttrGroup[$attr_group]['custom_options']) {
             $custom_option_arr = [];
@@ -326,6 +326,7 @@ class ProductApi extends Service
                 $this->_param['custom_option'] = $custom_option_arr;
             }
         }
+        */
         
         // 选填
         $remark = $post['remark'];
