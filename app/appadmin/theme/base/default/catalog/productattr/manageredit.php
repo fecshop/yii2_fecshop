@@ -28,7 +28,7 @@ function thissubmit(thiss){
 	items_input = "";
     
     var display_type_select = $(".display_type_select").val();
-    if (display_type_select == 'select') {
+    if (display_type_select == 'select' || display_type_select == 'editSelect') {
         $(".pageContent .items table tbody tr").each(function(){
             key_name = $(this).find(".key_name").val();
             //alert(search_engine);
@@ -84,7 +84,7 @@ function thissubmit(thiss){
                             </select>
                             <span class="remark-text"></span>
                             
-                            <div class="edit_p display_itemcs" style="display:<?= $display_type=='select' ? 'block' : 'none'  ?>">
+                            <div class="edit_p display_itemcs" style="display:<?= ($display_type=='select' || $display_type=='editSelect')    ? 'block' : 'none'  ?>">
                                 <label><?=  Yii::$service->page->translate->__('Display Items') ?>：</label>
                                 <input type="hidden" name="editFormData[display_data]" class="items_input"  />
                                 <div class="items" style="float:left;width:700px;">
@@ -143,7 +143,7 @@ function thissubmit(thiss){
                                             
                                             $("body").on("change",".pageContent .display_type_select",function(){
                                                 var val = $(this).val();
-                                                if (val != 'select') {
+                                                if (val != 'select' && val != 'editSelect' ) {
                                                     $(".display_itemcs").hide();
                                                     
                                                 } else {
