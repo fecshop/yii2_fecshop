@@ -342,6 +342,7 @@ class Attr
                 'name'  => 'meta_description',
                 'display' => [
                     'type' => 'textarea',
+                    'notEditor' => true,
                     'lang' => true,
                     'rows'    => 14,
                     'cols'    => 100,

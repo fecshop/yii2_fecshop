@@ -31,6 +31,8 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
     protected $_productHelperName = '\fecshop\app\appadmin\modules\Catalog\helper\Product';
     protected $_productHelper;
     
+    protected $_batchInsertUrl;
+    
     /**
      * init param function ,execute in construct.
      */
@@ -45,6 +47,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
          * edit data url
          */
         $this->_editUrl = CUrl::getUrl('catalog/productinfo/manageredit');
+        $this->_batchInsertUrl = CUrl::getUrl('catalog/productinfo/managerbatchedit');
         /*
          * delete data url
          */
@@ -389,5 +392,27 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
         $this->_param['numCount'] = $coll['count'];
 
         return $this->getTableTbodyHtml($data);
+    }
+    
+    /**
+     * get edit html bar, it contains  add ,eidt ,delete  button.
+     */
+    public function getEditBar()
+    {
+        /*
+        if(!strstr($this->_currentParamUrl,"?")){
+            $csvUrl = $this->_currentParamUrl."?type=export";
+        }else{
+            $csvUrl = $this->_currentParamUrl."&type=export";
+        }
+        <li class="line">line</li>
+        <li><a class="icon csvdownload"   href="'.$csvUrl.'" target="dwzExport" targetType="navTab" title="实要导出这些记录吗?"><span>导出EXCEL</span></a></li>
+        */
+        return '<ul class="toolBar">
+					<li><a class="add"   href="'.$this->_editUrl.'"  target="dialog" height="680" width="1200" drawable="true" mask="true"><span>' . Yii::$service->page->translate->__('Add') . '</span></a></li>
+                    <li><a class="add"   href="'.$this->_batchInsertUrl.'"  target="dialog" height="680" width="1200" drawable="true" mask="true"><span>' . Yii::$service->page->translate->__('Batch Add') . '</span></a></li>
+                    <li><a target="dialog" height="680" width="1200" drawable="true" mask="true" class="edit" href="'.$this->_editUrl.'?'.$this->_primaryKey.'={sid_user}" ><span>' . Yii::$service->page->translate->__('Update') . '</span></a></li>
+					<li><a  csrfName="' .CRequest::getCsrfName(). '" csrfVal="' .CRequest::getCsrfValue(). '" title="' . Yii::$service->page->translate->__('Are you sure you want to delete these records?') . '" target="selectedTodo" rel="'.$this->_primaryKey.'s" postType="string" href="'.$this->_deleteUrl.'" class="delete"><span>' . Yii::$service->page->translate->__('Batch Delete') . '</span></a></li>
+				</ul>';
     }
 }
