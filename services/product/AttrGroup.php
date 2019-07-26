@@ -85,5 +85,49 @@ class AttrGroup extends Service
         return $this->_attrGroup->getEnableStatus();
     }
     
+    /**
+     * get artile's primary key.
+     */
+    protected function actionGetPrimaryKey()
+    {
+        return $this->_attrGroup->getPrimaryKey();
+    }
+
+    /**
+     * get artile model by primary key.
+     */
+    protected function actionGetByPrimaryKey($primaryKey)
+    {
+        return $this->_attrGroup->getByPrimaryKey($primaryKey);
+    }
+    
+    protected function actionColl($filter = '')
+    {
+        return $this->_attrGroup->coll($filter);
+    }
+
+    /**
+     * @param $one|array , save one data .
+     * @param $originUrlKey|string , article origin url key.
+     * save $data to cms model,then,add url rewrite info to system service urlrewrite.
+     */
+    protected function actionSave($one)
+    {
+        return $this->_attrGroup->save($one);
+    }
+
+    protected function actionRemove($ids)
+    {
+        return $this->_attrGroup->remove($ids);
+    }
+    
+    public function getActiveAllColl()
+    {
+        return $this->_attrGroup->getActiveAllColl();
+        
+    }
+    
+    
+    
     
 }

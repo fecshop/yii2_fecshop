@@ -21,7 +21,7 @@ interface AttrGroupInterface
 
     public function coll($filter);
 
-    public function save($one, $originUrlKey);
+    public function save($one);
 
     public function remove($ids);
 }
