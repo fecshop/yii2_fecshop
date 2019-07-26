@@ -100,7 +100,7 @@ class AttrMysqldb extends Service implements AttrInterface
      */
     public function save($one)
     {
-         $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
+        $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
         if ($primaryVal) {
             $model = $this->_attrModel->findOne($primaryVal);
             if (!$model) {
@@ -139,6 +139,33 @@ class AttrMysqldb extends Service implements AttrInterface
         }
 
         return true;
+    }
+    
+    public function getActiveAllColl()
+    {
+        // attribute Group
+        $filter = [
+            'where' => [
+                ['status' => $this->getEnableStatus()]
+            ],
+            'fetchAll' => true,
+            'asArray' => true,
+        ];
+        $query = $this->_attrModel->find();
+        $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
+        
+        $coll = $query->all();
+        if (is_array($coll)) {
+            foreach ($coll as $k => $one) {
+                if ($one['display_data']) {
+                    $coll[$k]['display_data'] = unserialize($one['display_data']);
+                }
+            }
+            return $coll;
+        }
+        
+        return null;
+        
     }
     
 }

@@ -121,6 +121,16 @@ class Attr extends Service
         return $this->_attr->remove($ids);
     }
     
+    protected function actionGetActiveColl($ids)
+    {
+        return $this->_attr->remove($ids);
+    }
+    
+    public function getActiveAllColl()
+    {
+        return $this->_attr->getActiveAllColl();
+    }
+    
     
     public function getAttrTypes()
     {
@@ -146,6 +156,7 @@ class Attr extends Service
             'inputString-Lang' => 'inputString-Lang',
             'inputEmail' => 'inputEmail',
             'inputDate' => 'inputDate',
+            'editSelect' => 'editSelect',
             'select' => 'select',
         ];
         
