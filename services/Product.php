@@ -71,6 +71,7 @@ class Product extends Service
     public function init()
     {
         parent::init();
+        
         // 从数据库配置中得到值, 设置成当前service存储，是Mysqldb 还是 Mongodb
         $config = Yii::$app->store->get('service_db', 'category_and_product');
         $this->storage = 'ProductMysqldb';
@@ -79,6 +80,8 @@ class Product extends Service
         }
         $currentService = $this->getStorageService($this);
         $this->_product = new $currentService();
+        // 从数据库配置数据，初始化customAttrGroup
+        $this->initCustomAttrGroup();
     }
     // 动态更改为mongodb model
     public function changeToMongoStorage()
@@ -99,6 +102,78 @@ class Product extends Service
     protected function actionGetEnableStatus()
     {
         return $this->_product->getEnableStatus();
+    }
+    // 从数据库配置数据，初始化customAttrGroup
+    protected function initCustomAttrGroup()
+    {
+        $attrPrimaryKey =$this->attr->getPrimaryKey();
+        $attrGroupPrimaryKey = $this->attrGroup->getPrimaryKey();
+        
+        $allGroupColl = $this->attrGroup->getActiveAllColl();
+        // attr
+        $allAttrColl = $this->attr->getActiveAllColl();
+        $attrTypeColl = [];
+        if ($allAttrColl) {
+            foreach ($allAttrColl as $one) {
+                $attrTypeColl[$one[$attrPrimaryKey]] = $one;
+            }
+        }
+        
+        $customAttrGroupArr = [];
+        if ($allGroupColl) {
+            foreach ($allGroupColl as $one) {
+                $groupName = $one['name'];
+                $attr_ids = $one['attr_ids'];
+                if (!is_array($attr_ids) || empty($attr_ids)) {
+                    continue;
+                }
+                
+                $attr_ids = \fec\helpers\CFunc::array_sort($attr_ids, 'sort_order', 'desc');
+                //var_dump($attr_ids);exit;
+                foreach ($attr_ids as $attr_id_one) {
+                    if (!is_array($attr_id_one)) {
+                        continue;
+                    }
+                    $attr_id = $attr_id_one['attr_id'];
+                    $attr_sort_order = $attr_id_one['sort_order'];
+                    $attrOne = $attrTypeColl[$attr_id];
+                    if (!$attrOne) {
+                        continue;
+                    }
+                    $attrName = $attrOne['name'];
+                    $attrType = $attrOne['attr_type'];
+                    
+                    $attrInfo = [
+                        'dbtype'     => $attrOne['db_type'],
+                        'name'       => $attrName,
+                        'showAsImg'  => $attrOne['show_as_img'] == 1 ? true : false ,
+                        'sort_order'   => $attr_sort_order,
+                    ];
+                    $displayType = $attrOne['display_type'];
+                    $displayInfo = [];
+                    if ($displayType == 'inputString-Lang') {
+                        $displayInfo['type'] = 'inputString';
+                        $displayInfo['lang'] = true;
+                    } else {
+                        $displayInfo['type'] = $displayType;
+                    }
+                    if (is_array($attrOne['display_data'])) {
+                        $d_arr = [];
+                        foreach ($attrOne['display_data'] as $o) {
+                            if ($o['key']) {
+                                $d_arr[] = $o['key'];
+                            }
+                        }
+                        $displayInfo['data'] = $d_arr;
+                    }
+                    $attrInfo['display'] = $displayInfo;
+                    
+                    $customAttrGroupArr[$groupName][$attrType][$attrName] = $attrInfo;
+                }
+            }
+        }
+        $this->customAttrGroup = $customAttrGroupArr;
+        //var_dump($customAttrGroupArr);exit;
     }
     
     /**
