@@ -55,6 +55,16 @@ class Attr
 
         return $this->_attrInfo;
     }
+    
+    public function getGroupGeneralAttr()
+    {
+        return Yii::$service->product->getGroupGeneralAttr($this->_currentAttrGroup);
+    }
+    
+    public function getGroupSpuAttr()
+    {
+        return Yii::$service->product->getGroupSpuAttr($this->_currentAttrGroup);
+    }
 
     public function getProductAttrGroupSelect()
     {
