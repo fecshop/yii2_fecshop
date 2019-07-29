@@ -215,6 +215,38 @@ class Product extends Service
         return $arr;
     }
     
+    public function getGroupGeneralAttr($productAttrGroup)
+    {
+        $arr = [];
+        if ($productAttrGroup == $this->_defaultAttrGroup) {
+            return [];
+        }
+        // 得到普通属性
+        if (isset($this->customAttrGroup[$productAttrGroup]['general_attr'])
+                && is_array($this->customAttrGroup[$productAttrGroup]['general_attr'])
+        ) {
+            $arr = array_merge($arr, $this->customAttrGroup[$productAttrGroup]['general_attr']);
+        }
+        
+        return $arr;
+    }
+    
+    public function getGroupSpuAttr($productAttrGroup)
+    {
+        $arr = [];
+        if ($productAttrGroup == $this->_defaultAttrGroup) {
+            return [];
+        }
+        // 得到用于spu，细分sku的属性，譬如颜色尺码之类。
+        if (isset($this->customAttrGroup[$productAttrGroup]['spu_attr'])
+                && is_array($this->customAttrGroup[$productAttrGroup]['spu_attr'])
+        ) {
+            $arr = array_merge($arr, $this->customAttrGroup[$productAttrGroup]['spu_attr']);
+        }
+        
+        return $arr;
+    }
+    
     /**
      * @param $productAttrGroup|string
      * 得到这个产品属性组里面的所有的产品属性，
