@@ -76,7 +76,8 @@ class Managerbatchedit extends AppadminbaseBlockEdit implements AppadminbaseBloc
             'priceInfo'         => $this->getPriceInfo(),
             'tier_price'        => $this->_one['tier_price'],
             'metaInfo'          => $this->getMetaInfo(),
-            'groupAttr'         => $this->getGroupAttr(),
+            'groupGeneralAttr'         => $this->getGroupGeneralAttr(),
+            'groupSpuAttr'         => $this->getGroupSpuAttr(),
             'descriptionInfo'   => $this->getDescriptionInfo(),
             'attrGroup'         => $this->_attr->getProductAttrGroupSelect(),
             'primaryInfo'       => $this->getCurrentProductPrimay(),
@@ -214,30 +215,14 @@ class Managerbatchedit extends AppadminbaseBlockEdit implements AppadminbaseBloc
         return $this->_lang_attr.$editBar.$this->_textareas;
     }
     
-    public function getGroupAttr()
+    public function getGroupGeneralAttr()
     {
         $this->_lang_attr = '';
         $this->_textareas = '';
-        $editArr = $this->_attr->getGroupAttr();
+        $editArr = $this->_attr->getGroupGeneralAttr();
         $this->_primaryKey = $this->_service->getPrimaryKey();
         $product_id = $this->_param[$this->_primaryKey];
         $this->_one = $this->_service->getByPrimaryKey($product_id);
-        if($product_id){
-            // 从mysql中取出来qty。
-            $qty = Yii::$service->product->stock->getProductFlatQty($product_id);
-            $this->_one['qty'] = $qty ;
-            // 从mysql中取出来custom option qty
-            $co_qty_arr     = Yii::$service->product->stock->getProductCustomOptionQty($product_id);
-            //var_dump($co_qty_arr);
-            $custom_option  = $this->_one['custom_option'];
-            if(is_array($co_qty_arr) && is_array($custom_option)){
-                $arr = [];
-                foreach($custom_option as $custom_option_sku => $one){
-                    $custom_option[$custom_option_sku]['qty'] = isset($co_qty_arr[$custom_option_sku]) ? $co_qty_arr[$custom_option_sku] : 0;
-                }
-                $this->_one['custom_option'] = $custom_option;
-            }
-        }
         // add translate
         if (!empty($editArr) && is_array($editArr)) {
             foreach ($editArr as $k => $v) {
@@ -262,6 +247,23 @@ class Managerbatchedit extends AppadminbaseBlockEdit implements AppadminbaseBloc
         }
 
         return '';
+    }
+    
+    public function getGroupSpuAttr()
+    {
+        $arr = [];
+        $editArr = $this->_attr->getGroupSpuAttr();
+        if (is_array($editArr) && !empty($editArr)) {
+            foreach ($editArr as $spuOne) {
+                $name = $spuOne['name'];
+                $displayData = isset($spuOne['display']['data']) ? $spuOne['display']['data'] : '';
+                if ($name && is_array($displayData)) {
+                    $arr[$name] = $displayData;
+                }
+                
+            }
+        }
+        return $arr;
     }
     
     public function getVal($name, $column){
