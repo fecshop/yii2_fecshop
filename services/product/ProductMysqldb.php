@@ -677,6 +677,9 @@ class ProductMysqldb extends Service implements ProductInterface
     
     public function getCategoryIdsByProductId($product_id)
     {
+        if (empty($product_id)) {
+            return [];
+        }
         $coll = $this->_categoryProductModel->find()
             ->asArray()
             ->where([
