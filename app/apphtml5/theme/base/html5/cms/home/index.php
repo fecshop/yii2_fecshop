@@ -9,19 +9,19 @@
 ?>
 <div class="swiper-container" data-space-between='10'>
 	<div class="swiper-wrapper">
-		<div class="swiper-slide"><img  class="lazy" data-src="<?= Yii::$service->image->getImgUrl('custom/home_img_1.jpg','apphtml5'); ?>" alt="" ></div>
-		<div class="swiper-slide"><img  class="lazy" data-src="<?= Yii::$service->image->getImgUrl('custom/home_img_2.jpg','apphtml5'); ?>" alt="" ></div>
-		<div class="swiper-slide"><img  class="lazy" data-src="<?= Yii::$service->image->getImgUrl('custom/home_img_3.jpg','apphtml5'); ?>" alt="" ></div>
+		<div class="swiper-slide"><img  class="lazy" data-src="<?= Yii::$service->image->getImgUrl('apphtml5/custom/home_img_1.jpg'); ?>" alt="" ></div>
+		<div class="swiper-slide"><img  class="lazy" data-src="<?= Yii::$service->image->getImgUrl('apphtml5/custom/home_img_2.jpg'); ?>" alt="" ></div>
+		<div class="swiper-slide"><img  class="lazy" data-src="<?= Yii::$service->image->getImgUrl('apphtml5/custom/home_img_3.jpg'); ?>" alt="" ></div>
 	</div>
 	<div class="swiper-pagination"></div>
 </div>
 <div style="padding:10px;">
 	<div class="row">
 		<div class="col-50">
-			<img class="lazy" data-src="<?= Yii::$service->image->getImgUrl('custom/home_small_1.jpg','apphtml5'); ?>" alt="" style='width: 100%'>
+			<img class="lazy" data-src="<?= Yii::$service->image->getImgUrl('apphtml5/custom/home_small_1.jpg'); ?>" alt="" style='width: 100%'>
 		</div>
 		<div class="col-50">
-			<img class="lazy" data-src="<?= Yii::$service->image->getImgUrl('custom/home_small_2.jpg','apphtml5'); ?>" alt="" style='width: 100%'>
+			<img class="lazy" data-src="<?= Yii::$service->image->getImgUrl('apphtml5/custom/home_small_2.jpg'); ?>" alt="" style='width: 100%'>
 		</div>
 	</div>
 </div>
