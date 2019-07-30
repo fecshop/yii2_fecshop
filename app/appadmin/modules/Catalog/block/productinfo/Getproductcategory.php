@@ -51,6 +51,7 @@ class Getproductcategory
 
         //$menu = $this->getMenArray($product_id);
         $menu = Yii::$service->category->getTreeArr();
+       
         $category_ids = $this->getCategoryByProductId($product_id);
         $str = '';
         if (is_array($menu) && !empty($menu)) {
