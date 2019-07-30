@@ -268,7 +268,7 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
         if (isset ($this->_one[$name]) ) {
             
             return ($this->_one[$name] || $this->_one[$name] === 0) ? $this->_one[$name] : $column['default'];
-        } else if($this->_one['attr_group_info']) { //  mysql model类型
+        } else if(isset($this->_one['attr_group_info']) && $this->_one['attr_group_info']) { //  mysql model类型
             $attr_group_info = $this->_one['attr_group_info'];
             if (isset($attr_group_info[$name])) {
                 return $attr_group_info[$name];

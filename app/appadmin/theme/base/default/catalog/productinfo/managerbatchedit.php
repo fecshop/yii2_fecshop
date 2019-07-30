@@ -394,21 +394,18 @@ function thissubmit(thiss){
 				</div>
                 <div >
                     <div class="group_spu_attr">
-                        <?php if (is_array($groupSpuAttr) && !empty($groupSpuAttr)):  ?>
-                            <?php foreach ($groupSpuAttr as $spuName => $spuData):  ?>
+                        <?php if (is_array($groupSpuAttr) && !empty($groupSpuAttr)): $iu = 0;  ?>
+                            <?php foreach ($groupSpuAttr as $spuName => $spuData):   $iu++; ?>
                                 <div class="spu_attr_one" style="margin-top:10px;margin-bottom:20px;" rel="<?= $spuName ?>">
                                     <div style="margin-bottom: 10px;">
                                         <label style="text-transform: capitalize;"><?= $spuName ?></label>
-                                        <input type="text" style="width:100px;" />
-                                        <div class="buttonActive" style="float:none;">
-                                            <div class="buttonContent">
-                                                <button class="add_spu_attr">
-                                                    <?=  Yii::$service->page->translate->__('Add') ?>
-                                                </button>
-                                            </div>
-                                        </div>
+                                        <input type="text" style="width:100px;"  class="spu_attr_input spu_attr_input_<?= $iu  ?>" />
+                                        
+                                        <a  rel="<?= $iu  ?>" style="text-align:right; float:none;" href="javascript:void(0)" class="add_spu_attr button">
+												<span> <?=  Yii::$service->page->translate->__('Add') ?></span>
+											</a>
                                     </div>
-                                    <div>
+                                    <div class="spu_attr_info spu_attr_info_<?= $iu  ?>">
                                         <?php foreach ($spuData as $sd): ?>
                                             <span style="    margin-right: 10px;  font-size: 14px;  height: 30px; line-height: 30px; min-width: 105px;display: inline-block;">
                                                 <input class="spuAttrCheck" type="checkbox"  id="<?=  $sd?>" rel="<?=  $sd?>">
@@ -421,7 +418,6 @@ function thissubmit(thiss){
                         <?php endif; ?>
                         <script>
                             $(document).ready(function(){
-                                
                                 $(".dialog").on("click",".spuAttrCheck",function(){
                                     var htmlStr = '<tr>';
                                     var attrArr = [];
@@ -438,46 +434,31 @@ function thissubmit(thiss){
                                            var val = $(this).attr('rel');
                                            spuData.push(val);
                                            rows++;
-                                        
                                         });
-                                        //console.log(rows);
                                         // 计算rows数
                                         for (var x in attrRows){
                                             v = attrRows[x];
                                             attrRows[x] = v * rows;
                                         }
                                         attrRows[spuName] = 1;
-                                        //console.log(attrRows);
-                                        // 
                                         obj.data = spuData;
                                         attrArr.push(obj);
                                     });
-                                    
                                     for (x in attrArr) {
                                         obj = attrArr[x];
                                         obj.rowSize = attrRows[obj.name];
                                     }
-                                    
                                     htmlStr += '<td class="sell-sku-cell sell-sku-cell-text">Sku编码</td>';
                                     htmlStr += '<td class="sell-sku-cell sell-sku-cell-text">价格</td>';
                                     htmlStr += '<td class="sell-sku-cell sell-sku-cell-text">数量</td>';
                                     htmlStr += '</tr>';
-                                    
-                                    //console.log(attrArr);
-                                    // htmlStr += '<tr>';
-                                    
                                     i = 0;
                                     hStr = '';
-                                    htmlStr += getXX(attrArr, i, hStr); 
-                                    
+                                    htmlStr += getTableStr(attrArr, i, hStr); 
                                     $(".sell-sku-body-table tbody").html(htmlStr);
-                                    console.log(htmlStr);
-                                    
-                                    
-                                })
+                                });
                                 
-                                
-                                function getXX(attrArr, i, hStr) {
+                                function getTableStr(attrArr, i, hStr) {
                                     var attrObj = attrArr[i];
                                     var htmlStr = '';
                                     for (var j = 0; j < attrObj.data.length; j++) {
@@ -500,9 +481,6 @@ function thissubmit(thiss){
                                                 shStr = shStr.replace(new RegExp(reallyDo, 'g'), replaceWith);
                                             }
                                         }
-                                        
-                                            
-                                        
                                         shStr += '<td class="sell-sku-cell sell-sku-cell-text" rowspan="'+ rowspan +'">';
                                         shStr += '<div class="cell-inner" style="min-width: 78px;">';
                                         shStr += '    <div class="sell-sku-cell-text">';
@@ -510,13 +488,9 @@ function thissubmit(thiss){
                                         shStr += '    </div>';
                                         shStr += '</div>';
                                         shStr += '</td>';
-                                        
-                                        
                                         if ( ii < attrArr.length) {
-                                            
-                                            htmlStr += getXX(attrArr, ii, shStr);
+                                            htmlStr += getTableStr(attrArr, ii, shStr);
                                         } else {
-                                            
                                             htmlStr += '<tr>' + shStr;
                                             htmlStr += '<td class="sell-sku-cell sell-sku-cell-input" rowspan="1">';
                                             htmlStr += '    <div class="cell-inner" style="min-width: 160px;">';
@@ -541,14 +515,39 @@ function thissubmit(thiss){
                                             htmlStr += '    <input class="textInput valid" type="text" label="数量（件）" required="" value="0" name="skuStock" maxlength="15" height="100%">';
                                             htmlStr += '    </span></span></span></div>';
                                             htmlStr += '</td>';
-                                            
-                                    
                                             htmlStr += '</tr>';
                                         }
                                     }
                                     
                                     return htmlStr;
                                 }
+                                
+                                $(".dialog").on("click",".add_spu_attr",function(){
+                                    var rel = $(this).attr('rel');
+                                    var str1 = ".spu_attr_input_" + rel;
+                                    var str2 = ".spu_attr_info_" + rel ;
+                                    var addVal = $(str1).val();
+                                    addVal = addVal.toLowerCase();
+                                    if (!addVal) {
+                                        alert("请填写值");
+                                    } else {
+                                        var isCF = 0;
+                                        $(str2 + " input").each(function(){
+                                            v = $(this).attr('rel');
+                                            v = v.toLowerCase();
+                                            if (v == addVal) {
+                                                alert("添加的值重复");
+                                                isCF = 1;
+                                            }
+                                        });
+                                        if (isCF == 0) {
+                                            appendStr = '<span style="    margin-right: 10px;  font-size: 14px;  height: 30px; line-height: 30px; min-width: 105px;display: inline-block;"><input class="spuAttrCheck" type="checkbox" id="'+addVal+'" rel="'+addVal+'"><label for="'+addVal+'" style="text-transform: capitalize;font-size:14px;">'+addVal+'</label> </span>';
+                                            //alert(appendStr);
+                                            $(str2).append(appendStr);
+                                        }
+                                    }
+                                    
+                                });
                                 
                             });
                         </script>
@@ -562,54 +561,9 @@ function thissubmit(thiss){
                                 <col width="151px">
                             </colgroup>
                             <tbody>
-                                <tr>
-                                    <td>颜色</td>
-                                    <td>尺码</td>
-                                    <td>价格</td>
-                                    <td>数量</td>
-                                    <td>Sku</td>
-                                </tr>
-                                <tr class="sku-table-row">
-                                    <td class="sell-sku-cell sell-sku-cell-text" rowspan="3">
-                                        <div class="cell-inner" style="min-width: 78px;">
-                                            <div class="sell-sku-cell-text">
-                                                <p class="sell-sku-cell-text-content" title="浅灰色">浅灰色</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="sell-sku-cell sell-sku-cell-text" rowspan="1">
-                                        <div class="cell-inner" style="min-width: 78px;">
-                                            <div class="sell-sku-cell-text">
-                                                <p class="sell-sku-cell-text-content" title="L">L</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="sell-sku-cell sell-sku-cell-money" rowspan="1">
-                                        <div class="cell-inner" style="min-width: 90px;">
-                                            <span class="sell-o-number">
-                                            <span class="input-wrap">
-                                            <span class="next-input next-input-single next-input-medium fusion-input">
-                                            <input type="text" label="价格（元）" required="" value="" name="skuPrice" maxlength="15" height="100%">
-                                            </span></span></span></div>
-                                    </td>
-                                    <td class="sell-sku-cell sell-sku-cell-positiveNumber" rowspan="1">
-                                        <div class="cell-inner" style="min-width: 90px;">
-                                        <span class="sell-o-number">
-                                        <span class="input-wrap">
-                                        <span class="next-input next-input-single next-input-medium fusion-input">
-                                        <input type="text" label="数量（件）" required="" value="0" name="skuStock" maxlength="15" height="100%">
-                                        </span></span></span></div>
-                                    </td>
-                                    <td class="sell-sku-cell sell-sku-cell-input" rowspan="1">
-                                        <div class="cell-inner" style="min-width: 160px;">
-                                        <span class="sell-o-input"><span class="input-wrap">
-                                        <span class="next-input next-input-single next-input-medium fusion-input">
-                                        <input type="text" label="商家编码" name="skuOuterId" value="" maxlength="64" height="100%">
-                                        </span></span></span></div>
-                                    </td>
-                                </tr>
-                                    
-                                <tr class="sku-table-row"><td class="sell-sku-cell hide sell-sku-cell-text" rowspan="3"><div class="cell-inner" style="min-width: 78px;"><div class="sell-sku-cell-text"><p class="sell-sku-cell-text-content" title="浅灰色">浅灰色</p></div></div></td><td class="sell-sku-cell sell-sku-cell-text" rowspan="1"><div class="cell-inner" style="min-width: 78px;"><div class="sell-sku-cell-text"><p class="sell-sku-cell-text-content" title="XL">XL</p></div></div></td><td class="sell-sku-cell sell-sku-cell-money" rowspan="1"><div class="cell-inner" style="min-width: 90px;"><span class="sell-o-number"><span class="input-wrap"><span class="next-input next-input-single next-input-medium fusion-input"><input type="text" label="价格（元）" required="" value="" name="skuPrice" maxlength="15" height="100%"></span></span></span></div></td><td class="sell-sku-cell sell-sku-cell-positiveNumber" rowspan="1"><div class="cell-inner" style="min-width: 90px;"><span class="sell-o-number"><span class="input-wrap"><span class="next-input next-input-single next-input-medium fusion-input"><input type="text" label="数量（件）" required="" value="0" name="skuStock" maxlength="15" height="100%"></span></span></span></div></td><td class="sell-sku-cell sell-sku-cell-input" rowspan="1"><div class="cell-inner" style="min-width: 160px;"><span class="sell-o-input"><span class="input-wrap"><span class="next-input next-input-single next-input-medium fusion-input"><input type="text" label="商家编码" name="skuOuterId" value="" maxlength="64" height="100%"></span></span></span></div></td><td class="sell-sku-cell sell-sku-cell-input" rowspan="1"><div class="cell-inner" style="min-width: 120px;"><span class="sell-o-input"><span class="input-wrap"><span class="next-input next-input-single next-input-medium fusion-input"><input type="text" label="商品条形码" name="skuBarcode" value="" maxlength="32" height="100%"></span></span></span></div></td></tr><tr class="sku-table-row"><td class="sell-sku-cell hide sell-sku-cell-text" rowspan="3"><div class="cell-inner" style="min-width: 78px;"><div class="sell-sku-cell-text"><p class="sell-sku-cell-text-content" title="浅灰色">浅灰色</p></div></div></td><td class="sell-sku-cell sell-sku-cell-text" rowspan="1"><div class="cell-inner" style="min-width: 78px;"><div class="sell-sku-cell-text"><p class="sell-sku-cell-text-content" title="均码">均码</p></div></div></td><td class="sell-sku-cell sell-sku-cell-money" rowspan="1"><div class="cell-inner" style="min-width: 90px;"><span class="sell-o-number"><span class="input-wrap"><span class="next-input next-input-single next-input-medium fusion-input"><input type="text" label="价格（元）" required="" value="" name="skuPrice" maxlength="15" height="100%"></span></span></span></div></td><td class="sell-sku-cell sell-sku-cell-positiveNumber" rowspan="1"><div class="cell-inner" style="min-width: 90px;"><span class="sell-o-number"><span class="input-wrap"><span class="next-input next-input-single next-input-medium fusion-input"><input type="text" label="数量（件）" required="" value="0" name="skuStock" maxlength="15" height="100%"></span></span></span></div></td><td class="sell-sku-cell sell-sku-cell-input" rowspan="1"><div class="cell-inner" style="min-width: 160px;"><span class="sell-o-input"><span class="input-wrap"><span class="next-input next-input-single next-input-medium fusion-input"><input type="text" label="商家编码" name="skuOuterId" value="" maxlength="64" height="100%"></span></span></span></div></td><td class="sell-sku-cell sell-sku-cell-input" rowspan="1"><div class="cell-inner" style="min-width: 120px;"><span class="sell-o-input"><span class="input-wrap"><span class="next-input next-input-single next-input-medium fusion-input"><input type="text" label="商品条形码" name="skuBarcode" value="" maxlength="32" height="100%"></span></span></span></div></td></tr><tr class="sku-table-row"><td class="sell-sku-cell sell-sku-cell-text" rowspan="3"><div class="cell-inner" style="min-width: 78px;"><div class="sell-sku-cell-text"><p class="sell-sku-cell-text-content" title="黑色">黑色</p></div></div></td><td class="sell-sku-cell sell-sku-cell-text" rowspan="1"><div class="cell-inner" style="min-width: 78px;"><div class="sell-sku-cell-text"><p class="sell-sku-cell-text-content" title="L">L</p></div></div></td><td class="sell-sku-cell sell-sku-cell-money" rowspan="1"><div class="cell-inner" style="min-width: 90px;"><span class="sell-o-number"><span class="input-wrap"><span class="next-input next-input-single next-input-medium fusion-input"><input type="text" label="价格（元）" required="" value="" name="skuPrice" maxlength="15" height="100%"></span></span></span></div></td><td class="sell-sku-cell sell-sku-cell-positiveNumber" rowspan="1"><div class="cell-inner" style="min-width: 90px;"><span class="sell-o-number"><span class="input-wrap"><span class="next-input next-input-single next-input-medium fusion-input"><input type="text" label="数量（件）" required="" value="0" name="skuStock" maxlength="15" height="100%"></span></span></span></div></td><td class="sell-sku-cell sell-sku-cell-input" rowspan="1"><div class="cell-inner" style="min-width: 160px;"><span class="sell-o-input"><span class="input-wrap"><span class="next-input next-input-single next-input-medium fusion-input"><input type="text" label="商家编码" name="skuOuterId" value="" maxlength="64" height="100%"></span></span></span></div></td><td class="sell-sku-cell sell-sku-cell-input" rowspan="1"><div class="cell-inner" style="min-width: 120px;"><span class="sell-o-input"><span class="input-wrap"><span class="next-input next-input-single next-input-medium fusion-input"><input type="text" label="商品条形码" name="skuBarcode" value="" maxlength="32" height="100%"></span></span></span></div></td></tr><tr class="sku-table-row"><td class="sell-sku-cell hide sell-sku-cell-text" rowspan="3"><div class="cell-inner" style="min-width: 78px;"><div class="sell-sku-cell-text"><p class="sell-sku-cell-text-content" title="黑色">黑色</p></div></div></td><td class="sell-sku-cell sell-sku-cell-text" rowspan="1"><div class="cell-inner" style="min-width: 78px;"><div class="sell-sku-cell-text"><p class="sell-sku-cell-text-content" title="XL">XL</p></div></div></td><td class="sell-sku-cell sell-sku-cell-money" rowspan="1"><div class="cell-inner" style="min-width: 90px;"><span class="sell-o-number"><span class="input-wrap"><span class="next-input next-input-single next-input-medium fusion-input"><input type="text" label="价格（元）" required="" value="" name="skuPrice" maxlength="15" height="100%"></span></span></span></div></td><td class="sell-sku-cell sell-sku-cell-positiveNumber" rowspan="1"><div class="cell-inner" style="min-width: 90px;"><span class="sell-o-number"><span class="input-wrap"><span class="next-input next-input-single next-input-medium fusion-input"><input type="text" label="数量（件）" required="" value="0" name="skuStock" maxlength="15" height="100%"></span></span></span></div></td><td class="sell-sku-cell sell-sku-cell-input" rowspan="1"><div class="cell-inner" style="min-width: 160px;"><span class="sell-o-input"><span class="input-wrap"><span class="next-input next-input-single next-input-medium fusion-input"><input type="text" label="商家编码" name="skuOuterId" value="" maxlength="64" height="100%"></span></span></span></div></td><td class="sell-sku-cell sell-sku-cell-input" rowspan="1"><div class="cell-inner" style="min-width: 120px;"><span class="sell-o-input"><span class="input-wrap"><span class="next-input next-input-single next-input-medium fusion-input"><input type="text" label="商品条形码" name="skuBarcode" value="" maxlength="32" height="100%"></span></span></span></div></td></tr><tr class="sku-table-row"><td class="sell-sku-cell hide sell-sku-cell-text" rowspan="3"><div class="cell-inner" style="min-width: 78px;"><div class="sell-sku-cell-text"><p class="sell-sku-cell-text-content" title="黑色">黑色</p></div></div></td><td class="sell-sku-cell sell-sku-cell-text" rowspan="1"><div class="cell-inner" style="min-width: 78px;"><div class="sell-sku-cell-text"><p class="sell-sku-cell-text-content" title="均码">均码</p></div></div></td><td class="sell-sku-cell sell-sku-cell-money" rowspan="1"><div class="cell-inner" style="min-width: 90px;"><span class="sell-o-number"><span class="input-wrap"><span class="next-input next-input-single next-input-medium fusion-input"><input type="text" label="价格（元）" required="" value="" name="skuPrice" maxlength="15" height="100%"></span></span></span></div></td><td class="sell-sku-cell sell-sku-cell-positiveNumber" rowspan="1"><div class="cell-inner" style="min-width: 90px;"><span class="sell-o-number"><span class="input-wrap"><span class="next-input next-input-single next-input-medium fusion-input"><input type="text" label="数量（件）" required="" value="0" name="skuStock" maxlength="15" height="100%"></span></span></span></div></td><td class="sell-sku-cell sell-sku-cell-input" rowspan="1"><div class="cell-inner" style="min-width: 160px;"><span class="sell-o-input"><span class="input-wrap"><span class="next-input next-input-single next-input-medium fusion-input"><input type="text" label="商家编码" name="skuOuterId" value="" maxlength="64" height="100%"></span></span></span></div></td><td class="sell-sku-cell sell-sku-cell-input" rowspan="1"><div class="cell-inner" style="min-width: 120px;"><span class="sell-o-input"><span class="input-wrap"><span class="next-input next-input-single next-input-medium fusion-input"><input type="text" label="商品条形码" name="skuBarcode" value="" maxlength="32" height="100%"></span></span></span></div></td></tr><tr class="sku-table-row"><td class="sell-sku-cell sell-sku-cell-text" rowspan="3"><div class="cell-inner" style="min-width: 78px;"><div class="sell-sku-cell-text"><p class="sell-sku-cell-text-content" title="藕色">藕色</p></div></div></td><td class="sell-sku-cell sell-sku-cell-text" rowspan="1"><div class="cell-inner" style="min-width: 78px;"><div class="sell-sku-cell-text"><p class="sell-sku-cell-text-content" title="L">L</p></div></div></td><td class="sell-sku-cell sell-sku-cell-money" rowspan="1"><div class="cell-inner" style="min-width: 90px;"><span class="sell-o-number"><span class="input-wrap"><span class="next-input next-input-single next-input-medium fusion-input"><input type="text" label="价格（元）" required="" value="" name="skuPrice" maxlength="15" height="100%"></span></span></span></div></td><td class="sell-sku-cell sell-sku-cell-positiveNumber" rowspan="1"><div class="cell-inner" style="min-width: 90px;"><span class="sell-o-number"><span class="input-wrap"><span class="next-input next-input-single next-input-medium fusion-input"><input type="text" label="数量（件）" required="" value="0" name="skuStock" maxlength="15" height="100%"></span></span></span></div></td><td class="sell-sku-cell sell-sku-cell-input" rowspan="1"><div class="cell-inner" style="min-width: 160px;"><span class="sell-o-input"><span class="input-wrap"><span class="next-input next-input-single next-input-medium fusion-input"><input type="text" label="商家编码" name="skuOuterId" value="" maxlength="64" height="100%"></span></span></span></div></td><td class="sell-sku-cell sell-sku-cell-input" rowspan="1"><div class="cell-inner" style="min-width: 120px;"><span class="sell-o-input"><span class="input-wrap"><span class="next-input next-input-single next-input-medium fusion-input"><input type="text" label="商品条形码" name="skuBarcode" value="" maxlength="32" height="100%"></span></span></span></div></td></tr><tr class="sku-table-row"><td class="sell-sku-cell hide sell-sku-cell-text" rowspan="3"><div class="cell-inner" style="min-width: 78px;"><div class="sell-sku-cell-text"><p class="sell-sku-cell-text-content" title="藕色">藕色</p></div></div></td><td class="sell-sku-cell sell-sku-cell-text" rowspan="1"><div class="cell-inner" style="min-width: 78px;"><div class="sell-sku-cell-text"><p class="sell-sku-cell-text-content" title="XL">XL</p></div></div></td><td class="sell-sku-cell sell-sku-cell-money" rowspan="1"><div class="cell-inner" style="min-width: 90px;"><span class="sell-o-number"><span class="input-wrap"><span class="next-input next-input-single next-input-medium fusion-input"><input type="text" label="价格（元）" required="" value="" name="skuPrice" maxlength="15" height="100%"></span></span></span></div></td><td class="sell-sku-cell sell-sku-cell-positiveNumber" rowspan="1"><div class="cell-inner" style="min-width: 90px;"><span class="sell-o-number"><span class="input-wrap"><span class="next-input next-input-single next-input-medium fusion-input"><input type="text" label="数量（件）" required="" value="0" name="skuStock" maxlength="15" height="100%"></span></span></span></div></td><td class="sell-sku-cell sell-sku-cell-input" rowspan="1"><div class="cell-inner" style="min-width: 160px;"><span class="sell-o-input"><span class="input-wrap"><span class="next-input next-input-single next-input-medium fusion-input"><input type="text" label="商家编码" name="skuOuterId" value="" maxlength="64" height="100%"></span></span></span></div></td><td class="sell-sku-cell sell-sku-cell-input" rowspan="1"><div class="cell-inner" style="min-width: 120px;"><span class="sell-o-input"><span class="input-wrap"><span class="next-input next-input-single next-input-medium fusion-input"><input type="text" label="商品条形码" name="skuBarcode" value="" maxlength="32" height="100%"></span></span></span></div></td></tr><tr class="sku-table-row"><td class="sell-sku-cell hide sell-sku-cell-text" rowspan="3"><div class="cell-inner" style="min-width: 78px;"><div class="sell-sku-cell-text"><p class="sell-sku-cell-text-content" title="藕色">藕色</p></div></div></td><td class="sell-sku-cell sell-sku-cell-text" rowspan="1"><div class="cell-inner" style="min-width: 78px;"><div class="sell-sku-cell-text"><p class="sell-sku-cell-text-content" title="均码">均码</p></div></div></td><td class="sell-sku-cell sell-sku-cell-money" rowspan="1"><div class="cell-inner" style="min-width: 90px;"><span class="sell-o-number"><span class="input-wrap"><span class="next-input next-input-single next-input-medium fusion-input"><input type="text" label="价格（元）" required="" value="" name="skuPrice" maxlength="15" height="100%"></span></span></span></div></td><td class="sell-sku-cell sell-sku-cell-positiveNumber" rowspan="1"><div class="cell-inner" style="min-width: 90px;"><span class="sell-o-number"><span class="input-wrap"><span class="next-input next-input-single next-input-medium fusion-input"><input type="text" label="数量（件）" required="" value="0" name="skuStock" maxlength="15" height="100%"></span></span></span></div></td><td class="sell-sku-cell sell-sku-cell-input" rowspan="1"><div class="cell-inner" style="min-width: 160px;"><span class="sell-o-input"><span class="input-wrap"><span class="next-input next-input-single next-input-medium fusion-input"><input type="text" label="商家编码" name="skuOuterId" value="" maxlength="64" height="100%"></span></span></span></div></td><td class="sell-sku-cell sell-sku-cell-input" rowspan="1"><div class="cell-inner" style="min-width: 120px;"><span class="sell-o-input"><span class="input-wrap"><span class="next-input next-input-single next-input-medium fusion-input"><input type="text" label="商品条形码" name="skuBarcode" value="" maxlength="32" height="100%"></span></span></span></div></td></tr></tbody></table>
+                                
+                            </tbody>
+                        </table>
                     </div>    
 				</div>
 				<div class="relation_list" style="margin:20px 2px;">
