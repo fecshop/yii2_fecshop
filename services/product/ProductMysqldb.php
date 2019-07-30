@@ -363,6 +363,33 @@ class ProductMysqldb extends Service implements ProductInterface
             $this->_productModel->addCustomProductAttrs($attrs);
         }
     }
+    // 进行spu对应的属性进行检查，相同spu的产品，他们的sku属性不能全部相同，否则返回false
+    public function checkSpuAttrUnique($spuAttrArr, $product_colls)
+    {
+        if (is_array($product_colls)) {
+            foreach ($product_colls as $sar) {
+                $sar_attr_group_info = unserialize($sar['attr_group_info']);
+                $si = 0;
+                if (is_array($sar_attr_group_info)) {
+                    foreach ($spuAttrArr as $sar_key => $sar_val) {
+                        if (!isset($sar_attr_group_info[$sar_key])) {
+                            $si = 1;
+                        } else if ( isset($sar_attr_group_info[$sar_key]) && $sar_attr_group_info[$sar_key] != $sar_val) {
+                            
+                            $si = 1;
+                        }
+                    }
+                }
+                if ($si  == 0) {
+                    Yii::$service->helper->errors->add('product Spu of the same,  Spu attributes cannot be the same');
+
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
 
     /**
      * @param $one|array , 产品数据数组
@@ -379,6 +406,15 @@ class ProductMysqldb extends Service implements ProductInterface
         $one['min_sales_qty'] = $one['min_sales_qty'];
         $currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
         $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
+        // 得到group spu attr
+        $attr_group = $one['attr_group'];
+        $groupSpuAttrs = Yii::$service->product->getGroupSpuAttr($attr_group);
+        $spuAttrArr = [];
+        if (is_array($groupSpuAttrs)) {
+            foreach ($groupSpuAttrs as $groupSpuOne) {
+                $spuAttrArr[$groupSpuOne['name']] = $one[$groupSpuOne['name']];
+            }
+        }
         
         if ($primaryVal) {
             $model = $this->_productModel->findOne($primaryVal);
@@ -399,6 +435,18 @@ class ProductMysqldb extends Service implements ProductInterface
 
                 return false;
             }
+            // spu 下面的各个sku的spu属性不能相同
+            if (!empty($spuAttrArr)) {
+                $product_colls = $this->_productModel->find()->asArray()->where([
+                    '<>', $this->getPrimaryKey(), $primaryVal,
+                ])->andWhere([
+                    'spu' => $one['spu'],
+                ])->all();
+                /////////////////
+                if (!$this->checkSpuAttrUnique($spuAttrArr, $product_colls)) {
+                    return false;
+                }
+            }
         } else {
             
             $model = new $this->_productModelName();
@@ -417,6 +465,17 @@ class ProductMysqldb extends Service implements ProductInterface
                 Yii::$service->helper->errors->add('Product Sku is exist，please use other sku');
 
                 return false;
+            }
+            
+            // spu 下面的各个sku的spu属性不能相同
+            if (!empty($spuAttrArr)) {
+                $product_colls = $this->_productModel->find()->asArray()->where([
+                    'spu' => $one['spu'],
+                ])->all();
+                /////////////////
+                if (!$this->checkSpuAttrUnique($spuAttrArr, $product_colls)) {
+                    return false;
+                }
             }
             
         }

@@ -315,6 +315,17 @@ class ProductMongodb extends Service implements ProductInterface
         $one['min_sales_qty'] = (int)$one['min_sales_qty'];
         $currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
         $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
+        
+        // 得到group spu attr
+        $attr_group = $one['attr_group'];
+        $groupSpuAttrs = Yii::$service->product->getGroupSpuAttr($attr_group);
+        $spuAttrArr = [];
+        if (is_array($groupSpuAttrs)) {
+            foreach ($groupSpuAttrs as $groupSpuOne) {
+                $spuAttrArr[] = $groupSpuOne['name'];
+            }
+        }
+        
         if ($primaryVal) {
             $model = $this->_productModel->findOne($primaryVal);
             if (!$model) {
@@ -334,6 +345,25 @@ class ProductMongodb extends Service implements ProductInterface
 
                 return false;
             }
+            
+            // spu 下面的各个sku的spu属性不能相同
+            if (!empty($spuAttrArr)) {
+                $product_mode = $this->_productModel->find()->asArray()->where([
+                    '<>', $this->getPrimaryKey(), (new \MongoDB\BSON\ObjectId($primaryVal)),
+                ])->andWhere([
+                    'spu' => $one['spu'],
+                ]);
+                foreach ($spuAttrArr as $sar) {
+                    $product_mode->andWhere([$sar => $one[$sar]]);
+                }
+                
+                $product_one = $product_mode->one();
+                if ($product_one['sku']) {
+                    Yii::$service->helper->errors->add('product Spu of the same,  Spu attributes cannot be the same');
+
+                    return false;
+                }
+            }
         } else {
             $model = new $this->_productModelName();
             $model->created_at = time();
@@ -349,6 +379,23 @@ class ProductMongodb extends Service implements ProductInterface
 
                 return false;
             }
+            
+            if (!empty($spuAttrArr)) {
+                $product_mode = $this->_productModel->find()->asArray()->where([
+                    'spu' => $one['spu'],
+                ]);
+                foreach ($spuAttrArr as $sar) {
+                    $product_mode->andWhere([$sar => $one[$sar]]);
+                }
+                
+                $product_one = $product_mode->one();
+                if ($product_one['sku']) {
+                    Yii::$service->helper->errors->add('product Spu of the same,  Spu attributes cannot be the same');
+
+                    return false;
+                }
+            }
+            
         }
         $model->updated_at = time();
         // 计算出来产品的最终价格。
@@ -369,6 +416,7 @@ class ProductMongodb extends Service implements ProductInterface
         /**
          * 保存产品
          */
+        //var_dump($one);exit;
         $saveStatus = Yii::$service->helper->ar->save($model, $one);
         
         // 自定义url部分
@@ -380,6 +428,7 @@ class ProductMongodb extends Service implements ProductInterface
             $model->url_key = $urlKey;
             $model->save();
         }
+        
         $product_id = $model->{$this->getPrimaryKey()};
         /**
          * 更新产品库存。
