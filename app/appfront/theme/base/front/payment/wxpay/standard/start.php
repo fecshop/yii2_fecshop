@@ -2,7 +2,7 @@
 <div class="shortcut">
     <div class="w">
         <a class="s-logo" href="<?= Yii::$service->url->homeUrl()  ?>" target="_blank">
-            <img width="170" height="28" alt="fecshop收银台" src="//img.appfront.fancyecommerce.com/custom/logo.png">
+            <img width="170" height="28" alt="fecshop收银台" src="<img src="<?= Yii::$service->image->getImgUrl('appfront/custom/logo.png'); ?>"  />">
         </a>
         <ul class="s-right">
             <?php if($customer_email): ?>
@@ -112,7 +112,7 @@
     <div class="pf-wrap w">
         <div class="pf-line">
             <span class="pf-l-copyright">Copyright ?2016-2017  fecshop 版权所有</span>
-            <img width="185" height="20" src="//img.appfront.fancyecommerce.com/custom/logo.png">
+            <img width="185" height="20" src="<?= Yii::$service->image->getImgUrl('appfront/custom/logo.png'); ?>">
         </div>
     </div>
 </div>       

@@ -19,7 +19,7 @@
 					<div class="item">
 						<p class="tc pro_img">
 							<a style="" class="i_proImg" href="<?= $product['url'] ?>">
-								<img style="width:100%;" class="lazyOwl" data-src="<?= Yii::$service->product->image->getResize($product['image'],[180,200],false) ?>"  src="<?= Yii::$service->image->getImgUrl('images/lazyload1.gif','appfront') ; ?>">
+								<img style="width:100%;" class="lazyOwl" data-src="<?= Yii::$service->product->image->getResize($product['image'],[180,200],false) ?>"  src="<?= Yii::$service->image->getImgUrl('appfront/images/lazyload1.gif') ; ?>">
 							</a>
 						</p>
 						<!--
