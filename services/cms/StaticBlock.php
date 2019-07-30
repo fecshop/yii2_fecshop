@@ -91,7 +91,7 @@ class Staticblock extends Service
     {
         return [
             'homeUrl'   => Yii::$service->url->homeUrl(),
-            'imgBaseUrl'=> Yii::$service->image->getBaseImgUrl($app),
+            'imgBaseUrl'=> Yii::$service->image->getBaseImgUrl(),
         ];
     }
 
