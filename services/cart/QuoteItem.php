@@ -185,7 +185,11 @@ class QuoteItem extends Service
             ])->all();
             if (is_array($data) && !empty($data)) {
                 foreach ($data as $one) {
-                    $item_qty += $one['qty'];
+                    $product_id = $one['product_id'];
+                    $productModel = Yii::$service->product->getByPrimaryKey($product_id);
+                    if ($productModel && isset($productModel['status']) && Yii::$service->product->isActive($productModel['status'])) {
+                        $item_qty += $one['qty'];
+                    }
                 }
             }
         }
@@ -210,7 +214,11 @@ class QuoteItem extends Service
             ])->all();
             if (is_array($data) && !empty($data)) {
                 foreach ($data as $one) {
-                    $item_qty += $one['qty'];
+                    $product_id = $one['product_id'];
+                    $productModel = Yii::$service->product->getByPrimaryKey($product_id);
+                    if ($productModel && isset($productModel['status']) && Yii::$service->product->isActive($productModel['status'])) {
+                        $item_qty += $one['qty'];
+                    }
                 }
             }
         }
