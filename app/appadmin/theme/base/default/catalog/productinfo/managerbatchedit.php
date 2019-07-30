@@ -187,6 +187,45 @@ function thissubmit(thiss){
 			tier_price_str += tier_qty+'##'+tier_price+"||";
 		}
 	});
+    
+    spuStr = '';
+    isSkuPriceQtyEmpty = false;
+    $(".sell-sku-body-table tr ").each(function(){
+        skuStr = '';
+        iss = 0;
+        $(this).find("td.sell-sku-cell .cell-inner  p.spu_attr_content").each(function(){
+            sAttr = $(this).attr('rel');
+            sAttrVal = $(this).attr('title');
+            if (sAttr && sAttrVal) {
+                skuStr += sAttr+ '###' + sAttrVal + '|||';
+                iss = 1;
+            }
+        });
+        if (iss) {
+            sSkuCodeVal = $(this).find("td.sell-sku-cell .sku_code").val();
+            sSkuPriceVal = $(this).find("td.sell-sku-cell .sku_price").val();
+            sSkuQtyVal = $(this).find("td.sell-sku-cell .sku_qty").val();
+            if (sSkuCodeVal && sSkuPriceVal && sSkuQtyVal) {
+                skuStr += 'sku###' + sSkuCodeVal + '|||';
+                skuStr += 'price###' + sSkuPriceVal + '|||';
+                skuStr += 'qty###' + sSkuQtyVal;
+                spuStr += skuStr + '***';
+            } else {
+                isSkuPriceQtyEmpty = true;
+                
+            }
+        }
+        
+    });
+    if (isSkuPriceQtyEmpty) {
+        alert("sku,价格，库存不能为空");
+        return false;
+    }
+    if (!spuStr) {
+        alert("您应该至少添加一行spu属性");
+        return false;
+    }
+    $(".spu_attrs").val(spuStr);
 	//alert(tier_price_str);
 	jQuery(".tier_price_input").val(tier_price_str);
 	//alert($(".tier_price_input").val());
@@ -199,6 +238,7 @@ function thissubmit(thiss){
 		<?php echo CRequest::getCsrfInputHtml();  ?>	
 		<input type="hidden" name="operate"  value="<?=  $operate ?>" />
 		<input type="hidden" class="primary_info"  value="<?= $primaryInfo ?>" />
+       <input type="hidden" class="spu_attrs"  name="spu_attrs" value="" />
 		<div class="tabs" >
 			<div class="tabsHeader">
 				<div class="tabsHeaderContent">
@@ -450,7 +490,7 @@ function thissubmit(thiss){
                                     }
                                     htmlStr += '<td class="sell-sku-cell sell-sku-cell-text">Sku编码</td>';
                                     htmlStr += '<td class="sell-sku-cell sell-sku-cell-text">价格</td>';
-                                    htmlStr += '<td class="sell-sku-cell sell-sku-cell-text">数量</td>';
+                                    htmlStr += '<td class="sell-sku-cell sell-sku-cell-text">库存</td>';
                                     htmlStr += '</tr>';
                                     i = 0;
                                     hStr = '';
@@ -484,7 +524,7 @@ function thissubmit(thiss){
                                         shStr += '<td class="sell-sku-cell sell-sku-cell-text" rowspan="'+ rowspan +'">';
                                         shStr += '<div class="cell-inner" style="min-width: 78px;">';
                                         shStr += '    <div class="sell-sku-cell-text">';
-                                        shStr += '        <p class="sell-sku-cell-text-content" title="'+attrVal+'">'+attrVal+'</p>';
+                                        shStr += '        <p class="spu_attr_content  sell-sku-cell-text-content" rel="'+spuName+'" title="'+attrVal+'">'+attrVal+'</p>';
                                         shStr += '    </div>';
                                         shStr += '</div>';
                                         shStr += '</td>';
@@ -496,7 +536,7 @@ function thissubmit(thiss){
                                             htmlStr += '    <div class="cell-inner" style="min-width: 160px;">';
                                             htmlStr += '    <span class="sell-o-input"><span class="input-wrap">';
                                             htmlStr += '    <span class="next-input next-input-single next-input-medium fusion-input">';
-                                            htmlStr += '    <input class="textInput valid" type="text" label="商家编码" name="skuOuterId" value="" maxlength="64" height="100%">';
+                                            htmlStr += '    <input class="textInput valid sku_code" type="text" label="商家编码" name="skuOuterId" value="" maxlength="64" height="100%">';
                                             htmlStr += '    </span></span></span></div>';
                                             htmlStr += '</td>';
                                             htmlStr += '<td class="sell-sku-cell sell-sku-cell-money" rowspan="1">';
@@ -504,7 +544,7 @@ function thissubmit(thiss){
                                             htmlStr += '       <span class="sell-o-number">';
                                             htmlStr += '        <span class="input-wrap">';
                                             htmlStr += '        <span class="next-input next-input-single next-input-medium fusion-input">';
-                                            htmlStr += '        <input class="textInput valid" type="text" label="价格（元）" required="" value="" name="skuPrice" maxlength="15" height="100%">';
+                                            htmlStr += '        <input class="textInput valid sku_price" type="text" label="价格（元）" required="" value="" name="skuPrice" maxlength="15" height="100%">';
                                             htmlStr += '        </span></span></span></div>';
                                             htmlStr += '</td>';
                                             htmlStr += '<td class="sell-sku-cell sell-sku-cell-positiveNumber" rowspan="1">';
@@ -512,7 +552,7 @@ function thissubmit(thiss){
                                             htmlStr += '    <span class="sell-o-number">';
                                             htmlStr += '    <span class="input-wrap">';
                                             htmlStr += '    <span class="next-input next-input-single next-input-medium fusion-input">';
-                                            htmlStr += '    <input class="textInput valid" type="text" label="数量（件）" required="" value="0" name="skuStock" maxlength="15" height="100%">';
+                                            htmlStr += '    <input class="textInput valid sku_qty" type="text" label="数量（件）" required="" value="0" name="skuStock" maxlength="15" height="100%">';
                                             htmlStr += '    </span></span></span></div>';
                                             htmlStr += '</td>';
                                             htmlStr += '</tr>';

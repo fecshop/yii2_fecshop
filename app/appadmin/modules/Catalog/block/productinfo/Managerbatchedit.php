@@ -29,7 +29,7 @@ class Managerbatchedit extends AppadminbaseBlockEdit implements AppadminbaseBloc
     /**
      * 为了可以使用rewriteMap，use 引入的文件统一采用下面的方式，通过Yii::mapGet()得到className和Object
      */
-    protected $_attrBlockName = '\fecshop\app\appadmin\modules\Catalog\block\productinfo\index\Attr';
+    protected $_attrBlockName = '\fecshop\app\appadmin\modules\Catalog\block\productinfo\index\BatchAttr';
     protected $_attrBlock;
 
     public function init()
@@ -426,22 +426,64 @@ class Managerbatchedit extends AppadminbaseBlockEdit implements AppadminbaseBloc
             }
         }
         
-        $this->_service->save($this->_param, 'catalog/product/index');
-        
-        $errors = Yii::$service->helper->errors->get();
-        if (!$errors) {
-            echo  json_encode([
-                'statusCode' => '200',
-                'message'    => Yii::$service->page->translate->__('Save Success'),
-            ]);
-            exit;
-        } else {
+        $spu_attrs = Yii::$app->request->post('spu_attrs');
+        $spuArr = $this->getSpuArr($spu_attrs);
+        if (!$spuArr || empty($spuArr)) {
             echo  json_encode([
                 'statusCode' => '300',
-                'message'    => $errors,
+                'message'    => 'spu属性为空，如果您当前选择的产品没有spu属性，请使用单个产品添加',
             ]);
             exit;
         }
+        
+        foreach ($spuArr as $spuOne) {
+            foreach ($spuOne as $k=>$v) {
+                $this->_param[$k] = $v;
+            }
+            $this->_service->save($this->_param, 'catalog/product/index');
+        
+            $errors = Yii::$service->helper->errors->get();
+            if ($errors) {
+                echo  json_encode([
+                    'statusCode' => '300',
+                    'message'    => $errors,
+                ]);
+                exit;
+            }
+        }
+        
+        echo  json_encode([
+            'statusCode' => '200',
+            'message'    => Yii::$service->page->translate->__('Save Success'),
+        ]);
+        exit;
+                
+    }
+    
+    // 字符串解析出来数组。
+    public function getSpuArr($spu_attrs)
+    {
+        if (!$spu_attrs) {
+            return null;
+        }
+        $arr = [];
+        $spu_arrs = explode('***', $spu_attrs);
+        foreach ($spu_arrs as $spu_arr) {
+            if ($spu_arr) {
+                $spu_attr_arr = explode('|||', $spu_arr);
+                $arr2 = [];
+                foreach ($spu_attr_arr as $spu_attr_one) {
+                    if ($spu_attr_one) {
+                        list($attr, $val) = explode('###', $spu_attr_one);
+                        $arr2[$attr] = $val;
+                    }
+                }
+                $arr[] = $arr2;
+            }
+            
+        }
+        
+        return $arr;
     }
 
     protected function initParamType()
