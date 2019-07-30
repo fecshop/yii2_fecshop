@@ -247,9 +247,10 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
         $csrfString = \fec\helpers\CRequest::getCsrfString();
         $user_ids = [];
         $product_ids = [];
+        $productPrimaryKey = Yii::$service->product->getPrimaryKey();
         foreach ($data as $one) {
             $user_ids[] = $one['created_user_id'];
-            $product_ids[] = (string)$one['_id'];
+            $product_ids[] = (string)$one[$productPrimaryKey];
         }
         //var_dump($product_ids);
         $users = Yii::$service->adminUser->getIdAndNameArrByIds($user_ids);
