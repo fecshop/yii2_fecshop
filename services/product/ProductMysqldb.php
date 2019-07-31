@@ -793,6 +793,7 @@ class ProductMysqldb extends Service implements ProductInterface
                     Yii::$service->helper->errors->add('Product Remove Errors:ID:{id} is not exist', ['id'=>$id]);
                     $removeAll = 0;
                 }
+                $this->removeCategoryProductRelationByProductId($id);
             }
             if (!$removeAll) {
                 return false;
@@ -808,6 +809,7 @@ class ProductMysqldb extends Service implements ProductInterface
                 Yii::$service->search->removeByProductId($model[$this->getPrimaryKey()]);
                 Yii::$service->product->stock->removeProductStock($id);
                 $model->delete();
+                $this->removeCategoryProductRelationByProductId($id);
             //$this->removeChildCate($id);
             } else {
                 Yii::$service->helper->errors->add('Product Remove Errors:ID:{id} is not exist.', ['id'=>$id]);
@@ -1147,5 +1149,11 @@ class ProductMysqldb extends Service implements ProductInterface
 
     public function updateAllScoreToZero(){
         return $this->_productModel->getCollection()->update([], ['score' => 0]);
+    }
+    
+    
+    public function removeCategoryProductRelationByProductId($product_id)
+    {
+        return $this->_categoryProductModel->deleteAll(['product_id' => $product_id]);
     }
 }

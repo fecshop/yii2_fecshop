@@ -26,6 +26,10 @@ class CategoryMysqldb extends Service implements CategoryInterface
 
     protected $_categoryModel;
     
+    protected $_categoryProductModelName = '\fecshop\models\mysqldb\CategoryProduct';
+
+    protected $_categoryProductModel;
+    
     protected $serializeAttrs = [
         'name',
         'menu_custom',
@@ -41,6 +45,8 @@ class CategoryMysqldb extends Service implements CategoryInterface
     {
         parent::init();
         list($this->_categoryModelName, $this->_categoryModel) = Yii::mapGet($this->_categoryModelName);
+        list($this->_categoryProductModelName, $this->_categoryProductModel) = \Yii::mapGet($this->_categoryProductModelName);
+        
     }
     
     // 保存的数据进行serialize序列化
@@ -298,11 +304,14 @@ class CategoryMysqldb extends Service implements CategoryInterface
                     Yii::$service->url->removeRewriteUrlKey($url_key);
                     $model->delete();
                     $this->removeChildCate($id);
+                    // delete category product relation
+                    $this->removeCategoryProductRelationByCategoryId($id);
                 } else {
                     Yii::$service->helper->errors->add("Category Remove Errors:ID:{id} is not exist.", ['id' => $id]);
 
                     $deleteAll = false;
                 }
+                
             }
             return $deleteAll;
         } else {
@@ -319,6 +328,8 @@ class CategoryMysqldb extends Service implements CategoryInterface
 
                 return false;
             }
+            // delete category product relation
+            $this->removeCategoryProductRelationByCategoryId($id);
         }
         return true;
     }
@@ -335,6 +346,8 @@ class CategoryMysqldb extends Service implements CategoryInterface
                 $url_key = $one['url_key'];
                 Yii::$service->url->removeRewriteUrlKey($url_key);
                 $one->delete();
+                // delete category product relation
+                $this->removeCategoryProductRelationByCategoryId($idVal);
             }
         }
     }
@@ -592,4 +605,10 @@ class CategoryMysqldb extends Service implements CategoryInterface
 
         return $arr;
     }
+    
+    public function removeCategoryProductRelationByCategoryId($category_id)
+    {
+        return $this->_categoryProductModel->deleteAll(['category_id' => $category_id]);
+    }
+    
 }
