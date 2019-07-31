@@ -64,8 +64,11 @@ class Index
         list($review_count, $reviw_rate_star_average, $reviw_rate_star_info) = $reviewHelper::getReviewAndStarCount($this->_product);
         
         $this->filterProductImg($this->_product['image']);
+        // var_dump($this->_product['attr_group']);
         $groupAttrInfo = Yii::$service->product->getGroupAttrInfo($this->_product['attr_group']);
+        //var_dump($groupAttrInfo);
         $groupAttrArr = $this->getGroupAttrArr($groupAttrInfo);
+        //var_dump($groupAttrArr );
         return [
             'groupAttrArr'              => $groupAttrArr,
             'name'                      => Yii::$service->store->getStoreAttrVal($this->_product['name'], 'name'),
@@ -132,6 +135,19 @@ class Index
                     }
                     $attr = Yii::$service->page->translate->__($attr);
                     $gArr[$attr] = $attrVal;
+                } else if (isset($this->_product['attr_group_info']) && is_array($this->_product['attr_group_info'])) {
+                    $attr_group_info = $this->_product['attr_group_info'];
+                    if (isset($attr_group_info[$attr]) && $attr_group_info[$attr]) {
+                        $attrVal = $attr_group_info[$attr];
+                        // get translate 
+                        if (isset($info['display']['lang']) && $info['display']['lang'] && is_array($attrVal)) {
+                            $attrVal = Yii::$service->store->getStoreAttrVal($attrVal, $attr);
+                        } else if ($attrVal && !is_array($attrVal)) {
+                            $attrVal = Yii::$service->page->translate->__($attrVal);
+                        }
+                        $attr = Yii::$service->page->translate->__($attr);
+                        $gArr[$attr] = $attrVal;
+                    }
                 }
             }
         }
