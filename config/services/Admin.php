@@ -104,10 +104,10 @@ return [
                                         'label' => 'Category Info',
                                         'url_key' => '/catalog/category/index',
                                     ],
-                                    'category_info_config' => [
-                                        'label' => '分类配置',
-                                        'url_key' => '/catalog/category/index',
-                                    ],
+                                    //'category_info_config' => [
+                                    //    'label' => '分类配置',
+                                    //    'url_key' => '/catalog/category/index',
+                                    //],
                                 ],  
                             ],
                             'urlrewrite_manager' => [
@@ -126,10 +126,10 @@ return [
                                         'label' => 'Manager Order',
                                         'url_key' => '/sales/orderinfo/manager',
                                     ],
-                                    'order_config' => [
-                                        'label' => '订单参数配置',
-                                        'url_key' => '/sales/orderinfo/manager',
-                                    ],
+                                    //'order_config' => [
+                                    //    'label' => '订单参数配置',
+                                    //    'url_key' => '/sales/orderinfo/manager',
+                                    //],
                                 ],
                             ],
                             'coupon' => [
