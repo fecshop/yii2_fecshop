@@ -284,6 +284,22 @@ class m190716_024608_fecshop_tables extends Migration
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
             ",
+            
+            '
+            INSERT INTO `store_base_config` (`id`, `key`, `value`, `created_at`, `updated_at`) VALUES
+            (2, \'service_db\', \'a:7:{s:20:"category_and_product";s:7:"mysqldb";s:16:"product_favorite";s:7:"mysqldb";s:14:"product_review";s:7:"mysqldb";s:23:"article_and_staticblock";s:7:"mysqldb";s:11:"url_rewrite";s:7:"mysqldb";s:10:"newsletter";s:7:"mysqldb";s:16:"error_handle_log";s:7:"mysqldb";}\', 1563602730, 1564392254),
+            (3, \'search_engine\', \'a:3:{s:11:"mysqlSearch";s:1:"1";s:11:"mongoSearch";s:1:"1";s:9:"xunSearch";s:1:"1";}\', 1563630981, 1564494197),
+            (4, \'mutil_lang\', \'a:8:{i:0;a:3:{s:9:"lang_name";s:5:"en_US";s:9:"lang_code";s:2:"en";s:13:"search_engine";s:11:"mysqlSearch";}i:1;a:3:{s:9:"lang_name";s:5:"zh_CN";s:9:"lang_code";s:2:"zh";s:13:"search_engine";s:11:"mysqlSearch";}i:2;a:3:{s:9:"lang_name";s:5:"fr_FR";s:9:"lang_code";s:2:"fr";s:13:"search_engine";s:11:"mysqlSearch";}i:3;a:3:{s:9:"lang_name";s:5:"de_DE";s:9:"lang_code";s:2:"de";s:13:"search_engine";s:11:"mysqlSearch";}i:4;a:3:{s:9:"lang_name";s:5:"es_ES";s:9:"lang_code";s:2:"es";s:13:"search_engine";s:11:"mysqlSearch";}i:5;a:3:{s:9:"lang_name";s:5:"pt_PT";s:9:"lang_code";s:2:"pt";s:13:"search_engine";s:11:"mysqlSearch";}i:6;a:3:{s:9:"lang_name";s:5:"ru_RU";s:9:"lang_code";s:2:"ru";s:13:"search_engine";s:11:"mysqlSearch";}i:7;a:3:{s:9:"lang_name";s:5:"it_IT";s:9:"lang_code";s:2:"it";s:13:"search_engine";s:11:"mysqlSearch";}}\', 1563681314, 1563861226),
+            (5, \'appfront_cache\', \'a:9:{s:12:"allPageCache";s:1:"2";s:13:"homePageCache";s:1:"2";s:17:"categoryPageCache";s:1:"2";s:16:"productPageCache";s:1:"2";s:16:"articlePageCache";s:1:"2";s:14:"headBlockCache";s:1:"2";s:16:"headerBlockCache";s:1:"2";s:14:"menuBlockCache";s:1:"2";s:16:"footerBlockCache";s:1:"2";}\', 1563785109, 1564494161),
+            (6, \'apphtml5_cache\', \'a:9:{s:12:"allPageCache";s:1:"2";s:13:"homePageCache";s:1:"2";s:17:"categoryPageCache";s:1:"2";s:16:"productPageCache";s:1:"2";s:16:"articlePageCache";s:1:"2";s:14:"headBlockCache";s:1:"2";s:16:"headerBlockCache";s:1:"2";s:14:"menuBlockCache";s:1:"2";s:16:"footerBlockCache";s:1:"2";}\', 1563789953, 1564494282),
+            (7, \'appserver_cache\', \'a:5:{s:12:"allPageCache";s:1:"2";s:13:"homePageCache";s:1:"2";s:17:"categoryPageCache";s:1:"2";s:16:"productPageCache";s:1:"2";s:16:"articlePageCache";s:1:"2";}\', 1563789975, 1564494295),
+            (8, \'currency\', \'a:4:{i:0;a:3:{s:13:"currency_code";s:3:"EUR";s:15:"currency_symbol";s:3:"€";s:13:"currency_rate";s:4:"0.93";}i:1;a:3:{s:13:"currency_code";s:3:"USD";s:15:"currency_symbol";s:1:"$";s:13:"currency_rate";s:1:"1";}i:2;a:3:{s:13:"currency_code";s:3:"GBP";s:15:"currency_symbol";s:2:"£";s:13:"currency_rate";s:3:"0.8";}i:3;a:3:{s:13:"currency_code";s:3:"CNY";s:15:"currency_symbol";s:3:"￥";s:13:"currency_rate";s:3:"6.3";}}\', 1563809273, 1563809339),
+            (9, \'base_info\', \'a:3:{s:12:"default_lang";s:2:"en";s:16:"default_currency";s:3:"USD";s:13:"base_currency";s:3:"USD";}\', 1563810520, 1563810949),
+            (10, \'appserver_store\', \'a:9:{s:3:"key";s:36:"fecshop.appserver.fancyecommerce.com";s:4:"lang";s:5:"en_US";s:9:"lang_name";s:7:"English";s:8:"currency";s:3:"USD";s:12:"https_enable";s:1:"1";s:21:"facebook_login_app_id";s:16:"1108618299786621";s:25:"facebook_login_app_secret";s:32:"420b56da4f4664a4d1065a1d31e5ec73";s:22:"google_login_client_id";s:72:"380372364773-qdj1seag9bh2n0pgrhcv2r5uoc58ltp3.apps.googleusercontent.com";s:26:"google_login_client_secret";s:24:"ei8RaoCDoAlIeh1nHYm0rrwO";}\', 1563872863, 1563873396),
+            (11, \'appserver_store_lang\', \'a:4:{i:0;a:3:{s:12:"languageName";s:9:"Français";s:4:"code";s:2:"fr";s:8:"language";s:5:"fr_FR";}i:1;a:3:{s:12:"languageName";s:7:"English";s:4:"code";s:2:"en";s:8:"language";s:5:"en_US";}i:2;a:3:{s:12:"languageName";s:8:"Español";s:4:"code";s:2:"es";s:8:"language";s:5:"es_ES";}i:3;a:3:{s:12:"languageName";s:6:"中文";s:4:"code";s:2:"zh";s:8:"language";s:5:"zh_CN";}}\', 1563879849, 1563890840);
+             
+
+            ',
         ];
 
         foreach ($arr as $sql) {
