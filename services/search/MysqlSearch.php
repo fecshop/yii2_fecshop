@@ -85,7 +85,7 @@ class MysqlSearch extends Service implements SearchInterface
         if (!$this->_searchLangCode) {
             $langArr = Yii::$app->store->get('mutil_lang');
             foreach ($langArr as $one) {
-                if ($one['search_engine'] == 'xunSearch') {
+                if ($one['search_engine'] == 'mysqlSearch') {
                     $this->_searchLangCode[] = $one['lang_code'];
                 }
             }
@@ -170,7 +170,7 @@ class MysqlSearch extends Service implements SearchInterface
     /**
      * @param $nowTimeStamp | int
      * 批量更新过程中，被更新的产品都会更新字段sync_updated_at
-     * 删除xunSearch引擎中sync_updated_at小于$nowTimeStamp的字段.
+     * 删除mysqlSearch引擎中sync_updated_at小于$nowTimeStamp的字段.
      */
     protected function actionDeleteNotActiveProduct($nowTimeStamp)
     {
