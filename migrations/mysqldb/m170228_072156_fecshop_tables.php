@@ -472,32 +472,7 @@ class m170228_072156_fecshop_tables extends Migration
 			  KEY `custom_url_key` (`custom_url_key`),
 			  PRIMARY KEY (`id`)
 			) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=52 ;
-			", "
-			INSERT INTO `url_rewrite` (`id`, `type`, `custom_url_key`, `origin_url`) VALUES
-			(1, '1', '1', '1'),
-			(2, 'system', '/4444444444.html', '/cms/article/index?_id=57919ea0f656f2154de25ca9'),
-			(3, 'system', '/72527', '/cms/article/index?_id=0'),
-			(4, 'system', '/fashion-women.html', '/cms/article/index?_id=57936c63f656f2f42ce25ca4'),
-			(5, 'system', '/fashion-women-74341929', '/cms/article/index?_id=57936ae1f656f2f42ce25ca3'),
-			(6, 'system', '/67535963', '/cms/article/index?_id=57937062f656f2e944e25ca5'),
-			(7, 'system', '/11571166', '/cms/article/index?_id=57937114f656f2f42ce25ca5'),
-			(8, 'system', '/98145363', '/cms/article/index?id=27'),
-			(9, 'system', '/55555555555', '/cms/article/index?id=26'),
-			(10, 'system', '/67786962', '/cms/article/index?id=29'),
-			(11, 'system', '/fashion-hand-bag-for-women22', '/cms/article/index?id=30'),
-			(12, 'system', '/57161191', '/?_id=57aa815bf656f26e70e25ca3'),
-			(13, 'system', '/67274789', '/?_id=57aa897cf656f26e70e25ca4'),
-			(14, 'system', '/432432', '/catalog/category/index?_id=57aa8d7ff656f2107ee25ca3'),
-			(15, 'system', '/111111111111111', '/catalog/category/index?_id=57aa8d91f656f24c5fe25ca3'),
-			(16, 'system', '/women', '/catalog/category/index?_id=57aa8f18f656f24c5fe25ca4'),
-			(17, 'system', '/men', '/catalog/category/index?_id=57aa8f1ef656f26e70e25ca5'),
-			(18, 'system', '/lady', '/catalog/category/index?_id=57aa8f27f656f2107ee25ca4'),
-			(19, 'system', '/2121', '/catalog/category/index?_id=57aacb89f656f22e0be25ca3'),
-			(20, 'system', '/1111en', '/catalog/category/index?_id=57aacbbcf656f2f610e25ca3'),
-			(21, 'system', '/1111en-66254841', '/catalog/category/index?_id=57aacbe3f656f22e0be25ca4'),
-			(22, 'system', '/2222222', '/catalog/category/index?_id=57aacc35f656f22e0be25ca5'),
-			(23, 'system', '/1111', '/catalog/category/index?_id=57aacdf0f656f2b00ee25ca3'),
-			(45, 'system', '/1111111111111111', '/catalog/product/index?_id=57b5936af656f2ff293bf56e');",
+			", 
 
         ];
         //  ALTER TABLE `admin_role_menu` ADD INDEX ( `created_at` )

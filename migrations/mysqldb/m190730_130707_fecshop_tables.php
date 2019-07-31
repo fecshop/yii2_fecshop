@@ -111,7 +111,7 @@ class m190730_130707_fecshop_tables extends Migration
         $this->execute("INSERT INTO `admin_role_url_key` (`role_id`, `url_key_id`, `created_at`, `updated_at`) VALUES (4, " . $lastInsertId . ", 1541129239, 1541129239)");
         
         // 15
-        $this->execute("INSERT INTO `admin_url_key` (`name`, `tag`, `tag_sort_order`, `url_key`, `created_at`, `updated_at`, `can_delete`) VALUES ('Config Base Manager', 'config_base_manager', 1, '/config/base/manager', 1563809630, 1563809630,, 1)");
+        $this->execute("INSERT INTO `admin_url_key` (`name`, `tag`, `tag_sort_order`, `url_key`, `created_at`, `updated_at`, `can_delete`) VALUES ('Config Base Manager', 'config_base_manager', 1, '/config/base/manager', 1563809630, 1563809630,1)");
         
         $lastInsertId = $this->db->getLastInsertID() ;
         
