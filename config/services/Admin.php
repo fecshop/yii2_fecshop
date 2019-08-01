@@ -20,6 +20,7 @@ return [
 					'catalog_product_review_manager' 		=> 'Catalog-Product-Review',
 					'catalog_product_search_manager' 		=> 'Catalog-Product-Search',
 					'catalog_product_favorite_manager' 	=> 'Catalog-Product-Favorite',
+                    'catalog_product_upload_manager' 	    => 'Catalog-Product-Upload',
 					'catalog_category_manager' 				=> 'Catalog-Category',
 					'catalog_url_rewrite_manager' 			    => 'Catalog-Url-Rewrite',
                     'sales_order_manager' 						=> 'Sales-Order',
@@ -93,6 +94,11 @@ return [
                                     'product_favorite_manager' => [
                                         'label' => 'Product Favorite',
                                         'url_key' => '/catalog/productfavorite/index',
+                                    ],
+                                    
+                                    'product_upload_manager' => [
+                                        'label' => '产品批量上传',
+                                        'url_key' => '/catalog/productupload/manager',
                                     ],
                                 ]
                             ],
