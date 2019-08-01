@@ -12,6 +12,15 @@
 
 
 
+Fecshop-2.x版本
+--------------
+
+>Fecshop-2版本在用户体验方面进行了很多的优化，请安装Fecshop-2版本
+
+Fecshop-2.x版本发布，文档地址：http://www.fecshop.com/doc/fecshop-guide/develop/cn-2.0/guide-README.html
+
+请参看上面的文档进行安装Fecshop-2.x
+
 
 项目状态：
 
