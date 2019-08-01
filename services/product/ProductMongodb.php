@@ -982,4 +982,165 @@ class ProductMongodb extends Service implements ProductInterface
     public function updateAllScoreToZero(){
         return $this->_productModel->getCollection()->update([], ['score' => 0]);
     }
+    
+    /**
+     * @param $one|array , 产品数据数组
+     * @param $originUrlKey|string , 产品的原来的url key ，也就是在前端，分类的自定义url。
+     * 保存产品（插入和更新），以及保存产品的自定义url
+     * 如果提交的数据中定义了自定义url，则按照自定义url保存到urlkey中，如果没有自定义urlkey，则会使用name进行生成。
+     */
+    public function excelSave($one, $originUrlKey = 'catalog/product/index')
+    {
+        $sku = $one['sku'];
+        // 查询出来主键。
+        $primaryKey = $this->getPrimaryKey();
+        $productModel = $this->getBySku($sku);
+        if (isset($productModel['sku']) && $productModel['sku']) {
+            $one[$primaryKey] = $productModel[$primaryKey];
+        }
+        $currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
+        $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
+        if (isset($one['attr_group']) && $one['attr_group']) {
+            $this->addGroupAttrs($one['attr_group']);
+        }
+        // 得到group spu attr
+        $attr_group = $one['attr_group'];
+        $groupSpuAttrs = Yii::$service->product->getGroupSpuAttr($attr_group);
+        $spuAttrArr = [];
+        if (is_array($groupSpuAttrs)) {
+            foreach ($groupSpuAttrs as $groupSpuOne) {
+                $spuAttrArr[] = $groupSpuOne['name'];
+            }
+        }
+        
+        if ($primaryVal) {
+            $model = $this->_productModel->findOne($primaryVal);
+            if (!$model) {
+                Yii::$service->helper->errors->add('Product {primaryKey} is not exist', ['primaryKey'=>$this->getPrimaryKey()]);
+
+                return false;
+            }
+
+            //验证sku 是否重复
+            $product_one = $this->_productModel->find()->asArray()->where([
+                '<>', $this->getPrimaryKey(), (new \MongoDB\BSON\ObjectId($primaryVal)),
+            ])->andWhere([
+                'sku' => $one['sku'],
+            ])->one();
+            if ($product_one['sku']) {
+                Yii::$service->helper->errors->add('Product Sku is exist，please use other sku');
+
+                return false;
+            }
+            
+            // spu 下面的各个sku的spu属性不能相同
+            if (!empty($spuAttrArr)) {
+                $product_mode = $this->_productModel->find()->asArray()->where([
+                    '<>', $this->getPrimaryKey(), (new \MongoDB\BSON\ObjectId($primaryVal)),
+                ])->andWhere([
+                    'spu' => $one['spu'],
+                ]);
+                foreach ($spuAttrArr as $sar) {
+                    $product_mode->andWhere([$sar => $one[$sar]]);
+                }
+                
+                $product_one = $product_mode->one();
+                if ($product_one['sku']) {
+                    Yii::$service->helper->errors->add('product Spu of the same,  Spu attributes cannot be the same');
+
+                    return false;
+                }
+            }
+            
+            // 多语言属性，如果您有其他的多语言属性，可以自行二开添加。
+            $name =$model['name'];
+            $meta_title = $model['meta_title'];
+            $meta_keywords = $model['meta_keywords'];
+            $meta_description = $model['meta_description'];
+            $short_description = $model['short_description'];
+            $description = $model['description'];
+            $one['name'] = array_merge((is_array($name) ? $name : []), $one['name']);
+            $one['meta_title'] = array_merge((is_array($meta_title) ? $meta_title : []), $one['meta_title']);
+            $one['meta_keywords'] = array_merge((is_array($meta_keywords) ? $meta_keywords : []), $one['meta_keywords']);
+            $one['meta_description'] = array_merge((is_array($meta_description) ? $meta_description : []), $one['meta_description']);
+            $one['short_description'] = array_merge((is_array($short_description) ? $short_description : []), $one['short_description']);
+            $one['description'] = array_merge((is_array($description) ? $description : []), $one['description']);
+        } else {
+            $model = new $this->_productModelName();
+            $model->created_at = time();
+            $model->created_user_id = \fec\helpers\CUser::getCurrentUserId();
+            $primaryVal = new \MongoDB\BSON\ObjectId();
+            $model->{$this->getPrimaryKey()} = $primaryVal;
+            //验证sku 是否重复
+            $product_one = $this->_productModel->find()->asArray()->where([
+                'sku' => $one['sku'],
+            ])->one();
+            if ($product_one['sku']) {
+                Yii::$service->helper->errors->add('Product Sku is exist，please use other sku');
+
+                return false;
+            }
+            
+            if (!empty($spuAttrArr)) {
+                $product_mode = $this->_productModel->find()->asArray()->where([
+                    'spu' => $one['spu'],
+                ]);
+                foreach ($spuAttrArr as $sar) {
+                    $product_mode->andWhere([$sar => $one[$sar]]);
+                }
+                
+                $product_one = $product_mode->one();
+                if ($product_one['sku']) {
+                    Yii::$service->helper->errors->add('product Spu of the same,  Spu attributes cannot be the same');
+
+                    return false;
+                }
+            }
+            
+        }
+        $model->updated_at = time();
+        // 计算出来产品的最终价格。
+        $one['final_price'] = Yii::$service->product->price->getFinalPrice($one['price'], $one['special_price'], $one['special_from'], $one['special_to']);
+        $one['score'] = (int) $one['score'];
+        unset($one['_id']);
+        unset($one['custom_option']);
+        /**
+         * 如果 $one['custom_option'] 不为空，则计算出来库存总数，填写到qty
+         */
+        //if (is_array($one['custom_option']) && !empty($one['custom_option'])) {
+        //    $custom_option_qty = 0;
+        //    foreach ($one['custom_option'] as $co_one) {
+        //        $custom_option_qty += $co_one['qty'];
+        //    }
+        //    $one['qty'] = $custom_option_qty;
+        //}
+        /**
+         * 保存产品
+         */
+        //var_dump($one);exit;
+        $saveStatus = Yii::$service->helper->ar->save($model, $one);
+        
+        // 自定义url部分
+        if ($originUrlKey) {
+            $originUrl = $originUrlKey.'?'.$this->getPrimaryKey() .'='. $primaryVal;
+            $originUrlKey = isset($one['url_key']) ? $one['url_key'] : '';
+            $defaultLangTitle = Yii::$service->fecshoplang->getDefaultLangAttrVal($one['name'], 'name');
+            $urlKey = Yii::$service->url->saveRewriteUrlKeyByStr($defaultLangTitle, $originUrl, $originUrlKey);
+            $model->url_key = $urlKey;
+            $model->save();
+        }
+        
+        $product_id = $model->{$this->getPrimaryKey()};
+        /**
+         * 更新产品库存。
+         */
+        Yii::$service->product->stock->saveProductStock($product_id, $one);
+        /**
+         * 更新产品信息到搜索表。
+         */
+        Yii::$service->search->syncProductInfo([$product_id]);
+
+        return $model;
+    }
+    
 }

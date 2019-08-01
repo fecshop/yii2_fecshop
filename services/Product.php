@@ -647,4 +647,15 @@ class Product extends Service
     {
         return $this->_product->updateAllScoreToZero();
     }
+    
+    
+    public function excelSave($productArr)
+    {
+        return $this->_product->excelSave($productArr);
+    }
+    
+    
+    
+    
+    
 }
