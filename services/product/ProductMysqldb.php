@@ -1210,18 +1210,30 @@ class ProductMysqldb extends Service implements ProductInterface
                 }
             }
             // 多语言属性，如果您有其他的多语言属性，可以自行二开添加。
-            $name = unserialize($model['name']);
-            $meta_title = unserialize($model['meta_title']);
-            $meta_keywords = unserialize($model['meta_keywords']);
-            $meta_description = unserialize($model['meta_description']);
-            $short_description = unserialize($model['short_description']);
-            $description = unserialize($model['description']);
-            $one['name'] = array_merge((is_array($name) ? $name : []), $one['name']);
-            $one['meta_title'] = array_merge((is_array($meta_title) ? $meta_title : []), $one['meta_title']);
-            $one['meta_keywords'] = array_merge((is_array($meta_keywords) ? $meta_keywords : []), $one['meta_keywords']);
-            $one['meta_description'] = array_merge((is_array($meta_description) ? $meta_description : []), $one['meta_description']);
-            $one['short_description'] = array_merge((is_array($short_description) ? $short_description : []), $one['short_description']);
-            $one['description'] = array_merge((is_array($description) ? $description : []), $one['description']);
+            $name =$model['name'];
+            $meta_title = $model['meta_title'];
+            $meta_keywords = $model['meta_keywords'];
+            $meta_description = $model['meta_description'];
+            $short_description = $model['short_description'];
+            $description = $model['description'];
+            if (is_array($one['name']) && !empty($one['name'])) {
+                $one['name'] = array_merge((is_array($name) ? $name : []), $one['name']);
+            }
+            if (is_array($one['meta_title']) && !empty($one['meta_title'])) {
+                $one['meta_title'] = array_merge((is_array($meta_title) ? $meta_title : []), $one['meta_title']);
+            }
+            if (is_array($one['meta_keywords']) && !empty($one['meta_keywords'])) {
+                $one['meta_keywords'] = array_merge((is_array($meta_keywords) ? $meta_keywords : []), $one['meta_keywords']);
+            }
+            if (is_array($one['meta_description']) && !empty($one['meta_description'])) {
+                $one['meta_description'] = array_merge((is_array($meta_description) ? $meta_description : []), $one['meta_description']);
+            }
+            if (is_array($one['short_description']) && !empty($one['short_description'])) {
+                $one['short_description'] = array_merge((is_array($short_description) ? $short_description : []), $one['short_description']);
+            }
+            if (is_array($one['description']) && !empty($one['description'])) {
+                $one['description'] = array_merge((is_array($description) ? $description : []), $one['description']);
+            }
         } else {
             $model = new $this->_productModelName();
             $model->created_at = time();

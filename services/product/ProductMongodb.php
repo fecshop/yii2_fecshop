@@ -1059,12 +1059,24 @@ class ProductMongodb extends Service implements ProductInterface
             $meta_description = $model['meta_description'];
             $short_description = $model['short_description'];
             $description = $model['description'];
-            $one['name'] = array_merge((is_array($name) ? $name : []), $one['name']);
-            $one['meta_title'] = array_merge((is_array($meta_title) ? $meta_title : []), $one['meta_title']);
-            $one['meta_keywords'] = array_merge((is_array($meta_keywords) ? $meta_keywords : []), $one['meta_keywords']);
-            $one['meta_description'] = array_merge((is_array($meta_description) ? $meta_description : []), $one['meta_description']);
-            $one['short_description'] = array_merge((is_array($short_description) ? $short_description : []), $one['short_description']);
-            $one['description'] = array_merge((is_array($description) ? $description : []), $one['description']);
+            if (is_array($one['name']) && !empty($one['name'])) {
+                $one['name'] = array_merge((is_array($name) ? $name : []), $one['name']);
+            }
+            if (is_array($one['meta_title']) && !empty($one['meta_title'])) {
+                $one['meta_title'] = array_merge((is_array($meta_title) ? $meta_title : []), $one['meta_title']);
+            }
+            if (is_array($one['meta_keywords']) && !empty($one['meta_keywords'])) {
+                $one['meta_keywords'] = array_merge((is_array($meta_keywords) ? $meta_keywords : []), $one['meta_keywords']);
+            }
+            if (is_array($one['meta_description']) && !empty($one['meta_description'])) {
+                $one['meta_description'] = array_merge((is_array($meta_description) ? $meta_description : []), $one['meta_description']);
+            }
+            if (is_array($one['short_description']) && !empty($one['short_description'])) {
+                $one['short_description'] = array_merge((is_array($short_description) ? $short_description : []), $one['short_description']);
+            }
+            if (is_array($one['description']) && !empty($one['description'])) {
+                $one['description'] = array_merge((is_array($description) ? $description : []), $one['description']);
+            }
         } else {
             $model = new $this->_productModelName();
             $model->created_at = time();

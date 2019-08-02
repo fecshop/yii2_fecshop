@@ -53,10 +53,22 @@ class Manager
                 foreach ($arr as $one) {
                     $i++;
                     if ($i > 1) {
-                        $this->saveProduct($one);
+                        $saveStatus = $this->saveProduct($one);
+                        if (!$saveStatus) {
+                            echo  json_encode([
+                                'statusCode' => '300',
+                                'message'    => 'upload fail',
+                            ]);
+                            exit;
+                        }
                     }
                 }
             }
+            echo  json_encode([
+                'statusCode' => '200',
+                'message'    => Yii::$service->page->translate->__('Save Success'),
+            ]);
+            exit;
         }
         
     }
@@ -158,11 +170,7 @@ class Manager
             }
         }
         
-        //var_dump($productArr);
-        
-        Yii::$service->product->excelSave($productArr);
-        
-        
+        return Yii::$service->product->excelSave($productArr);
     }
     
     # 1.保存前台上传的文件。
