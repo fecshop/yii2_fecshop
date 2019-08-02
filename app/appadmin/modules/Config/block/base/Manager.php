@@ -30,6 +30,7 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
         'default_lang',
         'default_currency',
         'base_currency',
+        'image_domain',
     ];
     
     public function init()
@@ -119,6 +120,16 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
             ],
             
             
+            
+             [
+                'label' => Yii::$service->page->translate->__('Image Domain'),
+                'name'  => 'image_domain',
+                'display' => [
+                    'type' => 'inputString',
+                ],
+                'require' => 1,
+                'remark' =>  'image base domain that use for generate image url'
+            ],
         ];
     }
     

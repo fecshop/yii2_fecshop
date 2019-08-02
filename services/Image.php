@@ -44,43 +44,43 @@ class Image extends Service
 
     protected $_maxUploadSize;
 
-    public $appbase;
+    // public $appbase;
+    public $commonBaseDir;
+    public $commonBaseDomain;
+    
+    public function init()
+    {
+        parent::init();
+        
+        $this->commonBaseDomain = Yii::$app->store->get('base_info', 'image_domain');
+    }
 
     /**
      * @param $str | String 图片的相对路径
      * @param $app | String @appimage下面的文件夹的名称。各个名称对应各个入口的名字，譬如common appfront appadmin等
      * @return 返回图片的绝对路径。
      */
-    protected function actionGetImgDir($str = '', $app = 'common')
+    protected function actionGetImgDir($str = '')  // , $app = 'common' 第二个参数废弃
     {
-        if ($appbase = $this->appbase) {
-            if (isset($appbase[$app]['basedir'])) {
-                if ($str) {
-                    return Yii::getAlias($appbase[$app]['basedir'].'/'.$str);
-                }
-
-                return Yii::getAlias($appbase[$app]['basedir']);
-            }
+        if ($str) {
+            return Yii::getAlias($this->commonBaseDir) . '/'.$str;
         }
+
+        return Yii::getAlias($this->commonBaseDir);
     }
 
     /**
      * @param $str | String 图片的相对路径
      * @param $app | String @appimage下面的文件夹的名称。各个名称对应各个入口的名字，譬如common appfront appadmin等
      * @return 返回图片的完整URL
-     */
-    protected function actionGetImgUrl($str, $app = 'common')
+     */ 
+    protected function actionGetImgUrl($str)   // , $app = 'common' 第二个参数废弃
     {
-        //echo "$str,$app";
-        if ($appbase = $this->appbase) {
-            if (isset($appbase[$app]['basedomain'])) {
-                if ($str) {
-                    return $appbase[$app]['basedomain'].'/'.$str;
-                }
-
-                return $appbase[$app]['basedomain'];
-            }
+        if ($str) {
+            return $this->commonBaseDomain.'/'.$str;
         }
+
+        return $this->commonBaseDomain;
     }
 
     /**
