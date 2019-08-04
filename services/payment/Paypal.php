@@ -84,9 +84,19 @@ class Paypal extends Service
 
     protected $_ipnMessageModel;
     
+    protected $_account;
+    protected $_password;
+    protected $_signature;
+    protected $_env;
+    
     public function init()
     {
         parent::init();
+        $this->_account = Yii::$app->store->get('payment_paypal', 'paypal_account');
+        $this->_password = Yii::$app->store->get('payment_paypal', 'paypal_password');
+        $this->_signature = Yii::$app->store->get('payment_paypal', 'paypal_signature');
+        $this->_env = Yii::$app->store->get('payment_paypal', 'paypal_env');
+        
         list($this->_ipnMessageModelName, $this->_ipnMessageModel) = \Yii::mapGet($this->_ipnMessageModelName);
         $this->_allowChangOrderStatus = [
             Yii::$service->order->payment_status_pending,
@@ -164,10 +174,15 @@ class Paypal extends Service
         $urlParamStr   .= '&cmd=_notify-validate';
         $urlParamStr    = substr($urlParamStr, 1);
         $current_payment_method = Yii::$service->payment->getPaymentMethod();
-        if ($current_payment_method == $this->standard_payment_method) {
-            $verifyUrl = Yii::$service->payment->getStandardWebscrUrl($this->standard_payment_method);
+        //if ($current_payment_method == $this->standard_payment_method) {
+        //    $verifyUrl = Yii::$service->payment->getStandardWebscrUrl($this->standard_payment_method);
+        //} else {
+        //    $verifyUrl = Yii::$service->payment->getExpressWebscrUrl($this->express_payment_method);
+        //}
+        if ($this->_env == Yii::$service->payment->env_sanbox) {
+            $verifyUrl = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
         } else {
-            $verifyUrl = Yii::$service->payment->getExpressWebscrUrl($this->express_payment_method);
+            $verifyUrl = 'https://www.paypal.com/cgi-bin/webscr';
         }
         $verifyUrl      = $verifyUrl.'?'.$urlParamStr;
 
@@ -411,8 +426,12 @@ class Paypal extends Service
     public function getExpressCheckoutUrl($token)
     {
         if ($token) {
-            $webscrUrl = Yii::$service->payment->getExpressWebscrUrl($this->express_payment_method);
-
+            //$webscrUrl = Yii::$service->payment->getExpressWebscrUrl($this->express_payment_method);
+            if ($this->_env == Yii::$service->payment->env_sanbox) {
+                $webscrUrl = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
+            } else {
+                $webscrUrl = 'https://www.paypal.com/cgi-bin/webscr';
+            }
             return $webscrUrl.'?cmd=_express-checkout&token='.urlencode($token);
         }
     }
@@ -424,8 +443,12 @@ class Paypal extends Service
     public function getStandardCheckoutUrl($token)
     {
         if ($token) {
-            $webscrUrl = Yii::$service->payment->getStandardWebscrUrl($this->standard_payment_method);
-
+            // $webscrUrl = Yii::$service->payment->getStandardWebscrUrl($this->standard_payment_method);
+            if ($this->_env == Yii::$service->payment->env_sanbox) {
+                $webscrUrl = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
+            } else {
+                $webscrUrl = 'https://www.paypal.com/cgi-bin/webscr';
+            }
             return $webscrUrl.'?useraction=commit&cmd=_express-checkout&token='.urlencode($token);
         }
     }
@@ -440,17 +463,20 @@ class Paypal extends Service
     public function PPHttpPost5($methodName_, $nvpStr_, $i = 1)
     {
         $current_payment_method = Yii::$service->payment->getPaymentMethod();
+        $API_NvpUrl     = Yii::$service->payment->getStandardNvpUrl($this->standard_payment_method);
+        $API_Signature  = $this->_signature;
+        $API_UserName   = $this->_account;
+        $API_Password   = $this->_password;
+        if ($this->_env == Yii::$service->payment->env_sanbox) {
+            $API_NvpUrl = 'https://api-3t.sandbox.paypal.com/nvp';
+        } else {
+            $API_NvpUrl = 'https://api-3t.paypal.com/nvp';
+        }
+        
+        
         if ($current_payment_method == $this->standard_payment_method) {
-            $API_NvpUrl     = Yii::$service->payment->getStandardNvpUrl($this->standard_payment_method);
-            $API_Signature  = Yii::$service->payment->getStandardSignature($this->standard_payment_method);
-            $API_UserName   = Yii::$service->payment->getStandardAccount($this->standard_payment_method);
-            $API_Password   = Yii::$service->payment->getStandardPassword($this->standard_payment_method);
             $ipn_url        = Yii::$service->payment->getStandardIpnUrl($this->standard_payment_method);
         } else {
-            $API_NvpUrl = Yii::$service->payment->getExpressNvpUrl($this->express_payment_method);
-            $API_Signature  = Yii::$service->payment->getExpressSignature($this->express_payment_method);
-            $API_UserName   = Yii::$service->payment->getExpressAccount($this->express_payment_method);
-            $API_Password   = Yii::$service->payment->getExpressPassword($this->express_payment_method);
             $ipn_url        = Yii::$service->payment->getExpressIpnUrl($this->express_payment_method);
         }
         // Set the API operation, version, and API signature in the request.
