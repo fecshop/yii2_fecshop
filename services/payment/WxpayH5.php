@@ -50,6 +50,15 @@ class WxpayH5 extends Service
         if (!is_file($wxpayConfigFile)) {
             throw new InvalidConfigException('wxpay config file:['.$wxpayConfigFile.'] is not exist');
         }
+        $appId = Yii::$app->store->get('payment_wxpay', 'wechat_service_app_id');
+        $appSecret = Yii::$app->store->get('payment_wxpay', 'wechat_service_app_secret');
+        $mchKey = Yii::$app->store->get('payment_wxpay', 'merchant_key');
+        $mchId = Yii::$app->store->get('payment_wxpay', 'merchant_mch_id');
+        define('WX_APP_ID', $appId);
+        define('WX_APP_SECRET', $appSecret);
+        define('WX_MCH_KEY', $mchKey);
+        define('WX_MCH_ID', $mchId);
+        //echo $appId;exit;
         require_once($wxpayConfigFile);
         
         $wxpayApiFile       = Yii::getAlias('@fecshop/lib/wxpay/lib/WxPay.Api.php');
