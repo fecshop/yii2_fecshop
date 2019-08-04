@@ -33,8 +33,16 @@ class Payment extends Service
      * 如果需要释放产品库存，客服在后台取消订单即可释放产品库存。
      */
     public $noRelasePaymentMethod;
+    
+    public $env_sanbox = 'sanbox';
+    public $env_product = 'product';
 
     protected $_currentPaymentMethod;
+    
+    public function init()
+    {
+        parent::init();
+    }
 
     /**
      * @param $payment_method | string
@@ -73,6 +81,8 @@ class Payment extends Service
 
         return $arr;
     }
+    
+    
 
     /**
      * @param $payment_method | String 支付方式。
@@ -242,11 +252,17 @@ class Payment extends Service
     public function getStandardPaymentArr()
     {
         $arr = [];
+        $appName = Yii::$service->helper->getAppName();
         if (
             isset($this->paymentConfig['standard']) &&
             is_array($this->paymentConfig['standard'])
         ) {
             foreach ($this->paymentConfig['standard'] as $payment_type => $info) {
+                // 查看配置是否是激活状态 
+                $checkMoneyConfig = Yii::$app->store->get($appName.'_payment', $payment_type);
+                if ($checkMoneyConfig != Yii::$app->store->enable) {
+                    continue;
+                }
                 $label = $info['label'];
                 $imageUrl = '';
                 if (is_array($info['image'])) {
