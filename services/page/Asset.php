@@ -54,7 +54,19 @@ class Asset extends Service
     // 是否每次访问都强制复制css js img等文件到发布地址，true代表每次访问都发布
     // 一般开发环境用true，线上用false。当线上更新jscss文件，可以清空assets发布路径下的文件的方式来更新
     public $forceCopy = true;
+    
+    public function init()
+    {
+        parent::init();
+        $appName = Yii::$service->helper->getAppName();
+        $assetForceCopy = Yii::$app->store->get($appName.'_base', 'assetForceCopy');
+        $this->forceCopy = ($assetForceCopy  == Yii::$app->store->enable) ? true : false;
+        $js_version = Yii::$app->store->get($appName.'_base', 'js_version');
+        $css_version = Yii::$app->store->get($appName.'_base', 'css_version');
+        $this->jsVersion = $js_version;  
+        $this->cssVersion = $css_version; 
 
+    }
     /**
      * 文件路径默认放到模板路径下面的assets里面.
      */
