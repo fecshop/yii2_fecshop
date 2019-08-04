@@ -252,11 +252,12 @@ use fec\helpers\CRequest;
 						<div class="proceed_to_checkout">
 							
 							<button onclick="location.href='<?= Yii::$service->url->getUrl('checkout/onepage');  ?>'" type="button" title="Proceed to Checkout" class="button btn-proceed-checkout btn-checkout"><span><span><?= Yii::$service->page->translate->__('Proceed to Pay');?></span></span></button>
-							
-							<span class="or">- <?= Yii::$service->page->translate->__('OR');?> - </span>
-							<a class="express_paypal" href="<?= Yii::$service->url->getUrl('payment/paypal/express/start');    ?>">
-							
-							</a>
+							<?php if ($enablePaypalExpress): ?>
+                                <span class="or">- <?= Yii::$service->page->translate->__('OR');?> - </span>
+                                <a class="express_paypal" href="<?= Yii::$service->url->getUrl('payment/paypal/express/start');    ?>">
+                                
+                                </a>
+                            <?php endif;  ?>
 						</div>
 					</div>
 					<div class="clear"></div>
