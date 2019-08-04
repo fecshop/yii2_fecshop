@@ -40,6 +40,7 @@ return [
 					'dashboard_error_handler'					=> 'Dashboard-ErrorHandler',
                     
                     'config_base_manager' 					    => 'Config-Base',
+                    'config_payment_manager' 					    => 'Config-Payment',
                     'config_appfront_manager' 					=> 'Config-Appfront',
                     'config_apphtml5_manager' 					=> 'Config-Apphtml5',
                     'config_appserver_manager' 				=> 'Config-Appserver',
@@ -174,9 +175,31 @@ return [
                                 ],
                             ],
                             
+                            'payment_config' => [
+                                'label' => '支付配置',
+                                'child' => [
+                                    'payment_paypal' => [
+                                        'label' => 'Paypal支付配置',
+                                        'url_key' => '/config/paymentpaypal/manager',
+                                    ],
+                                    'payment_alipay' => [
+                                        'label' => '支付宝支付配置',
+                                        'url_key' => '/config/paymentalipay/manager',
+                                    ],
+                                    'payment_wxpay' => [
+                                        'label' => '微信支付配置',
+                                        'url_key' => '/config/paymentwxpay/manager',
+                                    ],
+                                ],
+                            ],
+                            
                             'appfront_config' => [
                                 'label' => 'Appfront配置',
                                 'child' => [
+                                    'base' => [
+                                        'label' => '基础配置',
+                                        'url_key' => '/config/appfrontbase/manager',
+                                    ],
                                     'cache' => [
                                         'label' => '缓存配置',
                                         'url_key' => '/config/appfrontcache/manager',
@@ -184,6 +207,10 @@ return [
                                     'store' => [
                                         'label' => 'Store配置',
                                         'url_key' => '/config/appfrontstore/manager',
+                                    ],
+                                    'payment' => [
+                                        'label' => '支付配置',
+                                        'url_key' => '/config/appfrontpayment/manager',
                                     ],
                                     /*
                                     'theme' => [
@@ -218,6 +245,10 @@ return [
                             'apphtml5_config' => [
                                 'label' => 'Apphtml5配置',
                                 'child' => [
+                                    'base' => [
+                                        'label' => '基础配置',
+                                        'url_key' => '/config/apphtml5base/manager',
+                                    ],
                                     'cache' => [
                                         'label' => '缓存配置',
                                         'url_key' => '/config/apphtml5cache/manager',
