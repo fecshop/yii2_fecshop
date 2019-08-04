@@ -75,6 +75,7 @@ class Alipay extends Service
     protected $_allowChangOrderStatus;
 
     protected $_initAlipayLib = 0;
+    
 
     /**
      * 支付宝：SDK工作目录
@@ -97,7 +98,25 @@ class Alipay extends Service
             Yii::$service->order->payment_status_pending,
             Yii::$service->order->payment_status_processing,
         ];
+        // init by store config
+        $this->appId = Yii::$app->store->get('payment_alipay', 'app_id');
+        $this->sellerId = Yii::$app->store->get('payment_alipay', 'seller_id');
+        $this->rsaPrivateKey = Yii::$app->store->get('payment_alipay', 'rsa_private_key');
+        $this->alipayrsaPublicKey = Yii::$app->store->get('payment_alipay', 'rsa_public_key');
+        if ($alipay_aop_sdk_work_dir = Yii::$app->store->get('payment_alipay', 'alipay_aop_sdk_work_dir')) {
+            $this->alipay_aop_sdk_work_dir = $alipay_aop_sdk_work_dir;
+        }
+        $this->alipay_aop_sdk_dev_mode = Yii::$app->store->get('payment_alipay', 'alipay_aop_sdk_dev_mode') == 1 ? true : false ;
+        // 沙盒还是正式环境
+        $env = Yii::$app->store->get('payment_alipay', 'alipay_env');
+        if ($env == Yii::$service->payment->env_sanbox) {
+            $this->gatewayUrl = 'https://openapi.alipaydev.com/gateway.do';
+        } else {
+            $this->gatewayUrl = 'https://openapi.alipay.com/gateway.do';
+        }
     }
+    
+    
 
     /**
      * 初始化 $this->_AopClient
