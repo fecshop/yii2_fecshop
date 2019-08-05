@@ -68,9 +68,7 @@ use fec\helpers\CRequest;
 							</div>
 						<?php endforeach; ?>
 					<?php endif; ?>
-
 				</div>
-				
 				<div class="cart-collaterals">
 					<div class="col2-set">
 						<div class="col-1">
@@ -99,9 +97,6 @@ use fec\helpers\CRequest;
 								</div>
 							</form>
 							<div class="clear"></div>
-							
-							
-							
 						</div>
 					</div>
 					<div class="cart_cost">
@@ -109,55 +104,45 @@ use fec\helpers\CRequest;
 							<div class="col-66"><?= Yii::$service->page->translate->__('Sub Total');?> :  </div>
 							<div class="col-33"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['product_total']); ?></div>
 						</div>
-                        
                         <div class="row no-gutter">
 							<div class="col-66"><?= Yii::$service->page->translate->__('Sub Weight');?> :  </div>
 							<div class="col-33"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['product_weight']); ?> Kg</div>
 						</div>
-                        
                         <div class="row no-gutter">
 							<div class="col-66"><?= Yii::$service->page->translate->__('Sub Volume');?> :  </div>
 							<div class="col-33"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['product_volume']); ?> c㎡</div>
 						</div>
-                        
-						
 						<div class="row no-gutter">
 							<div class="col-66"><?= Yii::$service->page->translate->__('Shipping Cost');?>  : </div>
 							<div class="col-33"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['shipping_cost']); ?></div>
 						</div>
-						
-						
 						<div class="row no-gutter">
 							<div class="col-66"><?= Yii::$service->page->translate->__('Discount');?>  :</div>
 							<div class="col-33">-<?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['coupon_cost']); ?>%</div>
 						</div>
-						
 						<div class="row no-gutter">
 							<div class="col-66"><?= Yii::$service->page->translate->__('Grand Total');?>  :</div>
 							<div class="col-33"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['grand_total']) ?></div>
 						</div>
 					</div>
 					<div class="totals cart-totals">
-						
 						<div class="proceed_to_checkout">
-							
 							<div class="row no-gutter">
 								<div class="col-50">
 									<button onclick="location.href='<?= Yii::$service->url->getUrl('checkout/onepage');  ?>'" type="button" title="Proceed to Checkout" class="button btn-proceed-checkout btn-checkout"><span><span><?= Yii::$service->page->translate->__('Proceed to Pay');?></span></span></button>
-							
-								</div>
+                                </div>
+                                <?php if ($enablePaypalExpress): ?>
 								<div class="col-50">
 									<a  external class="express_paypal" href="<?= Yii::$service->url->getUrl('payment/paypal/express/start');    ?>">
 										<img src="<?= Yii::$service->image->getImgUrl('/images/pay.png') ?>"  />
 									</a>
-									
 								</div>
+                                <?php endif;  ?>
 							</div>
 						</div>
 					</div>
 					<div class="clear"></div>
 				</div>
-				
 			</div>
 		</div>
 	<?php else: ?>
