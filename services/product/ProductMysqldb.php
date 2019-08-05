@@ -67,7 +67,10 @@ class ProductMysqldb extends Service implements ProductInterface
         return 'id';
     }
     
-    
+    public function serviceStorageName()
+    {
+        return 'mysqldb';
+    }
 
     /**
      * 得到分类激活状态的值
