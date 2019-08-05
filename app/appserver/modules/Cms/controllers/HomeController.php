@@ -94,18 +94,13 @@ class HomeController extends AppserverController
     }
     
     public function getProduct(){
-        $featured_skus = Yii::$app->controller->module->params['homeFeaturedSku'];
-        //Yii::$service->session->getUUID();
+        $appName = Yii::$service->helper->getAppName();
+        $bestFeatureSkuConfig = Yii::$app->store->get($appName.'_home', 'best_feature_sku');
+        $featured_skus = explode(',', $bestFeatureSkuConfig);
+
         return $this->getProductBySkus($featured_skus);
     }
     
-    
-
-    //public function getBestSellerProduct(){
-    //	$best_skus = Yii::$app->controller->module->params['homeBestSellerSku'];
-    //	return $this->getProductBySkus($best_skus);
-    //}
-
     public function getProductBySkus($skus)
     {
         $productPrimaryKey = Yii::$service->product->getPrimaryKey();
