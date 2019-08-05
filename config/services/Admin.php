@@ -111,6 +111,10 @@ return [
                                         'label' => 'Category Info',
                                         'url_key' => '/catalog/category/index',
                                     ],
+                                    'category_sort_manager' => [
+                                        'label' => 'Category Sort',
+                                        'url_key' => '/config/categorysort/manager',
+                                    ],
                                     //'category_info_config' => [
                                     //    'label' => '分类配置',
                                     //    'url_key' => '/catalog/category/index',
@@ -176,7 +180,7 @@ return [
                             ],
                             
                             'payment_config' => [
-                                'label' => '支付配置',
+                                'label' => '支付参数配置',
                                 'child' => [
                                     'payment_paypal' => [
                                         'label' => 'Paypal支付配置',
@@ -200,6 +204,10 @@ return [
                                         'label' => '基础配置',
                                         'url_key' => '/config/appfrontbase/manager',
                                     ],
+                                    'home' => [
+                                        'label' => '首页配置',
+                                        'url_key' => '/config/appfronthome/manager',
+                                    ],
                                     'cache' => [
                                         'label' => '缓存配置',
                                         'url_key' => '/config/appfrontcache/manager',
@@ -212,34 +220,6 @@ return [
                                         'label' => '支付配置',
                                         'url_key' => '/config/appfrontpayment/manager',
                                     ],
-                                    /*
-                                    'theme' => [
-                                        'label' => '模板配置',
-                                        'url_key' => '/sales/orderinfo/manager',
-                                    ],
-                                    'theme' => [
-                                        'label' => '菜单配置',
-                                        'url_key' => '/sales/orderinfo/manager',
-                                    ],
-                                    'payment' => [
-                                        'label' => '支付配置',
-                                        'url_key' => '/sales/orderinfo/manager',
-                                    ],
-                                    'wx' => [
-                                        'label' => '微信小程序配置',
-                                        'url_key' => '/sales/orderinfo/manager',
-                                    ],
-                                    'email' => [
-                                        'label' => '邮件配置',
-                                        'url_key' => '/sales/orderinfo/manager',
-                                    ],
-                                    'yanzhengma' => [
-                                        'label' => '验证码配置',
-                                        'url_key' => '/sales/orderinfo/manager',
-                                    ],
-                                    */
-                                    
-                                    
                                 ],
                             ],
                             'apphtml5_config' => [
@@ -249,6 +229,10 @@ return [
                                         'label' => '基础配置',
                                         'url_key' => '/config/apphtml5base/manager',
                                     ],
+                                    'home' => [
+                                        'label' => '首页配置',
+                                        'url_key' => '/config/apphtml5home/manager',
+                                    ],
                                     'cache' => [
                                         'label' => '缓存配置',
                                         'url_key' => '/config/apphtml5cache/manager',
@@ -257,11 +241,23 @@ return [
                                         'label' => 'Store配置',
                                         'url_key' => '/config/apphtml5store/manager',
                                     ],
+                                    'payment' => [
+                                        'label' => '支付配置',
+                                        'url_key' => '/config/apphtml5payment/manager',
+                                    ],
                                 ],
                             ],
                             'appserver_config' => [
                                 'label' => 'Appserver配置',
                                 'child' => [
+                                    'base' => [
+                                        'label' => '基础配置',
+                                        'url_key' => '/config/appserverbase/manager',
+                                    ],
+                                    'home' => [
+                                        'label' => '首页配置',
+                                        'url_key' => '/config/appserverhome/manager',
+                                    ],
                                     'cache' => [
                                         'label' => '缓存配置',
                                         'url_key' => '/config/appservercache/manager',
@@ -274,7 +270,10 @@ return [
                                         'label' => 'Store语言配置',
                                         'url_key' => '/config/appserverstorelang/manager',
                                     ],
-                                    
+                                    'payment' => [
+                                        'label' => '支付配置',
+                                        'url_key' => '/config/appserverpayment/manager',
+                                    ],
                                 ],
                             ],
                         ],
