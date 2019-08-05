@@ -27,10 +27,17 @@ class CartController extends AppserverTokenController
         $currency_info = Yii::$service->page->currency->getCurrencyInfo();
         $code = Yii::$service->helper->appserver->status_success;
         $cart_info = $this->getCartInfo();
-
+        // check if is enable paypal express
+        $enablePaypalExpress = false;
+        $appName = Yii::$service->helper->getAppName();
+        $paypalExpressConfig = Yii::$app->store->get($appName.'_payment', 'paypal_express');
+        if ($paypalExpressConfig == Yii::$app->store->enable) {
+            $enablePaypalExpress = true;
+        }
         $data = [
             'cart_info' => $cart_info,
             'currency'  => $currency_info,
+            'enablePaypalExpress' => $enablePaypalExpress,
         ];
         $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
 
