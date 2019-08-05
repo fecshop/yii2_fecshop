@@ -55,6 +55,11 @@ class ProductMongodb extends Service implements ProductInterface
             return new $this->_productModelName();
         }
     }
+    
+    public function serviceStorageName()
+    {
+        return 'mongodb';
+    }
 
     /**
      * @param $sku|array
@@ -312,12 +317,14 @@ class ProductMongodb extends Service implements ProductInterface
         if (!$this->initSave($one)) {
             return false;
         }
+        $attr_group = $one['attr_group'];
+        if ($attr_group) {
+            $this->addGroupAttrs($attr_group);
+        }
         $one['min_sales_qty'] = (int)$one['min_sales_qty'];
         $currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
         $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
-        
         // 得到group spu attr
-        $attr_group = $one['attr_group'];
         $groupSpuAttrs = Yii::$service->product->getGroupSpuAttr($attr_group);
         $spuAttrArr = [];
         if (is_array($groupSpuAttrs)) {
@@ -354,12 +361,13 @@ class ProductMongodb extends Service implements ProductInterface
                     'spu' => $one['spu'],
                 ]);
                 foreach ($spuAttrArr as $sar) {
+                    //var_dump([$sar => $one[$sar]]);
                     $product_mode->andWhere([$sar => $one[$sar]]);
                 }
                 
                 $product_one = $product_mode->one();
                 if ($product_one['sku']) {
-                    Yii::$service->helper->errors->add('product Spu of the same,  Spu attributes cannot be the same');
+                    Yii::$service->helper->errors->add('product Spu of the same22,  Spu attributes cannot be the same');
 
                     return false;
                 }
@@ -397,6 +405,7 @@ class ProductMongodb extends Service implements ProductInterface
             }
             
         }
+        
         $model->updated_at = time();
         // 计算出来产品的最终价格。
         $one['final_price'] = Yii::$service->product->price->getFinalPrice($one['price'], $one['special_price'], $one['special_from'], $one['special_to']);
@@ -452,6 +461,9 @@ class ProductMongodb extends Service implements ProductInterface
         if (!$this->initSave($one)) {
             return false;
         }
+        if (isset($one['attr_group']) && $one['attr_group']) {
+            $this->addGroupAttrs($one['attr_group']);
+        }
         $defaultLangTitle = Yii::$service->fecshoplang->getDefaultLangAttrVal($one['name'], 'name');
         $product_one = $this->_productModel->find()->where([
             'sku' => $one['sku'],
@@ -464,9 +476,7 @@ class ProductMongodb extends Service implements ProductInterface
             $primaryVal = new \MongoDB\BSON\ObjectId();
             $model->{$this->getPrimaryKey()} = $primaryVal;
         }
-        if (isset($one['attr_group']) && $one['attr_group']) {
-            $this->addGroupAttrs($one['attr_group']);
-        }
+        
         
         // 保存mongodb表中的产品id到字段origin_mongo_id
         $origin_mysql_id = $one['id'];
@@ -493,8 +503,9 @@ class ProductMongodb extends Service implements ProductInterface
          */
         //$one = $this->serializeSaveData($one);
         // 得到对应的mongodb的分类id数组
+        //var_dump($one['category']);
         if ($c = $this->syncGetProductCategorys($one['category'])){
-            var_dump($c);
+            //var_dump($c);
             $one['category'] = $c;
         }
         
@@ -992,6 +1003,9 @@ class ProductMongodb extends Service implements ProductInterface
     public function excelSave($one, $originUrlKey = 'catalog/product/index')
     {
         $sku = $one['sku'];
+        if (isset($one['attr_group']) && $one['attr_group']) {
+            $this->addGroupAttrs($one['attr_group']);
+        }
         // 查询出来主键。
         $primaryKey = $this->getPrimaryKey();
         $productModel = $this->getBySku($sku);
@@ -1000,9 +1014,7 @@ class ProductMongodb extends Service implements ProductInterface
         }
         $currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
         $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
-        if (isset($one['attr_group']) && $one['attr_group']) {
-            $this->addGroupAttrs($one['attr_group']);
-        }
+        
         // 得到group spu attr
         $attr_group = $one['attr_group'];
         $groupSpuAttrs = Yii::$service->product->getGroupSpuAttr($attr_group);
