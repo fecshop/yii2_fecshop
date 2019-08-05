@@ -102,6 +102,32 @@ class CategoryController extends AppserverController
 
         return $behaviors;
     }
+    public function init()
+    {
+        parent::init();
+        $this->getQuerySort();
+    }
+    protected $_sort_items;
+    public function getQuerySort()
+    {
+        if (!$this->_sort_items) {
+            $category_sorts = Yii::$app->store->get('category_sort');
+            if (is_array($category_sorts)) {
+                foreach ($category_sorts as $one) {
+                    $sort_key = $one['sort_key'];
+                    $sort_label = $one['sort_label'];
+                    $sort_db_columns = $one['sort_db_columns'];
+                    $sort_direction = $one['sort_direction'];
+                    $this->_sort_items[$sort_key] = [
+                        'label'        => $sort_label,
+                        'db_columns'   => $sort_db_columns,
+                        'direction'    => $sort_direction,
+                    ];
+                }
+            }
+        }
+        
+    }
     
     public function actionIndex(){
         
@@ -273,7 +299,7 @@ class CategoryController extends AppserverController
     {
         $category_query  = Yii::$app->controller->module->params['category_query'];
         $numPerPage      = $category_query['numPerPage'];
-        $sort            = $category_query['sort'];
+        $sort                   = $this->_sort_items;
         $current_sort    = Yii::$app->request->get($this->_sort);
         $frontNumPerPage = [];
         
@@ -481,38 +507,38 @@ class CategoryController extends AppserverController
         $sort       = Yii::$app->request->get($this->_sort);
         $direction  = Yii::$app->request->get($this->_direction);
 
-        $category_query_config = Yii::$app->controller->module->params['category_query'];
-        if (isset($category_query_config['sort'])) {
-            $sortConfig = $category_query_config['sort'];
-            if (is_array($sortConfig)) {
-                
-                //return $category_query_config['numPerPage'][0];
-                if ($sort && isset($sortConfig[$sort])) {
-                    $orderInfo = $sortConfig[$sort];
-                    //var_dump($orderInfo);
+        //$category_query_config = Yii::$app->controller->module->params['category_query'];
+       
+        $sortConfig = $this->_sort_items;
+        if (is_array($sortConfig)) {
+            
+            //return $category_query_config['numPerPage'][0];
+            if ($sort && isset($sortConfig[$sort])) {
+                $orderInfo = $sortConfig[$sort];
+                //var_dump($orderInfo);
+                if (!$direction) {
+                    $direction = $orderInfo['direction'];
+                }
+            } else {
+                foreach ($sortConfig as $k => $v) {
+                    $orderInfo = $v;
                     if (!$direction) {
-                        $direction = $orderInfo['direction'];
+                        $direction = $v['direction'];
                     }
-                } else {
-                    foreach ($sortConfig as $k => $v) {
-                        $orderInfo = $v;
-                        if (!$direction) {
-                            $direction = $v['direction'];
-                        }
-                        break;
-                    }
+                    break;
                 }
-                
-                $db_columns = $orderInfo['db_columns'];
-                if ($direction == 'desc') {
-                    $direction = -1;
-                } else {
-                    $direction = 1;
-                }
-                //var_dump([$db_columns => $direction]);
-                //exit;
-                return [$db_columns => $direction];
             }
+            
+            $db_columns = $orderInfo['db_columns'];
+           $storageName = Yii::$service->product->serviceStorageName();
+            if ($direction == 'desc') {
+                $direction =  $storageName == 'mongodb' ? -1 :  SORT_DESC;
+            } else {
+                $direction = $storageName == 'mongodb' ? 1 :SORT_ASC;
+            }
+            //var_dump([$db_columns => $direction]);
+            //exit;
+            return [$db_columns => $direction];
         }
     }
     /**
@@ -570,9 +596,8 @@ class CategoryController extends AppserverController
         if ($productPrimaryKey == 'id') {
             $select[] = 'id';
         }
-        $category_query = Yii::$app->getModule('catalog')->params['category_query'];
-        if (is_array($category_query['sort'])) {
-            foreach ($category_query['sort'] as $sort_item) {
+        if (is_array($this->_sort_items)) {
+            foreach ($this->_sort_items as $sort_item) {
                 $select[] = $sort_item['db_columns'];
             }
         }
@@ -637,9 +662,9 @@ class CategoryController extends AppserverController
             'special_from', 'special_to',
             'url_key', 'score',
         ];
-        $category_query = Yii::$app->getModule('catalog')->params['category_query'];
-        if (is_array($category_query['sort'])) {
-            foreach ($category_query['sort'] as $sort_item) {
+        //$category_query = Yii::$app->getModule('catalog')->params['category_query'];
+        if (is_array($this->_sort_items)) {
+            foreach ($this->_sort_items as $sort_item) {
                 $select[] = $sort_item['db_columns'];
             }
         }

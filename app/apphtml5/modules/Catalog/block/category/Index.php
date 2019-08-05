@@ -380,8 +380,8 @@ class Index  extends \yii\base\BaseObject
     protected function getOrderBy()
     {
         $primaryKey = Yii::$service->category->getPrimaryKey();
-        $sort       = Yii::$app->request->get($this->_sort);
-        $direction  = Yii::$app->request->get($this->_direction);
+        $sort = Yii::$app->request->get($this->_sort);
+        $direction = Yii::$app->request->get($this->_direction);
 
         $sortConfig = $this->_sort_items;;
         if (is_array($sortConfig)) {
@@ -395,17 +395,18 @@ class Index  extends \yii\base\BaseObject
                     }
                     break;
                 }
-                $db_columns = $orderInfo['db_columns'];
-                $storageName = Yii::$service->product->serviceStorageName();
-                if ($direction == 'desc') {
-                    $direction =  $storageName == 'mongodb' ? -1 :  SORT_DESC;
-                } else {
-                    $direction = $storageName == 'mongodb' ? 1 :SORT_ASC;
-                }
-                
-                return [$db_columns => $direction];
             }
+            $db_columns = $orderInfo['db_columns'];
+            $storageName = Yii::$service->product->serviceStorageName();
+            if ($direction == 'desc') {
+                $direction =  $storageName == 'mongodb' ? -1 :  SORT_DESC;
+            } else {
+                $direction = $storageName == 'mongodb' ? 1 :SORT_ASC;
+            }
+            
+            return [$db_columns => $direction];
         }
+        
     }
     /**
      * 分类页面的产品，每页显示的产品个数。

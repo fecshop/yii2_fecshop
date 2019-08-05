@@ -371,7 +371,7 @@ class Index extends \yii\base\BaseObject
         $sort = Yii::$app->request->get($this->_sort);
         $direction = Yii::$app->request->get($this->_direction);
 
-        $sortConfig = $this->_sort_items;;
+        $sortConfig = $this->_sort_items;
         if (is_array($sortConfig)) {
             if ($sort && isset($sortConfig[$sort])) {
                 $orderInfo = $sortConfig[$sort];
