@@ -16,7 +16,7 @@ use yii\base\InvalidValueException;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Index
+class Index  extends \yii\base\BaseObject
 {
     // 当前分类对象
     protected $_category;
@@ -47,7 +47,34 @@ class Index
     protected $_filter_attr;
     protected $_numPerPageVal;
     protected $_page_count;
-
+    
+    public function init()
+    {
+        parent::init();
+        $this->getQuerySort();
+    }
+    protected $_sort_items;
+    public function getQuerySort()
+    {
+        if (!$this->_sort_items) {
+            $category_sorts = Yii::$app->store->get('category_sort');
+            if (is_array($category_sorts)) {
+                foreach ($category_sorts as $one) {
+                    $sort_key = $one['sort_key'];
+                    $sort_label = $one['sort_label'];
+                    $sort_db_columns = $one['sort_db_columns'];
+                    $sort_direction = $one['sort_direction'];
+                    $this->_sort_items[$sort_key] = [
+                        'label'        => $sort_label,
+                        'db_columns'   => $sort_db_columns,
+                        'direction'    => $sort_direction,
+                    ];
+                }
+            }
+        }
+        
+    }
+    
     public function getLastData()
     {
         // 每页显示的产品个数，进行安全验证，如果个数不在预先设置的值内，则会报错。
@@ -166,7 +193,7 @@ class Index
     {
         $category_query  = Yii::$app->controller->module->params['category_query'];
         $numPerPage      = $category_query['numPerPage'];
-        $sort            = $category_query['sort'];
+        $sort                   = $this->_sort_items;
         $frontNumPerPage = [];
         if (is_array($numPerPage) && !empty($numPerPage)) {
             $attrUrlStr = $this->_numPerPage;
@@ -356,30 +383,26 @@ class Index
         $sort       = Yii::$app->request->get($this->_sort);
         $direction  = Yii::$app->request->get($this->_direction);
 
-        $category_query_config = Yii::$app->controller->module->params['category_query'];
-        if (isset($category_query_config['sort'])) {
-            $sortConfig = $category_query_config['sort'];
-            if (is_array($sortConfig)) {
-                //return $category_query_config['numPerPage'][0];
-                if ($sort && isset($sortConfig[$sort])) {
-                    $orderInfo = $sortConfig[$sort];
-                } else {
-                    foreach ($sortConfig as $k => $v) {
-                        $orderInfo = $v;
-                        if (!$direction) {
-                            $direction = $v['direction'];
-                        }
-                        break;
+        $sortConfig = $this->_sort_items;;
+        if (is_array($sortConfig)) {
+            if ($sort && isset($sortConfig[$sort])) {
+                $orderInfo = $sortConfig[$sort];
+            } else {
+                foreach ($sortConfig as $k => $v) {
+                    $orderInfo = $v;
+                    if (!$direction) {
+                        $direction = $v['direction'];
                     }
+                    break;
                 }
                 $db_columns = $orderInfo['db_columns'];
+                $storageName = Yii::$service->product->serviceStorageName();
                 if ($direction == 'desc') {
-                    $direction = -1;
+                    $direction =  $storageName == 'mongodb' ? -1 :  SORT_DESC;
                 } else {
-                    $direction = 1;
+                    $direction = $storageName == 'mongodb' ? 1 :SORT_ASC;
                 }
-                //var_dump([$db_columns => $direction]);
-
+                
                 return [$db_columns => $direction];
             }
         }
@@ -435,9 +458,8 @@ class Index
                 'special_from', 'special_to',
                 'url_key', 'score',
             ];
-        $category_query = Yii::$app->getModule('catalog')->params['category_query'];
-        if (is_array($category_query['sort'])) {
-            foreach ($category_query['sort'] as $sort_item) {
+        if (is_array($this->_sort_items)) {
+            foreach ($this->_sort_items as $sort_item) {
                 $select[] = $sort_item['db_columns'];
             }
         }

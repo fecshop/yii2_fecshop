@@ -371,10 +371,8 @@ class Index extends \yii\base\BaseObject
         $sort = Yii::$app->request->get($this->_sort);
         $direction = Yii::$app->request->get($this->_direction);
 
-        $category_query_config = Yii::$app->controller->module->params['category_query'];
         $sortConfig = $this->_sort_items;;
         if (is_array($sortConfig)) {
-            //return $category_query_config['numPerPage'][0];
             if ($sort && isset($sortConfig[$sort])) {
                 $orderInfo = $sortConfig[$sort];
             } else {
@@ -444,12 +442,11 @@ class Index extends \yii\base\BaseObject
     protected function getCategoryProductColl()
     {
         $select = [
-                'sku', 'spu', 'name', 'image',
-                'price', 'special_price',
-                'special_from', 'special_to',
-                'url_key', 'score', 'reviw_rate_star_average', 'review_count'
-            ];
-        $category_query = Yii::$app->getModule('catalog')->params['category_query'];
+            'sku', 'spu', 'name', 'image',
+            'price', 'special_price',
+            'special_from', 'special_to',
+            'url_key', 'score', 'reviw_rate_star_average', 'review_count'
+        ];
         if (is_array($this->_sort_items)) {
             foreach ($this->_sort_items as $sort_item) {
                 $select[] = $sort_item['db_columns'];
