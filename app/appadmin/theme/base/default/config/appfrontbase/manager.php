@@ -67,6 +67,9 @@ use fecadmin\models\AdminRole;
     font-size: 13px;
     font-weight: 500;
 }
+.pageContent .combox {
+        margin-left:5px;
+}
 </style>
 
 
