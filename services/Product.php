@@ -91,6 +91,11 @@ class Product extends Service
         $this->_product = new $currentService();
     }
     
+    
+    public function serviceStorageName()
+    {
+        return $this->_product->serviceStorageName();
+    }
     // 动态更改为mongodb model
     public function changeToMysqlStorage()
     {
