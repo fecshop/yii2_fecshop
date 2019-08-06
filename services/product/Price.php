@@ -33,6 +33,16 @@ class Price extends Service
     // 您可以通过 Yii::$service->product->price->currentOff 直接获取。
     public $currentOff = 0;
     
+    public function init()
+    {
+        parent::init();
+        $ifSpecialPriceGtPriceFinalPriceEqPrice = Yii::$app->store->get('product','ifSpecialPriceGtPriceFinalPriceEqPrice');
+        if ($ifSpecialPriceGtPriceFinalPriceEqPrice == Yii::$app->store->enable) {
+            $this->ifSpecialPriceGtPriceFinalPriceEqPrice = true;
+        } else {
+            $this->ifSpecialPriceGtPriceFinalPriceEqPrice = false;
+        }
+    }
     /**
      * @param  $price 		 | Float  产品的价格
      * 得到当前货币状态下的产品的价格信息。
