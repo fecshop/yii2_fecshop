@@ -47,7 +47,7 @@ class Menu extends Service
     # 得到后台显示菜单（左侧）
     public function getLeftMenuTreeHtml($treeArr='', $i=1){
         $str = '';
-        foreach($treeArr as $node){
+        foreach($treeArr as $key => $node){
             // 二次开发的过程中，如果fecshop后台的某些菜单想不显示，那么可以在配置中将active设置成false
             if (isset($node['active']) && $node['active'] === false) {
                 continue;
@@ -80,7 +80,7 @@ class Menu extends Service
                     $str .=			'</ul>';
                     $str .=		'</li>';
                 }else{
-                    $str .='<li><a href="'.CUrl::getUrl($url_key).'" target="navTab" rel="page1">'.$name.'</a></li>';
+                    $str .='<li><a href="'.CUrl::getUrl($url_key).'" target="navTab" rel="page' . $key . '">'.$name.'</a></li>';
                 }
             }
         }
