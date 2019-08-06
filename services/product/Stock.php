@@ -30,7 +30,7 @@ use Yii;
 class Stock extends Service
 {
     // 零库存：也就是说库存忽略掉，产品的库存
-    public $zeroInventory = 0;
+    public $zeroInventory = false;
 
     // product model arr
     protected $_product_arr;
@@ -56,6 +56,10 @@ class Stock extends Service
         parent::init();
         list($this->_flatQtyModelName, $this->_flatQtyModel) = \Yii::mapGet($this->_flatQtyModelName);
         list($this->_COQtyModelName, $this->_COQtyModel) = \Yii::mapGet($this->_COQtyModelName);
+        $zeroInventory = Yii::$app->store->get('product','zeroInventory');
+        if ($zeroInventory == Yii::$app->store->enable) {
+            $this->zeroInventory = true;
+        }
     }
 
     /**
