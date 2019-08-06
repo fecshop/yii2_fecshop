@@ -32,8 +32,17 @@ class ReviewMongodb extends Service implements ReviewInterface
     public function init()
     {
         parent::init();
-        $this->_viewService = Yii::$service->product->review;
+        //$this->_viewService = Yii::$service->product->review;
         list($this->_reviewModelName, $this->_reviewModel) = \Yii::mapGet($this->_reviewModelName);
+    }
+    
+    public function getReviewService()
+    {
+        if (!$this->_viewService) {
+            $this->_viewService = Yii::$service->product->review;
+        }
+        
+        return $this->_viewService;
     }
     
     /**
@@ -42,10 +51,10 @@ class ReviewMongodb extends Service implements ReviewInterface
      */
     public function isReviewRole($product_id)
     {
-        if (!$this->_viewService->reviewOnlyOrderedProduct) {
+        if (!$this->getReviewService()->reviewOnlyOrderedProduct) {
             return true;
         }
-        $itmes = Yii::$service->order->item->getByProductIdAndCustomerId($product_id, $this->_viewService->reviewMonth);
+        $itmes = Yii::$service->order->item->getByProductIdAndCustomerId($product_id, $this->getReviewService()->reviewMonth);
         //var_dump($itmes);exit;
         if ($itmes) {
             return true;
@@ -98,7 +107,7 @@ class ReviewMongodb extends Service implements ReviewInterface
             'product_spu' => $spu,
         ];
 
-        if ($this->_viewService->filterByLang && ($currentLangCode = Yii::$service->store->currentLangCode)) {
+        if ($this->getReviewService()->filterByLang && ($currentLangCode = Yii::$service->store->currentLangCode)) {
             $where['lang_code'] = $currentLangCode;
         }
         $count = $this->_reviewModel->find()->asArray()->where($where)->count();
@@ -121,7 +130,7 @@ class ReviewMongodb extends Service implements ReviewInterface
      */
     protected function actionGetListBySpu($filter)
     {
-        if ($this->_viewService->filterByLang && ($currentLangCode = Yii::$service->store->currentLangCode)) {
+        if ($this->getReviewService()->filterByLang && ($currentLangCode = Yii::$service->store->currentLangCode)) {
             $filter['where'][] = ['lang_code' => $currentLangCode];
         }
         $query = $this->_reviewModel->find();
