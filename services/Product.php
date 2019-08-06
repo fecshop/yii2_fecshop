@@ -71,7 +71,10 @@ class Product extends Service
     public function init()
     {
         parent::init();
-        
+        // init $this->productSpuShowOnlyOneSku
+        $appName = Yii::$service->helper->getAppName();
+        $productSpuShowOnlyOneSku = Yii::$app->store->get($appName.'_catalog','category_productSpuShowOnlyOneSku');
+        $this->productSpuShowOnlyOneSku = ($productSpuShowOnlyOneSku == Yii::$app->store->enable) ? true : false;
         // 从数据库配置中得到值, 设置成当前service存储，是Mysqldb 还是 Mongodb
         $config = Yii::$app->store->get('service_db', 'category_and_product');
         $this->storage = 'ProductMysqldb';
@@ -113,7 +116,6 @@ class Product extends Service
     {
         $attrPrimaryKey =$this->attr->getPrimaryKey();
         $attrGroupPrimaryKey = $this->attrGroup->getPrimaryKey();
-        
         $allGroupColl = $this->attrGroup->getActiveAllColl();
         // attr
         $allAttrColl = $this->attr->getActiveAllColl();
@@ -123,7 +125,6 @@ class Product extends Service
                 $attrTypeColl[$one[$attrPrimaryKey]] = $one;
             }
         }
-        
         $customAttrGroupArr = [];
         if ($allGroupColl) {
             foreach ($allGroupColl as $one) {
@@ -132,7 +133,6 @@ class Product extends Service
                 if (!is_array($attr_ids) || empty($attr_ids)) {
                     continue;
                 }
-                
                 $attr_ids = \fec\helpers\CFunc::array_sort($attr_ids, 'sort_order', 'desc');
                 //var_dump($attr_ids);exit;
                 foreach ($attr_ids as $attr_id_one) {
@@ -178,7 +178,6 @@ class Product extends Service
             }
         }
         $this->customAttrGroup = $customAttrGroupArr;
-        //var_dump($customAttrGroupArr);exit;
     }
     
     /**
