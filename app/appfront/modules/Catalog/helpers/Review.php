@@ -15,17 +15,20 @@ use Yii;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Review
+class Review extends \yii\base\BaseObject
 {
     // 初始化当前appfront的设置，覆盖service的初始设置。
     public static function initReviewConfig()
     {
         // 用当前的配置，覆盖service的公用配置。
-        $reviewParam = Yii::$app->getModule('catalog')->params['review'];
-
-        if (isset($reviewParam['filterByLang'])) {
-            Yii::$service->product->review->filterByLang = $reviewParam['filterByLang'];
-        }
+        // $reviewParam = Yii::$app->getModule('catalog')->params['review'];
+        //$appName = Yii::$service->helper->getAppName();
+        //$reviewFilterByLang = Yii::$app->store->get($appName.'_catalog','review_filterByLang');
+        //$reviewFilterByLang = ($reviewFilterByLang == Yii::$app->store->enable) ? true : false;
+        //
+        //if (isset($reviewParam['filterByLang'])) {
+        //    Yii::$service->product->review->filterByLang = $reviewParam['filterByLang'];
+        //}
     }
 
     /**

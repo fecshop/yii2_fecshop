@@ -177,8 +177,12 @@ class Index extends \yii\base\BaseObject
      */
     protected function getQueryItem()
     {
-        $category_query  = Yii::$app->controller->module->params['category_query'];
-        $numPerPage      = $category_query['numPerPage'];
+        //$category_query  = Yii::$app->controller->module->params['category_query'];
+        //$numPerPage      = $category_query['numPerPage'];
+        
+        $appName = Yii::$service->helper->getAppName();
+        $numPerPage = Yii::$app->store->get($appName.'_catalog','category_query_numPerPage');
+        $numPerPage = explode(',', $numPerPage);
         $sort                   = $this->_sort_items;
         $frontNumPerPage = [];
         if (is_array($numPerPage) && !empty($numPerPage)) {
@@ -238,7 +242,10 @@ class Index extends \yii\base\BaseObject
     protected function getFilterAttr()
     {
         if (!$this->_filter_attr) {
-            $filter_default = Yii::$app->controller->module->params['category_filter_attr'];
+            $appName = Yii::$service->helper->getAppName();
+            $filter_default = Yii::$app->store->get($appName.'_catalog','category_filter_attr');
+            $filter_default = explode(',',$filter_default);
+            //$filter_default = Yii::$app->controller->module->params['category_filter_attr'];
             $current_fileter_select = $this->_category['filter_product_attr_selected'];
             $current_fileter_unselect = $this->_category['filter_product_attr_unselected'];
             $current_fileter_select_arr = $this->getFilterArr($current_fileter_select);
@@ -313,9 +320,13 @@ class Index extends \yii\base\BaseObject
     protected function getFilterPrice()
     {
         $filter = [];
-        $priceInfo = Yii::$app->controller->module->params['category_query'];
-        if (isset($priceInfo['price_range']) && !empty($priceInfo['price_range']) && is_array($priceInfo['price_range'])) {
-            foreach ($priceInfo['price_range'] as $price_item) {
+        //$priceInfo = Yii::$app->controller->module->params['category_query'];
+        $appName = Yii::$service->helper->getAppName();
+        $category_query_priceRange = Yii::$app->store->get($appName.'_catalog','category_query_priceRange');
+        $category_query_priceRange = explode(',',$category_query_priceRange);
+        if ( !empty($category_query_priceRange) && is_array($category_query_priceRange)) {
+            foreach ($category_query_priceRange as $price_item) {
+                $price_item = trim($price_item);
                 $info = Yii::$service->url->category->getFilterChooseAttrUrl($this->_filterPrice, $price_item, $this->_page);
                 $info['val'] = $this->getFormatFilterPrice($price_item);
                 $filter[$this->_filterPrice][] = $info;
@@ -406,7 +417,10 @@ class Index extends \yii\base\BaseObject
     {
         if (!$this->_numPerPageVal) {
             $numPerPage = Yii::$app->request->get($this->_numPerPage);
-            $category_query_config = Yii::$app->getModule('catalog')->params['category_query'];
+            //$category_query_config = Yii::$app->getModule('catalog')->params['category_query'];
+            $appName = Yii::$service->helper->getAppName();
+            $categoryConfigNumPerPage = Yii::$app->store->get($appName.'_catalog','category_query_numPerPage');
+            $category_query_config['numPerPage'] = explode(',',$categoryConfigNumPerPage);
             if (!$numPerPage) {
                 if (isset($category_query_config['numPerPage'])) {
                     if (is_array($category_query_config['numPerPage'])) {
@@ -529,7 +543,10 @@ class Index extends \yii\base\BaseObject
     // 面包屑导航
     protected function breadcrumbs($name)
     {
-        if (Yii::$app->controller->module->params['category_breadcrumbs']) {
+        $appName = Yii::$service->helper->getAppName();
+        $category_breadcrumbs = Yii::$app->store->get($appName.'_catalog','category_breadcrumbs');
+        
+        if ($category_breadcrumbs == Yii::$app->store->enable) {
             $parent_info = Yii::$service->category->getAllParentInfo($this->_category['parent_id']);
             if (is_array($parent_info) && !empty($parent_info)) {
                 foreach ($parent_info as $info) {

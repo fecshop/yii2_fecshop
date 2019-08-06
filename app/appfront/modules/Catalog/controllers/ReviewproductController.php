@@ -29,9 +29,11 @@ class ReviewproductController extends AppfrontController
     // 增加评论
     public function actionAdd()
     {
-        $reviewParam = Yii::$app->getModule('catalog')->params['review'];
-        $addReviewOnlyLogin = isset($reviewParam['addReviewOnlyLogin']) ? $reviewParam['addReviewOnlyLogin'] : false;
-        if ($addReviewOnlyLogin && Yii::$app->user->isGuest) {
+        //$reviewParam = Yii::$app->getModule('catalog')->params['review'];
+        $appName = Yii::$service->helper->getAppName();
+        $addReviewOnlyLogin = Yii::$app->store->get($appName.'_catalog','review_addReviewOnlyLogin');
+        //$addReviewOnlyLogin = ($addReviewOnlyLogin ==  Yii::$app->store->enable)  ? true : false;
+        if ($addReviewOnlyLogin ==  Yii::$app->store->enable && Yii::$app->user->isGuest) {
             $currentUrl = Yii::$service->url->getCurrentUrl();
             Yii::$service->customer->setLoginSuccessRedirectUrl($currentUrl);
 

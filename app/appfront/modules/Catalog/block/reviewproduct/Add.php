@@ -16,7 +16,7 @@ use Yii;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Add
+class Add extends \yii\base\BaseObject
 {
     protected $_add_captcha;
     /**
@@ -25,8 +25,9 @@ class Add
     protected $_reviewHelperName = '\fecshop\app\appfront\modules\Catalog\helpers\Review';
     protected $_reviewHelper;
 
-    public function __construct()
+    public function init()
     {
+        parent::init();
         /**
          * 通过Yii::mapGet() 得到重写后的class类名以及对象。Yii::mapGet是在文件@fecshop\yii\Yii.php中
          */
@@ -40,8 +41,10 @@ class Add
     public function getAddCaptcha()
     {
         if (!$this->_add_captcha) {
-            $reviewParam = Yii::$app->getModule('catalog')->params['review'];
-            $this->_add_captcha = isset($reviewParam['add_captcha']) ? $reviewParam['add_captcha'] : false;
+            $appName = Yii::$service->helper->getAppName();
+            $addCaptcha = Yii::$app->store->get($appName.'_catalog','review_add_captcha');
+            // $reviewParam = Yii::$app->getModule('catalog')->params['review'];
+            $this->_add_captcha = ($addCaptcha == Yii::$app->store->enable) ? true : false;
         }
 
         return $this->_add_captcha;
