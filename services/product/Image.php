@@ -62,7 +62,17 @@ class Image extends Service
     protected $_defaultImg;
 
     protected $_md5WaterImgPath;
-
+    
+    
+    public function init()
+    {
+        parent::init();
+        // init by store config
+        $this->imageFloder = Yii::$app->store->get('product','imageFloder');
+        $this->maxUploadMSize = (float)Yii::$app->store->get('product','maxUploadMSize');
+        $this->pngCompressionLevel = (int)Yii::$app->store->get('product','pngCompressionLevel');
+        $this->jpegQuality = (int)Yii::$app->store->get('product','jpegCompressionLevel');
+    }
     /**
      * 得到保存产品图片所在相对根目录的url路径.
      */
