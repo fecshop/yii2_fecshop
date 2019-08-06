@@ -86,6 +86,10 @@ return [
                                         'label' => '产品属性组管理',
                                         'url_key' => '/catalog/productattrgroup/manager',
                                     ],
+                                    'product_param_manager' => [
+                                        'label' => '产品参数管理',
+                                        'url_key' => '/config/product/manager',
+                                    ],
                                     // 三级类
                                     'product_review_manager' => [
                                         'label' => 'Product Reveiew',
@@ -216,10 +220,15 @@ return [
                                         'label' => 'Store配置',
                                         'url_key' => '/config/appfrontstore/manager',
                                     ],
+                                    'catalog' => [
+                                        'label' => '分类产品配置',
+                                        'url_key' => '/config/appfrontcatalog/manager',
+                                    ],
                                     'payment' => [
                                         'label' => '支付配置',
                                         'url_key' => '/config/appfrontpayment/manager',
                                     ],
+                                    
                                 ],
                             ],
                             'apphtml5_config' => [
@@ -240,6 +249,11 @@ return [
                                     'store' => [
                                         'label' => 'Store配置',
                                         'url_key' => '/config/apphtml5store/manager',
+                                    ],
+                                    
+                                    'catalog' => [
+                                        'label' => '分类产品配置',
+                                        'url_key' => '/config/apphtml5catalog/manager',
                                     ],
                                     'payment' => [
                                         'label' => '支付配置',
@@ -269,6 +283,11 @@ return [
                                     'store_lang' => [
                                         'label' => 'Store语言配置',
                                         'url_key' => '/config/appserverstorelang/manager',
+                                    ],
+                                    
+                                    'catalog' => [
+                                        'label' => '分类产品配置',
+                                        'url_key' => '/config/appservercatalog/manager',
                                     ],
                                     'payment' => [
                                         'label' => '支付配置',
