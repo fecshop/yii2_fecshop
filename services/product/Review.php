@@ -58,6 +58,14 @@ class Review extends Service
     public function init()
     {
         parent::init();
+        // 初始化$this->filterByLang
+        $appName = Yii::$service->helper->getAppName();
+        $reviewFilterByLang = Yii::$app->store->get($appName.'_catalog','review_filterByLang');
+        $this->filterByLang = ($reviewFilterByLang == Yii::$app->store->enable) ? true : false;
+        $reviewOnlyOrderedProduct = Yii::$app->store->get($appName.'_catalog','review_OnlyOrderedProduct');
+        $this->reviewOnlyOrderedProduct = ($reviewOnlyOrderedProduct == Yii::$app->store->enable) ? true : false;
+        $this->reviewMonth = Yii::$app->store->get($appName.'_catalog','review_MonthLimit');
+        //$this->reviewOnlyOrderedProduct = ($reviewOnlyOrderedProduct == Yii::$app->store->enable) ? true : false;
         // 从数据库配置中得到值, 设置成当前service存储，是Mysqldb 还是 Mongodb
         $config = Yii::$app->store->get('service_db', 'product_review');
         $this->storage = 'ReviewMysqldb';
@@ -66,6 +74,7 @@ class Review extends Service
         }
         $currentService = $this->getStorageService($this);
         $this->_review = new $currentService();
+        //var_dump([$this->filterByLang , $this->reviewOnlyOrderedProduct, $this->reviewMonth]);
     }
     // 动态更改为mongodb model
     public function changeToMongoStorage()
