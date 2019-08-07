@@ -940,7 +940,19 @@ class ProductMysqldb extends Service implements ProductInterface
                 ['in', 'id', $productIds]
             ];
             foreach ($where as $k=>$v) {
-                $whereArr[] = [$k =>$v];
+                if ($k == 'price' && is_array($v)) {  // 价格数据处理。
+                    foreach ($v as $k1=>$v1) {
+                        $fh = '';
+                        if ($k1 == '$gte') $fh = '>=' ;
+                        if ($k1 == '$gt') $fh = '>' ;
+                        if ($k1 == '$lte') $fh = '<=' ;
+                        if ($k1 == '$lt') $fh = '<' ;
+                        $whereArr[] = [$fh, 'price', $v1];
+                    }
+                } else {
+                    $whereArr[] = [$k =>$v];
+                }
+                
             }
             $where = $whereArr;
         }
@@ -1009,7 +1021,19 @@ class ProductMysqldb extends Service implements ProductInterface
                 ['in', 'id', $productIds]
             ];
             foreach ($where as $k=>$v) {
-                $whereArr[] = [$k =>$v];
+                if ($k == 'price' && is_array($v)) {  // 价格数据处理。
+                    foreach ($v as $k1=>$v1) {
+                        $fh = '';
+                        if ($k1 == '$gte') $fh = '>=' ;
+                        if ($k1 == '$gt') $fh = '>' ;
+                        if ($k1 == '$lte') $fh = '<=' ;
+                        if ($k1 == '$lt') $fh = '<' ;
+                        $whereArr[] = [$fh, 'price', $v1];
+                    }
+                } else {
+                    $whereArr[] = [$k =>$v];
+                }
+                
             }
             $where = $whereArr;
         }
