@@ -28,9 +28,11 @@ class ReviewproductController extends AppserverController
         if(Yii::$app->request->getMethod() === 'OPTIONS'){
             return [];
         }
-        $reviewParam = Yii::$app->getModule('catalog')->params['review'];
-        $addReviewOnlyLogin = isset($reviewParam['addReviewOnlyLogin']) ? $reviewParam['addReviewOnlyLogin'] : false;
-        if ($addReviewOnlyLogin) {
+        //$reviewParam = Yii::$app->getModule('catalog')->params['review'];
+        $appName = Yii::$service->helper->getAppName();
+        $addReviewOnlyLogin = Yii::$app->store->get($appName.'_catalog','review_addReviewOnlyLogin');
+        //$addReviewOnlyLogin = ($addReviewOnlyLogin ==  Yii::$app->store->enable)  ? true : false;
+        if ($addReviewOnlyLogin ==  Yii::$app->store->enable && Yii::$app->user->isGuest) {
             $identity = Yii::$service->customer->loginByAccessToken(get_class($this));
             if(!$identity){
                 
@@ -61,11 +63,12 @@ class ReviewproductController extends AppserverController
             return [];
         }
         $captcha = Yii::$app->request->post('captcha');
-        $reviewParam = Yii::$app->getModule('catalog')->params['review'];
-        $add_captcha = isset($reviewParam['add_captcha']) ? $reviewParam['add_captcha'] : false;
-        
+        //$reviewParam = Yii::$app->getModule('catalog')->params['review'];
+        //$add_captcha = isset($reviewParam['add_captcha']) ? $reviewParam['add_captcha'] : false;
+        $appName = Yii::$service->helper->getAppName();
+        $addCaptcha = Yii::$app->store->get($appName.'_catalog','review_add_captcha');
         // 检查验证码
-        if($add_captcha){
+        if($addCaptcha == Yii::$app->store->enable){
             if(!\Yii::$service->helper->captcha->validateCaptcha($captcha)){
                 $code = Yii::$service->helper->appserver->status_invalid_captcha;
                 $data = [];
