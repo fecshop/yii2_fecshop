@@ -35,11 +35,11 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
         'category_query_numPerPage',
         'category_query_priceRange',
         'category_productSpuShowOnlyOneSku',
-        'product_small_img_width',
-        'product_small_img_height',
+        //'product_small_img_width',
+        //'product_small_img_height',
         'product_middle_img_width',
         
-        'productImgMagnifier',
+        //'productImgMagnifier',
         'review_add_captcha',
         'review_productPageReviewCount',
         'review_reviewPageReviewCount',
@@ -185,7 +185,7 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
                 ],
                 'remark' => '产品页面是否显示面包屑导航'
             ],
-            
+            /*
             [
                 'label'  => Yii::$service->page->translate->__('Product Small Img Width'),
                 'name' => 'product_small_img_width',
@@ -203,7 +203,7 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
                 ],
                 'remark' => '产品橱窗图的高度（px）',
             ],
-            
+            */
             [
                 'label'  => Yii::$service->page->translate->__('Product Middle Img Width'),
                 'name' => 'product_middle_img_width',
@@ -214,7 +214,7 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
             ],
             
             
-        
+            /*
             [
                 'label' => Yii::$service->page->translate->__('productImgMagnifier'),
                 'name'  => 'productImgMagnifier',
@@ -227,6 +227,7 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
                 ],
                'remark' =>'是否已放大镜的方式显示，如果否，则是内窥的方式查看',
             ],
+            */
             [
                 'label' => Yii::$service->page->translate->__('Review Show Captcha'),
                 'name'  => 'review_add_captcha',

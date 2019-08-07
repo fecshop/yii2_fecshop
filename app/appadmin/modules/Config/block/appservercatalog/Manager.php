@@ -27,7 +27,7 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
     public $_key = 'appserver_catalog';
     public $_type;
     protected $_attrArr = [
-        'category_breadcrumbs',
+        //'category_breadcrumbs',
         'product_breadcrumbs',
         'category_filter_attr',
         'category_filter_category',
@@ -35,11 +35,11 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
         'category_query_numPerPage',
         'category_query_priceRange',
         'category_productSpuShowOnlyOneSku',
-        'product_small_img_width',
-        'product_small_img_height',
+        //'product_small_img_width',
+        //'product_small_img_height',
         'product_middle_img_width',
         
-        'productImgMagnifier',
+        //'productImgMagnifier',
         'review_add_captcha',
         'review_productPageReviewCount',
         'review_reviewPageReviewCount',
@@ -48,7 +48,7 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
         'review_filterByLang',
         'review_OnlyOrderedProduct',
         'review_MonthLimit',
-        'favorite_addSuccessRedirectFavoriteList',
+        //'favorite_addSuccessRedirectFavoriteList',
     ];
     public function init()
     {
@@ -95,18 +95,6 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
         
         return [
             // 需要配置
-            [
-                'label' => Yii::$service->page->translate->__('Category Show Breadcrumbs'),
-                'name'  => 'category_breadcrumbs',
-                'display' => [
-                    'type' => 'select',
-                    'data' => [
-                        Yii::$app->store->enable => 'Yes',
-                        Yii::$app->store->disable => 'No',
-                    ],
-                ],
-                'remark' => '分类页面是否显示面包屑导航'
-            ],
             
             [
                 'label'  => Yii::$service->page->translate->__('Category Filter Attr'),
@@ -185,7 +173,7 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
                 ],
                 'remark' => '产品页面是否显示面包屑导航'
             ],
-            
+            /*
             [
                 'label'  => Yii::$service->page->translate->__('Product Small Img Width'),
                 'name' => 'product_small_img_width',
@@ -203,7 +191,7 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
                 ],
                 'remark' => '产品橱窗图的高度（px）',
             ],
-            
+            */
             [
                 'label'  => Yii::$service->page->translate->__('Product Middle Img Width'),
                 'name' => 'product_middle_img_width',
@@ -213,20 +201,6 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
                 'remark' => '产品中等橱窗图的宽度（px）',
             ],
             
-            
-        
-            [
-                'label' => Yii::$service->page->translate->__('productImgMagnifier'),
-                'name'  => 'productImgMagnifier',
-                'display' => [
-                    'type' => 'select',
-                    'data' => [
-                        Yii::$app->store->enable => 'Yes',
-                        Yii::$app->store->disable => 'No',
-                    ],
-                ],
-               'remark' =>'是否已放大镜的方式显示，如果否，则是内窥的方式查看',
-            ],
             [
                 'label' => Yii::$service->page->translate->__('Review Show Captcha'),
                 'name'  => 'review_add_captcha',
@@ -318,7 +292,7 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
                 ],
                 'remark' => ' Yes：代表用户购物过的产品才能评论，No：代表用户没有购买的产品也可以评论'
             ],
-            
+            /*
             [
                 'label' => Yii::$service->page->translate->__('Favorite SuccessRedirectFavoriteList'),
                 'name'  => 'favorite_addSuccessRedirectFavoriteList',
@@ -331,6 +305,7 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
                 ],
                 'remark' => '产品收藏成功后是否跳转到账户中心的收藏列表'
             ],
+            */
         ];
     }
     
