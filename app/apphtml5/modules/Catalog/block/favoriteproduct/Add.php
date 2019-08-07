@@ -15,7 +15,7 @@ use Yii;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Add
+class Add  extends \yii\base\BaseObject
 {
     /**
      * 用户添加收藏产品
@@ -39,9 +39,11 @@ class Add
         if (!$addStatus) {
             Yii::$service->page->message->addByHelperErrors();
         }
-        $favoriteParam = Yii::$app->getModule('catalog')->params['favorite'];
+        //$favoriteParam = Yii::$app->getModule('catalog')->params['favorite'];
+        $appName = Yii::$service->helper->getAppName();
+        $category_breadcrumbs = Yii::$app->store->get($appName.'_catalog','favorite_addSuccessRedirectFavoriteList');
         // 跳转。
-        if (isset($favoriteParam['addSuccessRedirectFavoriteList']) && $favoriteParam['addSuccessRedirectFavoriteList']) {
+        if ($category_breadcrumbs == Yii::$app->store->enable) {
             return Yii::$service->url->redirectByUrlKey('customer/productfavorite');
         } else {
             $product = Yii::$service->product->getByPrimaryKey($product_id);
