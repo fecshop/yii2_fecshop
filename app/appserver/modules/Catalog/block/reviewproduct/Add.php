@@ -41,8 +41,10 @@ class Add
     public function getAddCaptcha()
     {
         if (!$this->_add_captcha) {
-            $reviewParam = Yii::$app->getModule('catalog')->params['review'];
-            $this->_add_captcha = isset($reviewParam['add_captcha']) ? $reviewParam['add_captcha'] : false;
+            $appName = Yii::$service->helper->getAppName();
+            $addCaptcha = Yii::$app->store->get($appName.'_catalog','review_add_captcha');
+            // $reviewParam = Yii::$app->getModule('catalog')->params['review'];
+            $this->_add_captcha = ($addCaptcha == Yii::$app->store->enable) ? true : false;
         }
 
         return $this->_add_captcha;

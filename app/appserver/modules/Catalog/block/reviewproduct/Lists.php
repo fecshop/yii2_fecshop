@@ -68,9 +68,12 @@ class Lists
         $this->pageNum = $this->pageNum ? $this->pageNum : 1;
         //$this->spu = Yii::$app->request->get('spu');
         $this->product_id = Yii::$app->request->get('product_id');
-        $review = Yii::$app->getModule('catalog')->params['review'];
-        $productPageReviewCount = isset($review['reviewPageReviewCount']) ? $review['reviewPageReviewCount'] : 10;
-        $this->numPerPage = $productPageReviewCount ? $productPageReviewCount : $this->numPerPage;
+        // $review = Yii::$app->getModule('catalog')->params['review'];
+        $appName = Yii::$service->helper->getAppName();
+        $reviewPageReviewCount = Yii::$app->store->get($appName.'_catalog','review_reviewPageReviewCount');
+            
+        //$productPageReviewCount = $reviewPageReviewCount ? $reviewPageReviewCount : 10;
+        $this->numPerPage = $reviewPageReviewCount ? $reviewPageReviewCount : $this->numPerPage;
     }
 
     public function getLastData()
