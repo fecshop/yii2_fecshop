@@ -50,14 +50,21 @@ class Index
     }
     public function getLastData()
     {
-        $productImgSize = Yii::$app->controller->module->params['productImgSize'];
-        $productImgMagnifier = Yii::$app->controller->module->params['productImgMagnifier'];
+        $reviewHelper = $this->_reviewHelper;
+        //$productImgSize = Yii::$app->controller->module->params['productImgSize'];
+        //$productImgMagnifier = Yii::$app->controller->module->params['productImgMagnifier'];
+        
+        $appName = Yii::$service->helper->getAppName();
+        $product_small_img_width = Yii::$app->store->get($appName.'_catalog','product_small_img_width');
+        $product_small_img_height = Yii::$app->store->get($appName.'_catalog','product_small_img_height');
+        $product_middle_img_width = Yii::$app->store->get($appName.'_catalog','product_middle_img_width');
+        $productImgMagnifier = Yii::$app->store->get($appName.'_catalog','productImgMagnifier');
         if (!$this->initProduct()) {
             Yii::$service->url->redirect404();
             return;
         }
         $productPrimaryKey = Yii::$service->product->getPrimaryKey();
-        $reviewHelper = $this->_reviewHelper;
+        
         $reviewHelper::initReviewConfig();
         list($review_count, $reviw_rate_star_average, $reviw_rate_star_info) = $reviewHelper::getReviewAndStarCount($this->_product);
         $this->filterProductImg($this->_product['image']);
@@ -78,9 +85,9 @@ class Index
             'price_info'                => $this->getProductPriceInfo(),
             'tier_price'                => $this->_product['tier_price'],
             'media_size' => [
-                'small_img_width'       => $productImgSize['small_img_width'],
-                'small_img_height'      => $productImgSize['small_img_height'],
-                'middle_img_width'      => $productImgSize['middle_img_width'],
+                'small_img_width'       => $product_small_img_width,
+                'small_img_height'      => $product_small_img_height,
+                'middle_img_width'      => $product_middle_img_width,
             ],
             'productImgMagnifier'       => $productImgMagnifier,
             'options'                   => $this->getSameSpuInfo(),
@@ -493,7 +500,9 @@ class Index
     // 面包屑导航
     protected function breadcrumbs($name)
     {
-        if (Yii::$app->controller->module->params['category_breadcrumbs']) {
+        $appName = Yii::$service->helper->getAppName();
+        $category_breadcrumbs = Yii::$app->store->get($appName.'_catalog','product_breadcrumbs');
+        if ($category_breadcrumbs == Yii::$app->store->enable) {
             $parent_info = Yii::$service->category->getAllParentInfo($this->_category['parent_id']);
             if (is_array($parent_info) && !empty($parent_info)) {
                 foreach ($parent_info as $info) {
