@@ -52,13 +52,9 @@ class Index
     {
         $reviewHelper = $this->_reviewHelper;
         //$productImgSize = Yii::$app->controller->module->params['productImgSize'];
-        //$productImgMagnifier = Yii::$app->controller->module->params['productImgMagnifier'];
         
         $appName = Yii::$service->helper->getAppName();
-        $product_small_img_width = Yii::$app->store->get($appName.'_catalog','product_small_img_width');
-        $product_small_img_height = Yii::$app->store->get($appName.'_catalog','product_small_img_height');
         $product_middle_img_width = Yii::$app->store->get($appName.'_catalog','product_middle_img_width');
-        $productImgMagnifier = Yii::$app->store->get($appName.'_catalog','productImgMagnifier');
         if (!$this->initProduct()) {
             Yii::$service->url->redirect404();
             return;
@@ -85,11 +81,8 @@ class Index
             'price_info'                => $this->getProductPriceInfo(),
             'tier_price'                => $this->_product['tier_price'],
             'media_size' => [
-                'small_img_width'       => $product_small_img_width,
-                'small_img_height'      => $product_small_img_height,
                 'middle_img_width'      => $product_middle_img_width,
             ],
-            'productImgMagnifier'       => $productImgMagnifier,
             'options'                   => $this->getSameSpuInfo(),
             'custom_option'             => $this->_product['custom_option'],
             'description'               => Yii::$service->store->getStoreAttrVal($this->_product['description'], 'description'),

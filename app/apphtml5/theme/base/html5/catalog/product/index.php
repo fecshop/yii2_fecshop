@@ -21,7 +21,6 @@
 					$imageParam = [
                         'media_size' => $media_size,
                         'image' => $image_thumbnails,
-                        'productImgMagnifier' => $productImgMagnifier,
                     ];
 				?>
 				<?= Yii::$service->page->widget->render($imageView,$imageParam); ?>
