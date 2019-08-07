@@ -197,8 +197,9 @@ class ProductController extends AppserverController
          */
         list($this->_reviewHelperName,$this->_reviewHelper) = Yii::mapGet($this->_reviewHelperName);  
         
-        $productImgSize = Yii::$app->controller->module->params['productImgSize'];
-        //$productImgMagnifier = Yii::$app->controller->module->params['productImgMagnifier'];
+        $appName = Yii::$service->helper->getAppName();
+        $middle_img_width = Yii::$app->store->get($appName.'_catalog','product_middle_img_width');
+        
         if(!$this->initProduct()){
             $code = Yii::$service->helper->appserver->product_not_active;
             $data = '';
@@ -232,7 +233,6 @@ class ProductController extends AppserverController
             $main_arr[] = $image['main'];
             $gallerys = $main_arr;
         }
-        $middle_img_width = $productImgSize['middle_img_width'];
         if(is_array($gallerys) && !empty($gallerys)){
             foreach($gallerys as $gallery){
                 $image = $gallery['image'];
@@ -746,7 +746,9 @@ class ProductController extends AppserverController
     // 面包屑导航
     protected function breadcrumbs($name)
     {
-        if (Yii::$app->controller->module->params['category_breadcrumbs']) {
+        $appName = Yii::$service->helper->getAppName();
+        $category_breadcrumbs = Yii::$app->store->get($appName.'_catalog','product_breadcrumbs');
+        if ($category_breadcrumbs == Yii::$app->store->enable) {
             $parent_info = Yii::$service->category->getAllParentInfo($this->_category['parent_id']);
             if (is_array($parent_info) && !empty($parent_info)) {
                 foreach ($parent_info as $info) {
