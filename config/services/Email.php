@@ -8,7 +8,7 @@
 return [
     'email' => [
         'class' => 'fecshop\services\Email',
-
+        
         /*
          * 下面为配置邮箱的smtp部分，你可以配置多个smtp，
          * 在具体的邮件使用中，选择下面的数组的相应的key即可。
@@ -16,7 +16,7 @@ return [
             # 默认通用配置
             'default' => [
                 'class' => 'yii\swiftmailer\Mailer',
-                'transport' => [
+                'transport' => [ 
                     'class' => 'Swift_SmtpTransport',
                     'host' => 'smtp.qq.com',
                     'username' => '372716335@qq.com',
@@ -52,9 +52,10 @@ return [
         */
 
         // 公用配置
+        /*
         'mailerInfo'    => [
             //在邮件中显示的Store的名字
-            'storeName'    => 'FecShop',
+            'storeName'    => 'FecMall',
             // 在邮件中显示的电话
             'phone'            => 'xxxxxxxxxx',
             // 在邮件中显示的联系邮箱地址。
@@ -63,6 +64,7 @@ return [
             ],
 
         ],
+        */
 
         'childService' => [
             /*
@@ -73,20 +75,20 @@ return [
                  /**
                   * 注册账户是否需要邮件激活
                   */
-                'registerAccountIsNeedEnableByEmail' => true,
+                //'registerAccountIsNeedEnableByEmail' => true,
                 /**
                  * 注册账户激活邮件的token的过期时间，只有当 registerAccountIsNeedEnableByEmail 为true的时候有效。
                  */
-                'registerAccountEnableTokenExpire' => 86400,
+                //'registerAccountEnableTokenExpire' => 86400,
                 // 各个邮件的模板部分：
-                'emailTheme' => [
+                //'emailTheme' => [
                     // 注册账户发送的邮件的模板配置
-                    'register' => [
-                        'enable' => true,
+                //    'register' => [
+                //        'enable' => true,
                         // 邮件内容的动态数据提供部分
-                        'widget'        => 'fecshop\services\email\widgets\customer\account\register\Body',
+                //        'widget'        => 'fecshop\services\email\widgets\customer\account\register\Body',
                         // 邮件内容的view部分
-                        'viewPath'        => '@fecshop/services/email/views/customer/account/register',
+                //        'viewPath'        => '@fecshop/services/email/views/customer/account/register',
                         /*
                          * 1.默认是default，譬如下面的 'mailerConfig'  => 'default',你可以不填写，因为默认就是default
                          * 2.您可以使用上面email服务的配置项mailerConfig中的设置的各个项，譬如填写default 或者 login等。
@@ -107,9 +109,10 @@ return [
                          *
                          *	],
                          */
-                        'mailerConfig'  => 'default',
-                    ],
+                //        'mailerConfig'  => 'default',
+                //    ],
                     // 登录用户发送邮件的模板的设置。
+                    /*
                     'login' => [
                         'enable' => false,
                         // 邮件内容的动态数据提供部分
@@ -156,19 +159,20 @@ return [
                         'mailerConfig'  => 'default',
                     ],
                 ],
+                */
             ],
 
             'order' => [
                 'class' => 'fecshop\services\email\Order',
                 // 各个邮件的模板部分：
-                'emailTheme' => [
+                //'emailTheme' => [
                     // 游客发送的邮件的模板配置
-                    'guestCreate' => [
-                        'enable' => true,
+                   // 'guestCreate' => [
+                    //    'enable' => true,
                         // 邮件内容的动态数据提供部分
-                        'widget'        => 'fecshop\services\email\widgets\order\create\Body',
+                    //    'widget'        => 'fecshop\services\email\widgets\order\create\Body',
                         // 邮件内容的view部分
-                        'viewPath'        => '@fecshop/services/email/views/order/create/guest',
+                    //    'viewPath'        => '@fecshop/services/email/views/order/create/guest',
                         /*
                          * 1.默认是default，譬如下面的 'mailerConfig'  => 'default',你可以不填写，因为默认就是default
                          * 2.您可以使用上面email服务的配置项mailerConfig中的设置的各个项，譬如填写default 或者 login等。
@@ -189,20 +193,20 @@ return [
                          *
                          *	],
                          */
-                        'mailerConfig'  => 'default',
-                    ],
+                       // 'mailerConfig'  => 'default',
+                    //],
                     // 登录用户发送邮件的模板的设置。
-                    'loginedCreate' => [
-                        'enable' => true,
+                    //'loginedCreate' => [
+                    //    'enable' => true,
                         // 邮件内容的动态数据提供部分
-                        'widget'        => 'fecshop\services\email\widgets\order\create\Body',
+                     //   'widget'        => 'fecshop\services\email\widgets\order\create\Body',
                         // 邮件内容的view部分
-                        'viewPath'    => '@fecshop/services/email/views/order/create/logined',
+                     //   'viewPath'    => '@fecshop/services/email/views/order/create/logined',
                         // 如果不定义 mailerConfig，则会使用email service里面的默认配置
-                        'mailerConfig'  => 'default',
-                    ],
-
-                ],
+                     //   'mailerConfig'  => 'default',
+                    //],
+                    //
+                //],
             ],
         ],
 

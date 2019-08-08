@@ -21,7 +21,7 @@ class Email extends Service
 {
     public $mailerConfig;
 
-    public $defaultForm;
+    // public $defaultForm;
 
     public $mailerInfo;
 
@@ -36,6 +36,23 @@ class Email extends Service
 
     protected $_from;
 
+    public function init()
+    {
+        parent::init();
+        $this->mailerInfo['storeName'] = Yii::$app->store->get('email', 'baseStoreName');
+        $this->mailerInfo['phone'] = Yii::$app->store->get('email', 'baseContactsPhone');
+        $this->mailerInfo['contacts']['emailAddress'] = Yii::$app->store->get('email', 'baseContactsEmail');
+        $this->mailerConfig['default']['class'] = 'yii\swiftmailer\Mailer';
+        $this->mailerConfig['default']['transport'] = [
+            'class' => 'Swift_SmtpTransport',
+            'host'              => Yii::$app->store->get('email', 'default_smtp_host'),            //SMTP Host
+            'username'      => Yii::$app->store->get('email', 'default_smtp_username'),     //SMTP 账号
+            'password'      => Yii::$app->store->get('email', 'default_smtp_password'),     //SMTP 密码
+            'port'              => Yii::$app->store->get('email', 'default_smtp_port'),                     //SMTP 端口
+            'encryption'    => Yii::$app->store->get('email', 'default_smtp_encryption'),  
+        ];
+        $this->mailerConfig['default']['messageConfig'] = ['charset'=>'UTF-8'];
+    }
     /**
      * 在邮箱中显示的 邮箱地址
      */
