@@ -211,7 +211,7 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
                         Yii::$app->store->disable => 'No',
                     ],
                 ],
-                'remark' => 'Review页面是否开启验证码验证',
+                'remark' => 'Review页面是否开启验证码验证,对于Appserver Api入口，如果您想开启该功能，必须配置redis，否则将会报错。',
             ],
             
             [
