@@ -23,6 +23,7 @@ return [
                     'catalog_product_upload_manager' 	    => 'Catalog-Product-Upload',
 					'catalog_category_manager' 				=> 'Catalog-Category',
 					'catalog_url_rewrite_manager' 			    => 'Catalog-Url-Rewrite',
+                    'sales_cart_manager' 						=> 'Sales-Cart',
                     'sales_order_manager' 						=> 'Sales-Order',
 					'sales_coupon_manager' 					    => 'Sales-Coupon',
                     'customer_account' 							    => 'Customer-Account',
@@ -141,12 +142,16 @@ return [
                                         'label' => 'Manager Order',
                                         'url_key' => '/sales/orderinfo/manager',
                                     ],
-                                    //'order_config' => [
-                                    //    'label' => '订单参数配置',
-                                    //    'url_key' => '/sales/orderinfo/manager',
-                                    //],
+                                    'order_config' => [
+                                        'label' => '订单参数配置',
+                                        'url_key' => '/config/order/manager',
+                                    ],
                                 ],
                             ],
+                            'cart' => [
+                                'label' => '购物车参数配置',
+                                'url_key' => '/config/cart/manager',
+                            ], 
                             'coupon' => [
                                 'label' => 'Coupon',
                                 'url_key' => '/sales/coupon/manager',
