@@ -103,6 +103,19 @@ class Order extends Service
     {
         parent::init();
         list($this->_orderModelName, $this->_orderModel) = \Yii::mapGet($this->_orderModelName);
+        $this->initParamConfig();
+    }
+    
+    public function initParamConfig()
+    {
+        $this->increment_id = Yii::$app->store->get('order', 'increment_id');
+        $requiredAddressAttr = Yii::$app->store->get('order', 'requiredAddressAttr');
+        $this->requiredAddressAttr = explode(',',$requiredAddressAttr);
+        $this->orderProductSaleInMonths = Yii::$app->store->get('order', 'orderProductSaleInMonths');
+        $this->minuteBeforeThatReturnPendingStock = Yii::$app->store->get('order', 'minuteBeforeThatReturnPendingStock');
+        $this->orderCountThatReturnPendingStock = Yii::$app->store->get('order', 'orderCountThatReturnPendingStock');
+        $this->orderRemarkStrMaxLen = Yii::$app->store->get('order', 'orderRemarkStrMaxLen');
+        //$guestOrder = Yii::$app->store->get('order', 'guestOrder');
     }
     
     /**
