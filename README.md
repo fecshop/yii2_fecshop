@@ -10,6 +10,10 @@
 
 [![Latest Stable Version](https://poser.pugx.org/fancyecommerce/fecshop/v/stable)](https://packagist.org/packages/fancyecommerce/fecshop) [![Total Downloads](https://poser.pugx.org/fancyecommerce/fecshop/downloads)](https://packagist.org/packages/fancyecommerce/fecshop) [![Latest Unstable Version](https://poser.pugx.org/fancyecommerce/fecshop/v/unstable)](https://packagist.org/packages/fancyecommerce/fecshop)
 
+Fecshop更名为FecMall
+--------------
+
+详细参看：[关于Fecshop更名为FecMall的原因](http://www.fecmall.com/topic/2020)
 
 
 Fecmall-2.x版本
