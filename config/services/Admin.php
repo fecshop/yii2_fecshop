@@ -184,6 +184,10 @@ return [
                                         'label' => '货币配置',
                                         'url_key' => '/config/currency/manager',
                                     ],
+                                    'email_manager' => [
+                                        'label' => '邮件配置',
+                                        'url_key' => '/config/email/manager',
+                                    ],
                                     
                                 ],
                             ],
