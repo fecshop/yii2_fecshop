@@ -1,10 +1,10 @@
 <?php
 /**
- * FecShop file.
+ * Fecmall file.
  *
  * @link http://www.fecshop.com/
- * @copyright Copyright (c) 2016 FecShop Software LLC
- * @license http://www.fecshop.com/license/
+ * @copyright Copyright (c) 2016 Fecmall Software LLC
+ * @license http://www.fecmall.com/license/
  */
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -29,7 +29,7 @@ if ($currentLangCode == 'zh') {
 }
 ?>
 <?php
-// fecshop 多模板机制的js和css部分
+// Fecmall 多模板机制的js和css部分
 $jsOptions = [
 	# js config 1
 	[
@@ -93,7 +93,7 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <?= Html::csrfMetaTags() ?>
-    <title><?= $this->title ? Html::encode($this->title) : Yii::$service->page->translate->__('Fecshop Admin Manager System') ?></title>
+    <title><?= $this->title ? Html::encode($this->title) : Yii::$service->page->translate->__('Fecmall Admin Manager System') ?></title>
 	<link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" >
 	<?php $this->head() ?>
 <script> 
@@ -122,7 +122,7 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
 			
 			<div id="sidebar">
 				<div class="toggleCollapse" style="background:#20222A !important;overflow: visible;">
-					<h2 style="font-size:20px;font-weight:100;    padding-top: 10px;padding-bottom: 10px;"><?= Yii::$service->page->translate->__('Fecshop'); ?></h2>
+					<h2 style="font-size:20px;font-weight:100;    padding-top: 10px;padding-bottom: 10px;"><?= Yii::$service->page->translate->__('Fecmall'); ?></h2>
 					<div><i class=”fa fa-list”></i></div>
                     
 				</div>
@@ -205,8 +205,8 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
     <div class="container">
         <div style="position:absolute;z-index: 99999;" id="footer">
             © 2015-2019
-            <a style="text-decoration:none" href="http://www.fecshop.com" target="_blank">
-                <?= Yii::$service->page->translate->__('Fecshop Team'); ?> - www.fecshop.com
+            <a style="text-decoration:none" href="http://www.fecmall.com" target="_blank">
+                <?= Yii::$service->page->translate->__('Fecmall Team'); ?> - www.fecmall.com
             </a>
         </div>
     </div>

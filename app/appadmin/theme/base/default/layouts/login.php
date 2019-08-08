@@ -81,22 +81,22 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
                  <h1 class="login_logo">
                      <a href="<?= Yii::$app->getHomeUrl()  ?>" style="font-size:35px;text-decoration:none;
                     color:#6f8992;">
-                         <img alt="Fecshop" src="<?= Yii::getAlias($logoPath[1]); ?>">
+                         <img  style="height:40px" alt="Fecshop" src="<?= Yii::getAlias($logoPath[1]); ?>">
                      </a>
                  </h1>
                  <?= $content; ?>
              </div>
              <div class="login_main">
                  <ul class="helpList">
-                     <li><a target="_blank" href="http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-appadmin-about.html"><?= Yii::$service->page->translate->__('Introduction'); ?></a></li>
-                     <li><a target="_blank" href="http://www.fecshop.com/wendang"><?= Yii::$service->page->translate->__('Fecshop Detailed'); ?></a></li>
-                     <li><a target="_blank" href="http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-appadmin-about.html"><?= Yii::$service->page->translate->__('How to get started quickly?'); ?></a></li>
+                     <li><a target="_blank" href="http://www.fecmall.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-appadmin-about.html"><?= Yii::$service->page->translate->__('Introduction'); ?></a></li>
+                     <li><a target="_blank" href="http://www.fecmall.com/wendang"><?= Yii::$service->page->translate->__('Fecmall Detailed'); ?></a></li>
+                     <li><a target="_blank" href="http://www.fecmall.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-appadmin-about.html"><?= Yii::$service->page->translate->__('How to get started quickly?'); ?></a></li>
                  </ul>
 
              </div>
          </div>
          <div id="login_footer">
-             Copyright &copy; 2016 <a style="text-decoration:none" target="_blank" href="http://www.fecshop.com">www.fecshop.com</a> <?= Yii::$service->page->translate->__('Login Fecshop Admin'); ?>Inc. All Rights Reserved.
+             Copyright &copy; 2016 <a style="text-decoration:none" target="_blank" href="http://www.fecmall.com">www.fecmall.com</a> <?= Yii::$service->page->translate->__('Login Fecmall Admin'); ?>Inc. All Rights Reserved.
          </div>
 
 	</div>
