@@ -23,9 +23,10 @@ class Register
         $firstname = isset($param['firstname']) ? $param['firstname'] : '';
         $lastname = isset($param['lastname']) ? $param['lastname'] : '';
         $email = isset($param['email']) ? $param['email'] : '';
-        $registerParam = \Yii::$app->getModule('customer')->params['register'];
-        $registerPageCaptcha = isset($registerParam['registerPageCaptcha']) ? $registerParam['registerPageCaptcha'] : false;
-
+        //$registerParam = \Yii::$app->getModule('customer')->params['register'];
+        //$registerPageCaptcha = isset($registerParam['registerPageCaptcha']) ? $registerParam['registerPageCaptcha'] : false;
+        $appName = Yii::$service->helper->getAppName();
+        $registerPageCaptcha = Yii::$app->store->get($appName.'_account', 'registerPageCaptcha');
         return [
             'firstname'        => $firstname,
             'lastname'        => $lastname,
@@ -35,17 +36,19 @@ class Register
             'maxNameLength' => Yii::$service->customer->getRegisterNameMaxLength(),
             'minPassLength' => Yii::$service->customer->getRegisterPassMinLength(),
             'maxPassLength' => Yii::$service->customer->getRegisterPassMaxLength(),
-            'registerPageCaptcha' => $registerPageCaptcha,
+            'registerPageCaptcha' => ($registerPageCaptcha == Yii::$app->store->enable ? true : false),
         ];
     }
 
     public function register($param)
     {
         $captcha = $param['captcha'];
-        $registerParam = \Yii::$app->getModule('customer')->params['register'];
-        $registerPageCaptcha = isset($registerParam['registerPageCaptcha']) ? $registerParam['registerPageCaptcha'] : false;
-        // 如果开启了验证码，但是验证码验证不正确就报错返回。
-        if ($registerPageCaptcha && !$captcha) {
+        $appName = Yii::$service->helper->getAppName();
+        $registerPageCaptcha = Yii::$app->store->get($appName.'_account', 'registerPageCaptcha');
+        
+        //$registerParam = \Yii::$app->getModule('customer')->params['register'];
+        //$registerPageCaptcha = isset($registerParam['registerPageCaptcha']) ? $registerParam['registerPageCaptcha'] : false;// 如果开启了验证码，但是验证码验证不正确就报错返回。
+        if (($registerPageCaptcha == Yii::$app->store->enable)  && !$captcha) {
             Yii::$service->page->message->addError(['Captcha can not empty']);
 
             return;
