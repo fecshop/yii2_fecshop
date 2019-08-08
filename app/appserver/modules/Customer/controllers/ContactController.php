@@ -37,12 +37,12 @@ class ContactController extends AppserverController
         }
         
         $contactsEmail = '';
-        $contactsCaptcha = false;
-        $contacts = Yii::$app->getModule('customer')->params['contacts'];
-
-        if (isset($contacts['contactsCaptcha'])) {
-            $contactsCaptcha = $contacts['contactsCaptcha'] ? true : false;
-        }
+        //$contactsCaptcha = false;
+        //$contacts = Yii::$app->getModule('customer')->params['contacts'];
+        $appName = Yii::$service->helper->getAppName();
+        $contactsCaptcha = Yii::$app->store->get($appName.'_account', 'contactsCaptcha');
+        $contactsCaptcha = ($contactsCaptcha == Yii::$app->store->enable)  ? true : false;
+        
         if (isset($contacts['email']['address'])) {
             $contactsEmail = $contacts['email']['address'];
         }
@@ -93,8 +93,12 @@ class ContactController extends AppserverController
             
             return $responseData;
         }   
-        $contacts = Yii::$app->getModule('customer')->params['contacts'];
-        $contactsCaptcha = $contacts['contactsCaptcha'] ? true : false;
+        //$contacts = Yii::$app->getModule('customer')->params['contacts'];
+        //$contactsCaptcha = $contacts['contactsCaptcha'] ? true : false;
+        $appName = Yii::$service->helper->getAppName();
+        $contactsCaptcha = Yii::$app->store->get($appName.'_account', 'contactsCaptcha');
+        $contactsCaptcha = ($contactsCaptcha == Yii::$app->store->enable)  ? true : false;
+        
         if($contactsCaptcha){
             if(!Yii::$service->helper->captcha->validateCaptcha($captcha)){
                 $code = Yii::$service->helper->appserver->status_invalid_captcha;
