@@ -33,9 +33,12 @@ class ForgotController extends AppserverController
         //    
         //    return $responseData;
         //}
-        $forgotPasswordParam = \Yii::$app->getModule('customer')->params['forgotPassword'];
-        $forgotCaptchaActive = isset($forgotPasswordParam['forgotCaptcha']) ? $forgotPasswordParam['forgotCaptcha'] : false;
-
+        //$forgotPasswordParam = \Yii::$app->getModule('customer')->params['forgotPassword'];
+        //$forgotCaptchaActive = isset($forgotPasswordParam['forgotCaptcha']) ? $forgotPasswordParam['forgotCaptcha'] : false;
+        $appName = Yii::$service->helper->getAppName();
+        $forgotCaptcha = Yii::$app->store->get($appName.'_account', 'forgotPasswordCaptcha');
+        $forgotCaptchaActive = ($forgotCaptcha == Yii::$app->store->enable)  ? true : false;
+        
         $code = Yii::$service->helper->appserver->status_success;
         $data = [
             'forgotCaptchaActive' => $forgotCaptchaActive,
@@ -148,8 +151,11 @@ class ForgotController extends AppserverController
         }
         
         $email       = Yii::$app->request->post('email');
-        $forgotPasswordParam = \Yii::$app->getModule('customer')->params['forgotPassword'];
-        $forgotCaptchaActive = isset($forgotPasswordParam['forgotCaptcha']) ? $forgotPasswordParam['forgotCaptcha'] : false;
+        //$forgotPasswordParam = \Yii::$app->getModule('customer')->params['forgotPassword'];
+        //$forgotCaptchaActive = isset($forgotPasswordParam['forgotCaptcha']) ? $forgotPasswordParam['forgotCaptcha'] : false;
+        $appName = Yii::$service->helper->getAppName();
+        $forgotCaptcha = Yii::$app->store->get($appName.'_account', 'forgotPasswordCaptcha');
+        $forgotCaptchaActive = ($forgotCaptcha == Yii::$app->store->enable)  ? true : false;
         if($forgotCaptchaActive){
             $captcha    = Yii::$app->request->post('captcha');
             if(!Yii::$service->helper->captcha->validateCaptcha($captcha)){
