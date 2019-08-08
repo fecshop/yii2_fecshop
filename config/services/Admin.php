@@ -268,6 +268,10 @@ return [
                                         'label' => '分类产品配置',
                                         'url_key' => '/config/apphtml5catalog/manager',
                                     ],
+                                    'account' => [
+                                        'label' => '账户配置',
+                                        'url_key' => '/config/apphtml5account/manager',
+                                    ],
                                     'payment' => [
                                         'label' => '支付配置',
                                         'url_key' => '/config/apphtml5payment/manager',
@@ -301,6 +305,10 @@ return [
                                     'catalog' => [
                                         'label' => '分类产品配置',
                                         'url_key' => '/config/appservercatalog/manager',
+                                    ],
+                                    'account' => [
+                                        'label' => '账户配置',
+                                        'url_key' => '/config/appserveraccount/manager',
                                     ],
                                     'payment' => [
                                         'label' => '支付配置',
