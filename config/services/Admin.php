@@ -233,6 +233,10 @@ return [
                                         'label' => '分类产品配置',
                                         'url_key' => '/config/appfrontcatalog/manager',
                                     ],
+                                    'account' => [
+                                        'label' => '账户配置',
+                                        'url_key' => '/config/appfrontaccount/manager',
+                                    ],
                                     'payment' => [
                                         'label' => '支付配置',
                                         'url_key' => '/config/appfrontpayment/manager',
