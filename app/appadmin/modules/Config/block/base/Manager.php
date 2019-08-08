@@ -31,6 +31,7 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
         'default_currency',
         'base_currency',
         'image_domain',
+        
     ];
     
     public function init()
@@ -130,6 +131,7 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
                 'require' => 1,
                 'remark' =>  'image base domain that use for generate image url'
             ],
+            
         ];
     }
     
