@@ -17,30 +17,30 @@ return [
          * 模块内部的params配置。
          */
         'params'=> [
-            'register' => [
+            //'register' => [
                 // 账号注册成功后，是否自动登录
-                'successAutoLogin' => true,
+            //    'successAutoLogin' => true,
                 // 注册登录成功后，跳转的url
-                'loginSuccessRedirectUrlKey' => 'customer/account',
+            //    'loginSuccessRedirectUrlKey' => 'customer/account',
                 // 注册页面的验证码是否开启
-                'registerPageCaptcha' => true,
+            //    'registerPageCaptcha' => true,
 
-            ],
-            'login' => [
+            //],
+            //'login' => [
                 // 在登录页面 customer/account/login 页面登录成功后跳转的urlkey，
-                'loginPageSuccessRedirectUrlKey' => 'customer/account',
+            //    'loginPageSuccessRedirectUrlKey' => 'customer/account',
                 // 在其他页面的弹框方式登录的账号成功后，的页面跳转，如果是false，则代表返回原来的页面。
-                'otherPageSuccessRedirectUrlKey' => false,
+            //    'otherPageSuccessRedirectUrlKey' => false,
                 // 登录页面的验证码是否开启
-                'loginPageCaptcha' => false,
+            //    'loginPageCaptcha' => false,
                 // 邮件信息，登录账号后是否发送邮件
 
-            ],
-            'forgotPassword' => [
+            //],
+            //'forgotPassword' => [
                 // 忘记密码页面的验证码是否开启
-                'forgotCaptcha' => true,
+            //    'forgotCaptcha' => true,
 
-            ],
+            //],
 
             'leftMenu'  => [
                 'Account Information' => 'customer/editaccount',
@@ -51,15 +51,15 @@ return [
 
             ],
 
-            'contacts'    => [
+            //'contacts'    => [
                 // 联系我们页面的验证码是否开启
-                'contactsCaptcha' => true,
+            //    'contactsCaptcha' => true,
                 // 设置联系我们邮箱，如果不设置，则从email service配置中读取。
                 //'address' => '',
-            ],
-            'newsletterSubscribe' => [
+            //],
+            //'newsletterSubscribe' => [
 
-            ],
+            //],
         ],
     ],
 ];
