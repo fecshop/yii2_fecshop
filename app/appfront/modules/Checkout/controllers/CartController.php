@@ -53,6 +53,7 @@ class CartController extends AppfrontController
         $qty = \Yii::$service->helper->htmlEncode($qty);
         $qty = abs(ceil((int) $qty));
         if ($qty && $product_id) {
+            
             if ($custom_option) {
                 $custom_option_sku = json_decode($custom_option, true);
             }
@@ -64,6 +65,7 @@ class CartController extends AppfrontController
                 'qty'        =>  $qty,
                 'custom_option_sku' => $custom_option_sku,
             ];
+            
             $innerTransaction = Yii::$app->db->beginTransaction();
             try {
                 $addToCart = Yii::$service->cart->addProductToCart($item);
