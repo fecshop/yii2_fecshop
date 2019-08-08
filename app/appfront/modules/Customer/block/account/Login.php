@@ -20,8 +20,11 @@ class Login
 {
     public function getLastData($param = '')
     {
-        $loginParam = \Yii::$app->getModule('customer')->params['login'];
-        $loginPageCaptcha = isset($loginParam['loginPageCaptcha']) ? $loginParam['loginPageCaptcha'] : false;
+        //$loginParam = \Yii::$app->getModule('customer')->params['login'];
+        $appName = Yii::$service->helper->getAppName();
+        $loginPageCaptcha = Yii::$app->store->get($appName.'_account', 'loginPageCaptcha');
+        
+        $loginPageCaptcha = ($loginPageCaptcha == Yii::$app->store->enable)  ? true : false;
         $email = isset($param['email']) ? $param['email'] : '';
         $this->breadcrumbs(Yii::$service->page->translate->__('Login'));
         return [
@@ -45,8 +48,9 @@ class Login
     public function login($param)
     {
         $captcha = $param['captcha'];
-        $loginParam = \Yii::$app->getModule('customer')->params['login'];
-        $loginPageCaptcha = isset($loginParam['loginPageCaptcha']) ? $loginParam['loginPageCaptcha'] : false;
+        $appName = Yii::$service->helper->getAppName();
+        $loginPageCaptcha = Yii::$app->store->get($appName.'_account', 'loginPageCaptcha');
+        $loginPageCaptcha = ($loginPageCaptcha == Yii::$app->store->enable)  ? true : false;
         if ($loginPageCaptcha && !$captcha) {
             Yii::$service->page->message->addError(['Captcha can not empty']);
 
