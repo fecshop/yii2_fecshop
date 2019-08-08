@@ -17,9 +17,9 @@ return [
          * 模块内部的params配置。
          */
         'params'=> [
-            'guestOrder' => true, // 是否支持游客下单
-            'checkout_cart_breadcrumbs' => false,
-            'checkout_onepage_breadcrumbs' => false,
+            // 'guestOrder' => true, // 是否支持游客下单 **废弃，改为后台配置
+            // 'checkout_cart_breadcrumbs' => false,
+            // 'checkout_onepage_breadcrumbs' => false,
         ],
     ],
 ];
