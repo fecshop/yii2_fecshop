@@ -17,7 +17,7 @@ return [
          * 模块内部的params配置。
          */
         'params'=> [
-            'guestOrder' => true, // 是否支持游客下单
+            // 'guestOrder' => true, // 是否支持游客下单 **废弃，改为后台配置
         ],
     ],
 ];
