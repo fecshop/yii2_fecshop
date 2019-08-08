@@ -24,7 +24,7 @@ class Register
         $lastname = isset($param['lastname']) ? $param['lastname'] : '';
         $email = isset($param['email']) ? $param['email'] : '';
         $appName = Yii::$service->helper->getAppName();
-        $registerPageCaptcha = Yii::$app->store->get($appName.'_account', 'registerSuccessAutoLogin');
+        $registerPageCaptcha = Yii::$app->store->get($appName.'_account', 'registerPageCaptcha');
         $this->breadcrumbs(Yii::$service->page->translate->__('Register'));
         return [
             'firstname'        => $firstname,
@@ -51,7 +51,7 @@ class Register
     {
         $captcha = $param['captcha'];
         $appName = Yii::$service->helper->getAppName();
-        $registerPageCaptcha = Yii::$app->store->get($appName.'_account', 'registerSuccessAutoLogin');
+        $registerPageCaptcha = Yii::$app->store->get($appName.'_account', 'registerPageCaptcha');
         
         //$registerParam = \Yii::$app->getModule('customer')->params['register'];
         //$registerPageCaptcha = isset($registerParam['registerPageCaptcha']) ? $registerParam['registerPageCaptcha'] : false;
