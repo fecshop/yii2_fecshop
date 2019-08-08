@@ -79,8 +79,9 @@ class NewsletterMysqldb extends Service implements NewsletterInterface
      */
     protected function emailIsExist($emailAddress)
     {
-        $primaryKey = $this->_newsletterModel->primaryKey();
+        $primaryKey = $this->getPrimaryKey();
         $one = $this->_newsletterModel->findOne(['email' => $emailAddress]);
+        
         if ($one[$primaryKey]) {
             return true;
         }
