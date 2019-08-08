@@ -32,7 +32,35 @@ class Customer extends Service
      * 注册账户激活邮件的token的过期时间。
      */
     public $registerAccountEnableTokenExpire = 86400;
-
+    
+    public function init()
+    {
+        parent::init();
+        // init email config
+        $this->registerAccountIsNeedEnableByEmail = (Yii::$app->store->get('email', 'registerAccountIsNeedEnableByEmail') == Yii::$app->store->enable) ? true : false ;
+        $this->registerAccountEnableTokenExpire = Yii::$app->store->get('email', 'registerAccountIsNeedEnableByEmail');
+        $this->emailTheme['register']['enable'] = (Yii::$app->store->get('email', 'registerEnable') == Yii::$app->store->enable) ? true : false ;
+        $this->emailTheme['register']['widget'] = Yii::$app->store->get('email', 'registerWidget');
+        $this->emailTheme['register']['viewPath'] = Yii::$app->store->get('email', 'registerViewPath');
+        
+        $this->emailTheme['login']['enable'] = (Yii::$app->store->get('email', 'loginEnable') == Yii::$app->store->enable) ? true : false ;
+        $this->emailTheme['login']['widget'] = Yii::$app->store->get('email', 'loginWidget');
+        $this->emailTheme['login']['viewPath'] = Yii::$app->store->get('email', 'loginViewPath');
+        
+        $this->emailTheme['forgotPassword']['enable'] = (Yii::$app->store->get('email', 'forgotPasswordEnable') == Yii::$app->store->enable) ? true : false ;
+        $this->emailTheme['forgotPassword']['widget'] = Yii::$app->store->get('email', 'forgotPasswordWidget');
+        $this->emailTheme['forgotPassword']['viewPath'] = Yii::$app->store->get('email', 'forgotPasswordViewPath');
+        $this->emailTheme['forgotPassword']['passwordResetTokenExpire'] = Yii::$app->store->get('email', 'forgotPasswordResetTokenExpire');
+    
+        $this->emailTheme['contacts']['enable'] = (Yii::$app->store->get('email', 'contactsEnable') == Yii::$app->store->enable) ? true : false ;
+        $this->emailTheme['contacts']['widget'] = Yii::$app->store->get('email', 'contactsWidget');
+        $this->emailTheme['contacts']['viewPath'] = Yii::$app->store->get('email', 'contactsViewPath');
+        $this->emailTheme['contacts']['address'] = Yii::$app->store->get('email', 'contactsEmailAddress');
+    
+        $this->emailTheme['newsletter']['enable'] = (Yii::$app->store->get('email', 'newsletterEnable') == Yii::$app->store->enable) ? true : false ;
+        $this->emailTheme['newsletter']['widget'] = Yii::$app->store->get('email', 'newsletterWidget');
+        $this->emailTheme['newsletter']['viewPath'] = Yii::$app->store->get('email', 'newsletterViewPath');
+    }
     /**
      * @param $emailInfo | Array  ，数组格式格式如下：
      * [ 'email' => 'xx@xx.com' , [...] ] 其中email是必须有的数组key，对于其他的，
