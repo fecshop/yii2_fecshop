@@ -66,8 +66,11 @@ class RegisterController extends AppserverController
         $minPassLength = Yii::$service->customer->getRegisterPassMinLength();
         $maxPassLength = Yii::$service->customer->getRegisterPassMaxLength();
             
-        $registerParam = \Yii::$app->getModule('customer')->params['register'];
-        $registerPageCaptcha = isset($registerParam['registerPageCaptcha']) ? $registerParam['registerPageCaptcha'] : false;
+        //$registerParam = \Yii::$app->getModule('customer')->params['register'];
+        //$registerPageCaptcha = isset($registerParam['registerPageCaptcha']) ? $registerParam['registerPageCaptcha'] : false;
+        $appName = Yii::$service->helper->getAppName();
+        $registerPageCaptcha = Yii::$app->store->get($appName.'_account', 'registerPageCaptcha');
+        $registerPageCaptcha = ($registerPageCaptcha == Yii::$app->store->enable)  ? true : false;
         $errorArr = [];
         // 如果开启了验证码，但是验证码验证不正确就报错返回。
         if ($registerPageCaptcha && !$captcha) {
@@ -138,7 +141,11 @@ class RegisterController extends AppserverController
             $param = \Yii::$service->helper->htmlEncode($param);
             $registerStatus = $this->register($param);
             if ($registerStatus) {
-                $params_register = Yii::$app->getModule('customer')->params['register'];
+                //$params_register = Yii::$app->getModule('customer')->params['register'];
+                $appName = Yii::$service->helper->getAppName();
+                $registerSuccessAutoLogin = Yii::$app->store->get($appName.'_account', 'registerSuccessAutoLogin');
+                //$registerSuccessRedirectUrlKey = Yii::$app->store->get($appName.'_account', 'registerSuccessRedirectUrlKey');
+                
                 $redirect = '/customer/account/login';
                 
                 // 是否需要邮件激活？
@@ -155,7 +162,7 @@ class RegisterController extends AppserverController
                     return $responseData;
                 } else { // 如果不需要邮件激活？
                     // 注册成功后，是否自动登录
-                    if (isset($params_register['successAutoLogin']) && $params_register['successAutoLogin']) {
+                    if ($registerSuccessAutoLogin == Yii::$app->store->enable) {
                         $accessToken = Yii::$service->customer->loginAndGetAccessToken($email,$password);
                         if($accessToken){
                             $redirect = '/customer/account/index';
@@ -200,9 +207,14 @@ class RegisterController extends AppserverController
             
             return $responseData;
         }
-        $registerParam = \Yii::$app->getModule('customer')->params['register'];
-        $registerPageCaptcha = isset($registerParam['registerPageCaptcha']) ? $registerParam['registerPageCaptcha'] : false;
-
+        //$registerParam = \Yii::$app->getModule('customer')->params['register'];
+        //$registerPageCaptcha = isset($registerParam['registerPageCaptcha']) ? $registerParam['registerPageCaptcha'] : false;
+        $appName = Yii::$service->helper->getAppName();
+        $registerPageCaptcha = Yii::$app->store->get($appName.'_account', 'registerSuccessAutoLogin');
+        $registerPageCaptcha = ($registerPageCaptcha == Yii::$app->store->enable)  ? true : false;
+        //$registerParam = \Yii::$app->getModule('customer')->params['register'];
+        //$registerPageCaptcha = isset($registerParam['registerPageCaptcha']) ? $registerParam['registerPageCaptcha'] : false;
+        
         $code = Yii::$service->helper->appserver->status_success;
         $data = [
             'minNameLength' => Yii::$service->customer->getRegisterNameMinLength(),

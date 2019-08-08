@@ -39,8 +39,12 @@ class LoginController extends AppserverController
         }
         $email       = Yii::$app->request->post('email');
         $password    = Yii::$app->request->post('password');
-        $loginParam  = \Yii::$app->getModule('customer')->params['login'];
-        $loginCaptchaActive = isset($loginParam['loginPageCaptcha']) ? $loginParam['loginPageCaptcha'] : false;
+        //$loginParam  = \Yii::$app->getModule('customer')->params['login'];
+        //$loginCaptchaActive = isset($loginParam['loginPageCaptcha']) ? $loginParam['loginPageCaptcha'] : false;
+        $appName = Yii::$service->helper->getAppName();
+        $loginPageCaptcha = Yii::$app->store->get($appName.'_account', 'loginPageCaptcha');
+        
+        $loginCaptchaActive = ($loginPageCaptcha == Yii::$app->store->enable)  ? true : false;
         if($loginCaptchaActive){
             $captcha    = Yii::$app->request->post('captcha');
             if(!Yii::$service->helper->captcha->validateCaptcha($captcha)){
@@ -106,8 +110,13 @@ class LoginController extends AppserverController
             
             return $responseData;
         }
-        $loginParam = \Yii::$app->getModule('customer')->params['login'];
-        $loginCaptchaActive = isset($loginParam['loginPageCaptcha']) ? $loginParam['loginPageCaptcha'] : false;
+        $appName = Yii::$service->helper->getAppName();
+        $loginPageCaptcha = Yii::$app->store->get($appName.'_account', 'loginPageCaptcha');
+        
+        $loginCaptchaActive = ($loginPageCaptcha == Yii::$app->store->enable)  ? true : false;
+        
+        //$loginParam = \Yii::$app->getModule('customer')->params['login'];
+        //$loginCaptchaActive = isset($loginParam['loginPageCaptcha']) ? $loginParam['loginPageCaptcha'] : false;
         $googleRedirectUrl   = Yii::$app->request->get('googleRedirectUrl');
         $facebookRedirectUrl = Yii::$app->request->get('facebookRedirectUrl');
         
