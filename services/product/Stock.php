@@ -425,6 +425,7 @@ class Stock extends Service
      * @param $product | Object,  Product Model
      * @param $sale_qty | Int 需要出售的个数
      * @param $custom_option_sku | String 产品custom option sku
+     * @param $checkDbQty | boolean, 是否检查商品库存？如果为false，则不对库存进行检查。
      * @return bool
      *  查看产品库存
      */
@@ -449,30 +450,26 @@ class Stock extends Service
         if (!$this->checkOnShelfStatus($is_in_stock)) {
             Yii::$service->helper->errors->add(
                 'Product Id: {product_id}, The product has off the shelf',
-                ['product_id' => $product['_id']]
+                ['product_id' => $product[$productPrimaryKey]]
             );
             
             return false;
         }
-        
         // 如果不检查数据库里面的库存，那么直接返回true
         if (!$checkDbQty) {
             
             return true;
         }
-        
         if ($custom_option_sku) {
             $productCustomOptionQty = $this->_COQtyModel->find()->where([
                 'product_id'        => $product_id,
                 'custom_option_sku' => $custom_option_sku
             ])->one();
-            
             if (!$productCustomOptionQty['qty']) {
                 Yii::$service->helper->errors->add('product: [ {product_name} ] is stock out', ['product_name' => $product_name]);
                 
                 return false;
             }
-            
             if ($productCustomOptionQty['qty'] < $sale_qty) {
                 Yii::$service->helper->errors->add('product: [ {product_name} ] is stock out', ['product_name' => $product_name]);
                 
@@ -482,6 +479,7 @@ class Stock extends Service
             $productFlatQty = $this->_flatQtyModel->find()->where([
                 'product_id' => $product_id
             ])->one();
+            
             if (!$productFlatQty['qty']) {
                 $productName = Yii::$service->store->getStoreAttrVal($product['name'], 'name');
                 Yii::$service->helper->errors->add(
@@ -491,17 +489,15 @@ class Stock extends Service
                 
                 return false;
             }    
-                
             if ($productFlatQty['qty'] < $sale_qty) {
                 Yii::$service->helper->errors->add(
                         'Product Id: {product_id}, Product inventory is less than [{sale_qty}]',
-                        ['product_id' => $product['_id'], 'sale_qty' => $sale_qty]
+                        ['product_id' => $product[$productPrimaryKey], 'sale_qty' => $sale_qty]
                     );
-                
                 return false;
             }
         }
-
+ 
         return true;
     }
     
