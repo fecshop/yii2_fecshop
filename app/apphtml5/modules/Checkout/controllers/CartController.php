@@ -220,8 +220,11 @@ class CartController extends AppfrontController
                 ]);
                 $innerTransaction->commit();
             } else {
+                $errors = Yii::$service->helper->errors->get(',');
                 echo json_encode([
                     'status' => 'fail',
+                    'content'=> Yii::$service->page->translate->__($errors),
+                    //'items_count' => Yii::$service->cart->quote->getCartItemCount(),
                 ]);
                 $innerTransaction->rollBack();
             }

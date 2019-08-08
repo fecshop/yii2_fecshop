@@ -216,7 +216,9 @@ $(document).ready(function(){
 				success:function(data, textStatus){ 
 					if(data.status == 'success'){
 						window.location.href=currentUrl;
-					}
+					} else {
+                        alert(data.content);
+                    }
 				},
 				error:function (XMLHttpRequest, textStatus, errorThrown){}
 			});
@@ -240,7 +242,9 @@ $(document).ready(function(){
 			success:function(data, textStatus){ 
 				if(data.status == 'success'){
 					window.location.href=currentUrl;
-				}
+				} else {
+                    alert(data.content);
+                }
 			},
 			error:function (XMLHttpRequest, textStatus, errorThrown){}
 		});
