@@ -3,9 +3,9 @@
 /*
  * FecShop file.
  *
- * @link http://www.fecshop.com/
+ * @link http://www.fecmall.com/
  * @copyright Copyright (c) 2016 FecShop Software LLC
- * @license http://www.fecshop.com/license/
+ * @license http://www.fecmall.com/license/
  */
 
 namespace fecshop\services;
