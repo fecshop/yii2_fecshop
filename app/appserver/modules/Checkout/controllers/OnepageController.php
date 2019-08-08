@@ -30,8 +30,8 @@ class OnepageController extends AppserverController
         if(Yii::$app->request->getMethod() === 'OPTIONS'){
             return [];
         }
-        $guestOrder = Yii::$app->controller->module->params['guestOrder'];
-        if(!$guestOrder && Yii::$app->user->isGuest){
+        $guestOrder = Yii::$app->store->get('order', 'guestOrder');
+        if($guestOrder != Yii::$app->store->enable && Yii::$app->user->isGuest){
             $code = Yii::$service->helper->appserver->account_no_login_or_login_token_timeout;
             $data = [];
             $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
@@ -46,8 +46,8 @@ class OnepageController extends AppserverController
         if(Yii::$app->request->getMethod() === 'OPTIONS'){
             return [];
         }
-        $guestOrder = Yii::$app->controller->module->params['guestOrder'];
-        if(!$guestOrder && Yii::$app->user->isGuest){
+        $guestOrder = Yii::$app->store->get('order', 'guestOrder');
+        if($guestOrder != Yii::$app->store->enable && Yii::$app->user->isGuest){
             $code = Yii::$service->helper->appserver->account_no_login_or_login_token_timeout;
             $data = [];
             $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
@@ -63,8 +63,8 @@ class OnepageController extends AppserverController
         if(Yii::$app->request->getMethod() === 'OPTIONS'){
             return [];
         }
-        $guestOrder = Yii::$app->controller->module->params['guestOrder'];
-        if(!$guestOrder && Yii::$app->user->isGuest){
+        $guestOrder = Yii::$app->store->get('order', 'guestOrder');
+        if($guestOrder != Yii::$app->store->enable && Yii::$app->user->isGuest){
             $code = Yii::$service->helper->appserver->account_no_login_or_login_token_timeout;
             $data = [];
             $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
