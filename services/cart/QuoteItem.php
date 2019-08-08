@@ -47,6 +47,7 @@ class QuoteItem extends Service
      * 将某个产品加入到购物车中。
      * 在添加到 cart_item 表后，更新购物车中产品的总数。
      * @param array $item
+     * @param Object $product ， Product Model
      * @return mixed
      * example:
      * $item = [
@@ -56,7 +57,7 @@ class QuoteItem extends Service
      *      'sku' 				=> 'xxxx',
      * ];
      */
-    public function addItem($item)
+    public function addItem($item, $product)
     {
         $cart_id = Yii::$service->cart->quote->getCartId();
         if (!$cart_id) {
@@ -69,6 +70,8 @@ class QuoteItem extends Service
 
             return false;
         }
+        
+        
         $where = [
             'cart_id'    => $cart_id,
             'product_id' => $item['product_id'],
@@ -78,13 +81,29 @@ class QuoteItem extends Service
         }
         /** @var \fecshop\models\mysqldb\cart\Item $item_one */
         $item_one = $this->_itemModel->find()->where($where)->one();
+        
         if ($item_one['cart_id']) {
+            // 检查产品满足加入购物车的条件
+            
+            $checkItem = $item;
+            $checkItem['qty'] = $item['qty'] + $item_one['qty'];
+            $productValidate = Yii::$service->cart->info->checkProductBeforeAdd($checkItem, $product);
+            
+            if (!$productValidate) {
+                return false;
+            }
             $item_one->active = $this->itemDefaultActiveStatus;
             $item_one->qty = $item['qty'] + $item_one['qty'];
             $item_one->save();
             // 重新计算购物车的数量
             Yii::$service->cart->quote->computeCartInfo();
         } else {
+            // 检查产品满足加入购物车的条件
+            $checkItem = $item;
+            $productValidate = Yii::$service->cart->info->checkProductBeforeAdd($checkItem, $product);
+            if (!$productValidate) {
+                return false;
+            }
             $item_one = new $this->_itemModelName;
             $item_one->store = Yii::$service->store->currentStore;
             $item_one->cart_id = $cart_id;
@@ -394,6 +413,14 @@ class QuoteItem extends Service
             $product_id = $one['product_id'];
             if ($one['item_id'] && $product_id) {
                 $product = Yii::$service->product->getByPrimaryKey($product_id);
+                // 检查产品满足加入购物车的条件
+                $checkItem = $one;
+                $checkItem['qty'] += 1;
+                $productValidate = Yii::$service->cart->info->checkProductBeforeAdd($checkItem, $product);
+            
+                if (!$productValidate) {
+                    return false;
+                }
                 $changeQty = Yii::$service->cart->getCartQty($product['package_number'], 1);
                 $one['qty'] = $one['qty'] + $changeQty;
                 $one->save();

@@ -29,7 +29,14 @@ class Info extends Service
     // 如果addToCartCheckSkuQty设置为true，则需要检查产品qty是否>购买qty，
     // 如果设置为false，则不需要，也就是说产品库存qty小于购买qty，也是可以加入购物车的。
     public $addToCartCheckSkuQty = false;
-
+    
+    public function init()
+    {
+        parent::init();
+        // get Config from store config
+        $this->maxCountAddToCart = Yii::$app->store->get('cart', 'maxCountAddToCart');
+        $this->addToCartCheckSkuQty = (Yii::$app->store->get('cart', 'addToCartCheckSkuQty') == Yii::$app->store->enable ) ? true : false;
+    }
     /**
      * Checks several conditions before you add product to cart
      * @param array $item
@@ -44,7 +51,7 @@ class Info extends Service
      */
     public function checkProductBeforeAdd($item, $product)
     {
-        // 加入购物车的产品个数不能小于设置的最小购买数量
+        // 加入购物车后的产品个数不能小于设置的最小购买数量
         $qty = $item['qty'];
         $min_sales_qty = $product['min_sales_qty'];
         if (($min_sales_qty > 0) && ($min_sales_qty > $qty)) {
@@ -52,12 +59,14 @@ class Info extends Service
             
             return false;
         }
+        
         // 验证产品是否是激活状态
         if ($product['status'] != Yii::$service->product->getEnableStatus()) {
             Yii::$service->helper->errors->add('product is not active');
 
             return false;
         }
+        
         // 加入购物车的产品个数超出 购物车中产品的最大个数。
         if ($qty > $this->maxCountAddToCart) {
             Yii::$service->helper->errors->add('The number of products added to the shopping cart can not exceed {max_count_add_to_cart}', ['max_count_add_to_cart' => $this->maxCountAddToCart]);
@@ -74,6 +83,7 @@ class Info extends Service
         // 验证库存 是否库存满足
         $product_id = $item['product_id'];
         $custom_option_sku = $item['custom_option_sku'];
+        
         if ($this->addToCartCheckSkuQty) {
             // 验证：1.上架状态， 2.库存个数是否大于购买个数
             // 该验证方式是默认验证方式
