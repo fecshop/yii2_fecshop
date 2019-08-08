@@ -86,6 +86,14 @@ class Customer extends Service
         list($this->_customerModelName, $this->_customerModel) = Yii::mapGet($this->_customerModelName);
         list($this->_customerLoginModelName, $this->_customerLoginModel) = Yii::mapGet($this->_customerLoginModelName);
         list($this->_customerRegisterModelName, $this->_customerRegisterModel) = Yii::mapGet($this->_customerRegisterModelName);
+        
+        $appName = Yii::$service->helper->getAppName();
+        $this->customer_register = [
+            'min_name_length' => (int)Yii::$app->store->get($appName.'_account', 'min_name_length'),  // 注册账号的firstname, lastname的最小长度
+            'max_name_length' => (int)Yii::$app->store->get($appName.'_account', 'max_name_length'), // 注册账号的firstname, lastname的最大长度
+            'min_pass_length' => (int)Yii::$app->store->get($appName.'_account', 'min_pass_length'),  // 注册账号的密码的最小长度
+            'max_pass_length' => (int)Yii::$app->store->get($appName.'_account', 'max_pass_length'), // 注册账号的密码的最大长度
+        ];
     }
 
     /**
