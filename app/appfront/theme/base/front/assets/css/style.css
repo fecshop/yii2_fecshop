@@ -21,7 +21,7 @@ h3 {
 .top_nav_inner {height: 100%;width:1200px;}
 #mainBox, .footHelp_inner, .main_inner, .social_inner, .top_main_inner, .top_nav_inner {margin-left: auto;margin-right: auto;}
 
-
+.logo img{height: 40px;}
 .fl {display: inline;float: left;}
 
 .top_nav_left{float:left;}
