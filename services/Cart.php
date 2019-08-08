@@ -57,25 +57,23 @@ class Cart extends Service
                 $item['custom_option_sku'] = $custom_option_sku;
             }
         }
+        
         $item['sku'] = $product['sku'];
         $item['qty'] = $this->getCartQty($product['package_number'], $item['qty']);
         
-        // 检查产品满足加入购物车的条件
-        $productValidate = Yii::$service->cart->info->checkProductBeforeAdd($item, $product);
-        if (!$productValidate) {
-            return false;
-        }
-
         // 开始加入购物车
         // service 里面不允许有事务，请在调用层使用事务。
         $beforeEventName = 'event_add_to_cart_before';
         $afterEventName = 'event_add_to_cart_after';
+        
         /**
          * 此处属于 fecshop 自造的简单事件 event ，比较简洁
          * 详情参看：http://www.fecshop.com/doc/fecshop-guide/instructions/cn-1.0/guide-fecshop_event.html
          */
         Yii::$service->event->trigger($beforeEventName, $item); // 触发事件 - 加购物车前事件
-        Yii::$service->cart->quoteItem->addItem($item);
+        if (!Yii::$service->cart->quoteItem->addItem($item, $product)) {
+            return false;
+        }
         Yii::$service->event->trigger($afterEventName, $item);  // 触发事件 - 加购物车后事件
         return true;
     }
