@@ -80,15 +80,15 @@ return [
                                         'url_key' => '/catalog/productinfo/index',
                                     ],
                                     'product_attr_manager' => [
-                                        'label' => '产品属性管理',
+                                        'label' => 'Product Attribute',
                                         'url_key' => '/catalog/productattr/manager',
                                     ],
                                     'product_attr_group_manager' => [
-                                        'label' => '产品属性组管理',
+                                        'label' => 'Product Attribute Group',
                                         'url_key' => '/catalog/productattrgroup/manager',
                                     ],
                                     'product_param_manager' => [
-                                        'label' => '产品参数管理',
+                                        'label' => 'Product Param Config',
                                         'url_key' => '/config/product/manager',
                                     ],
                                     // 三级类
@@ -103,7 +103,7 @@ return [
                                     ],
                                     
                                     'product_upload_manager' => [
-                                        'label' => '产品批量上传',
+                                        'label' => 'Product Excel Upload',
                                         'url_key' => '/catalog/productupload/manager',
                                     ],
                                 ]
@@ -117,7 +117,7 @@ return [
                                         'url_key' => '/catalog/category/index',
                                     ],
                                     'category_sort_manager' => [
-                                        'label' => 'Category Sort',
+                                        'label' => 'Category Sort Config',
                                         'url_key' => '/config/categorysort/manager',
                                     ],
                                     //'category_info_config' => [
@@ -143,13 +143,13 @@ return [
                                         'url_key' => '/sales/orderinfo/manager',
                                     ],
                                     'order_config' => [
-                                        'label' => '订单参数配置',
+                                        'label' => 'Order Param Config',
                                         'url_key' => '/config/order/manager',
                                     ],
                                 ],
                             ],
                             'cart' => [
-                                'label' => '购物车参数配置',
+                                'label' => 'Cart Param Config',
                                 'url_key' => '/config/cart/manager',
                             ], 
                             'coupon' => [
@@ -159,33 +159,33 @@ return [
                         ],
                     ],
                     'config' => [
-                        'label' => '网站配置',
+                        'label' => 'Website Config',
                         'child' => [
                             'services' => [
-                                'label' => '基础配置',
+                                'label' => 'Base Config',
                                 'child' => [
                                     'base_manager' => [
-                                        'label' => '基础配置',
+                                        'label' => 'Base Config',
                                         'url_key' => '/config/base/manager',
                                     ],
                                     'service_manager' => [
-                                        'label' => 'Service数据库配置',
+                                        'label' => 'Service Db Config',
                                         'url_key' => '/config/service/db',
                                     ],
                                     'search' => [
-                                        'label' => '搜索引擎配置',
+                                        'label' => 'Search Engine Config',
                                         'url_key' => '/config/search/manager',
                                     ],
                                     'mutillang' => [
-                                        'label' => '多语言配置',
+                                        'label' => 'Mutil-Lang Config',
                                         'url_key' => '/config/mutillang/manager',
                                     ],
                                     'currency' => [
-                                        'label' => '货币配置',
+                                        'label' => 'Currency Config',
                                         'url_key' => '/config/currency/manager',
                                     ],
                                     'email_manager' => [
-                                        'label' => '邮件配置',
+                                        'label' => 'Email Config',
                                         'url_key' => '/config/email/manager',
                                     ],
                                     
@@ -193,125 +193,125 @@ return [
                             ],
                             
                             'payment_config' => [
-                                'label' => '支付参数配置',
+                                'label' => 'Payment Param Config',
                                 'child' => [
                                     'payment_paypal' => [
-                                        'label' => 'Paypal支付配置',
+                                        'label' => 'Paypal Config',
                                         'url_key' => '/config/paymentpaypal/manager',
                                     ],
                                     'payment_alipay' => [
-                                        'label' => '支付宝支付配置',
+                                        'label' => 'Alipay Config',
                                         'url_key' => '/config/paymentalipay/manager',
                                     ],
                                     'payment_wxpay' => [
-                                        'label' => '微信支付配置',
+                                        'label' => 'Wxpay Config',
                                         'url_key' => '/config/paymentwxpay/manager',
                                     ],
                                 ],
                             ],
                             
                             'appfront_config' => [
-                                'label' => 'Appfront配置',
+                                'label' => 'Appfront Config',
                                 'child' => [
                                     'base' => [
-                                        'label' => '基础配置',
+                                        'label' => 'Base Config',
                                         'url_key' => '/config/appfrontbase/manager',
                                     ],
                                     'home' => [
-                                        'label' => '首页配置',
+                                        'label' => 'Home Page Config',
                                         'url_key' => '/config/appfronthome/manager',
                                     ],
                                     'cache' => [
-                                        'label' => '缓存配置',
+                                        'label' => 'Cache Config',
                                         'url_key' => '/config/appfrontcache/manager',
                                     ],
                                     'store' => [
-                                        'label' => 'Store配置',
+                                        'label' => 'Store Config',
                                         'url_key' => '/config/appfrontstore/manager',
                                     ],
                                     'catalog' => [
-                                        'label' => '分类产品配置',
+                                        'label' => 'Catalog Config',
                                         'url_key' => '/config/appfrontcatalog/manager',
                                     ],
                                     'account' => [
-                                        'label' => '账户配置',
+                                        'label' => 'Customer Account Config',
                                         'url_key' => '/config/appfrontaccount/manager',
                                     ],
                                     'payment' => [
-                                        'label' => '支付配置',
+                                        'label' => 'Payment Config',
                                         'url_key' => '/config/appfrontpayment/manager',
                                     ],
                                     
                                 ],
                             ],
                             'apphtml5_config' => [
-                                'label' => 'Apphtml5配置',
+                                'label' => 'Apphtml5 Config',
                                 'child' => [
                                     'base' => [
-                                        'label' => '基础配置',
+                                        'label' => 'Base Config',
                                         'url_key' => '/config/apphtml5base/manager',
                                     ],
                                     'home' => [
-                                        'label' => '首页配置',
+                                        'label' => 'Home Page Config',
                                         'url_key' => '/config/apphtml5home/manager',
                                     ],
                                     'cache' => [
-                                        'label' => '缓存配置',
+                                        'label' => 'Cache Config',
                                         'url_key' => '/config/apphtml5cache/manager',
                                     ], 
                                     'store' => [
-                                        'label' => 'Store配置',
+                                        'label' => 'Store Config',
                                         'url_key' => '/config/apphtml5store/manager',
                                     ],
                                     
                                     'catalog' => [
-                                        'label' => '分类产品配置',
+                                        'label' => 'Catalog Config',
                                         'url_key' => '/config/apphtml5catalog/manager',
                                     ],
                                     'account' => [
-                                        'label' => '账户配置',
+                                        'label' => 'Customer Account Config',
                                         'url_key' => '/config/apphtml5account/manager',
                                     ],
                                     'payment' => [
-                                        'label' => '支付配置',
+                                        'label' => 'Payment Config',
                                         'url_key' => '/config/apphtml5payment/manager',
                                     ],
                                 ],
                             ],
                             'appserver_config' => [
-                                'label' => 'Appserver配置',
+                                'label' => 'Appserver Config',
                                 'child' => [
                                     'base' => [
-                                        'label' => '基础配置',
+                                        'label' => 'Base Config',
                                         'url_key' => '/config/appserverbase/manager',
                                     ],
                                     'home' => [
-                                        'label' => '首页配置',
+                                        'label' => 'Home Page Config',
                                         'url_key' => '/config/appserverhome/manager',
                                     ],
                                     'cache' => [
-                                        'label' => '缓存配置',
+                                        'label' => 'Cache Config',
                                         'url_key' => '/config/appservercache/manager',
                                     ], 
                                     'store' => [
-                                        'label' => 'Store配置',
+                                        'label' => 'Store Config',
                                         'url_key' => '/config/appserverstore/manager',
                                     ],
                                     'store_lang' => [
-                                        'label' => 'Store语言配置',
+                                        'label' => 'Store Language Config',
                                         'url_key' => '/config/appserverstorelang/manager',
                                     ],
                                     
                                     'catalog' => [
-                                        'label' => '分类产品配置',
+                                        'label' => 'Catalog Config',
                                         'url_key' => '/config/appservercatalog/manager',
                                     ],
                                     'account' => [
-                                        'label' => '账户配置',
+                                        'label' => 'Customer Account Config',
                                         'url_key' => '/config/appserveraccount/manager',
                                     ],
                                     'payment' => [
-                                        'label' => '支付配置',
+                                        'label' => 'Payment Config',
                                         'url_key' => '/config/appserverpayment/manager',
                                     ],
                                 ],
