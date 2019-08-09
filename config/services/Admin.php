@@ -133,7 +133,7 @@ return [
                         ]
                     ],
                     'sales' => [
-                        'label' => 'Sales',
+                        'label' => 'Mall Manager',
                         'child' => [
                             'order' => [
                                 'label' => 'Order',
@@ -155,6 +155,19 @@ return [
                             'coupon' => [
                                 'label' => 'Coupon',
                                 'url_key' => '/sales/coupon/manager',
+                            ],
+                            'customer' => [
+                                'label' => 'Customer',
+                                'child' => [
+                                    'account' => [
+                                        'label' => 'Manager Account',
+                                        'url_key' => '/customer/account/index',
+                                    ],
+                                ],
+                            ],
+                            'newsletter' => [
+                                'label' => 'NewsLetter',
+                                'url_key' => '/customer/newsletter/index',
                             ],
                         ],
                     ],
@@ -319,20 +332,7 @@ return [
                         ],
                         
                     ],
-                    'customer' => [
-                        'label' => 'Manager User',
-                        'child' => [
-                            'account' => [
-                                'label' => 'Manager Account',
-                                'url_key' => '/customer/account/index',
-                            ],
-                            'newsletter' => [
-                                'label' => 'NewsLetter',
-                                'url_key' => '/customer/newsletter/index',
-                            ],
-
-                        ],
-                    ],
+                    
                     'cms' => [
                         'label' => 'CMS',
                         'child' => [
