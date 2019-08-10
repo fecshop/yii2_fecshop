@@ -53,7 +53,7 @@ function thissubmit(thiss){
 		<div layouth="56" class="pageFormContent" style="height: 240px; overflow: auto;">
         
             <div class="edit_p">
-                <label><?=  Yii::$service->page->translate->__('Language') ?>：</label>
+                <label><?=  Yii::$service->page->translate->__('Mutil Language') ?>：</label>
                 <input type="hidden" name="editFormData[langs]" class="langs_input"  />
                 <div class="langs" style="float:left;width:700px;">
                     <table style="">

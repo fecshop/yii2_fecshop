@@ -28,7 +28,7 @@ use fecadmin\models\AdminRole;
 				<input type="hidden"  value="<?=  $_id; ?>" size="30" name="editFormData[_id]" class="textInput ">
 				
 				<fieldset id="fieldset_table_qbe">
-					<legend style="color:#cc0000"><?= Yii::$service->page->translate->__('Service Databse Config') ?></legend>
+					<legend style="color:#cc0000"><?= Yii::$service->page->translate->__('Appserver Store Config') ?></legend>
 					<div>
 						<?= $editBar; ?>
 					</div>
