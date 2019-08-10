@@ -231,7 +231,7 @@ class m190809_154516_fecshop_tables extends Migration
         $this->execute("INSERT INTO `admin_role_url_key` (`role_id`, `url_key_id`, `created_at`, `updated_at`) VALUES (4, " . $lastInsertId . ", 1541129239, 1541129239)");
 
         // 32
-        $this->execute("INSERT INTO `admin_url_key` (`name`, `tag`, `tag_sort_order`, `url_key`, `created_at`, `updated_at`, `can_delete`) VALUES ('Config Appfront Catalog Save', 'config_appfront_manager', 21, '/config/appfrontcatalog/managersave', 1565056218, 1565056218, 1)");
+        $this->execute("INSERT INTO `admin_url_key` (`name`, `tag`, `tag_sort_order`, `url_key`, `created_at`, `updated_at`, `can_delete`) VALUES ('Config Apphtml5 Catalog Save', 'config_apphtml5_manager', 21, '/config/apphtml5catalog/managersave', 1565056218, 1565056218, 1)");
         
         $lastInsertId = $this->db->getLastInsertID() ;
         
