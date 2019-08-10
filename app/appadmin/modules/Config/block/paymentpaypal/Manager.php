@@ -113,7 +113,7 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
             ],
             
             [
-                'label'  => Yii::$service->page->translate->__('paypal_password'),
+                'label'  => Yii::$service->page->translate->__('Paypal Password'),
                 'name' => 'paypal_password',
                 'display' => [
                     'type' => 'inputString',
@@ -121,7 +121,7 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
             ],
             
             [
-                'label'  => Yii::$service->page->translate->__('paypal_signature'),
+                'label'  => Yii::$service->page->translate->__('Paypal Signature'),
                 'name' => 'paypal_signature',
                 'display' => [
                     'type' => 'inputString',

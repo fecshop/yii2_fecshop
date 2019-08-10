@@ -92,13 +92,22 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
         return [
             // 需要配置
             [
-                'label' => Yii::$service->page->translate->__('Default Lang'),
+                'label' => Yii::$service->page->translate->__('Default Base Lang'),
                 'name'  => 'default_lang',
                 'display' => [
                     'type' => 'select',
                     'data' => $langArr,
                 ],
-                'remark' => 'default language'
+                'remark' => '基础语言，分类产品等，进行后台编辑的基础语言'
+            ],
+            [
+                'label' => Yii::$service->page->translate->__('Base Currency'),
+                'name'  => 'base_currency',
+                'display' => [
+                    'type' => 'select',
+                    'data' => $currencyArr,
+                ],
+                'remark' => '基础货币，产品数据后台编辑的货币'
             ],
             
             [
@@ -108,16 +117,7 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
                     'type' => 'select',
                     'data' => $currencyArr,
                 ],
-                'remark' => 'default currency for store, if store not set, default currency will be use'
-            ],
-            [
-                'label' => Yii::$service->page->translate->__('Base Currency'),
-                'name'  => 'base_currency',
-                'display' => [
-                    'type' => 'select',
-                    'data' => $currencyArr,
-                ],
-                'remark' => 'base currency'
+                'remark' => '默认的货币，如果store中没有设置货币，那么将使用默认货币'
             ],
             
             
@@ -129,7 +129,7 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
                     'type' => 'inputString',
                 ],
                 'require' => 1,
-                'remark' =>  'image base domain that use for generate image url'
+                'remark' =>  '图片的域名'
             ],
             
         ];

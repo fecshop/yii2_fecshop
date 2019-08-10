@@ -85,7 +85,7 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
                         Yii::$app->store->disable => 'Disable',
                     ],
                 ],
-                'remark' => 'After you enbale it, you must config it in store, and run fullSearchSync.sh'
+                'remark' => '开启该选项后，您可以在入口的store中配置该搜索引擎，执行shell脚本`sh fullSearchSync.sh`，同步数据到搜索引擎'
             ],
             
             [
@@ -98,7 +98,7 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
                         Yii::$app->store->disable => 'Disable',
                     ],
                 ],
-                'remark' => 'After you enbale it, you must config it in store, and run fullSearchSync.sh'
+                'remark' => '开启该选项后，您可以在入口的store中配置该搜索引擎，执行shell脚本`sh fullSearchSync.sh`，同步数据到搜索引擎'
             ],
             [
                 'label' => Yii::$service->page->translate->__('Xunsearch Engine'),
@@ -110,7 +110,7 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
                         Yii::$app->store->disable => 'Disable',
                     ],
                 ],
-                'remark' => 'After you enbale it, you must config it in store, and run fullSearchSync.sh'
+                'remark' => '开启该选项后，您可以在入口的store中配置该搜索引擎，执行shell脚本`sh fullSearchSync.sh`，同步数据到搜索引擎'
             ],
             
             
