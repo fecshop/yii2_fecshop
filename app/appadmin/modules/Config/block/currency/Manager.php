@@ -95,12 +95,36 @@ class Manager extends \yii\base\BaseObject
         $currencys = $editFormData['currencys'];
         
         $saveData = $this->getEditParam($currencys);
+         // 得到baseCurrencyCode
+        $base_currency = Yii::$app->store->get('base_info', 'base_currency');
+        if ($base_currency){
+            $hasBase = false;
+            if (isset($saveData['value']) && is_array($saveData['value'])) {
+                foreach ($saveData['value'] as $one) {
+                    // var_dump($one);exit;
+                    $currency_code = $one['currency_code'];
+                    if ($base_currency == $currency_code) {
+                        $hasBase = true;
+                        break;
+                    }
+                }
+            }
+            if (!$hasBase) {
+                echo  json_encode([
+                    'statusCode' => '300',
+                    'message'    => 'you can not delete base currency code: '.$base_currency,
+                ]);
+                exit;
+            }
+        } 
         /*
          * if attribute is date or date time , db storage format is int ,by frontend pass param is int ,
          * you must convert string datetime to time , use strtotime function.
          */
         // 设置 bdmin_user_id 为 当前的user_id
         $this->_service->saveConfig($saveData);
+        
+       
         
         $errors = Yii::$service->helper->errors->get();
         if (!$errors) {
