@@ -111,6 +111,29 @@ class Manager extends \yii\base\BaseObject
         $langs = $editFormData['langs'];
         
         $saveData = $this->getEditParam($langs);
+        // 得到defaultLangCode
+        $default_lang = Yii::$app->store->get('base_info', 'default_lang');
+        //echo $default_lang;exit;
+        if ($default_lang){
+            $hasDefault = false;
+            if (isset($saveData['value']) && is_array($saveData['value'])) {
+                foreach ($saveData['value'] as $one) {
+                    $lang_code = $one['lang_code'];
+                    if ($default_lang == $lang_code) {
+                        $hasDefault = true;
+                        break;
+                    }
+                }
+            }
+            if (!$hasDefault) {
+                echo  json_encode([
+                    'statusCode' => '300',
+                    'message'    => 'you can not delete default lang code: ' . $default_lang,
+                ]);
+                exit;
+            }
+        } 
+            
         /*
          * if attribute is date or date time , db storage format is int ,by frontend pass param is int ,
          * you must convert string datetime to time , use strtotime function.
