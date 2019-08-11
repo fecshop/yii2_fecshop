@@ -36,6 +36,15 @@ class Wx extends Service
         if (!is_file($wxpayConfigFile)) {
             throw new InvalidConfigException('wxpay config file:['.$wxpayConfigFile.'] is not exist');
         }
+        $appId = Yii::$app->store->get('payment_wxpay', 'wechat_micro_app_id' );
+        $appSecret = Yii::$app->store->get('payment_wxpay', 'wechat_micro_app_secret');
+        $mchKey = Yii::$app->store->get('payment_wxpay', 'merchant_key');
+        $mchId = Yii::$app->store->get('payment_wxpay', 'merchant_mch_id');
+        define('WX_APP_ID', $appId);
+        define('WX_APP_SECRET', $appSecret);
+        define('WX_MCH_KEY', $mchKey);
+        define('WX_MCH_ID', $mchId);
+        
         require_once($wxpayConfigFile);
         // 通过上面的小程序，设置配置信息 
         $this->microProgramAppId = \WxPayConfig::APPID;
@@ -55,7 +64,7 @@ class Wx extends Service
         $grant_type = 'authorization_code';
         
         $url = $this->wxApiBaseUrl .  $urlKey . "?appid=$apiId&secret=$secret&js_code=$code&grant_type=$grant_type";
-        // echo $url;
+        //echo $url; exit;
         $returnStr =  \fec\helpers\CApi::getCurlData($url);
         $wxUserInfo = json_decode($returnStr, true);
         if (!isset($wxUserInfo['session_key']) || !isset($wxUserInfo['openid']) ) {
