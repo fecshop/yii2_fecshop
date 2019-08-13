@@ -369,6 +369,13 @@ class Store extends Service
     public function isAppServerMobile()
     {
         $store = $this->store;
+        if (!isset($store['mobile'])) {
+            return;
+        }
+        $enable = isset($store['mobile']['enable']) ? $store['mobile']['enable'] : false;
+        if (!$enable) {
+            return;
+        }
         $condition = isset($store['mobile']['condition']) ? $store['mobile']['condition'] : false;
         $redirectDomain = isset($store['mobile']['redirectDomain']) ? $store['mobile']['redirectDomain'] : false;
         $redirectType = isset($store['mobile']['type']) ? $store['mobile']['type'] : false;
