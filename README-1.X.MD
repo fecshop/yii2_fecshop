@@ -16,16 +16,14 @@ Fecshop更名为FecMall
 详细参看：[关于Fecshop更名为FecMall的原因](http://www.fecmall.com/topic/2020)
 
 
---------------
-
-
 Fecmall-2.x版本
 --------------
 
 >Fecmall-2版本在用户体验方面进行了很多的优化，请安装Fecmall-2版本
 
+Fecmall-2.x版本发布，安装地址：http://www.fecmall.com/doc/fecshop-guide/develop/cn-2.0/guide-fecshop-2-about-hand-install.html
 
-[Fecmall-1.x版本](README-1.X.MD)
+请参看上面的文档进行安装Fecshop-2.x
 
 
 项目状态：
@@ -101,10 +99,15 @@ Fecmall Trace Demo: http://trace.fecshop.com
 2、Fecmall文档，视频，扩展库
 ------------
 
-**二开以及安装文档：** [Fecmall 开发文档](http://www.fecmall.com/doc/fecshop-guide/develop/cn-2.0/guide-README.html)【撰写完成】
+**二开以及安装文档：** [Fecmall 安装开发文档](http://www.fecmall.com/doc/fecshop-guide/develop/cn-1.0/guide-README.html)【撰写完成】
 
-**使用帮助说明文档：** [Fecmall 帮助文档](http://www.fecmall.com/doc/fecshop-guide/instructions/cn-1.0/guide-README.html)【撰写完成】
+**使用帮助说明文档：** [Fecmall 使用帮助文档](http://www.fecmall.com/doc/fecshop-guide/instructions/cn-1.0/guide-README.html)【撰写完成】
 
+**安装开发帮助视频：** [Fecmall 安装开发视频](http://www.fecmall.com/doc/fecshop-guide/instructions/cn-1.0/guide-fecshop_video_install.html)【撰写完成】
+
+**前后端分离模式Api:** [Appserver VUE Api文档](http://www.fecmall.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-server.html)【撰写完成】
+
+**Fecmall 扩展:** [Fecmall 官方扩展列表](http://www.fecshop.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-pkg-list.html)
 
 
 3、安装Fecmall
@@ -112,11 +115,29 @@ Fecmall Trace Demo: http://trace.fecshop.com
 
 > 请务必按照说明安装，Fecmall是基于composer在线安装，直接git clone下载下来是不行的，请按照下面的说明操作
 
-[Fecmall 安装文档](http://www.fecmall.com/doc/fecshop-guide/develop/cn-2.0/guide-fecshop-2-about-hand-install.html)
+
+再强调一遍：**Fecmall是基于composer在线安装，直接git clone下载下来是不行的**，请按照安装文档操作
 
 
+3.1、【标准方式】标准安装方式：从基础linux一步一步的配置的方式，详细参看文档： [Fecmall 安装](http://www.fecmall.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-hand-install.html)
 
-4、联系Terry：
+3.2、【强烈推荐】docker compose快速部署 
+：由于上面的安装操作需要安装的东西比较多，过程比较繁杂，
+建议使用docker compose，参看：
+[docker compose快速部署Fecmall](https://github.com/fecshop/yii2_fecshop_docker)
+
+3.3、【不推荐】vagrant box的方式：2017.6月做的box，以后不再维护vagrant box，
+推荐使用docker compose安装，如果您想使用vagrant box可以参看：
+[Fecmall vagrant安装](http://www.fecmall.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-vagrantinstall.html)
+
+4、Fecshop 配置：
+----------------
+
+配置详细参看：[Fecmall 配置](http://www.fecmall.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-config.html)
+
+如果您使用docker compose或者 vagrant box的安装方式，不需要执行这个操作。
+
+5、联系Terry：
 ----------------
 
 扫一扫添加Terry的微信：
@@ -125,7 +146,7 @@ Fecmall Trace Demo: http://trace.fecshop.com
 
 
 
-5、架构特色
+6、架构特色
 -----------
 
 架构特色：参看详细介绍：[Fecmall 架构特色](http://www.fecmall.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-framework.html)
@@ -195,7 +216,7 @@ appserver（手机app服务），appapi（erp，或者其他接口对接），
 鉴于以上特点，您可以下载安装[Fecmall](http://www.fecmall.com)，然后更改[Fecmall](http://www.fecmall.com)的模板和功能，扩展自己想要
 的功能，或者安装第三方开发好了的扩展或者模板，来快速的组建起来您的网站。
 
-6、捐赠
+7、捐赠
 -----------
 
 如果您认为这是一个不错的项目，对您有帮助，你可以通过下面的方式进行捐赠，
