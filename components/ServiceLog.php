@@ -29,10 +29,10 @@ class ServiceLog extends Component
     protected $_logModelName = '\fecshop\models\mongodb\FecshopServiceLog';
     protected $_logModel;
     
-    public function init(){
-	parent::init();
-        list($this->_logModelName,$this->_logModel) = Yii::mapGet($this->_logModelName);  
-    }
+    //public function init(){
+    //    parent::init();
+    //    
+    //}
     /**
      * Log：get log uuid .
      */
@@ -65,12 +65,21 @@ class ServiceLog extends Component
     }
     
     public $serviceLogHtmlPrintStr;
+    
+    
+    public function initServiceLogDbPrint()
+    {
+        if (!$this->_logModel) {
+            list($this->_logModelName,$this->_logModel) = Yii::mapGet($this->_logModelName);  
+        }
+    }
     /**
      * ServiceLog：保存serviceLog.
      */
     public function printServiceLog($log_info)
     {
         if ($this->isServiceLogDbPrint()) {
+            $this->initServiceLogDbPrint();
             $this->_logModel->getCollection()->save($log_info);
         }
         if ($this->isServiceLogHtmlPrint() || $this->isServiceLogDbPrintByParam()) {
