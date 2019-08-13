@@ -21,7 +21,7 @@ Fecmall-2.x版本
 
 >Fecmall-2版本在用户体验方面进行了很多的优化，请安装Fecmall-2版本
 
-Fecmall-2.x版本发布，文档地址：http://www.fecmall.com/doc/fecshop-guide/develop/cn-2.0/guide-README.html
+Fecmall-2.x版本发布，安装地址：http://www.fecmall.com/doc/fecshop-guide/develop/cn-2.0/guide-fecshop-2-about-hand-install.html
 
 请参看上面的文档进行安装Fecshop-2.x
 
