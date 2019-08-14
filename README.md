@@ -112,8 +112,9 @@ Fecmall Trace Demo: http://trace.fecshop.com
 
 > 请务必按照说明安装，Fecmall是基于composer在线安装，直接git clone下载下来是不行的，请按照下面的说明操作
 
-[Fecmall 安装文档](http://www.fecmall.com/doc/fecshop-guide/develop/cn-2.0/guide-fecshop-2-about-hand-install.html)
+[Linux 安装 Fecmall 安装文档](http://www.fecmall.com/doc/fecshop-guide/develop/cn-2.0/guide-fecshop-2-about-hand-install.html)
 
+[Windows环境使用WAMP 安装 Fecmall文档](http://www.fecmall.com/doc/fecshop-guide/develop/cn-2.0/guide-fecshop-2-about-wamp-install.html)
 
 
 4、联系Terry：
