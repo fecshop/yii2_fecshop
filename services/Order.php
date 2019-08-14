@@ -219,6 +219,9 @@ class Order extends Service
         //$this->requiredAddressAttr;
         if (is_array($this->requiredAddressAttr) && !empty($this->requiredAddressAttr)) {
             foreach ($this->requiredAddressAttr as $attr) {
+                if (!$attr) {
+                    continue;
+                }
                 if (!isset($billing[$attr]) || empty($billing[$attr])) {
                     Yii::$service->helper->errors->add('{attr} can not empty', ['attr' => $attr]);
 
