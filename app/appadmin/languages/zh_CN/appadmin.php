@@ -785,10 +785,38 @@ return [
     'Cateory Sort Direction' => '分类排序方式',
     'Remove' => '删除',
     'Add Category Sort' => '添加分类排序',
+    'Extension-Center' => '应用中心',
+    'Extensions List' => '安装应用列表',
+    'Extension Edit' => '安装应用编辑',
+    'Extension Save' => '安装应用保存',
+    'Extension Delete' => '卸载应用',
+    'Extension Center' => '应用中心',
+    'Installed Extensions Manager' => '安装应用管理',
+    'Extensions Manager' => '应用管理',
+    'Extention Market' => '应用市场',
+    'Extension Installed' => '已安装应用',
+    'Extension Param Config' => '应用配置参数',
+    'Extension Installed List' => '已安装应用列表',
+    'Extension Installed Edit' => '已安装应用编辑',
+    'Extension Installed Save' => '已安装应用保存',
+    'Extension Installed Delete' => '已安装应用卸载',
+    
+    'Extension Market Manager' => '应用市场管理',
+    'Config Extension Manager' => '应用参数配置',
+    'Config Extension Save' => '应用参数配置保存',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
     '' => '',
     '' => '',
     '' => '',
     '' => '',
     
     
+              
+
+  
 ];
