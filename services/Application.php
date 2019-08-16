@@ -63,12 +63,37 @@ class Application
      * 在 @app/web/index.php 入口文件处。会调用 new fecshop\services\Application($config['services']);
      * Yii::$service 就是该类实例化的对象，注入的配置保存到 $this->childService 中
      */
-    public function __construct($config = [])
+    public function __construct(&$config = [])
     {
         Yii::$service = $this;
-        $this->childService = $config;
+        $this->initRewriteMap($config);
+        $this->childService = $config['services'];
+        unset($config['services']);
     }
-
+    // init yiiClassMap and fecRewriteMap
+    public function initRewriteMap(&$config)
+    {
+        /**
+         * yii class Map Custom 
+         */ 
+        $yiiClassMap = isset($config['yiiClassMap']) ? $config['yiiClassMap'] : '';
+        if(is_array($yiiClassMap) && !empty($yiiClassMap)){
+            foreach($yiiClassMap as $namespace => $filePath){
+                Yii::$classMap[$namespace] = $filePath;
+            }
+        }
+        unset($config['yiiClassMap']);
+        /**
+         * Yii 重写block controller model等
+         * 也就是说：除了compoent 和services，其他的用RewriteMap的方式来实现重写
+         * 重写的类可以集成被重写的类
+         */ 
+        $fecRewriteMap = isset($config['fecRewriteMap']) ? $config['fecRewriteMap'] : '';
+        if(is_array($fecRewriteMap) && !empty($fecRewriteMap)){
+            Yii::$rewriteMap = $fecRewriteMap;
+        }
+        unset($config['fecRewriteMap']);
+    }
     /**
      * 根据服务名字获取服务实例
      * Get service instance by service name.
