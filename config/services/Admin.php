@@ -39,7 +39,7 @@ return [
 					'dashboard_cache' 							    => 'Dashboard-Cache',
 					'dashboard_config' 							    => 'Dashboard-Config',
 					'dashboard_error_handler'					=> 'Dashboard-ErrorHandler',
-                    
+                    'extension_manager' 					    => 'Extension-Center',
                     'config_base_manager' 					    => 'Config-Base',
                     'config_payment_manager' 					    => 'Config-Payment',
                     'config_appfront_manager' 					=> 'Config-Appfront',
@@ -131,6 +131,31 @@ return [
                                 'url_key' => '/catalog/urlrewrite/index',
                             ],
                         ]
+                    ],
+                    'extension' => [
+                        'label' => 'Extension Center',
+                        'child' => [
+                            'extension_manager' => [
+                                'label' => 'Extensions Manager',
+                                'child' => [
+                                    'extension_market' => [
+                                        'label' => 'Extention Market',
+                                        'url_key' => '/system/extensionmarket/manager',
+                                    ],
+                                    'extension_installed' => [
+                                        'label' => 'Extension Installed',
+                                        'url_key' => '/system/extensioninstalled/manager',
+                                    ],
+                                    
+                                ],
+                                
+                            ], 
+                            'extension_param' => [
+                                'label' => 'Extension Param Config',
+                                'url_key' => '/config/extension/manager',
+                            ],
+                            
+                        ],
                     ],
                     'sales' => [
                         'label' => 'Mall Manager',
