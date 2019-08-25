@@ -43,6 +43,9 @@ return [
             'errors' => [
                 'class' => 'fecshop\services\helper\Errors',
             ],
+            'zipFile' => [
+                'class' => 'fecshop\services\helper\ZipFile',
+            ],
             'errorHandler' => [
                 'class' => 'fecshop\services\helper\ErrorHandler',
             ],
