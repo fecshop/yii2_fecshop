@@ -12,6 +12,9 @@ return [
             'administer' => [
                 'class' => 'fecshop\services\extension\Administer',
             ],
+            'remoteService' => [
+                'class' => 'fecshop\services\extension\RemoteService',
+            ],
         ],
     ],
 ];
