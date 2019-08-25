@@ -28,19 +28,19 @@ class Administer extends Service
      * @return boolean 安装成功返回的状态
      * 
      */
-    public function install($extension_name, $forceInstall=false)
+    public function install($extension_namespace, $forceInstall=false)
     {
         // 插件不存在
-        $modelOne = Yii::$service->extension->getByName($extension_name);
-        if (!$modelOne['name']) {
-            Yii::$service->helper->errors->add('extension: {name} is not exist', ['name' =>$extension_name ]);
+        $modelOne = Yii::$service->extension->getByNamespace($extension_namespace);
+        if (!$modelOne['namespace']) {
+            Yii::$service->helper->errors->add('extension: {namespace} is not exist', ['namespace' =>$extension_namespace ]);
             
             return false;
         }
         // 插件已经安装
         $installed_status = $modelOne['installed_status'];
         if (!$forceInstall && Yii::$service->extension->isInstalledStatus($installed_status)) {
-            Yii::$service->helper->errors->add('extension: {name} has installed', ['name' =>$extension_name ]);
+            Yii::$service->helper->errors->add('extension: {namespace} has installed', ['namespace' =>$extension_namespace ]);
             
             return false;
         }
@@ -48,7 +48,7 @@ class Administer extends Service
         // 通过数据库找到应用的配置文件路径
         $extensionConfigFile = Yii::getAlias($modelOne['config_file_path']);
         if (!file_exists($extensionConfigFile)) {
-            Yii::$service->helper->errors->add('extension: {name} config file is not exit', ['name' =>$extension_name ]);
+            Yii::$service->helper->errors->add('extension: {namespace} config file is not exit', ['namespace' =>$extension_namespace ]);
             
             return false;
         }
@@ -56,7 +56,7 @@ class Administer extends Service
         $extensionConfig = require($extensionConfigFile);
         // 如果没有该配置，说明该插件不需要进行安装操作。
         if (!isset($extensionConfig['administer']['install'])) {
-            Yii::$service->helper->errors->add('extension: {name}， have no install file function', ['name' =>$extension_name ]);
+            Yii::$service->helper->errors->add('extension: {namespace}， have no install file function', ['namespace' =>$extension_namespace ]);
             
             return false;
         }
@@ -82,21 +82,21 @@ class Administer extends Service
     
     /**
      * 应用升级函数
-     * @param $extension_name | string , 插件的名称
+     * @param $extension_namespace | string , 插件的名称
      */
-    public function upgrade($extension_name)
+    public function upgrade($extension_namespace)
     {
         // 插件不存在
-        $modelOne = Yii::$service->extension->getByName($extension_name);
-        if (!$modelOne['name']) {
-            Yii::$service->helper->errors->add('extension: {name} is not exist', ['name' =>$extension_name ]);
+        $modelOne = Yii::$service->extension->getByNamespace($extension_namespace);
+        if (!$modelOne['namespace']) {
+            Yii::$service->helper->errors->add('extension: {namespace} is not exist', ['namespace' =>$extension_namespace ]);
             
             return false;
         }
         // 插件如果没有安装
         $installed_status = $modelOne['installed_status'];
         if (!Yii::$service->extension->isInstalledStatus($installed_status)) {
-            Yii::$service->helper->errors->add('extension: {name} has not installed', ['name' =>$extension_name ]);
+            Yii::$service->helper->errors->add('extension: {namespace} has not installed', ['namespace' =>$extension_namespace ]);
             
             return false;
         }
@@ -104,7 +104,7 @@ class Administer extends Service
         // 通过数据库找到应用的配置文件路径，如果配置文件不存在
         $extensionConfigFile = Yii::getAlias($modelOne['config_file_path']);
         if (!file_exists($extensionConfigFile)) {
-            Yii::$service->helper->errors->add('extension: {name} config file is not exit', ['name' =>$extension_name ]);
+            Yii::$service->helper->errors->add('extension: {namespace} config file is not exit', ['namespace' =>$extension_namespace ]);
             
             return false;
         }
@@ -112,7 +112,7 @@ class Administer extends Service
         $extensionConfig = require($extensionConfigFile);
         // 如果没有该配置，说明该插件不需要进行安装操作。
         if (!isset($extensionConfig['administer']['upgrade'])) {
-            Yii::$service->helper->errors->add('extension: {name}， have no upgrade file function', ['name' =>$extension_name ]);
+            Yii::$service->helper->errors->add('extension: {namespace}， have no upgrade file function', ['namespace' =>$extension_namespace ]);
             
             return false;
         }
@@ -140,7 +140,7 @@ class Administer extends Service
      * 3.插件卸载。
      *
      */
-    public function uninstall($extension_name)
+    public function uninstall($extension_namespace)
     {
         
         
