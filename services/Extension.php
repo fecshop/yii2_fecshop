@@ -26,6 +26,8 @@ class Extension extends Service
     const INSTALL_INIT_STATUS = 2;
     const UNINSTALLED_STATUS = 3;
     
+    const STATUS_ENABLE = 1;
+    const STATUS_DISABLE = 2;
     
     protected $warnings;
     protected $_modelName = '\fecshop\models\mysqldb\Extension';
@@ -58,10 +60,11 @@ class Extension extends Service
      * @param $extension_name | string ， 插件名称（唯一）
      * @return model
      */
-    public function getByName($extension_name)
+    public function getByNamespace($extension_namespace)
     {
-        return $this->_model->findOne(['name' => $extension_name]);
+        return $this->_model->findOne(['namespace' => $extension_namespace]);
     }
+    
 
     /*
      * example filter:
@@ -139,6 +142,65 @@ class Extension extends Service
 
         return true;
     }
+    
+    // 新安装的插件，进行初始化
+    public function newInstallInit($param)
+    {
+        $namespace = $param['namespace'];
+        //$package = $param['package'];
+        //$name = $param['name'];
+        //$config_file_path = $param['config_file_path'];
+        //$version = $param['version'];
+        if (!$namespace) {
+            Yii::$service->helper->errors->add('namespace is empty');
+
+            return false;
+        }
+        // 查看namespace 是否存在
+        $modelOne = $this->_model->findOne(['namespace' => $namespace]);
+        if ($modelOne['id']) {
+            Yii::$service->helper->errors->add('this namespace is exist');
+
+            return false;
+        }
+        $param['config_file_path'] = '@addons/' . $param['package'] . '/' .  $param['config_file_path'] ;
+        $model = new $this->_modelName();
+        $model->attributes = $param;
+        if (!$model->validate()) {
+            $errors = $model->errors;
+            Yii::$service->helper->errors->addByModelErrors($errors);
+            return false;
+        }
+        $model->status = self::STATUS_ENABLE;
+        $model->created_at = time();
+        $model->updated_at = time();
+        $model->installed_status = self::INSTALL_INIT_STATUS;
+        $model->priority = 1;
+        return $model->save();
+    }
+    
+    // 从数据库中获取所有的namespace
+    public function getAllNamespaces()
+    {
+        $filter = [
+            'asArray' => true,
+            'fetchAll' => true,
+        ];
+        $data = $this->coll($filter);
+        $arr = [];
+        if (is_array($data['coll'])) {
+            foreach ($data['coll'] as $one) {
+                $namespace = $one['namespace'];
+                if ($namespace) {
+                    $arr[] = $namespace;
+                }
+            }
+        }
+        
+        return $arr;
+    }
+    
+    
     
     /**
      * @param $installed_status | int 
