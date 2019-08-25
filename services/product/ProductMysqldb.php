@@ -1153,7 +1153,7 @@ class ProductMysqldb extends Service implements ProductInterface
                 //$b[$review_count_lang]          = $lang_count;
                 $one['reviw_rate_star_average_lang'] = $a;
                 $one['review_count_lang']           = $b;
-                $one['reviw_rate_star_info']        = $rate_total_arr;
+                $one['reviw_rate_star_info']        = serialize($rate_total_arr);
                 $c                                  = $one['reviw_rate_star_info_lang'];
                 //$c[$reviw_rate_star_info_lang]      = $rate_lang_total_arr;
                 $one['reviw_rate_star_info_lang']   = $c;
