@@ -49,9 +49,35 @@ class TestController extends AppfrontController
         var_dump($dd);
         
     }
-
+    /*
     public function actionTest(){
-        echo 12;exit;
+        $src_file = Yii::getAlias('@addons/fecshop_theme_furnilife.zip');
+        $dest_dir = Yii::getAlias('@addons/');
+        Yii::$service->helper->zipFile->unzip($src_file, $dest_dir, true, false);
     }
-
+    */
+    
+    public function actionTest(){
+        $remoteUrl = 'http://addons.server.fecmall.com/';
+        $url = $remoteUrl . 'customer/addons/downloada?namespace=fectfurnilife';
+        
+        $this->downFile($url,$path)
+    }
+    
+    function downFile($url,$path){
+        $arr=parse_url($url);
+        $fileName=basename($arr['path']);
+        $file=file_get_contents($url);
+        file_put_contents($path.$fileName,$file);
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
