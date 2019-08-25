@@ -89,26 +89,4 @@ class ArticleController extends AppfrontController
         return $behaviors;
     }
     
-    public function actionTestextension()
-    {
-        
-        if (!Yii::$service->extension->administer->install('theme_furnilife')) {
-            $errors = Yii::$service->helper->errors->get();
-            
-            var_dump($errors);
-            echo 'installed';
-        }
-        
-        if (!Yii::$service->extension->administer->upgrade('theme_furnilife')) {
-            $errors = Yii::$service->helper->errors->get();
-            var_dump($errors);
-            echo "update";
-        }
-        
-        echo 1;exit;
-        
-        
-        
-        
-    }
 }

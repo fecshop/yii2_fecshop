@@ -28,52 +28,7 @@ class TestController extends AppfrontController
      * 
      */
     public function actionIndex()
-    {
-        Product::initLang('en');
-        //Product::updateMapping();
-        //Product::initLang('zh');
-        //Product::updateMapping();
-        /*
-        $one = Product::findOne(5);
-        var_dump($one->attributes);
-        $one->_id = 'yyyy';
-        $one->save(); 
-        var_dump($one->getPrimaryKey());exit;
-        */
-        $p = new Product;
-        $p->_id = 5;
-        $p->sku = 'xxxx';
-        $p->save(); 
-        
-        $dd = Product::find()->all();
-        var_dump($dd);
-        
     }
-    /*
-    public function actionTest(){
-        $src_file = Yii::getAlias('@addons/fecshop_theme_furnilife.zip');
-        $dest_dir = Yii::getAlias('@addons/');
-        Yii::$service->helper->zipFile->unzip($src_file, $dest_dir, true, false);
-    }
-    */
-    
-    public function actionTest(){
-        $remoteUrl = 'http://addons.server.fecmall.com/';
-        $url = $remoteUrl . 'customer/addons/downloada?namespace=fectfurnilife';
-        
-        $this->downFile($url,$path)
-    }
-    
-    function downFile($url,$path){
-        $arr=parse_url($url);
-        $fileName=basename($arr['path']);
-        $file=file_get_contents($url);
-        file_put_contents($path.$fileName,$file);
-    }
-    
-    
-    
-    
     
     
     
