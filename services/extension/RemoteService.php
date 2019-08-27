@@ -91,7 +91,7 @@ class RemoteService extends Service
     }
     
     // 下载应用
-    public function downloadAddons($namespace, $packageName, $addonName)
+    public function downloadAddons($namespace, $packageName, $folderName, $addonName)
     {
         // 得到下载的url
         $url = $this->remoteUrl . '/customer/addons/download?namespace='.$namespace;
@@ -101,8 +101,15 @@ class RemoteService extends Service
             mkdir($packagePath);
             chmod($packagePath, 0777);
         }
+        // 应用文件夹
+        $packagePath = Yii::getAlias('@addons/'.$packageName.'/'.$folderName);
+        if (!is_dir($packagePath)){
+            mkdir($packagePath);
+            chmod($packagePath, 0777);
+        }
+        
         // 根据文件路径，以及addon的name，得到zip文件存放的文件完整路径
-        $filePath = Yii::getAlias('@addons/'.$packageName.'/'.$addonName.'.zip');
+        $filePath = Yii::getAlias('@addons/'.$packageName.'/'.$folderName.'/'.$addonName.'.zip');
         // 将url中的zip文件，存储到该文件目录。
         if ($this->downCurl($url,$filePath)) {
             return $filePath;
