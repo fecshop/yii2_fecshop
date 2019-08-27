@@ -27,31 +27,56 @@ use fec\helpers\CRequest;
                     <img style="" src="<?= $addon_one['addon_info']['image'] ?>" />
                     <h2 style="margin10px auto"><?= $addon_one['addon_info']['name'] ?></h2>
                 </div>
-                <div>
+                <div class="clear"></div>
+                <div style="margin-top:60px;">
                 <?php    
                     $namespace = $addon_one['addon_info']['namespace'];
-                    if (in_array($namespace, $installed_extensions)):
+                    if (in_array($namespace, $installed_extensions_namespace)):
+                        if ( version_compare($versionArr[$namespace], $addon_one['addon_info']['version'] ,'<') ):
+                        
                 ?>
-                    <a class="abutton-update" href="javascript:void(0)">升级</a>
+                            <a class="abutton-update" href="javascript:void(0)"  addonName="<?= $addon_one['addon_info']['name'] ?>" rel="<?= $namespace ?>" folderName="<?= $addon_one['addon_info']['folder'] ?>"  packageName="<?= $addon_one['addon_info']['package'] ?>">需要升级</a>
+                        <?php else: ?>
+                            <a class="abutton-normal" href="javascript:void(0)">最新版本</a>
+                        <?php endif; ?>
+                 
+                    
                 <?php else: ?>
-                    <a class="abutton" href="javascript:void(0)" addonName="<?= $addon_one['addon_info']['name'] ?>" rel="<?= $namespace ?>"  packageName="<?= $addon_one['addon_info']['package'] ?>">安装</a>
+                    <a class="abutton" href="javascript:void(0)" addonName="<?= $addon_one['addon_info']['name'] ?>" rel="<?= $namespace ?>"  folderName="<?= $addon_one['addon_info']['folder'] ?>"  packageName="<?= $addon_one['addon_info']['package'] ?>">点击安装</a>
                 
                 <?php endif; ?>
                     
+                    <div class="version_info">
+                        <div class="">最高版本: <?= $addon_one['addon_info']['version'] ?></div>
+                        <?php if($versionArr[$namespace]): ?>
+                        <div style="margin-top:5px;">当前版本: <?= $versionArr[$namespace] ?></div>
+                        <?php endif; ?>
+                    </div>
                     
-                    <span class="version_info">最高版本: <?= $addon_one['addon_info']['version'] ?></span>
                 </div>
+                <a href="javascript:void(0)" class="removeAddon" title="卸载应用"  addonName="<?= $addon_one['addon_info']['name'] ?>" rel="<?= $namespace ?>" folderName="<?= $addon_one['addon_info']['folder'] ?>"  packageName="<?= $addon_one['addon_info']['package'] ?>">
+                    <i class="fa fa-trash-o"></i>
+                </a>
             </li>
         <?php endforeach; ?>
         </ul>
     <?php endif; ?>
     </div>
-    
-    <a class="reflushaaa" href="javascript:void(0)">刷新页面</a>
-	
+   
 </div>
 
 <style>
+.removeAddon{
+    display: block;
+    bottom: 10px;
+    position: absolute;
+    right: 10px;
+    font-size:18px;
+    color:#999;
+}
+.removeAddon:hover{
+    color:#333;
+}
 
 .version_info{
     float: right;
@@ -59,10 +84,11 @@ use fec\helpers\CRequest;
 }
 .addon_li{
     width: 280px;
-    height:320px;
+    height:390px;
     display: inline-block;
     margin: 10px;
     border: 1px solid #ccc;
+    position: relative;
 }
 .addon_d{
     width:230px;
@@ -91,6 +117,11 @@ use fec\helpers\CRequest;
     padding:5px 10px;
 }
 
+.abutton-normal{
+    background:#337ab7 !important;
+    color:#fff;
+    padding:5px 10px;
+}
 
 
 .abutton:hover{
@@ -115,10 +146,12 @@ use fec\helpers\CRequest;
             namespace = $(this).attr('rel');
             var packageName = $(this).attr('packageName');
             var addonName = $(this).attr('addonName');
+            var folderName = $(this).attr('folderName');
             
             var url = "<?= Yii::$service->url->getUrl("system/extensionmarket/install"); ?>";
             url += '?namespace=' + namespace;
             url += '&packageName=' + packageName;
+            url += '&folderName=' + folderName;
             url += '&addonName=' + encodeURIComponent(addonName);
             
             $.ajax({
@@ -150,7 +183,97 @@ use fec\helpers\CRequest;
             
             
         });
+        $(document).on("click",".removeAddon",function(){
+            var self = this;
+            alertMsg.confirm("您确定删除该应用吗？", {
+                okCall: function(){
+                    namespace = $(self).attr('rel');
+                    var packageName = $(self).attr('packageName');
+                    var addonName = $(self).attr('addonName');
+                    var folderName = $(this).attr('folderName');
+                    
+                    var url = "<?= Yii::$service->url->getUrl("system/extensionmarket/uninstall"); ?>";
+                    url += '?namespace=' + namespace;
+                    url += '&packageName=' + packageName;
+                    url += '&folderName=' + folderName;
+                    url += '&addonName=' + encodeURIComponent(addonName);
+                    
+                    $.ajax({
+                        url: url,
+                        async: true,
+                        timeout: 800000,
+                        dataType: 'json', 
+                        type: 'get',
+                        success:function(data, textStatus){
+                            
+                            if(data.statusCode == 200){
+                                //alert(data.statusCode);
+                                message = data.message;
+                                alertMsg.correct(message);
+                                navTab.reloadFlag('page1');
+                            } else if (data.statusCode == 300){
+                                message = data.message;
+                                alertMsg.error(message)
+                            } else {
+                                alertMsg.error("错误");
+                            }
+                            //
+                        },
+                        error:function(){
+                            
+                        }
+                    });
+                    
+                    
+                    
+                    
+                },
+                cancelCall : function() {
+                    
+                    
+                }
+            });
+            
+        });
         
+        $(document).on("click",".abutton-update",function(){
+            namespace = $(this).attr('rel');
+            var packageName = $(this).attr('packageName');
+            var addonName = $(this).attr('addonName');
+            var folderName = $(this).attr('folderName');
+            
+            var url = "<?= Yii::$service->url->getUrl("system/extensionmarket/upgrade"); ?>";
+            url += '?namespace=' + namespace;
+            url += '&packageName=' + packageName;
+            url += '&folderName=' + folderName;
+            url += '&addonName=' + encodeURIComponent(addonName);
+            
+            $.ajax({
+                url: url,
+                async: true,
+                timeout: 800000,
+                dataType: 'json', 
+                type: 'get',
+                success:function(data, textStatus){
+                    
+                    if(data.statusCode == 200){
+                        //alert(data.statusCode);
+                        message = data.message;
+                        alertMsg.correct(message);
+                        navTab.reloadFlag('page1');
+                    } else if (data.statusCode == 300){
+                        message = data.message;
+                        alertMsg.error(message)
+                    } else {
+                        alertMsg.error("错误");
+                    }
+                    //
+                },
+                error:function(){
+                    
+                }
+            });
+        });
     });
 
 

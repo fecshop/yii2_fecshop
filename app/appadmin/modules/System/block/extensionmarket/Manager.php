@@ -22,7 +22,9 @@ use Yii;
  */
 class Manager 
 {
-
+    
+    public $nameSpaceArr;
+    public $versionArr;
     /**
      * init param function ,execute in construct.
      */
@@ -36,17 +38,37 @@ class Manager
         $addons = $info['addons'];
         $coll = isset($addons['coll']) ? $addons['coll'] : [];
         $count  = isset($addons['count']) ? $addons['count'] : 0;
+        $this->initInstalledExtensions();
         return [
             'addon_list'=> $coll,
             'addon_count' => $count,
-            'installed_extensions' => $this->getInstalledExtensions(),
+            'installed_extensions_namespace' => $this->nameSpaceArr,
+            'versionArr' => $this->versionArr,
+            
         ];
     }
     
     // namespace
-    public function getInstalledExtensions()
+    public function initInstalledExtensions()
     {
-        return Yii::$service->extension->getAllNamespaces();
+        $filter = [
+            'asArray' => true,
+            'fetchAll' => true,
+        ];
+        $data = Yii::$service->extension->coll($filter);
+        $arr = [];
+        $versionArr = [];
+        if (is_array($data['coll'])) {
+            foreach ($data['coll'] as $one) {
+                $namespace = $one['namespace'];
+                if ($namespace) {
+                    $arr[] = $namespace;
+                    $versionArr[$namespace] = $one['version'];
+                }
+            }
+        }
+        $this->versionArr = $versionArr;
+        $this->nameSpaceArr = $arr;
         
         
     }
