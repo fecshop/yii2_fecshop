@@ -163,7 +163,7 @@ class Extension extends Service
 
             return false;
         }
-        $param['config_file_path'] = '@addons/' . $param['package'] . '/' .  $param['config_file_path'] ;
+        $param['config_file_path'] = '@addons/' . $param['package'] . '/' .  $param['folder']  . '/config.php';
         $model = new $this->_modelName();
         $model->attributes = $param;
         if (!$model->validate()) {
@@ -177,6 +177,49 @@ class Extension extends Service
         $model->installed_status = self::INSTALL_INIT_STATUS;
         $model->priority = 1;
         return $model->save();
+    }
+    
+    // 更新的插件，zip文件下载解压后，进行数据库初始化
+    public function upgradeInit($param)
+    {
+        $namespace = $param['namespace'];
+        //$package = $param['package'];
+        //$name = $param['name'];
+        //$config_file_path = $param['config_file_path'];
+        //$version = $param['version'];
+        if (!$namespace) {
+            Yii::$service->helper->errors->add('namespace is empty');
+
+            return false;
+        }
+        // 查看namespace 是否存在
+        $modelOne = $this->_model->findOne(['namespace' => $namespace]);
+        if (!$modelOne['id']) {
+            Yii::$service->helper->errors->add('this namespace is exist');
+
+            return false;
+        }
+        if (!$this->isInstalledStatus($modelOne['installed_status'])) {
+            Yii::$service->helper->errors->add('addon status is not install status');
+
+            return false;
+        }
+        
+        $param['config_file_path'] = '@addons/' . $param['package'] . '/' .  $param['folder']  . '/config.php';
+        // $param['config_file_path'] = '@addons/' . $param['package'] . '/' .  $param['config_file_path'] ;
+        //$model = new $this->_modelName();
+        $modelOne->attributes = $param;
+        if (!$modelOne->validate()) {
+            $errors = $modelOne->errors;
+            Yii::$service->helper->errors->addByModelErrors($errors);
+            return false;
+        }
+        //$modelOne->status = self::STATUS_ENABLE;
+        //$modelOne->created_at = time();
+        $modelOne->updated_at = time();
+        //$modelOne->installed_status = self::INSTALL_INIT_STATUS;
+        //$modelOne->priority = 1;
+        return $modelOne->save();
     }
     
     // 从数据库中获取所有的namespace
@@ -279,11 +322,14 @@ class Extension extends Service
             return false;
         }
         $installed_version = $modelOne['installed_version'];
+        $addon_remote_version = $modelOne['version'];
         
         $count = count($versions);
         for ($i = 0; $i < $count; $i++) {
             // 如果当前版本号 小于 此版本号
-            if (version_compare($installed_version, $versions[$i] ,'<')) {
+            if (version_compare($installed_version, $versions[$i] ,'<')
+                && version_compare($versions[$i],  $addon_remote_version,'<=')  // 应用里面update更新的版本号，如果大于应用version，那么不生效（这样可以通过远程来控制最大版本号）
+            ) {
                 // 执行插件更新版本操作。
                 if (!$upgradeOb->run($versions[$i])) {
                     return false;
