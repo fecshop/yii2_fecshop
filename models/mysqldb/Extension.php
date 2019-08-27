@@ -36,6 +36,12 @@ class Extension extends ActiveRecord
             ['package', 'filter', 'filter' => 'trim'],
             ['package', 'string', 'length' => [1, 50]],
             
+            ['folder', 'required'],
+            ['folder', 'filter', 'filter' => 'trim'],
+            ['folder', 'string', 'length' => [1, 50]],
+            
+            
+            
             ['name', 'required'],
             ['name', 'filter', 'filter' => 'trim'],
             ['name', 'string', 'length' => [1, 50]],
