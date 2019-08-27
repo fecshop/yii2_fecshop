@@ -38,7 +38,7 @@ class Customer extends Service
         parent::init();
         // init email config
         $this->registerAccountIsNeedEnableByEmail = (Yii::$app->store->get('email', 'registerAccountIsNeedEnableByEmail') == Yii::$app->store->enable) ? true : false ;
-        $this->registerAccountEnableTokenExpire = Yii::$app->store->get('email', 'registerAccountIsNeedEnableByEmail');
+        $this->registerAccountEnableTokenExpire = Yii::$app->store->get('email', 'registerAccountEnableTokenExpire');
         $this->emailTheme['register']['enable'] = (Yii::$app->store->get('email', 'registerEnable') == Yii::$app->store->enable) ? true : false ;
         $this->emailTheme['register']['widget'] = Yii::$app->store->get('email', 'registerWidget');
         $this->emailTheme['register']['viewPath'] = Yii::$app->store->get('email', 'registerViewPath');
