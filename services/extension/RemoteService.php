@@ -26,6 +26,7 @@ class RemoteService extends Service
     public $loginUrlKey = '/customer/login/account';
     public $getAddonsListUrlKey = '/customer/addons/index';
     public $getAddonInfoUrlKey = '/customer/addons/info';
+    public $getDeveloperInfoUrlKey = '/customer/addons/developer';
     // 远程登陆
     public function login($param) 
     {
@@ -44,7 +45,31 @@ class RemoteService extends Service
         
         return false;
     }
-    // 得到远程的addon 信息
+    
+    // 得到开发者的信息
+    public function getDeveloperInfo()
+    {
+        $accessToken = $this->getAccessToken();
+        if (!$accessToken) {
+            return false;
+        }
+        $url = $this->remoteUrl . $this->getDeveloperInfoUrlKey ;
+        $headerRequest = [
+            'access-token: '.$accessToken,
+        ];
+        list($responseHeader, $result) = $this->getCurlData($url, 'post', $headerRequest, [], 10);
+        
+        if ($result['code'] == 200) {
+            
+            return $result['data'];
+        }
+        
+        return false;
+        
+        
+    }
+    
+    // 得到远程的addon 信息(我的应用列表)
     public function getMyAddonsInfo()
     {
         $accessToken = $this->getAccessToken();
@@ -109,7 +134,7 @@ class RemoteService extends Service
         }
         
         // 根据文件路径，以及addon的name，得到zip文件存放的文件完整路径
-        $filePath = Yii::getAlias('@addons/'.$packageName.'/'.$folderName.'/'.$addonName.'.zip');
+        $filePath = Yii::getAlias('@addons/'.$packageName.'/'.$folderName.'/'.$folderName.'.zip');
         // 将url中的zip文件，存储到该文件目录。
         if ($this->downCurl($url,$filePath)) {
             return $filePath;
