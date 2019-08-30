@@ -15,6 +15,9 @@ return [
             'remoteService' => [
                 'class' => 'fecshop\services\extension\RemoteService',
             ],
+            'generate' => [
+                'class' => 'fecshop\services\extension\Generate',
+            ],
         ],
     ],
 ];
