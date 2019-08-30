@@ -40,6 +40,7 @@ return [
 					'dashboard_config' 							    => 'Dashboard-Config',
 					'dashboard_error_handler'					=> 'Dashboard-ErrorHandler',
                     'extension_manager' 					    => 'Extension-Center',
+                    'extension_developer_center' 					    => 'Extension-Developer-Center',
                     'config_base_manager' 					    => 'Config-Base',
                     'config_payment_manager' 					    => 'Config-Payment',
                     'config_appfront_manager' 					=> 'Config-Appfront',
@@ -150,9 +151,14 @@ return [
                                 ],
                                 
                             ], 
-                            'extension_param' => [
-                                'label' => 'Extension Param Config',
-                                'url_key' => '/config/extension/manager',
+                            'extension_developer' => [
+                                'label' => 'Developer Center',
+                                'child' => [
+                                    'extension_market' => [
+                                        'label' => 'Extention Gii',
+                                        'url_key' => '/system/extensiongii/manager',
+                                    ],
+                                ],
                             ],
                             
                         ],
