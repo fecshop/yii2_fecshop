@@ -22,41 +22,70 @@ use fec\helpers\CRequest;
 	<?php if (is_array($addon_list)) : ?>
         <ul>
         <?php foreach ($addon_list as $addon_one): ?>
+            <?php 
+                $symbol = '';
+                $val = '';
+                $mb = 1024 * 1024;
+                if ($addon_one['addon_info']['zip_size']  <  $mb) {
+                    $symbol = 'KB';
+                    $val = Yii::$service->helper->format->number_format($addon_one['addon_info']['zip_size'] / 1024);
+                } else {
+                    $symbol = 'MB';
+                    $val = Yii::$service->helper->format->number_format($addon_one['addon_info']['zip_size'] / $mb);
+                
+                }
+                $zip_size = $val. $symbol ;
+                $top_version = $addon_one['addon_info']['version'];
+                $canDelete = false;
+            ?>
             <li class="addon_li">
                 <div class="addon_d">
                     <img style="" src="<?= $addon_one['addon_info']['image'] ?>" />
-                    <h2 style="margin10px auto"><?= $addon_one['addon_info']['name'] ?></h2>
+                    <h2 style=""><?= $addon_one['addon_info']['name'] ?>
+                    ( <?= $zip_size ?> ) </h2>
                 </div>
                 <div class="clear"></div>
                 <div style="margin-top:60px;">
                 <?php    
                     $namespace = $addon_one['addon_info']['namespace'];
                     if (in_array($namespace, $installed_extensions_namespace)):
+                        $canDelete = true; 
                         if ( version_compare($versionArr[$namespace], $addon_one['addon_info']['version'] ,'<') ):
                         
                 ?>
-                            <a class="abutton-update" href="javascript:void(0)"  addonName="<?= $addon_one['addon_info']['name'] ?>" rel="<?= $namespace ?>" folderName="<?= $addon_one['addon_info']['folder'] ?>"  packageName="<?= $addon_one['addon_info']['package'] ?>">需要升级</a>
+                            <a  title="您的应用有新版本发布，您可以点击该按钮进行升级应用，升级之前，请务必进行文件和数据库的备份，以免造成不必要的损失，升级过程中，将会重新下载zip文件进行解压覆盖旧版本应用"
+                            class="abutton-update" href="javascript:void(0)"  addonName="<?= $addon_one['addon_info']['name'] ?>" rel="<?= $namespace ?>" folderName="<?= $addon_one['addon_info']['folder'] ?>"  packageName="<?= $addon_one['addon_info']['package'] ?>">需要升级</a>
                         <?php else: ?>
-                            <a class="abutton-normal" href="javascript:void(0)">最新版本</a>
+                            
+                            <a title="该应用已经是最新的版本了，无需升级，如果想要卸载，点击右下角卸载按钮即可" class="abutton-normal" href="javascript:void(0)">最新版本</a>
                         <?php endif; ?>
                  
                     
                 <?php else: ?>
-                    <a class="abutton" href="javascript:void(0)" addonName="<?= $addon_one['addon_info']['name'] ?>" rel="<?= $namespace ?>"  folderName="<?= $addon_one['addon_info']['folder'] ?>"  packageName="<?= $addon_one['addon_info']['package'] ?>">点击安装</a>
-                
+                    <?php if ($top_version): ?>
+                        <a title="点击该按钮，进行应用的在线安装" class="abutton" href="javascript:void(0)" addonName="<?= $addon_one['addon_info']['name'] ?>" rel="<?= $namespace ?>"  folderName="<?= $addon_one['addon_info']['folder'] ?>"  packageName="<?= $addon_one['addon_info']['package'] ?>">点击安装</a>
+                    <?php else: ?>
+                        <a title="您是该应用的开发者，请上传版本zip文件，通过管理员审核后菜才可以安装" class="not_publish" href="javascript:void(0)" addonName="<?= $addon_one['addon_info']['name'] ?>" rel="<?= $namespace ?>"  folderName="<?= $addon_one['addon_info']['folder'] ?>"  packageName="<?= $addon_one['addon_info']['package'] ?>">未发布</a>
+                    
+                    <?php endif; ?>
                 <?php endif; ?>
                     
                     <div class="version_info">
-                        <div class="">最高版本: <?= $addon_one['addon_info']['version'] ?></div>
+                        <?php if ($top_version): ?>
+                        <div class="">最高版本: <?= $top_version ?></div>
+                        <?php endif; ?>
+                        
                         <?php if($versionArr[$namespace]): ?>
                         <div style="margin-top:5px;">当前版本: <?= $versionArr[$namespace] ?></div>
                         <?php endif; ?>
                     </div>
                     
                 </div>
+                <?php if($canDelete): ?>
                 <a href="javascript:void(0)" class="removeAddon" title="卸载应用"  addonName="<?= $addon_one['addon_info']['name'] ?>" rel="<?= $namespace ?>" folderName="<?= $addon_one['addon_info']['folder'] ?>"  packageName="<?= $addon_one['addon_info']['package'] ?>">
                     <i class="fa fa-trash-o"></i>
                 </a>
+                <?php endif; ?>
             </li>
         <?php endforeach; ?>
         </ul>
@@ -66,6 +95,9 @@ use fec\helpers\CRequest;
 </div>
 
 <style>
+.addon_li h2{
+    margin10px auto;line-height: 20px;height: 40px;overflow: hidden;
+}
 .removeAddon{
     display: block;
     bottom: 10px;
@@ -78,13 +110,14 @@ use fec\helpers\CRequest;
     color:#333;
 }
 
+
 .version_info{
     float: right;
     margin-right: 10px;
 }
 .addon_li{
     width: 280px;
-    height:390px;
+    height:440px;
     display: inline-block;
     margin: 10px;
     border: 1px solid #ccc;
@@ -103,6 +136,12 @@ use fec\helpers\CRequest;
     display:block;
     margin:20px auto;
     text-align:center;
+}
+
+.not_publish{
+    background: #f0ad4e !important;
+    color:#fff;
+    padding:5px 10px;
 }
 
 .abutton{
