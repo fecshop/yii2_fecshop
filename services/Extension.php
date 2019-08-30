@@ -29,6 +29,9 @@ class Extension extends Service
     const STATUS_ENABLE = 1;
     const STATUS_DISABLE = 2;
     
+    const TYPE_INSTALL = 'installed';
+    const TYPE_LOCAL_CREATED = 'local_created';
+    
     protected $warnings;
     protected $_modelName = '\fecshop\models\mysqldb\Extension';
 
@@ -143,6 +146,53 @@ class Extension extends Service
         return true;
     }
     
+    //const TYPE_INSTALL = 'installed';
+    //const TYPE_LOCAL_CREATED = 'local_created';
+    
+    // 本地后台初始化的应用
+    public function newLocalCreateInit($param)
+    {
+        $namespace = $param['namespaces'];
+        //$package = $param['package'];
+        //$name = $param['name'];
+        //$config_file_path = $param['config_file_path'];
+        //$version = $param['version'];
+        if (!$namespace) {
+            Yii::$service->helper->errors->add('namespace is empty');
+
+            return false;
+        }
+        // 查看namespace 是否存在
+        $modelOne = $this->_model->findOne(['namespace' => $namespace]);
+        if ($modelOne['id']) {
+            Yii::$service->helper->errors->add('this namespace is exist');
+
+            return false;
+        }
+        $config_file_path = '@addons/' . $param['package'] . '/' .  $param['addon_folder']  . '/config.php';
+        $model = new $this->_modelName();
+        $model['namespace'] = $param['namespaces'];
+        $model['package'] = $param['package'];
+        $model['folder'] = $param['addon_folder'];
+        $model['name'] = $param['addon_name'];
+        $model['version'] = '1.0.0';
+        $model['config_file_path'] = $config_file_path;
+        
+        if (!$model->validate()) {
+            $errors = $model->errors;
+            Yii::$service->helper->errors->addByModelErrors($errors);
+            return false;
+        }
+        $model->status = self::STATUS_ENABLE;
+        $model->type = self::TYPE_LOCAL_CREATED;
+        
+        $model->created_at = time();
+        $model->updated_at = time();
+        $model->installed_status = self::INSTALLED_STATUS;
+        $model->priority = 1;
+        return $model->save();
+    }
+    
     // 新安装的插件，进行初始化
     public function newInstallInit($param)
     {
@@ -172,6 +222,8 @@ class Extension extends Service
             return false;
         }
         $model->status = self::STATUS_ENABLE;
+        $model->type = self::TYPE_INSTALL;
+        
         $model->created_at = time();
         $model->updated_at = time();
         $model->installed_status = self::INSTALL_INIT_STATUS;
@@ -345,4 +397,25 @@ class Extension extends Service
         return true;
     }
     
+    
+    /**
+     * @param $installConfig | array
+     * 进行应用的卸载
+     * 通过扩展配置中获取安装部分的配置，通过该函数执行安装。
+     */
+    public function uninstallAddons($unstallConfig, $modelOne)
+    {
+        $uninstallOb = Yii::createObject($unstallConfig);
+        if (!($uninstallOb instanceof \fecshop\services\extension\UninstallInterface)) {
+            Yii::$service->helper->errors->add("Extension unstall file must implements interface `\fecshop\services\extension\UninstallInterface`");
+            
+            return false;
+        }
+        
+        if (!$uninstallOb->run()) {
+            return false;
+        }
+        // 进行extension数据的删除
+        return $modelOne->delete();
+    }
 }
