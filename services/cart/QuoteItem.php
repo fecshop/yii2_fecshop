@@ -64,7 +64,7 @@ class QuoteItem extends Service
             Yii::$service->cart->quote->createCart();
             $cart_id = Yii::$service->cart->quote->getCartId();
         }
-        // 查看是否存在此产品，如果存在，则相加个数
+        // 
         if (!isset($item['product_id']) || empty($item['product_id'])) {
             Yii::$service->helper->errors->add('add to cart error, product id is empty');
 
@@ -84,7 +84,6 @@ class QuoteItem extends Service
         
         if ($item_one['cart_id']) {
             // 检查产品满足加入购物车的条件
-            
             $checkItem = $item;
             $checkItem['qty'] = $item['qty'] + $item_one['qty'];
             $productValidate = Yii::$service->cart->info->checkProductBeforeAdd($checkItem, $product);
@@ -404,6 +403,7 @@ class QuoteItem extends Service
      */
     public function addOneItem($item_id)
     {
+        
         $cart_id = Yii::$service->cart->quote->getCartId();
         if ($cart_id) {
             $one = $this->_itemModel->find()->where([
@@ -414,8 +414,11 @@ class QuoteItem extends Service
             if ($one['item_id'] && $product_id) {
                 $product = Yii::$service->product->getByPrimaryKey($product_id);
                 // 检查产品满足加入购物车的条件
-                $checkItem = $one;
-                $checkItem['qty'] += 1;
+                $checkItem = [
+                    'product_id' 		=> $one['product_id'],
+                    'custom_option_sku' => $one['custom_option_sku'],
+                    'qty' 				=> $one['qty'] + 1,
+                ];
                 $productValidate = Yii::$service->cart->info->checkProductBeforeAdd($checkItem, $product);
             
                 if (!$productValidate) {
