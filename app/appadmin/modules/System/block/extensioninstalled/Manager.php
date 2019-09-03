@@ -88,6 +88,14 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
                 ],
             ],
             
+            [    // selecit的Int 类型
+                'type' => 'select',
+                'title'  => Yii::$service->page->translate->__('Extension Type'),
+                'name' => 'type',
+                'columns_type' => 'string',  // int使用标准匹配， string使用模糊查询
+                'value' => Yii::$service->extension->getTypeArr(),
+            ],
+            
             [    // 时间区间类型搜索
                 'type' => 'inputdatefilter',
                 'name' => 'created_at',
@@ -120,6 +128,25 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
                 'width'          => '50',
                 'align'           => 'left',
             ],
+             [
+                'orderField'    => 'package',
+                'label'           => Yii::$service->page->translate->__('Extension Fackage'),
+                'width'          => '50',
+                'align'           => 'left',
+            ],
+             [
+                'orderField'    => 'folder',
+                'label'           => Yii::$service->page->translate->__('Extension Folder'),
+                'width'          => '50',
+                'align'           => 'left',
+            ],
+            [
+                'orderField'    => 'type',
+                'label'           => Yii::$service->page->translate->__('Extension Type'),
+                'width'          => '50',
+                'align'           => 'center',
+                'display'        => Yii::$service->extension->getTypeArr(),
+            ],
             [
                 'orderField'    => 'status',
                 'label'           => Yii::$service->page->translate->__('Status'),
@@ -129,6 +156,14 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
                     1 => Yii::$service->page->translate->__('Enable'),
                     2 => Yii::$service->page->translate->__('Disable'),
                 ],
+            ],
+            
+            [
+                'orderField'    => 'installed_status',
+                'label'           => Yii::$service->page->translate->__('Installed Status'),
+                'width'          => '50',
+                'align'           => 'center',
+                'display'        => Yii::$service->extension->getInstallStatusArr(),
             ],
             
             [

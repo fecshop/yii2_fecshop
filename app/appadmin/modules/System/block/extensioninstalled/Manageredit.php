@@ -58,6 +58,22 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
                 'require' => 1,
             ],
             [
+                'label'  => Yii::$service->page->translate->__('Extension Package'),
+                'name' => 'package',
+                'display' => [
+                    'type' => 'inputString',
+                ],
+                'require' => 1,
+            ],
+            [
+                'label'  => Yii::$service->page->translate->__('Extension Folder'),
+                'name' => 'folder',
+                'display' => [
+                    'type' => 'inputString',
+                ],
+                'require' => 1,
+            ],
+            [
                 'label'  => Yii::$service->page->translate->__('Status'),
                 'name' => 'status',
                 'display' => [
@@ -71,38 +87,24 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
                 'default' => 1,
             ],
             [
-                'label'  => Yii::$service->page->translate->__('Authorized Domain'),
-                'name' => 'domain',
+                'label'  => Yii::$service->page->translate->__('Extension Type'),
+                'name' => 'type',
                 'display' => [
-                    'type' => 'inputString',
+                    'type' => 'select',
+                    'data' =>  Yii::$service->extension->getTypeArr(),
                 ],
                 'require' => 1,
+                'default' => 1,
             ],
             [
-                'label'  => Yii::$service->page->translate->__('Authorized Price'),
-                'name' => 'price',
-                'display' => [
-                    'type' => 'inputString',
-                ],
-                'require' => 1,
-            ],
-            [
-                'label'  => Yii::$service->page->translate->__('Author Name'),
-                'name' => 'author_name',
+                'label'  => Yii::$service->page->translate->__('Namespace'),
+                'name' => 'namespace',
                 'display' => [
                     'type' => 'inputString',
                 ],
                 'require' => 1,
             ],
             
-            [
-                'label'  => Yii::$service->page->translate->__('Description'),
-                'name' => 'description',
-                'display' => [
-                    'type' => 'inputString',
-                ],
-                'require' => 1,
-            ],
             
             [
                 'label'  => Yii::$service->page->translate->__('Config File Path'),
@@ -114,20 +116,31 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
             ],
             
             [
-                'label'  => Yii::$service->page->translate->__('Theme File Patch'),
-                'name' => 'theme_file_patch',
+                'label'  => Yii::$service->page->translate->__('Extension Version'),
+                'name' => 'version',
+                'display' => [
+                    'type' => 'inputString',
+                ],
+                'require' => 1,
+            ],
+            
+            [
+                'label'  => Yii::$service->page->translate->__('Priority'),
+                'name' => 'priority',
                 'display' => [
                     'type' => 'inputString',
                 ],
                 'require' => 1,
             ],
             [
-                'label'  => Yii::$service->page->translate->__('Version'),
-                'name' => 'version',
+                'label'  => Yii::$service->page->translate->__('Installed Status'),
+                'name' => 'installed_status',
                 'display' => [
-                    'type' => 'inputString',
+                    'type' => 'select',
+                    'data' => Yii::$service->extension->getInstallStatusArr(),
                 ],
                 'require' => 1,
+                'default' => 1,
             ],
             
         ];
@@ -159,6 +172,44 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
             ]);
             exit;
         }
+    }
+    // 插件激活
+    public function extensionEnable()
+    {
+        $ids = Yii::$app->request->post('ids');
+        $idArr = explode(',', $ids);
+        if (!Yii::$service->extension->enableAddons($idArr)) {
+            echo  json_encode([
+                'statusCode' => '300',
+                'message'    => Yii::$service->page->translate->__('Enable Extension fail'),
+            ]);
+            exit;
+        }
+        echo  json_encode([
+            'statusCode' => '200',
+            'message'    => Yii::$service->page->translate->__('Enable Extension Success') ,
+        ]);
+        exit;
+    }
+    // 插件关闭
+    public function extensionDisable()
+    {
+        $ids = Yii::$app->request->post('ids');
+        $idArr = explode(',', $ids);
+        if (!Yii::$service->extension->disableAddons($idArr)) {
+            echo  json_encode([
+                'statusCode' => '300',
+                'message'    => Yii::$service->page->translate->__('Enable Extension fail'),
+            ]);
+            exit;
+        }
+        echo  json_encode([
+            'statusCode' => '200',
+            'message'    => Yii::$service->page->translate->__('Enable Extension Success') ,
+        ]);
+        exit;
+        
+        
     }
 
     // 批量删除
