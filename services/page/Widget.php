@@ -46,10 +46,11 @@ class Widget extends Service
      *    'terry1'=> 'My1',
      *   'terry2'=> 'My2',
      * ]
-     * 如果传递的是字符串，那么会去配置（$widgetConfig）中查找
+     * 如果传递的是字符串，那么会去配置（$widgetConfig）中查找，譬如 category/filter_price ，对应  $widgetConfig['category']['filter_price'] 的配置
      * 最后找到后，通过renderContent函数，得到html
      * 该功能大致为通过一个动态数据提供者block，和内容显示部分view，view里面需要使用的动态变量
      * 由block提供，最终生成一个html区块，返回。
+     * @param $parentThis 外部传递的数组变量，作为变量，可以在view中直接使用
      */
     protected function actionRender($configKey, $parentThis = '')
     {
@@ -57,15 +58,76 @@ class Widget extends Service
         if (is_array($configKey)) {
             $config = $configKey;
             $configKey = '';
-        } else {
-            if (isset($this->widgetConfig[$configKey])) {
-                $config = $this->widgetConfig[$configKey];
+        } else if ($configKey){
+            $configArr = explode('/', $configKey);
+            
+            if (count($configArr) < 2 ) {
+                throw new InvalidValueException(" config key: '$configKey', format: `xxxx/xxxx`, you must config it with correct format");
+            }
+            if (isset($this->widgetConfig[$configArr[0]][$configArr[1]])) {
+                $config = $this->widgetConfig[$configArr[0]][$configArr[1]];
             } else {
                 throw new InvalidValueException(" config key: '$configKey', can not find in  ".'Yii::$service->page->widget->widgetConfig'.', you must config it before use it.');
             }
         }
 
         return $this->renderContent($configKey, $config, $parentThis);
+    }
+    /**
+     * @param configKey   String or Array
+     * 如果传递的是一个配置数组，内容格式如下：
+     * [
+     *    # class 选填
+     *    'class' => 'fec\block\TestMenu',
+     *    # view 为 必填 ， view可以用两种方式
+     *    #  view 1 使用绝对地址的方式
+     *    'view'  => '@fec/views/testmenu/index.php',
+     *    OR
+     *    #  view 2 使用相对地址，通过当前模板进行查找
+     *    'view'  => 'cms/home/index.php',
+     *
+     *    # 下面为选填
+     *    'method'=> 'getLastData',
+     *    'terry1'=> 'My1',
+     *   'terry2'=> 'My2',
+     * ]
+     * 如果传递的是字符串，那么会去配置（$widgetConfig）中查找，譬如 category/filter_price ，对应  $widgetConfig['category']['filter_price'] 的配置
+     * 最后找到后，通过renderContent函数，得到html
+     * 该功能大致为通过一个动态数据提供者block，和内容显示部分view，view里面需要使用的动态变量
+     * 由block提供，最终生成一个html区块，返回。
+     * @param $diConfig | array 数组变量，会注入$configKey中class对应的类变量
+     */
+    protected function actionDiRender($configKey, $diConfig = [])
+    {
+        if (!is_array($diConfig)) {
+            throw new InvalidValueException(" configParent: '$diConfig' must be array");
+        }
+        // 
+        
+        $config = '';
+        if (is_array($configKey)) {
+            $config = $configKey;
+            $configKey = '';
+        } else if ($configKey){
+            $configArr = explode('/', $configKey);
+            
+            if (count($configArr) < 2 ) {
+                throw new InvalidValueException(" config key: '$configKey', format: `xxxx/xxxx`, you must config it with correct format");
+            }
+            if (isset($this->widgetConfig[$configArr[0]][$configArr[1]])) {
+                $config = $this->widgetConfig[$configArr[0]][$configArr[1]];
+            } else {
+                throw new InvalidValueException(" config key: '$configKey', can not find in  ".'Yii::$service->page->widget->widgetConfig'.', you must config it before use it.');
+            }
+        }
+        if (!isset($config['class']) || !$config['class']) {
+            throw new InvalidConfigException('in widget ['.$configKey.'],you enable cache ,you must config widget class .');
+        }
+        foreach ($diConfig as $k=>$v) {
+            $config [$k] = $v;
+        }
+        
+        return $this->renderContent($configKey, $config);
     }
 
     /**

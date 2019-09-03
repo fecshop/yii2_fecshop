@@ -42,6 +42,8 @@ class Theme extends Service
      * current layout file path.
      */
     public $layoutFile;
+    
+    public $viewFileConfig;
 
     /**
      * array that contains mutil theme dir.
@@ -89,7 +91,19 @@ class Theme extends Service
         if ($module && $module->id) {
             $relativeFile = $module->id.'/';
         }
-        $relativeFile .= Yii::$app->controller->id.'/'.$view.'.php';
+        $routerPath = $relativeFile.Yii::$app->controller->id.'/'.$view;
+        // 从配置中查看是否存在指定的view路径。
+        if (isset($this->viewFileConfig[$routerPath])) {
+            $relativeFile = $this->viewFileConfig[$routerPath];
+            // 如果view是以@开头，则说明是绝对路径,直接返回
+            if (substr($relativeFile, 0, 1) == '@') {
+                return Yii::getAlias($relativeFile);
+            }
+        } else {
+            $relativeFile .= Yii::$app->controller->id.'/'.$view.'.php';
+        }
+        
+        
         $absoluteDir = Yii::$service->page->theme->getThemeDirArr();
         foreach ($absoluteDir as $dir) {
             if ($dir) {
