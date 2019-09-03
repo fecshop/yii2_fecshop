@@ -19,7 +19,7 @@ use fecshop\app\apphtml5\helper\Format;
 		<h1 class='title'><?= Yii::$service->page->translate->__('Product Favorite'); ?></h1>
 	</div>
 </div>
-<?= Yii::$service->page->widget->render('flashmessage'); ?>
+<?= Yii::$service->page->widget->render('base/flashmessage'); ?>
 
 <div class="account-container">
 	<div class="col-main account_center">
@@ -47,15 +47,13 @@ use fecshop\app\apphtml5\helper\Format;
 									<div class="review_description_centen">
 										<div class="category_product" style="display:inline-block;float:left;">
 											<?php
-												$config = [
-													'class' 		=> 'fecshop\app\apphtml5\modules\Catalog\block\category\Price',
-													'view'  		=> 'catalog/category/price.php',
+												$diConfig = [
 													'price' 		=> $one['price'],
 													'special_price' => $one['special_price'],
 													'special_from' 	=> $one['special_from'],
 													'special_to' 	=> $one['special_to'],
 												];
-												echo Yii::$service->page->widget->renderContent('category_product_price',$config);
+                                                echo Yii::$service->page->widget->DiRender('category/price', $diConfig);
 											?>
 										</div>
 										

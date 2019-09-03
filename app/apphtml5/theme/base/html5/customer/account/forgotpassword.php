@@ -15,7 +15,7 @@
 		<h1 class='title'><?= Yii::$service->page->translate->__('Forgot Password'); ?></h1>
 	</div>
 </div>
-<?= Yii::$service->page->widget->render('flashmessage'); ?>	
+<?= Yii::$service->page->widget->render('base/flashmessage'); ?>	
 <div class="list-block customer-login ">
 	<form class="account-form" action="<?= Yii::$service->url->getUrl('customer/account/forgotpasswordsubmit'); ?>" method="post" id="form-validate">
 		<ul>

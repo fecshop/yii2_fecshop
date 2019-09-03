@@ -8,7 +8,7 @@
  */
 ?>
 <div class="main container one-column" style="margin:0.75rem">
-    <?= Yii::$service->page->widget->render('breadcrumbs',$this); ?>
+    <?= Yii::$service->page->widget->render('base/breadcrumbs',$this); ?>
     <?php if ($enable): ?>
         <?php
             $param = ['logUrlB' => '<a external href="'.$loginUrl.'">','logUrlE' => '</a> '];

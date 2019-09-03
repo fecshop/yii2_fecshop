@@ -15,15 +15,12 @@
 		<div class="media_img">
 			<div class="media_img_content">
 				<?php # 图片部分。
-					$imageView = [
-						'view'	=> 'catalog/product/index/image.php'
-					];
 					$imageParam = [
                         'media_size' => $media_size,
                         'image' => $image_thumbnails,
                     ];
 				?>
-				<?= Yii::$service->page->widget->render($imageView,$imageParam); ?>
+				<?= Yii::$service->page->widget->render('product/image',$imageParam); ?>
 			</div>
 		</div>
 		<div class="product_info">
@@ -47,44 +44,14 @@
 				<div class="clear"></div>
 			</div>
 			<div class="price_info">
-				<?php # 价格部分
-					$priceView = [
-						'view'	=> 'catalog/product/index/price.php'
-					];
-					$priceParam = [
-						'price_info' => $price_info,
-					];
-				?>
-				<?= Yii::$service->page->widget->render($priceView,$priceParam); ?>
-                
+                <?= Yii::$service->page->widget->render('product/price', ['price_info' => $price_info]); ?>
 			</div>
 			<div class="product_info_section" id="product_info_section">
 				<div class="product_options">
-					<?php # options部分
-						$optionsView = [
-							'view'	=> 'catalog/product/index/options.php'
-						];
-						$optionsParam = [
-							'options' => $options,
-						];
-					?>
-					<?= Yii::$service->page->widget->render($optionsView,$optionsParam); ?>
+					<?= Yii::$service->page->widget->render('product/options', ['options' => $options]); ?>
 				</div>
 				<div class="product_custom_options">
-					<?php # custom options部分
-						$optionsView = [
-							'class' =>  'fecshop\app\apphtml5\modules\Catalog\block\product\CustomOption',
-							'view'	=> 'catalog/product/index/custom_option.php',
-							'custom_option' 	=> $custom_option,
-							'attr_group'		=> $attr_group,
-							'product_id'		=> $_id ,
-							'middle_img_width' 	=> $media_size['middle_img_width'],
-						];
-						$optionsParam = [
-							
-						];
-					?>
-					<?= Yii::$service->page->widget->render($optionsView,$optionsParam); ?>
+					
 				</div>
 				<div class="product_qty pg">
 					<div class="label"><?= Yii::$service->page->translate->__('Qty:'); ?></div>
@@ -118,15 +85,7 @@
 					<div class="clear"></div>
 				</div>
 				<div class="tier_price_info">
-					<?php # tier price 部分。
-						$priceView = [
-							'view'	=> 'catalog/product/index/tier_price.php'
-						];
-						$priceParam = [
-							'tier_price' => $tier_price,
-						];
-					?>
-					<?= Yii::$service->page->widget->render($priceView,$priceParam); ?>
+					<?= Yii::$service->page->widget->render('product/tier_price', ['tier_price' => $tier_price]); ?>
 				</div>
 				<div class="addtocart">
 					<a external href="javascript:void(0)" id="js_registBtn" class="button button-fill button-success redBtn addProductToCart">
@@ -181,9 +140,7 @@
 				<div class="content-block">
 					<div class="text-reviews" id="text-reviews" style="">
 						<?php # review部分。
-							$reviewView = [
-								'class' 		=> 'fecshop\app\apphtml5\modules\Catalog\block\product\Review',
-								'view'			=> 'catalog/product/index/review.php',
+							$reviewParam = [
 								'product_id' 	=> $_id,
 								'spu'			=> $spu,
                             ];
@@ -191,20 +148,14 @@
                            $reviewParam['review_count'] = $review_count;
                            $reviewParam['reviw_rate_star_average'] = $reviw_rate_star_average;
 						?>
-						<?= Yii::$service->page->widget->render($reviewView,$reviewParam); ?>
+						<?= Yii::$service->page->widget->DiRender('product/review', $reviewParam); ?>
 					</div> 
 				</div>
 			  </div>
 			  <div id="tab3" class="tab">
 				<div class="content-block">
 					<div class="text-questions" style="">
-						<?php # payment部分。
-							$paymentView = [
-								'view'			=> 'catalog/product/index/payment.php',
-							];
-							
-						?>
-						<?= Yii::$service->page->widget->render($paymentView); ?>
+						<?= Yii::$service->page->widget->render('product/payment'); ?>
 					
 					</div>  
 				</div>
@@ -213,15 +164,7 @@
 		</div>
 	</div>
 	<div class="buy_also_buy_cer">
-		<?php # buy also buy 部分。
-			$buyAlsoBuyView = [
-				'view'	=> 'catalog/product/index/buy_also_buy.php'
-			];
-			$buyAlsoBuyParam = [
-				'products' => $buy_also_buy,
-			];
-		?>
-		<?= Yii::$service->page->widget->render($buyAlsoBuyView,$buyAlsoBuyParam); ?>
+        <?= Yii::$service->page->widget->render('product/buy_also_buy', ['products' => $buy_also_buy]); ?>
 	</div>
 </div>
 <script>

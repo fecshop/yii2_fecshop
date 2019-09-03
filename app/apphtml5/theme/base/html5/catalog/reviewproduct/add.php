@@ -8,7 +8,7 @@
  */
 ?>
 <div class="main container one-column">
-<?= Yii::$service->page->widget->render('flashmessage'); ?>
+<?= Yii::$service->page->widget->render('base/flashmessage'); ?>
 	<div class="col-main">
 		<div class="std">
 			<div class="review_add">
@@ -25,15 +25,7 @@
 						
 						<div class="product_info review_add_price">
 							<div class="price_info">
-								<?php 
-									$priceView = [
-										'view'	=> 'catalog/product/index/price.php'
-									];
-									$priceParam = [
-										'price_info' => $price_info,
-									];
-								?>
-								<?= Yii::$service->page->widget->render($priceView,$priceParam); ?>
+								<?= Yii::$service->page->widget->render('product/price',['price_info' => $price_info]); ?>
 							</div>
 						</div>
 					</div>

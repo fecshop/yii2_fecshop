@@ -10,7 +10,7 @@
 
 <div class="content">
 	<div class="content-block">
-		<?= Yii::$service->page->widget->render('breadcrumbs',$this); ?>
+		<?= Yii::$service->page->widget->render('base/breadcrumbs',$this); ?>
 		<div class="category_page">
 			<div class="category_img">
 				<a href="#">
@@ -31,13 +31,7 @@
 				<div class=" infinite-scroll infinite-scroll-bottom" data-distance="10">
 					<div class="list-block">
 						<div class="list-container">
-							<?php
-								$parentThis['products'] = $products;
-								$config = [
-									'view'  		=> 'cms/home/index/product.php',
-								];
-								echo Yii::$service->page->widget->renderContent('category_product_price',$config,$parentThis);
-							?>
+							<?=  Yii::$service->page->widget->render('cms/productlist' , ['products' => $products] ); ?>
 						
 						</div>
 						<!-- 加载提示符 -->
@@ -62,10 +56,7 @@
 		$parentThis = [
 			'refine_by_info' => $refine_by_info,
 		];
-		$config = [
-			'view'  		=> 'catalog/category/index/filter/refineby.php',
-		];
-		echo Yii::$service->page->widget->renderContent('category_product_filter_refine_by',$config,$parentThis);
+        echo Yii::$service->page->widget->render('category/filter_refineby', $parentThis);
 	?>
 	<?php
 		# Category Left Filter subCategory
@@ -73,30 +64,21 @@
 			'filter_category' => $filter_category,
 			'current_category'=> $name,
 		];
-		$config = [
-			'view'  		=> 'catalog/category/index/filter/subcategory.php',
-		];
-		echo Yii::$service->page->widget->renderContent('category_product_filter_sub_category',$config,$parentThis);
+		echo Yii::$service->page->widget->render('category/filter_subcategory', $parentThis);
 	?>
 	<?php
 		# Category Left Filter Product Attributes
 		$parentThis = [
 			'filters' => $filter_info,
 		];
-		$config = [
-			'view'  		=> 'catalog/category/index/filter/attr.php',
-		];
-		echo Yii::$service->page->widget->renderContent('category_product_filter_attr',$config,$parentThis);
+		echo Yii::$service->page->widget->render('category/filter_attr', $parentThis);
 	?>
 	<?php
 		# Category Left Filter Product Price
 		$parentThis = [
 			'filter_price' => $filter_price,
 		];
-		$config = [
-			'view'  		=> 'catalog/category/index/filter/price.php',
-		];
-		echo Yii::$service->page->widget->renderContent('category_product_filter_price',$config,$parentThis);
+		echo Yii::$service->page->widget->render('category/filter_price', $parentThis);
 	?>
 	</div>
 </div>
@@ -110,12 +92,8 @@
 			<?php
 				$parentThis = [
 					'query_item' => $query_item,
-					//'product_page'=>$product_page,
 				];
-				$config = [
-					'view'  		=> 'catalog/category/index/toolbar.php',
-				];
-				$toolbar = Yii::$service->page->widget->renderContent('category_toolbar',$config,$parentThis);
+				$toolbar = Yii::$service->page->widget->render('category/toolbar', $parentThis);
 				echo $toolbar;
 			?>
 		</div>

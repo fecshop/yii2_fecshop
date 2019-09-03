@@ -14,7 +14,7 @@
 		<?= Yii::$service->page->translate->__('Login'); ?>
 	</a>
 </div>
-<?= Yii::$service->page->widget->render('flashmessage'); ?>	
+<?= Yii::$service->page->widget->render('base/flashmessage'); ?>	
 <div class="list-block customer-login  customer-register">
 	<form action="<?= Yii::$service->url->getUrl('customer/account/register'); ?>" method="post" id="register-form" class="account-form">
 		<?= \fec\helpers\CRequest::getCsrfInputHtml();  ?>

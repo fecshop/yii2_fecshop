@@ -8,10 +8,9 @@
  */
 ?>
 <?php
-    $reviw_rate_star_info = $parentThis['reviw_rate_star_info'];
-    $review_count = $parentThis['review_count'];
-    $reviw_rate_star_average = $parentThis['reviw_rate_star_average'];
-    //var_dump($reviw_rate_star_info);
+    //$reviw_rate_star_info = $parentThis['reviw_rate_star_info'];
+    //$review_count = $parentThis['review_count'];
+    //$reviw_rate_star_average = $parentThis['reviw_rate_star_average'];
 ?>
 <div class="product-Reviews">
 	<div id="pic_list_2" class="scroll_horizontal">

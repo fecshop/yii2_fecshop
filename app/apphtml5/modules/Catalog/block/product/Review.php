@@ -22,6 +22,9 @@ class Review  extends \yii\base\BaseObject
     public $spu;
     public $filterBySpu = true;
     public $filterOrderBy = 'review_date';
+    public $reviw_rate_star_info;
+    public $review_count;
+    public $reviw_rate_star_average;
     /**
      * 为了可以使用rewriteMap，use 引入的文件统一采用下面的方式，通过Yii::mapGet()得到className和Object
      */
@@ -56,9 +59,11 @@ class Review  extends \yii\base\BaseObject
             return [
                 '_id' => $this->product_id,
                 'spu' => $this->spu,
-                'review_count'    => $count,
                 'coll'            => $coll,
                 'noActiveStatus'=> Yii::$service->product->review->noActiveStatus(),
+                'reviw_rate_star_info' => $this->reviw_rate_star_info,
+                'review_count' => $this->review_count,
+                'reviw_rate_star_average' => $this->reviw_rate_star_average,
             ];
         }
     }

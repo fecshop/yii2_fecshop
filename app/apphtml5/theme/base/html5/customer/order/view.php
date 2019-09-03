@@ -18,7 +18,7 @@ use fecshop\app\apphtml5\helper\Format;
 		<h1 class='title'><?= Yii::$service->page->translate->__('View Order'); ?></h1>
 	</div>
 </div>
-<?= Yii::$service->page->widget->render('flashmessage'); ?>
+<?= Yii::$service->page->widget->render('base/flashmessage'); ?>
 
 
 <div class="account-container">

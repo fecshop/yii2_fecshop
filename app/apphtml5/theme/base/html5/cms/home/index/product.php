@@ -25,14 +25,11 @@
                     </p>
                     <p style="color: #333;">
                         <?php
-                            
-                            $config = [
-                                'class' 		=> 'fecshop\app\apphtml5\modules\Catalog\block\category\Price',
-                                'view'  		=> 'cms/home/index/price.php',
+                            $diConfig = [
                                 'price' 		=> $product['price'],
                                 'special_price' => $product['special_price'],
                             ];
-                            echo Yii::$service->page->widget->renderContent('category_product_price',$config);
+                            echo Yii::$service->page->widget->DiRender('home/product_price',$diConfig);
                         ?>
                     </p>
                 </div>

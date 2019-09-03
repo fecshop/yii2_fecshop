@@ -95,6 +95,170 @@ $config = [
             */
         ],
     ],
+    
+     'services' => [
+        'page' => [
+            'childService' => [
+                'theme' => [
+                    'viewFileConfig' => [
+                        // 'catalog/category/index' => '@fecshop/app/appfront/theme/base/front/catalog/category/index.php',
+                    ],
+                ],
+                'widget' => [
+                    'widgetConfig' => [
+                        'base' => [
+                            'head' => [
+                                // 动态数据提供部分
+                                'class' => 'fecshop\app\appfront\widgets\Head',
+                                // 根据多模板的优先级，依次去模板找查找该文件，直到找到这个文件。
+                                'view'  => 'widgets/head.php',
+                                // 缓存
+                                'cache' => [
+                                    'timeout'    => 4500,  // 缓存过期时间
+                                ],
+                            ],
+                            'header' => [
+                                'class' => 'fecshop\app\appfront\widgets\Headers',
+                                // 根据多模板的优先级，依次去模板找查找该文件，直到找到这个文件。
+                                'view'  => 'widgets/header.php',
+                                'cache' => [
+                                    'timeout'    => 4500,
+                                ],
+                            ],
+                            'topsearch' => [
+                                'view'  => 'widgets/topsearch.php',
+                            ],
+                            'menu' => [
+                                'class' => 'fecshop\app\appfront\widgets\Menu',
+                                // 根据多模板的优先级，依次去模板找查找该文件，直到找到这个文件。
+                                'view'  => 'widgets/menu.php',
+                                'cache' => [
+                                    //'timeout' 	=> 4500,
+                                ],
+                            ],
+                            'footer' => [
+                                'class' => 'fecshop\app\appfront\widgets\Footer',
+                                // 根据多模板的优先级，依次去模板找查找该文件，直到找到这个文件。
+                                'view'  => 'widgets/footer.php',
+                                'cache' => [
+                                    //'timeout' 	=> 4500,
+                                ],
+                            ],
+                            'scroll' => [
+                                // 'class' => 'fecshop\app\appfront\modules\Cms\block\widgets\Scroll',
+                                // 根据多模板的优先级，依次去模板找查找该文件，直到找到这个文件。
+                                'view'  => 'widgets/scroll.php',
+                            ],
+                            'breadcrumbs' => [
+                                'view'  => 'widgets/breadcrumbs.php',
+                            ],
+                            'flashmessage' => [
+                                'view'  => 'widgets/flashmessage.php',
+                            ],
+                            'trace' => [
+                                'view'  => 'widgets/trace.php',
+                            ],
+                            'beforeContent' => [
+                                'view'  => 'widgets/beforeContent.php',
+                            ],
+                        ],
+                        'home' => [
+                            'product_price' => [
+                                'class' 		=> 'fecshop\app\appfront\modules\Catalog\block\category\Price',
+                                'view'  		=> 'cms/home/index/price.php',
+                            ],
+                        ],
+                        'customer' => [
+                            'left_menu' => [
+                                'class' => 'fecshop\app\appfront\modules\Customer\block\LeftMenu',
+                                'view'	=> 'customer/leftmenu.php'
+                            ],
+                        ],
+                        'cms' => [
+                            'productlist' => [
+                                'view'  => 'cms/home/index/product.php',
+                            ],
+                        ],
+                        'category' => [
+                            'price' => [
+                                'class' 		=> 'fecshop\app\appfront\modules\Catalog\block\category\Price',
+                                'view'  		=> 'catalog/category/price.php',
+                            ],
+                            'toolbar' => [
+                                'view'  		=> 'catalog/category/index/toolbar.php',
+                            ],
+                            'filter_refineby' => [
+                                'view'  		=> 'catalog/category/index/filter/refineby.php',
+                            ],
+                            'filter_subcategory' => [
+                               'view'  		=> 'catalog/category/index/filter/subcategory.php',
+                            ],
+                            'filter_attr' => [
+                               'view'  		=> 'catalog/category/index/filter/attr.php',
+                            ],
+                            'filter_price' => [
+                               'view'  		=> 'catalog/category/index/filter/price.php',
+                            ],
+                            
+                        ],
+                        'product' => [
+                            'price' => [
+                               'view'	=> 'catalog/product/index/price.php'
+                            ],
+                            'options' => [
+                                'view'	=> 'catalog/product/index/options.php'
+                            ],
+                            'tier_price' => [
+                                'view'	=> 'catalog/product/index/tier_price.php'
+                            ],
+                            'image' => [
+                                'view'	=> 'catalog/product/index/image.php'
+                            ],
+                            'buy_also_buy' => [
+                                'view'	=> 'catalog/product/index/buy_also_buy.php'
+                            ],
+                            'review' => [
+                                'class'  => 'fecshop\app\appfront\modules\Catalog\block\product\Review',
+                                'view'  => 'catalog/product/index/review.php',
+                            ],
+                            'payment' => [
+                                'view'			=> 'catalog/product/index/payment.php',
+                            ],
+                        ],
+                        'search' => [
+                            'toolbar' => [
+                                'view'  		=> 'catalogsearch/index/index/toolbar.php',
+                            ],
+                        ],
+                        // 下单页面
+                        'order' => [
+                            'shipping' => [
+                                'view'	=> 'checkout/onepage/index/shipping.php'
+                            ],
+                            'payment' => [
+                                'view'	=> 'checkout/onepage/index/payment.php'
+                            ],
+                            'view' => [
+                                'view'	=> 'checkout/onepage/index/review_order.php'
+                            ],
+                        ],
+                        'payment' => [
+                            'paypal_express_address' => [
+                                'view'	=> 'payment/paypal/express/review/address.php',
+                            ],
+                            'paypal_express_shipping' => [
+                                'view'	=> 'payment/paypal/express/review/shipping.php'
+                            ],
+                            'paypal_express_orderview' => [
+                                'view'	=> 'payment/paypal/express/review/review_order.php'
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    
+    ],
 ];
 // product 生产环境，errorHandler使用 AppfrontErrorHandler
 if (YII_ENV_PROD) {

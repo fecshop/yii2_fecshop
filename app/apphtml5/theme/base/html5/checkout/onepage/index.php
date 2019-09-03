@@ -10,7 +10,7 @@ use fec\helpers\CRequest;
 ?>
 <div class="main container one-column">
 	<div class="col-main">
-		<?= Yii::$service->page->widget->render('flashmessage'); ?>
+		<?= Yii::$service->page->widget->render('base/flashmessage'); ?>
 		<form action="<?= Yii::$service->url->getUrl('checkout/onepage'); ?>" method="post" id="onestepcheckout-form">
 			<?= CRequest::getCsrfInputHtml(); ?>
 			<div style="margin: 0;" class="group-select">
@@ -45,28 +45,16 @@ use fec\helpers\CRequest;
 
 					<div class="onestepcheckout-column-middle">
 						<div class="shipping_method_html">
-							<?php # shipping部分
-								$shippingView = [
-									'view'	=> 'checkout/onepage/index/shipping.php'
-								];
-								$shippingParam = [
-									'shippings' => $shippings,
-								];
-							?>
-							<?= Yii::$service->page->widget->render($shippingView,$shippingParam); ?>
+                            <?= Yii::$service->page->widget->render('order/shipping', ['shippings' => $shippings]); ?>
 						</div>
-				
-				
-						<?php # payment部分
-							$paymentView = [
-								'view'	=> 'checkout/onepage/index/payment.php'
-							];
+                        
+                        <?php # payment部分
 							$paymentParam = [
 								'payments' => $payments,
 								'current_payment_mothod' => $current_payment_mothod,
 							];
 						?>
-						<?= Yii::$service->page->widget->render($paymentView,$paymentParam); ?>
+						<?= Yii::$service->page->widget->render('order/payment', $paymentParam); ?>
 					
 							
 						<div class="onestepcheckout-coupons">
@@ -92,16 +80,13 @@ use fec\helpers\CRequest;
 
 					<div class="onestepcheckout-column-right">
 						<div class="review_order_view">
-							<?php # review order部分
-								$reviewOrderView = [
-									'view'	=> 'checkout/onepage/index/review_order.php'
-								];
+                            <?php # review order部分
 								$reviewOrderParam = [
 									'cart_info' => $cart_info,
 									'currency_info' => $currency_info,
 								];
 							?>
-							<?= Yii::$service->page->widget->render($reviewOrderView,$reviewOrderParam); ?>
+							<?= Yii::$service->page->widget->render('order/view', $reviewOrderParam); ?>
 							
 						</div>
 						<div class="onestepcheckout-place-order">

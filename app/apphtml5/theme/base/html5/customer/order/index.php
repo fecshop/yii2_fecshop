@@ -15,10 +15,9 @@
 		<h1 class='title'><?= Yii::$service->page->translate->__('Customer Order'); ?></h1>
 	</div>
 </div>
-<?= Yii::$service->page->widget->render('flashmessage'); ?>
+<?= Yii::$service->page->widget->render('base/flashmessage'); ?>
 
 <div class="order_list">
-<?= Yii::$service->page->widget->render('flashmessage'); ?>
 
 	<div class="col-main account_center">
 		<div class="std">

@@ -13,7 +13,7 @@ use fec\helpers\CRequest;
 ?>
 <div class="main container one-column">
 	<div class="col-main">
-     <?= Yii::$service->page->widget->render('flashmessage'); ?>
+     <?= Yii::$service->page->widget->render('base/flashmessage'); ?>
 	<?php if(is_array($cart_info) && !empty($cart_info)):   ?>
 			    
 		<div class="product_page">

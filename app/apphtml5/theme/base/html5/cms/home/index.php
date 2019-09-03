@@ -41,10 +41,7 @@
 				<?php
 					$parentThis['products'] = $bestFeaturedProducts;
 					$parentThis['name'] = 'featured';
-					$config = [
-						'view'  		=> 'cms/home/index/product.php',
-					];
-					echo Yii::$service->page->widget->renderContent('category_product_price',$config,$parentThis);
+                    echo Yii::$service->page->widget->render('cms/productlist', $parentThis);
 				?>
 				
             </div>

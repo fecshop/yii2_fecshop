@@ -11,7 +11,7 @@
 	<?= Yii::$service->page->translate->__('Login'); ?>
 	<a external href="<?= Yii::$service->url->getUrl('customer/account/register');  ?>" class="f-right"><?= Yii::$service->page->translate->__('Register'); ?></a>
 </div>
-<?= Yii::$service->page->widget->render('flashmessage'); ?>	
+<?= Yii::$service->page->widget->render('base/flashmessage'); ?>	
 <div class="list-block customer-login">
 	<form action="<?= Yii::$service->url->getUrl("customer/account/login");  ?>" method="post" id="login-form" class="account-form">
 		<ul>
