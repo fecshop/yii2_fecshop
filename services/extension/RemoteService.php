@@ -70,7 +70,7 @@ class RemoteService extends Service
     }
     
     // 得到远程的addon 信息(我的应用列表)
-    public function getMyAddonsInfo()
+    public function getMyAddonsInfo($pageNum, $numPerPage)
     {
         $accessToken = $this->getAccessToken();
         if (!$accessToken) {
@@ -80,7 +80,11 @@ class RemoteService extends Service
         $headerRequest = [
             'access-token: '.$accessToken,
         ];
-        list($responseHeader, $result) = $this->getCurlData($url, 'post', $headerRequest, [], 10);
+        $data = [
+            'pageNum' => $pageNum,
+            'numPerPage' => $numPerPage,
+        ];
+        list($responseHeader, $result) = $this->getCurlData($url, 'post', $headerRequest, $data, 10);
         
         if ($result['code'] == 200) {
             
