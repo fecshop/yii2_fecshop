@@ -9,7 +9,7 @@
 use fec\helpers\CRequest; 
 ?>
 <div class="main container two-columns-left">
-    <?= Yii::$service->page->widget->render('breadcrumbs',$this); ?>
+    <?= Yii::$service->page->widget->render('base/breadcrumbs',$this); ?>
 	<div class="col-main account_center">
 		<div class="std">
 			<div style="margin:4px 0 0">
@@ -36,17 +36,15 @@ use fec\helpers\CRequest;
 									</span>
 									<div class="review_description_centen">
 										<div class="category_product" style="display:inline-block;float:left;">
-											<?php
-												$config = [
-													'class' 		=> 'fecshop\app\appfront\modules\Catalog\block\category\Price',
-													'view'  		=> 'catalog/category/price.php',
-													'price' 		=> $one['price'],
+                                            <?php
+                                                $diConfig = [
+                                                    'price' 		=> $one['price'],
 													'special_price' => $one['special_price'],
 													'special_from' 	=> $one['special_from'],
 													'special_to' 	=> $one['special_to'],
-												];
-												echo Yii::$service->page->widget->renderContent('category_product_price',$config);
-											?>
+                                                ];
+                                                echo Yii::$service->page->widget->DiRender('category/price', $diConfig);
+                                            ?>
 										</div>
 										<div class="favorite-Operation" style="display:inline-block;float:right; margin-top: 0px;">
 											<a href='javascript:doPost("<?= Yii::$service->url->getUrl('customer/productfavorite') ?>", {"type":"remove", "favorite_id":"<?= $one['favorite_id'] ?>", "<?= CRequest::getCsrfName() ?>": "<?= CRequest::getCsrfValue() ?>" })' >
@@ -77,13 +75,7 @@ use fec\helpers\CRequest;
 	</div>
 	
 	<div class="col-left ">
-		<?php
-			$leftMenu = [
-				'class' => 'fecshop\app\appfront\modules\Customer\block\LeftMenu',
-				'view'	=> 'customer/leftmenu.php'
-			];
-		?>
-		<?= Yii::$service->page->widget->render($leftMenu,$this); ?>
+		<?= Yii::$service->page->widget->render('customer/left_menu', $this); ?>
 	</div>
 	<div class="clear"></div>
 </div>

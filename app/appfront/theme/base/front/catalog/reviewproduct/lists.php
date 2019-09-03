@@ -8,7 +8,7 @@
  */
 ?>
 <div class="main container one-column">
-<?= Yii::$service->page->widget->render('flashmessage'); ?>
+<?= Yii::$service->page->widget->render('base/flashmessage'); ?>
 	<div class="col-main">
 		<div class="std">
 			<div class="review_lists">
@@ -26,15 +26,7 @@
 						</a> </div>
 						<div class="product_info review_add_price">
 							<div class="price_info">
-								<?php # 价格
-									$priceView = [
-										'view'	=> 'catalog/product/index/price.php'
-									];
-									$priceParam = [
-										'price_info' => $price_info,
-									];
-								?>
-								<?= Yii::$service->page->widget->render($priceView,$priceParam); ?>
+								<?= Yii::$service->page->widget->render('product/price',['price_info' => $price_info]); ?>
 							</div>
 						</div>
 						<div style="margin:20px 0 0">
@@ -62,8 +54,6 @@
 						<a href=""><?= Yii::$service->page->translate->__('Product Review');?></a>
 					</div>
                     <div class="clear"></div>
-                    
-                    
                     <div class="box pro_commit">
                         <div class="averageWarp">
                             <span class="lineBlock fon14"><?= Yii::$service->page->translate->__('Average Rating'); ?>: </span>
@@ -115,8 +105,6 @@
                             </div>
                         </div>
                         
-                    
-                    
                         <div class="product-Reviews_top">
                             <?php  if(is_array($coll) && !empty($coll)):  ?>
                             <ul id="review_description">

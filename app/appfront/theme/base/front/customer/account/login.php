@@ -8,8 +8,8 @@
  */
 ?>
 <div class="main container one-column">
-    <?= Yii::$service->page->widget->render('breadcrumbs',$this); ?>
-    <?= Yii::$service->page->widget->render('flashmessage'); ?>
+    <?= Yii::$service->page->widget->render('base/breadcrumbs',$this); ?>
+    <?= Yii::$service->page->widget->render('base/flashmessage'); ?>
     
 	<div class="account-login">
 		<div class="page-title">

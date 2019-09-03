@@ -9,7 +9,7 @@
 ?>
 <div class="main container two-columns-left">
 	<div class="col-main account_center">
-		<?= Yii::$service->page->widget->render('flashmessage'); ?>			
+		<?= Yii::$service->page->widget->render('base/flashmessage'); ?>			
 		<div class="std">
 			<div class="page-title">
 				<h2><?= Yii::$service->page->translate->__('Contact Information'); ?></h2>

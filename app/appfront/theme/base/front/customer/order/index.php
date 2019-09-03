@@ -8,8 +8,8 @@
  */
 ?>
 <div class="main container two-columns-left">
-    <?= Yii::$service->page->widget->render('breadcrumbs',$this); ?>
-    <?= Yii::$service->page->widget->render('flashmessage'); ?>
+    <?= Yii::$service->page->widget->render('base/breadcrumbs',$this); ?>
+    <?= Yii::$service->page->widget->render('base/flashmessage'); ?>
 	<div class="col-main account_center">
 		<div class="std">
 			<div style="margin:4px 0 0">
@@ -63,13 +63,7 @@
 	</div>
 	
 	<div class="col-left ">
-		<?php
-			$leftMenu = [
-				'class' => 'fecshop\app\appfront\modules\Customer\block\LeftMenu',
-				'view'	=> 'customer/leftmenu.php'
-			];
-		?>
-		<?= Yii::$service->page->widget->render($leftMenu,$this); ?>
+    <?= Yii::$service->page->widget->render('customer/left_menu', $this); ?>
 	</div>
 	<div class="clear"></div>
 </div>

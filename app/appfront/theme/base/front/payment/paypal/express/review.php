@@ -9,7 +9,7 @@
 ?>
 <div class="main container one-column">
 	<div class="col-main">
-		<?= Yii::$service->page->widget->render('flashmessage'); ?>
+		<?= Yii::$service->page->widget->render('base/flashmessage'); ?>
 		<form action="<?= Yii::$service->url->getCurrentUrl(); ?>" method="post" id="onestepcheckout-form">
 			<?= \fec\helpers\CRequest::getCsrfInputHtml(); ?>
 			<fieldset style="margin: 0;" class="group-select">
@@ -17,11 +17,6 @@
 				<div class="onestepcheckout-threecolumns checkoutcontainer onestepcheckout-skin-generic onestepcheckout-enterprise">
 					<div class="onestepcheckout-column-left">
 						<?php # address 部门
-							//echo $address_view_file;
-							$addressView = [
-								'view'	=> 'payment/paypal/express/review/address.php',
-							];
-							//var_dump($address_list);
 							$addressParam = [
 								'cart_address_id' 	=> $cart_address_id,
 								'address_list'	  	=> $address_list,
@@ -29,25 +24,15 @@
 								'country_select'  	=> $country_select,
 								'state_html'  	  	=> $state_html,
 								'cart_address'		=> $cart_address,
-								//'payments' => $payments,
-								//'current_payment_mothod' => $current_payment_mothod,
 							];
 						?>
-						<?= Yii::$service->page->widget->render($addressView,$addressParam); ?>
+						<?= Yii::$service->page->widget->render('payment/paypal_express_address',$addressParam); ?>
 					
 					</div>
 
 					<div class="onestepcheckout-column-middle">
 						<div class="shipping_method_html">
-							<?php # shipping部分
-								$shippingView = [
-									'view'	=> 'payment/paypal/express/review/shipping.php'
-								];
-								$shippingParam = [
-									'shippings' => $shippings,
-								];
-							?>
-							<?= Yii::$service->page->widget->render($shippingView,$shippingParam); ?>
+							<?= Yii::$service->page->widget->render('payment/paypal_express_shipping', ['shippings' => $shippings]); ?>
 						</div>
 				
 				
@@ -77,15 +62,12 @@
 					<div class="onestepcheckout-column-right">
 						<div class="review_order_view">
 							<?php # review order部分
-								$reviewOrderView = [
-									'view'	=> 'payment/paypal/express/review/review_order.php'
-								];
 								$reviewOrderParam = [
 									'cart_info' => $cart_info,
 									'currency_info' => $currency_info,
 								];
 							?>
-							<?= Yii::$service->page->widget->render($reviewOrderView,$reviewOrderParam); ?>
+							<?= Yii::$service->page->widget->render('payment/paypal_express_orderview', $reviewOrderParam); ?>
 							
 						</div>
 						<div class="onestepcheckout-place-order">

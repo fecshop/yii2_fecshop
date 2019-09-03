@@ -24,13 +24,11 @@
 						</a>
 					</p>
 					<?php
-						$config = [
-							'class' 		=> 'fecshop\app\appfront\modules\Catalog\block\category\Price',
-							'view'  		=> 'cms/home/index/price.php',
+						$diConfig = [
 							'price' 		=> $product['price'],
 							'special_price' => $product['special_price'],
 						];
-						echo Yii::$service->page->widget->renderContent('category_product_price',$config);
+						echo Yii::$service->page->widget->DiRender('home/product_price',$diConfig);
 					?>
 				</div>
 			<?php  endforeach;  ?>

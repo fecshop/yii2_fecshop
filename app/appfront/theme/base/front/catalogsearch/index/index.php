@@ -11,7 +11,7 @@
 <?php // echo count($products); ?>
 <?php  $count = 4; $end = $count-1; ?>
 	<div class="col-main">
-		<?= Yii::$service->page->widget->render('breadcrumbs',$this); ?>
+		<?= Yii::$service->page->widget->render('base/breadcrumbs',$this); ?>
 		<div class="menu_category">
 			<?php  if(is_array($products) && !empty($products)): ?>
 				<div class="panelBar">
@@ -20,10 +20,7 @@
 							'query_item' => $query_item,
 							'product_page'=>$product_page,
 						];
-						$config = [
-							'view'  		=> 'catalogsearch/index/index/toolbar.php',
-						];
-						$toolbar = Yii::$service->page->widget->renderContent('category_toolbar',$config,$parentThis);
+						$toolbar = Yii::$service->page->widget->render('search/toolbar', $parentThis);
 						echo $toolbar;
 					?>
 				</div>
@@ -45,14 +42,14 @@
                                         </a>
                                     </div>
                                     <?php
-                                        $config = [
-                                            'class' 		=> 'fecshop\app\appfront\modules\Catalog\block\category\Price',
-                                            'view'  		=> 'catalog/category/price.php',
-                                            'price' 		=> $product['price'],
-                                            'special_price' => $product['special_price'],
-                                        ];
-                                        echo Yii::$service->page->widget->renderContent('category_product_price',$config);
-                                    ?>
+									$diConfig = [
+										'price' 		=> $product['price'],
+										'special_price' => $product['special_price'],
+										'special_from' => $product['special_from'],
+										'special_to' => $product['special_to'],
+									];
+									echo Yii::$service->page->widget->DiRender('category/price', $diConfig);
+								?>
                                 </li>
                             <?php  if($i%$count == $end): ?>
                             </ul>
@@ -82,31 +79,21 @@
 			$parentThis = [
 				'refine_by_info' => $refine_by_info,
 			];
-			$config = [
-				'view'  		=> 'catalog/category/index/filter/refineby.php',
-			];
-			echo Yii::$service->page->widget->renderContent('category_product_filter_refine_by',$config,$parentThis);
+			echo Yii::$service->page->widget->render('category/filter_refineby', $parentThis);
 		?>
-		
 		<?php
 			# Category Left Filter Product Attributes
 			$parentThis = [
 				'filters' => $filter_info,
 			];
-			$config = [
-				'view'  		=> 'catalog/category/index/filter/attr.php',
-			];
-			echo Yii::$service->page->widget->renderContent('category_product_filter_attr',$config,$parentThis);
+			echo Yii::$service->page->widget->render('category/filter_attr', $parentThis);
 		?>
 		<?php
 			# Category Left Filter Product Price
 			$parentThis = [
 				'filter_price' => $filter_price,
 			];
-			$config = [
-				'view'  		=> 'catalog/category/index/filter/price.php',
-			];
-			echo Yii::$service->page->widget->renderContent('category_product_filter_price',$config,$parentThis);
+			echo Yii::$service->page->widget->render('category/filter_price', $parentThis);
 		?>
 	</div>
 	<div class="clear"></div>

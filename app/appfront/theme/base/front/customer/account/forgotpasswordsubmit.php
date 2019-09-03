@@ -8,7 +8,7 @@
  */
 ?>
 <div class="main container one-column">
-<?= Yii::$service->page->widget->render('breadcrumbs',$this); ?>
+<?= Yii::$service->page->widget->render('base/breadcrumbs',$this); ?>
 <?php if(!empty($identity)):  ?>
 	<div>
 		<?= Yii::$service->page->translate->__('We\'ve sent a message to the email address'); ?> <?=  $identity['email'] ?>

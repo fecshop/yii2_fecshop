@@ -15,24 +15,17 @@
 			<?php
 				$parentThis['products'] = $bestSellerProducts;
 				$parentThis['name'] = 'best-seller';
-				$config = [
-					'view'  		=> 'cms/home/index/product.php',
-				];
-				echo Yii::$service->page->widget->renderContent('category_product_price',$config,$parentThis);
+				echo Yii::$service->page->widget->render('cms/productlist',$parentThis);
 			?>
 		</div>
 	</div>
 	<div class="clear"></div>
 	<div class="mt10" style="margin-top:34px;">
 		<h4 class="sectionBox_h featured"><span><?= Yii::$service->page->translate->__('featured products'); ?></span><em><a href=""><?= Yii::$service->page->translate->__('more'); ?></a></em></h4>
-		<div class="pro-content">
-			<?php
+		<div class="pro-content"><?php
 				$parentThis['products'] = $bestFeaturedProducts;
 				$parentThis['name'] = 'featured';
-				$config = [
-					'view'  		=> 'cms/home/index/product.php',
-				];
-				echo Yii::$service->page->widget->renderContent('category_product_price',$config,$parentThis);
+				echo Yii::$service->page->widget->render('cms/productlist',$parentThis);
 			?>
 		</div>
 	</div>

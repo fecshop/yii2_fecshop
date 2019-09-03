@@ -41,10 +41,10 @@ $cssOptions = [];
     <?php $this->head() ?>
 </head>
 <body>
-<?= Yii::$service->page->widget->render('beforeContent',$this); ?>
+<?= Yii::$service->page->widget->render('base/beforeContent',$this); ?>
 <?php $this->beginBody() ?>
 	<?= $content; ?>
-    <?= Yii::$service->page->widget->render('trace',$this); ?>
+    <?= Yii::$service->page->widget->render('base/trace',$this); ?>
 <?php $this->endBody() ?>
 </body>
 </html>

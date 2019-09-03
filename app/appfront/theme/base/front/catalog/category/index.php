@@ -11,7 +11,7 @@
 <?php // echo count($products); ?>
 <?php  $count = 4; $end = $count-1; ?>
 	<div class="col-main">
-		<?= Yii::$service->page->widget->render('breadcrumbs',$this); ?>
+		<?= Yii::$service->page->widget->render('base/breadcrumbs',$this); ?>
 		<div class="menu_category">
 			<div class="category_img">
 				<a href="#"><?=  $image ? '<img style="width:980px;" src="'.$image.'"/>' : '';?><a>
@@ -27,11 +27,7 @@
 							'query_item' => $query_item,
 							'product_page'=>$product_page,
 						];
-						$config = [
-							'view'  		=> 'catalog/category/index/toolbar.php',
-						];
-						$toolbar = Yii::$service->page->widget->renderContent('category_toolbar',$config,$parentThis);
-						echo $toolbar;
+						echo Yii::$service->page->widget->render('category/toolbar', $parentThis);
 					?>
 				<?php endif; ?>
 			</div>
@@ -56,15 +52,13 @@
 									</a>
 								</div>
 								<?php
-									$config = [
-										'class' 		=> 'fecshop\app\appfront\modules\Catalog\block\category\Price',
-										'view'  		=> 'catalog/category/price.php',
+									$diConfig = [
 										'price' 		=> $product['price'],
 										'special_price' => $product['special_price'],
 										'special_from' => $product['special_from'],
 										'special_to' => $product['special_to'],
 									];
-									echo Yii::$service->page->widget->renderContent('category_product_price',$config);
+									echo Yii::$service->page->widget->DiRender('category/price', $diConfig);
 								?>
 							</li>
 						<?php  if($i%$count == $end): ?>
@@ -92,10 +86,7 @@
 			$parentThis = [
 				'refine_by_info' => $refine_by_info,
 			];
-			$config = [
-				'view'  		=> 'catalog/category/index/filter/refineby.php',
-			];
-			echo Yii::$service->page->widget->renderContent('category_product_filter_refine_by',$config,$parentThis);
+			echo Yii::$service->page->widget->render('category/filter_refineby', $parentThis);
 		?>
 		<?php
 			# Category Left Filter subCategory
@@ -103,30 +94,21 @@
 				'filter_category' => $filter_category,
 				'current_category'=> $name,
 			];
-			$config = [
-				'view'  		=> 'catalog/category/index/filter/subcategory.php',
-			];
-			echo Yii::$service->page->widget->renderContent('category_product_filter_sub_category',$config,$parentThis);
+			echo Yii::$service->page->widget->render('category/filter_subcategory', $parentThis);
 		?>
 		<?php
 			# Category Left Filter Product Attributes
 			$parentThis = [
 				'filters' => $filter_info,
 			];
-			$config = [
-				'view'  		=> 'catalog/category/index/filter/attr.php',
-			];
-			echo Yii::$service->page->widget->renderContent('category_product_filter_attr',$config,$parentThis);
+			echo Yii::$service->page->widget->render('category/filter_attr', $parentThis);
 		?>
 		<?php
 			# Category Left Filter Product Price
 			$parentThis = [
 				'filter_price' => $filter_price,
 			];
-			$config = [
-				'view'  		=> 'catalog/category/index/filter/price.php',
-			];
-			echo Yii::$service->page->widget->renderContent('category_product_filter_price',$config,$parentThis);
+			echo Yii::$service->page->widget->render('category/filter_price', $parentThis);
 		?>
 	</div>
 	<div class="clear"></div>

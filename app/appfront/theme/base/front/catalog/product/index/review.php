@@ -9,9 +9,9 @@
 ?>
 
 <?php
-    $reviw_rate_star_info = $parentThis['reviw_rate_star_info'];
-    $review_count = $parentThis['review_count'];
-    $reviw_rate_star_average = $parentThis['reviw_rate_star_average'];
+    //$reviw_rate_star_info = $parentThis['reviw_rate_star_info'];
+    //$review_count = $parentThis['review_count'];
+    //$reviw_rate_star_average = $parentThis['reviw_rate_star_average'];
     //var_dump($reviw_rate_star_info);
 ?>
 <div class="product-Reviews">
