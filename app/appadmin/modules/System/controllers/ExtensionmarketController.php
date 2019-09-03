@@ -11,6 +11,7 @@ namespace fecshop\app\appadmin\modules\System\controllers;
 
 use fecshop\app\appadmin\modules\System\SystemController;
 use Yii;
+use fec\helpers\CRequest;
 
 /**
  * @author Terry Zhao <2358269014@qq.com>
@@ -19,6 +20,9 @@ use Yii;
 class ExtensionmarketController extends SystemController
 {
     public $enableCsrfValidation = true;
+    public $_param = [];
+    public $_pageNum = 1;
+    public $_numPerPage = 10;
     
     
     public function actionManager()
@@ -30,17 +34,32 @@ class ExtensionmarketController extends SystemController
             ];
             return $this->render($this->action->id, $data);
         }
+        
+        // 加载页面
+        $param = CRequest::param();
+        if (empty($param['pageNum'])) {
+            $param['pageNum'] = $this->_pageNum;
+        }
+        if (empty($param['numPerPage'])) {
+            $param['numPerPage'] = $this->_numPerPage;
+        }
+         
+        if (is_array($param) && !empty($param)) {
+            $this->_param = array_merge($this->_param, $param);
+        }
+        
+        
         // 获取我的应用信息，如果获取失败，说明需要重新登陆
-        $info = Yii::$service->extension->remoteService->getMyAddonsInfo();
+        $info = Yii::$service->extension->remoteService->getMyAddonsInfo($this->_param['pageNum'], $this->_param['numPerPage'] );
         if (!$info) {
             $data = [
                 'guest' => true,
             ];
             return $this->render($this->action->id, $data);
         }
-        // 加载页面
+       
         
-        $data = $this->getBlock()->getLastData($info);
+        $data = $this->getBlock()->getLastData($this->_param, $info);
 
         return $this->render($this->action->id, $data);
     }

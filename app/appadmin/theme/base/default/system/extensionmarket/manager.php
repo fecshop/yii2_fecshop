@@ -15,9 +15,13 @@ use fec\helpers\CRequest;
 
 <form id="pagerForm" method="post" action="<?= \fec\helpers\CUrl::getCurrentUrl();  ?>">
 	<?=  CRequest::getCsrfInputHtml();  ?>
+	<?=  $pagerForm;  ?>
 </form>
 
 <div class="pageContent">
+	<div class="panelBar">
+		<?= $toolBar; ?>
+	</div>
     <div style="margin:100px 100px 10px 100px;">
 	<?php if (is_array($addon_list)) : ?>
         <ul>

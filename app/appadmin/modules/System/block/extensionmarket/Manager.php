@@ -20,11 +20,12 @@ use Yii;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Manager 
+class Manager extends \yii\base\BaseObject
 {
     
     public $nameSpaceArr;
     public $versionArr;
+    public $_param = [];
     /**
      * init param function ,execute in construct.
      */
@@ -33,20 +34,51 @@ class Manager
         parent::init();
     }
 
-    public function getLastData($info)
+    public function getLastData($param, $info)
     {
+        $this->_param = $param;
         $addons = $info['addons'];
         $coll = isset($addons['coll']) ? $addons['coll'] : [];
         $count  = isset($addons['count']) ? $addons['count'] : 0;
         $this->initInstalledExtensions();
+        $toolBar = $this->getToolBar($count, $this->_param['pageNum'], $this->_param['numPerPage']);
+        $pagerForm = $this->getPagerForm();
         return [
             'addon_list'=> $coll,
+            'pagerForm' => $pagerForm,
+            'toolBar' => $toolBar,
             'addon_count' => $count,
             'installed_extensions_namespace' => $this->nameSpaceArr,
             'versionArr' => $this->versionArr,
             
         ];
     }
+    public function getPagerForm()
+    {
+        $str = '';
+        if (is_array($this->_param) && !empty($this->_param)) {
+            foreach ($this->_param as $k=>$v) {
+                if ($k != '_csrf') {
+                    $str .= '<input type="hidden" name="'.$k.'" value="'.$v.'">';
+                }
+            }
+        }
+
+        return $str;
+    }
+    /**
+     * list pager, it contains  numPerPage , pageNum , totalNum.
+     */
+    public function getToolBar($numCount, $pageNum, $numPerPage)
+    {
+        return    '<div class="pages">
+					<span>' . Yii::$service->page->translate->__('Show') . '</span>
+					<span>' . Yii::$service->page->translate->__('Line, Total {numCount} Line', ['numCount' => $numCount]) . '</span>
+				</div>
+				<div class="pagination" targetType="navTab" totalCount="'.$numCount.'" numPerPage="'.$numPerPage.'" pageNumShown="10" currentPage="'.$pageNum.'"></div>
+				';
+    }
+
     
     // namespace
     public function initInstalledExtensions()
