@@ -40,6 +40,7 @@ return [
 					'dashboard_config' 							    => 'Dashboard-Config',
 					'dashboard_error_handler'					=> 'Dashboard-ErrorHandler',
                     'extension_manager' 					    => 'Extension-Center',
+                    'extension_installed' 					    => 'Extension-Installed',
                     'extension_developer_center' 					    => 'Extension-Developer-Center',
                     'config_base_manager' 					    => 'Config-Base',
                     'config_payment_manager' 					    => 'Config-Payment',
