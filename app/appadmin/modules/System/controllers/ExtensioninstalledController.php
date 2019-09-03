@@ -33,6 +33,19 @@ class ExtensioninstalledController extends SystemController
 
         return $this->render($this->action->id, $data);
     }
+    
+    public function actionManagerenable()
+    {
+        $data = $this->getBlock('manageredit')->extensionEnable();
+    }
+    
+    public function actionManagerdisable()
+    {
+        $data = $this->getBlock('manageredit')->extensionDisable();
+    }
+    
+    
+    
     /*
     public function actionManagereditsave()
     {
