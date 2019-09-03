@@ -48,6 +48,23 @@ class Image extends Service
     public $commonBaseDir;
     public $commonBaseDomain;
     
+    /**
+     * @param $file | string, 图片文件路径
+     * @return boolean， 是否是允许的图片类型
+     */
+    public function isAllowImgType($file)
+    {
+        $img = getimagesize($file);
+        $imgType = $img['mime'];
+
+        if (!in_array($imgType, $this->allowImgType)) {
+            return false;
+        
+        }
+        
+        return true;
+    }
+    
     public function init()
     {
         parent::init();
