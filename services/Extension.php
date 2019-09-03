@@ -22,14 +22,15 @@ class Extension extends Service
 {
     public $numPerPage = 20;
     
+    // install status
     const INSTALLED_STATUS = 1;
     const INSTALL_INIT_STATUS = 2;
     const UNINSTALLED_STATUS = 3;
-    
+    // status
     const STATUS_ENABLE = 1;
     const STATUS_DISABLE = 2;
-    
-    const TYPE_INSTALL = 'installed';
+    // type
+    const TYPE_INSTALL = 'online_installed';
     const TYPE_LOCAL_CREATED = 'local_created';
     
     protected $warnings;
@@ -42,6 +43,23 @@ class Extension extends Service
     {
         parent::init();
         list($this->_modelName, $this->_model) = Yii::mapGet($this->_modelName);
+    }
+    
+    public function getTypeArr()
+    {
+        return [
+            self::TYPE_INSTALL => Yii::$service->page->translate->__('Online Installed'),
+            self::TYPE_LOCAL_CREATED => Yii::$service->page->translate->__('Local Created'),
+        ];
+    }
+    
+    public function getInstallStatusArr()
+    {
+        return [
+            self::INSTALLED_STATUS => Yii::$service->page->translate->__('Installed'),
+            self::INSTALL_INIT_STATUS => Yii::$service->page->translate->__('Install Init'),
+            self::UNINSTALLED_STATUS => Yii::$service->page->translate->__('UNINSTALLED'),
+        ];
     }
     
     public function getPrimaryKey()
@@ -143,6 +161,43 @@ class Extension extends Service
             $model->delete();
         }
 
+        return true;
+    }
+    /**
+     * @param $ids | array， 应用id数组
+     * 应用状态激活
+     */
+    public function enableAddons($ids)
+    {
+        foreach ($ids as $id) {
+            $model = $this->_model->findOne($id);
+            $model->status = self::STATUS_ENABLE;
+            $model->updated_at = time();
+            if (!$model->save()) {
+                
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    /**
+     * @param $ids | array， 应用id数组
+     * 应用状态关闭
+     */
+    public function disableAddons($ids)
+    {
+        foreach ($ids as $id) {
+            $model = $this->_model->findOne($id);
+            $model->status = self::STATUS_DISABLE;
+            $model->updated_at = time();
+            if (!$model->save()) {
+                
+                return false;
+            }
+        }
+        
         return true;
     }
     
