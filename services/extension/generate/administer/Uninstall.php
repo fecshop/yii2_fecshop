@@ -22,6 +22,17 @@ class Uninstall implements \fecshop\services\extension\UninstallInterface
      */
     public function run()
     {
+        if (!$this->uninstallDbSql()) {
+            return false;
+        }
+        if (!$this->removeImageFile()) {
+            return false;
+        }
+        return true;
+    }
+    
+    public function uninstallDbSql()
+    {
         /*
         $sql = "
         //    DROP TABLE IF EXISTS `fecmall_addon_test1`;
@@ -30,6 +41,17 @@ class Uninstall implements \fecshop\services\extension\UninstallInterface
         // 执行sql, 创建表结构的时候，这个函数会返回0，因此不能以返回值作为return
         Yii::$app->getDb()->createCommand($sql)->execute();
         */
+        
+        return true;
+    }
+    
+    public function removeImageFile()
+    {
+        /*
+        $targetPath = Yii::getAlias('@appimage/common/appfront/media/fect/xxxxxxxxx');
+        Yii::$service->helper->deleteDir($targetPath);
+        */
+        
         return true;
     }
 }

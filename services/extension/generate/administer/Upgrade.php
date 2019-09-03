@@ -39,23 +39,59 @@ class Upgrade implements \fecshop\services\extension\UpgradeInterface
         switch ($version)
         {
             case '1.0.1' :
-                // 增加测试 - 冗余的字段
-                $sql = "ALTER TABLE fecmall_addon_test1 ADD COLUMN redundancy_field_5255 varchar(48);";
-                Yii::$app->getDb()->createCommand($sql)->execute();
+                $this->upgrade101();
                 break;
             case '1.0.2' :
-                // 删除测试 - 冗余的字段
-                $sql = "ALTER TABLE fecmall_addon_test1 ADD COLUMN redundancy_field_566 varchar(48);";
-                Yii::$app->getDb()->createCommand($sql)->execute();
+                $this->upgrade102();
                 break;
             case '1.0.3' :
-                // 删除测试 - 冗余的字段
-                $sql = "ALTER TABLE fecmall_addon_test1 ADD COLUMN redundancy_field_567 varchar(48);";
-                Yii::$app->getDb()->createCommand($sql)->execute();
+                $this->upgrade103();
                 break;
         }
         */
         
         return true;
     }
+    // 1.0.1
+    public function upgrade101()
+    {
+        // 增加测试 - 冗余的字段
+        // $sql = "ALTER TABLE fecmall_addon_test1 ADD COLUMN redundancy_field_5255 varchar(48);";
+        // Yii::$app->getDb()->createCommand($sql)->execute();
+    }
+    
+    // 1.0.2
+    public function upgrade102()
+    {
+        // 删除测试 - 冗余的字段
+        // $sql = "ALTER TABLE fecmall_addon_test1 ADD COLUMN redundancy_field_566 varchar(48);";
+        // Yii::$app->getDb()->createCommand($sql)->execute();
+    }
+    
+    // 1.0.3
+    public function upgrade103()
+    {
+        // 删除测试 - 冗余的字段
+        // $sql = "ALTER TABLE fecmall_addon_test1 ADD COLUMN redundancy_field_567 varchar(48);";
+        // Yii::$app->getDb()->createCommand($sql)->execute();
+    }
+    
+    /**
+     * 复制图片文件到appimage，如果存在，则会被强制覆盖
+     * 如果更新的版本中有新增的图片，可以执行copy image
+     */
+    public function copyImageFile()
+    {
+        /*
+        $sourcePath = Yii::getAlias('@<?= $namespaces ?>/app/appimage');
+        $targetPath = Yii::getAlias('@appimage');
+        // 只复制产品文件到appimage，其他的文件将会被过滤掉。（安全）
+        Yii::$service->helper->copyDirImage($sourcePath, $targetPath);
+        */
+        return true;
+    }
+    
+    
+    
+    
 }

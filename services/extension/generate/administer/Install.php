@@ -26,6 +26,22 @@ class Install implements \fecshop\services\extension\InstallInterface
      */
     public function run()
     {
+        if (!$this->installDbSql()) {
+            return false;
+        }
+        if (!$this->copyImageFile()) {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    /**
+     * 进行数据库的初始化
+     * sql语句执行，多个sql用分号  `;`隔开
+     */
+    public function installDbSql()
+    {
         /**
          * 小知识：事务操作中，表数据的操作是可以回滚的，表结构改变的sql是无法回滚的。
         $sql = "
@@ -77,6 +93,23 @@ class Install implements \fecshop\services\extension\InstallInterface
         // 执行sql, 创建表结构的时候，这个函数会返回0，因此不能以返回值作为return
         Yii::$app->getDb()->createCommand($sql)->execute();
         */
+        
         return true;
     }
+    
+    /**
+     * 复制图片文件到appimage，如果存在，则会被强制覆盖
+     * 模板应用一般会用到改函数
+     */
+    public function copyImageFile()
+    {
+        /*
+        $sourcePath = Yii::getAlias('@<?= $namespaces ?>/app/appimage');
+        $targetPath = Yii::getAlias('@appimage');
+        // 只复制产品文件到appimage，其他的文件将会被过滤掉。（安全）
+        Yii::$service->helper->copyDirImage($sourcePath, $targetPath);
+        */
+        return true;
+    }
+    
 }
