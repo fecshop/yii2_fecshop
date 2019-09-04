@@ -30,8 +30,6 @@ class TestController extends AppfrontController
     public function actionIndex()
     {
         
-        
-        
     }
     /*
     public function actionTest(){
