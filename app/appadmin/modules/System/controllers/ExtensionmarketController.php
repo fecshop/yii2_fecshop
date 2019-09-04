@@ -132,15 +132,16 @@ class ExtensionmarketController extends SystemController
         }
         // 将远程获取的数据，保存到数据库中。
         if (!Yii::$service->extension->newInstallInit($data)){
+            $errors = Yii::$service->helper->errors->get(',');
             echo  json_encode([
                 'statusCode' => '300',
-                'message'    => Yii::$service->page->translate->__('init new install addon to db fail'),
+                'message'    => Yii::$service->page->translate->__($errors),
             ]);
             exit;
         }
         // 进行插件的安装
         if (!Yii::$service->extension->administer->install($namespace)) {
-            $errors = Yii::$service->helper->errors->get();
+            $errors = Yii::$service->helper->errors->get(',');
             echo  json_encode([
                 'statusCode' => '300',
                 'message'    => Yii::$service->page->translate->__($errors),
@@ -149,7 +150,7 @@ class ExtensionmarketController extends SystemController
         }
         // 进行插件的升级
         if (!Yii::$service->extension->administer->upgrade($namespace)) {
-            $errors = Yii::$service->helper->errors->get();
+            $errors = Yii::$service->helper->errors->get(',');
             echo  json_encode([
                 'statusCode' => '300',
                 'message'    => Yii::$service->page->translate->__($errors),
@@ -227,7 +228,7 @@ class ExtensionmarketController extends SystemController
         }
         // 进行插件的升级
         if (!Yii::$service->extension->administer->upgrade($namespace)) {
-            $errors = Yii::$service->helper->errors->get();
+            $errors = Yii::$service->helper->errors->get(',');
             echo  json_encode([
                 'statusCode' => '300',
                 'message'    => Yii::$service->page->translate->__($errors),

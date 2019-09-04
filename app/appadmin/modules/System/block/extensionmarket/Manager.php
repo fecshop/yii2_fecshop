@@ -23,7 +23,7 @@ use Yii;
 class Manager extends \yii\base\BaseObject
 {
     
-    public $nameSpaceArr;
+    public $installedNameSpaceArr;
     public $versionArr;
     public $_param = [];
     /**
@@ -48,7 +48,7 @@ class Manager extends \yii\base\BaseObject
             'pagerForm' => $pagerForm,
             'toolBar' => $toolBar,
             'addon_count' => $count,
-            'installed_extensions_namespace' => $this->nameSpaceArr,
+            'installed_extensions_namespace' => $this->installedNameSpaceArr,
             'versionArr' => $this->versionArr,
             
         ];
@@ -88,19 +88,22 @@ class Manager extends \yii\base\BaseObject
             'fetchAll' => true,
         ];
         $data = Yii::$service->extension->coll($filter);
-        $arr = [];
+        $installedArr = [];
         $versionArr = [];
         if (is_array($data['coll'])) {
             foreach ($data['coll'] as $one) {
                 $namespace = $one['namespace'];
                 if ($namespace) {
-                    $arr[] = $namespace;
-                    $versionArr[$namespace] = $one['version'];
+                    if (Yii::$service->extension->isInstalledStatus($one['installed_status'])) {
+                        $installedArr[] = $namespace;
+                    }
+                    
+                    $versionArr[$namespace] = $one['installed_version'];
                 }
             }
         }
         $this->versionArr = $versionArr;
-        $this->nameSpaceArr = $arr;
+        $this->installedNameSpaceArr = $installedArr;
         
         
     }
