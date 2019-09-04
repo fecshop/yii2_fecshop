@@ -23,7 +23,7 @@ class ZipFile extends Service
 {
     public function unzip($src_file, $dest_dir=false, $create_zip_name_dir=true, $overwrite=true){
         if ($dest_dir) {
-            $dest_dir = '/'.trim($dest_dir, '/') . '/';
+            $dest_dir .= '/';
         }
         if ($zip = zip_open($src_file)){
             if ($zip){

@@ -50,7 +50,7 @@ class Administer extends Service
         // 通过数据库找到应用的配置文件路径
         $extensionConfigFile = Yii::getAlias($modelOne['config_file_path']);
         if (!file_exists($extensionConfigFile)) {
-            Yii::$service->helper->errors->add('extension: {namespace} config file is not exit', ['namespace' =>$extension_namespace ]);
+            Yii::$service->helper->errors->add('extension: {namespace} [{extensionConfigFile}]config file is not exit', ['namespace' =>$extension_namespace, 'extensionConfigFile' => $extensionConfigFile ]);
             
             return false;
         }
