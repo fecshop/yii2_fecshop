@@ -30,28 +30,28 @@ use fecadmin\models\AdminRole;
 					<legend style="color:#cc0000">Gii生成应用</legend>
 					<div>
                         <p class="edit_p">
-                            <label>package</label>
+                            <label><?= Yii::$service->page->translate->__('Extension Package'); ?></label>
                             <input type="text" value="<?= $package ?>" size="30" name="editFormData[package]" class="textInput required">
                             <span class="remark-text">开发者的package包名，必须使用英文</span>
                         </p>
                         <p class="edit_p">
-                            <label>addon_folder</label>
+                            <label><?= Yii::$service->page->translate->__('Extension Folder'); ?></label>
                             <input type="text" value="" size="30" name="editFormData[addon_folder]" class="textInput required">
                             <span class="remark-text">应用文件名，也就是应用所在的文件夹的名字</span>
                         </p>
 						<p class="edit_p">
-                            <label>namespaces：</label>
+                            <label><?= Yii::$service->page->translate->__('Extension Namespace'); ?></label>
                             <input type="text" value="" size="30" name="editFormData[namespaces]" class="textInput required">
                             <span class="remark-text">应用的namespaces，为了保证唯一性，建议先去应用市场平台添加应用，以免和其他的应用发生冲突，进而无法发布应用</span>
                         </p>
                         
                         <p class="edit_p">
-                            <label>addon_name</label>
+                            <label><?= Yii::$service->page->translate->__('Extension Name'); ?></label>
                             <input type="text" value="" size="30" name="editFormData[addon_name]" class="textInput required">
                             <span class="remark-text">应用的名字，这个用于在分类中显示应用的名字，可以中文</span>
                         </p>
                         <p class="edit_p">
-                            <label>addon_author</label>
+                            <label><?= Yii::$service->page->translate->__('Extension Author'); ?></label>
                             <input type="text" value="<?= $addon_author ?>" size="30" name="editFormData[addon_author]" class="textInput required">
                             <span class="remark-text">应用的作者</span>
                         </p>

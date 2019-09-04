@@ -130,7 +130,7 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
             ],
              [
                 'orderField'    => 'package',
-                'label'           => Yii::$service->page->translate->__('Extension Fackage'),
+                'label'           => Yii::$service->page->translate->__('Extension Package'),
                 'width'          => '50',
                 'align'           => 'left',
             ],
