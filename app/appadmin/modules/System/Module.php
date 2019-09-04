@@ -27,7 +27,9 @@ class Module extends \fec\AdminModule
         $this->blockNamespace = $nameSpace . '\\block';
         // $this->_currentDir = __DIR__;
         // $this->_currentNameSpace = __NAMESPACE__;
-
+        // 设置超时时间
+        ini_set("max_execution_time", "360000");
+        set_time_limit(0);
         // 指定默认的man文件
         $this->layout = '/main_ajax.php';
         parent::init();
