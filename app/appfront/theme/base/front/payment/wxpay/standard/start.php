@@ -2,7 +2,7 @@
 <div class="shortcut">
     <div class="w">
         <a class="s-logo" href="<?= Yii::$service->url->homeUrl()  ?>" target="_blank">
-            <img width="170" height="28" alt="fecshop收银台" src="<img src="<?= Yii::$service->image->getImgUrl('appfront/custom/logo.png'); ?>"  />">
+            <img width="170" height="28" alt="fecshop收银台" src="<?= Yii::$service->image->getImgUrl('appfront/custom/logo.png'); ?>"  />
         </a>
         <ul class="s-right">
             <?php if($customer_email): ?>
