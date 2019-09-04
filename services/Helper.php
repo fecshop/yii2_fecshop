@@ -163,21 +163,21 @@ class Helper extends Service
         {
             if (($file != '.') && ($file != '..'))
             {
-                $filePath = $sourcePath . '/' . $file;
-                $targetPath = $targetPath . '/' . $file;
-                if (is_dir($filePath)){
-                    $this->copyDir($filePath, $targetPath);
-                } else if (Yii::$service->image->isAllowImgType($filePath)){
+                $sourcePathFile = $sourcePath . '/' . $file;
+                $targetPathFile = $targetPath . '/' . $file;
+                if (is_dir($sourcePathFile)){
+                    $this->copyDirImage($sourcePathFile, $targetPathFile);
+                } else if (Yii::$service->image->isAllowImgType($sourcePathFile)){
                     if ($isForce) {
-                        copy($filePath, $targetPath);
-                    } else if (!file_exists($targetPath)) {
-                        copy($filePath, $targetPath);
+                        copy($sourcePathFile, $targetPathFile);
+                    } else if (!file_exists($targetPathFile)) {
+                        copy($sourcePathFile, $targetPathFile);
                     } else {
-                        Yii::$service->helper->errors->add('target path:' . $targetPath . ' is exist.');
+                        Yii::$service->helper->errors->add('target path:' . $targetPathFile . ' is exist.');
                     }
                     
                 } else {
-                    Yii::$service->helper->errors->add('file is not image:' . $filePath);
+                    Yii::$service->helper->errors->add('file is not image:' . $sourcePathFile);
                 }
             }
         }
@@ -206,18 +206,18 @@ class Helper extends Service
         while (false !== ($file = readdir($dir)))
         {
             if (($file != '.') && ($file != '..')) {
-                $filePath = $sourcePath . '/' . $file;
-                $targetPath = $targetPath . '/' . $file;
-                if (is_dir( $filePath)) {
-                    $this->copyDir( $filePath, $targetPath);
+                $sourcePathFile = $sourcePath . '/' . $file;
+                $targetPathFile = $targetPath . '/' . $file;
+                if (is_dir( $sourcePathFile)) {
+                    $this->copyDir( $sourcePathFile, $targetPathFile);
                 } else {
                     //copy($sourcePath . '/' . $file, $targetPath . '/' . $file);
                     if ($isForce) {
-                        copy($filePath, $targetPath);
-                    } else if (!file_exists($targetPath)) {
-                        copy($filePath, $targetPath);
+                        copy($sourcePathFile, $targetPathFile);
+                    } else if (!file_exists($targetPathFile)) {
+                        copy($sourcePathFile, $targetPathFile);
                     } else {
-                        Yii::$service->helper->errors->add('target path:' . $targetPath . ' is exist.');
+                        Yii::$service->helper->errors->add('target path:' . $targetPathFile . ' is exist.');
                     }
                 }
             }
