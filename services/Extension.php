@@ -262,21 +262,34 @@ class Extension extends Service
             return false;
         }
         // 查看namespace 是否存在
-        $modelOne = $this->_model->findOne(['namespace' => $namespace]);
+        $modelOne = $this->_model->findOne([
+            'namespace' => $namespace,
+            'installed_status' => self::INSTALLED_STATUS,
+        ]);
         if ($modelOne['id']) {
             Yii::$service->helper->errors->add('this namespace is exist');
 
             return false;
         }
+        
         $param['config_file_path'] = '@addons/' . $param['package'] . '/' .  $param['folder']  . '/config.php';
-        $model = new $this->_modelName();
+        // 查看是否上次未安装存在记录，
+        $model = $this->_model->findOne([
+            'namespace' => $namespace,
+            'package' => $param['package'],
+            'folder' => $param['folder'],
+        ]);
+        if (!$model['id']) {
+            $model = new $this->_modelName();
+        }
+        
         $model->attributes = $param;
         if (!$model->validate()) {
             $errors = $model->errors;
             Yii::$service->helper->errors->addByModelErrors($errors);
             return false;
         }
-        $model->status = self::STATUS_ENABLE;
+        $model->status = self::STATUS_DISABLE;
         $model->type = self::TYPE_INSTALL;
         
         $model->created_at = time();
@@ -402,6 +415,7 @@ class Extension extends Service
         }
         // 更新数据库-扩展的安装信息。
         $modelOne->installed_status = self::INSTALLED_STATUS;
+        $modelOne->status = self::STATUS_ENABLE;
         $modelOne->installed_version = $installOb->version;
         $modelOne->updated_at = time();
         return $modelOne->save();
@@ -449,6 +463,16 @@ class Extension extends Service
                 }
             }
         }
+        
+        // 查看升级后的install_version和version是否一致, 可能插件无更新（db，文件复制等）
+        
+        $modelOne->installed_version = $modelOne['version'];
+        $modelOne->updated_at = time();
+        if (!$modelOne->save()) {
+            return false;
+        }
+        
+        
         return true;
     }
     
