@@ -7,18 +7,11 @@ use yii\db\Migration;
  */
 class m190904_025251_fecshop_tables extends Migration
 {
+    
     /**
      * {@inheritdoc}
      */
     public function safeUp()
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function safeDown()
     {
         $sql = "
                 CREATE TABLE IF NOT EXISTS `extensions` (
@@ -142,6 +135,16 @@ class m190904_025251_fecshop_tables extends Migration
         $this->execute("INSERT INTO `admin_role_url_key` (`role_id`, `url_key_id`, `created_at`, `updated_at`) VALUES (4, " . $lastInsertId . ", 1567162984, 1567162984)");
 
         
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function safeDown()
+    {
+        echo "m190904_025251_fecshop_tables cannot be reverted.\n";
+
+        return false;
         
     }
 
