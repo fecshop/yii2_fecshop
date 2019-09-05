@@ -209,6 +209,7 @@ class ProductMysqldb extends Service implements ProductInterface
                 ['spu' => $spu],
             ],
             'asArray' => true,
+            'fetchAll' => true,
         ];
         
         $data = Yii::$service->product->coll($filter);
