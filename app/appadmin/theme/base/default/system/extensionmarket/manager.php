@@ -50,9 +50,19 @@ use fec\helpers\CRequest;
                 </div>
                 <div class="clear"></div>
                 <div style="margin-top:60px;">
-                <?php    
+                <?php   
+                    $isLocal = false;
                     $namespace = $addon_one['addon_info']['namespace'];
-                    if (in_array($namespace, $installed_extensions_namespace)):
+                    if (in_array($namespace, $localCreatedArr)):
+                        $isLocal = true;
+                ?>
+                       <a title="本地开发的应用，您可以测试安装脚本，测试脚本，卸载脚本" class="not_publish" href="javascript:void(0)" addonName="<?= $addon_one['addon_info']['name'] ?>" rel="<?= $namespace ?>"  folderName="<?= $addon_one['addon_info']['folder'] ?>"  packageName="<?= $addon_one['addon_info']['package'] ?>">本地开发</a>
+                       <a title="您可以点击该按钮，测试您的本地开发应用的安装脚本" class="local_install_test" p_type="install" href="javascript:void(0)" addonName="<?= $addon_one['addon_info']['name'] ?>" rel="<?= $namespace ?>"  folderName="<?= $addon_one['addon_info']['folder'] ?>"  packageName="<?= $addon_one['addon_info']['package'] ?>">安装Test</a>
+                       <a title="您可以点击该按钮，测试您的本地开发应用的升级脚本" class="local_install_test" p_type="upgrade" href="javascript:void(0)" addonName="<?= $addon_one['addon_info']['name'] ?>" rel="<?= $namespace ?>"  folderName="<?= $addon_one['addon_info']['folder'] ?>"  packageName="<?= $addon_one['addon_info']['package'] ?>">升级Test</a>
+                       <a title="您可以点击该按钮，测试您的本地开发应用的卸载脚本" class="local_install_test" p_type="uninstall"  href="javascript:void(0)" addonName="<?= $addon_one['addon_info']['name'] ?>" rel="<?= $namespace ?>"  folderName="<?= $addon_one['addon_info']['folder'] ?>"  packageName="<?= $addon_one['addon_info']['package'] ?>">卸载Test</a>
+                       
+                <?php
+                    elseif (in_array($namespace, $installed_extensions_namespace)):
                         $canDelete = true; 
                         if ( version_compare($versionArr[$namespace], $addon_one['addon_info']['version'] ,'<') ):
                         
@@ -74,7 +84,7 @@ use fec\helpers\CRequest;
                     <?php endif; ?>
                 <?php endif; ?>
                     
-                    <div class="version_info">
+                    <div class="version_info <?= $isLocal ? 'addon_local' : ''  ?>">
                         <?php if ($top_version): ?>
                         <div class="">最高版本: <?= $top_version ?></div>
                         <?php endif; ?>
@@ -114,6 +124,9 @@ use fec\helpers\CRequest;
     color:#333;
 }
 
+.version_info.addon_local{
+        margin-top: 20px;
+}
 
 .version_info{
     float: right;
@@ -147,6 +160,14 @@ use fec\helpers\CRequest;
     color:#fff;
     padding:5px 10px;
 }
+
+.local_install_test{
+    background: #5e72e4 !important;
+    color:#fff;
+    padding:5px 10px;
+}
+
+
 
 .abutton{
     background:#009688  !important;
@@ -317,6 +338,48 @@ use fec\helpers\CRequest;
                 }
             });
         });
+        
+        
+        $(document).on("click",".local_install_test",function(){
+            namespace = $(this).attr('rel');
+            var p_type = $(this).attr('p_type');
+            var packageName = $(this).attr('packageName');
+            var addonName = $(this).attr('addonName');
+            var folderName = $(this).attr('folderName');
+            
+            var url = "<?= Yii::$service->url->getUrl("system/extensionmarket/administertest"); ?>";
+            url += '?namespace=' + namespace;
+            url += '&packageName=' + packageName;
+            url += '&folderName=' + folderName;
+            url += '&p_type=' + p_type;
+            url += '&addonName=' + encodeURIComponent(addonName);
+            
+            $.ajax({
+                url: url,
+                async: true,
+                timeout: 800000,
+                dataType: 'json', 
+                type: 'get',
+                success:function(data, textStatus){
+                    if(data.statusCode == 200){
+                        //alert(data.statusCode);
+                        message = data.message;
+                        alertMsg.correct(message);
+                        navTab.reloadFlag('page1');
+                    } else if (data.statusCode == 300){
+                        message = data.message;
+                        alertMsg.error(message)
+                    } else {
+                        alertMsg.error("错误");
+                    }
+                    //
+                },
+                error:function(){
+                    
+                }
+            });
+        });
+        
     });
 
 

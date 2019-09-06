@@ -77,6 +77,56 @@ class ExtensionmarketController extends SystemController
         return $this->render($this->action->id, $data);
     }
     
+    public function actionAdministertest()
+    {
+        $namespace = Yii::$app->request->get('namespace');
+        $packageName = Yii::$app->request->get('packageName');
+        $folderName = Yii::$app->request->get('folderName');
+        $addonName = Yii::$app->request->get('addonName');
+        $pType = Yii::$app->request->get('p_type');
+        if ($pType == 'install') {
+            // 进行插件的安装
+            if (!Yii::$service->extension->administer->testInstall($namespace)) {
+                $errors = Yii::$service->helper->errors->get(',');
+                echo  json_encode([
+                    'statusCode' => '300',
+                    'message'    => Yii::$service->page->translate->__($errors),
+                ]);
+                exit;
+            }
+        } else if ($pType == 'upgrade'){
+            if (!Yii::$service->extension->administer->testUpgrade($namespace)) {
+                $errors = Yii::$service->helper->errors->get(',');
+                echo  json_encode([
+                    'statusCode' => '300',
+                    'message'    => Yii::$service->page->translate->__($errors),
+                ]);
+                exit;
+            }
+        } else if ($pType == 'uninstall'){
+            if (!Yii::$service->extension->administer->testUninstall($namespace)) {
+                $errors = Yii::$service->helper->errors->get(',');
+                echo  json_encode([
+                    'statusCode' => '300',
+                    'message'    => Yii::$service->page->translate->__($errors),
+                ]);
+                exit;
+            }
+        } else {
+            echo  json_encode([
+                'statusCode' => '300',
+                'message'    => Yii::$service->page->translate->__('error param'),
+            ]);
+            exit;
+        }
+        // 输入安装成功信息。
+        echo  json_encode([
+            'statusCode' => '200',
+            'message'    => Yii::$service->page->translate->__('administer test {pType} success', ['pType' => $pType]),
+        ]);
+        exit;
+    }
+    
     public function actionInstall()
     {
         $namespace = Yii::$app->request->get('namespace');

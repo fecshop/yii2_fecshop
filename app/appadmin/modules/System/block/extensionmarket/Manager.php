@@ -26,6 +26,7 @@ class Manager extends \yii\base\BaseObject
     public $installedNameSpaceArr;
     public $versionArr;
     public $_param = [];
+    public $localCreatedArr = [];
     /**
      * init param function ,execute in construct.
      */
@@ -50,6 +51,7 @@ class Manager extends \yii\base\BaseObject
             'addon_count' => $count,
             'installed_extensions_namespace' => $this->installedNameSpaceArr,
             'versionArr' => $this->versionArr,
+            'localCreatedArr' => $this->localCreatedArr ,
             
         ];
     }
@@ -90,12 +92,16 @@ class Manager extends \yii\base\BaseObject
         $data = Yii::$service->extension->coll($filter);
         $installedArr = [];
         $versionArr = [];
+        $localCreatedArr = [];
         if (is_array($data['coll'])) {
             foreach ($data['coll'] as $one) {
                 $namespace = $one['namespace'];
                 if ($namespace) {
                     if (Yii::$service->extension->isInstalledStatus($one['installed_status'])) {
                         $installedArr[] = $namespace;
+                    }
+                    if (Yii::$service->extension->isTypeLocalCreated($one['type'])) {
+                        $localCreatedArr[] = $namespace;
                     }
                     
                     $versionArr[$namespace] = $one['installed_version'];
@@ -104,7 +110,7 @@ class Manager extends \yii\base\BaseObject
         }
         $this->versionArr = $versionArr;
         $this->installedNameSpaceArr = $installedArr;
-        
+        $this->localCreatedArr = $localCreatedArr;
         
     }
     
