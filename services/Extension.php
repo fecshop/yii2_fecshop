@@ -53,6 +53,11 @@ class Extension extends Service
         ];
     }
     
+    public function isTypeLocalCreated($type)
+    {
+        return $type == self::TYPE_LOCAL_CREATED ? true : false;
+    }
+    
     public function getInstallStatusArr()
     {
         return [
@@ -418,8 +423,34 @@ class Extension extends Service
         $modelOne->status = self::STATUS_ENABLE;
         $modelOne->installed_version = $installOb->version;
         $modelOne->updated_at = time();
-        return $modelOne->save();
         
+        return $modelOne->save();
+    }
+    
+    public function testInstallAddons($installConfig, $modelOne)
+    {
+        $installOb = Yii::createObject($installConfig);
+        if (!$installOb->version) {
+            Yii::$service->helper->errors->add("Extension Install Object must have property `version`");
+            
+            return false;
+        }
+        if (!($installOb instanceof \fecshop\services\extension\InstallInterface)) {
+            Yii::$service->helper->errors->add("Extension install file must implements interface `\fecshop\services\extension\InstallInterface`");
+            
+            return false;
+        }
+        if (!$installOb->run()) {
+            return false;
+        }
+        
+        // 更新数据库-扩展的安装信息。
+        $modelOne->installed_status = self::INSTALLED_STATUS;
+        $modelOne->status = self::STATUS_ENABLE;
+        $modelOne->installed_version = $installOb->version;
+        $modelOne->updated_at = time();
+        
+        return $modelOne->save();
     }
     
     
@@ -476,6 +507,55 @@ class Extension extends Service
         return true;
     }
     
+    public function testUpgradeAddons($upgradeConfig, $modelOne)
+    {
+        $upgradeOb = Yii::createObject($upgradeConfig);
+        if (!($upgradeOb instanceof \fecshop\services\extension\UpgradeInterface)) {
+            Yii::$service->helper->errors->add("Extension upgrade file must implements interface `\fecshop\services\extension\UpgradeInterface`");
+            
+            return false;
+        }
+        $versions = $upgradeOb->versions;
+        if (!empty($versions) && !is_array($versions)) {
+            Yii::$service->helper->errors->add("Upgrade Object property `versions` must be array");
+            
+            return false;
+        }
+        $installed_version = $modelOne['installed_version'];
+        $addon_remote_version = $modelOne['version'];
+        
+        $count = count($versions);
+        for ($i = 0; $i < $count; $i++) {
+            // 如果当前版本号 小于 此版本号
+            
+            if (version_compare($installed_version, $versions[$i] ,'<')
+                && version_compare($versions[$i],  $addon_remote_version,'<=')  // 应用里面update更新的版本号，如果大于应用version，那么不生效（这样可以通过远程来控制最大版本号）
+            ) {
+                //echo $versions[$i];
+                // 执行插件更新版本操作。
+                if (!$upgradeOb->run($versions[$i])) {
+                    return false;
+                }
+                // 更新数据库插件安装版本信息
+                $modelOne->installed_version = $versions[$i];
+                $modelOne->updated_at = time();
+                if (!$modelOne->save()) {
+                    return false;
+                }
+            }
+        }
+        
+        // 查看升级后的install_version和version是否一致, 可能插件无更新（db，文件复制等）
+        
+        $modelOne->installed_version = $modelOne['version'];
+        $modelOne->updated_at = time();
+        if (!$modelOne->save()) {
+            return false;
+        }
+        
+        
+        return true;
+    }
     
     /**
      * @param $installConfig | array
@@ -497,4 +577,22 @@ class Extension extends Service
         // 进行extension数据的删除
         return $modelOne->delete();
     }
+    public function testUninstallAddons($unstallConfig, $modelOne)
+    {
+        $uninstallOb = Yii::createObject($unstallConfig);
+        if (!($uninstallOb instanceof \fecshop\services\extension\UninstallInterface)) {
+            Yii::$service->helper->errors->add("Extension unstall file must implements interface `\fecshop\services\extension\UninstallInterface`");
+            
+            return false;
+        }
+        
+        if (!$uninstallOb->run()) {
+            return false;
+        }
+        
+        return true;
+        // 进行extension数据的删除
+        //return $modelOne->delete();
+    }
+    
 }

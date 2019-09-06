@@ -83,6 +83,54 @@ class Administer extends Service
         return false;
     }
     
+    
+    public function testInstall($extension_namespace, $forceInstall=false)
+    {
+        // 插件不存在
+        $modelOne = Yii::$service->extension->getByNamespace($extension_namespace);
+        if (!$modelOne['namespace']) {
+            Yii::$service->helper->errors->add('extension: {namespace} is not exist', ['namespace' =>$extension_namespace ]);
+            
+            return false;
+        }
+        
+        // 通过数据库找到应用的配置文件路径
+        $extensionConfigFile = Yii::getAlias($modelOne['config_file_path']);
+        if (!file_exists($extensionConfigFile)) {
+            Yii::$service->helper->errors->add('extension: {namespace} [{extensionConfigFile}]config file is not exit', ['namespace' =>$extension_namespace, 'extensionConfigFile' => $extensionConfigFile ]);
+            
+            return false;
+        }
+        // 加载应用配置
+        $extensionConfig = require($extensionConfigFile);
+        // 如果没有该配置，说明该插件不需要进行安装操作。
+        if (!isset($extensionConfig['administer']['install'])) {
+            Yii::$service->helper->errors->add('extension: {namespace}， have no install file function', ['namespace' =>$extension_namespace ]);
+            
+            return false;
+        }
+        
+        // 事务操作, 只对mysql有效，如果是mongodb，无法回滚
+        $innerTransaction = Yii::$app->db->beginTransaction();
+        try {
+            // 执行应用的install部分功能
+            if (!Yii::$service->extension->testInstallAddons($extensionConfig['administer']['install'], $modelOne)) {
+                $innerTransaction->rollBack();
+                
+                return false;
+            }
+            
+            $innerTransaction->commit();
+            return true;
+        } catch (\Exception $e) {
+            $innerTransaction->rollBack();
+            Yii::$service->helper->errors->add($e->getMessage());
+            return false;
+        }
+        
+        return false;
+    }
+    
     /**
      * 应用升级函数
      * @param $extension_namespace | string , 插件的名称
@@ -125,6 +173,53 @@ class Administer extends Service
         try {
             // 执行应用的upgrade部分功能
             if (!Yii::$service->extension->upgradeAddons($extensionConfig['administer']['upgrade'], $modelOne)) {
+                $innerTransaction->rollBack();
+                return false;
+            }
+            $innerTransaction->commit();
+            
+            return true;
+        } catch (\Exception $e) {
+            $innerTransaction->rollBack();
+            Yii::$service->helper->errors->add($e->getMessage());
+            return false;
+        }
+        
+        return false;
+    }
+    
+    
+    public function testUpgrade($extension_namespace)
+    {
+        // 插件不存在
+        $modelOne = Yii::$service->extension->getByNamespace($extension_namespace);
+        if (!$modelOne['namespace']) {
+            Yii::$service->helper->errors->add('extension: {namespace} is not exist', ['namespace' =>$extension_namespace ]);
+            
+            return false;
+        }
+        
+        // 通过数据库找到应用的配置文件路径，如果配置文件不存在
+        $extensionConfigFile = Yii::getAlias($modelOne['config_file_path']);
+        if (!file_exists($extensionConfigFile)) {
+            Yii::$service->helper->errors->add('extension: {namespace} config file is not exit', ['namespace' =>$extension_namespace ]);
+            
+            return false;
+        }
+        // 加载应用配置
+        $extensionConfig = require($extensionConfigFile);
+        // 如果没有该配置，说明该插件不需要进行安装操作。
+        if (!isset($extensionConfig['administer']['upgrade'])) {
+            Yii::$service->helper->errors->add('extension: {namespace}， have no upgrade file function', ['namespace' =>$extension_namespace ]);
+            
+            return false;
+        }
+        
+        // 事务操作, 只对mysql有效，如果是mongodb，无法回滚
+        $innerTransaction = Yii::$app->db->beginTransaction();
+        try {
+            // 执行应用的upgrade部分功能
+            if (!Yii::$service->extension->testUpgradeAddons($extensionConfig['administer']['upgrade'], $modelOne)) {
                 $innerTransaction->rollBack();
                 return false;
             }
@@ -206,6 +301,61 @@ class Administer extends Service
         return true;
     }
     
+    public function testUninstall($extension_namespace)
+    {
+        // 插件不存在
+        $modelOne = Yii::$service->extension->getByNamespace($extension_namespace);
+        if (!$modelOne['namespace']) {
+            Yii::$service->helper->errors->add('extension: {namespace} is not exist', ['namespace' =>$extension_namespace ]);
+            
+            return false;
+        }
+        
+        // 通过数据库找到应用的配置文件路径，如果配置文件不存在
+        $extensionConfigFile = Yii::getAlias($modelOne['config_file_path']);
+        if (!file_exists($extensionConfigFile)) {
+            Yii::$service->helper->errors->add('extension: {namespace} config file is not exit', ['namespace' =>$extension_namespace ]);
+            
+            return false;
+        }
+        // 加载应用配置
+        $extensionConfig = require($extensionConfigFile);
+        // 如果没有该配置，说明该插件无法进行卸载操作
+        if (!isset($extensionConfig['administer']['uninstall'])) {
+            Yii::$service->helper->errors->add('extension: {namespace}， have no uninstall file function', ['namespace' =>$extension_namespace ]);
+            
+            return false;
+        }
+        // 事务操作, 只对mysql有效，执行插件的uninstall，并在extensions表中进行删除扩展配置
+        $innerTransaction = Yii::$app->db->beginTransaction();
+        try {
+            // 执行应用的upgrade部分功能
+            if (!Yii::$service->extension->testUninstallAddons($extensionConfig['administer']['uninstall'], $modelOne)) {
+                $innerTransaction->rollBack();
+                
+                return false;
+            }
+            $innerTransaction->commit();
+            
+            return true;
+        } catch (\Exception $e) {
+            $innerTransaction->rollBack();
+            Yii::$service->helper->errors->add($e->getMessage());
+            
+            return false;
+        }
+        
+        // 进行应用源文件的删除操作。
+        $package = $modelOne['package'];
+        $folder = $modelOne['folder'];
+        if ($package && $folder && $this->uninstallRemoveFile) {
+            $installPath = Yii::getAlias('@addons/' . $package . '/' . $folder);
+            // 从配置中获取，是否进行应用文件夹的删除，如果是，则进行文件的删除。
+            Yii::$service->helper->deleteDir($installPath);
+        }
+        
+        return true;
+    }
     
     
     
