@@ -247,5 +247,29 @@ class Helper extends Service
      
         return true;
     }
-
+    
+    
+    
+    public function scanAllDirSubFile($dir, $subDir='/')
+    {	
+        if(is_dir($dir)){
+            $files = array();
+            $child_dirs = scandir($dir);
+            foreach ($child_dirs as $child_dir){
+                //'.'和'..'是Linux系统中的当前目录和上一级目录，必须排除掉，  
+                //否则会进入死循环，报segmentation falt 错误
+                if($child_dir != '.' && $child_dir != '..'){
+                    if(is_dir($dir.'/'.$child_dir)){
+                        //$files[$child_dir] = my_scandir($dir.'/'.$child_dir);
+                        $files = array_merge($files, $this->scanAllDirSubFile($dir.'/'.$child_dir, $subDir.$child_dir.'/'));
+                    }else{
+                        $files[] = $subDir.$child_dir;
+                    }
+                }
+            }
+            return $files;
+        }else{
+            return $subDir.$dir;
+        }
+    }
 }
