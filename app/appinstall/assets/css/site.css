@@ -1,0 +1,22 @@
+.body-container{
+    min-height: 900px;
+        margin-top: 50px;
+    padding-top: 20px;
+}
+
+.error-msg {
+    margin:3px 0;
+	background: #faebe7 url("../images/i_msg-error.gif") no-repeat scroll 8px 7px;
+    border: 1px solid #f16048;
+    color: #df280a;
+    font-size: 0.8em;
+    padding: 5px 30px;
+}
+.correct-msg {
+    margin:3px 0;
+	background: #eff5ea url("../images/i_msg-success.gif") no-repeat scroll 8px 7px;
+    border: 1px solid #95a486;
+    color: #3d6611 ;
+    font-size: 0.8em;
+    padding: 5px 30px;
+}
