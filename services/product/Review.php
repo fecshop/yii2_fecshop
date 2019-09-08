@@ -156,7 +156,7 @@ class Review extends Service
     /**
      * 查看review 的列表
      */
-    public function list($filter)
+    public function actionList($filter)
     {
         return $this->_review->list($filter);
     }
