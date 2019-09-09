@@ -35,7 +35,7 @@ class RemoteService extends Service
             'email' => $param['email'],
             'password' => $param['password'],
         ];
-        list($responseHeader, $result) = $this->getCurlData($url, 'post', [], $data, 10);
+        list($responseHeader, $result) = $this->getCurlData($url, 'post', [], $data, 30);
         if ($result['code'] == 200) {
             $access_token =  $responseHeader['Access-Token'];
             $this->setAccessToken($access_token);
@@ -57,7 +57,7 @@ class RemoteService extends Service
         $headerRequest = [
             'access-token: '.$accessToken,
         ];
-        list($responseHeader, $result) = $this->getCurlData($url, 'post', $headerRequest, [], 10);
+        list($responseHeader, $result) = $this->getCurlData($url, 'post', $headerRequest, [], 30);
         
         if ($result['code'] == 200) {
             
@@ -84,7 +84,7 @@ class RemoteService extends Service
             'pageNum' => $pageNum,
             'numPerPage' => $numPerPage,
         ];
-        list($responseHeader, $result) = $this->getCurlData($url, 'post', $headerRequest, $data, 10);
+        list($responseHeader, $result) = $this->getCurlData($url, 'post', $headerRequest, $data, 30);
         
         if ($result['code'] == 200) {
             
@@ -107,7 +107,7 @@ class RemoteService extends Service
         $data = [
             'namespace' => $namespace,
         ];
-        list($responseHeader, $result) = $this->getCurlData($url, 'post', $headerRequest, $data, 10);
+        list($responseHeader, $result) = $this->getCurlData($url, 'post', $headerRequest, $data, 30);
         
         if ($result['code'] == 200) {
             
@@ -172,7 +172,7 @@ class RemoteService extends Service
         curl_setopt($ch, CURLOPT_FILE, $fp);
         //这个选项是意思是跳转，如果你访问的页面跳转到另一个页面，也会模拟访问。
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($ch,CURLOPT_TIMEOUT,100);
+        curl_setopt($ch,CURLOPT_TIMEOUT, 5000);
 
         //执行命令
         curl_exec($ch);
@@ -219,7 +219,7 @@ class RemoteService extends Service
     }
     
     
-    public static function getCurlData($url,$type="get", $headerData, $data=array(),$timeout = 10){
+    public static function getCurlData($url,$type="get", $headerData, $data=array(),$timeout = 30){
         //对空格进行转义
         $url = str_replace(' ','+',$url);
         if($type == "get"){
