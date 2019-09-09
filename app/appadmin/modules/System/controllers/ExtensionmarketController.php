@@ -155,6 +155,14 @@ class ExtensionmarketController extends SystemController
         // 删除zip压缩包 
         unlink($zipFilePath);
         
+        /**
+          * 对于某些比较大的应用插件，下载时间可能需要几分钟
+          * 对于mysql，如果设置了超时时间，会超时导致无法执行sql，进行mysql重连。报错
+          * 因此下面对mysql进行了关闭，重新打开
+          */
+        \Yii::$app->db->close();
+        \Yii::$app->db->open();
+        
         // 将addons信息写入数据库
         /*
         array(6) {
@@ -242,6 +250,13 @@ class ExtensionmarketController extends SystemController
         }
         // 删除zip压缩包 
         unlink($zipFilePath);
+        /**
+          * 对于某些比较大的应用插件，下载时间可能需要几分钟
+          * 对于mysql，如果设置了超时时间，会超时导致无法执行sql，进行mysql重连。报错
+          * 因此下面对mysql进行了关闭，重新打开
+          */
+        \Yii::$app->db->close();
+        \Yii::$app->db->open();
         
         // 将addons信息写入数据库
         /*
