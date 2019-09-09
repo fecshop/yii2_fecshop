@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * FecMall file.
+ *
+ * @link http://www.fecmall.com/
+ * @copyright Copyright (c) 2016 FecMall Software LLC
+ * @license http://www.fecmall.com/license/
+ */
 /* @var $this \yii\web\View */
 /* @var $content string */
 
@@ -9,7 +15,10 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use fecshop\app\appinstall\assets\AppAsset;
 use common\widgets\Alert;
-
+/**
+ * @author Terry Zhao <2358269014@qq.com>
+ * @since 1.0
+ */
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>

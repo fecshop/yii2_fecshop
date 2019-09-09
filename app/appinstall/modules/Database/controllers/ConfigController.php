@@ -1,9 +1,18 @@
 <?php
-
+/**
+ * FecMall file.
+ *
+ * @link http://www.fecmall.com/
+ * @copyright Copyright (c) 2016 FecMall Software LLC
+ * @license http://www.fecmall.com/license/
+ */
 namespace fecshop\app\appinstall\modules\Database\controllers;
 
 use Yii;
-
+/**
+ * @author Terry Zhao <2358269014@qq.com>
+ * @since 1.0
+ */
 class ConfigController extends \yii\web\Controller
 {
     public function init()
@@ -13,12 +22,30 @@ class ConfigController extends \yii\web\Controller
     
     public $_migrateLog = '';
     
-    // 数据库管理
+    // 安装默认第一步页面
+    public function actionIndex()
+    {
+        $editForm = Yii::$app->request->post('editForm');
+        if ($editForm && $this->checkDatabaseData($editForm) 
+            && $this->updateDatabase($editForm)) {
+            Yii::$app->session->setFlash('database-success', 'mysql config set success, mysql config file path: @common/config/main-local.php');
+            // 进行跳转
+            $homeUrl = Yii::$app->homeUrl;
+            return $this->redirect($homeUrl.'/database/config/migrate'); 
+        }
+        $errorInfo = Yii::$app->session->getFlash('database-errors');
+        $errorInfo = $this->getErrorHtml($errorInfo);
+        return $this->render($this->action->id, [
+            'errorInfo' => $errorInfo,
+            'editForm' => $editForm,
+        ]);
+    }
+    
+    // 数据库migrate页面
     public function actionMigrate()
     {
         $successInfo = Yii::$app->session->getFlash('database-success');
         $successInfo = $this->getSuccessHtml($successInfo);
-        
         $errorInfo = Yii::$app->session->getFlash('migrate-errors');
         $errorInfo = $this->getErrorHtml($errorInfo);
         
@@ -31,17 +58,6 @@ class ConfigController extends \yii\web\Controller
         ]);
     }
     
-    public function actionComplete()
-    {
-        // 执行 chmod 644 @common/config/main-local
-        
-        // 删除掉install.php文件
-         return $this->render($this->action->id, [
-        ]);
-        
-    }
-    
-    // 进行测试数据sql的安装和测试图片的复制
     public function actionAddtestdata()
     {
         $errorInfo = Yii::$app->session->getFlash('add-test-errors');
@@ -55,7 +71,7 @@ class ConfigController extends \yii\web\Controller
         ]);
         
     }
-    
+    // 进行sql migrate ，产品图片的复制
     public function actionAddtestdatainit()
     {
         // 1. 图片的复制
@@ -63,7 +79,6 @@ class ConfigController extends \yii\web\Controller
         //$sourcePath = Yii::getAlias('@fectmelani/app/appimage');
         $targetPath = Yii::getAlias('@appimage');
         $this->copyDir($sourcePath, $targetPath);
-        
         // 2. sql文件的执行
         $sqlFile = dirname(Yii::getAlias('@common')) . '/environments/test_data/fecshop.sql';
         $sqlStr = file_get_contents($sqlFile);
@@ -74,56 +89,40 @@ class ConfigController extends \yii\web\Controller
             $innerTransaction->commit();
             echo json_encode([
                 'status' => 'success',
-            ]);exit;
+            ]);
             
+            exit;
         } catch (\Exception $e) {
             $innerTransaction->rollBack();
             $message = $e->getMessage();
             echo json_encode([
                 'status' => 'fail',
                 'info' => $message ,
-            ]);exit;
-            
-        }
-        
-        echo json_encode([
-                'status' => 'fail',
-                'info' => 'error' ,
             ]);
+            
+            exit;
+        }
+        echo json_encode([
+            'status' => 'fail',
+            'info' => 'error' ,
+        ]);
+        
         exit;
     }
     
-   
-    
-    // 进行数据库的migrate操作
+    // 进行数据库的migrate操作（ajax）
     public function actionMigrateprocess()
     {
         $this->runMigrate();
         exit;
     }
     
-    
-    // 安装默认第一步页面
-    public function actionIndex()
+    // 完成页面
+    public function actionComplete()
     {
-        
-        $editForm = Yii::$app->request->post('editForm');
-        
-        if ($editForm && $this->checkDatabaseData($editForm) 
-            && $this->updateDatabase($editForm)) {
-                
-            Yii::$app->session->setFlash('database-success', 'mysql config set success, mysql config file path: @common/config/main-local.php');
-            // 进行跳转
-            $homeUrl = Yii::$app->homeUrl;
-            return $this->redirect($homeUrl.'/database/config/migrate'); 
-        }
-        $errorInfo = Yii::$app->session->getFlash('database-errors');
-        $errorInfo = $this->getErrorHtml($errorInfo);
-        return $this->render($this->action->id, [
-            'errorInfo' => $errorInfo,
-            'editForm' => $editForm,
-        ]);
+        return $this->render($this->action->id, []);
     }
+    
     // 进行数据库的信息的检查，以及将数据库信息写入文件
     public function updateDatabase($editForm)
     {
@@ -156,13 +155,15 @@ class ConfigController extends \yii\web\Controller
             
             return false;
         }
+        // 得到文件的内容
         $mainLocalInfo = file_get_contents($mainLocalFile);
         //$mainLocalInfo = require($mainLocalFile);
+        // 进行文件替换
         $mainLocalInfo = str_replace('{mysql_host}', $host, $mainLocalInfo);
         $mainLocalInfo = str_replace('{mysql_database}', $database, $mainLocalInfo);
         $mainLocalInfo = str_replace('{mysql_user}', $user, $mainLocalInfo);
         $mainLocalInfo = str_replace('{mysql_password}', $password, $mainLocalInfo);
-        //var_dump($mainLocalInfo);exit;
+        // 写入配置文件
         if (@file_put_contents($mainLocalFile, $mainLocalInfo) === false) {
             $errors = 'Unable to write the file '.$mainLocalFile;
             Yii::$app->session->setFlash('database-errors', $errors);
@@ -218,24 +219,27 @@ class ConfigController extends \yii\web\Controller
             </div>
             ';
         }
+        
         return '';
     }
     
     public function getErrorHtml($errorInfo){
         if ($errorInfo) {
             return '
-            <div class="fecshop_message">
-                    <div class="error-msg">
-                        <div>'. $errorInfo .'</div>
-                    </div>
-            </div>
+                <div class="fecshop_message">
+                        <div class="error-msg">
+                            <div>'. $errorInfo .'</div>
+                        </div>
+                </div>
             ';
         }
         
         return '';
-        
     }
-    
+    /**
+      * 在yii web环境，执行console中的命令，
+      * 该函数，相当于执行console命令行 `./yii migrate --interactive=0 --migrationPath=@fecshop/migrations/mysqldb`
+      */
     public function runMigrate()
     {
         $oldApp = \Yii::$app;
@@ -246,10 +250,10 @@ class ConfigController extends \yii\web\Controller
                 'db' => $oldApp->db,
             ],
         ]);
-        $dd = \Yii::$app->runAction('migrate/up', ['migrationPath' => '@fecshop/migrations/mysqldb', 'interactive' => false]);
+        $runResult = \Yii::$app->runAction('migrate/up', ['migrationPath' => '@fecshop/migrations/mysqldb', 'interactive' => false]);
         \Yii::$app = $oldApp;
         
-        return $dd ;
+        return $runResult ;
     }
     
     /*
@@ -275,9 +279,8 @@ class ConfigController extends \yii\web\Controller
     }
     */
     
-    
-    
-    public function dir_mkdir($path = '', $mode = 0777, $recursive = true)
+    // 创建文件夹，在图片文件复制的过程中使用。
+    public function dirMkdir($path = '', $mode = 0777, $recursive = true)
     {
         clearstatcache();
         if (!is_dir($path))
@@ -289,7 +292,7 @@ class ConfigController extends \yii\web\Controller
         return true;
     }
      /**
-     * 文件夹文件拷贝
+     * 文件夹文件拷贝（递归）
      *
      * @param string $sourcePath 来源文件夹
      * @param string $targetPath 目的地文件夹
@@ -302,9 +305,8 @@ class ConfigController extends \yii\web\Controller
         {
             return false;
         }
-     
         $dir = opendir($sourcePath);
-        $this->dir_mkdir($targetPath);
+        $this->dirMkdir($targetPath);
         while (false !== ($file = readdir($dir)))
         {
             if (($file != '.') && ($file != '..')) {

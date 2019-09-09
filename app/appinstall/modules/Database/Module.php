@@ -1,10 +1,10 @@
 <?php
 /**
- * FecShop file.
+ * FecMall file.
  *
- * @link http://www.fecshop.com/
- * @copyright Copyright (c) 2016 FecShop Software LLC
- * @license http://www.fecshop.com/license/
+ * @link http://www.fecmall.com/
+ * @copyright Copyright (c) 2016 FecMall Software LLC
+ * @license http://www.fecmall.com/license/
  */
 
 namespace fecshop\app\appinstall\modules\Database;
@@ -14,7 +14,6 @@ use Yii;
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
- * Catalog Module 模块
  */
 class Module extends \yii\base\Module
 {

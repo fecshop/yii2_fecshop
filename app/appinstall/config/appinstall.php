@@ -1,10 +1,10 @@
 <?php
 /**
- * FecShop file.
+ * FecMall file.
  *
- * @link http://www.fecshop.com/
- * @copyright Copyright (c) 2016 FecShop Software LLC
- * @license http://www.fecshop.com/license/
+ * @link http://www.fecmall.com/
+ * @copyright Copyright (c) 2016 FecMall Software LLC
+ * @license http://www.fecmall.com/license/
  */
 /**
  * 本文件在@appfront/web/index.php 处，会被引入。
@@ -25,7 +25,7 @@ $config = [
     'components' => [
         // 404页面对应的url key
         'errorHandler' => [
-            'errorAction' => 'site/helper/error',
+            'errorAction' => 'database/error/index',
         ],
         // 首页对应的url key
         'urlManager' => [
