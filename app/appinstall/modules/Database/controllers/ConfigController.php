@@ -20,14 +20,14 @@ class ConfigController extends \yii\web\Controller
         parent::init();
     }
     
-    public $_migrateLog = '';
+    // public $_migrateLog = '';
     
     // 安装默认第一步页面
     public function actionIndex()
     {
         $editForm = Yii::$app->request->post('editForm');
         if ($editForm && $this->checkDatabaseData($editForm) 
-            && $this->updateDatabase($editForm)) {
+            && $this->updateDatabaseConfig($editForm)) {
             Yii::$app->session->setFlash('database-success', 'mysql config set success, mysql config file path: @common/config/main-local.php');
             // 进行跳转
             $homeUrl = Yii::$app->homeUrl;
@@ -44,6 +44,25 @@ class ConfigController extends \yii\web\Controller
     // 数据库migrate页面
     public function actionMigrate()
     {
+        
+        $isPost = Yii::$app->request->post('isPost');
+        if ($isPost ) {
+            // 进行数据库初始化
+            if ($this->runMigrate()) {
+                $successInfo = '数据库migrate初始化完成';
+                $successInfo = $this->getSuccessHtml($successInfo);
+                //exit;
+                return $this->render('migratesuccess', [
+                    'successInfo' => $successInfo,
+                    'nextUrl' => Yii::$app->homeUrl . '/database/config/addtestdata',
+                    'skipUrl' => Yii::$app->homeUrl . '/database/config/complete',
+                ]);
+            } else {
+                $errors = 'migrate 失败，你可以在logs文件中查看具体原因（@appfront/config/main.php中log组件，对应的logFile配置，查看该log文件，如果没有可以手动创建该log文件，清空数据库，重新执行该操作）';
+                Yii::$app->session->setFlash('migrate-errors', $errors);
+            }
+        }
+            
         $successInfo = Yii::$app->session->getFlash('database-success');
         $successInfo = $this->getSuccessHtml($successInfo);
         $errorInfo = Yii::$app->session->getFlash('migrate-errors');
@@ -52,19 +71,21 @@ class ConfigController extends \yii\web\Controller
         return $this->render($this->action->id, [
             'successInfo' => $successInfo,
             'errorInfo' => $errorInfo,
-            'initUrl' => Yii::$app->homeUrl . '/database/config/migrateprocess',
-            'nextUrl' => Yii::$app->homeUrl . '/database/config/addtestdata',
-            'migrateLog'  => $this->_migrateLog
         ]);
     }
-    
+    // 产品测试数据添加
     public function actionAddtestdata()
     {
-        $errorInfo = Yii::$app->session->getFlash('add-test-errors');
-        $errorInfo = $this->getErrorHtml($errorInfo);
+        if ($this->addProductData()) {
+            $successInfo = $this->getSuccessHtml('产品测试数据添加成功');
+        } else {
+            $errorInfo = Yii::$app->session->getFlash('add-test-data-errors');
+            $errorInfo = $this->getErrorHtml($errorInfo);
+        }
         
         return $this->render($this->action->id, [
             'errorInfo' => $errorInfo,
+            'successInfo' => $successInfo,
             'initUrl' => Yii::$app->homeUrl . '/database/config/addtestdatainit',
             'nextUrl' => Yii::$app->homeUrl . '/database/config/complete',
             //'migrateLog'  => $this->_migrateLog
@@ -72,7 +93,7 @@ class ConfigController extends \yii\web\Controller
         
     }
     // 进行sql migrate ，产品图片的复制
-    public function actionAddtestdatainit()
+    public function addProductData()
     {
         // 1. 图片的复制
         $sourcePath = dirname(Yii::getAlias('@common')) . '/environments/test_data/appimage';
@@ -87,34 +108,15 @@ class ConfigController extends \yii\web\Controller
         try {
             $result = $conn->createCommand($sqlStr)->execute();
             $innerTransaction->commit();
-            echo json_encode([
-                'status' => 'success',
-            ]);
             
-            exit;
+            return true;
         } catch (\Exception $e) {
             $innerTransaction->rollBack();
             $message = $e->getMessage();
-            echo json_encode([
-                'status' => 'fail',
-                'info' => $message ,
-            ]);
-            
-            exit;
+            Yii::$app->session->setFlash('add-test-data-errors', $message);
         }
-        echo json_encode([
-            'status' => 'fail',
-            'info' => 'error' ,
-        ]);
         
-        exit;
-    }
-    
-    // 进行数据库的migrate操作（ajax）
-    public function actionMigrateprocess()
-    {
-        $this->runMigrate();
-        exit;
+        return false;
     }
     
     // 完成页面
@@ -124,7 +126,7 @@ class ConfigController extends \yii\web\Controller
     }
     
     // 进行数据库的信息的检查，以及将数据库信息写入文件
-    public function updateDatabase($editForm)
+    public function updateDatabaseConfig($editForm)
     {
         $host = $editForm['host'];
         $database = $editForm['database'];
@@ -242,42 +244,24 @@ class ConfigController extends \yii\web\Controller
       */
     public function runMigrate()
     {
+        $bashPath = dirname(Yii::getAlias('@appfront'));
         $oldApp = \Yii::$app;
         Yii::$app = new \yii\console\Application([
             'id' => 'install-console',
-            'basePath' => '@appfront',
+            'basePath' => $bashPath,
             'components' => [
                 'db' => $oldApp->db,
             ],
         ]);
-        $runResult = \Yii::$app->runAction('migrate/up', ['migrationPath' => '@fecshop/migrations/mysqldb', 'interactive' => false]);
-        \Yii::$app = $oldApp;
-        
-        return $runResult ;
-    }
-    
-    /*
-    public function runMigrate()
-    {
-        
-        // 通过ob函数截取输出字符
         ob_start();
         ob_implicit_flush(false);
-        extract(['oldApp' => \Yii::$app], EXTR_OVERWRITE);
-        \Yii::$app = new \yii\console\Application([
-            'id' => 'install-console',
-            'basePath' => '@appfront',
-            'components' => [
-                'db' => $oldApp->db,
-            ],
-        ]);
-        $result = \Yii::$app->runAction('migrate/up', ['migrationPath' => '@fecshop/migrations/mysqldb', 'interactive' => false]);
+        $runResult = \Yii::$app->runAction('migrate/up', ['migrationPath' => '@fecshop/migrations/mysqldb', 'interactive' => false]);
+        $post_log = ob_get_clean();
+        Yii::info($post_log, 'fecshop_debug');
         \Yii::$app = $oldApp;
-        $this->_migrateLog = ob_get_clean();
-        
-        return true;
+        // $runResult 返回值，0代表执行完成，1代表执行出错。
+        return $runResult === 0 ? true : false ;
     }
-    */
     
     // 创建文件夹，在图片文件复制的过程中使用。
     public function dirMkdir($path = '', $mode = 0777, $recursive = true)

@@ -19,7 +19,7 @@
 
 <p style="font-size:16px;line-height:25px;">3.后台默认用户名，用户名密码： <span style="color:#c7254e">admin  admin123</span></p>
 
-<p style="font-size:16px;line-height:25px;">4.访问后台，更改<span style="color:#c7254e">admin</span>用户密码，然后根据文档进行后台配置  </p>
+<p style="font-size:16px;line-height:25px;">4.访问后台（访问nginx配置的后台appadmin域名），更改<span style="color:#c7254e">admin</span>用户密码，然后根据文档进行后台配置  </p>
 
 
 <br/>
