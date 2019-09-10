@@ -23,6 +23,8 @@ class Administer extends Service
     // 卸载应用，是否删除掉应用的文件夹
     public $uninstallRemoveFile = true;
     
+    public $currentNamespace;
+    
     /**
      * 1.插件的安装
      * @param $extension_name | string ， 插件名称（唯一）
@@ -39,6 +41,7 @@ class Administer extends Service
             
             return false;
         }
+        $this->currentNamespace = $extension_namespace;
         // 插件已经安装
         $installed_status = $modelOne['installed_status'];
         if (!$forceInstall && Yii::$service->extension->isInstalledStatus($installed_status)) {
@@ -93,7 +96,7 @@ class Administer extends Service
             
             return false;
         }
-        
+        $this->currentNamespace = $extension_namespace;
         // 通过数据库找到应用的配置文件路径
         $extensionConfigFile = Yii::getAlias($modelOne['config_file_path']);
         if (!file_exists($extensionConfigFile)) {
@@ -144,6 +147,7 @@ class Administer extends Service
             
             return false;
         }
+        $this->currentNamespace = $extension_namespace;
         // 插件如果没有安装
         $installed_status = $modelOne['installed_status'];
         if (!Yii::$service->extension->isInstalledStatus($installed_status)) {
@@ -369,13 +373,30 @@ class Administer extends Service
     
     
     // theme文件进行copy到@app/theme/base/addons 下面。
-    protected function  copyThemeFile($modelOne) 
+    protected function  copyThemeFile($sourcePath) 
     {
+        if (!$this->currentNamespace) {
+            Yii::$service->helper->errors->add('copyThemeFile: current extension: {namespace} is not exist', ['namespace' =>$this->currentNamespace ]);
+            
+            return false;
+        }
+        $targetPath = Yii::getAlias('@appimage/common/addons/'.$this->currentNamespace);
         
-        
-        
+        Yii::$service->helper->copyDirImage($sourcePath, $targetPath);
         
     }
     
-    
+    // theme文件进行copy到@app/theme/base/addons 下面。
+    protected function  removeThemeFile() 
+    {
+        if (!$this->currentNamespace) {
+            Yii::$service->helper->errors->add('copyThemeFile: current extension: {namespace} is not exist', ['namespace' =>$this->currentNamespace ]);
+            
+            return false;
+        }
+        $sourcePath = Yii::getAlias('@appimage/common/addons/'.$this->currentNamespace);
+        Yii::$service->helper->deleteDir($sourcePath);
+        
+        return true;
+    }
 }

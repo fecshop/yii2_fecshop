@@ -48,8 +48,7 @@ class Uninstall implements \fecshop\services\extension\UninstallInterface
     public function removeImageFile()
     {
         /*
-        $targetPath = Yii::getAlias('@appimage/common/appfront/media/fect/xxxxxxxxx');
-        Yii::$service->helper->deleteDir($targetPath);
+        return Yii::$service->extension->administer->removeThemeFile();
         */
         
         return true;

@@ -77,21 +77,17 @@ class Upgrade implements \fecshop\services\extension\UpgradeInterface
     }
     
     /**
-     * 复制图片文件到appimage，如果存在，则会被强制覆盖
-     * 如果更新的版本中有新增的图片，可以执行copy image
+     * 复制图片文件到appimage/common/addons/{namespace}，如果存在，则会被强制覆盖
      */
     public function copyImageFile()
     {
         /*
-        $sourcePath = Yii::getAlias('@<?= $namespaces ?>/app/appimage');
-        $targetPath = Yii::getAlias('@appimage');
-        // 只复制产品文件到appimage，其他的文件将会被过滤掉。（安全）
-        Yii::$service->helper->copyDirImage($sourcePath, $targetPath);
+        $sourcePath = Yii::getAlias('@<?= $namespaces ?>/app/appimage/common/addons/<?= $namespaces ?>');
+        
+        Yii::$service->extension->administer->copyThemeFile($sourcePath);
         */
         return true;
     }
-    
-    
     
     
 }
