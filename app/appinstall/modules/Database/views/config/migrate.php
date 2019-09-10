@@ -1,7 +1,7 @@
 <?php
     use fec\helpers\CRequest;
 ?>
-<h1>Mysql数据库表初始化</h1>
+<h1>Mysql数据库表初始化Migrate</h1>
 <br/>
 
 <?=  $errorInfo  ?>
@@ -24,7 +24,7 @@
     <?php echo CRequest::getCsrfInputHtml();  ?>
     <input type="hidden" value="1" name="isPost" />	
     <button type="submit" class="btn btn-default  dbInit">进行数据表初始化</button>
-    <span class="d_info" style="margin-left:20px;display:none; color: #cc0000">数据库migrate初始化中...</span>
+    <span class="d_info" style="margin-left:20px;display:none; color: #cc0000">数据库migrate初始化中，请耐心等待，在该过程中请勿刷新页面...</span>
 </form>
 
 <script>

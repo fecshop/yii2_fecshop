@@ -18,35 +18,35 @@ class m190906_121308_fecshop_tables extends Migration
             ';
         $this->execute($sql);
         // 1
-        $sql = " 
-            UPDATE `store_domain` SET `lang` = 'en-US' WHERE `lang` = 'en_US';
-        ";
-        $this->execute($sql);
+        //$sql = " 
+        //    UPDATE `store_domain` SET `lang` = 'en-US' WHERE `lang` = 'en_US';
+        //";
+        //$this->execute($sql);
         // 2
-        $sql = " 
-            UPDATE `store_domain` SET `lang` = 'fr-FR' WHERE `lang` = 'fr_FR';
-        ";
-        $this->execute($sql);
+        //$sql = " 
+        //    UPDATE `store_domain` SET `lang` = 'fr-FR' WHERE `lang` = 'fr_FR';
+        //";
+        //$this->execute($sql);
         // 3
-        $sql = " 
-            UPDATE `store_domain` SET `lang` = 'es-ES' WHERE `lang` = 'es_ES';
-        ";
-        $this->execute($sql);
+        //$sql = " 
+        //    UPDATE `store_domain` SET `lang` = 'es-ES' WHERE `lang` = 'es_ES';
+        //";
+        //$this->execute($sql);
         // 4
-        $sql = " 
-            UPDATE `store_domain` SET `lang` = 'zh-CN' WHERE `lang` = 'zh_CN';
-        ";
-        $this->execute($sql);
+        //$sql = " 
+        //    UPDATE `store_domain` SET `lang` = 'zh-CN' WHERE `lang` = 'zh_CN';
+       // ";
+        //$this->execute($sql);
         // 5
-        $sql = " 
-            UPDATE `store_domain` SET `lang` = 'it-IT' WHERE `lang` = 'it_IT';
-        ";
-        $this->execute($sql);
+        //$sql = " 
+        //    UPDATE `store_domain` SET `lang` = 'it-IT' WHERE `lang` = 'it_IT';
+        //";
+        //$this->execute($sql);
         // 6
-        $sql = " 
-            UPDATE `store_domain` SET `lang` = 'de-DE' WHERE `lang` = 'de_DE';
-        ";
-        $this->execute($sql);
+        //$sql = " 
+         //   UPDATE `store_domain` SET `lang` = 'de-DE' WHERE `lang` = 'de_DE';
+        //";
+        //$this->execute($sql);
         // appserver_store
         $sql = '
             UPDATE `store_base_config` SET `value` = \'a:9:{s:3:"key";s:36:"fecshop.appserver.fancyecommerce.com";s:4:"lang";s:5:"en-US";s:9:"lang_name";s:7:"English";s:8:"currency";s:3:"USD";s:12:"https_enable";s:1:"1";s:21:"facebook_login_app_id";s:16:"1108618299786621";s:25:"facebook_login_app_secret";s:32:"420b56da4f4664a4d1065a1d31e5ec73";s:22:"google_login_client_id";s:72:"380372364773-qdj1seag9bh2n0pgrhcv2r5uoc58ltp3.apps.googleusercontent.com";s:26:"google_login_client_secret";s:24:"ei8RaoCDoAlIeh1nHYm0rrwO";}\' WHERE `key` ="appserver_store";

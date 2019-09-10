@@ -28,7 +28,7 @@ class ConfigController extends \yii\web\Controller
         $editForm = Yii::$app->request->post('editForm');
         if ($editForm && $this->checkDatabaseData($editForm) 
             && $this->updateDatabaseConfig($editForm)) {
-            Yii::$app->session->setFlash('database-success', 'mysql config set success, mysql config file path: @common/config/main-local.php');
+            Yii::$app->session->setFlash('database-success', 'Mysql配置成功，写入的配置文件路径为: @common/config/main-local.php');
             // 进行跳转
             $homeUrl = Yii::$app->homeUrl;
             return $this->redirect($homeUrl.'/database/config/migrate'); 
@@ -245,7 +245,8 @@ class ConfigController extends \yii\web\Controller
     public function runMigrate()
     {
         $bashPath = dirname(Yii::getAlias('@appfront'));
-        $oldApp = \Yii::$app;
+        $oldApp = Yii::$app;
+        $aliases = Yii::$aliases;
         Yii::$app = new \yii\console\Application([
             'id' => 'install-console',
             'basePath' => $bashPath,
@@ -255,10 +256,18 @@ class ConfigController extends \yii\web\Controller
         ]);
         ob_start();
         ob_implicit_flush(false);
-        $runResult = \Yii::$app->runAction('migrate/up', ['migrationPath' => '@fecshop/migrations/mysqldb', 'interactive' => false]);
+        $runResult = Yii::$app->runAction('migrate/up', ['migrationPath' => '@fecshop/migrations/mysqldb', 'interactive' => false]);
         $post_log = ob_get_clean();
         Yii::info($post_log, 'fecshop_debug');
-        \Yii::$app = $oldApp;
+        Yii::$app = $oldApp;
+        /**
+          * aliases 需要重新设置，否则，将会导致配置文件中的  aliases 无法获取，譬如main.php中的
+          *  'aliases' => [
+          *     '@bower' => '@vendor/bower-asset',
+          *     '@npm'   => '@vendor/npm-asset',
+          *  ],
+        */
+        Yii::$aliases = $aliases;
         // $runResult 返回值，0代表执行完成，1代表执行出错。
         return $runResult === 0 ? true : false ;
     }
