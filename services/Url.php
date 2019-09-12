@@ -24,7 +24,7 @@ use Yii;
  */
 class Url extends Service
 {
-    public $randomCount = 8;
+    public $randomCount = 9;
 
     public $showScriptName;
 
@@ -62,14 +62,24 @@ class Url extends Service
         $str = trim($str);
         $originUrl = $originUrl ? '/'.trim($originUrl, '/') : '';
         $originUrlKey = $originUrlKey ? '/'.trim($originUrlKey, '/') : '';
-        if ($originUrlKey) {
+        if ($originUrlKey && $originUrl) {
             /**
              * if originUrlKey and  originUrl is exist in url rewrite collectons.
              */ 
             $model = $this->find();
+            // 如果已经存在，那么直接返回
             $data_one = $model->where([
                 'custom_url_key'    => $originUrlKey,
-                //'origin_url'        => $originUrl,
+                'origin_url'        => $originUrl,
+            ])->one();
+            if (isset($data_one['custom_url_key'])) {
+
+                return $originUrlKey;
+            }
+            /*
+            $data_one = $model->where([
+                'custom_url_key'    => $originUrlKey,
+                'origin_url'        => $originUrl,
             ])->one();
             if (isset($data_one['custom_url_key'])) {
                 // 只要进行了查询，就要更新一下rewrite url表的updated_at.
@@ -79,6 +89,7 @@ class Url extends Service
 
                 return $originUrlKey;
             }
+            */
         }
         if ($originUrlKey) {
             $urlKey = $this->generateUrlByName($originUrlKey);
@@ -348,6 +359,23 @@ class Url extends Service
 
         return $str;
     }
+    
+    protected function isRandomStr($randomStr)
+    {
+        $f = substr($randomStr, 0, 1);
+        if ($f !== '-') {
+            return false;
+        }
+        $s =  substr($randomStr, 1);
+        if (strlen($s) != $this->randomCount) {
+            return false;
+        }
+        if(!is_numeric($s)){
+            return false;
+        }
+        
+        return true;
+    }
 
     /**
      * if url key is exist in url_rewrite table ,Behind url add some random string.
@@ -359,13 +387,33 @@ class Url extends Service
             $o_url = $this->_origin_url;
             if (strstr($this->_origin_url, '.')) {
                 list($o_url, $suffix) = explode('.', $this->_origin_url);
+                $l = $this->randomCount +1;
+                if (strlen($o_url) > $l) {
+                    $randomStrSub = substr($o_url, strlen($o_url) - $l , $l );
+                    $orignUrlK = substr($o_url, 0, strlen($o_url) - $l );
+                    if ($this->isRandomStr($randomStrSub)) {
+                        $o_url = $orignUrlK;
+                    }
+                }
+                
                 $randomStr = $this->getRandom();
 
                 return $o_url.'-'.$randomStr.'.'.$suffix;
-            }
-            $randomStr = $this->getRandom();
+            } else {
+                $l = $this->randomCount +1;
+                
+                if (strlen($o_url) > $l) {
+                    $randomStr = substr($o_url, strlen($o_url) - $l , $l );
+                    $orignUrlK = substr($o_url, 0, strlen($o_url) - $l );
+                    if ($this->isRandomStr($randomStr)) {
+                        $o_url = $orignUrlK;
+                    }
+                }
+                $randomStr = $this->getRandom();
 
-            return $this->_origin_url.'-'.$randomStr;
+                return $o_url.'-'.$randomStr;
+            }
+            
         }
     }
 

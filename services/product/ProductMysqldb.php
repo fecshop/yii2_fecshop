@@ -406,6 +406,9 @@ class ProductMysqldb extends Service implements ProductInterface
         if (!$this->initSave($one)) {
             return false;
         }
+        $url_key = isset($one['url_key']) ? $one['url_key'] : ''; 
+        unset($one['url_key']);
+        
         $currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
         $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
         // 得到group spu attr
@@ -513,7 +516,7 @@ class ProductMysqldb extends Service implements ProductInterface
         // 自定义url部分
         if ($originUrlKey) {
             $originUrl = $originUrlKey.'?'.$this->getPrimaryKey() .'='. $product_id;
-            $originUrlKey = isset($one['url_key']) ? $one['url_key'] : '';
+            $originUrlKey = $url_key;
             $defaultLangTitle = Yii::$service->fecshoplang->getDefaultLangAttrVal($one['name'], 'name');
             $urlKey = Yii::$service->url->saveRewriteUrlKeyByStr($defaultLangTitle, $originUrl, $originUrlKey);
             $model->url_key = $urlKey;
@@ -546,6 +549,8 @@ class ProductMysqldb extends Service implements ProductInterface
         if (!$this->initSave($one)) {
             return false;
         }
+        $url_key = isset($one['url_key']) ? $one['url_key'] : ''; 
+        unset($one['url_key']);
         $defaultLangTitle = Yii::$service->fecshoplang->getDefaultLangAttrVal($one['name'], 'name');
         $product_one = $this->_productModel->find()->where([
             'sku' => $one['sku'],
@@ -585,9 +590,8 @@ class ProductMysqldb extends Service implements ProductInterface
         
         $this->syncProductCategory($one['category'], $product_id);
         // 自定义url部分
-        $originUrlKey = 'catalog/product/index';
-        $originUrl = $originUrlKey.'?'.$this->getPrimaryKey() .'='. $product_id;
-        $originUrlKey = isset($one['url_key']) ? $one['url_key'] : '';
+        $originUrl = 'catalog/product/index' . '?' . $this->getPrimaryKey() .'='. $product_id;
+        $originUrlKey = $url_key;
         //var_dump([$defaultLangTitle, $originUrl, $originUrlKey]);
         //echo $defaultLangTitle;
         $urlKey = Yii::$service->url->saveRewriteUrlKeyByStr($defaultLangTitle, $originUrl, $originUrlKey);
@@ -1191,6 +1195,9 @@ class ProductMysqldb extends Service implements ProductInterface
     {
         $sku = $one['sku'];
         // 查询出来主键。
+        $url_key = isset($one['url_key']) ? $one['url_key'] : ''; 
+        unset($one['url_key']);
+        
         $primaryKey = $this->getPrimaryKey();
         $productModel = $this->getBySku($sku);
         if (isset($productModel['sku']) && $productModel['sku']) {
@@ -1311,7 +1318,7 @@ class ProductMysqldb extends Service implements ProductInterface
         // 自定义url部分
         if ($originUrlKey) {
             $originUrl = $originUrlKey.'?'.$this->getPrimaryKey() .'='. $product_id;
-            $originUrlKey = isset($one['url_key']) ? $one['url_key'] : '';
+            $originUrlKey = $url_key;
             $defaultLangTitle = Yii::$service->fecshoplang->getDefaultLangAttrVal($one['name'], 'name');
             $urlKey = Yii::$service->url->saveRewriteUrlKeyByStr($defaultLangTitle, $originUrl, $originUrlKey);
             $model->url_key = $urlKey;
