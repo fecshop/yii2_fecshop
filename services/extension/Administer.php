@@ -373,7 +373,7 @@ class Administer extends Service
     
     
     // theme文件进行copy到@app/theme/base/addons 下面。
-    protected function  copyThemeFile($sourcePath) 
+    public function  copyThemeFile($sourcePath) 
     {
         if (!$this->currentNamespace) {
             Yii::$service->helper->errors->add('copyThemeFile: current extension: {namespace} is not exist', ['namespace' =>$this->currentNamespace ]);
@@ -387,7 +387,7 @@ class Administer extends Service
     }
     
     // theme文件进行copy到@app/theme/base/addons 下面。
-    protected function  removeThemeFile() 
+    public function  removeThemeFile() 
     {
         if (!$this->currentNamespace) {
             Yii::$service->helper->errors->add('copyThemeFile: current extension: {namespace} is not exist', ['namespace' =>$this->currentNamespace ]);
