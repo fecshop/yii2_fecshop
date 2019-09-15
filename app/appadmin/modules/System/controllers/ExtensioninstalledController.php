@@ -34,6 +34,13 @@ class ExtensioninstalledController extends SystemController
         return $this->render($this->action->id, $data);
     }
     
+    public function actionManagerview()
+    {
+        $data = $this->getBlock()->getLastData();
+
+        return $this->render($this->action->id, $data);
+    }
+    
     public function actionManagerenable()
     {
         $data = $this->getBlock('manageredit')->extensionEnable();
@@ -46,12 +53,12 @@ class ExtensioninstalledController extends SystemController
     
     
     
-    /*
+    
     public function actionManagereditsave()
     {
         $data = $this->getBlock('manageredit')->save();
     }
-
+    /*
     public function actionManagerdelete()
     {
         $this->getBlock('manageredit')->delete();

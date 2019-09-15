@@ -24,6 +24,7 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
 {
     public $_enableUrl;
     public $_disableUrl;
+    public $_viewUrl;
     /**
      * init param function ,execute in construct.
      */
@@ -33,6 +34,7 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
          * edit data url
          */
         $this->_editUrl = CUrl::getUrl('system/extensioninstalled/manageredit');
+        $this->_viewUrl = CUrl::getUrl('system/extensioninstalled/managerview');
         /*
          * delete data url
          */
@@ -173,6 +175,13 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
                 'align'           => 'center',
                 'convert'       => ['int' => 'datetime'],
             ],
+            
+            [
+                'orderField'    => 'priority',
+                'label'           => Yii::$service->page->translate->__('Priority'),
+                'width'          => '50',
+                'align'           => 'left',
+            ],
             [
                 'orderField'    => 'updated_at',
                 'label'           => Yii::$service->page->translate->__('Updated At'),
@@ -264,8 +273,10 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
                 $str .= '<td>'.$val.'</td>';
             }
             $str .= '<td>
-						<a title="' . Yii::$service->page->translate->__('View') . '" target="dialog" class="btnEdit" mask="true" drawable="true" width="1200" height="680" href="'.$this->_editUrl.'?'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" ><i class="fa fa-eye"></i></a>
-					</td>';
+						<a title="' . Yii::$service->page->translate->__('View') . '" target="dialog" class="btnEdit" mask="true" drawable="true" width="1200" height="680" href="'.$this->_viewUrl.'?'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" ><i class="fa fa-eye"></i></a>
+                        <a title="' . Yii::$service->page->translate->__('Edit') . '" target="dialog" class="btnEdit" mask="true" drawable="true" width="1200" height="680" href="'.$this->_editUrl.'?'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" ><i class="fa fa-pencil"></i></a>
+					
+                    </td>';
             $str .= '</tr>';
         }
 

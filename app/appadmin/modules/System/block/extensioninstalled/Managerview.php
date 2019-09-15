@@ -20,7 +20,7 @@ use Yii;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInterface
+class Managerview extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInterface
 {
     public $_saveUrl;
 
@@ -50,6 +50,30 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
     {
         return [
             [
+                'label'  => Yii::$service->page->translate->__('Extension Name'),
+                'name' => 'name',
+                'display' => [
+                    'type' => 'inputString',
+                ],
+                'require' => 1,
+            ],
+            [
+                'label'  => Yii::$service->page->translate->__('Extension Package'),
+                'name' => 'package',
+                'display' => [
+                    'type' => 'inputString',
+                ],
+                'require' => 1,
+            ],
+            [
+                'label'  => Yii::$service->page->translate->__('Extension Folder'),
+                'name' => 'folder',
+                'display' => [
+                    'type' => 'inputString',
+                ],
+                'require' => 1,
+            ],
+            [
                 'label'  => Yii::$service->page->translate->__('Status'),
                 'name' => 'status',
                 'display' => [
@@ -62,6 +86,43 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
                 'require' => 1,
                 'default' => 1,
             ],
+            [
+                'label'  => Yii::$service->page->translate->__('Extension Type'),
+                'name' => 'type',
+                'display' => [
+                    'type' => 'select',
+                    'data' =>  Yii::$service->extension->getTypeArr(),
+                ],
+                'require' => 1,
+                'default' => 1,
+            ],
+            [
+                'label'  => Yii::$service->page->translate->__('Namespace'),
+                'name' => 'namespace',
+                'display' => [
+                    'type' => 'inputString',
+                ],
+                'require' => 1,
+            ],
+            
+            
+            [
+                'label'  => Yii::$service->page->translate->__('Config File Path'),
+                'name' => 'config_file_path',
+                'display' => [
+                    'type' => 'inputString',
+                ],
+                'require' => 1,
+            ],
+            
+            [
+                'label'  => Yii::$service->page->translate->__('Extension Version'),
+                'name' => 'version',
+                'display' => [
+                    'type' => 'inputString',
+                ],
+                'require' => 1,
+            ],
             
             [
                 'label'  => Yii::$service->page->translate->__('Priority'),
@@ -70,6 +131,16 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
                     'type' => 'inputString',
                 ],
                 'require' => 1,
+            ],
+            [
+                'label'  => Yii::$service->page->translate->__('Installed Status'),
+                'name' => 'installed_status',
+                'display' => [
+                    'type' => 'select',
+                    'data' => Yii::$service->extension->getInstallStatusArr(),
+                ],
+                'require' => 1,
+                'default' => 1,
             ],
             
         ];
@@ -86,49 +157,21 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
          * if attribute is date or date time , db storage format is int ,by frontend pass param is int ,
          * you must convert string datetime to time , use strtotime function.
          */
-        $status = $this->_param['status'];
-        $priority = $this->_param['priority'];
-        $id = $this->_param['id'];
-        if (!$status) {
+        $this->_service->save($this->_param, 'cms/article/index');
+        $errors = Yii::$service->helper->errors->get();
+        if (!$errors) {
             echo  json_encode([
-                'statusCode' => '300',
-                'message'    => Yii::$service->page->translate->__('status can not empty'),
+                'statusCode' => '200',
+                'message'    => Yii::$service->page->translate->__('Save Success'),
             ]);
             exit;
-        }
-        if (!$priority) {
-            echo  json_encode([
-                'statusCode' => '300',
-                'message'    => Yii::$service->page->translate->__('priority can not empty'),
-            ]);
-            exit;
-        }
-        if (!$id) {
-            echo  json_encode([
-                'statusCode' => '300',
-                'message'    => Yii::$service->page->translate->__('id can not empty'),
-            ]);
-            exit;
-        }
-        $saveStatus = $this->_service->save([
-            'id' => $id,
-            'priority' => $priority,
-            'status' => $status, 
-        ]);
-        if (!$saveStatus) {
-            $errors = Yii::$service->helper->errors->get();
+        } else {
             echo  json_encode([
                 'statusCode' => '300',
                 'message'    => $errors,
             ]);
             exit;
         }
-        
-        echo  json_encode([
-            'statusCode' => '200',
-            'message'    => Yii::$service->page->translate->__('Save Success'),
-        ]);
-        exit;
     }
     // 插件激活
     public function extensionEnable()

@@ -21,7 +21,7 @@ use fecadmin\models\AdminRole;
 </style>
 
 <div class="pageContent"> 
-	<form  method="post" action="<?= $saveUrl ?>" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDoneCloseAndReflush);">
+	<form  method="post"  class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDoneCloseAndReflush);">
 		<?php echo CRequest::getCsrfInputHtml();  ?>	
 		<div layouth="56" class="pageFormContent" style="height: 240px; overflow: auto;">
                 <input type="hidden"  value="<?=  $product_id; ?>" size="30" name="product_id" class="textInput ">
@@ -35,17 +35,7 @@ use fecadmin\models\AdminRole;
 				<?= $textareas ?>
 				
 		</div>
-        <div class="formBar">
-			<ul>
-				<!--<li><a class="buttonActive" href="javascript:;"><span>保存</span></a></li>-->
-				<li>
-                    <div class="buttonActive"><div class="buttonContent"><button onclick="func('accept')"  value="accept" name="accept" type="submit"><?= Yii::$service->page->translate->__('Save') ?></button></div></div>
-                </li>
-				<li>
-					<div class="button"><div class="buttonContent"><button type="button" class="close"><?= Yii::$service->page->translate->__('Cancel') ?></button></div></div>
-				</li>
-			</ul>
-		</div>
+        
 	</form>
 </div>	
 
