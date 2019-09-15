@@ -10,7 +10,7 @@
 <div class="shopping-cart-img">
 	<?= $title ?>
 </div>
-<?= Yii::$service->page->widget->render('flashmessage'); ?>	
+<?= Yii::$service->page->widget->render('base/flashmessage'); ?>	
 <div class="mobile-container">
 	<div class="col-main">
 		<div>

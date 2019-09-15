@@ -9,7 +9,7 @@
 ?>
 <div class="main container one-column">
 	<div class="col-main">
-		<?= Yii::$service->page->widget->render('flashmessage'); ?>
+		<?= Yii::$service->page->widget->render('base/flashmessage'); ?>
 
 		<form action="<?= Yii::$service->url->getCurrentUrl(); ?>" method="post" id="onestepcheckout-form">
 			<?= \fec\helpers\CRequest::getCsrfInputHtml(); ?>
