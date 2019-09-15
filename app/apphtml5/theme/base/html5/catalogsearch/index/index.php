@@ -32,7 +32,7 @@
 							<?php  if(is_array($products) && !empty($products)): ?>
                                 <?php
                                     $parentThis['products'] = $products;
-                                    echo Yii::$service->page->widget->renderContent('cms/productlist', $parentThis);
+                                    echo Yii::$service->page->widget->render('cms/productlist', $parentThis);
                                 ?>
                                 
                             <?php else: ?>
