@@ -241,6 +241,7 @@ class CategoryMysqldb extends Service implements CategoryInterface
         }
         $one = $this->serializeSaveData($one);
         $saveStatus = Yii::$service->helper->ar->save($model, $one);
+        $primaryVal = $model->id;
         $originUrl = $originUrlKey.'?'.$this->getPrimaryKey() .'='. $primaryVal;
         $originUrlKey = isset($one['url_key']) ? $one['url_key'] : '';
         $defaultLangTitle = Yii::$service->fecshoplang->getDefaultLangAttrVal($one['name'], 'name');
