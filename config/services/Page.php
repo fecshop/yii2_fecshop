@@ -24,10 +24,10 @@ return [
                 'class' =>  'fecshop\services\page\Asset',
                 // js 版本号，当更改了js，将这里的版本号+1，生成的js链接就会更改为  xxx.js?v=2 ,
                 // 这样做的好处是，js的链接url改变了，可以防止浏览器继续使用缓存，而不是重新加载js文件的问题。
-                'jsVersion'        => 1,
+                //'jsVersion'        => 1,
                 // css 版本号，原理同js
                 // 关于版本号更多的信息，请参看：http://www.fancyecommerce.com/2017/04/17/css-js-%E5%90%8E%E9%9D%A2%E5%8A%A0%E7%89%88%E6%9C%AC%E5%8F%B7%E7%9A%84%E5%8E%9F%E5%9B%A0%E5%92%8C%E6%96%B9%E5%BC%8F/
-                'cssVersion'    => 1,
+                //'cssVersion'    => 1,
                 /**
                  * @var string the root directory string the published asset files.
                  * 设置: js和css的发布路径，默认在web路径下的assets文件夹下，您可以放到其他的文件路径，然后用独立的jscss域名做指向
