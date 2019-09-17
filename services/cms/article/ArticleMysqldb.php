@@ -77,7 +77,7 @@ class ArticleMysqldb extends Service implements ArticleInterface
                 $model['title'] = unserialize($model['title']);
                 $model['meta_keywords'] = unserialize($model['meta_keywords']);
                 $model['meta_description'] = unserialize($model['meta_description']);
-                var_dump($model);
+                //var_dump($model);
                 return $model;
             }
         }
