@@ -578,6 +578,11 @@ class CategoryMysqldb extends Service implements CategoryInterface
 
         return $data;
     }
+    
+    public function getChildCategory($category_id) {
+        
+        return $this->getChildCate($category_id);
+    }
 
     protected function getChildCate($category_id)
     {
@@ -593,17 +598,19 @@ class CategoryMysqldb extends Service implements CategoryInterface
                 $one =$this->unserializeData($one) ;
                 $currentUrlKey = $one['url_key'];
                 $currentName = $one['name'];
-                $currentId = (string) $one['_id'];
-
+                $currentId = (string) $one['id'];
+                
                 $arr[$currentId] = [
                     //'_id' 		=> $currentId,
                     'name'        => $currentName,
                     'url_key'    => $currentUrlKey,
                     'parent_id'    => $one['parent_id'],
+                    'thumbnail_image' => $one['thumbnail_image'],
+                    'image' => $one['image'],
                 ];
             }
         }
-
+        
         return $arr;
     }
     

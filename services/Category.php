@@ -221,4 +221,12 @@ class Category extends Service
     {
         return $this->_category->getFilterCategory($category_id, $parent_id);
     }
+    
+    /**
+     * 得到category model的全名.
+     */
+    public function getChildCategory($category_id)
+    {
+        return $this->_category->getChildCategory($category_id);
+    }
 }

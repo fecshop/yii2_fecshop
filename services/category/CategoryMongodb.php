@@ -500,7 +500,10 @@ class CategoryMongodb extends Service implements CategoryInterface
 
         return $data;
     }
-
+    public function getChildCategory($category_id) {
+        
+        return $this->getChildCate($category_id);
+    }
     protected function getChildCate($category_id)
     {
         //echo $category_id;
@@ -521,6 +524,8 @@ class CategoryMongodb extends Service implements CategoryInterface
                     'name'        => $currentName,
                     'url_key'    => $currentUrlKey,
                     'parent_id'    => $one['parent_id'],
+                    'thumbnail_image' => $one['thumbnail_image'],
+                    'image' => $one['image'],
                 ];
             }
         }
