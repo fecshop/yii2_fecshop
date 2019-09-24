@@ -202,7 +202,7 @@ class Administer extends Service
             
             return false;
         }
-        
+        $this->currentNamespace = $extension_namespace;
         // 通过数据库找到应用的配置文件路径，如果配置文件不存在
         $extensionConfigFile = Yii::getAlias($modelOne['config_file_path']);
         if (!file_exists($extensionConfigFile)) {
@@ -252,6 +252,7 @@ class Administer extends Service
             
             return false;
         }
+        $this->currentNamespace = $extension_namespace;
         // 插件如果没有安装
         $installed_status = $modelOne['installed_status'];
         if (!Yii::$service->extension->isInstalledStatus($installed_status)) {
@@ -314,7 +315,7 @@ class Administer extends Service
             
             return false;
         }
-        
+        $this->currentNamespace = $extension_namespace;
         // 通过数据库找到应用的配置文件路径，如果配置文件不存在
         $extensionConfigFile = Yii::getAlias($modelOne['config_file_path']);
         if (!file_exists($extensionConfigFile)) {
@@ -390,7 +391,7 @@ class Administer extends Service
     public function  removeThemeFile() 
     {
         if (!$this->currentNamespace) {
-            Yii::$service->helper->errors->add('copyThemeFile: current extension: {namespace} is not exist', ['namespace' =>$this->currentNamespace ]);
+            Yii::$service->helper->errors->add('removeThemeFile: current extension: {namespace} is not exist', ['namespace' =>$this->currentNamespace ]);
             
             return false;
         }
