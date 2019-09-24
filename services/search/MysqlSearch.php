@@ -299,49 +299,32 @@ class MysqlSearch extends Service implements SearchInterface
         $pageNum = $filter['pageNum'];
         $numPerPage = $filter['numPerPage'];
         $orderBy = $filter['orderBy'];
-        
-        $searchM = $this->_searchModel->find()->asArray()
-            ->where($whereArr)
-            
-            ;
-        if ($orderBy) {
-            $searchM->orderBy($orderBy);
-        }    
-            
-        $search_data = $searchM->limit($numPerPage)->offset(($pageNum-1)*$numPerPage)->all();
-        //var_dump($search_data);exit;
-        
-        //var_dump($search_data);exit;
-        /**
-         * 在搜索页面, spu相同的sku，是否只显示其中score高的sku，其他的sku隐藏
-         * 如果设置为true，那么在搜索结果页面，spu相同，sku不同的产品，只会显示score最高的那个产品
-         * 如果设置为false，那么在搜索结果页面，所有的sku都显示。
-         * 这里做设置的好处，譬如服装，一个spu的不同颜色尺码可能几十个产品，都显示出来会占用很多的位置，对于这种产品您可以选择设置true
-         * 这个针对的京东模式的产品
-         */
-        $data = [];
+        $count = 0;
+        $searchM = $this->_searchModel->find()->asArray()->where($whereArr);
         if (Yii::$service->search->productSpuShowOnlyOneSku) {
-            foreach ($search_data as $one) {
-                if (!isset($data[$one['spu']])) {
-                    $data[$one['spu']] = $one;
-                }
-            }
+            /**
+             * 如果产品spu存在多个sku（譬如同一款产品存在多个颜色尺码），但是分类页只显示一个sku，那么需要通过
+             * 下面的逻辑，对spu进行group，对score倒序，取score最大的那个sku作为分类列表显示
+             */
+            $orderBy['score'] = SORT_DESC;
+            $query = $searchM->orderBy($orderBy)->groupBy('spu')->limit($numPerPage)->offset(($pageNum-1)*$numPerPage);
+            $search_data = $query->all();
+            $count = $query->limit(null)->offset(null)->count();
         } else {
-            $data = $search_data;
-        }
-            
-        $count = count($data);
-        $offset = ($pageNum - 1) * $numPerPage;
-        $limit = $numPerPage;
+            if ($orderBy) {
+                $searchM->orderBy($orderBy);
+            } 
+            $query = $searchM->limit($numPerPage)->offset(($pageNum-1)*$numPerPage);
+            $search_data = $query->all();
+            $count = $query->limit(null)->offset(null)->count();
+        }   
         $productIds = [];
-        foreach ($data as $d) {
+        foreach ($search_data as $d) {
             $productIds[] = $d['product_id'];
         }
-        
-        $productIds = array_slice($productIds, $offset, $limit);
+        // 通过productIds数组 得到产品数据
         $productPrimaryKey = Yii::$service->product->getPrimaryKey();
         if (!empty($productIds)) {
-            //
             foreach ($select as $sk => $se) {
                 if ($se == 'product_id') {
                     unset($select[$sk]);
@@ -355,31 +338,14 @@ class MysqlSearch extends Service implements SearchInterface
                 ],
             ];
             $collData = Yii::$service->product->coll($filter);
-            $data = $collData['coll'];
-            /**
-             * 下面的代码的作用：将结果按照上面in查询的顺序进行数组的排序，使结果和上面的搜索结果排序一致（_id）。
-             */
-            //var_dump($data);exit;
-            $s_data = [];
-            foreach ($data as $one) {
-                if ($one[$productPrimaryKey]) {
-                    $_id = (string) $one[$productPrimaryKey];
-                    $s_data[$_id] = $one;
-                }
-            }
-            $return_data = [];
-            foreach ($productIds as $product_id) {
-                $pid = (string) $product_id;
-                if (isset($s_data[$pid]) && $s_data[$pid]) {
-                    $return_data[] = $s_data[$pid];
-                }
-            }
-            
+            $return_data = $collData['coll'];
             return [
                 'coll' => $return_data,
                 'count'=> $count,
             ];
         }
+        
+        return [];
     }
 
     /**
