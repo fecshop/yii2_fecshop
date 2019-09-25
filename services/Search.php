@@ -152,7 +152,6 @@ class Search extends Service
             $service = $this->{$currentSearchEngine};
             return $service->getSearchProductColl($select, $where, $pageNum, $numPerPage, $product_search_max_count, $filterAttr);
         }
-        
     }
 
     /**
