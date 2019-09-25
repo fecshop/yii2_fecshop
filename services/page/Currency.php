@@ -102,7 +102,14 @@ class Currency extends Service
             }
         }
         if ($currencyCode) {
-            return $this->_currencys[$currencyCode];
+            if (isset($this->_currencys[$currencyCode])) {
+                
+                return $this->_currencys[$currencyCode];
+            } else {
+                $currencyCode = $this->defaultCurrency;
+                
+                return $this->_currencys[$currencyCode];
+            }
         }
 
         return $this->_currencys;
