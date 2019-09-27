@@ -421,7 +421,9 @@ class Quote extends Service
 
                     $curr_grand_total = $product_total + $currShippingCost - $currDiscountCost;
                     $base_grand_total = $base_product_total + $baseShippingCost - $baseDiscountCost;
-
+                    if (!$shipping_method) {
+                        $shipping_method = $cart['shipping_method'];
+                    }
                     $this->cartInfo[$cartInfoKey] = [
                         'cart_id'           => $cart_id,
                         'store'             => $cart['store'],          // store nme
