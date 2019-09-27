@@ -28,6 +28,8 @@ class Address extends Service
     protected $_addressModelName = '\fecshop\models\mysqldb\customer\Address';
 
     protected $_addressModel;
+    public $is_default = 1;
+    public $is_not_default = 2;
     
     public function init()
     {
@@ -422,4 +424,26 @@ class Address extends Service
         }
     }
     */
+    /**
+     * 得到登陆用户的默认货运地址。
+     */
+    public function getDefaultAddress(){
+        if (Yii::$app->user->isGuest) {
+            Yii::$service->helper->errors->add('customer is guest');
+            
+            return null;
+        }
+        $identity = Yii::$app->user->identity;
+        $customer_id = $identity->id;
+        $one = $this->_addressModel->findOne([
+            'customer_id'    => $customer_id,
+            'is_default'  => $this->is_default,
+        ]);
+        if ($one['customer_id']) {
+            
+            return $one;
+        }
+        
+        return null;
+    }
 }
