@@ -52,17 +52,40 @@ class Image extends Service
      * @param $file | string, 图片文件路径
      * @return boolean， 是否是允许的图片类型
      */
-    public function isAllowImgType($file)
+    public function isAllowImgType($file, $fileName)
     {
         $img = getimagesize($file);
         $imgType = $img['mime'];
 
         if (!in_array($imgType, $this->allowImgType)) {
+            
             return false;
         
         }
+        // 文件后缀检查
+        $fileNameArr = explode('.', $fileName);
+        $fileSuffix = $fileNameArr[count($fileNameArr)-1];
+        $allowImgSuffix = $this->getAllowImgSuffix();
+        if (!in_array($fileSuffix, $allowImgSuffix)) {
+            
+            return false;
+        }
         
         return true;
+    }
+    public function getAllowImgSuffix()
+    {
+        $arr = [];
+        if (!is_array($this->allowImgType) || empty($this->allowImgType)) {
+            return [];
+        }
+        
+        foreach ($this->allowImgType as $one) {
+            $oneArr = explode('/',$one);
+            $arr[] = $oneArr[1];
+        }
+        
+        return $arr;
     }
     
     public function init()
@@ -210,7 +233,10 @@ class Image extends Service
         $size = $FILE['size'];
         $file = $FILE['tmp_name'];
         $name = $FILE['name'];
-        $name = $this->generateImgName($name);
+        $newName = $this->generateImgName($name);
+        if (!$newName) {
+            throw new InvalidValueException('generate img name fail');
+        }
         
         if ($size > $this->getMaxUploadSize()) {
             throw new InvalidValueException('upload image is to max than'. $this->getMaxUploadSize().' MB');
@@ -218,13 +244,12 @@ class Image extends Service
             throw new InvalidValueException('file type is empty.');
         } elseif ($img = getimagesize($file)) {
             $imgType = $img['mime'];
-
-            if (!in_array($imgType, $this->allowImgType)) {
+            if (!$this->isAllowImgType($file, $name)) {
                 throw new InvalidValueException('image type is not allow for '.$imgType);
             }
         }
         // process image name.
-        $imgSavedRelativePath = $this->getImgSavedRelativePath($name);
+        $imgSavedRelativePath = $this->getImgSavedRelativePath($newName);
         $isMoved = @move_uploaded_file($file, $this->GetCurrentBaseImgDir().$imgSavedRelativePath);
         if ($isMoved) {
             $imgUrl = $this->getUrlByRelativePath($imgSavedRelativePath);

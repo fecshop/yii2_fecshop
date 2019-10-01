@@ -167,7 +167,7 @@ class Helper extends Service
                 $targetPathFile = $targetPath . '/' . $file;
                 if (is_dir($sourcePathFile)){
                     $this->copyDirImage($sourcePathFile, $targetPathFile);
-                } else if (Yii::$service->image->isAllowImgType($sourcePathFile)){
+                } else if (Yii::$service->image->isAllowImgType($sourcePathFile, $file)){
                     if ($isForce) {
                         copy($sourcePathFile, $targetPathFile);
                     } else if (!file_exists($targetPathFile)) {
