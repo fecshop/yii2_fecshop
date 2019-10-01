@@ -75,8 +75,18 @@ class AccountController extends AppfrontController
             return Yii::$service->url->redirectByUrlKey('customer/account');
         }
         $param = Yii::$app->request->post('editForm');
+        
+        
         if (!empty($param) && is_array($param)) {
             $param = \Yii::$service->helper->htmlEncode($param);
+            // 如果密码和确认密码不一致
+            if ($param['confirmation'] != $param['password']) {
+                Yii::$service->helper->errors->add('Password is not equal to confirm password');
+                Yii::$service->page->message->addByHelperErrors();      
+                $data = $this->getBlock()->getLastData($param);
+
+                return $this->render($this->action->id, $data);
+            }
             $registerStatus = $this->getBlock()->register($param);
             //echo $registerStatus;exit;
             if ($registerStatus) {
