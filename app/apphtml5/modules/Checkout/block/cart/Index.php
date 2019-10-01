@@ -21,7 +21,7 @@ class Index
     {
         $this->initHead();
         $currency_info = Yii::$service->page->currency->getCurrencyInfo();
-        $cart_info = $this->getCartInfo(false);
+        $cart_info = $this->getCartInfo();
         // check if is enable paypal express
         $enablePaypalExpress = false;
         $appName = Yii::$service->helper->getAppName();
