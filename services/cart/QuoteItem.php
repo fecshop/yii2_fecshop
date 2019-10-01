@@ -270,7 +270,8 @@ class QuoteItem extends Service
             if (!isset($this->_cart_product_info[$cart_id])) {
                 $data = $this->_itemModel->find()->where([
                     'cart_id' => $cart_id,
-                ])->all();
+                ])->orderBy( ['active' => SORT_ASC, 'updated_at' => SORT_DESC])  // 加入按照active  updated_at 进行排序
+                ->all();
                 if (is_array($data) && !empty($data)) {
                     foreach ($data as $one) {
                         $active             = $one['active'];
