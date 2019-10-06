@@ -948,7 +948,7 @@ class Order extends Service
                 return false;
             }
             if ($order) {
-                $order->order_status    = $this->payment_status_canceled;
+                $order->order_status    = $this->status_canceled;
                 $order->updated_at      = time();
                 $order->save();
                 // 释放库存
