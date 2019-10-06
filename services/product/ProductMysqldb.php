@@ -896,6 +896,9 @@ class ProductMysqldb extends Service implements ProductInterface
             return [];
         }
         $select = $filter['select'];
+        if (!in_array('id', $select)) {
+            $select[] = 'id';
+        }
         $query = $this->_productModel->find()->asArray();
         $query->where($where);
         $query->andWhere(['status' => $this->getEnableStatus()]);
