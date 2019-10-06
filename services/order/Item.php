@@ -30,7 +30,31 @@ class Item extends Service
         parent::init();
         list($this->_itemModelName, $this->_itemModel) = \Yii::mapGet($this->_itemModelName);
     }
+    
+    /**
+     * 得到order 表的id字段。
+     */
+    protected function actionGetPrimaryKey()
+    {
+        return 'item_id';
+    }
 
+    /**
+     * @param $primaryKey | Int
+     * @return Object($this->_itemModel)
+     * 通过主键值，返回Order Model对象
+     */
+    protected function actionGetByPrimaryKey($primaryKey)
+    {
+        $one = $this->_itemModel->findOne($primaryKey);
+        $primaryKey = $this->getPrimaryKey();
+        if ($one[$primaryKey]) {
+            return $one;
+        } else {
+            return new $this->_orderModelName();
+        }
+    }
+    
     /**
      * @param $product_id | string , 产品的id
      * @param  $customer_id | int， 用户的id
