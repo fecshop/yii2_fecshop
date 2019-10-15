@@ -532,7 +532,6 @@ class Customer extends Service
     protected function actionLoginSuccessRedirect($urlKey = '')
     {
         $url = $this->getLoginSuccessRedirectUrl();
-
         if ($url) {
             // 这个优先级最高
             // 在跳转之前，去掉这个session存储的值。跳转后，这个值必须失效。

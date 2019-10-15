@@ -186,6 +186,14 @@ class ProductMysqldb extends Service implements ProductInterface
     public function coll($filter = '')
     {
         $query = $this->_productModel->find();
+        // 对于存在select的查询，自动加上主键值。
+        if (isset($filter['select']) && is_array($filter['select'])) {
+            $primaryKey = $this->getPrimaryKey();
+            if (!in_array($primaryKey, $filter['select'])) {
+                $filter['select'][] = $primaryKey;
+            }
+        }
+        //var_dump($filter['select']);exit; 
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
         
         $coll = $query->all();
