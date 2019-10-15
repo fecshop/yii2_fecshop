@@ -17,7 +17,7 @@ use Yii;
  */
 class Start
 {
-    public function startPayment()
+    public function startPayment($increment_id)
     {
         $methodName_ = 'SetExpressCheckout';
         $return_url = Yii::$app->request->post('return_url');
@@ -29,7 +29,7 @@ class Start
         //var_dump($checkoutReturn);
         if (strtolower($checkoutReturn['ACK']) == 'success') {
             $token = $checkoutReturn['TOKEN'];
-            $increment_id = Yii::$service->order->getSessionIncrementId();
+            //$increment_id = Yii::$service->order->getSessionIncrementId();
             //echo $increment_id ;exit;
             # 将token写入到订单中
             Yii::$service->order->updateTokenByIncrementId($increment_id,$token);
