@@ -234,6 +234,24 @@ class Category extends Service
             }
         }
     }
+    
+    
+    /**
+     * 没有排序参数的url
+     */
+    public  function getFilterNoSortUrl()
+    {
+        $currentUrl = Yii::$service->url->getCurrentUrl();
+        $ar=parse_url($currentUrl);
+        if (!isset($ar['query'])) {
+            return $url;
+        }
+        parse_str($ar['query'],$arr);
+        unset($arr['sort']);
+        unset($arr['dir']);
+        
+        return $ar['scheme'].'://'.$ar['host'].$ar['path'].($arr ? '?'.http_build_query($arr) : '');
+    }
 
     // 得到不选择这个属性的url
     /*
