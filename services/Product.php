@@ -36,7 +36,7 @@ class Product extends Service
      */
     public $customAttrGroup;
 
-    public $categoryAggregateMaxCount; // Yii::$service->product->categoryAggregateMaxCount;
+    public $categoryAggregateMaxCount = 5000; // Yii::$service->product->categoryAggregateMaxCount;
     /**
       * 分类页面的产品，如果一个spu下面由多个sku同时在这个分类，
       * 那么，是否只显示一个sku（score最高），而不是全部sku

@@ -370,6 +370,11 @@ class Customer extends Service
 
             return null;
         }
+        if (strlen($password) < 6  || strlen($password) > 30) {
+            Yii::$service->helper->errors->add('Password length must be greater than 6, less than 30');
+
+            return null;
+        }
         $customerModel->setPassword($password);
         $customerModel->removePasswordResetToken();
         $customerModel->updated_at = time();

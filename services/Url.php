@@ -503,4 +503,36 @@ class Url extends Service
             Yii::$app->getResponse()->redirect($error404Url)->send();
         }
     }
+    // 判断是否是首页
+    public function isHomePage()
+    {
+        $rules = Yii::$app->urlManager->rules;
+        $route = '';
+        if (!is_array($rules)) {
+            return false;
+        }
+        foreach ($rules as $one) {
+            $name = $one->name;
+            if ($name === '') {
+                $route = $one->route;
+            }
+        }
+        if (!$route) {
+            return false;
+        }
+        //  $route  默认为  cms/home/index
+        $arr = explode('/', $route);
+        if (count($arr) != 3) {
+            return false;
+        }
+        $mId = Yii::$app->controller->module->id;
+        $cId = Yii::$app->controller->id;
+        $aId = Yii::$app->controller->action->id;
+        // 通过module controler  action 的id 与 $routeArr核对，不一致则为false
+        if ($mId != $arr[0] || $cId != $arr[1] || $aId != $arr[2]) {
+            return false;
+        }
+        
+        return true;
+    }
 }
