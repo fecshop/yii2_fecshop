@@ -121,7 +121,7 @@ class Address extends Service
                 $filter = [
                     'numPerPage'    => 30,
                     'pageNum'        => 1,
-                    'orderBy'        => ['updated_at' => SORT_DESC],
+                    'orderBy'        => ['is_default' => SORT_ASC   ,'updated_at' => SORT_DESC],
                     'where'            => [
                         ['customer_id' => $customer_id],
                     ],
