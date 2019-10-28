@@ -27,13 +27,14 @@ class AdminUserForm extends AdminUser {
             ['code', 'filter', 'filter' => 'trim'],
             ['code', 'validateCode'],
             ['person', 'filter', 'filter' => 'trim'],
-            ['password', 'validatePasswordFormat'],
+            //['password', 'validatePasswordFormat'],
         ];
 
         return array_merge($parent_rules,$current_rules) ;
     }
 
     public function validateUsername($attribute, $params){
+        
         if($this->id){
             $one = AdminUser::find()->where(" id != ".$this->id." AND username = '".$this->username."' ")
                 ->one();
@@ -45,6 +46,20 @@ class AdminUserForm extends AdminUser {
                 ->one();
             if($one['id']){
                 $this->addError($attribute,"this username is exist!");
+            }
+        }
+        // password
+        if($this->id){
+            if($this->password && strlen($this->password) <= 6){
+                $this->addError($attribute,"password must >=6");
+            }
+        }else{
+            if(!$this->password){
+                $this->addError($attribute,"password can not empty");
+            } else if (strlen($this->password) < 6) {
+                $this->addError($attribute,"password must >=6");
+            } else if (!strlen($this->password) >= 100) {
+                $this->addError($attribute,"password must <= 100");
             }
         }
     }
@@ -80,20 +95,23 @@ class AdminUserForm extends AdminUser {
             }
         }
     }
-
+    /*
     public function validatePasswordFormat($attribute, $params){
         if($this->id){
             if($this->password && strlen($this->password) <= 6){
                 $this->addError($attribute,"password must >=6");
             }
         }else{
-            if($this->password && strlen($this->password) >= 6){
-
-            }else{
+            if(!$this->password){
+                $this->addError($attribute,"password can not empty");
+            } else if (strlen($this->password) < 6) {
                 $this->addError($attribute,"password must >=6");
+            } else if (!strlen($this->password) >= 100) {
+                $this->addError($attribute,"password must <= 100");
             }
         }
     }
+    */
 
     public function setPassword($password)
     {
