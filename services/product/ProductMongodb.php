@@ -509,6 +509,11 @@ class ProductMongodb extends Service implements ProductInterface
             $one['category'] = $c;
         }
         
+        $one['price'] = (float) $one['price'];
+        $one['cost_price'] = (float) $one['cost_price'];
+        $one['special_price'] = (float) $one['special_price'];
+        $one['final_price'] = (float) $one['final_price'];
+        
         $saveStatus = Yii::$service->helper->ar->save($model, $one);
         $product_id = (string)$model->{$this->getPrimaryKey()};
         
