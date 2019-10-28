@@ -24,6 +24,9 @@ class Index
         return [
             'accountEditUrl' => Yii::$service->url->getUrl('customer/editaccount'),
             'email'            => $identity['email'],
+            'firstname'            => $identity['firstname'],
+            'lastname'            => $identity['lastname'],
+            'created_at'            => $identity['created_at'],
             'accountAddressUrl' => Yii::$service->url->getUrl('customer/address'),
             'accountOrderUrl' => Yii::$service->url->getUrl('customer/order'),
         ];

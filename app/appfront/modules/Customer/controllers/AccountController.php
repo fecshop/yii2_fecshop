@@ -192,7 +192,7 @@ class AccountController extends AppfrontController
                 $data['identity'] = $identity;
             } else {
                 $redirectUrl = Yii::$service->url->getUrl('customer/account/forgotpassword');
-                Yii::$service->url->redirect($redirectUrl);
+                return Yii::$service->url->redirect($redirectUrl);
             }
         }
         $this->breadcrumbs(Yii::$service->page->translate->__('Reset Password Submit'));
@@ -217,7 +217,7 @@ class AccountController extends AppfrontController
             if ($resetStatus) {
                 // 重置成功，跳转
                 $resetSuccessUrl = Yii::$service->url->getUrl('customer/account/resetpasswordsuccess');
-                Yii::$service->url->redirect($resetSuccessUrl);
+                return Yii::$service->url->redirect($resetSuccessUrl);
             }
         }
         $data = $this->getBlock()->getLastData();

@@ -77,6 +77,10 @@ class Resetpassword
             $status = Yii::$service->customer->changePasswordAndClearToken($password, $identity);
             if ($status) {
                 return true;
+            } else {
+                Yii::$service->page->message->addByHelperErrors();
+                
+                return false;
             }
         } else {
             Yii::$service->page->message->addError(['Reset Password Token is Expired OR The Email you entered does not match with the resetToekn. ']);

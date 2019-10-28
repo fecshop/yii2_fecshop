@@ -285,6 +285,7 @@ class Index extends \yii\base\BaseObject
                     $refineInfo[] = [
                         'name' =>  $refine_attr_str,
                         'url'  =>  $refine_attr_url,
+                        'attr' => $attr,
                     ];
                 }
             }
