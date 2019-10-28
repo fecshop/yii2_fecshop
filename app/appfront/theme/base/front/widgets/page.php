@@ -14,28 +14,28 @@
 		<span><</span>
 	<?php endif;  ?>	
 	<?php if($firstSpaceShow):  ?>
-		<a href="<?= $firstSpaceShow['url']['url'] ?>"><?= $firstSpaceShow['p'] ?></a>
+		<a href="<?= $firstSpaceShow['url']['url'] ?>"><?= $firstSpaceShow[$pageParam] ?></a>
 	<?php endif;  ?>	
 	<?= $hiddenFrontStr ?>		
 	<?php  if(!empty($frontPage )): ?>
 		<?php foreach($frontPage as $page): ?>
-			<a href="<?= $page['url']['url'] ?>"><?= $page['p'] ?></a>
+			<a href="<?= $page['url']['url'] ?>"><?= $page[$pageParam] ?></a>
 		<?php endforeach;  ?>	
 	<?php endif;  ?>	
 	
 	<?php if($currentPage): ?>
-		<span class="current" ><?= $currentPage['p'] ?></span>
+		<span class="current" ><?= $currentPage[$pageParam] ?></span>
 	<?php endif;  ?>	
 	
 	<?php if(!empty($behindPage )): ?>
 		<?php foreach($behindPage as $page): ?>
-			<a href="<?= $page['url']['url'] ?>"><?= $page['p'] ?></a>
+			<a href="<?= $page['url']['url'] ?>"><?= $page[$pageParam] ?></a>
 		<?php endforeach;  ?>	
 	<?php endif;  ?>		
 		
 	<?= $hiddenBehindStr ?>			
 	<?php if($lastSpaceShow): ?>
-		<a href="<?= $lastSpaceShow['url']['url'] ?>"><?= $lastSpaceShow['p'] ?></a>
+		<a href="<?= $lastSpaceShow['url']['url'] ?>"><?= $lastSpaceShow[$pageParam] ?></a>
 	<?php endif;  ?>	
 	<?php if($nextPage):  ?>
 		<a href="<?= $nextPage['url']['url'] ?>">></a>
