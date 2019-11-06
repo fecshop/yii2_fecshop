@@ -39,6 +39,9 @@ class Facebook extends Service
         $thirdLogin  = Yii::$service->store->thirdLogin;
         $this->facebook_app_id     = isset($thirdLogin['facebook']['facebook_app_id']) ? $thirdLogin['facebook']['facebook_app_id'] : '';
         $this->facebook_app_secret = isset($thirdLogin['facebook']['facebook_app_secret']) ? $thirdLogin['facebook']['facebook_app_secret'] : '';
+        if (!$this->facebook_app_id || !$this->facebook_app_secret) {
+            return '';
+        }
         $fb = new \Facebook\Facebook([
             'app_id' => $this->facebook_app_id,
             'app_secret' => $this->facebook_app_secret,
