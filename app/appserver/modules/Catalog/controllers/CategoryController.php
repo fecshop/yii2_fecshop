@@ -308,6 +308,7 @@ class CategoryController extends AppserverController
         $frontNumPerPage = [];
         
         $frontSort = [];
+        $hasSelect = false;
         if (is_array($sort) && !empty($sort)) {
             $attrUrlStr = $this->_sort;
             $dirUrlStr  = $this->_direction;
@@ -317,6 +318,7 @@ class CategoryController extends AppserverController
                 
                 if($current_sort == $np){
                     $selected = true;
+                    $hasSelect = true;
                 }else{
                     $selected = false;
                 }
@@ -327,6 +329,9 @@ class CategoryController extends AppserverController
                     'selected'  => $selected,
                 ];
             }
+        }
+        if (!$hasSelect ){ // 默认第一个为选中的排序方式
+            $frontSort[0]['selected'] = true;
         }
         $data = [
             'frontNumPerPage' => $frontNumPerPage,
