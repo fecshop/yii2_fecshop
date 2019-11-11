@@ -213,6 +213,7 @@ class Index  extends \yii\base\BaseObject
             }
         }
         $frontSort = [];
+        $hasSelect = false;
         if (is_array($sort) && !empty($sort)) {
             $attrUrlStr = $this->_sort;
             $dirUrlStr  = $this->_direction;
@@ -228,7 +229,9 @@ class Index  extends \yii\base\BaseObject
                     'val' => $direction,
                 ];
                 $urlInfo = Yii::$service->url->category->getFilterSortAttrUrl($arr, $this->_page);
-                
+                if ($urlInfo['selected']) {
+                    $hasSelect = true;
+                }
                 $frontSort[] = [
                     'label'     => $label,
                     'value'     => $np,
@@ -236,6 +239,9 @@ class Index  extends \yii\base\BaseObject
                     'selected'  => $urlInfo['selected'],
                 ];
             }
+        }
+        if (!$hasSelect ){ // 默认第一个为选中的排序方式
+            $frontSort[0]['selected'] = true;
         }
         $data = [
             'frontNumPerPage' => $frontNumPerPage,
