@@ -21,9 +21,11 @@ class Page
     public $numPerPage;
     public $countTotal;
     public $page;
+    public $pageSection; // = 'p_comment';
 
     public function getLastData()
     {
+        $this->page = $this->page ? $this->page : 'p';
         $spaceShowNum = 4;
         $productNumPerPage = $this->numPerPage;
         $countTotal = $this->countTotal;
@@ -134,7 +136,7 @@ class Page
             $url = $this->getPageUrl($pageNum, 1);
             //Yii::$service->url->category->getFilterChooseAttrUrl($this->page,1);
             $firstSpaceShow = [
-                'p'   => 1,
+                $this->page   => 1,
                 'url' => $url,
             ];
         }
@@ -142,7 +144,7 @@ class Page
             $url = $this->getPageUrl($pageNum, $maxPageNum);
             //Yii::$service->url->category->getFilterChooseAttrUrl($this->page,$maxPageNum);
             $lastSpaceShow = [
-                'p'   => $maxPageNum,
+                $this->page   => $maxPageNum,
                 'url' => $url,
             ];
         }
@@ -151,7 +153,7 @@ class Page
         if (is_array($frontPage) && !empty($frontPage)) {
             foreach ($frontPage as $p) {
                 $frontPageU[] = [
-                    'p'   => $p,
+                    $this->page   => $p,
                     'url' => $this->getPageUrl($pageNum, $p),
                     //Yii::$service->url->category->getFilterChooseAttrUrl($this->page,$p),
                 ];
@@ -162,7 +164,7 @@ class Page
         if (is_array($behindPage) && !empty($behindPage)) {
             foreach ($behindPage as $p) {
                 $behindPageU[] = [
-                    'p'   => $p,
+                    $this->page   => $p,
                     'url' => $this->getPageUrl($pageNum, $p),
                     //Yii::$service->url->category->getFilterChooseAttrUrl($this->page,$p),
                 ];
@@ -173,7 +175,7 @@ class Page
         if ($pageNum > 1) {
             $prevPage = $pageNum - 1;
             $prevPage = [
-                'p'        => $prevPage,
+                $this->page        => $prevPage,
                 'url'    => $this->getPageUrl($pageNum, $prevPage),
                 //Yii::$service->url->category->getFilterChooseAttrUrl($this->page,$prevPage),
             ];
@@ -181,15 +183,15 @@ class Page
         if ($pageNum != $maxPageNum) {
             $nextPage = $pageNum + 1;
             $nextPage = [
-                'p'        => $nextPage,
+                $this->page        => $nextPage,
                 'url'    => $this->getPageUrl($pageNum, $nextPage),
                 //Yii::$service->url->category->getFilterChooseAttrUrl($this->page,$nextPage),
             ];
         }
         $currentPage = [
-            'p'        => $pageNum,
+            $this->page        => $pageNum,
         ];
-        //var_dump($frontPageU);
+        //var_dump($currentPage);exit;
         return [
             'firstSpaceShow'=> $firstSpaceShow,
             'lastSpaceShow' => $lastSpaceShow,
@@ -201,25 +203,28 @@ class Page
             'nextPage'        => $nextPage,
             'hiddenFrontStr'=> $hiddenFrontStr,
             'hiddenBehindStr'=>$hiddenBehindStr,
+            'pageParam' => $this->page,
         ];
     }
 
     public function getPageUrl($currentPage, $showPage)
     {
         $currentUrl = Yii::$service->url->getCurrentUrl();
-        $pVal = Yii::$app->request->get('p');
+        $pVal = Yii::$app->request->get($this->page);
         if ($pVal) {
-            $currentPageStr = 'p='.$pVal;
-            $showPageStr = 'p='.$showPage;
+            $currentPageStr = $this->page.'='.$pVal;
+            $showPageStr = $this->page.'='.$showPage;
             $url = str_replace($currentPageStr, $showPageStr, $currentUrl);
         } else {
             if (strstr($currentUrl, '?')) {
-                $url = $currentUrl.'&p='.$showPage;
+                $url = $currentUrl.'&'.$this->page.'='.$showPage;
             } else {
-                $url = $currentUrl.'?p='.$showPage;
+                $url = $currentUrl.'?'.$this->page.'='.$showPage;
             }
         }
-
+        if ($this->pageSection) {
+            $url = $url . '#' . $this->pageSection;
+        }
         return [
             'url' => $url,
         ];
