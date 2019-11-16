@@ -162,6 +162,11 @@ class AdminUser extends Service
         if (!$data['auth_key']) {
             $this->_userFormModel->auth_key = '';
         }
+        if (!$data['password'] && !$data['id']) {
+            Yii::$service->helper->errors->add("password can not empty");
+            
+            return null;
+        }
         
         if ($this->_userFormModel[$primaryKey]) {
             if ($this->_userFormModel->validate()) {

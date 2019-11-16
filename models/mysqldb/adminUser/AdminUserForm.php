@@ -27,7 +27,7 @@ class AdminUserForm extends AdminUser {
             ['code', 'filter', 'filter' => 'trim'],
             ['code', 'validateCode'],
             ['person', 'filter', 'filter' => 'trim'],
-            //['password', 'validatePasswordFormat'],
+            ['password', 'validatePasswordFormat'],
         ];
 
         return array_merge($parent_rules,$current_rules) ;
@@ -46,20 +46,6 @@ class AdminUserForm extends AdminUser {
                 ->one();
             if($one['id']){
                 $this->addError($attribute,"this username is exist!");
-            }
-        }
-        // password
-        if($this->id){
-            if($this->password && strlen($this->password) <= 6){
-                $this->addError($attribute,"password must >=6");
-            }
-        }else{
-            if(!$this->password){
-                $this->addError($attribute,"password can not empty");
-            } else if (strlen($this->password) < 6) {
-                $this->addError($attribute,"password must >=6");
-            } else if (!strlen($this->password) >= 100) {
-                $this->addError($attribute,"password must <= 100");
             }
         }
     }
@@ -95,7 +81,7 @@ class AdminUserForm extends AdminUser {
             }
         }
     }
-    /*
+    
     public function validatePasswordFormat($attribute, $params){
         if($this->id){
             if($this->password && strlen($this->password) <= 6){
@@ -111,7 +97,7 @@ class AdminUserForm extends AdminUser {
             }
         }
     }
-    */
+    
 
     public function setPassword($password)
     {
