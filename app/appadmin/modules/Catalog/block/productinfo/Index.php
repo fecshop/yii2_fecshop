@@ -91,6 +91,9 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
      */
     public function getSearchArr()
     {
+        $productPrimaryKey = Yii::$service->product->getPrimaryKey();
+        // 判断mongodb还是mysql存储product数据
+        $nameIsLang = $productPrimaryKey == '_id' ? true : false;
         $data = [
             [    // selecit的Int 类型
                 'type'  => 'select',
@@ -111,7 +114,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
                 'title'   => Yii::$service->page->translate->__('Product Name'),
                 'name'  => 'name',
                 'columns_type' => 'string',
-                'lang' => true,
+                'lang' => $nameIsLang,
             ],
             [    // 字符串类型
                 'type' => 'inputtext',
