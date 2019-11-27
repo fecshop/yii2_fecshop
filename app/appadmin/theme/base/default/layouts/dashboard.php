@@ -123,7 +123,7 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
 			<div id="sidebar">
 				<div class="toggleCollapse" style="background:#20222A !important;overflow: visible;">
 					<h2 style="font-size:20px;font-weight:100;    padding-top: 10px;padding-bottom: 10px;"><?= Yii::$service->page->translate->__('Fecmall'); ?></h2>
-					<div><i class=”fa fa-list”></i></div>
+					<div><i class="fa fa-list"></i></div>
                     
 				</div>
 
@@ -233,7 +233,7 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
                     }
                 },
                 error:function(){
-                    alert('<?= Yii::$service->page->translate->__('loading category information error'); ?>');
+                    alert('<?= Yii::$service->page->translate->__('change language error'); ?>');
                 }
             });
         });    
