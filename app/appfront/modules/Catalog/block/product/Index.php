@@ -434,6 +434,12 @@ class Index
                 }
             }
             if (!empty($d_arr)) {
+                // 不在里面的规格属性（新建产品添加的规格属性），添加进去
+                foreach ($data as $size=>$d) {
+                    if (!isset($d_arr[$size])) {
+                        $d_arr[$size] = $data[$size];
+                    }
+                }
                 return $d_arr;
             }
         }
