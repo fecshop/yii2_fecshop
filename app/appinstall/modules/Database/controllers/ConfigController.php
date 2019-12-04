@@ -131,10 +131,14 @@ class ConfigController extends \yii\web\Controller
         $host = $editForm['host'];
         $database = $editForm['database'];
         $user = $editForm['user'];
+        $port = $editForm['port'];
+        if (!$port) {
+            $port = '3306';
+        }
         $password = $editForm['password'];
         $dbConfig = [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host='.$host.';dbname='.$database,
+            'dsn' => 'mysql:host='.$host.';port='.$port.';dbname='.$database,
             'username' => $user,
             'password' => $password,
             'charset' => 'utf8',
@@ -162,6 +166,7 @@ class ConfigController extends \yii\web\Controller
         //$mainLocalInfo = require($mainLocalFile);
         // 进行文件替换
         $mainLocalInfo = str_replace('{mysql_host}', $host, $mainLocalInfo);
+        $mainLocalInfo = str_replace('{mysql_port}', $port, $mainLocalInfo);
         $mainLocalInfo = str_replace('{mysql_database}', $database, $mainLocalInfo);
         $mainLocalInfo = str_replace('{mysql_user}', $user, $mainLocalInfo);
         $mainLocalInfo = str_replace('{mysql_password}', $password, $mainLocalInfo);

@@ -15,6 +15,11 @@
   </div>
   
   <div class="form-group">
+    <label for="name">Mysql数据库端口</label>
+    <input type="text" class="form-control" value="<?= $editForm['port'] ? $editForm['port'] : '3306' ?>" name="editForm[port]" placeholder="Mysql数据库port，请先去mysql中创建数据库，然后再填写">
+  </div>
+  
+  <div class="form-group">
     <label for="name">Mysql数据库名称</label>
     <input type="text" class="form-control" value="<?= $editForm['database'] ?>" name="editForm[database]" placeholder="Mysql数据库名称，请先去mysql中创建数据库，然后再填写">
   </div>
