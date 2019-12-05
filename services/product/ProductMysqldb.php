@@ -1053,24 +1053,25 @@ class ProductMysqldb extends Service implements ProductInterface
             }
             $where = $whereArr;
         }
-        // spu 进行group
+        // 1.先按照score排序
         $subQuery = $this->_productModel->find()
                     ->select($select)
                     ->where($where)
                     ->orderBy(['score' => SORT_DESC])
-                    ->groupBy('spu')
                     ;
         // 总数    
-        $product_total_count = $this->_productModel->find()
-                    ->select($select)
-                    ->where($where)
-                    ->orderBy(['score' => SORT_DESC])
+        $product_total_count = (new Query())
+                    ->from(['product2' => $subQuery])
                     ->groupBy('spu')
                     ->count();
-                    
+        // 2.上面score排序的结果进行group，这样，score最大值的产品就会作为group后的产品，显示到分类中。
+        $subQuery2 =  (new Query())
+                    ->from(['product2' => $subQuery])
+                    ->groupBy('spu');
+            
         // 进行查询coll
         $products = (new Query())  //->select($field)
-			->from(['product' => $subQuery]) // 在这里使用了子查询
+			->from(['product' => $subQuery2]) // 在这里使用了子查询
             ->orderBy($orderBy)
             ->offset(($pageNum -1) * $numPerPage)
             ->limit($numPerPage)
