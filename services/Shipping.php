@@ -189,11 +189,12 @@ class Shipping extends Service
             ];
         } else {  // 通过公式计算得到运费。
             $formula = str_replace('[weight]', $weight, $formula);
-            $currentCost = eval("return $formula;");
-            
+            //echo $formula;exit;
+            $baseCost = eval("return $formula;");
+            $currCost = Yii::$service->page->currency->getCurrentCurrencyPrice($baseCost);
             return [
-                'currCost'  => Yii::$service->helper->format->number_format($currentCost, 2),
-                'baseCost'  => Yii::$service->helper->format->number_format($currentCost, 2),
+                'currCost'  => Yii::$service->helper->format->number_format($currCost, 2),
+                'baseCost'  => Yii::$service->helper->format->number_format($baseCost, 2),
             ];
         }
     }
