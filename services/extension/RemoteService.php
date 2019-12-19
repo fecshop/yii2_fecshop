@@ -118,6 +118,13 @@ class RemoteService extends Service
         
         
     }
+    // 应用zip文件报错的文件路径
+    public function getExtensionZipFilePath($packageName, $folderName)
+    {
+        $filePath = Yii::getAlias('@addons/'.$packageName.'/'.$folderName.'/'.$folderName.'.zip');
+        
+        return $filePath;
+    }
     
     // 下载应用
     public function downloadAddons($namespace, $packageName, $folderName, $addonName)
@@ -137,8 +144,9 @@ class RemoteService extends Service
             chmod($packagePath, 0777);
         }
         
+        $filePath = $this->getExtensionZipFilePath($packageName, $folderName);
         // 根据文件路径，以及addon的name，得到zip文件存放的文件完整路径
-        $filePath = Yii::getAlias('@addons/'.$packageName.'/'.$folderName.'/'.$folderName.'.zip');
+        //$filePath = Yii::getAlias('@addons/'.$packageName.'/'.$folderName.'/'.$folderName.'.zip');
         // 将url中的zip文件，存储到该文件目录。
         if ($this->downCurl($url,$filePath)) {
             return $filePath;
