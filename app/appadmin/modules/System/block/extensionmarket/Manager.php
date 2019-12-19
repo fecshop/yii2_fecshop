@@ -44,17 +44,83 @@ class Manager extends \yii\base\BaseObject
         $this->initInstalledExtensions();
         $toolBar = $this->getToolBar($count, $this->_param['pageNum'], $this->_param['numPerPage']);
         $pagerForm = $this->getPagerForm();
+        
+        $can_hand_install_extensions = $this->canHandInstallExtensions($coll);
+        $can_hand_upgrade_extensions = $this->canHandUpgradeExtensions($coll);
+        //var_dump( $can_hand_install_extensions);
         return [
             'addon_list'=> $coll,
             'pagerForm' => $pagerForm,
             'toolBar' => $toolBar,
             'addon_count' => $count,
             'installed_extensions_namespace' => $this->installedNameSpaceArr,
+            'can_hand_install_extensions' => $can_hand_install_extensions,
+            'can_hand_upgrade_extensions' => $can_hand_upgrade_extensions,
             'versionArr' => $this->versionArr,
             'localCreatedArr' => $this->localCreatedArr ,
             
         ];
     }
+    /**
+     * @param $addon_list | array   ， 应用扩展列表
+     * 手动更新应用列表
+     */
+    public function canHandUpgradeExtensions($addon_list)
+    {
+        $arr = [];
+        if (!is_array($addon_list)) {
+            return $arr;
+        }
+        foreach ($addon_list as $addon) {
+            $packageName = isset($addon['addon_info']['package']) ? $addon['addon_info']['package'] : '';
+            $folderName = isset($addon['addon_info']['folder']) ? $addon['addon_info']['folder'] : '';
+            $namespaceName = isset($addon['addon_info']['namespace']) ? $addon['addon_info']['namespace'] : '';  //$addon['namespace']; 
+            // 如果应用没安装
+            if (!in_array($namespaceName, $this->installedNameSpaceArr)) {
+                continue;
+            }
+            // 如果版本不需要升级
+            if (!version_compare($this->versionArr[$namespace], $addon['addon_info']['version'] ,'<') ){
+                continue;
+            }
+            // 文件检测
+            $filePath = Yii::$service->extension->remoteService->getExtensionZipFilePath($packageName, $folderName);
+            if (file_exists($filePath) && is_executable($filePath)) {
+                
+                $arr[] = $namespaceName;
+            }
+        }
+        
+        return $arr;
+    }
+    /**
+     * @param $addon_list | array   ， 应用扩展列表
+     *
+     */
+    public function canHandInstallExtensions($addon_list)
+    {
+        $arr = [];
+        if (!is_array($addon_list)) {
+            return $arr;
+        }
+        foreach ($addon_list as $addon) {
+            $packageName = isset($addon['addon_info']['package']) ? $addon['addon_info']['package'] : '';
+            $folderName = isset($addon['addon_info']['folder']) ? $addon['addon_info']['folder'] : '';
+            $namespaceName = isset($addon['addon_info']['namespace']) ? $addon['addon_info']['namespace'] : '';  //$addon['namespace']; 
+            // 如果应用已经安装
+            if (in_array($namespaceName, $this->installedNameSpaceArr)) {
+                continue;
+            }
+            $filePath = Yii::$service->extension->remoteService->getExtensionZipFilePath($packageName, $folderName);
+            if (file_exists($filePath) && is_executable($filePath)) {
+                
+                $arr[] = $namespaceName;
+            }
+        }
+        
+        return $arr;
+    }
+    
     public function getPagerForm()
     {
         $str = '';

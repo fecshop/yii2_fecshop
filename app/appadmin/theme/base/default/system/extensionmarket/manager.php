@@ -69,6 +69,15 @@ use fec\helpers\CRequest;
                 ?>
                             <a  title="您的应用有新版本发布，您可以点击该按钮进行升级应用，升级之前，请务必进行文件和数据库的备份，以免造成不必要的损失，升级过程中，将会重新下载zip文件进行解压覆盖旧版本应用"
                             class="abutton-update" href="javascript:void(0)"  addonName="<?= $addon_one['addon_info']['name'] ?>" rel="<?= $namespace ?>" folderName="<?= $addon_one['addon_info']['folder'] ?>"  packageName="<?= $addon_one['addon_info']['package'] ?>">需要升级</a>
+                        
+                        
+                            <?php if (in_array($namespace, $can_hand_upgrade_extensions)): // 可以手动升级  ?>
+                                <a  title="您的应用有新版本发布，您可以点击该按钮进行升级应用，升级之前，请务必进行文件和数据库的备份，以免造成不必要的损失，升级过程中，将会重新下载zip文件进行解压覆盖旧版本应用"
+                                    class="abutton-hand-update" href="javascript:void(0)"  addonName="<?= $addon_one['addon_info']['name'] ?>" rel="<?= $namespace ?>" folderName="<?= $addon_one['addon_info']['folder'] ?>"  packageName="<?= $addon_one['addon_info']['package'] ?>">手动升级</a>
+                                
+                            <?php endif; ?>
+                        
+                        
                         <?php else: ?>
                             
                             <a title="该应用已经是最新的版本了，无需升级，如果想要卸载，点击右下角卸载按钮即可" class="abutton-normal" href="javascript:void(0)">最新版本</a>
@@ -76,6 +85,10 @@ use fec\helpers\CRequest;
                  
                     
                 <?php else: ?>
+                    <?php if (in_array($namespace, $can_hand_install_extensions)): ?>
+                        <a title="点击该按钮，进行应用的手动安装" class="handbutton" href="javascript:void(0)" addonName="<?= $addon_one['addon_info']['name'] ?>" rel="<?= $namespace ?>"  folderName="<?= $addon_one['addon_info']['folder'] ?>"  packageName="<?= $addon_one['addon_info']['package'] ?>">手动安装</a>
+                    
+                    <?php endif; ?>
                     <?php if ($top_version): ?>
                         <a title="点击该按钮，进行应用的在线安装" class="abutton" href="javascript:void(0)" addonName="<?= $addon_one['addon_info']['name'] ?>" rel="<?= $namespace ?>"  folderName="<?= $addon_one['addon_info']['folder'] ?>"  packageName="<?= $addon_one['addon_info']['package'] ?>">点击安装</a>
                     <?php else: ?>
@@ -181,6 +194,12 @@ use fec\helpers\CRequest;
     padding:5px 10px;
 }
 
+.abutton-hand-update{
+    background:#cc0000  !important;
+    color:#fff;
+    padding:5px 10px;
+}
+
 .abutton-normal{
     background:#337ab7 !important;
     color:#fff;
@@ -189,6 +208,18 @@ use fec\helpers\CRequest;
 
 
 .abutton:hover{
+    opacity:0.8
+}
+
+
+
+.handbutton{
+    background:#5e72e4 !important;
+    color:#fff;
+    padding:5px 10px;
+}
+
+.handbutton:hover{
     opacity:0.8
 }
 
@@ -247,6 +278,47 @@ use fec\helpers\CRequest;
             
             
         });
+        // hand install
+        $(document).off("click").on("click",".handbutton",function(){
+            namespace = $(this).attr('rel');
+            var packageName = $(this).attr('packageName');
+            var addonName = $(this).attr('addonName');
+            var folderName = $(this).attr('folderName');
+            
+            var url = "<?= Yii::$service->url->getUrl("system/extensionmarket/handinstall"); ?>";
+            url += '?namespace=' + namespace;
+            url += '&packageName=' + packageName;
+            url += '&folderName=' + folderName;
+            url += '&addonName=' + encodeURIComponent(addonName);
+            
+            $.ajax({
+                url: url,
+                async: true,
+                timeout: 800000,
+                dataType: 'json', 
+                type: 'get',
+                success:function(data, textStatus){
+                    if(data.statusCode == 200){
+                        //alert(data.statusCode);
+                        message = data.message;
+                        alertMsg.correct(message);
+                        navTab.reloadFlag('page1');
+                    } else if (data.statusCode == 300){
+                        message = data.message;
+                        alertMsg.error(message)
+                    } else {
+                        alertMsg.error("错误");
+                    }
+                    //
+                },
+                error:function(){
+                    
+                }
+            });
+            
+        });
+        
+        
         $(document).on("click",".removeAddon",function(){
             var self = this;
             alertMsg.confirm("您确定删除该应用吗？", {
@@ -298,6 +370,45 @@ use fec\helpers\CRequest;
                 }
             });
             
+        });
+        
+        $(document).on("click",".abutton-hand-update",function(){
+            namespace = $(this).attr('rel');
+            var packageName = $(this).attr('packageName');
+            var addonName = $(this).attr('addonName');
+            var folderName = $(this).attr('folderName');
+            
+            var url = "<?= Yii::$service->url->getUrl("system/extensionmarket/handupgrade"); ?>";
+            url += '?namespace=' + namespace;
+            url += '&packageName=' + packageName;
+            url += '&folderName=' + folderName;
+            url += '&addonName=' + encodeURIComponent(addonName);
+            
+            $.ajax({
+                url: url,
+                async: true,
+                timeout: 800000,
+                dataType: 'json', 
+                type: 'get',
+                success:function(data, textStatus){
+                    
+                    if(data.statusCode == 200){
+                        //alert(data.statusCode);
+                        message = data.message;
+                        alertMsg.correct(message);
+                        navTab.reloadFlag('page1');
+                    } else if (data.statusCode == 300){
+                        message = data.message;
+                        alertMsg.error(message)
+                    } else {
+                        alertMsg.error("错误");
+                    }
+                    //
+                },
+                error:function(){
+                    
+                }
+            });
         });
         
         $(document).on("click",".abutton-update",function(){
