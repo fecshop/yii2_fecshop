@@ -122,6 +122,11 @@ return [
                                         'label' => 'Category Sort Config',
                                         'url_key' => '/config/categorysort/manager',
                                     ],
+                                    'category_upload_manager' => [
+                                        'label' => 'Category Excel Upload',
+                                        'url_key' => '/catalog/categoryupload/manager',
+                                    ],
+                                    
                                     //'category_info_config' => [
                                     //    'label' => '分类配置',
                                     //    'url_key' => '/catalog/category/index',
