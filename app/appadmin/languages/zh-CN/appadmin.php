@@ -823,7 +823,7 @@ return [
     'Extension Market Install' => '应用在线安装',
     'ExtensionMarket Upgrade' => '应用在线升级',
     'Extension Market Uninstall' => '应用在线卸载',
-    '' => '',
+    'Category Excel Upload' => '分类批量上传',
     '' => '',
     '' => '',
     '' => '',
