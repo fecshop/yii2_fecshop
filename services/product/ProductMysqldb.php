@@ -1228,11 +1228,13 @@ class ProductMysqldb extends Service implements ProductInterface
         }
         if ($primaryVal) {
             $model = $this->_productModel->findOne($primaryVal);
-            if (!$model) {
+            
+            if (!isset($model[$this->getPrimaryKey()]) || !$model[$this->getPrimaryKey()]) {
                 Yii::$service->helper->errors->add('Product {primaryKey} is not exist', ['primaryKey'=>$this->getPrimaryKey()]);
 
                 return false;
             }
+            $model = $this->unserializeData($model) ;
             //验证sku 是否重复
             $product_one = $this->_productModel->find()->asArray()->where([
                 '<>', $this->getPrimaryKey(), $primaryVal,
@@ -1263,6 +1265,7 @@ class ProductMysqldb extends Service implements ProductInterface
             $meta_description = $model['meta_description'];
             $short_description = $model['short_description'];
             $description = $model['description'];
+            //var_dump($description);
             if (is_array($one['name']) && !empty($one['name'])) {
                 $one['name'] = array_merge((is_array($name) ? $name : []), $one['name']);
             }
