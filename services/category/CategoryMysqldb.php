@@ -369,7 +369,12 @@ class CategoryMysqldb extends Service implements CategoryInterface
         } else {
             $where = ['parent_id' => $rootCategoryId];
         }
-        $categorys = $this->_categoryModel->find()->asArray()->where($where)->all();
+        $orderBy = ['sort_order' => SORT_DESC];
+        $categorys = $this->_categoryModel->find()
+                    ->asArray()
+                    ->where($where)
+                    ->orderBy($orderBy)
+                    ->all();
         //var_dump($categorys);exit;
         $idKey = $this->getPrimaryKey();
         if (!empty($categorys)) {

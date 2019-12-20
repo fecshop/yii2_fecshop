@@ -198,6 +198,7 @@ class Index extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInterf
                 'name' => 'meta_description',
                 'display'=>[
                     'type' => 'textarea',
+                    'notEditor' => true,
                     'lang' => true,
                     'rows'    => 14,
                     'cols'    => 100,
@@ -260,7 +261,14 @@ class Index extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInterf
                 ],
                 'require' => 0,
             ],
-
+            [
+                'label' => Yii::$service->page->translate->__('Sort Order'),
+                'name' => 'sort_order',
+                'display' => [
+                    'type' => 'inputString',
+                ],
+                'require' => 0,
+            ],
             [
                 'label' => Yii::$service->page->translate->__('Filter Attr'),
                 'name' => 'filter_product_attr_selected',

@@ -45,6 +45,7 @@ class Menu extends Service
         }
         
         $categoryPrimaryKey = Yii::$service->category->getPrimaryKey();
+        $orderBy = ['sort_order' => SORT_DESC];
         $filter = [
             'select' => [$categoryPrimaryKey, 'parent_id', 'name', 'url_key', 'menu_custom',],
             'where' => [
@@ -52,6 +53,7 @@ class Menu extends Service
                 ['status'    => Yii::$service->category->getCategoryEnableStatus()],
                 ['menu_show' => Yii::$service->category->getCategoryMenuShowStatus()],
             ],
+            'orderBy' => $orderBy,
         ];
         $collData = Yii::$service->category->coll($filter);
         $data = $collData['coll'];

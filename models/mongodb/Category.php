@@ -74,6 +74,7 @@ class Category extends ActiveRecord
             */
             'origin_mysql_parent_id',  // 用户mysql数据同步到mongodb，这里保存的是mysql数据库中的parent_id
             'origin_mysql_id',  //  用户mysql数据同步到mongodb，这里保存的是mysql数据库中的id
+            'sort_order',
        ];
     }
 }

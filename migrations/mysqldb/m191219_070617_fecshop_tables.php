@@ -25,7 +25,17 @@ class m191219_070617_fecshop_tables extends Migration
         $lastInsertId = $this->db->getLastInsertID() ;
         
         $this->execute("INSERT INTO `admin_role_url_key` (`role_id`, `url_key_id`, `created_at`, `updated_at`) VALUES (4, " . $lastInsertId . ", 1541129239, 1541129239)");
+        
+        $arr = [
+            "
+                ALTER TABLE `category` ADD `sort_order` INT( 11 ) NULL COMMENT '同级别的分类，进行排序的字段'
+            ",
+        ];
 
+        foreach ($arr as $sql) {
+            $this->execute($sql);
+        }
+        
     }
 
     /**
