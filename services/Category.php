@@ -229,4 +229,11 @@ class Category extends Service
     {
         return $this->_category->getChildCategory($category_id);
     }
+    
+    public function excelSave($categoryArr)
+    {
+        return $this->_category->excelSave($categoryArr);
+    }
+    
+    
 }
