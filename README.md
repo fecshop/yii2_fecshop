@@ -46,7 +46,7 @@ Fecmall-2.x版本
 [Fecmall](http://www.fecmall.com) 全称为Fancy ECommerce Mall，是基于php Yii2框架之上开发的一款优秀的开源电商系统，
 Fecmall支持多语言，多货币，架构上支持pc，手机web，手机app，和erp对接等入口，您可以免费快速的定制和部署属于您的电商系统。
 
-详细参看地址：[Fecmall介绍](http://www.fecmall.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-about-description.html)
+详细参看地址：[Fecmall开源商城功能列表](http://www.fecmall.com/fecmall)
 
 [Fecmall](http://www.fecmall.com) 官网：http://www.fecmall.com ，您可以在这里提交bug，问题咨询等等。
 
@@ -61,7 +61,7 @@ Fecmall支持多语言，多货币，架构上支持pc，手机web，手机app�
 ![wx_xiaochengxu_fecmall](wx_xiaochengxu_fecmall2.png)
 
 
-[Fecmall](http://www.fecmall.com) 后台演示地址：加QQ群，在群公告里面有后台演示地址，账号密码等信息
+[Fecmall](http://www.fecmall.com) 后台演示地址：http://www.fecmall.com/yanshi (该帖子里面有后台演示地址)
 
 
 作者, Terry Email：2358269014@qq.com
@@ -82,29 +82,15 @@ Fecmall问题咨询，Bug提交等参看：[Fecmall论坛](http://www.fecmall.co
 Fecmall开源项目历程：[Fecmall时间线](http://www.fecmall.com/site/timeline)
 
 
-Fecmall Trace 网站流量广告分析系统
-----------------------
-
-> golang + mongodb + elasticSearch 做的一套用户行为分析系统， 管理系统界面使用了vue admin， 已经和fecmall无缝对接完成，Appfront, Apphtml5, Appserver三个入口都打通数据对接，尤其是appserver这类vue类型的数据对接，该系统也是开源项目，通过js打点和php发送数据的2种方式收集数据，存入mongodb，然后通过golang脚本进行一系列的统计，结果数据传递到elasticSearch进行查询，该系统对于初始的数据统计，以及广告分析已经完善，详细可以参看下面的demo，对于您自己想要的数据分析，可以自己二次开发。
-
-对于google analysis，百度统计等统计系统，收集的数据太少，譬如购物车数据，搜索数据，用户email，另外还有订单支付状态不准确的问题等等，另外，对于广告数据也不能满足要求，因此terry开发了一套网站流量广告系统来完善周围，更加详细的介绍，以及github源码地址参看文档
-
-网站流量分析系统文档： http://www.fecmall.com/doc/fec-go-guide/develop/cn-1.0/guide-trace-about.html
-
-> 2018年开始的项目，历经8个月开发完毕， 文档逐步完善， 有数据分析需求的童鞋可以使用
-
-Fecmall Trace Demo: http://trace.fecshop.com
-
-测试账户： test test123 （清不要修改密码，该账户有一定的权限限制）
-
 
 2、Fecmall文档，视频，扩展库
 ------------
 
 **二开以及安装文档：** [Fecmall 开发文档](http://www.fecmall.com/doc/fecshop-guide/develop/cn-2.0/guide-README.html)【撰写完成】
 
-**使用帮助说明文档：** [Fecmall 帮助文档](http://www.fecmall.com/doc/fecshop-guide/instructions/cn-1.0/guide-README.html)【撰写完成】
+**使用帮助说明文档：** [Fecmall 帮助文档](http://www.fecmall.com/doc/fecshop-guide/instructions/cn-2.0/guide-README.html)【撰写完成】
 
+**使用帮助说明文档：** [Fecmall 应用市场文档](http://www.fecmall.com/doc/fecshop-guide/addons/cn-2.0/guide-README.html)【撰写完成】
 
 
 3、安装Fecmall
@@ -155,6 +141,8 @@ model，组织数据，事务处理等操作，
 都重构成自己想要的样子，譬如，
 将某个底层由mysql换成mongodb，或者为了应付高并发读写并且多事务性的功能部分，
 进行分库分表的设计方式。
+
+关于Fecmall Service，详细参看：[Fecshop Services](http://www.fecmall.com/doc/fecshop-guide/develop/cn-2.0/guide-fecmall-service-abc.html)
 
 4. [Fecmall](http://www.fecmall.com)多模板系统，[Fecmall](http://www.fecmall.com)设置了多个模板路径，各个模板路径下的文件被加载
 的优先级不同，其中，Fecmall的模板路径下的文件最全面，但是优先级最低，
