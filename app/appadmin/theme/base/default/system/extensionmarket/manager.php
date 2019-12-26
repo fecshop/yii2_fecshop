@@ -279,7 +279,7 @@ use fec\helpers\CRequest;
             
         });
         // hand install
-        $(document).off("click").on("click",".handbutton",function(){
+        $(document).on("click",".handbutton",function(){
             namespace = $(this).attr('rel');
             var packageName = $(this).attr('packageName');
             var addonName = $(this).attr('addonName');
