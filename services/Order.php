@@ -141,6 +141,7 @@ class Order extends Service
             $this->payment_status_confirmed,
             $this->status_holded,
             $this->status_processing,
+            $this->status_dispatched,
             $this->status_completed,
         ];
     }
