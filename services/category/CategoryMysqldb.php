@@ -511,7 +511,7 @@ class CategoryMysqldb extends Service implements CategoryInterface
         //'url_key'	=> $currentUrlKey,
         //$category['current'] = true;
         //$data[0] = $category;
-        $id = $category['id'];
+        $id = $category['_id'];
         $name = $category['name'];
         $url_key = $category['url_key'];
         $cate = $this->_categoryModel->find()->asArray()->where([
@@ -542,7 +542,7 @@ class CategoryMysqldb extends Service implements CategoryInterface
         if (is_array($allParent) && !empty($allParent)) {
             foreach ($allParent as $k => $category) {
                 unset($d[$k]);
-                $category_id = $category['id'];
+                $category_id = $category['_id'];
                 $parent_id = $category['parent_id'];
                 if ($parent_id) {
                     $cate = $this->_categoryModel->find()->asArray()->where([
