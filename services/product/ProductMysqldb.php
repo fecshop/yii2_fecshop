@@ -515,6 +515,7 @@ class ProductMysqldb extends Service implements ProductInterface
         /**
          * 保存产品
          */
+        $defaultLangTitle = Yii::$service->fecshoplang->getDefaultLangAttrVal($one['name'], 'name');
         $one = $this->serializeSaveData($one);
         $saveStatus = Yii::$service->helper->ar->save($model, $one);
         $product_id = $model->{$this->getPrimaryKey()};
@@ -525,7 +526,7 @@ class ProductMysqldb extends Service implements ProductInterface
         if ($originUrlKey) {
             $originUrl = $originUrlKey.'?'.$this->getPrimaryKey() .'='. $product_id;
             $originUrlKey = $url_key;
-            $defaultLangTitle = Yii::$service->fecshoplang->getDefaultLangAttrVal($one['name'], 'name');
+            
             $urlKey = Yii::$service->url->saveRewriteUrlKeyByStr($defaultLangTitle, $originUrl, $originUrlKey);
             $model->url_key = $urlKey;
              
@@ -1323,7 +1324,7 @@ class ProductMysqldb extends Service implements ProductInterface
         /**
          * 保存产品
          */
-        
+        $defaultLangName = Yii::$service->fecshoplang->getDefaultLangAttrVal($one['name'], 'name');
         $one = $this->serializeSaveData($one);
         $saveStatus = Yii::$service->helper->ar->save($model, $one);
         $product_id = $model->{$this->getPrimaryKey()};
@@ -1334,7 +1335,7 @@ class ProductMysqldb extends Service implements ProductInterface
         if ($originUrlKey) {
             $originUrl = $originUrlKey.'?'.$this->getPrimaryKey() .'='. $product_id;
             $originUrlKey = $url_key;
-            $defaultLangTitle = Yii::$service->fecshoplang->getDefaultLangAttrVal($one['name'], 'name');
+            $defaultLangTitle = $defaultLangName;
             $urlKey = Yii::$service->url->saveRewriteUrlKeyByStr($defaultLangTitle, $originUrl, $originUrlKey);
             $model->url_key = $urlKey;
              

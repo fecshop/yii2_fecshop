@@ -139,13 +139,14 @@ class ArticleMysqldb extends Service implements ArticleInterface
             $model->created_at = time();
             $model->created_user_id = \fec\helpers\CUser::getCurrentUserId();
         }
-        
+        $defaultLangTitle = Yii::$service->fecshoplang->getDefaultLangAttrVal($one['title'], 'title');
         $model->updated_at = time();
         foreach ($this->_lang_attr as $attrName) {
             if (is_array($one[$attrName]) && !empty($one[$attrName])) {
                 $one[$attrName] = serialize($one[$attrName]);
             }
         }
+        
         unset($one['id']);
         $primaryKey = $this->getPrimaryKey();
         $saveStatus  = Yii::$service->helper->ar->save($model, $one);
@@ -153,7 +154,7 @@ class ArticleMysqldb extends Service implements ArticleInterface
 
         $originUrl = $originUrlKey.'?'.$this->getPrimaryKey() .'='. $primaryVal;
         $originUrlKey = isset($one['url_key']) ? $one['url_key'] : '';
-        $defaultLangTitle = Yii::$service->fecshoplang->getDefaultLangAttrVal($one['title'], 'title');
+        
         $urlKey = Yii::$service->url->saveRewriteUrlKeyByStr($defaultLangTitle, $originUrl, $originUrlKey);
         
         $model->url_key = $urlKey;
