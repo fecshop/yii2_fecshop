@@ -39,8 +39,8 @@ class Imageupload
                 list($imgSavedRelativePath, $imgUrl) = $saveImgInfo;
                 $img_str .= '<tr class="p_img" rel="'.$rel_index.'" style="border-bottom:1px solid #ccc;">
 								<td style="width:120px;text-align:center;"><img  rel="'.$imgSavedRelativePath.'" style="width:100px;height:100px;" src="'.$imgUrl.'"></td>
-								<td style="width:220px;text-align:center;"><input style="height:10px;width:200px;" type="text" class="image_label" name="image_label"  /></td>
-								<td style="width:220px;text-align:center;"><input style="height:10px;width:200px;" type="text" class="sort_order"  name="sort_order"  /></td>
+								<td style="width:220px;text-align:center;"><input  type="text" class="image_label textInput" name="image_label"  /></td>
+								<td style="width:220px;text-align:center;"><input  type="text" class="sort_order textInput"  name="sort_order"  /></td>
 								<td style="width:30px;text-align:center;"><input type="radio" name="image"  value="'.$imgSavedRelativePath.'" /></td>
                                 <td style="width:220px;text-align:center;">
                                     <select name="is_thumbnails" class="is_thumbnails">
