@@ -56,7 +56,7 @@
 							
 							<div class="myFavorite_nohove" id="myFavorite">
 								<i></i>
-								<a href="javascript:void(0)" url="<?= Yii::$service->url->getUrl('catalog/favoriteproduct/add'); ?>"  product_id="<?= $_id?>" class="addheart" id="divMyFavorite" rel="nofollow" >
+								<a href="javascript:void(0)" url="<?= Yii::$service->url->getUrl('catalog/favoriteproduct/add'); ?>"   class="addheart" id="divMyFavorite" rel="nofollow" >
 									<?= Yii::$service->page->translate->__('Add to Favorites'); ?>
 								</a>				
 							</div>
@@ -188,7 +188,7 @@
 				addToCartUrl = "<?= Yii::$service->url->getUrl('checkout/cart/add'); ?>";
 				$data = {};
 				$data['custom_option'] 	= custom_option_json;
-				$data['product_id'] 	= "<?= $_id ?>";
+				$data['product_id'] 	= $('.product_view_id').val();
 				$data['qty'] 			= qty;
 				if (csrfName && csrfVal) {
 					$data[csrfName] 		= csrfVal;
@@ -225,7 +225,7 @@
 			}else{
                 $(this).addClass('act');
 				url = $(this).attr('url');
-                product_id = $(this).attr('product_id');
+                product_id = $('.product_view_id').val();
                 csrfName = $(".product_csrf").attr("name");
 				csrfVal  = $(".product_csrf").val();
                 param = {};
@@ -249,7 +249,7 @@
 			});
 			if(i){
 				getCOUrl = "<?= Yii::$service->url->getUrl('catalog/product/getcoprice'); ?>";
-				product_id = "<?=  $_id ?>";		
+				product_id = $('.product_view_id').val();;		
 				qty = $(".qty").val();
 				custom_option_sku = '';
 				for(x in custom_option_arr){
