@@ -77,13 +77,15 @@ $(document).ready(function(){
 	}); 
 
 	//pass the images to Fancybox
-	$("#zoom_03").bind("click", function(e) {  
+	$(".product_page").on("click", "#zoom_03", function(e) {  
+    // $("#zoom_03").bind("click", function(e) {  
 		var ez =   $('#zoom_03').data('elevateZoom');	
 		$.fancybox(ez.getGalleryList());
 		return false;
 	});
 	$(document).ready(function(){
-		$(".next_images").click(function(){
+        $(".product_page").on("click", ".next_images", function(e) {  
+		//$(".next_images").click(function(){
 			//83
 			i = 0;
 			$(".product-img-box .box-img .list-img img").each(function(){
@@ -100,8 +102,8 @@ $(document).ready(function(){
 				$(".product-img-box .list-img").animate({top: '-=125px'}, "fast"); 
 			}		
 		});
-		
-		$(".pre_images").click(function(){
+		$(".product_page").on("click", ".pre_images", function(e) {  
+		//$(".pre_images").click(function(){
 			
 			//83
 			i = 0;
