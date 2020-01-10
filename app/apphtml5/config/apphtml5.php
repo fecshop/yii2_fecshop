@@ -101,7 +101,7 @@ $config = [
             'childService' => [
                 'theme' => [
                     'viewFileConfig' => [
-                        // 'catalog/category/index' => '@fecshop/app/appfront/theme/base/front/catalog/category/index.php',
+                        // 'catalog/category/index' => '@fecshop/app/apphtml5/theme/base/front/catalog/category/index.php',
                     ],
                 ],
                 'widget' => [
@@ -109,7 +109,7 @@ $config = [
                         'base' => [
                             'head' => [
                                 // 动态数据提供部分
-                                'class' => 'fecshop\app\appfront\widgets\Head',
+                                'class' => 'fecshop\app\apphtml5\widgets\Head',
                                 // 根据多模板的优先级，依次去模板找查找该文件，直到找到这个文件。
                                 'view'  => 'widgets/head.php',
                                 // 缓存
@@ -118,7 +118,7 @@ $config = [
                                 ],
                             ],
                             'header' => [
-                                'class' => 'fecshop\app\appfront\widgets\Headers',
+                                'class' => 'fecshop\app\apphtml5\widgets\Headers',
                                 // 根据多模板的优先级，依次去模板找查找该文件，直到找到这个文件。
                                 'view'  => 'widgets/header.php',
                                 'cache' => [
@@ -129,7 +129,7 @@ $config = [
                                 'view'  => 'widgets/topsearch.php',
                             ],
                             'menu' => [
-                                'class' => 'fecshop\app\appfront\widgets\Menu',
+                                'class' => 'fecshop\app\apphtml5\widgets\Menu',
                                 // 根据多模板的优先级，依次去模板找查找该文件，直到找到这个文件。
                                 'view'  => 'widgets/menu.php',
                                 'cache' => [
@@ -137,7 +137,7 @@ $config = [
                                 ],
                             ],
                             'footer' => [
-                                'class' => 'fecshop\app\appfront\widgets\Footer',
+                                'class' => 'fecshop\app\apphtml5\widgets\Footer',
                                 // 根据多模板的优先级，依次去模板找查找该文件，直到找到这个文件。
                                 'view'  => 'widgets/footer.php',
                                 'cache' => [
@@ -145,7 +145,7 @@ $config = [
                                 ],
                             ],
                             'scroll' => [
-                                // 'class' => 'fecshop\app\appfront\modules\Cms\block\widgets\Scroll',
+                                // 'class' => 'fecshop\app\apphtml5\modules\Cms\block\widgets\Scroll',
                                 // 根据多模板的优先级，依次去模板找查找该文件，直到找到这个文件。
                                 'view'  => 'widgets/scroll.php',
                             ],
@@ -164,13 +164,13 @@ $config = [
                         ],
                         'home' => [
                             'product_price' => [
-                                'class' 		=> 'fecshop\app\appfront\modules\Catalog\block\category\Price',
+                                'class' 		=> 'fecshop\app\apphtml5\modules\Catalog\block\category\Price',
                                 'view'  		=> 'cms/home/index/price.php',
                             ],
                         ],
                         'customer' => [
                             'left_menu' => [
-                                'class' => 'fecshop\app\appfront\modules\Customer\block\LeftMenu',
+                                'class' => 'fecshop\app\apphtml5\modules\Customer\block\LeftMenu',
                                 'view'	=> 'customer/leftmenu.php'
                             ],
                         ],
@@ -181,7 +181,7 @@ $config = [
                         ],
                         'category' => [
                             'price' => [
-                                'class' 		=> 'fecshop\app\appfront\modules\Catalog\block\category\Price',
+                                'class' 		=> 'fecshop\app\apphtml5\modules\Catalog\block\category\Price',
                                 'view'  		=> 'catalog/category/price.php',
                             ],
                             'toolbar' => [
@@ -218,7 +218,7 @@ $config = [
                                 'view'	=> 'catalog/product/index/buy_also_buy.php'
                             ],
                             'review' => [
-                                'class'  => 'fecshop\app\appfront\modules\Catalog\block\product\Review',
+                                'class'  => 'fecshop\app\apphtml5\modules\Catalog\block\product\Review',
                                 'view'  => 'catalog/product/index/review.php',
                             ],
                             'payment' => [
