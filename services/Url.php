@@ -535,4 +535,22 @@ class Url extends Service
         
         return true;
     }
+    /**
+     * @param $url | string ， 网址url字符串
+     * @return bool
+     * 判断传递的网址url字符串，是否是合法的网址字符串。
+     */
+    public function isValidUrl($url)
+    {
+        if (filter_var($url, FILTER_VALIDATE_URL) === FALSE) {
+            
+            return false;
+        }
+        
+        return true;
+    }
+    
+
+
+
 }
