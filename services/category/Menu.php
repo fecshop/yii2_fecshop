@@ -54,6 +54,8 @@ class Menu extends Service
                 ['menu_show' => Yii::$service->category->getCategoryMenuShowStatus()],
             ],
             'orderBy' => $orderBy,
+            'fetchAll' => true,
+            'asArray' => true,
         ];
         $collData = Yii::$service->category->coll($filter);
         $data = $collData['coll'];
