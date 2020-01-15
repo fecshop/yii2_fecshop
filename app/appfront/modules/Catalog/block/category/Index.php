@@ -461,8 +461,9 @@ class Index extends \yii\base\BaseObject
      */
     protected function getCategoryProductColl()
     {
+        $productPrimaryKey = Yii::$service->product->getPrimaryKey();
         $select = [
-            'sku', 'spu', 'name', 'image',
+            $productPrimaryKey, 'sku', 'spu', 'name', 'image',
             'price', 'special_price',
             'special_from', 'special_to',
             'url_key', 'score', 'reviw_rate_star_average', 'review_count'
