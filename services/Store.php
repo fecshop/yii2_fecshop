@@ -60,18 +60,18 @@ class Store extends Service
     public $thirdLogin;
 
     //public $https;
-    
+
     public $serverLangs;
-    
+
     public $apiAppNameArr = ['appserver','appapi'];
-    
+
     public function init()
     {
         parent::init();
-        
+
         $this->initCurrentStoreConfig();
     }
-    
+
     // 是否是api入口
     public function isApiStore()
     {
@@ -82,7 +82,7 @@ class Store extends Service
             return false;
         }
     }
-    
+
     public function isAppserver()
     {
         $appServerArr = ['appserver'];
@@ -90,7 +90,7 @@ class Store extends Service
         if (in_array($currentAppName, $appServerArr)) {
             return true;
         }
-        
+
         return false;
     }
 
@@ -107,7 +107,7 @@ class Store extends Service
     {
         $currentAppName = $this->getCurrentAppName();
         if ($this->isAppserver()) {
-            return $this->initAppserverCurrentStoreConfig(); 
+            return $this->initAppserverCurrentStoreConfig();
         }
         $coll = Yii::$service->storeDomain->getCollByAppName($currentAppName);
         if (is_array($coll)) {
@@ -166,7 +166,7 @@ class Store extends Service
                 }
             }
         }
-        
+
         return true;
     }
     // 如果入口是appserver，那么通过这个函数初始化
@@ -208,16 +208,16 @@ class Store extends Service
         $this->stores[$storeKey]['serverLangs'] = Yii::$app->store->get('appserver_store_lang');
         // 通过该方法，初始化货币services，直接从headers中取出来currency。进行set，这样currency就不会从session中读取（fecshop-2版本对于appserver已经抛弃session servcies）
         Yii::$service->page->currency->appserverSetCurrentCurrency();
-        
+
         return true;
     }
-    
+
     /**
      *	Bootstrap:init website,  class property $currentLang ,$currentTheme and $currentStore.
      *  if you not config this ,default class property will be set.
      *  if current store_code is not config , InvalidValueException will be throw.
      *	class property $currentStore will be set value $store_code.
-     * @param $app
+     * @param \yii\web\Application $app
      */
     protected function actionBootstrap($app)
     {
@@ -260,9 +260,9 @@ class Store extends Service
                      * current domain is config is store config.
                      */
                     $init_complete = 1;
-                    $this->thirdLogin = $store['thirdLogin'];
+                    $this->thirdLogin = isset($store['thirdLogin']) ? $store['thirdLogin'] : [];
                     /**
-                     * appserver 部分
+                   * appserver 部分
                      */
                     if (isset($store['serverLangs']) && !empty($store['serverLangs'])) {
                         $this->serverLangs = $store['serverLangs'];
@@ -281,7 +281,7 @@ class Store extends Service
                                 }
                             }
                         }
-                        
+
                     }
                     //if (isset($headers['fecshop-currency']) && $headers['fecshop-currency']) {
                     //    $currentC = Yii::$service->page->currency->getCurrentCurrency();
@@ -293,7 +293,7 @@ class Store extends Service
                 }
             }
         }
-        
+
         if (!$init_complete) {
             throw new InvalidValueException('this domain is not config in store service, you must config it in admin store config');
         }
@@ -395,7 +395,7 @@ class Store extends Service
                 }
             }
         }
-        
+
         return false;
     }
 

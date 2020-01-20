@@ -67,7 +67,7 @@ class Staticblock extends Service
     protected function actionGetStoreContentByIdentify($identify, $app = 'common')
     {
         $staticBlock    = $this->_static_block->getByIdentify($identify);
-        $content        = $staticBlock['content'];
+        $content        = isset($staticBlock['content'])?$staticBlock['content']:'';
         $storeContent   = Yii::$service->store->getStoreAttrVal($content, 'content');
         $_params_       = $this->getStaticBlockVariableArr($app);
         ob_start();

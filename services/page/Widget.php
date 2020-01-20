@@ -60,7 +60,7 @@ class Widget extends Service
             $configKey = '';
         } else if ($configKey){
             $configArr = explode('/', $configKey);
-            
+
             if (count($configArr) < 2 ) {
                 throw new InvalidValueException(" config key: '$configKey', format: `xxxx/xxxx`, you must config it with correct format");
             }
@@ -102,15 +102,15 @@ class Widget extends Service
         if (!is_array($diConfig)) {
             throw new InvalidValueException(" configParent: '$diConfig' must be array");
         }
-        // 
-        
+        //
+
         $config = '';
         if (is_array($configKey)) {
             $config = $configKey;
             $configKey = '';
         } else if ($configKey){
             $configArr = explode('/', $configKey);
-            
+
             if (count($configArr) < 2 ) {
                 throw new InvalidValueException(" config key: '$configKey', format: `xxxx/xxxx`, you must config it with correct format");
             }
@@ -126,7 +126,7 @@ class Widget extends Service
         foreach ($diConfig as $k=>$v) {
             $config [$k] = $v;
         }
-        
+
         return $this->renderContent($configKey, $config);
     }
 
@@ -167,14 +167,14 @@ class Widget extends Service
 
         return Yii::$app->view->renderFile($viewFile, $params);
     }
-    
+
     public  $_cache_arr = [
         'head' => 'headBlockCache',
         'header' => 'headerBlockCache',
         'menu' => 'menuBlockCache',
         'footer' => 'footerBlockCache',
     ];
-    
+
     /**
      * @param $configKey | string , 标记，以及报错排查时使用的key。
      * @param $config,就是上面actionRender()方法中的参数，格式一样。
@@ -185,13 +185,13 @@ class Widget extends Service
     {
         // 从配置中读取cache的enable状态
         $cacheEnable = false;
-        $cacheConfigKey = $this->_cache_arr[$configKey];
+        $cacheConfigKey = isset($this->_cache_arr[$configKey]) ? $this->_cache_arr[$configKey] : null;
         $appName = Yii::$service->helper->getAppName();
         $cacheConfig = Yii::$app->store->get($appName.'_cache');
         if ($cacheConfigKey && isset($cacheConfig[$cacheConfigKey]) && $cacheConfig[$cacheConfigKey] == Yii::$app->store->enable) {
             $cacheEnable = true;
         }
-        if ($cacheEnable) { 
+        if ($cacheEnable) {
             if (!isset($config['class']) || !$config['class']) {
                 throw new InvalidConfigException('in widget ['.$configKey.'],you enable cache ,you must config widget class .');
             } elseif ($ob = new $config['class']()) {
