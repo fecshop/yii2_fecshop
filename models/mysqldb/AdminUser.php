@@ -11,6 +11,7 @@ namespace fecshop\models\mysqldb;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+
 /**
  * User model
  *
@@ -24,8 +25,13 @@ use yii\web\IdentityInterface;
  * @property integer $created_at
  * @property integer $updated_at
  * @property string $password write-only password
- */
-/**
+ * @property string $access_token
+ * @property int $access_token_created_at access token 创建时间戳
+ * @property int $allowance
+ * @property int $allowance_updated_at
+ * @property string $created_at_datetime
+ * @property string $updated_at_datetime
+ * @property string $birth_date
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */

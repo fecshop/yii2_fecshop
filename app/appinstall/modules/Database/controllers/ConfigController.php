@@ -8,30 +8,65 @@
  */
 namespace fecshop\app\appinstall\modules\Database\controllers;
 
+use fecshop\models\mysqldb\AdminUser;
 use Yii;
+use yii\base\Exception;
+use yii\web\Controller;
+
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class ConfigController extends \yii\web\Controller
+class ConfigController extends Controller
 {
+    /**
+     * 增加前置动作，检查指定目录是否存在 install.lock 锁文件，存在则不允许再次安装
+     * @param \yii\base\Action $action
+     * @return bool
+     * @throws \yii\web\BadRequestHttpException
+     * @author Yanlongli<ahlyl94@gmail.com>
+     */
+    public function beforeAction($action)
+    {
+        try {
+            if (file_exists('install.lock') && "1" === file_get_contents("install.lock")) {
+                Yii::$app->response->data = "您的项目可能已安装成功，如果需要重新安装，请手动删除项目目录的 <code>appfront/web/install.lock</code> 文件";
+                return false;
+            } else {
+                file_put_contents("install.lock", "0");
+            }
+        } catch (\Exception $exception) {
+            Yii::$app->response->data = "没有文件读写权限，请赋予 <code>appfront/web</code> 目录可读写权限。" . $exception->getMessage();
+            return false;
+        }
+
+        return parent::beforeAction($action);
+    }
+
     public function init()
     {
         parent::init();
     }
-    
+
     // public $_migrateLog = '';
-    
+
     // 安装默认第一步页面
     public function actionIndex()
     {
         $editForm = Yii::$app->request->post('editForm');
-        if ($editForm && $this->checkDatabaseData($editForm) 
+        if ($editForm && $this->checkDatabaseData($editForm)
             && $this->updateDatabaseConfig($editForm)) {
             Yii::$app->session->setFlash('database-success', 'Mysql配置成功，写入的配置文件路径为: @common/config/main-local.php');
+            // 临时缓存超级管理账户资料
+            Yii::$app->session->set('super_account', [
+                'username' => $editForm['username'],
+                'userpassword' => $editForm['userpassword'],
+                'useremail' => $editForm['useremail'],
+            ]);
+
             // 进行跳转
             $homeUrl = Yii::$app->homeUrl;
-            return $this->redirect($homeUrl.'/database/config/migrate'); 
+            return $this->redirect($homeUrl . '/database/config/migrate');
         }
         $errorInfo = Yii::$app->session->getFlash('database-errors');
         $errorInfo = $this->getErrorHtml($errorInfo);
@@ -40,15 +75,36 @@ class ConfigController extends \yii\web\Controller
             'editForm' => $editForm,
         ]);
     }
-    
+
     // 数据库migrate页面
     public function actionMigrate()
     {
-        
+
         $isPost = Yii::$app->request->post('isPost');
         if ($isPost ) {
             // 进行数据库初始化
             if ($this->runMigrate()) {
+                // 更新超级管理员账户
+                $superUserInfo = Yii::$app->session->get('super_account', [
+                    'username' => 'admin',
+                    'userpassword' => 'admin123',
+                    'useremail' => 'admin@fecmall.com',
+                ]);
+                /**
+                 * @var $superUser AdminUser
+                 */
+                $superUser = AdminUser::findOne(['id' => 2]);
+                $superUser->username = $superUserInfo['username'];
+                $superUser->password_hash = Yii::$app->security->generatePasswordHash($superUserInfo['userpassword'], 6);;
+                $superUser->email = $superUserInfo['useremail'];
+                $superUser->updated_at = time();
+                $superUser->updated_at_datetime = date(DATE_ATOM, $superUser->updated_at);
+                $superUser->save();
+                Yii::$app->session->remove('super_account');
+
+                // 锁定安装向导
+                file_put_contents('install.lock', "1");
+
                 $successInfo = '数据库migrate初始化完成';
                 $successInfo = $this->getSuccessHtml($successInfo);
                 //exit;
@@ -62,17 +118,18 @@ class ConfigController extends \yii\web\Controller
                 Yii::$app->session->setFlash('migrate-errors', $errors);
             }
         }
-            
+
         $successInfo = Yii::$app->session->getFlash('database-success');
         $successInfo = $this->getSuccessHtml($successInfo);
         $errorInfo = Yii::$app->session->getFlash('migrate-errors');
         $errorInfo = $this->getErrorHtml($errorInfo);
-        
+
         return $this->render($this->action->id, [
             'successInfo' => $successInfo,
             'errorInfo' => $errorInfo,
         ]);
     }
+
     // 产品测试数据添加
     public function actionAddtestdata()
     {
@@ -82,7 +139,7 @@ class ConfigController extends \yii\web\Controller
             $errorInfo = Yii::$app->session->getFlash('add-test-data-errors');
             $errorInfo = $this->getErrorHtml($errorInfo);
         }
-        
+
         return $this->render($this->action->id, [
             'errorInfo' => $errorInfo,
             'successInfo' => $successInfo,
@@ -90,8 +147,9 @@ class ConfigController extends \yii\web\Controller
             'nextUrl' => Yii::$app->homeUrl . '/database/config/complete',
             //'migrateLog'  => $this->_migrateLog
         ]);
-        
+
     }
+
     // 进行sql migrate ，产品图片的复制
     public function addProductData()
     {
@@ -108,23 +166,23 @@ class ConfigController extends \yii\web\Controller
         try {
             $result = $conn->createCommand($sqlStr)->execute();
             $innerTransaction->commit();
-            
+
             return true;
         } catch (\Exception $e) {
             $innerTransaction->rollBack();
             $message = $e->getMessage();
             Yii::$app->session->setFlash('add-test-data-errors', $message);
         }
-        
+
         return false;
     }
-    
+
     // 完成页面
     public function actionComplete()
     {
         return $this->render($this->action->id, []);
     }
-    
+
     // 进行数据库的信息的检查，以及将数据库信息写入文件
     public function updateDatabaseConfig($editForm)
     {
@@ -150,7 +208,7 @@ class ConfigController extends \yii\web\Controller
         } catch (\Exception $e) {
             $connError = $e->getMessage();
             Yii::$app->session->setFlash('database-errors', $connError);
-            
+
             return false;
         }
         // 将信息写入配置文件
@@ -158,7 +216,7 @@ class ConfigController extends \yii\web\Controller
         if(!file_exists($mainLocalFile)){
             $errors = 'config file[@common/config/main-local.php] is not exist, you exec init command before install';
             Yii::$app->session->setFlash('database-errors', $errors);
-            
+
             return false;
         }
         // 得到文件的内容
@@ -174,48 +232,64 @@ class ConfigController extends \yii\web\Controller
         if (@file_put_contents($mainLocalFile, $mainLocalInfo) === false) {
             $errors = 'Unable to write the file '.$mainLocalFile;
             Yii::$app->session->setFlash('database-errors', $errors);
-            
+
             return false;
-        } 
+        }
         // 设置数据库文件644, 需要shell手动设置文件权限。
         /*
         if (@chmod($mainLocalFile,0644) === false) {
             $errors = 'Unable to set mainLocalFile 644, please change it';
             Yii::$app->session->setFlash('database', $errors);
-            
+
             return false;
-        } 
+        }
         */
         return true;
     }
+
     // 检查前端传递的参数
     public function checkDatabaseData($editForm)
     {
         $session = Yii::$app->session;
         if (!$editForm['host']) {
             $session->setFlash('database-errors', 'Mysql数据库Host为空');
-            
+
             return false;
         }
         if (!$editForm['database']) {
             $session->setFlash('database-errors', 'Mysql数据库名称为空');
-            
+
             return false;
         }
         if (!$editForm['user']) {
             $session->setFlash('database-errors', 'Mysql数据库账户为空');
-            
+
             return false;
         }
         if (!$editForm['password']) {
             $session->setFlash('database-errors', 'Mysql数据库密码为空');
-            
+
             return false;
         }
-        
+        if (!$editForm['username']) {
+            $session->setFlash('database-errors', '超级管理员账户为空');
+
+            return false;
+        }
+        if (!$editForm['useremail']) {
+            $session->setFlash('database-errors', '超级账户邮箱为空');
+
+            return false;
+        }
+        if (!$editForm['userpassword']) {
+            $session->setFlash('database-errors', '超级账户密码为空');
+
+            return false;
+        }
+
         return true;
     }
-    
+
     public function getSuccessHtml($successInfo){
         if ($successInfo) {
             return '
@@ -226,10 +300,10 @@ class ConfigController extends \yii\web\Controller
             </div>
             ';
         }
-        
+
         return '';
     }
-    
+
     public function getErrorHtml($errorInfo){
         if ($errorInfo) {
             return '
@@ -240,13 +314,14 @@ class ConfigController extends \yii\web\Controller
                 </div>
             ';
         }
-        
+
         return '';
     }
+
     /**
-      * 在yii web环境，执行console中的命令，
-      * 该函数，相当于执行console命令行 `./yii migrate --interactive=0 --migrationPath=@fecshop/migrations/mysqldb`
-      */
+     * 在yii web环境，执行console中的命令，
+     * 该函数，相当于执行console命令行 `./yii migrate --interactive=0 --migrationPath=@fecshop/migrations/mysqldb`
+     */
     public function runMigrate()
     {
         $bashPath = dirname(Yii::getAlias('@appfront'));
@@ -266,30 +341,30 @@ class ConfigController extends \yii\web\Controller
         Yii::info($post_log, 'fecshop_debug');
         Yii::$app = $oldApp;
         /**
-          * aliases 需要重新设置，否则，将会导致配置文件中的  aliases 无法获取，譬如main.php中的
-          *  'aliases' => [
-          *     '@bower' => '@vendor/bower-asset',
-          *     '@npm'   => '@vendor/npm-asset',
-          *  ],
-        */
+         * aliases 需要重新设置，否则，将会导致配置文件中的  aliases 无法获取，譬如main.php中的
+         *  'aliases' => [
+         *     '@bower' => '@vendor/bower-asset',
+         *     '@npm'   => '@vendor/npm-asset',
+         *  ],
+         */
         Yii::$aliases = $aliases;
         // $runResult 返回值，0代表执行完成，1代表执行出错。
         return $runResult === 0 ? true : false ;
     }
-    
+
     // 创建文件夹，在图片文件复制的过程中使用。
     public function dirMkdir($path = '', $mode = 0777, $recursive = true)
     {
         clearstatcache();
-        if (!is_dir($path))
-        {
+        if (!is_dir($path)) {
             mkdir($path, $mode, $recursive);
             return chmod($path, $mode);
         }
-     
+
         return true;
     }
-     /**
+
+    /**
      * 文件夹文件拷贝（递归）
      *
      * @param string $sourcePath 来源文件夹
@@ -299,19 +374,17 @@ class ConfigController extends \yii\web\Controller
      */
     public function copyDir($sourcePath, $targetPath, $isForce = true)
     {
-        if (empty($sourcePath) || empty($targetPath))
-        {
+        if (empty($sourcePath) || empty($targetPath)) {
             return false;
         }
         $dir = opendir($sourcePath);
         $this->dirMkdir($targetPath);
-        while (false !== ($file = readdir($dir)))
-        {
+        while (false !== ($file = readdir($dir))) {
             if (($file != '.') && ($file != '..')) {
                 $sourcePathFile = $sourcePath . '/' . $file;
                 $targetPathFile = $targetPath . '/' . $file;
-                if (is_dir( $sourcePathFile)) {
-                    $this->copyDir( $sourcePathFile, $targetPathFile);
+                if (is_dir($sourcePathFile)) {
+                    $this->copyDir($sourcePathFile, $targetPathFile);
                 } else {
                     //copy($sourcePath . '/' . $file, $targetPath . '/' . $file);
                     if ($isForce) {
@@ -325,7 +398,7 @@ class ConfigController extends \yii\web\Controller
             }
         }
         closedir($dir);
-     
+
         return true;
     }
 }
