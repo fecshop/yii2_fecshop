@@ -13,7 +13,7 @@ use fec\helpers\CRequest;
     <?php echo CRequest::getCsrfInputHtml(); ?>
     <div class="form-group">
         <label for="name">Mysql数据库Host</label>
-        <input type="text" class="form-control" value="<?= $editForm['host'] ? $editForm['host'] : 'localhost' ?>"
+        <input type="text" class="form-control" value="<?= $editForm['host'] ? $editForm['host'] : '127.0.0.1' ?>"
                name="editForm[host]" placeholder="Mysql数据库Host，同服务器可填写 127.0.0.1 或 localhost">
     </div>
 
@@ -39,18 +39,6 @@ use fec\helpers\CRequest;
         <label for="name">Mysql数据库密码</label>
         <input type="password" class="form-control" value="<?= $editForm['password'] ?>" name="editForm[password]"
                placeholder="Mysql数据库密码">
-    </div>
-
-    <div class="form-group">
-        <label for="name">超级管理员账户</label>
-        <input type="text" class="form-control" value="<?= $editForm['username'] ? $editForm['username'] : 'admin' ?>"
-               name="editForm[username]" placeholder="超级管理员账户">
-    </div>
-
-    <div class="form-group">
-        <label for="name">超级账户密码</label>
-        <input type="password" class="form-control" required value="<?= $editForm['userpassword'] ?>"
-               name="editForm[userpassword]" placeholder="超级账户密码">
     </div>
 
     <button type="submit" class="btn btn-default">提交</button>

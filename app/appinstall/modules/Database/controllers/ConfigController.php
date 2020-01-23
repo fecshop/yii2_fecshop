@@ -8,7 +8,7 @@
  */
 namespace fecshop\app\appinstall\modules\Database\controllers;
 
-use fecshop\models\mysqldb\AdminUser;
+//use fecshop\models\mysqldb\AdminUser;
 use Yii;
 use yii\base\Exception;
 use yii\web\Controller;
@@ -28,19 +28,28 @@ class ConfigController extends Controller
      */
     public function beforeAction($action)
     {
-        try {
-            if (file_exists('install.lock') && "1" === file_get_contents("install.lock")) {
-                Yii::$app->response->data = "您的项目可能已安装成功，如果需要重新安装，请手动删除项目目录的 <code>appfront/web/install.lock</code> 文件";
+        if ($this->action->id  != 'complete') {
+            $installLockFilePath = $this->getInstallLockFilePath();
+            try {
+                if (file_exists($installLockFilePath) && "1" === file_get_contents($installLockFilePath)) {
+                    Yii::$app->response->data = "您的项目可能已安装成功，如果需要重新安装，请手动删除项目目录的 <code>".$installLockFilePath."</code> 文件";
+                    return false;
+                } else {
+                    file_put_contents($installLockFilePath, "0");
+                }
+            } catch (\Exception $exception) {
+                Yii::$app->response->data = $exception->getMessage();
                 return false;
-            } else {
-                file_put_contents("install.lock", "0");
             }
-        } catch (\Exception $exception) {
-            Yii::$app->response->data = "没有文件读写权限，请赋予 <code>appfront/web</code> 目录可读写权限。" . $exception->getMessage();
-            return false;
         }
+        
 
         return parent::beforeAction($action);
+    }
+    
+    protected function getInstallLockFilePath()
+    {
+        return Yii::getAlias('@appfront/runtime/install.lock');
     }
 
     public function init()
@@ -57,13 +66,6 @@ class ConfigController extends Controller
         if ($editForm && $this->checkDatabaseData($editForm)
             && $this->updateDatabaseConfig($editForm)) {
             Yii::$app->session->setFlash('database-success', 'Mysql配置成功，写入的配置文件路径为: @common/config/main-local.php');
-            // 临时缓存超级管理账户资料
-            Yii::$app->session->set('super_account', [
-                'username' => $editForm['username'],
-                'userpassword' => $editForm['userpassword'],
-                'useremail' => $editForm['useremail'],
-            ]);
-
             // 进行跳转
             $homeUrl = Yii::$app->homeUrl;
             return $this->redirect($homeUrl . '/database/config/migrate');
@@ -75,6 +77,29 @@ class ConfigController extends Controller
             'editForm' => $editForm,
         ]);
     }
+    
+    // 安装默认第一步页面
+    public function actionInitadminuser()
+    {
+        $editForm = Yii::$app->request->post('editForm');
+        if (is_array($editForm) && !empty($editForm)) {
+            $param = [
+                'username' => $editForm['username'],
+                'password' => $editForm['password'],
+            ];
+            if ($this->installUpdateUser($param)) {
+                $homeUrl = Yii::$app->homeUrl;
+                return $this->redirect($homeUrl . '/database/config/complete');
+                
+            }
+        }
+        $errorInfo = $this->getErrorHtml($this->_install_errors);
+        return $this->render($this->action->id, [
+            'errorInfo' => $errorInfo,
+            'editForm' => $editForm,
+        ]);
+        
+    }
 
     // 数据库migrate页面
     public function actionMigrate()
@@ -84,27 +109,7 @@ class ConfigController extends Controller
         if ($isPost ) {
             // 进行数据库初始化
             if ($this->runMigrate()) {
-                // 更新超级管理员账户
-                $superUserInfo = Yii::$app->session->get('super_account', [
-                    'username' => 'admin',
-                    'userpassword' => 'admin123',
-                    'useremail' => 'admin@fecmall.com',
-                ]);
-                /**
-                 * @var $superUser AdminUser
-                 */
-                $superUser = AdminUser::findOne(['id' => 2]);
-                $superUser->username = $superUserInfo['username'];
-                $superUser->password_hash = Yii::$app->security->generatePasswordHash($superUserInfo['userpassword'], 6);;
-                $superUser->email = $superUserInfo['useremail'];
-                $superUser->updated_at = time();
-                $superUser->updated_at_datetime = date(DATE_ATOM, $superUser->updated_at);
-                $superUser->save();
-                Yii::$app->session->remove('super_account');
-
-                // 锁定安装向导
-                file_put_contents('install.lock', "1");
-
+                
                 $successInfo = '数据库migrate初始化完成';
                 $successInfo = $this->getSuccessHtml($successInfo);
                 //exit;
@@ -129,6 +134,85 @@ class ConfigController extends Controller
             'errorInfo' => $errorInfo,
         ]);
     }
+    
+    
+    
+   /*
+                $superUserInfo = Yii::$app->session->get('super_account', [
+                    'username' => 'admin',
+                    'userpassword' => 'admin123',
+                    'useremail' => 'admin@fecmall.com',
+                ]);
+                
+                $param = [
+                    'username' =>  $superUserInfo['username'],
+                    'password' =>  $superUserInfo['userpassword'],
+                    'email' =>  $superUserInfo['useremail'],
+                ];
+                $this->installUpdateUser($param);
+                
+                Yii::$app->session->remove('super_account');
+*/
+                
+                
+    /**
+     * 因为安装部分没有引入services，因此无法使用Yii::$service
+     * 安装更新User
+     */
+    protected $_install_errors;
+    
+    public function installUpdateUser($param)
+    {
+        // $userFormModelName = '\fecshop\models\mysqldb\adminUser\AdminUserForm';
+        // list($userFormModelName, $userFormModel) = \Yii::mapGet($userFormModelName);
+        $userFormModel = new \fecshop\models\mysqldb\adminUser\AdminUserForm;
+        $model = $userFormModel->findOne(['id' => 2]); // 初始化admin表的user为2
+        if (!$model) {
+            //Yii::$service->helper->errors->add('admin user[id=2] is not exist');
+            $this->_install_errors = 'admin user[id=2] is not exist';
+            return false;
+        }
+        
+        $model->attributes = $param;
+        if ($model->validate()) {
+            $model->save();
+            
+            return true;
+        } else {
+            $errors = $model->errors;
+            if (is_array($errors) && !empty($errors)) {
+                foreach ($errors as $one) {
+                    $this->_install_errors .= implode(',', $one);
+                }
+            }
+            
+            
+            return false;
+        }    
+        
+        
+        
+        echo $param['username'];echo $param['password'];
+        $model->username = $param['username'];
+        $model->setPassword($param['password']); // = Yii::$app->security->generatePasswordHash($superUserInfo['userpassword'], 6);;
+        //$model->email = $param['email'];
+        //$model->updated_at = time();
+        if ($model->validate()) {
+            //var_dump($model);
+            echo 55;
+            exit;
+            return $model->save();
+            
+            return true;
+        } else {
+            $errors = $model->errors;
+            $this->_install_errors = $errors;
+			//Yii::$service->helper->errors->addByModelErrors($errors);
+            var_dump($this->_install_errors);
+            exit;
+            return false;
+        }    
+    }
 
     // 产品测试数据添加
     public function actionAddtestdata()
@@ -139,12 +223,12 @@ class ConfigController extends Controller
             $errorInfo = Yii::$app->session->getFlash('add-test-data-errors');
             $errorInfo = $this->getErrorHtml($errorInfo);
         }
-
+         
         return $this->render($this->action->id, [
             'errorInfo' => $errorInfo,
             'successInfo' => $successInfo,
             'initUrl' => Yii::$app->homeUrl . '/database/config/addtestdatainit',
-            'nextUrl' => Yii::$app->homeUrl . '/database/config/complete',
+            'nextUrl' => Yii::$app->homeUrl . '/database/config/initadminuser',
             //'migrateLog'  => $this->_migrateLog
         ]);
 
@@ -180,6 +264,11 @@ class ConfigController extends Controller
     // 完成页面
     public function actionComplete()
     {
+        
+        // 锁定安装向导
+        $installLockFilePath = $this->getInstallLockFilePath();
+        file_put_contents($installLockFilePath, "1");
+
         return $this->render($this->action->id, []);
     }
 
@@ -271,21 +360,21 @@ class ConfigController extends Controller
 
             return false;
         }
-        if (!$editForm['username']) {
-            $session->setFlash('database-errors', '超级管理员账户为空');
-
-            return false;
-        }
-        if (!$editForm['useremail']) {
-            $session->setFlash('database-errors', '超级账户邮箱为空');
-
-            return false;
-        }
-        if (!$editForm['userpassword']) {
-            $session->setFlash('database-errors', '超级账户密码为空');
-
-            return false;
-        }
+        //if (!$editForm['username']) {
+        //    $session->setFlash('database-errors', '超级管理员账户为空');
+//
+        //    return false;
+        //}
+        //if (!$editForm['useremail']) {
+        //    $session->setFlash('database-errors', '超级账户邮箱为空');
+//
+        //    return false;
+       // }
+        //if (!$editForm['userpassword']) {
+       //     $session->setFlash('database-errors', '超级账户密码为空');
+//
+        //    return false;
+       // }
 
         return true;
     }
