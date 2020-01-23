@@ -29,11 +29,11 @@ class RewriteMysqldb extends Service implements RewriteInterface
     protected $_lang_attr = [
 
     ];
-    
+
     protected $_urlRewriteModelName = '\fecshop\models\mysqldb\url\UrlRewrite';
 
     protected $_urlRewriteModel;
-    
+
     public function init()
     {
         parent::init();
@@ -49,7 +49,7 @@ class RewriteMysqldb extends Service implements RewriteInterface
         $UrlData = $this->_urlRewriteModel->find()->where([
             'custom_url_key' => $urlKey,
         ])->asArray()->one();
-        if ($UrlData['custom_url_key']) {
+        if ($UrlData) {
             return $UrlData['origin_url'];
         }
     }

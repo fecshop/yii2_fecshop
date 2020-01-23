@@ -31,9 +31,9 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
         'default_currency',
         'base_currency',
         'image_domain',
-        
+
     ];
-    
+
     public function init()
     {
         // 需要配置
@@ -48,32 +48,33 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
             $this->_one['value'] = unserialize($this->_one['value']);
         }
     }
-    
-    
-    
+
+
     // 传递给前端的数据 显示编辑form
     public function getLastData()
     {
-        $id = ''; 
+        $id = '';
         if (isset($this->_one['id'])) {
-           $id = $this->_one['id'];
-        } 
+            $id = $this->_one['id'];
+        }
         return [
-            'id'            =>   $id, 
-            'editBar'      => $this->getEditBar(),
-            'textareas'   => $this->_textareas,
-            'lang_attr'   => $this->_lang_attr,
-            'saveUrl'     => $this->_saveUrl,
+            'id' => $id,
+            'editBar' => $this->getEditBar(),
+            'textareas' => $this->_textareas,
+            'lang_attr' => $this->_lang_attr,
+            'saveUrl' => $this->_saveUrl,
         ];
     }
+
     public function setService()
     {
         $this->_service = Yii::$service->storeBaseConfig;
     }
+
     public function getEditArr()
     {
         // language
-        $langArr = []; 
+        $langArr = [];
         $mutilLangs = Yii::$app->store->get('mutil_lang');
         if (is_array($mutilLangs)) {
             foreach ($mutilLangs as $lang) {
@@ -81,19 +82,19 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
             }
         }
         // currency
-        $currencyArr = []; 
+        $currencyArr = [];
         $currencys = Yii::$app->store->get('currency');
         if (is_array($currencys)) {
             foreach ($currencys as $currency) {
                 $currencyArr[$currency['currency_code']] = $currency['currency_code'];
             }
         }
-        
+
         return [
             // 需要配置
             [
                 'label' => Yii::$service->page->translate->__('Default Base Lang'),
-                'name'  => 'default_lang',
+                'name' => 'default_lang',
                 'display' => [
                     'type' => 'select',
                     'data' => $langArr,
@@ -102,45 +103,43 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
             ],
             [
                 'label' => Yii::$service->page->translate->__('Base Currency'),
-                'name'  => 'base_currency',
+                'name' => 'base_currency',
                 'display' => [
                     'type' => 'select',
                     'data' => $currencyArr,
                 ],
                 'remark' => '基础货币，产品数据后台编辑的货币'
             ],
-            
+
             [
                 'label' => Yii::$service->page->translate->__('Default Currency'),
-                'name'  => 'default_currency',
+                'name' => 'default_currency',
                 'display' => [
                     'type' => 'select',
                     'data' => $currencyArr,
                 ],
                 'remark' => '默认的货币，如果store中没有设置货币，那么将使用默认货币'
             ],
-            
-            
-            
-             [
+            [
                 'label' => Yii::$service->page->translate->__('Image Domain'),
-                'name'  => 'image_domain',
+                'name' => 'image_domain',
                 'display' => [
                     'type' => 'inputString',
                 ],
                 'require' => 1,
-                'remark' =>  '图片的域名'
+                'remark' => '图片的域名,指向 appimage/ 目录的地址，或 OSS 的地址'
             ],
-            
+
         ];
     }
-    
-    public function getArrParam(){
+
+    public function getArrParam()
+    {
         $request_param = CRequest::param();
         $this->_param = $request_param[$this->_editFormData];
         $param = [];
         $attrVals = [];
-        foreach($this->_param as $attr => $val) {
+        foreach ($this->_param as $attr => $val) {
             if (in_array($attr, $this->_attrArr)) {
                 $attrVals[$attr] = $val;
             } else {
@@ -149,10 +148,10 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
         }
         $param['value'] = $attrVals;
         $param['key'] = $this->_key;
-        
+
         return $param;
     }
-    
+
     /**
      * save article data,  get rewrite url and save to article url key.
      */
@@ -166,33 +165,33 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
         $this->_service->saveConfig($this->getArrParam());
         $errors = Yii::$service->helper->errors->get();
         if (!$errors) {
-            echo  json_encode([
+            echo json_encode([
                 'statusCode' => '200',
-                'message'    => Yii::$service->page->translate->__('Save Success'),
+                'message' => Yii::$service->page->translate->__('Save Success'),
             ]);
             exit;
         } else {
-            echo  json_encode([
+            echo json_encode([
                 'statusCode' => '300',
-                'message'    => $errors,
+                'message' => $errors,
             ]);
             exit;
         }
     }
-    
-    
-    
-    public function getVal($name, $column){
+
+
+    public function getVal($name, $column)
+    {
         if (is_object($this->_one) && property_exists($this->_one, $name) && $this->_one[$name]) {
-            
+
             return $this->_one[$name];
         }
         $content = $this->_one['value'];
         if (is_array($content) && !empty($content) && isset($content[$name])) {
-            
+
             return $content[$name];
         }
-        
+
         return '';
     }
 }

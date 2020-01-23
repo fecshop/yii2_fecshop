@@ -32,6 +32,7 @@ use yii\web\IdentityInterface;
  * @property string $created_at_datetime
  * @property string $updated_at_datetime
  * @property string $birth_date
+ *
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
