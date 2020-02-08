@@ -136,7 +136,15 @@ class Currency extends Service
             return $this->currencys[$currencyCode]['symbol'];
         }
     }
-
+    /**
+     * 得到默认的货币符号，譬如： ￥, $
+     */
+    public function getBaseSymbol()
+    {
+        if (isset($this->currencys[$this->baseCurrecy]['symbol'])) {
+            return $this->currencys[$this->baseCurrecy]['symbol'];
+        }
+    }
     /**
      * property $price|Float ，默认货币的价格
      * Get current currency price.  price format is two decimal places,
