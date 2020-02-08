@@ -941,27 +941,44 @@ class Order extends Service
         if (!$increment_id) {
             $increment_id = $this->getSessionIncrementId();
         }
-        if ($increment_id) {
-            $order = $this->getByIncrementId($increment_id);
-            if ($customer_id && $order['customer_id'] != $customer_id) {
-                Yii::$service->helper->errors->add('do not have role to cancel this order');
-                
-                return false;
-            }
-            if ($order) {
-                $order->order_status    = $this->status_canceled;
-                $order->updated_at      = time();
-                $order->save();
-                // 释放库存
-                $order_primary_key      = $this->getPrimaryKey();
-                $product_items          = Yii::$service->order->item->getByOrderId($order[$order_primary_key], true);
-                Yii::$service->product->stock->returnQty($product_items);
-                
-                return true;
-            }
+        if (!$increment_id) {
+            Yii::$service->helper->errors->add('order increment id is empty');
+           
+            return false;
         }
-
-        return false;
+        
+        $order = $this->getByIncrementId($increment_id);
+        if ($customer_id && $order['customer_id'] != $customer_id) {
+            Yii::$service->helper->errors->add('do not have role to cancel this order');
+            
+            return false;
+        }
+        // 通过updateAll的结果数，来判定是否取消成功。
+        $updateComules = $this->_orderModel->updateAll(
+            [
+                'order_status' => $this->status_canceled,
+                'updated_at' => time(),
+            ],
+            [
+                'and',
+                ['increment_id'  => $increment_id],
+                ['<>', 'order_status', $this->status_canceled],
+            ]
+        );
+        if (empty($updateComules)) {
+            Yii::$service->helper->errors->add('order cancel fail');
+            
+            return false;
+        }
+        // 返还库存
+        $order_primary_key      = $this->getPrimaryKey();
+        $product_items          = Yii::$service->order->item->getByOrderId($order[$order_primary_key], true);
+        if (!Yii::$service->product->stock->returnQty($product_items)) {
+            
+            return false;
+        }
+        
+        return true;
     }
     
     
