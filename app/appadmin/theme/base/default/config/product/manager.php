@@ -70,6 +70,9 @@ use fecadmin\models\AdminRole;
 .pageContent .combox {
         margin-left:5px;
 }
+.pageFormContent p{
+    height:auto;
+}
 </style>
 
 
