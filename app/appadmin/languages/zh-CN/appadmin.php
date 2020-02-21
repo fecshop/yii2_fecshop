@@ -78,11 +78,6 @@ return [
     'Add Items' => '增加子项',
     'Items' => '',
     'Attr Name' => '属性名称',
-    '' => '',
-    '' => '',
-    '' => '',
-    '' => '',
-    
 
     'Account List' => '账户列表',
     'Main Page' => '主页面',
@@ -824,6 +819,7 @@ return [
     'ExtensionMarket Upgrade' => '应用在线升级',
     'Extension Market Uninstall' => '应用在线卸载',
     'Category Excel Upload' => '分类批量上传',
+    'dispatched' => '已发货',
     '' => '',
     '' => '',
     '' => '',
