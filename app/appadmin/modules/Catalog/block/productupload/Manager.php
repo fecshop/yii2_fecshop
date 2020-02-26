@@ -22,17 +22,6 @@ class Manager
 {
     
     public $_fileFullDir;
-    /**
-     * init param function ,execute in construct.
-     */
-    public function init()
-    {
-        /*
-         * service component, data provider
-         */
-        //$this->_service = Yii::$service->product->favorite;
-        parent::init();
-    }
 
     public function getLastData()
     {
