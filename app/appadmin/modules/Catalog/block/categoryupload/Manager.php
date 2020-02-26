@@ -77,6 +77,9 @@ class Manager
     {
         // 从excel中获取数据。
         $category_id = $one['A'];
+        if (!$category_id) {
+            return true;  // 没有分类的行，直接跳过
+        }
         $parent_id = $one['B'];
         $language_code = $one['C'];
         $category_name = $one['D'];
