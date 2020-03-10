@@ -305,12 +305,18 @@ class Item extends Service
          * 由于是通过session查订单的方式，而不是新建，paypal报错可能多次下单（更新方式），
          * 因此在添加订单产品的时候先进行一次删除产品操作。
          */
+        $customer_id = '';
+        if (!Yii::$app->user->isGuest) {
+            $identity = Yii::$app->user->identity;
+            $customer_id = $identity->id;
+        }
         $this->_itemModel->deleteAll(['order_id' => $order_id]);
         if (is_array($items) && !empty($items) && $order_id && $store) {
             foreach ($items as $item) {
                 $myOrderItem = new $this->_itemModelName();
                 $myOrderItem['order_id'] = $order_id;
                 $myOrderItem['store'] = $store;
+                $myOrderItem['customer_id'] = $customer_id;
                 $myOrderItem['created_at'] = time();
                 $myOrderItem['updated_at'] = time();
                 $myOrderItem['product_id'] = $item['product_id'];
