@@ -170,9 +170,12 @@ class Index
     public function filterProductImg($product_images){
         $this->_image_thumbnails        = $product_images;
         //$this->_image_detail['gallery'] = $product_images['gallery'];
+        if (isset($product_images['main']['is_detail']) && $product_images['main']['is_detail'] == 1 ) {
+            $this->_image_detail[] = $product_images['main'];
+        }
         if (isset($product_images['gallery']) && is_array($product_images['gallery'])) {
             $thumbnails_arr = [];
-            $detail_arr     = [];
+            //$detail_arr     = [];
             foreach ($product_images['gallery'] as $one) {
                 $is_thumbnails  = $one['is_thumbnails'];
                 $is_detail      = $one['is_detail'];
@@ -180,16 +183,12 @@ class Index
                     $thumbnails_arr[]   = $one;
                 }
                 if($is_detail == 1){
-                    $detail_arr[]       = $one;
+                    $this->_image_detail[]       = $one;
                 }
             }
             $this->_image_thumbnails['gallery'] = $thumbnails_arr;
-            $this->_image_detail     = $detail_arr;
+            //$this->_image_detail     = $detail_arr;
         }
-        if (isset($product_images['main']['is_detail']) && $product_images['main']['is_detail'] == 1 ) {
-            $this->_image_detail[] = $product_images['main'];
-        }
-        
     }
     
     /**废弃
