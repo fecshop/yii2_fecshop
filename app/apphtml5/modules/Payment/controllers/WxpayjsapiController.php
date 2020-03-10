@@ -32,7 +32,7 @@ class WxpayjsapiController extends PaymentController
         parent::init();
         Yii::$service->page->theme->layoutFile = 'wxpay_jsapi.php';
         $data = Yii::$service->payment->wxpayJsApi->getScanCodeStart();
-        $data['success_url'] = Yii::$service->url->getUrl('payment/success');
+        $data['success_url'] = Yii::$service->payment->getStandardSuccessRedirectUrl();
         return $this->render($this->action->id, $data);
         
     }
