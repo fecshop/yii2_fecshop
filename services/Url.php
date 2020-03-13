@@ -275,6 +275,17 @@ class Url extends Service
     {
         return Yii::$app->getHomeUrl();
     }
+    
+    public function isHttps()
+    {
+        $homeUrl = $this->homeUrl();
+        if (substr($homeUrl, 0, 5) == 'https') {
+            
+            return true;
+        }
+        
+        return false;
+    }
 
     /**
      * get  base url.
