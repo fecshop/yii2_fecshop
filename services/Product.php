@@ -381,6 +381,11 @@ class Product extends Service
         return $this->_product->getCategoryIdsByProductId($product_id);
     }
     
+    public function getCategoryIdsByProductIds($product_ids)
+    {
+        return $this->_product->getCategoryIdsByProductIds($product_ids);
+    }
+    
     public function getProductIdsByCategoryId($category_id)
     {
         return $this->_product->getProductIdsByCategoryId($category_id);

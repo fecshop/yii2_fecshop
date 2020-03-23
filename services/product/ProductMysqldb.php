@@ -708,6 +708,28 @@ class ProductMysqldb extends Service implements ProductInterface
         return $arr;
     }
     
+    /**
+     * @param $product_ids | array, 产品id数组
+     * 通过产品id数组，得到分类id数组。
+     */
+    public function getCategoryIdsByProductIds($product_ids)
+    {
+        if (empty($product_ids) || ！is_array($product_ids)) {
+            return [];
+        }
+        $coll = $this->_categoryProductModel->find()
+            ->asArray()
+            ->where([
+                'in', 'product_id', $product_ids
+            ])->all();
+        $arr = [];
+        foreach ($coll as $one) {
+            $arr[] = (int)$one['category_id'];
+        }
+        
+        return array_unique($arr);
+    }
+    
     public function getProductIdsByCategoryId($category_id)
     {
         $coll = $this->_categoryProductModel->find()

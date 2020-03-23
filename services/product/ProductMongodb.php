@@ -580,6 +580,27 @@ class ProductMongodb extends Service implements ProductInterface
 
         return [];
     }
+    
+    /**
+     * @param $product_ids | array, 产品id数组
+     * 通过产品id数组，得到分类id数组。
+     */
+    public function getCategoryIdsByProductIds($product_ids)
+    {
+        $coll = $this->_productModel->find()->asArray()
+            ->where([
+                'in', '_id', $product_ids
+            ])->all();
+        $categoryIds = [];
+        foreach ($coll as $one) {
+            if (isset($one['category']) && !empty($one['category']) && is_array($one['category'])) {
+                $categoryIds = array_merge($categoryIds, $one['category']);
+            }
+        }
+        
+        return array_unique($categoryIds);
+    }
+    
     /**
      * @param $one|array
      * 对保存的数据进行数据验证
