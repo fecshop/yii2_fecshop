@@ -286,8 +286,6 @@ class Administer extends Service
                 return false;
             }
             $innerTransaction->commit();
-            
-            return true;
         } catch (\Exception $e) {
             $innerTransaction->rollBack();
             Yii::$service->helper->errors->add($e->getMessage());
