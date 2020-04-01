@@ -21,6 +21,8 @@ return [
 					'catalog_product_search_manager' 		=> 'Catalog-Product-Search',
 					'catalog_product_favorite_manager' 	=> 'Catalog-Product-Favorite',
                     'catalog_product_upload_manager' 	    => 'Catalog-Product-Upload',
+                    'catalog_product_brand_manager' 	    => 'Catalog-Product-Brand',
+                    'catalog_product_brand_category_manager' 	    => 'Catalog-Product-Brand-Category',
 					'catalog_category_manager' 				=> 'Catalog-Category',
 					'catalog_url_rewrite_manager' 			    => 'Catalog-Url-Rewrite',
                     'sales_cart_manager' 						=> 'Sales-Cart',
@@ -107,6 +109,16 @@ return [
                                     'product_upload_manager' => [
                                         'label' => 'Product Excel Upload',
                                         'url_key' => '/catalog/productupload/manager',
+                                    ],
+                                    
+                                    'product_brand_manager' => [
+                                        'label' => 'Product Brand',
+                                        'url_key' => '/catalog/productbrand/manager',
+                                    ],
+                                    
+                                    'product_randcategory_manager' => [
+                                        'label' => 'Product Brand Category',
+                                        'url_key' => '/catalog/productbrandcategory/manager',
                                     ],
                                 ]
                             ],
