@@ -83,6 +83,12 @@ return [
                 'class' => 'fecshop\services\product\Stock',
                 //'zeroInventory' => 0, // 是否零库存，1代表开启零库存。
             ],
+            'brand' => [
+                'class' => 'fecshop\services\product\Brand',
+            ],
+            'brandcategory' => [
+                'class' => 'fecshop\services\product\Brandcategory',
+            ],
             /* #暂时没用
 
             'coll' => [
