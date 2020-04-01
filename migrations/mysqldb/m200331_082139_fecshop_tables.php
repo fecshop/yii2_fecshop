@@ -74,6 +74,13 @@ class m200331_082139_fecshop_tables extends Migration
         
         $this->execute("INSERT INTO `admin_role_url_key` (`role_id`, `url_key_id`, `created_at`, `updated_at`) VALUES (4, " . $lastInsertId . ", 1585655278, 1585655278)");
 
+        // 9
+        $this->execute("INSERT INTO `admin_url_key` (`name`, `tag`, `tag_sort_order`, `url_key`, `created_at`, `updated_at`, `can_delete`) VALUES ( 'Product Brand Image Upload', 'catalog_product_brand_manager', 5, '/catalog/productbrand/imageupload', 1585743582, 1585743582 , 1)");
+        
+        $lastInsertId = $this->db->getLastInsertID() ;
+        
+        $this->execute("INSERT INTO `admin_role_url_key` (`role_id`, `url_key_id`, `created_at`, `updated_at`) VALUES (4, " . $lastInsertId . ", 1585655278, 1585655278)");
+
         
         $arr = [
             // 品牌分类表
