@@ -24,7 +24,7 @@ $this->title = 'Dashboard';
 <style>
     .group_resource li ul li{
         float:left;
-        margin:5px 0 0 0;
+        margin:10px 0 2px 0;
     }
     .group_resource{
         padding-left:10px;
@@ -39,6 +39,7 @@ $this->title = 'Dashboard';
     .line-resources{
         width:100%
     }
+    .dialog .tabsContent .edit_p label{width:120px;}
 </style>
 
 <div class="pageContent">
