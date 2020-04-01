@@ -64,7 +64,11 @@ class StoreBaseConfig extends Service
     public function getByKey($key)
     {
         if ($key) {
-            $one = $this->_model->findOne(['key' => $key]);
+            if (is_array($key)) {
+                $one = $this->_model->findOne($key);
+            } else {
+                $one = $this->_model->findOne(['key' => $key]);
+            }
             
             return $one;
         }
