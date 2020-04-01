@@ -39,7 +39,7 @@ $this->title = 'Dashboard';
     .line-resources{
         width:100%
     }
-    .dialog .tabsContent .edit_p label{width:120px;}
+    .dialog .tabsContent .edit_p label{min-width: 120px;}
 </style>
 
 <div class="pageContent">
