@@ -39,3 +39,8 @@ use fec\helpers\CRequest;
 	</table>
 	
 </div>
+<style>
+.grid .gridTbody td div {
+    height: auto;
+}
+</style>

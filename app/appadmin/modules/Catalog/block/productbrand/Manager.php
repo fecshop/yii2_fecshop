@@ -103,7 +103,7 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
     public function getTableFieldArr()
     {
         $brandCategorys = Yii::$service->product->brandcategory->getBrandCategoryIdAndNames(); 
-        $brandStatus = Yii::$service->product->brand->getStatusArr();
+        $brandStatus = Yii::$service->product->brandcategory->getStatusArr();
         
         $table_th_bar = [
             [
@@ -114,20 +114,11 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
             ],
             [
                 'orderField'    => 'name',
-                'label'           => Yii::$service->page->translate->__('Name'),
+                'label'           => Yii::$service->page->translate->__('Brand Name'),
                 'width'          => '50',
                 'align'           => 'left',
                 'lang'            => true,
             ],
-            [
-                'orderField'    => 'brand_category_id',
-                'label'           => Yii::$service->page->translate->__('brand_category_id'),
-                'width'          => '110',
-                'align'           => 'center',
-            ],
-            
-            
-            
             [
                 'orderField'    => 'brand_category_id',
                 'label'           => Yii::$service->page->translate->__('Brand Category'),
@@ -140,10 +131,12 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
                 'label'           => Yii::$service->page->translate->__('Logo'),
                 'width'          => '110',
                 'align'           => 'center',
+                'convert'        => [ 'string' => 'img'],
+                'img_height'    => 50,
             ],
             [
                 'orderField'    => 'website_url',
-                'label'           => Yii::$service->page->translate->__('website_url'),
+                'label'           => Yii::$service->page->translate->__('Website Url'),
                 'width'          => '110',
                 'align'           => 'center',
             ],
@@ -175,5 +168,88 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
 
         return $table_th_bar;
     }
+    
+    
+    
+    public function getTableTbodyHtml($data)
+    {
+        $fields = $this->getTableFieldArr();
+        $str = '';
+        $csrfString = CRequest::getCsrfString();
+        foreach ($data as $one) {
+            $str .= '<tr target="sid_user" rel="'.$one[$this->_primaryKey].'">';
+            $str .= '<td><input name="'.$this->_primaryKey.'s" value="'.$one[$this->_primaryKey].'" type="checkbox"></td>';
+            foreach ($fields as $field) {
+                $orderField = $field['orderField'];
+                $display = $field['display'];
+                $translate = $field['translate'];
+                $val = $one[$orderField];
+                $display_title = '';
+                if ($val) {
+                    if (isset($field['display']) && !empty($field['display'])) {
+                        $display = $field['display'];
+                        $val = $display[$val] ? $display[$val] : $val;
+                        $display_title = $val;
+                    }
+                    if (isset($field['convert']) && !empty($field['convert'])) {
+                        $convert = $field['convert'];
+                        foreach ($convert as $origin =>$to) {
+                            if (strstr($origin, 'mongodate')) {
+                                if (isset($val->sec)) {
+                                    $timestamp = $val->sec;
+                                    if ($to == 'date') {
+                                        $val = date('Y-m-d', $timestamp);
+                                    } elseif ($to == 'datetime') {
+                                        $val = date('Y-m-d H:i:s', $timestamp);
+                                    } elseif ($to == 'int') {
+                                        $val = $timestamp;
+                                    }
+                                    $display_title = $val;
+                                }
+                            } elseif (strstr($origin, 'date')) {
+                                if ($to == 'date') {
+                                    $val = date('Y-m-d', strtotime($val));
+                                } elseif ($to == 'datetime') {
+                                    $val = date('Y-m-d H:i:s', strtotime($val));
+                                } elseif ($to == 'int') {
+                                    $val = strtotime($val);
+                                }
+                                $display_title = $val;
+                            } elseif ($origin == 'int') {
+                                if ($to == 'date') {
+                                    $val = date('Y-m-d', $val);
+                                } elseif ($to == 'datetime') {
+                                    $val = date('Y-m-d H:i:s', $val);
+                                } elseif ($to == 'int') {
+                                    $val = $val;
+                                }
+                                $display_title = $val;
+                            } elseif ($origin == 'string') {
+                                $val = Yii::$service->category->image->getUrl($val);
+                                if ($to == 'img') {
+                                    $val = '<img style="max-height:50px" src="'.$val.'" />';
+                                }
+                            }
+                        }
+                    }
+                    if (isset($field['lang']) && !empty($field['lang'])) {
+                        $val = Yii::$service->fecshoplang->getDefaultLangAttrVal($val, $orderField);
+                    }
+                }
+                if ($translate) {
+                    $val = Yii::$service->page->translate->__($val);
+                }
+                $str .= '<td><span title="'.$display_title.'">'.$val.'</span></td>';
+            }
+            $str .= '<td>
+						<a title="' . Yii::$service->page->translate->__('Edit') . '" target="dialog" class="btnEdit" mask="true" drawable="true" width="1200" height="680" href="'.$this->_editUrl.'?'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" ><i class="fa fa-pencil"></i></a>
+						<a title="' . Yii::$service->page->translate->__('Delete') . '" target="ajaxTodo" href="'.$this->_deleteUrl.'?'.$this->_primaryKey.'='.$one[$this->_primaryKey].'" class="btnDel"  csrfName="' .CRequest::getCsrfName(). '" csrfVal="' .CRequest::getCsrfValue(). '"  ><i class="fa fa-trash-o"></i></a>
+					</td>';
+            $str .= '</tr>';
+        }
 
+        return $str;
+    }
+    
+    
 }

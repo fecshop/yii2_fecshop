@@ -42,4 +42,11 @@ class ProductbrandController extends CatalogController
     {
         $this->getBlock('manageredit')->delete();
     }
+    
+    public function actionImageupload()
+    {
+        $this->getBlock('image')->upload();
+    }
+    
+    
 }

@@ -38,6 +38,8 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
             'textareas'   => $this->_textareas,
             'lang_attr'   => $this->_lang_attr,
             'saveUrl'     => $this->_saveUrl,
+            'image'                     => $this->_one['logo'],
+            'imageurl'                  => Yii::$service->category->image->getUrl($this->_one['logo']),
         ];
     }
 
@@ -61,16 +63,9 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
                 ],
                 'require' => 1,
             ],
+            
             [
-                'label'  => Yii::$service->page->translate->__('Logo'),
-                'name' => 'logo',
-                'display' => [
-                    'type' => 'inputString',
-                ],
-                'require' => 0,
-            ],
-            [
-                'label'  => Yii::$service->page->translate->__('website_url'),
+                'label'  => Yii::$service->page->translate->__('Website Url'),
                 'name' => 'website_url',
                 'display' => [
                     'type' => 'inputString',
@@ -111,6 +106,8 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
          * if attribute is date or date time , db storage format is int ,by frontend pass param is int ,
          * you must convert string datetime to time , use strtotime function.
          */
+        $image = Yii::$app->request->post('image');
+        $this->_param['logo'] = $image;
         $this->_service->save($this->_param);
         $errors = Yii::$service->helper->errors->get();
         if (!$errors) {
