@@ -175,7 +175,7 @@ class BatchAttr
                 'require' => 0,
             ],
             [
-                'label' => Yii::$service->page->translate->__('Weight (KG)'),
+                'label' => Yii::$service->page->translate->__('Weight (G)'),
                 'name'  => 'weight',
                 'display' => [
                     'type' => 'inputString',
