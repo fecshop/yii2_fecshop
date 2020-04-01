@@ -469,7 +469,7 @@ class AppadminbaseBlock extends BaseObject
             $align = isset($b['align']) ? 'align="'.$b['align'].'"' : '';
             $str .= '<th width="'.$width.'" '.$align.' orderField="'.$orderField.'" class="'.$class.'">'.$label.'</th>';
         }
-        $str .= '<th width="80" >' . Yii::$service->page->translate->__('Edit') . '</th>';
+        $str .= '<th width="120" >' . Yii::$service->page->translate->__('Edit') . '</th>';
         $str .= '</tr></thead>';
 
         return $str;

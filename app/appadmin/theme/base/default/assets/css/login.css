@@ -14,11 +14,12 @@ img { border:0;}
 
 body {margin:0;text-align:center;background: #2196F3 url(../images/bg_3.jpg) repeat center;}
 
-#login {display:block;width: 880px;margin: 7% auto;text-align:left;background: #fff;box-shadow: 0 0 10px #cac5c5;border-radius: 20px;position: relative;clear: both;}
+#login {display:block;width: 880px;margin: 7% auto;text-align:left;background: #fff;box-shadow: 0 0 10px #cac5c5;
+position: relative;clear: both;}
 #login_header {display:block;padding-top:40px;/* height:80px; */}
 .login_logo {float:left;margin-top:10px;margin-bottom: 40px;}
 .login_info { float:left; margin-left:10px; line-height:80px; font-size:18px; color:#0088cc; font-weight: bold;}
-.login_headerContent {float:right;display:block;width:280px;height: 40px;padding:0 40px;background:url(../default/images/login_header_bg.png) no-repeat top right;}
+.login_headerContent {float:right;display:block;width:300px;height: 40px;padding:0 40px;background:url(../default/images/login_header_bg.png) no-repeat top right;}
 .navList {display:block;overflow:hidden;height:20px;padding-left:28px;text-align: right;}
 .navList ul {float: right;display:block;overflow:hidden;}
 .navList li {float: left;display:block;margin-left:-1px;padding:0 10px;}

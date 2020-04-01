@@ -145,11 +145,6 @@ body {
 
 td {}
 
-.grid .gridTbody td {
-    border: none;
-    border-bottom: solid 1px #ededed;
-}
-
 
 .panelBar {
     background: #fff;
@@ -442,6 +437,57 @@ unitBox {}
 select{
     background: #fff;
 }
+
+
+
+/**   ---- **/
+
+.grid .gridTbody td {
+    border: none;
+    border-bottom: solid 1px #e7e7e7;
+}
+
+.dialog .grid .gridTbody td,   #container .grid .gridTbody td{
+    padding: 4px;
+}
+
+.dialog .grid table thead th .gridCol, #container .grid table thead th .gridCol{
+    font-weight:700;
+}
+
+#container .pageForm .pageFormContent p.edit_p label{
+    text-align:right;
+}
+
+.dialog .tabsContent .edit_p label {
+    text-align:right;
+    line-height:30px;
+    padding-right:3px;
+     min-width: 154px;
+}
+
+.dialog .pageFormContent  .tabsContent  label {
+    min-width: 120px;
+}
+
+.dialog  .tabsContent .tabsContent .edit_p label{
+    min-width: 148px;
+}
+
+.pageContent .pageForm p.edit_p ,  .pageFormContent .pageForm p.edit_p{margin:0; height:35px;}
+
+
+.pageFormContent p.edit_p select, .pageFormContent p.edit_p input{margin-left:0px;}
+
+
+
+
+
+
+
+
+
+
 
 
 

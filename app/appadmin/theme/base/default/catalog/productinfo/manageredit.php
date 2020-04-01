@@ -223,7 +223,7 @@ function thissubmit(thiss){
 					<fieldset id="fieldset_table_qbe">
 						<legend style="color:#009688"><?=  Yii::$service->page->translate->__('Product attribute group switching: Please switch the product attribute group before editing') ?></legend>
 						<div>
-							<p class="edit_p">
+							<p class="edit_p" style="padding: 5px 0 0 10px;  height: 20px;">
 								<?= $attrGroup ?>
 							</p>
 						</div>
