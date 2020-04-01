@@ -64,7 +64,7 @@ class Echart extends Service
      * @return string 返回X-Y线性图表
      *
      */
-    public function getLine($data, $legend = false, $yPrex = '', $width = 1100, $height = 400, $title = '')
+    public function getLine($data, $legend = false, $yPrex = '', $width = '100%', $height = '400px', $title = '')
     {
         $this->i++;
         $div_id = "main_".$this->i;
@@ -129,18 +129,26 @@ class Echart extends Service
             }
         }
         $seriesArr = implode(',', $seriesArr);
-        
+        $str2 = '';
+        if ($width == '100%') {
+            $str2 = "w = document.body.clientWidth - 200;  $('.echart_line_containter').css('width', w);";
+        }
         $str = "
-            <div id='".$div_id."' style='width: ".$width."px;height:".$height."px;'></div>
+            <div class='echart_line_containter' id='".$div_id."' style='width: ".$width.";height:".$height.";'></div>
             <script type=\"text/javascript\">
             // 基于准备好的dom，初始化echarts实例
+            $(document).ready(function(){ 
+            ".$str2."
             var myChart = echarts.init(document.getElementById('".$div_id."'));
 
-            // 指定图表的配置项和数据
+            // 指定图表的配置项和数据  
+            // 自定义颜色63b2ee - 76da91 - f8cb7f - f89588 - 7cd6cf - 9192ab - 7898e1 - efa666 - eddd86 - 9987ce - 63b2ee - 76da91
             var option = {
                 title: {
                     text: '".$title."'
                 },
+                color: [\"#00aeff\", \"#76da91\", \"#f8cb7f\", \"#f89588\", \"#7cd6cf\", \"#00aeff\", \"#eddd86\"],
+                
                 tooltip: {
                     trigger: 'axis'
                 },";
@@ -182,6 +190,7 @@ class Echart extends Service
             };
             // 使用刚指定的配置项和数据显示图表。
             myChart.setOption(option);
+            });
             </script>
         ";
         

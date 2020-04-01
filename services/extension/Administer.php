@@ -283,12 +283,14 @@ class Administer extends Service
             // 执行应用的upgrade部分功能
             if (!Yii::$service->extension->uninstallAddons($extensionConfig['administer']['uninstall'], $modelOne)) {
                 $innerTransaction->rollBack();
+                
                 return false;
             }
             $innerTransaction->commit();
         } catch (\Exception $e) {
             $innerTransaction->rollBack();
             Yii::$service->helper->errors->add($e->getMessage());
+            
             return false;
         }
         
