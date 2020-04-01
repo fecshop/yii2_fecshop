@@ -162,4 +162,51 @@ class Brand extends Service
             $this->status_disable => Yii::$service->page->translate->__('Disable'),
         ];
     }
+    
+    /**
+     * 得到品牌id 和 names 数组
+     */
+    public function getAllBrandIdAndNames()
+    {
+        $filter = [
+            'where' => [
+                ['status' => $this->status_enable]
+            ],
+            'fetchAll' => true,
+            'asArray' => true,
+        ];
+        
+        $data = $this->coll($filter);
+        $arr = [];
+        if (is_array($data['coll']) && !empty($data['coll'])) {
+            foreach ($data['coll'] as $one) {
+                $name = Yii::$service->store->getStoreAttrVal($one['name'], 'name');
+                $arr[$one['id']] = $name;
+            }
+        }
+        
+        return $arr;
+    }
+    /**
+     * @param $brandId | int,  品牌id
+     * 根据品牌id，得到品牌的name
+     */
+    public function getBrandNameById($brandId)
+    {
+        $brandModel = $this->getByPrimaryKey($brandId);
+        if (!$brandModel['id']) {
+            
+            return '';
+        }
+        
+        return Yii::$service->store->getStoreAttrVal($brandModel['name'], 'name');
+    }
+    
+    
+    
+    
+    
+    
+    
+    
 }
