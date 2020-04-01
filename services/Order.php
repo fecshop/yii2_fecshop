@@ -1100,8 +1100,7 @@ class Order extends Service
         $preMonthTime = strtotime("-$days days");
         $filter = [
             'select' => ['created_at', 'increment_id', 'order_status', 'base_grand_total' ],
-            'numPerPage' 	=> 10000000,
-            'pageNum'		=> 1,
+            'fetchAll' => true,
             'where'			=> [
                 ['>=', 'created_at', $preMonthTime]
             ],
