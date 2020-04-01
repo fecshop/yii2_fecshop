@@ -107,6 +107,10 @@ class Index
     }
     public function getGroupAttrArr($groupAttrInfo){
         $gArr = [];
+        if ($this->_product['brand_id']) {
+            $brandName = Yii::$service->page->translate->__('brand');
+            $gArr[$brandName] = Yii::$service->product->brand->getBrandNameById($this->_product['brand_id']);
+        }
         // 增加重量，长宽高，体积重等信息
         if ($this->_product['weight']) {
             $weightName = Yii::$service->page->translate->__('weight');
