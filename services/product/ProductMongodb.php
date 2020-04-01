@@ -602,6 +602,27 @@ class ProductMongodb extends Service implements ProductInterface
     }
     
     /**
+     * @param $product_ids | array, 产品id数组
+     * 通过产品id数组，得到产品对应的分类id数组
+     */
+    public function getCategorysByProductIds($product_ids)
+    {
+        $coll = $this->_productModel->find()->asArray()
+            ->where([
+                'in', '_id', $product_ids
+            ])->all();
+        $categoryIds = [];
+        foreach ($coll as $one) {
+            $productId = (string)$one['_id'];
+            if (isset($one['category']) && !empty($one['category']) && is_array($one['category'])) {
+                $categoryIds[$productId] = $one['category'];
+            }
+        }
+        
+        return $categoryIds;
+    }
+    
+    /**
      * @param $one|array
      * 对保存的数据进行数据验证
      * sku  spu   默认语言name ， 默认语言description不能为空。
