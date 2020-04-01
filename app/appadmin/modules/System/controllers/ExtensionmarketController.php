@@ -22,7 +22,7 @@ class ExtensionmarketController extends SystemController
     public $enableCsrfValidation = true;
     public $_param = [];
     public $_pageNum = 1;
-    public $_numPerPage = 10;
+    public $_numPerPage = 8;
     
     
     public function actionManager()
