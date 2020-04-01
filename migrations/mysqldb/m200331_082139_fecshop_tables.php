@@ -111,6 +111,9 @@ class m200331_082139_fecshop_tables extends Migration
                   KEY `status` (`status`, `brand_category_id`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
             ",
+            "
+                ALTER TABLE `product_flat` ADD `brand_id` INT( 12 ) NULL COMMENT '品牌id'
+            ",
         ];
 
         foreach ($arr as $sql) {
