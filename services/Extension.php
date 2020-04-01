@@ -79,6 +79,7 @@ class Extension extends Service
             
             return $one;
         } else {
+            
             return new $this->_modelName();
         }
     }
@@ -206,10 +207,11 @@ class Extension extends Service
         return true;
     }
     
-    //const TYPE_INSTALL = 'installed';
-    //const TYPE_LOCAL_CREATED = 'local_created';
-    
-    // 本地后台初始化的应用
+    /**
+     * @param $param | array, 参数数组
+     * 属于Gii代码生成功能部分，作为第三方开发者，如果想开发自己的应用扩展，在后台使用`初始化应用`,
+     * 本部分是初始化部分。
+     */
     public function newLocalCreateInit($param)
     {
         $namespace = $param['namespaces'];
@@ -276,7 +278,6 @@ class Extension extends Service
 
             return false;
         }
-        
         $param['config_file_path'] = '@addons/' . $param['package'] . '/' .  $param['folder']  . '/config.php';
         // 查看是否上次未安装存在记录，
         $model = $this->_model->findOne([
@@ -308,10 +309,6 @@ class Extension extends Service
     public function upgradeInit($param)
     {
         $namespace = $param['namespace'];
-        //$package = $param['package'];
-        //$name = $param['name'];
-        //$config_file_path = $param['config_file_path'];
-        //$version = $param['version'];
         if (!$namespace) {
             Yii::$service->helper->errors->add('namespace is empty');
 
@@ -329,7 +326,6 @@ class Extension extends Service
 
             return false;
         }
-        
         $param['config_file_path'] = '@addons/' . $param['package'] . '/' .  $param['folder']  . '/config.php';
         // $param['config_file_path'] = '@addons/' . $param['package'] . '/' .  $param['config_file_path'] ;
         //$model = new $this->_modelName();
@@ -441,6 +437,7 @@ class Extension extends Service
             return false;
         }
         if (!$installOb->run()) {
+            
             return false;
         }
         
@@ -484,25 +481,26 @@ class Extension extends Service
             ) {
                 // 执行插件更新版本操作。
                 if (!$upgradeOb->run($versions[$i])) {
+                    
                     return false;
                 }
                 // 更新数据库插件安装版本信息
                 $modelOne->installed_version = $versions[$i];
                 $modelOne->updated_at = time();
                 if (!$modelOne->save()) {
+                    
                     return false;
                 }
             }
         }
         
         // 查看升级后的install_version和version是否一致, 可能插件无更新（db，文件复制等）
-        
         $modelOne->installed_version = $modelOne['version'];
         $modelOne->updated_at = time();
         if (!$modelOne->save()) {
+            
             return false;
         }
-        
         
         return true;
     }
@@ -534,12 +532,14 @@ class Extension extends Service
                 //echo $versions[$i];
                 // 执行插件更新版本操作。
                 if (!$upgradeOb->run($versions[$i])) {
+                    
                     return false;
                 }
                 // 更新数据库插件安装版本信息
                 $modelOne->installed_version = $versions[$i];
                 $modelOne->updated_at = time();
                 if (!$modelOne->save()) {
+                    
                     return false;
                 }
             }
@@ -550,6 +550,7 @@ class Extension extends Service
         $modelOne->installed_version = $modelOne['version'];
         $modelOne->updated_at = time();
         if (!$modelOne->save()) {
+            
             return false;
         }
         
@@ -572,6 +573,7 @@ class Extension extends Service
         }
         
         if (!$uninstallOb->run()) {
+            
             return false;
         }
         // 进行extension数据的删除
@@ -587,6 +589,7 @@ class Extension extends Service
         }
         
         if (!$uninstallOb->run()) {
+            
             return false;
         }
         
