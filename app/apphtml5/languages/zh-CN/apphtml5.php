@@ -405,7 +405,7 @@ return [
     'add coupon success' => '使用优惠卷成功',
     'Coupon is not available or has expired' => '优惠卷不可用或已经过期',
     'do you readly want delete this address?' => '你真的想删除这个地址吗？',
-
+    'The product is out of stock' => '产品缺货库存不足',
 
 
 
