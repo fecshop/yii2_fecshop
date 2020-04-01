@@ -177,10 +177,10 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
                                         <div class="widget-body am-cf">
                                             <div class="widget-4 am-u-sm-12 am-u-md-6 am-u-lg-3">
                                                 <div class="widget-card card__blue am-cf">
-                                                    <div class="card-header">商品总量</div>
+                                                    <div class="card-header">商品总量(Sku)</div>
                                                     <div class="card-body">
                                                         <div class="card-value"><?=  $recentStatisticsInfo['all']['product_count'] ?></div>
-                                                        <div class="card-description">当前商品总数量</div>
+                                                        <div class="card-description">当前商品Sku总数量</div>
                                                         <span class="card-icon iconfont icon-goods fa fa-product-hunt"></span>
                                                     </div>
                                                 </div>
@@ -213,7 +213,7 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
                                                     <div class="card-header">评价总量</div>
                                                     <div class="card-body">
                                                         <div class="card-value"><?=  $recentStatisticsInfo['all']['review_count'] ?></div>
-                                                        <div class="card-description">订单评价总数量</div>
+                                                        <div class="card-description">订单产品评价总数量</div>
                                                         <span class="card-icon iconfont icon-goods fa fa-eye"></span>
                                                     </div>
                                                 </div>
@@ -237,7 +237,7 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
                                                         <img src="data:image/png;base64,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" alt="">
                                                     </div>
                                                     <div class="outline-right dis-flex flex-dir-column flex-x-between">
-                                                        <div style="color: rgb(102, 102, 102); font-size: 1rem;">销售额(基础货币)</div>
+                                                        <div style="color: rgb(102, 102, 102); font-size: 1rem;">支付订单销售额(基础货币)</div>
                                                         <div style="color: rgb(51, 51, 51); font-size: 2rem;"><?=  $recentStatisticsInfo['today']['order_base_sale'] ?></div>
                                                         <div style="color: rgb(153, 153, 153); font-size: 1rem;">
                                                             昨日：<?=  $recentStatisticsInfo['yestday']['order_base_sale'] ?></div>
@@ -280,8 +280,6 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
                             </div>      
                         
                             <?php $day = 31;  // 获取三个月的数据?>
-                            
-                            <br/><br/><br/><br/>
                             
                             <?php list($orderAmount, $orderCount) = Yii::$service->order->getPreMonthOrder($day); ?>
                             <div class="widget" style="padding:50px 5px; 100px">
