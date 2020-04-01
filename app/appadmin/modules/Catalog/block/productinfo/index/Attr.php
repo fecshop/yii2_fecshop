@@ -147,6 +147,7 @@ class Attr
                 ],
                 'require' => 1,
             ],
+            
             [
                 'label' => Yii::$service->page->translate->__('Long (CM)'),
                 'name'  => 'long',
@@ -200,6 +201,14 @@ class Attr
                     'lang' => false,
                 ],
                 'require' => 0,
+            ],
+            [
+                'label' => Yii::$service->page->translate->__('Product Brand'),
+                'name'  => 'brand_id',
+                'display' => [
+                    'type' => 'select',
+                    'data' => Yii::$service->product->brand->getAllBrandIdAndNames(),
+                ],
             ],
             [
                 'label' => Yii::$service->page->translate->__('Status'),
