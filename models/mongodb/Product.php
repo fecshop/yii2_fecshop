@@ -112,6 +112,7 @@ class Product extends ActiveRecord
                 'buy_also_buy_sku',        // 买了的还买了什么
                 'see_also_see_sku',        // 看了的还看了什么
                 'origin_mysql_id',
+                'brand_id',
             ];
             if (is_array(self::$_customProductAttrs) && !empty(self::$_customProductAttrs)) {
                 $origin = array_merge($origin, self::$_customProductAttrs);
