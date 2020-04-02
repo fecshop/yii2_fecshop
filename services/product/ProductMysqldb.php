@@ -281,14 +281,13 @@ class ProductMysqldb extends Service implements ProductInterface
      */
     public function apiGetByPrimaryKey($primaryKey)
     {
-        $collection = $this->_productModel->find()->getCollection();
-        $cursor = $collection->findOne(['_id' => $primaryKey]);
-        $arr = [];
-        foreach ($cursor as $k => $v) {
-            $arr[$k] = $v;
+        $one =  $this->getByPrimaryKey($primaryKey);
+        if (!$one || !$one['sku']) {
+            
+            return null;
         }
-
-        return $arr;
+        
+        return $one;
     }
 
     /**
@@ -430,6 +429,11 @@ class ProductMysqldb extends Service implements ProductInterface
         }
         
         if ($primaryVal) {
+            if (!is_numeric($primaryVal)) {
+                Yii::$service->helper->errors->add('Product {primaryKey} is not exist, current product services is mysql services, please fill in mysql product id', ['primaryKey'=>$this->getPrimaryKey()]);
+
+                return false;
+            }
             $model = $this->_productModel->findOne($primaryVal);
             if (!$model) {
                 Yii::$service->helper->errors->add('Product {primaryKey} is not exist', ['primaryKey'=>$this->getPrimaryKey()]);

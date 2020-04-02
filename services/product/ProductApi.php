@@ -479,7 +479,12 @@ class ProductApi extends Service
                 'error'  => $this->_error,
             ];
         }
-        
+        // is_deputy
+        $spu = $this->_param['spu'];
+        $pOne = Yii::$service->product->getBySpu($spu);
+        if (!is_array($pOne) || count($pOne) < 1) {
+            $this->_param['is_deputy'] = 1;
+        }
         Yii::$service->product->addGroupAttrs($this->_param['attr_group']);
         $originUrlKey   = 'catalog/product/index';
         $saveData       = Yii::$service->product->save($this->_param, $originUrlKey);

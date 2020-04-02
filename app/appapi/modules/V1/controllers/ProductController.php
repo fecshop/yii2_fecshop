@@ -168,8 +168,8 @@ class ProductController extends AppapiTokenController
                 ],
             ];
         }
-        $param = [];
-        
+        $param = Yii::$app->request->post();
+        /*
         $name               ? ($param['name'] = $name)                    : '';
         $title              ? ($param['title'] = $title)                        : '';
         $meta_keywords      ? ($param['meta_keywords'] = $meta_keywords)        : '';
@@ -196,7 +196,7 @@ class ProductController extends AppapiTokenController
         $see_also_see_sku   ? ($param['see_also_see_sku'] = $see_also_see_sku)                      : '';
         $cost_price         ? ($param['cost_price'] = $cost_price)                      : '';
         $description        ? ($param['description'] = $description)                    : '';
-       
+       */
         $primaryKey         = Yii::$service->product->getPrimaryKey();
         $param[$primaryKey] = $id;
         
