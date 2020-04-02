@@ -511,7 +511,7 @@ class CategoryMongodb extends Service implements CategoryInterface
             'parent_id' => $category_id,
             'status' => $this->getCategoryEnableStatus(),
             'menu_show'  => $this->getCategoryMenuShowStatus(),
-        ])->all();
+        ])->orderBy(['sort_order' => SORT_DESC]) ->all();
         $arr = [];
         if (is_array($data) && !empty($data)) {
             foreach ($data as $one) {
