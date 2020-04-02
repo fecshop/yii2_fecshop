@@ -655,7 +655,8 @@ class Stock extends Service
      */
     protected function actionCheckOnShelfStatus($is_in_stock)
     {
-        if ($is_in_stock === 1) {
+        if ($is_in_stock == 1) {
+            
             return true;
         }
 

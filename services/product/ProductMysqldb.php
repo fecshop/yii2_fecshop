@@ -105,6 +105,7 @@ class ProductMysqldb extends Service implements ProductInterface
                 $ids_ob_arr[] = $id;
             }
             $filter = [
+                'select' => [$_id, 'sku'],
                 'where'            => [
                     ['in', $_id, $ids_ob_arr],
 

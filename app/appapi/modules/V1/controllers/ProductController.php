@@ -244,5 +244,121 @@ class ProductController extends AppapiTokenController
         }
     }
     
+   public $stockTypeReplace = 'replace';
+   public $stockTypeUpdateCounter = 'updateCounter';
+   
+    
+    public function actionUpdateqty(){
+        $items = Yii::$app->request->post('items');
+        if (!is_array($items) || empty($items)) {
+            return [
+                'code'    => 400,
+                'message' => 'items format error',
+                'data'    => [
+                    'error' => 'items format error',
+                ],
+            ];
+        }
+        // 检查数据
+        $errors = '';
+        $arr = [];
+        foreach ($items as $item) {
+            $product_id = isset($item['product_id']) ? $item['product_id'] : '';
+            $sku = isset($item['sku']) ? $item['sku'] : '';
+            $qty = isset($item['qty']) ? $item['qty'] : '';
+            $type = isset($item['type']) ? $item['type'] : '';
+            if (!$product_id && !$sku) {
+                $errors = 'product_id and sku, can not all empty';
+                break;
+            }
+            if (!$type || ($type != $this->stockTypeReplace && $type != $this->stockTypeUpdateCounter)) {
+                $errors = 'type ['.$type .']  is error, It can only choose one of these values["'.$this->stockTypeReplace.'", "'.$this->stockTypeUpdateCounter.'"]';
+                break;
+            }
+            if (!$qty) {
+                $errors = 'qty can not empty';
+                break;
+            }
+            if (!$product_id) {
+                $productModel = Yii::$service->product->getBySku($sku);
+                $productPrimaryKey = Yii::$service->product->getPrimaryKey();
+                $product_id= isset($productModel[$productPrimaryKey]) ? $productModel[$productPrimaryKey] : '';
+            } else {
+                $productModel = Yii::$service->product->getByPrimaryKey($product_id);
+                if (!$productModel['sku']) {
+                    $errors = 'product product_id['.$product_id.'] is not exist';
+                    break;
+                }
+                $sku = $productModel['sku'];
+            }
+            if (!$product_id) {
+                $errors = 'product sku['.$sku.'] is not exist';
+                break;
+            }
+            
+            $arr[] = [
+                'product_id' => $product_id,
+                'sku' => $sku,
+                'type' => $type,
+                'qty' => $qty,
+            ];
+        }
+        if ($errors) {
+            return [
+                'code'    => 400,
+                'message' => 'items data error',
+                'data'    => [
+                    'error' => $errors,
+                ],
+            ];
+        }
+        $errorInfos = [];
+        foreach ($arr as $one) {
+            $product_id = $one['product_id'];
+            $sku = $one['sku'];
+            $type = $one['type'];
+            $qty = $one['qty'];
+            if ($type == $this->stockTypeReplace) {
+                if (!Yii::$service->product->stock->saveProductStock($product_id, ['qty' => $qty])) {
+                    $errors = Yii::$service->helper->errors->get(',');
+                    if ($errors) {
+                        $errorInfos[] = "Product Update Stock Errors:".$errors;
+                    } else {
+                        $errorInfos[] = "Product Update Stock Errors: product stock saveProductStock error";
+                    } 
+                }
+            } else if ($type == $this->stockTypeUpdateCounter) {
+                $upitems = [
+                    [ 'sku' => $sku, 'qty' => $qty,]
+                ];
+                //var_dump($upitems);exit;
+                if (!Yii::$service->product->stock->Updatebybase($upitems)) {
+                    $errors = Yii::$service->helper->errors->get(',');
+                    if ($errors) {
+                        $errorInfos[] = "Product Update Stock Errors:".$errors;
+                    } else {
+                        $errorInfos[] = "Product Update Stock Errors: product stock Updatebybase error";
+                    } 
+                    
+                }
+            }
+        }
+        
+        if (!empty($errorInfos)) {
+            return [
+                'code'    => 400,
+                'message' => 'items data error',
+                'data'    => [
+                    'error' => implode(',', $errorInfos),
+                ],
+            ];
+        }
+        
+        return [
+            'code'    => 200,
+            'message' => 'update stock success',
+            'data'    => []
+        ];
+    }
     
 }
