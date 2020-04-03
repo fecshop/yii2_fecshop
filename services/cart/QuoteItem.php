@@ -243,7 +243,14 @@ class QuoteItem extends Service
 
         return $item_qty;
     }
-
+    /**
+     * 得到购物车产品的排序数组
+     */
+    public function getCartProductOrderBy()
+    {
+        
+        return ['active' => SORT_ASC, 'updated_at' => SORT_DESC];
+    }
     /**
      * @param $activeProduct | boolean , 是否只要active的产品
      * @return array ， foramt：
@@ -270,7 +277,7 @@ class QuoteItem extends Service
             if (!isset($this->_cart_product_info[$cart_id])) {
                 $data = $this->_itemModel->find()->where([
                     'cart_id' => $cart_id,
-                ])->orderBy( ['active' => SORT_ASC, 'updated_at' => SORT_DESC])  // 加入按照active  updated_at 进行排序
+                ])->orderBy( $this->getCartProductOrderBy())  // 加入按照active  updated_at 进行排序
                 ->all();
                 if (is_array($data) && !empty($data)) {
                     foreach ($data as $one) {
