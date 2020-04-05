@@ -88,11 +88,11 @@ class Shipping extends Service
      * @param $long | Float ,长度，单位cm
      * @param $width | Float ,宽度，单位cm
      * @param $high | Float ,高度，单位cm
-     * @return 体积重，单位Kg
+     * @return 体积重，单位g
      */
     public function getVolumeWeight($long, $width, $high)
     {
-        $volume_weight = ($long * $width * $high) / $this->volumeWeightCoefficient;
+        $volume_weight = ($long * $width * $high) / $this->volumeWeightCoefficient * 1000;
         return (float)$volume_weight;
     }
 

@@ -114,7 +114,7 @@ class Index
         // 增加重量，长宽高，体积重等信息
         if ($this->_product['weight']) {
             $weightName = Yii::$service->page->translate->__('weight');
-            $gArr[$weightName] = $this->_product['weight'].' Kg';
+            $gArr[$weightName] = $this->_product['weight'].' g';
         }
         if ($this->_product['long']) {
             $longName = Yii::$service->page->translate->__('long');
@@ -130,7 +130,7 @@ class Index
         }
         if ($this->_product['volume_weight']) {
             $volumeWeightName = Yii::$service->page->translate->__('volume weight');
-            $gArr[$volumeWeightName] = $this->_product['volume_weight'].' Kg';
+            $gArr[$volumeWeightName] = $this->_product['volume_weight'].' g';
         }
         if (is_array($groupAttrInfo)) {
             foreach ($groupAttrInfo as $attr => $info) {
