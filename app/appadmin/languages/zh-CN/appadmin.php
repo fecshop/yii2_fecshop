@@ -293,7 +293,7 @@ return [
     'Long (CM)' => '长(CM)',
     'Width (CM)' => '宽(CM)',
     'High (CM)' => '高(CM)',
-    'Volume weight (Kg) {link_a}   Formula {link_b} ' => '体积重 (Kg) {link_a}   公式 {link_b} ',
+    'Volume weight (g) {link_a}   Formula {link_b} ' => '体积重 (克) {link_a}   公式 {link_b} ',
     'Weight (G)' => '重量(克)',
     'Score' => '分值',
     'Status' => '状态',

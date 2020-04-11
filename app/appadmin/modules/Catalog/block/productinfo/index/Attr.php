@@ -176,7 +176,7 @@ class Attr
                 'require' => 0,
             ],
             [
-                'label' => '<span >' . Yii::$service->page->translate->__('Volume weight (Kg) {link_a}   Formula {link_b} ', [ 'link_a' => '<a  target="_blank" href="http://www.fecshop.com/topic/659">' , 'link_b' => '</a>' ]) . '</span>' ,
+                'label' => '<span >' . Yii::$service->page->translate->__('Volume weight (g) {link_a}   Formula {link_b} ', [ 'link_a' => '<a  target="_blank" href="http://www.fecshop.com/topic/659">' , 'link_b' => '</a>' ]) . '</span>' ,
                 'name'  => 'volume_weight',
                 'display' => [
                     'type' => 'inputString',
