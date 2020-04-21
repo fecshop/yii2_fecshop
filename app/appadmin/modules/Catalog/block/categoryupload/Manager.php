@@ -30,7 +30,7 @@ class Manager
         /*
          * service component, data provider
          */
-        parent::init();
+        // parent::init();
     }
 
     public function getLastData()

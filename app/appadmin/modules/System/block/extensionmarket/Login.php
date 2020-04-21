@@ -28,7 +28,7 @@ class Login
      */
     public function init()
     {
-        parent::init();
+        // parent::init();
     }
 
     public function getLastData()
