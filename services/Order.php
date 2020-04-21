@@ -49,7 +49,10 @@ class Order extends Service
 
     // 订单已发货【订单包裹被物流公司收取后】
     public $status_dispatched                   = 'dispatched';
-
+    
+    // 订单已收货
+    public $status_received                 = 'received';
+    
     // 订单已退款【已收款订单因为某些原因进行退款，譬如：仓库无货，用户收到货后发现破损退款等】
     public $status_refunded                     = 'refunded';
 
