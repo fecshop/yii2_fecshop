@@ -204,9 +204,9 @@ class LoginController extends AppserverController
             return $responseData;
         }
         
-        $isBindNew = $wxCode = Yii::$app->request->post('isBindNew');
-        $email = $wxCode = Yii::$app->request->post('email');
-        $password = $wxCode = Yii::$app->request->post('password');
+        $isBindNew = Yii::$app->request->post('isBindNew');
+        $email = Yii::$app->request->post('email');
+        $password = Yii::$app->request->post('password');
         if ($isBindNew == 1) {  // 进行注册
             // 查看该email是否存在
             if (Yii::$service->customer->isRegistered($email)) {
