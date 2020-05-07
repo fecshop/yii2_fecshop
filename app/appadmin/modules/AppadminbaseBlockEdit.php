@@ -160,6 +160,73 @@ EOF;
                             <span class="remark-text">{$remark}</span>
                         </p>
 EOF;
+            } elseif ($display_type == 'inputImage') {
+                $imgDisplay =  'display:none;' ;
+                $imgUrl = '';
+                if ($value) {
+                    $imgDisplay = 'display:inline-block;';
+                    $imgUrl = Yii::$service->image->getUrlByRelativePath($value);
+                }
+                $browseFiles = Yii::$service->page->translate->__('Browse Files');
+                $uploadError = Yii::$service->page->translate->__('Upload Error');
+                $imgUploadUrl = Yii::$service->url->getUrl('cms/xeditor/imageupload');
+                $str .= <<<EOF
+			<p class="edit_p" style="height:50px;">  
+                    <label style="float:none;display:inline-block;">{$label} :</label>
+                    <input type="hidden" class="textInput thumbnail_image img_{$name}" value="{$value}" name="{$this->_editFormData}[{$name}]" style="width:550px;">
+                    <span style="width:80px;display:inline-block;">
+                        <img style="width:50px;height:50px;{$imgDisplay}" class="cat_image_{$name}" src="{$imgUrl}" />
+                    </span>
+                    <button style="" onclick="getElementById('input_image_{$name}').click()" class="scalable" type="button" title="Duplicate" id=""><span><span><span>{$browseFiles}</span></span></span></button>
+
+                    <input type="file" class="uploadImgFile_{$name}" rel="{$name}"  id="input_image_{$name}" style="height:0;width:0;z-index: -1; position: absolute;left: 10px;top: 5px;"/>
+                    <a class="removeImgFile_{$name}"   href="javascript:void(0)" style="font-size: 20px; margin-left: 10px;margin-top: 10px;display: inline-block;color: #555;" >
+                        <i class="fa fa-trash-o"></i>
+                    </a>
+			</p>
+            <script>
+                $(document).ready(function(){
+                    $(".uploadImgFile_{$name}").change(function(){
+                        var data = new FormData();
+                        var kName = $(this).attr("rel");
+                        $.each($(this)[0].files, function(i, file) {
+                            data.append('upload_file', file);
+                        });
+                        $.ajax({
+                            url:'{$imgUploadUrl}',
+                            type:'POST',
+                            data:data,
+                            async:false,
+                            dataType: 'json', 
+                            timeout: 80000,
+                            cache: false,
+                            contentType: false,		//不可缺参数
+                            processData: false,		//不可缺参数
+                            success:function(data, textStatus){
+                                if(data.err == "0"){
+                                    alert(data.relative_path);
+                                    $(".img_{$name}").val(data.relative_path);
+                                    $(".cat_image_{$name}").attr("src",data.msg);
+                                    $(".cat_image_{$name}").show();
+                                }
+                            },
+                            error:function(){
+                                alert('{$uploadError}');
+                            }
+                        });
+                    });
+                    $(".removeImgFile_{$name}").click(function(){
+                        $(".cat_image_{$name}").attr("src", "");
+                        $(".cat_image_{$name}").hide();
+                        $(".img_{$name}").val('');
+                        $("uploadImgFile_{$name}").val('');
+                    });
+                });
+            
+            </script>
+EOF;
+            
+            
             } elseif ($display_type == 'inputDateTime') {
                 if ($value && !is_numeric($value)) {
                     $value = strtotime($value);

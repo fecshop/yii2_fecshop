@@ -27,7 +27,7 @@ class XeditorController extends CmsController
         foreach ($_FILES as $FILE) {
             list($imgSavedRelativePath, $imgUrl, $imgPath) = Yii::$service->image->saveUploadImg($FILE);
         }
-        exit(json_encode(['err' => 0, 'msg' => $imgUrl]));
+        exit(json_encode(['err' => 0, 'msg' => $imgUrl, 'relative_path' => $imgSavedRelativePath]));
     }
 
     public function actionFlashupload()
