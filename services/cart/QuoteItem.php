@@ -574,11 +574,9 @@ class QuoteItem extends Service
             if ($updateCount > 0) {
                 Yii::$service->cart->quote->computeCartInfo();
             }
-            
-            return true;
         }
 
-        return false;
+        return true;
     }
     
     /**
