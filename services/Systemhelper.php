@@ -20,7 +20,6 @@ class Systemhelper extends Service
 {
     public $controllerNameSpace;
     
-    
     /**
      * 后台用户登陆后，看到的的统计信息
      * 1.总量：产品Sku总数，用户总量，订单总量，评价总量
@@ -36,7 +35,6 @@ class Systemhelper extends Service
         ];
         $productData = Yii::$service->product->coll($productFilter);
         $productTotalCount = isset($productData['count']) ? $productData['count'] : 0;
-        
         // 1.2总量：用户总量
         $filter = [
             'select' => ['firstname'],
@@ -48,8 +46,6 @@ class Systemhelper extends Service
         if (isset($customerData['count']) && $customerData['count']) {
             $customerTotalCount = $customerData['count'];
         }
-        
-        
         // 1.3总量：支付订单总数
         $filter = [
             'select' => ['increment_id'],
@@ -63,7 +59,6 @@ class Systemhelper extends Service
         if (isset($orderData['count']) && $orderData['count']) {
             $orderTotalCount = $orderData['count'];
         }
-        
         // 1.4总量：评价
         $filter = [
             'select' => ['product_spu'],
@@ -75,8 +70,6 @@ class Systemhelper extends Service
         if (isset($reviewData['count']) && $reviewData['count']) {
             $reviewTotalCount = $reviewData['count'];
         }
-        
-        
         // 2.1昨日/今日 订单总销售额，总数，下单用户数
         $yest0Time = strtotime(date("Y-m-d",strtotime("-1 day")));   // 昨日0点
         $today0Time = strtotime(date("Y-m-d",time()));   // 昨日0点
@@ -112,10 +105,8 @@ class Systemhelper extends Service
                 }
             }
         }
-        
         $orderYestCustomerCount= count($orderYestCustomer);
         $orderTodayCustomerCount = count($orderTodayCustomer);
-        
         //2.2 新增用户数
         // 1.2总量：用户总量
         $filter = [
@@ -128,7 +119,6 @@ class Systemhelper extends Service
         ];
         $yestCustomerData = Yii::$service->customer->coll($filter);
         $yestCustomerCount = isset($yestCustomerData['count']) ? $yestCustomerData['count'] : 0;
-        
         $filter = [
             'select' => ['firstname'],
             'where'			=> [
@@ -138,7 +128,6 @@ class Systemhelper extends Service
         ];
         $todayCustomerData = Yii::$service->customer->coll($filter);
         $todayCustomerCount = isset($todayCustomerData['count']) ? $todayCustomerData['count'] : 0;
-        
         
         return [
             'all' => [
@@ -153,14 +142,12 @@ class Systemhelper extends Service
                 'order_customer_count' => $orderYestCustomerCount,
                 'register_customer_count' => $yestCustomerCount,
             ],
-            
             'today' => [
                 'order_count' => $orderTodayTotalCount,
                 'order_base_sale' => Yii::$service->helper->format->number_format($orderTodayTotalBaseSale),
                 'order_customer_count' => $orderTodayCustomerCount,
                 'register_customer_count' => $todayCustomerCount,
             ],
-            
         ];
     }
     

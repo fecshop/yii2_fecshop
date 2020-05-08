@@ -21,8 +21,6 @@ class Email extends Service
 {
     public $mailerConfig;
 
-    // public $defaultForm;
-
     public $mailerInfo;
 
     /**
@@ -60,6 +58,7 @@ class Email extends Service
     {
         $mailerInfo = $this->mailerInfo;
         if (isset($mailerInfo['contacts']['emailAddress'])) {
+            
             return $mailerInfo['contacts']['emailAddress'];
         }
     }
@@ -71,6 +70,7 @@ class Email extends Service
     {
         $mailerInfo = $this->mailerInfo;
         if (isset($mailerInfo['storeName'])) {
+            
             return $mailerInfo['storeName'];
         }
     }
@@ -83,6 +83,7 @@ class Email extends Service
     {
         $mailerInfo = $this->mailerInfo;
         if (isset($mailerInfo['phone'])) {
+            
             return $mailerInfo['phone'];
         }
     }
@@ -95,8 +96,10 @@ class Email extends Service
     {
         if (isset($this->mailerConfig[$key]) && $this->mailerConfig[$key]) {
             if (is_array($this->mailerConfig[$key])) {
+                
                 return $this->mailerConfig[$key];
             } elseif (is_string($this->mailerConfig[$key])) {
+                
                 return $this->getMailerConfig($this->mailerConfig[$key]);
             }
         }
@@ -111,9 +114,11 @@ class Email extends Service
     {
         if (isset($mailerConfig['transport']['username'])) {
             if (!empty($mailerConfig['transport']['username'])) {
+                
                 return $mailerConfig['transport']['username'];
             }
         }
+        
         return '';
     }
 
@@ -143,7 +148,7 @@ class Email extends Service
      * 通过 $mailerConfigParam 的三种方式，可以使用系统配置的mail组件，也可以自己动态配置mail组件
      * 增强mail组件使用的方面和灵活。
      */
-    protected function actionMailer($mailerConfigParam = '')
+    public function mailer($mailerConfigParam = '')
     {
         if (!$mailerConfigParam) {
             $key = 'default';
@@ -154,10 +159,12 @@ class Email extends Service
             $key = $mailerConfigParam;
         } else {
             Yii::$service->helper->errors->add('you mail config param is not correct');
+            
             return;
         }
         if (!$key) {
             Yii::$service->helper->errors->add('mail config key is empty');
+            
             return;
         }
         if (!$this->_mailer[$key]) {
@@ -192,6 +199,7 @@ class Email extends Service
             $this->_mailer[$key] = Yii::$app->get($component_name);
         }
         $this->_from = isset($this->_mailer_from[$key]) ? $this->_mailer_from[$key] : '';
+        
         return isset($this->_mailer[$key]) ? $this->_mailer[$key] : '' ;
     }
 
@@ -207,7 +215,7 @@ class Email extends Service
      * 您可以参看上面的函数 function actionMailer($mailerConfigParam = '') 或者到 @fecshop/config/services/Email.php参看 $mailerConfig的配置
      * 该函数用于发送邮件.
      */
-    protected function actionSend($sendInfo, $mailerConfigParam = '')
+    public function send($sendInfo, $mailerConfigParam = '')
     {
         $to         = isset($sendInfo['to']) ? $sendInfo['to'] : '';
         $subject    = isset($sendInfo['subject']) ? $sendInfo['subject'] : '';
@@ -250,13 +258,16 @@ class Email extends Service
                 ->setSubject($subject)
                 ->setHtmlBody($htmlBody)
                 ->send();
+                
             return true;
         } catch (\Swift_TransportException $e) {
             $errorMessage = $e->getMessage();
             Yii::$service->helper->errors->add($errorMessage);
+            
             return false;
         } catch (\Exception $e) {
             Yii::$service->helper->errors->add('send email fail');
+            
             return false;
         }
     }
@@ -306,7 +317,6 @@ class Email extends Service
             $subjectViewFile = $viewPath.'/subject_'.$defaultLangCode.'.php';
             $subjectViewFilePath = Yii::getAlias($subjectViewFile);
         }
-
         $subjectConfig = [
             'class' => $widget,
             'view'  => $subjectViewFilePath,
@@ -318,8 +328,6 @@ class Email extends Service
         $emailBody = $this->getHtmlContent($bodyConfig);
 
         return [$emailSubject, $emailBody];
-        //$emailSubject = Yii::$service->page->widget->render($subjectConfigKey,$parentThis);
-        //$emailBody = Yii::$service->page->widget->render($bodyConfigKey,$parentThis);
     }
 
     /**
@@ -342,20 +350,22 @@ class Email extends Service
             $params = $ob->$method();
 
             return Yii::$app->view->renderFile($viewFile, $params);
-        } else {
-            //errors
         }
+        
+        return null;
     }
 
     /**
      * @param $email_address | String  邮箱地址字符串
      * @return bool 如果格式正确，返回true
      */
-    protected function actionValidateFormat($email_address)
+    public function validateFormat($email_address)
     {
         if (preg_match("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$^", $email_address)) {
+            
             return true;
         } else {
+            
             return false;
         }
     }

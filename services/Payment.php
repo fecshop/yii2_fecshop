@@ -82,8 +82,6 @@ class Payment extends Service
         return $arr;
     }
     
-    
-
     /**
      * @param $payment_method | String 支付方式。
      * @return 返回提交订单信息跳转到的第三方支付url，也就是第三方支付的url。
@@ -99,8 +97,10 @@ class Payment extends Service
             if (isset($paymentConfig['standard'][$payment_method]['start_url'])) {
                 if (!empty($paymentConfig['standard'][$payment_method]['start_url'])) {
                     if ($type == 'appserver') {
+                        
                         return $this->getAppServerUrl($paymentConfig['standard'][$payment_method]['start_url']);
                     } else {
+                        
                         return $this->getUrl($paymentConfig['standard'][$payment_method]['start_url']);
                     }
                 }
@@ -141,6 +141,7 @@ class Payment extends Service
             $paymentConfig = $this->paymentConfig;
             if (isset($paymentConfig['standard'][$payment_method]['success_redirect_url'])) {
                 if (!empty($paymentConfig['standard'][$payment_method]['success_redirect_url'])) {
+                    
                     return $this->getUrl($paymentConfig['standard'][$payment_method]['success_redirect_url']);
                 }
             }
@@ -161,6 +162,7 @@ class Payment extends Service
             $paymentConfig = $this->paymentConfig;
             if (isset($paymentConfig['standard'][$payment_method]['cancel_url'])) {
                 if (!empty($paymentConfig['standard'][$payment_method]['cancel_url'])) {
+                    
                     return $this->getUrl($paymentConfig['standard'][$payment_method]['cancel_url']);
                 }
             }
@@ -181,6 +183,7 @@ class Payment extends Service
             $paymentConfig = $this->paymentConfig;
             if (isset($paymentConfig['standard'][$payment_method]['account'])) {
                 if (!empty($paymentConfig['standard'][$payment_method]['account'])) {
+                    
                     return $paymentConfig['standard'][$payment_method]['account'];
                 }
             }
@@ -201,6 +204,7 @@ class Payment extends Service
             $paymentConfig = $this->paymentConfig;
             if (isset($paymentConfig['standard'][$payment_method]['password'])) {
                 if (!empty($paymentConfig['standard'][$payment_method]['password'])) {
+                    
                     return $paymentConfig['standard'][$payment_method]['password'];
                 }
             }
@@ -221,6 +225,7 @@ class Payment extends Service
             $paymentConfig = $this->paymentConfig;
             if (isset($paymentConfig['standard'][$payment_method]['signature'])) {
                 if (!empty($paymentConfig['standard'][$payment_method]['signature'])) {
+                    
                     return $paymentConfig['standard'][$payment_method]['signature'];
                 }
             }
@@ -240,6 +245,7 @@ class Payment extends Service
             $paymentConfig = $this->paymentConfig;
             if (isset($paymentConfig['standard'][$payment_method]['webscr_url'])) {
                 if (!empty($paymentConfig['standard'][$payment_method]['webscr_url'])) {
+                    
                     return $paymentConfig['standard'][$payment_method]['webscr_url'];
                 }
             }
@@ -261,6 +267,7 @@ class Payment extends Service
                 // 查看配置是否是激活状态 
                 $checkMoneyConfig = Yii::$app->store->get($appName.'_payment', $payment_type);
                 if ($checkMoneyConfig != Yii::$app->store->enable) {
+                    
                     continue;
                 }
                 $label = $info['label'];
@@ -287,13 +294,15 @@ class Payment extends Service
      * @param $payment_method | String ， 支付方式
      * @return bool 判断传递的支付方式，是否在配置中存在，如果存在返回true。
      */
-    protected function actionIfIsCorrectStandard($payment_method)
+    public function ifIsCorrectStandard($payment_method)
     {
         $paymentConfig = $this->paymentConfig;
         $standard = isset($paymentConfig['standard']) ? $paymentConfig['standard'] : '';
         if (isset($standard[$payment_method]) && !empty($standard[$payment_method])) {
+            
             return true;
         } else {
+            
             return false;
         }
     }
@@ -307,6 +316,7 @@ class Payment extends Service
             $paymentConfig = $this->paymentConfig;
             if (isset($paymentConfig['standard'][$payment_method]['nvp_url'])) {
                 if (!empty($paymentConfig['standard'][$payment_method]['nvp_url'])) {
+                    
                     return $paymentConfig['standard'][$payment_method]['nvp_url'];
                 }
             }
@@ -324,8 +334,10 @@ class Payment extends Service
             $payment_method_label = $this->getExpressLabel($payment_method);
         }
         if ($payment_method_label) {
+            
             return $payment_method_label;
         } else {
+            
             return $payment_method;
         }
     }
@@ -343,6 +355,7 @@ class Payment extends Service
             $paymentConfig = $this->paymentConfig;
             if (isset($paymentConfig['standard'][$payment_method]['label'])) {
                 if (!empty($paymentConfig['standard'][$payment_method]['label'])) {
+                    
                     return $paymentConfig['standard'][$payment_method]['label'];
                 }
             }
@@ -362,6 +375,7 @@ class Payment extends Service
             $paymentConfig = $this->paymentConfig;
             if (isset($paymentConfig['standard'][$payment_method]['ipn_url'])) {
                 if (!empty($paymentConfig['standard'][$payment_method]['ipn_url'])) {
+                    
                     return $this->getUrl($paymentConfig['standard'][$payment_method]['ipn_url']);
                 }
             }
@@ -381,6 +395,7 @@ class Payment extends Service
             $paymentConfig = $this->paymentConfig;
             if (isset($paymentConfig['standard'][$payment_method]['return_url'])) {
                 if (!empty($paymentConfig['standard'][$payment_method]['return_url'])) {
+                    
                     return $this->getUrl($paymentConfig['standard'][$payment_method]['return_url']);
                 }
             }
@@ -404,6 +419,7 @@ class Payment extends Service
             $paymentConfig = $this->paymentConfig;
             if (isset($paymentConfig['express'][$payment_method]['nvp_url'])) {
                 if (!empty($paymentConfig['express'][$payment_method]['nvp_url'])) {
+                    
                     return $paymentConfig['express'][$payment_method]['nvp_url'];
                 }
             }
@@ -423,6 +439,7 @@ class Payment extends Service
             $paymentConfig = $this->paymentConfig;
             if (isset($paymentConfig['express'][$payment_method]['webscr_url'])) {
                 if (!empty($paymentConfig['express'][$payment_method]['webscr_url'])) {
+                    
                     return $paymentConfig['express'][$payment_method]['webscr_url'];
                 }
             }
@@ -442,6 +459,7 @@ class Payment extends Service
             $paymentConfig = $this->paymentConfig;
             if (isset($paymentConfig['express'][$payment_method]['account'])) {
                 if (!empty($paymentConfig['express'][$payment_method]['account'])) {
+                    
                     return $paymentConfig['express'][$payment_method]['account'];
                 }
             }
@@ -461,6 +479,7 @@ class Payment extends Service
             $paymentConfig = $this->paymentConfig;
             if (isset($paymentConfig['express'][$payment_method]['password'])) {
                 if (!empty($paymentConfig['express'][$payment_method]['password'])) {
+                    
                     return $paymentConfig['express'][$payment_method]['password'];
                 }
             }
@@ -480,6 +499,7 @@ class Payment extends Service
             $paymentConfig = $this->paymentConfig;
             if (isset($paymentConfig['express'][$payment_method]['signature'])) {
                 if (!empty($paymentConfig['express'][$payment_method]['signature'])) {
+                    
                     return $paymentConfig['express'][$payment_method]['signature'];
                 }
             }
@@ -499,6 +519,7 @@ class Payment extends Service
             $paymentConfig = $this->paymentConfig;
             if (isset($paymentConfig['express'][$payment_method]['label'])) {
                 if (!empty($paymentConfig['express'][$payment_method]['label'])) {
+                    
                     return $paymentConfig['express'][$payment_method]['label'];
                 }
             }
@@ -518,6 +539,7 @@ class Payment extends Service
             $paymentConfig = $this->paymentConfig;
             if (isset($paymentConfig['express'][$payment_method]['return_url'])) {
                 if (!empty($paymentConfig['express'][$payment_method]['return_url'])) {
+                    
                     return $this->getUrl($paymentConfig['express'][$payment_method]['return_url']);
                 }
             }
@@ -537,6 +559,7 @@ class Payment extends Service
             $paymentConfig = $this->paymentConfig;
             if (isset($paymentConfig['express'][$payment_method]['cancel_url'])) {
                 if (!empty($paymentConfig['express'][$payment_method]['cancel_url'])) {
+                    
                     return $this->getUrl($paymentConfig['express'][$payment_method]['cancel_url']);
                 }
             }
@@ -557,6 +580,7 @@ class Payment extends Service
             $paymentConfig = $this->paymentConfig;
             if (isset($paymentConfig['express'][$payment_method]['success_redirect_url'])) {
                 if (!empty($paymentConfig['express'][$payment_method]['success_redirect_url'])) {
+                    
                     return $this->getUrl($paymentConfig['express'][$payment_method]['success_redirect_url']);
                 }
             }
@@ -576,6 +600,7 @@ class Payment extends Service
             $paymentConfig = $this->paymentConfig;
             if (isset($paymentConfig['express'][$payment_method]['ipn_url'])) {
                 if (!empty($paymentConfig['express'][$payment_method]['ipn_url'])) {
+                    
                     return $this->getUrl($paymentConfig['express'][$payment_method]['ipn_url']);
                 }
             }

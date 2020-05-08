@@ -81,6 +81,7 @@ class Shipping extends Service
                 }
             }
         }
+        
         return $this->_shipping_methods;
     }
 
@@ -93,6 +94,7 @@ class Shipping extends Service
     public function getVolumeWeight($long, $width, $high)
     {
         $volume_weight = ($long * $width * $high) / $this->volumeWeightCoefficient * 1000;
+        
         return (float)$volume_weight;
     }
 
@@ -116,9 +118,10 @@ class Shipping extends Service
      * @return float 通过计算，得到在【基础货币】下的运费金额。
      * 本部分只针对csv类型的shipping进行计算。
      */
-    protected function actionGetShippingCostByCsv($shipping_method, $shippingConfig, $weight, $country, $region)
+    public function getShippingCostByCsv($shipping_method, $shippingConfig, $weight, $country, $region)
     {
         if (!$weight) {
+            
             return 0;
         }
         // 从配置中读取出来csv表格的数组信息（处理后的）。
@@ -132,6 +135,7 @@ class Shipping extends Service
         } elseif (isset($shippingArr['*']['*'])) {
             $priceData = $shippingArr['*']['*'];
         } else {
+            
             throw new InvalidConfigException('error,this country is config in csv table');
         }
         // 找到相应的配置后，是各个区间值，根据区间值，得到相应的运费。
@@ -145,17 +149,21 @@ class Shipping extends Service
                 if ($weight >= $csv_weight) {
                     $prev_weight = $csv_weight;
                     $prev_price  = $csv_price;
+                    
                     continue;
                 } else {
                     $last_price = $prev_price;
+                    
                     break;
                 }
             }
             if (!$last_price) {
                 $last_price = $csv_price;
             }
+            
             return $last_price;
         } else {
+            
             throw new InvalidConfigException('error,shipping info config is error');
         }
     }
@@ -172,7 +180,7 @@ class Shipping extends Service
      *  'baseCost'   => 11,
      * ]
      */
-    protected function actionGetShippingCost($method, $shippingInfo, $weight, $country, $region)
+    public function getShippingCost($method, $shippingInfo, $weight, $country, $region)
     {
         // 得到shipping计算的字符串公式
         $formula = $shippingInfo['formula'];
@@ -192,6 +200,7 @@ class Shipping extends Service
             //echo $formula;exit;
             $baseCost = eval("return $formula;");
             $currCost = Yii::$service->page->currency->getCurrentCurrencyPrice($baseCost);
+            
             return [
                 'currCost'  => Yii::$service->helper->format->number_format($currCost, 2),
                 'baseCost'  => Yii::$service->helper->format->number_format($baseCost, 2),
@@ -204,21 +213,24 @@ class Shipping extends Service
      * @proeprty $cartShippingMethod   购物车中的货运方式，这个是从购物车表中取出来的。
      * @return string 返回当前的货运方式。
      */
-    protected function actionGetCurrentShippingMethod($customShippingMethod, $cartShippingMethod, $country, $region, $weight)
+    public function getCurrentShippingMethod($customShippingMethod, $cartShippingMethod, $country, $region, $weight)
     {
         $available_method = $this->getAvailableShippingMethods($country, $region, $weight);
         if ($customShippingMethod) {
             if (isset($available_method[$customShippingMethod])) {
+                
                 return $customShippingMethod;
             }
         }
         if ($cartShippingMethod) {
             if (isset($available_method[$cartShippingMethod])) {
+                
                 return $cartShippingMethod;
             }
         }
         // 如果都不存在，则将可用物流中的第一个取出来$available_method
         foreach ($available_method as $method => $v) {
+            
             return $method;
         }
     }
@@ -227,7 +239,7 @@ class Shipping extends Service
      * @param $shipping_method | String
      * @return 得到货运方式的名字
      */
-    protected function actionGetShippingLabelByMethod($shipping_method)
+    public function getShippingLabelByMethod($shipping_method)
     {
         $s = $this->_shipping_methods[$shipping_method];
 
@@ -239,12 +251,14 @@ class Shipping extends Service
      * @return bool 发货方式
      * 判断前端传递的shipping method是否有效（做安全性验证）
      */
-    protected function actionIfIsCorrect($country, $region, $shipping_method, $weight)
+    public function ifIsCorrect($country, $region, $shipping_method, $weight)
     {
         $available_method = $this->getAvailableShippingMethods($country, $region, $weight);
         if (isset($available_method[$shipping_method]) && !empty($available_method[$shipping_method])) {
+            
             return true;
         } else {
+            
             return false;
         }
     }
@@ -259,6 +273,7 @@ class Shipping extends Service
     {
         $available_method = $this->getAvailableShippingMethods($countryCode, $region, $weight);
         foreach ($available_method as $method => $v) {
+            
             return $method;
         }
     }
@@ -289,14 +304,17 @@ class Shipping extends Service
                 foreach ($this->_shipping_methods as $shipping_method => $v) {
                     $countryLimit = isset($v['country']) ? $v['country'] : '';
                     if ($this->isCountryLimit($countryLimit, $countryCode)) {
+                        
                         continue;
                     }
                     // 如果是csv类型，查看在csv中是否存在
                     $formula = isset($v['formula']) ? $v['formula'] : '';
                     if ($formula === '') {
+                        
                         continue; // 代表shipping配置有问题，不可用
                     } elseif ($formula === 'csv') {
                         if ($this->isCsvCountryReginLimit($v, $countryCode, $region)) {
+                            
                             continue;
                         }
                     }
@@ -309,6 +327,7 @@ class Shipping extends Service
             }
             $this->_available_shipping[$c_key][$r_key][$w_key] = $availableShipping;
         }
+        
         return $this->_available_shipping[$c_key][$r_key][$w_key];
     }
     
@@ -343,6 +362,7 @@ class Shipping extends Service
         $commonDir = Yii::getAlias($this->shippingCsvDir);
         $csv = $commonDir.'/'.$shipping_method.'.csv';
         if (!file_exists($csv)) {
+            
             return false;
         }
         $fp = fopen($csv, 'r');
@@ -360,6 +380,7 @@ class Shipping extends Service
             $i++;
         }
         fclose($fp);
+        
         return $shippingCsvArr;
     }
     
@@ -377,14 +398,17 @@ class Shipping extends Service
             if ($type == 'allow') {
                 // 如果不存在于数组，则代表不允许
                 if (!in_array($countryCode, $code)) {
+                    
                     return true;
                 }
             } elseif ($type == 'not_allow') {
                 if (in_array($countryCode, $code)) {
+                    
                     return true;
                 }
             }
         }
+        
         return false;
     }
     
@@ -401,17 +425,20 @@ class Shipping extends Service
         if (!isset($csv_content['*']['*'])) {
             // 如果当前的国家对应的配置不存在，则不可用
             if (!isset($csv_content[$countryCode])) {
+                
                 return true;
             } elseif ($region) { // 如果参数传递的$region不为空
                 // 国家可用，如果不存在省市的通用配置
                 if (!isset($csv_content[$countryCode]['*'])) {
                     // 如果不存在相应省市的配置，则不可用
                     if (!isset($csv_content[$countryCode][$region])) {
+                        
                         return true;
                     }
                 }
             }
         }
+        
         return false;
     }
     
@@ -428,9 +455,11 @@ class Shipping extends Service
         foreach ($availableShipping as $method => $v) {
             $weightLimit = isset($v['weight']) ? $v['weight'] : '';
             if (isset($weightLimit['min']) && $weightLimit['min'] > $weight) {
+                
                 continue;
             }
             if (isset($weightLimit['max']) && $weightLimit['max'] < $weight) {
+                
                 continue;
             }
             $available_shipping[$method] = $v;

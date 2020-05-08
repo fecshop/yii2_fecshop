@@ -77,8 +77,10 @@ class Store extends Service
     {
         $appName = Yii::$app->params['appName'];
         if ($appName && in_array($appName, $this->apiAppNameArr)) {
+            
             return true;
         } else {
+            
             return false;
         }
     }
@@ -88,6 +90,7 @@ class Store extends Service
         $appServerArr = ['appserver'];
         $currentAppName = $this->getCurrentAppName();
         if (in_array($currentAppName, $appServerArr)) {
+            
             return true;
         }
 
@@ -107,6 +110,7 @@ class Store extends Service
     {
         $currentAppName = $this->getCurrentAppName();
         if ($this->isAppserver()) {
+            
             return $this->initAppserverCurrentStoreConfig();
         }
         $coll = Yii::$service->storeDomain->getCollByAppName($currentAppName);
@@ -219,7 +223,7 @@ class Store extends Service
      *	class property $currentStore will be set value $store_code.
      * @param \yii\web\Application $app
      */
-    protected function actionBootstrap($app)
+    public function bootstrap($app)
     {
         $host = explode('//', $app->getHomeUrl());
         $stores = $this->stores;
@@ -236,17 +240,12 @@ class Store extends Service
                         Yii::$service->store->currentLangName = $store['languageName'];
                         Yii::$service->page->translate->setLanguage($store['language']);
                     }
-                    //if (isset($store['theme']) && !empty($store['theme'])) {
-                    //    Yii::$service->store->currentTheme = $store['theme'];
-                    //}
                     // set local theme dir.
                     if (isset($store['localThemeDir']) && $store['localThemeDir']) {
-                        //Yii::$service->page->theme->localThemeDir = $store['localThemeDir'];
                         Yii::$service->page->theme->setLocalThemeDir($store['localThemeDir']);
                     }
                     // set third theme dir.
                     if (isset($store['thirdThemeDir']) && $store['thirdThemeDir']) {
-                        //Yii::$service->page->theme->thirdThemeDir = $store['thirdThemeDir'];
                         Yii::$service->page->theme->setThirdThemeDir($store['thirdThemeDir']);
                     }
                     // init store currency.
@@ -277,24 +276,19 @@ class Store extends Service
                                     Yii::$service->store->currentLang = $one['language'];
                                     Yii::$service->store->currentLangName = $one['languageName'];
                                     Yii::$service->page->translate->setLanguage($one['language']);
+                                    
                                     break;
                                 }
                             }
                         }
-
                     }
-                    //if (isset($headers['fecshop-currency']) && $headers['fecshop-currency']) {
-                    //    $currentC = Yii::$service->page->currency->getCurrentCurrency();
-                    //    if ($currentC != $headers['fecshop-currency']) {
-                    //        Yii::$service->page->currency->setCurrentCurrency($headers['fecshop-currency']);
-                    ///    }
-                    //}
+                    
                     break;
                 }
             }
         }
-
         if (!$init_complete) {
+            
             throw new InvalidValueException('this domain is not config in store service, you must config it in admin store config');
         }
     }
@@ -308,10 +302,12 @@ class Store extends Service
     protected function html5DeviceCheckAndRedirect($store_code, $store)
     {
         if (!isset($store['mobile'])) {
+            
             return;
         }
         $enable = isset($store['mobile']['enable']) ? $store['mobile']['enable'] : false;
         if (!$enable) {
+            
             return;
         }
         $condition = isset($store['mobile']['condition']) ? $store['mobile']['condition'] : false;
@@ -360,6 +356,7 @@ class Store extends Service
             }
         }
         header('Location:'.$redirectUrl);
+        
         exit;
     }
 
@@ -370,10 +367,12 @@ class Store extends Service
     {
         $store = $this->store;
         if (!isset($store['mobile'])) {
+            
             return;
         }
         $enable = isset($store['mobile']['enable']) ? $store['mobile']['enable'] : false;
         if (!$enable) {
+            
             return;
         }
         $condition = isset($store['mobile']['condition']) ? $store['mobile']['condition'] : false;
@@ -383,14 +382,17 @@ class Store extends Service
             $mobileDetect = Yii::$service->helper->mobileDetect;
             if (in_array('phone', $condition) && in_array('tablet', $condition)) {
                 if ($mobileDetect->isMobile()) {
+                    
                     return true;
                 }
             } elseif (in_array('phone', $condition)) {
                 if ($mobileDetect->isMobile() && !$mobileDetect->isTablet()) {
+                    
                     return true;
                 }
             } elseif (in_array('tablet', $condition)) {
                 if ($mobileDetect->isTablet()) {
+                    
                     return true;
                 }
             }
@@ -418,6 +420,7 @@ class Store extends Service
         }
         $redirectUrl = $host.$urlPath.'?'.$urlParam;
         header('Location:'.$redirectUrl);
+        
         exit;
     }
 
@@ -429,7 +432,7 @@ class Store extends Service
      * if lang attribute in current store language is empty , default language attribute will be return.
      * if attribute in default language value is empty, $attrVal will be return.
      */
-    protected function actionGetStoreAttrVal($attrVal, $attrName)
+    public function getStoreAttrVal($attrVal, $attrName)
     {
         $lang = $this->currentLangCode;
 
@@ -440,7 +443,7 @@ class Store extends Service
      * @return array
      *               get all store info, one item in array format is: ['storeCode' => 'store language'].
      */
-    protected function actionGetStoresLang()
+    public function getStoresLang()
     {
         $stores = $this->stores;
         $topLang = [];

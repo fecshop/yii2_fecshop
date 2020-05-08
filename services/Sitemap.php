@@ -37,7 +37,7 @@ class Sitemap extends Service
      * 对于sitemp.xml文件的访问，为了需要，您可以在nginx中做重新的指向。
      * sitemap的更多资料，您可以参看：http://www.fecshop.com/doc/fecshop-guide/instructions/cn-1.0/guide-fecshop_sitemap.html
      */
-    protected function actionBeginSiteMap()
+    public function beginSiteMap()
     {
         $this->initSiteMap();
         if (is_array($this->sitemapConfig) && !empty($this->sitemapConfig)) {
@@ -66,7 +66,7 @@ class Sitemap extends Service
     /**
      * sitemap 文件写入内容后的结束执行的函数。
      */
-    protected function actionEndSiteMap()
+    public function endSiteMap()
     {
         $this->initSiteMap();
         if (is_array($this->sitemapConfig) && !empty($this->sitemapConfig)) {
@@ -92,7 +92,7 @@ class Sitemap extends Service
     /**
      * 在sitemap文件中写入home部分的链接
      */
-    protected function actionHome()
+    public function home()
     {
         $this->initSiteMap();
         if (is_array($this->sitemapConfig) && !empty($this->sitemapConfig)) {
@@ -121,18 +121,19 @@ class Sitemap extends Service
     /**
      * 得到分类的总个数
      */
-    protected function actionCategorypagecount()
+    public function categorypagecount()
     {
         $this->initSiteMap();
         $coll = Yii::$service->category->coll();
         $count = $coll['count'];
+        
         echo ceil($count / $this->numPerPage);
     }
 
     /**
      * 在sitemap文件中写入分类部分的链接
      */
-    protected function actionCategory($pageNum)
+    public function category($pageNum)
     {
         $this->initSiteMap();
         if (is_array($this->sitemapConfig) && !empty($this->sitemapConfig)) {
@@ -173,18 +174,19 @@ class Sitemap extends Service
     /**
      * 得到产品的总个数
      */
-    protected function actionProductpagecount()
+    public function productpagecount()
     {
         $this->initSiteMap();
         $coll = Yii::$service->product->coll();
         $count = $coll['count'];
+        
         echo ceil($count / $this->numPerPage);
     }
 
     /**
      * 在sitemap文件中写入产品部分的链接
      */
-    protected function actionProduct()
+    public function product()
     {
         $this->initSiteMap();
         if (is_array($this->sitemapConfig) && !empty($this->sitemapConfig)) {
@@ -225,7 +227,7 @@ class Sitemap extends Service
     /**
      * page页的总个数
      */
-    protected function actionCmspagepagecount()
+    public function cmspagepagecount()
     {
         $this->initSiteMap();
         $coll = Yii::$service->cms->article->coll();
@@ -236,7 +238,7 @@ class Sitemap extends Service
     /**
      * 在sitemap文件中写入page部分的链接
      */
-    protected function actionCmspage()
+    public function cmspage()
     {
         $this->initSiteMap();
         if (is_array($this->sitemapConfig) && !empty($this->sitemapConfig)) {

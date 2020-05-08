@@ -47,48 +47,56 @@ class Admin extends Service
      * @return string 得到编辑器上传图片upload url
      */
     public function getXhEditorUploadImgUrl(){
+        
         return $this->xhEditorUploadImgUrl;
     }
     /**
      * @return string 得到编辑器上传图片允许的文件格式
      */
     public function getXhEditorUploadImgForamt(){
+        
         return $this->xhEditorUploadImgForamt;
     }
     /**
      * @return string 得到编辑器上传Flash upload url
      */
     public function getXhEditorUploadFlashUrl(){
+        
         return $this->xhEditorUploadFlashUrl;
     }
     /**
      * @return string 得到编辑器上传Flash允许的文件格式
      */
     public function getXhEditorUploadFlashFormat(){
+        
         return $this->xhEditorUploadFlashFormat;
     }
     /**
      * @return string 得到编辑器上传Link upload url
      */
     public function getXhEditorUploadLinkUrl(){
+        
         return $this->xhEditorUploadLinkUrl;
     }
     /**
      * @return string 得到编辑器上传Link允许的文件格式
      */
     public function getXhEditorUploadLinkFormat(){
+        
         return $this->xhEditorUploadLinkFormat;
     }
     /**
      * @return string 得到编辑器上传Media upload url
      */
     public function getXhEditorUploadMediaUrl(){
+        
         return $this->xhEditorUploadMediaUrl;
     }
     /**
      * @return string 得到编辑器上传Media允许的文件格式
      */
     public function getXhEditorUploadMediaFormat(){
+        
         return $this->xhEditorUploadMediaFormat;
     }
     /**
@@ -112,11 +120,13 @@ class Admin extends Service
                 $currentLangCode = Yii::$service->fecshoplang->defaultLangCode;
             }
             if (!$currentLangCode) {
+                
                 throw new InvalidConfigException('default lang code must config');
             }
             if ($this->setTranslateLang($currentLangCode)) {
                 $this->_currentLangCode = $currentLangCode;
             } else {
+                
                 throw new InvalidConfigException('lang code: '.$currentLangCode.' can not find in fecshoplang service config, you should add this language config');
             }
         }
@@ -126,6 +136,7 @@ class Admin extends Service
         if (!$this->_currentLangCode) {
             $this->initLangCode();
         }
+        
         return $this->_currentLangCode;
     }
     

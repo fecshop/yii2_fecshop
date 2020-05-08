@@ -46,12 +46,14 @@ class Cache extends Service
         $appName = Yii::$service->helper->getAppName();
         $cacheConfig = Yii::$app->store->get($appName.'_cache');
         if (!$cacheConfig || !is_array($cacheConfig)) {
+            
             return null;
         }
         if (isset($cacheConfig['allPageCache']) && $cacheConfig['allPageCache'] == Yii::$app->store->enable) {
-             $this->enable = true;
+            $this->enable = true;
         }
         $this->_cache_config = $cacheConfig;
+        
         return true;
     }
     public function init()
@@ -70,8 +72,10 @@ class Cache extends Service
         if ($this->enable && isset($this->_cache_config[$cacheConfigKey]) &&
             $this->_cache_config[$cacheConfigKey] == Yii::$app->store->enable
         ) {
+            
             return true;
         } else {
+            
             return false;
         }
     }
@@ -84,8 +88,10 @@ class Cache extends Service
     public function timeout($cacheKey)
     {
         if (isset($this->cacheConfig[$cacheKey]['timeout'])) {
+            
             return $this->cacheConfig[$cacheKey]['timeout'];
         } else {
+            
             return 0;
         }
     }
@@ -97,8 +103,10 @@ class Cache extends Service
     public function disableUrlParam($cacheKey)
     {
         if (isset($this->cacheConfig[$cacheKey]['disableUrlParam'])) {
+            
             return $this->cacheConfig[$cacheKey]['disableUrlParam'];
         } else {
+            
             return '';
         }
     }
@@ -111,8 +119,10 @@ class Cache extends Service
     public function cacheUrlParam($cacheKey)
     {
         if (isset($this->cacheConfig[$cacheKey]['cacheUrlParam'])) {
+            
             return $this->cacheConfig[$cacheKey]['cacheUrlParam'];
         } else {
+            
             return '';
         }
     }

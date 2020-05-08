@@ -46,15 +46,13 @@ class Fecshoplang extends Service
                 $this->allLangCode[$lang_name] = ['code' => $lang_code];
             }
         }
-        
-          
     }
     /**
      * @param $attrName|string  , attr name ,like  : tilte , description ,name etc..
      * @param $langCode|string , language 2 code, like :en ,fr ,es,
      *  get language child language attr, like: title_fr
      */
-    protected function actionGetLangAttrName($attrName, $langCode)
+    public function getLangAttrName($attrName, $langCode)
     {
         return $attrName.'_'.$langCode;
     }
@@ -63,18 +61,16 @@ class Fecshoplang extends Service
      * @param $attrName | String 属性名称
      * 得到默认语言的属性名称
      */
-    protected function actionGetDefaultLangAttrName($attrName)
+    public function getDefaultLangAttrName($attrName)
     {
         return $attrName.'_'.$this->defaultLangCode;
     }
 
-
-
-
-    protected function actionGetAdminLangCode()
+    public function getAdminLangCode()
     {
         if (!$this->_adminLangCode) {
             if (empty($this->adminLangCode) || !is_array($this->adminLangCode)) {
+                
                 return [];
             }
             if ($this->defaultLangCode) {
@@ -94,10 +90,11 @@ class Fecshoplang extends Service
     /**
      * 得到所有的语言简码，譬如：en,es,fr,zh,de等
      */
-    protected function actionGetAllLangCode()
+    public function getAllLangCode()
     {
         if (!$this->_allLangCode) {
             if (empty($this->allLangCode) || !is_array($this->allLangCode)) {
+                
                 return [];
             }
             if ($this->defaultLangCode) {
@@ -118,6 +115,7 @@ class Fecshoplang extends Service
     {
         $arr = [];
         if (empty($this->allLangCode) || !is_array($this->allLangCode)) {
+            
             return [];
         }
         foreach ($this->allLangCode as  $langName =>$codeInfo) {
@@ -134,10 +132,11 @@ class Fecshoplang extends Service
      * example getDefaultLangAttrVal(['title_en'=>'xx','title_fr'=>'yy'],'title');
      * 得到属性默认语言对应的值。上面是title属性默认语言的值。
      */
-    protected function actionGetDefaultLangAttrVal($attrVal, $attrName)
+    public function getDefaultLangAttrVal($attrVal, $attrName)
     {
         $defaultLangAttrName = $this->getDefaultLangAttrName($attrName);
         if (isset($attrVal[$defaultLangAttrName]) && !empty($attrVal[$defaultLangAttrName])) {
+            
             return $attrVal[$defaultLangAttrName];
         }
 
@@ -154,14 +153,16 @@ class Fecshoplang extends Service
      * if attribute in default language value is empty, '' will be return.
      * example getLangAttrVal(['title_en'=>'xx','title_fr'=>'yy'],'title','fr');
      */
-    protected function actionGetLangAttrVal($attrVal, $attrName, $langCode)
+    public function getLangAttrVal($attrVal, $attrName, $langCode)
     {
         $langAttrName = $this->getLangAttrName($attrName, $langCode);
         if (isset($attrVal[$langAttrName]) && !empty($attrVal[$langAttrName])) {
+            
             return $attrVal[$langAttrName];
         } else {
             $defaultLangAttrName = $this->getDefaultLangAttrName($attrName);
             if (isset($attrVal[$defaultLangAttrName]) && !empty($attrVal[$defaultLangAttrName])) {
+                
                 return $attrVal[$defaultLangAttrName];
             }
         }
@@ -188,11 +189,13 @@ class Fecshoplang extends Service
      * @return string , like  en ,fr ,es ,  if  $language is not exist in $this->allLangCode
      *                empty will be return.
      */
-    protected function actionGetLangCodeByLanguage($language)
+    public function getLangCodeByLanguage($language)
     {
         if (isset($this->allLangCode[$language])) {
+            
             return $this->allLangCode[$language]['code'];
         } else {
+            
             return '';
         }
     }

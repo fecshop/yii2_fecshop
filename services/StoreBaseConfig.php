@@ -57,6 +57,7 @@ class StoreBaseConfig extends Service
             
             return $one;
         } else {
+            
             return new $this->_modelName();
         }
     }
@@ -76,7 +77,6 @@ class StoreBaseConfig extends Service
         return null;
     }
     
-
     /*
      * example filter:
      * [
@@ -96,19 +96,7 @@ class StoreBaseConfig extends Service
         $query = $this->_model->find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
         $coll = $query->all();
-        //if (!empty($coll)) {
-           // foreach ($coll as $k => $one) {
-                //if (in_array($one['key'], $this->_serilizeAttr)) {
-                //    $one['key'] = unserialize($one)
-                //}
-                
-                //foreach ($this->_lang_attr as $attr) {
-                //    $one[$attr] = $one[$attr] ? unserialize($one[$attr]) : '';
-                //}
-                $coll[$k] = $one;
-            //}
-        //}
-        //var_dump($one);
+
         return [
             'coll' => $coll,
             'count'=> $query->limit(null)->offset(null)->count(),

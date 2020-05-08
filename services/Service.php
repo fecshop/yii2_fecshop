@@ -56,6 +56,7 @@ class Service extends BaseObject
 
             return $return;
         } else {
+            
             throw new InvalidCallException('fecshop service method is not exit.  '.get_class($this)."::$method");
         }
     }
@@ -73,9 +74,11 @@ class Service extends BaseObject
                 if (!isset($service['enableService']) || $service['enableService'] !== false) {
                     $this->_childService[$childServiceName] = Yii::createObject($service);
                 } else {
+                    
                     throw new InvalidConfigException('Child Service ['.$childServiceName.'] is disable in '.get_called_class().', you must config it! ');
                 }
             } else {
+                
                 throw new InvalidConfigException('Child Service ['.$childServiceName.'] is not find in '.get_called_class().', you must config it! ');
             }
         } 
@@ -124,6 +127,7 @@ class Service extends BaseObject
             list($logTrace, $isCalledByThis) = $this->debugBackTrace();
             // if function is called by $this ,not log it to mongodb.
             if ($isCalledByThis) {
+                
                 return;
             }
             $begin_microtime = $this->_beginCallTime;

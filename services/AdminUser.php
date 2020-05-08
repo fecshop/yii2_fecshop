@@ -33,7 +33,7 @@ class AdminUser extends Service
      * @param $data|array
      * 数组格式：['username'=>'xxx@xxx.com','password'=>'xxxx']
      */
-    protected function actionLogin($data)
+    public function login($data)
     {
         return Yii::$service->adminUser->userLogin->login($data);
     }

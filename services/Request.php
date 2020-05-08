@@ -53,6 +53,7 @@ class Request extends \yii\web\Request
                 $requestUri .= '?' . $_SERVER['QUERY_STRING'];
             }
         } else {
+            
             throw new InvalidConfigException('Unable to determine the request URI.');
         }
 
@@ -74,12 +75,9 @@ class Request extends \yii\web\Request
         if ($baseUrl) {
             $requestUriRelative = substr($requestUriRelative, strlen($baseUrl));
         }
-
-        //echo $requestUriRelative;exit;
         $urlKey = '';
         $urlParam = '';
         $urlParamSuffix = '';
-
         if (strstr($requestUriRelative, '#')) {
             list($urlNoSuffix, $urlParamSuffix) = explode('#', $requestUriRelative);
             if (strstr($urlNoSuffix, '?')) {
@@ -111,6 +109,7 @@ class Request extends \yii\web\Request
 
             return $baseUrl.$url;
         } else {
+            
             return $requestUri;
         }
     }
@@ -140,6 +139,7 @@ class Request extends \yii\web\Request
             'custom_url_key' => $urlKey,
         ])->asArray()->one();
         if ($UrlData['custom_url_key']) {
+            
             return $UrlData['origin_url'];
         }
     }

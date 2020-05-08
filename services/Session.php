@@ -111,6 +111,7 @@ class Session extends Service
             // 3.把 $this->_uuid 写入到 response 的header里面
             Yii::$app->response->getHeaders()->set($uuidName, $this->_uuid);
         }
+        
         return $this->_uuid;
     }
     

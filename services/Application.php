@@ -114,9 +114,11 @@ class Application
                 if (!isset($service['enableService']) || $service['enableService']) {
                     $this->_childService[$childServiceName] = Yii::createObject($service);
                 } else {
+                    
                     throw new InvalidConfigException('Child Service ['.$childServiceName.'] is disabled in '.get_called_class().', you must enable it! ');
                 }
             } else {
+                
                 throw new InvalidConfigException('Child Service ['.$childServiceName.'] does not exist in '.get_called_class().', you must config it! ');
             }
         }

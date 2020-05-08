@@ -75,12 +75,12 @@ class Category extends Service
         $this->_category = new $currentService();
     }
     
-    protected function actionGetCategoryEnableStatus()
+    public function getCategoryEnableStatus()
     {
         return $this->_category->getCategoryEnableStatus();
     }
 
-    protected function actionGetCategoryMenuShowStatus()
+    public function getCategoryMenuShowStatus()
     {
         return $this->_category->getCategoryMenuShowStatus();
     }
@@ -88,7 +88,7 @@ class Category extends Service
     /**
      * 得到当前的category service 对应的主键名称，譬如如果是mongo，返回的是 _id.
      */
-    protected function actionGetPrimaryKey()
+    public function getPrimaryKey()
     {
         return $this->_category->getPrimaryKey();
     }
@@ -96,7 +96,7 @@ class Category extends Service
     /**
      * 得到category model的全名.
      */
-    protected function actionGetModelName()
+    public function getModelName()
     {
         return get_class($this->_category->getByPrimaryKey());
     }
@@ -105,7 +105,7 @@ class Category extends Service
      * @param $primaryKey | String or Int , 主键
      * 通过主键，得到category info
      */
-    protected function actionGetByPrimaryKey($primaryKey)
+    public function getByPrimaryKey($primaryKey)
     {
         return $this->_category->getByPrimaryKey($primaryKey);
     }
@@ -114,12 +114,12 @@ class Category extends Service
      * @param $urlKey | String or Int , Url Key
      * 通过主键，得到category info
      */
-    protected function actionGetByUrlKey($urlKey)
+    public function getByUrlKey($urlKey)
     {
         return $this->_category->getByUrlKey($urlKey);
     }
 
-    protected function actionCollCount($filter = '')
+    public function collCount($filter = '')
     {
         return $this->_category->collCount($filter);
     }
@@ -140,7 +140,7 @@ class Category extends Service
      *      'asArray' => true,
      * ]
      */
-    protected function actionColl($filter = [])
+    public function coll($filter = [])
     {
         return $this->_category->coll($filter);
     }
@@ -154,16 +154,12 @@ class Category extends Service
     {
         return $this->_category->findOne($where);
     }
-    
-    
-    
-
     /**
      *  得到分类的树数组。
      *  数组中只有  id  name(default language), child(子分类) 等数据。
      *  目前此函数仅仅用于后台对分类的编辑使用。 appadmin.
      */
-    protected function actionGetTreeArr($rootCategoryId = 0, $lang = '', $appserver = false, $level = 1)
+    public function getTreeArr($rootCategoryId = 0, $lang = '', $appserver = false, $level = 1)
     {
         return $this->_category->getTreeArr($rootCategoryId, $lang, $appserver);
     }
@@ -173,7 +169,7 @@ class Category extends Service
      * @param $originUrlKey|string , 分类的在修改之前的url key.（在数据库中保存的url_key字段，如果没有则为空）
      * 保存分类，同时生成分类的伪静态url（自定义url），如果按照name生成的url或者自定义的urlkey存在，系统则会增加几个随机数字字符串，来增加唯一性。
      */
-    protected function actionSave($one, $originUrlKey = 'catalog/category/index')
+    public function save($one, $originUrlKey = 'catalog/category/index')
     {
         return $this->_category->save($one, $originUrlKey);
     }
@@ -190,7 +186,7 @@ class Category extends Service
      * 通过主键值找到分类，并且删除分类在url rewrite表中的记录
      * 查看这个分类是否存在子分类，如果存在子分类，则删除所有的子分类，以及子分类在url rewrite表中对应的数据。
      */
-    protected function actionRemove($id)
+    public function remove($id)
     {
         return $this->_category->remove($id);
     }
@@ -202,7 +198,7 @@ class Category extends Service
      * 譬如一个分类为三级分类，将他的parent_id传递给这个函数，那么，他返回的数组信息为[一级分类的信息（name，url_key），二级分类的信息（name，url_key）].
      * 目前这个功能用于前端分类页面的面包屑导航。
      */
-    protected function actionGetAllParentInfo($parent_id)
+    public function getAllParentInfo($parent_id)
     {
         return $this->_category->getAllParentInfo($parent_id);
     }
@@ -217,7 +213,7 @@ class Category extends Service
      * 4.依次递归。
      * 具体的显示效果，请查看appfront 对应的分类页面。
      */
-    protected function actionGetFilterCategory($category_id, $parent_id)
+    public function getFilterCategory($category_id, $parent_id)
     {
         return $this->_category->getFilterCategory($category_id, $parent_id);
     }
