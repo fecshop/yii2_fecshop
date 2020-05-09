@@ -212,7 +212,7 @@ class Email extends Service
      *	'senderName'=> $senderName,
      * ]
      * @param $mailerConfigParam | array or String，对于该参数的配置，
-     * 您可以参看上面的函数 function actionMailer($mailerConfigParam = '') 或者到 @fecshop/config/services/Email.php参看 $mailerConfig的配置
+     * 您可以参看上面的函数 function mailer($mailerConfigParam = '') 或者到 @fecshop/config/services/Email.php参看 $mailerConfig的配置
      * 该函数用于发送邮件.
      */
     public function send($sendInfo, $mailerConfigParam = '')

@@ -69,7 +69,7 @@ class Product extends Service
     }
 
     /**
-     * @param $filter | Array    和上面的函数 actionColl($filter) 类似。
+     * @param $filter | Array    和上面的函数 coll($filter) 类似。
      */
     public function getFrontList($filter)
     {

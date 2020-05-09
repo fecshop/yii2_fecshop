@@ -97,7 +97,7 @@ class NewsletterMysqldb extends Service implements NewsletterInterface
      * @return bool
      *              订阅邮件
      */
-    protected function actionSubscribe($emailAddress, $isRegister = false)
+    public function subscribe($emailAddress, $isRegister = false)
     {
         if (!$emailAddress) {
             Yii::$service->helper->errors->add('newsletter email address is empty');

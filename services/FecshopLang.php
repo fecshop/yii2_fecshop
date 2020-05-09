@@ -176,7 +176,7 @@ class Fecshoplang extends Service
      * @return 当前store 语言对应的值。
      */
     /*
-    protected function actionGetCurrentStoreAttrVal($attrVal,$attrName){
+    public function getCurrentStoreAttrVal($attrVal,$attrName){
         $langCode = Yii::$service->store->currentLangCode ;
         if($langCode){
             return $this->getLangAttrVal($attrVal,$attrName,$langCode);

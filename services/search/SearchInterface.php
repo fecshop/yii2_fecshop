@@ -17,5 +17,5 @@ namespace fecshop\services\search;
  */
 interface SearchInterface
 {
-    //protected function actionInitFullSearchIndex();
+    //public function initFullSearchIndex();
 }
