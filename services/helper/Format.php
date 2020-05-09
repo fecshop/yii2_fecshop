@@ -42,6 +42,8 @@ class Format extends Service
             $str = date("Y-m-d", strtotime("-$i day"));
             $arr[$str] = 0;
         }
+        
         return $arr;
     }
+    
 }

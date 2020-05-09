@@ -27,8 +27,6 @@ class AttrMysqldb extends Service implements AttrInterface
 
     protected $_attrModel;
     
-    
-    
     public function init()
     {
         parent::init();
@@ -40,8 +38,6 @@ class AttrMysqldb extends Service implements AttrInterface
         return 'id';
     }
     
-    
-
     /**
      * 得到分类激活状态的值
      */
@@ -51,19 +47,17 @@ class AttrMysqldb extends Service implements AttrInterface
         return $model::STATUS_ENABLE;
     }
     
-    
     public function getByPrimaryKey($primaryKey = null)
     {
         if ($primaryKey) {
             $one = $this->_attrModel->findOne($primaryKey);
             
             return $one;
-            //return $this->unserializeData($one) ;
         } else {
+            
             return new $this->_attrModel();
         }
     }
-    
     
     /*
      * example filter:
@@ -85,10 +79,7 @@ class AttrMysqldb extends Service implements AttrInterface
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
         
         $coll = $query->all();
-        //$arr = [];
-        //foreach ($coll as $one) {
-        //    $arr[] = $this->unserializeData($one) ;
-        //}
+        
         return [
             'coll' => $coll,
             'count'=> $query->limit(null)->offset(null)->count(),
@@ -143,7 +134,6 @@ class AttrMysqldb extends Service implements AttrInterface
     
     public function getActiveAllColl()
     {
-        // attribute Group
         $filter = [
             'where' => [
                 ['status' => $this->getEnableStatus()]
@@ -153,7 +143,6 @@ class AttrMysqldb extends Service implements AttrInterface
         ];
         $query = $this->_attrModel->find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
-        
         $coll = $query->all();
         if (is_array($coll)) {
             foreach ($coll as $k => $one) {
@@ -161,11 +150,11 @@ class AttrMysqldb extends Service implements AttrInterface
                     $coll[$k]['display_data'] = unserialize($one['display_data']);
                 }
             }
+            
             return $coll;
         }
         
         return null;
-        
     }
     
 }

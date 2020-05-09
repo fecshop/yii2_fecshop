@@ -125,7 +125,7 @@ class Favorite extends Service
      * 	'asArray' => true,
      * ]
      */
-    public function actionList($filter)
+    public function list($filter)
     {
         return $this->_favorite->list($filter);
     }

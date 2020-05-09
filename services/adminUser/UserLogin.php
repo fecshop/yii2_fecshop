@@ -34,7 +34,7 @@ class UserLogin extends Service
      * @param $data|array
      * 数组格式：['username'=>'xxx@xxx.com','password'=>'xxxx']
      */
-    public function actionLogin($data)
+    public function login($data)
     {
         $model = new $this->_adminUserLoginModelName();
         $model->username    = $data['username'];
@@ -67,6 +67,7 @@ class UserLogin extends Service
                 $access_token_created_at = $identity->access_token_created_at;
                 $timeout = Yii::$service->session->timeout;
                 if ($access_token_created_at + $timeout > time()) {
+                    
                     return $accessToken;
                 }
             }
@@ -83,8 +84,10 @@ class UserLogin extends Service
             $identity->access_token_created_at = time();
             $identity->save();
             $this->setHeaderAccessToken($identity->access_token);
+            
             return $identity->access_token;
         }
+        
         return null;
     }
 
@@ -94,8 +97,10 @@ class UserLogin extends Service
     {
         if ($accessToken) {
             Yii::$app->response->getHeaders()->set('access-token', $accessToken);
+            
             return true;
         }
+        
         return false;
     }
 
@@ -125,9 +130,11 @@ class UserLogin extends Service
                         $identity->access_token_created_at = time();
                         $identity->save();
                     }
+                    
                     return $identity;
                 } else {
                     $this->logoutByAccessToken();
+                    
                     return false;
                 }
             }

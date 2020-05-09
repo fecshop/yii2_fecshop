@@ -22,7 +22,7 @@ class BestSell extends Service
     /**
      *	得到全部产品中热销的产品
      */
-    protected function actionGetCategoryProduct()
+    public function getCategoryProduct()
     {
         return 'category best sell product';
     }
@@ -30,7 +30,7 @@ class BestSell extends Service
     /**
      *	得到全部产品中热销的产品
      */
-    protected function actionGetProduct()
+    public function getProduct()
     {
     }
 }

@@ -23,16 +23,15 @@ use Yii;
  * @property \fecshop\services\product\Stock $stock stock sub-service of product service
  *
  * @method getByPrimaryKey($primaryKey) get product model by primary key
- * @see \fecshop\services\Product::actionGetByPrimaryKey()
+ * @see \fecshop\services\Product::getByPrimaryKey()
  * @method getEnableStatus() get enable status
- * @see \fecshop\services\Product::actionGetEnableStatus()
+ * @see \fecshop\services\Product::getEnableStatus()
  *
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
 class AttrGroup extends Service
 {
-    
     /**
      * $storagePrex , $storage , $storagePath 为找到当前的storage而设置的配置参数
      * 可以在配置中更改，更改后，就会通过容器注入的方式修改相应的配置值
@@ -51,16 +50,10 @@ class AttrGroup extends Service
      */
     protected $_attrGroup;
 
-
     public function init()
     {
         parent::init();
         // 从数据库配置中得到值, 设置成当前service存储，是Mysqldb 还是 Mongodb
-        //$config = Yii::$app->store->get('service_db', 'category_and_product');
-        //$this->storage = 'ProductMysqldb';
-        //if ($config == Yii::$app->store->serviceMongodbName) {
-        //    $this->storage = 'ProductMongodb';
-        //}
         $currentService = $this->getStorageService($this);
         $this->_attrGroup = new $currentService();
     }
@@ -80,7 +73,7 @@ class AttrGroup extends Service
         $this->_attrGroup = new $currentService();
     }
 
-    protected function actionGetEnableStatus()
+    public function getEnableStatus()
     {
         return $this->_attrGroup->getEnableStatus();
     }
@@ -88,7 +81,7 @@ class AttrGroup extends Service
     /**
      * get artile's primary key.
      */
-    protected function actionGetPrimaryKey()
+    public function getPrimaryKey()
     {
         return $this->_attrGroup->getPrimaryKey();
     }
@@ -96,12 +89,12 @@ class AttrGroup extends Service
     /**
      * get artile model by primary key.
      */
-    protected function actionGetByPrimaryKey($primaryKey)
+    public function getByPrimaryKey($primaryKey)
     {
         return $this->_attrGroup->getByPrimaryKey($primaryKey);
     }
     
-    protected function actionColl($filter = '')
+    public function coll($filter = '')
     {
         return $this->_attrGroup->coll($filter);
     }
@@ -111,12 +104,12 @@ class AttrGroup extends Service
      * @param $originUrlKey|string , article origin url key.
      * save $data to cms model,then,add url rewrite info to system service urlrewrite.
      */
-    protected function actionSave($one)
+    public function save($one)
     {
         return $this->_attrGroup->save($one);
     }
 
-    protected function actionRemove($ids)
+    public function remove($ids)
     {
         return $this->_attrGroup->remove($ids);
     }
@@ -124,7 +117,6 @@ class AttrGroup extends Service
     public function getActiveAllColl()
     {
         return $this->_attrGroup->getActiveAllColl();
-        
     }
     
     

@@ -58,7 +58,7 @@ class Translate extends Service
      *
      * @param string $language the language to be set.
      */
-    protected function actionSetLanguage($language)
+    public function setLanguage($language)
     {
         Yii::$app->language = $language;
     }

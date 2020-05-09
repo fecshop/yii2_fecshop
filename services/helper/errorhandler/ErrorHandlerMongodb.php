@@ -73,6 +73,7 @@ class ErrorHandlerMongodb extends Service implements ErrorHandlerInterface
         $model->request_info = $req_info;
         $model->trace_string = $trace_string;
         $model->save();
+        
         return (string)$model[$this->getPrimaryKey()];
     }
     
@@ -82,6 +83,7 @@ class ErrorHandlerMongodb extends Service implements ErrorHandlerInterface
     public function getByPrimaryKey($primaryKey)
     {
         if ($primaryKey) {
+            
             return $this->_errorHandlerModel->findOne($primaryKey);
         }
     }
@@ -110,6 +112,7 @@ class ErrorHandlerMongodb extends Service implements ErrorHandlerInterface
                 $coll[$k] = $one;
             }
         }
+        
         return [
             'coll' => $coll,
             'count'=> $query->limit(null)->offset(null)->count(),

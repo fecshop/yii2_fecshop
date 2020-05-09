@@ -18,4 +18,5 @@ namespace fecshop\services\extension;
 interface UpgradeInterface
 {
     public function run($version);
+    
 }

@@ -54,6 +54,7 @@ class Db extends Service
             $user_id = CUser::getCurrentUserId();
         }
         if (!$user_id) {
+            
             return;
         }
         $coll = $this->_logModel->find()->where([

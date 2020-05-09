@@ -51,7 +51,7 @@ class Coupon extends Service
         list($this->_couponUsageModelName, $this->_couponUsageModel) = Yii::mapGet($this->_couponUsageModelName);
     }
     
-    protected function actionGetPrimaryKey()
+    public function getPrimaryKey()
     {
         return 'coupon_id';
     }
@@ -61,13 +61,15 @@ class Coupon extends Service
      * @return Object($this->_couponModel)
      *                          通过id找到cupon的对象
      */
-    protected function actionGetByPrimaryKey($primaryKey)
+    public function getByPrimaryKey($primaryKey)
     {
         $one = $this->_couponModel->findOne($primaryKey);
         $primaryKey = $this->getPrimaryKey();
         if ($one[$primaryKey]) {
+            
             return $one;
         } else {
+            
             return new $this->_couponModelName;
         }
     }
@@ -77,7 +79,7 @@ class Coupon extends Service
      * @param $coupon_id | Int
      * 通过customer_id 和 coupon_id得到 Coupon Usage Model.
      */
-    protected function actionGetCouponUsageModel($customer_id = '', $coupon_id = '')
+    public function getCouponUsageModel($customer_id = '', $coupon_id = '')
     {
         if (!$this->_coupon_usage_model) {
             if (!$customer_id) {
@@ -98,6 +100,7 @@ class Coupon extends Service
             }
         }
         if ($this->_coupon_usage_model) {
+            
             return $this->_coupon_usage_model;
         }
     }
@@ -106,7 +109,7 @@ class Coupon extends Service
      * @param $coupon_code | String
      * 根据 coupon_code 得到 coupon model
      */
-    protected function actionGetCouponModel($coupon_code = '')
+    public function getCouponModel($coupon_code = '')
     {
         if (!$this->_coupon_model) {
             if (!$coupon_code) {
@@ -120,6 +123,7 @@ class Coupon extends Service
             }
         }
         if ($this->_coupon_model) {
+            
             return $this->_coupon_model;
         }
     }
@@ -141,11 +145,12 @@ class Coupon extends Service
      * 	'asArray' => true,
      * ]
      */
-    protected function actionColl($filter = '')
+    public function coll($filter = '')
     {
         $query = $this->_couponModel->find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
         $coll = $query->all();
+        
         return [
             'coll' => $coll,
             'count'=> $query->limit(null)->offset(null)->count(),
@@ -156,7 +161,7 @@ class Coupon extends Service
      * @param $one|array , save one data .
      * @return int 保存coupon成功后，返回保存的id。
      */
-    protected function actionSave($one)
+    public function save($one)
     {
         $time = time();
         $primaryKey = $this->getPrimaryKey();
@@ -209,7 +214,7 @@ class Coupon extends Service
      *              如果传入的是id数组，则删除多个
      *              如果传入的是Int，则删除一个coupon
      */
-    protected function actionRemove($ids)
+    public function remove($ids)
     {
         if (!$ids) {
             Yii::$service->helper->errors->add('remove id is empty');
@@ -264,12 +269,7 @@ class Coupon extends Service
                     $this->_customer_id = Yii::$app->user->identity->id;
                 }
             }
-            // $this->getCouponUsageModel();
-            // $this->getCouponModel();
-
-            // $this->_coupon_code
             $this->_coupon_code = $coupon_code;
-
             $this->_useCouponInit = 1;
         }
     }
@@ -288,6 +288,7 @@ class Coupon extends Service
                 // 未过期
                 if ($expiration_date > time()) {
                     if ($isGetDiscount) {
+                        
                         return true;
                     }
                     $couponUsageModel = $this->getCouponUsageModel();
@@ -298,6 +299,7 @@ class Coupon extends Service
                     $users_per_customer = $couponModel['users_per_customer'];
                     // 次数限制
                     if ($times_used < $users_per_customer) {
+                        
                         return true;
                     } else {
                         Yii::$service->helper->errors->add('The coupon has exceeded the maximum number of uses');
@@ -305,10 +307,9 @@ class Coupon extends Service
                 } else {
                     Yii::$service->helper->errors->add('coupon is expired');
                 }
-            } else {
-                //Yii::$service->helper->errors->add("coupon is not exist");
             }
         }
+        
         return false;
     }
 
@@ -317,7 +318,7 @@ class Coupon extends Service
      * @param $dc_price | Float 总价格
      * 根据优惠券和总价格，计算出来打折后的价格。譬如原来10元，打八折后，是8元。
      */
-    protected function actionGetDiscount($coupon_code, $dc_price)
+    public function getDiscount($coupon_code, $dc_price)
     {
         $discount_cost = 0;
         $this->useCouponInit($coupon_code);
@@ -329,10 +330,8 @@ class Coupon extends Service
             //echo $conditions.'##'.$dc_price;;exit;
             if ($conditions <= $dc_price) {
                 if ($type == $this->coupon_type_percent) { // 百分比
-//                    $base_discount_cost = $discount / 100 * $dc_price;
                     $base_discount_cost = (1-$discount / 100) * $dc_price;
                 } elseif ($type == $this->coupon_type_direct) { // 直接折扣
-//                    $base_discount_cost = $dc_price - $discount;
                     $base_discount_cost = $discount;
                 }
                 $curr_discount_cost = Yii::$service->page->currency->getCurrentCurrencyPrice($base_discount_cost);
@@ -377,6 +376,7 @@ class Coupon extends Service
                         'coupon_id' => $c_model['coupon_id'],
                     ];
                     $result = $this->_couponModel->getDb()->createCommand($sql, $data)->execute();
+                    
                     return true;
                 } elseif ($type == 'cancel') {
                     $couponModel = $this->getCouponModel();
@@ -408,7 +408,7 @@ class Coupon extends Service
      * 如果当前购物车没有使用优惠券，则检查优惠券是否可以使用
      * 如果优惠券可以使用，则使用优惠券进行打折。更新购物车信息。
      */
-    protected function actionAddCoupon($coupon_code)
+    public function addCoupon($coupon_code)
     {
         $this->useCouponInit($coupon_code);
 
@@ -426,22 +426,14 @@ class Coupon extends Service
                 if ($dc_price > $conditions) {
                     // 更新购物侧的coupon 和优惠券的使用情况。
                     // 在service中不要出现事务等操作。在调用层使用。
-                    //$innerTransaction = Yii::$app->db->beginTransaction();
-                    //try {
                     $set_status = Yii::$service->cart->quote->setCartCoupon($coupon_code);
                     $up_status = $this->updateCouponUse('add');
                     if ($set_status && $up_status) {
-                        //$innerTransaction->commit();
+                        
                         return true;
                     } else {
                         Yii::$service->helper->errors->add('add coupon fail');
                     }
-                    //Yii::$service->helper->errors->add('add coupon fail');
-                        //$innerTransaction->rollBack();
-                    //} catch (\Exception $e) {
-                        //Yii::$service->helper->errors->add('add coupon fail');
-                        //$innerTransaction->rollBack();
-                    //}
                 } else {
                     Yii::$service->helper->errors->add('The coupon can not be used if the product amount in the shopping cart is less than {conditions} dollars', ['conditions' => $conditions]);
                 }
@@ -455,7 +447,7 @@ class Coupon extends Service
      * @param $coupon_code | String
      * 取消优惠券
      */
-    protected function actionCancelCoupon($coupon_code)
+    public function cancelCoupon($coupon_code)
     {
         $this->useCouponInit($coupon_code);
         if ($this->_customer_id) {
@@ -464,6 +456,7 @@ class Coupon extends Service
                 $up_status = $this->updateCouponUse('cancel');
                 $cancel_status = Yii::$service->cart->quote->cancelCartCoupon($coupon_code);
                 if ($up_status && $cancel_status) {
+                    
                     return true;
                 }
             }

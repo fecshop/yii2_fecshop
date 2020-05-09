@@ -87,8 +87,6 @@ class Quote extends Service
                     $this->_cart_id = $cart_id;
                 }
             }
-            
-            
         }
 
         return $this->_cart_id;
@@ -115,7 +113,6 @@ class Quote extends Service
             $cart->customer_address_city    = $address['city'];
             $cart->customer_address_state   = $address['state'];
             $cart->customer_address_zip     = $address['zip'];
-
             $cart->shipping_method          = $shipping_method;
             $cart->payment_method           = $payment_method;
 
@@ -246,13 +243,12 @@ class Quote extends Service
      * 设置cart_id类变量以及session中记录当前cartId的值
      * Cart的session的超时时间由session组件决定。
      */
-    protected function actionSetCartId($cart_id)
+    public function setCartId($cart_id)
     {
         $this->_cart_id = $cart_id;
         if (!Yii::$service->store->isAppserver()) {
             Yii::$service->session->set(self::SESSION_CART_ID, $cart_id);
         }
-        
     }
 
     /**
@@ -260,17 +256,16 @@ class Quote extends Service
      * 对于active的产品，在支付成功后，这些产品从购物车清楚
      * 而对于noActive产品，这些产品并没有支付，因而在购物车中保留。
      */
-    protected function actionClearCart()
+    public function clearCart()
     {
-        //Yii::$service->session->remove(self::SESSION_CART_ID);
-        Yii::$service->cart->quoteItem->removeNoActiveItemsByCartId();
+        return Yii::$service->cart->quoteItem->removeNoActiveItemsByCartId();
     }
 
     /**
      * 初始化创建cart信息，
      * 在用户的第一个产品加入购物车时，会在数据库中创建购物车.
      */
-    protected function actionCreateCart()
+    public function createCart()
     {
         $myCart = new $this->_cartModelName;
         $myCart->store = Yii::$service->store->currentStore;
@@ -301,68 +296,6 @@ class Quote extends Service
         $this->setCart($this->_cartModel->findOne($cart_id));
     }
 
-    /** 该函数已经废弃
-     * 购物车数据中是否含有address_id，address_id，是登录用户才会有的。
-     */
-    /*
-    public function hasAddressId()
-    {
-        $cart = $this->getCart();
-        $address_id = $cart['customer_address_id'];
-        if ($address_id) {
-            return true;
-        }
-    }
-    */
-
-    /**
-     * 得到购物车中的用户地址信息.
-     * @deprecated 该函数已经废弃
-     */
-    /*
-    public function getCartAddress()
-    {
-        $email = '';
-        $first_name = '';
-        $last_name = '';
-        if (!Yii::$app->user->isGuest) {
-            $identity = Yii::$app->user->identity;
-            $email = isset($identity['email']) ? $identity['email'] : '';
-            $first_name = isset($identity['first_name']) ? $identity['first_name'] : '';
-            $last_name = isset($identity['last_name']) ? $identity['last_name'] : '';
-        }
-        $cart = $this->getCurrentCart();
-        $customer_email = isset($cart['customer_email']) ? $cart['customer_email'] : '';
-        $customer_firstname = isset($cart['customer_firstname']) ? $cart['customer_firstname'] : '';
-        $customer_lastname = isset($cart['customer_lastname']) ? $cart['customer_lastname'] : '';
-        $customer_telephone = isset($cart['customer_telephone']) ? $cart['customer_telephone'] : '';
-        $customer_address_country = isset($cart['customer_address_country']) ? $cart['customer_address_country'] : '';
-        $customer_address_state = isset($cart['customer_address_state']) ? $cart['customer_address_state'] : '';
-        $customer_address_city = isset($cart['customer_address_city']) ? $cart['customer_address_city'] : '';
-        $customer_address_zip = isset($cart['customer_address_zip']) ? $cart['customer_address_zip'] : '';
-        $customer_address_street1 = isset($cart['customer_address_street1']) ? $cart['customer_address_street1'] : '';
-        $customer_address_street2 = isset($cart['customer_address_street2']) ? $cart['customer_address_street2'] : '';
-
-        $customer_email = $customer_email ? $customer_email : $email;
-        $customer_firstname = $customer_firstname ? $customer_firstname : $first_name;
-        $customer_lastname = $customer_lastname ? $customer_lastname : $last_name;
-
-        return [
-            'first_name'    => $customer_firstname,
-            'last_name'    => $customer_lastname,
-            'email'        => $customer_email,
-            'telephone'    => $customer_telephone,
-            'country' => $customer_address_country,
-            'state' => $customer_address_state,
-            'city' => $customer_address_city,
-            'zip' => $customer_address_zip,
-            'street1' => $customer_address_street1,
-            'street2' => $customer_address_street2,
-
-        ];
-    }
-    */
-
     /**
      * @param $activeProduct | boolean , 是否只要active的产品
      * @param $shipping_method | String  传递的货运方式
@@ -381,6 +314,7 @@ class Quote extends Service
         if (!isset($this->cartInfo[$cartInfoKey])) {
             $cart_id = $this->getCartId();
             if (!$cart_id) {
+                
                 return false;
             }
             $cart = $this->getCart();
@@ -389,6 +323,7 @@ class Quote extends Service
             // 购物车中active状态的产品个数
             $items_count = $cart['items_count'];
             if ($items_count <=0 && $items_all_count <= 0) {
+                
                 return false;
             }
             $coupon_code = $cart['coupon_code'];
@@ -403,9 +338,6 @@ class Quote extends Service
                 $product_total = $cart_product_info['product_total'];
                 $base_product_total = $cart_product_info['base_product_total'];
                 $product_qty_total = $cart_product_info['product_qty_total'];
-                //if (!$shipping_method) {
-                //    $shipping_method = Yii::$service->shipping->getDefaultShippingMethod($country,$region,$product_weight);
-                //}
                 if (is_array($products) && !empty($products)) {
                     $currShippingCost = 0;
                     $baseShippingCost = 0;
@@ -501,6 +433,7 @@ class Quote extends Service
     public function getCouponCost($base_product_total, $coupon_code)
     {
         $dc_discount = Yii::$service->cart->coupon->getDiscount($coupon_code, $base_product_total);
+        
         return $dc_discount;
     }
 
@@ -595,6 +528,7 @@ class Quote extends Service
         if ($customer_id) {
             $one = $this->_cartModel->findOne(['customer_id' => $customer_id]);
             if ($one['cart_id']) {
+                
                 return $one;
             }
         }

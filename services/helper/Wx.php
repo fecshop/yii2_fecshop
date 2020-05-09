@@ -34,6 +34,7 @@ class Wx extends Service
         parent::init();
         $wxpayConfigFile = Yii::getAlias($this->configFile);
         if (!is_file($wxpayConfigFile)) {
+            
             throw new InvalidConfigException('wxpay config file:['.$wxpayConfigFile.'] is not exist');
         }
         $appId = Yii::$app->store->get('payment_wxpay', 'wechat_micro_app_id' );
@@ -44,13 +45,11 @@ class Wx extends Service
         define('WX_APP_SECRET', $appSecret);
         define('WX_MCH_KEY', $mchKey);
         define('WX_MCH_ID', $mchId);
-        
         require_once($wxpayConfigFile);
         // 通过上面的小程序，设置配置信息 
         $this->microProgramAppId = \WxPayConfig::APPID;
         $this->microProgramSecret = \WxPayConfig::APPSECRET;
     }
-    
     
     /**
      * @param $code | string, 微信登陆的code
@@ -62,17 +61,14 @@ class Wx extends Service
         $apiId = $this->microProgramAppId;
         $secret = $this->microProgramSecret;
         $grant_type = 'authorization_code';
-        
         $url = $this->wxApiBaseUrl .  $urlKey . "?appid=$apiId&secret=$secret&js_code=$code&grant_type=$grant_type";
-        //echo $url; exit;
         $returnStr =  \fec\helpers\CApi::getCurlData($url);
         $wxUserInfo = json_decode($returnStr, true);
         if (!isset($wxUserInfo['session_key']) || !isset($wxUserInfo['openid']) ) {
+            
             return null;
         }
-        // 保存到session
-        //Yii::$service->helper->wx->setWxSessionKeyAndOpenid($wxUserInfo['session_key'], $wxUserInfo['openid']);
-            
+        
         return $wxUserInfo;
     }
     

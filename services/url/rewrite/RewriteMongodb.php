@@ -44,6 +44,7 @@ class RewriteMongodb extends Service implements RewriteInterface
             'custom_url_key' => $urlKey,
         ])->asArray()->one();
         if ($UrlData['custom_url_key']) {
+            
             return $UrlData['origin_url'];
         }
     }
@@ -56,8 +57,10 @@ class RewriteMongodb extends Service implements RewriteInterface
     public function getByPrimaryKey($primaryKey)
     {
         if ($primaryKey) {
+            
             return $this->_urlRewriteModel->findOne($primaryKey);
         } else {
+            
             return new $this->_urlRewriteModelName();
         }
     }

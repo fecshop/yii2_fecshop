@@ -17,7 +17,7 @@ namespace fecshop\services;
  */
 class Blog extends Service
 {
-    public functiongetCategoryMenu()
+    public function getCategoryMenu()
     {
     }
 

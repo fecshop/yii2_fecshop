@@ -51,6 +51,7 @@ class RemoteService extends Service
     {
         $accessToken = $this->getAccessToken();
         if (!$accessToken) {
+            
             return false;
         }
         $url = $this->remoteUrl . $this->getDeveloperInfoUrlKey ;
@@ -65,8 +66,6 @@ class RemoteService extends Service
         }
         
         return false;
-        
-        
     }
     
     // 得到远程的addon 信息(我的应用列表)
@@ -74,6 +73,7 @@ class RemoteService extends Service
     {
         $accessToken = $this->getAccessToken();
         if (!$accessToken) {
+            
             return false;
         }
         $url = $this->remoteUrl . $this->getAddonsListUrlKey ;
@@ -85,7 +85,6 @@ class RemoteService extends Service
             'numPerPage' => $numPerPage,
         ];
         list($responseHeader, $result) = $this->getCurlData($url, 'post', $headerRequest, $data, 30);
-        
         if ($result['code'] == 200) {
             
             return $result['data'];
@@ -98,6 +97,7 @@ class RemoteService extends Service
     {
         $accessToken = $this->getAccessToken();
         if (!$accessToken) {
+            
             return false;
         }
         $url = $this->remoteUrl . $this->getAddonInfoUrlKey ;
@@ -108,15 +108,12 @@ class RemoteService extends Service
             'namespace' => $namespace,
         ];
         list($responseHeader, $result) = $this->getCurlData($url, 'post', $headerRequest, $data, 30);
-        
         if ($result['code'] == 200) {
             
             return $result['data'];
         }
         
         return false;
-        
-        
     }
     // 应用zip文件报错的文件路径
     public function getExtensionZipFilePath($packageName, $folderName)
@@ -143,23 +140,24 @@ class RemoteService extends Service
             mkdir($packagePath);
             chmod($packagePath, 0777);
         }
-        
         $filePath = $this->getExtensionZipFilePath($packageName, $folderName);
         // 根据文件路径，以及addon的name，得到zip文件存放的文件完整路径
         //$filePath = Yii::getAlias('@addons/'.$packageName.'/'.$folderName.'/'.$folderName.'.zip');
         // 将url中的zip文件，存储到该文件目录。
         if ($this->downCurl($url,$filePath)) {
+            
             return $filePath;
         } 
         
         return null;
     }
-    // 远程下载zip包
     
+    // 远程下载zip包
     function downCurl($url, $filePath)
     {
         $accessToken = $this->getAccessToken();
         if (!$accessToken) {
+            
             return false;
         }
         $headerRequest = [
@@ -170,9 +168,7 @@ class RemoteService extends Service
         curl_setopt($ch, 
             CURLOPT_HTTPHEADER, 
             $headerRequest
-            );
-
-        //echo $filePath;exit;    
+            );  
         //设置抓取的url
         curl_setopt($ch, CURLOPT_URL, $url);
         //打开文件描述符
@@ -181,7 +177,6 @@ class RemoteService extends Service
         //这个选项是意思是跳转，如果你访问的页面跳转到另一个页面，也会模拟访问。
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch,CURLOPT_TIMEOUT, 5000);
-
         //执行命令
         curl_exec($ch);
         //关闭URL请求
@@ -192,20 +187,10 @@ class RemoteService extends Service
         return true;
     }
     
-    /*
-    public function downFile($url,$path){
-        $arr=parse_url($url);
-        $fileName=basename($arr['path']);
-        $file=file_get_contents($url);
-        file_put_contents($path.$fileName,$file);
-    }
-    */
-    
     public function isLogin($checkRemote = false)
     {
         if ($checkRemote) {
             // 进行远程检查
-            
         }
         if ($this->getAccessToken()) {
             
@@ -214,6 +199,7 @@ class RemoteService extends Service
         
         return false;
     }
+    
     public function setAccessToken($access_token)
     {
         if (!$access_token) {
@@ -221,30 +207,28 @@ class RemoteService extends Service
         }
         return Yii::$app->session->set(self::ADDONS_TOKEN, $access_token);
     }
+    
     public function getAccessToken()
     {
         return Yii::$app->session->get(self::ADDONS_TOKEN);
     }
     
-    
     public static function getCurlData($url,$type="get", $headerData, $data=array(),$timeout = 30){
         //对空格进行转义
         $url = str_replace(' ','+',$url);
-        if($type == "get"){
-            if(!empty($data) && is_array($data)){
-                
+        if ($type == "get") {
+            if (!empty($data) && is_array($data)) {
                 $arr = [];
-                foreach($data as $k=>$v){
+                foreach ($data as $k=>$v) {
                     $arr[] = $k."=".$v;
                 }
                 $str  = implode("&",$arr);
-                if(strstr($url,"?")){
+                if (strstr($url,"?")) {
                     $url .= "&".$str;
-                }else{
+                } else {
                     $url .= "?".$str;
                 }
             }
-            
         }
         $data = json_encode($data);
         $headerRequest = [
@@ -253,7 +237,6 @@ class RemoteService extends Service
         'Content-Length: ' . strlen($data)
         ];
         $headerRequest = array_merge($headerRequest, $headerData);
-        
         $url = urldecode($url);
         //echo $url ;exit;
         $ch = curl_init();
@@ -263,14 +246,13 @@ class RemoteService extends Service
         //curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_HEADER, true);
         curl_setopt($ch,CURLOPT_TIMEOUT,$timeout);  //定义超时3秒钟  
-        if($type == "post"){
+        if ($type == "post") {
             // POST数据
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, 
                 CURLOPT_HTTPHEADER, 
                 $headerRequest
                 );
-
             // 把post的变量加上
             curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         }
@@ -283,11 +265,13 @@ class RemoteService extends Service
             foreach ($headArr as $loop) {
                 $arr = explode(': ', $loop);
                 $responseHeaderArr[$arr[0]] = $arr[1];
-            }  // 
+            }
             $reponseBody = json_decode($body, true);
+            
             return [$responseHeaderArr, $reponseBody];
         }
-        return ['', ''];
         
+        return ['', ''];
     }
+    
 }

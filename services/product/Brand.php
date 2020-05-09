@@ -58,6 +58,7 @@ class Brand extends Service
 
             return $one;
         } else {
+            
             return new $this->_modelName();
         }
     }
@@ -89,7 +90,7 @@ class Brand extends Service
                 $coll[$k] = $one;
             }
         }
-        //var_dump($one);
+        
         return [
             'coll' => $coll,
             'count'=> $query->limit(null)->offset(null)->count(),
@@ -175,7 +176,6 @@ class Brand extends Service
             'fetchAll' => true,
             'asArray' => true,
         ];
-        
         $data = $this->coll($filter);
         $arr = [];
         if (is_array($data['coll']) && !empty($data['coll'])) {
@@ -201,10 +201,6 @@ class Brand extends Service
         
         return Yii::$service->store->getStoreAttrVal($brandModel['name'], 'name');
     }
-    
-    
-    
-    
     
     
     

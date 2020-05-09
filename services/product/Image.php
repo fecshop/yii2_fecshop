@@ -63,7 +63,6 @@ class Image extends Service
 
     protected $_md5WaterImgPath;
     
-    
     public function init()
     {
         parent::init();
@@ -76,7 +75,7 @@ class Image extends Service
     /**
      * 得到保存产品图片所在相对根目录的url路径.
      */
-    protected function actionGetBaseUrl()
+    public function getBaseUrl()
     {
         return Yii::$service->image->GetImgUrl($this->imageFloder, 'common');
     }
@@ -84,7 +83,7 @@ class Image extends Service
     /**
      * 得到保存产品图片所在相对根目录的文件夹路径.
      */
-    protected function actionGetBaseDir()
+    public function getBaseDir()
     {
         return Yii::$service->image->GetImgDir($this->imageFloder, 'common');
     }
@@ -92,7 +91,7 @@ class Image extends Service
     /**
      * 通过产品图片的相对路径得到产品图片的url.
      */
-    protected function actionGetUrl($str)
+    public function getUrl($str)
     {
         return Yii::$service->image->GetImgUrl($this->imageFloder.$str, 'common');
     }
@@ -100,7 +99,7 @@ class Image extends Service
     /**
      * 通过产品图片的相对路径得到产品图片的绝对路径.
      */
-    protected function actionGetDir($str)
+    public function getDir($str)
     {
         return Yii::$service->image->GetImgDir($this->imageFloder.$str, 'common');
     }
@@ -112,7 +111,7 @@ class Image extends Service
      * return , if success ,return image saved relative file path , like '/b/i/big.jpg'
      * if fail, reutrn false;
      */
-    protected function actionSaveProductUploadImg($FILE)
+    public function saveProductUploadImg($FILE)
     {
         Yii::$service->image->imageFloder = $this->imageFloder;
         Yii::$service->image->allowImgType = $this->allowImgType;
@@ -126,7 +125,7 @@ class Image extends Service
     /**
      * 获取产品默认图片的完整URL
      */
-    protected function actionDefautImg()
+    public function defautImg()
     {
         if (!$this->_defaultImg) {
             $this->_defaultImg = $this->getUrl($this->defaultImg);
@@ -142,7 +141,7 @@ class Image extends Service
      * @param $isWatered | Boolean ， 产品图片是否打水印。
      * 获取相应尺寸的产品图片。
      */
-    protected function actionGetResize($imageVal, $imgResize, $isWatered = false)
+    public function getResize($imageVal, $imgResize, $isWatered = false)
     {
         list($newPath, $newUrl) = $this->getNewPathAndUrl($imageVal, $imgResize, $isWatered);
         
@@ -150,10 +149,10 @@ class Image extends Service
     }
 
     /**
-     * 和上面的方法 actionGetResize 功能类似, actionGetResize是得到按照图片尺寸resize后的图片的url。
+     * 和上面的方法 getResize 功能类似, getResize是得到按照图片尺寸resize后的图片的url。
      * 本函数是得到resize后图片的 完整文件路径 （绝对文件地址）
      */
-    protected function actionGetResizeDir($imageVal, $imgResize, $isWatered = false)
+    public function getResizeDir($imageVal, $imgResize, $isWatered = false)
     {
         list($newPath, $newUrl) = $this->getNewPathAndUrl($imageVal, $imgResize, $isWatered);
         
@@ -167,7 +166,7 @@ class Image extends Service
      * @param $isWatered | Boolean ， 产品图片是否打水印。
      * 获取相应尺寸的产品图片。
      */
-    protected function actionGetNewPathAndUrl($imageVal, $imgResize, $isWatered = false)
+    public function getNewPathAndUrl($imageVal, $imgResize, $isWatered = false)
     {
         $originImgPath = $this->getDir($imageVal);
         if (!file_exists($originImgPath)) {
@@ -207,7 +206,6 @@ class Image extends Service
             //echo $waterImgPath;exit;
             $this->_md5WaterImgPath = md5($waterImgPath);
         }
-
         $baseDir = '/cache/'.$this->_md5WaterImgPath;
         if (is_array($imgResize)) {
             list($width, $height) = $imgResize;
@@ -215,7 +213,6 @@ class Image extends Service
             $width = $imgResize;
             $height = '0';
         }
-
         $imageArr = explode('/', $imageVal);
         $dirArr = ['cache', $this->_md5WaterImgPath, $width, $height];
         foreach ($imageArr as $igf) {
@@ -227,8 +224,10 @@ class Image extends Service
         if ($createDir) {
             $newPath = $this->getBaseDir().$baseDir .'/'.$width.'/'.$height.$imageVal;
             $newUrl = $this->getBaseUrl().$baseDir .'/'.$width.'/'.$height.$imageVal;
+            
             return [$newPath, $newUrl];
         } else {
+            
             return [];
         }
     }

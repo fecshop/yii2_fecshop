@@ -20,7 +20,6 @@ use fecshop\services\Service;
  */
 class Role extends Service
 {
-    
     const ADMIN_ROLEIDS_RESOURCES = 'admin_roleids_resources';
     
     public $numPerPage = 20;
@@ -64,6 +63,7 @@ class Role extends Service
 
             return $one;
         } else {
+            
             return new $this->_roleModelName();
         }
     }
@@ -158,6 +158,7 @@ class Role extends Service
             $roleData['role_name'] = $one['role_name'];
         } else {
             Yii::$service->helper->errors->add('role name can not empty');
+            
             return false;
         }
         if (isset($one['role_description'])) {
@@ -196,6 +197,7 @@ class Role extends Service
         }
         $one = $query->one();
         if (!empty($one)) {
+            
             return false;
         }
 
@@ -237,6 +239,7 @@ class Role extends Service
     public function getCurrentRoleResources(){
         if (!$this->_current_role_resources) {
             if (Yii::$app->user->isGuest) {
+                
                 return [];
             }
             $user = Yii::$app->user->identity;
@@ -257,6 +260,7 @@ class Role extends Service
                 }
             }
             if (empty($role_ids)) {
+                
                 return [];
             }
 

@@ -49,7 +49,6 @@ class Errors extends Service
         if (is_array($model_errors)) {
             foreach ($model_errors as $errors) {
                 $arr = [];
-
                 foreach ($errors as $s) {
                     $arr[] = Yii::$service->page->translate->__($s);
                 }
@@ -67,13 +66,13 @@ class Errors extends Service
         if (is_array($model_errors)) {
             foreach ($model_errors as $errors) {
                 $arr = [];
-
                 foreach ($errors as $s) {
                     $arr[] = Yii::$service->page->translate->__($s);
                 }
                 $error_arr[] = implode(',', $arr);
             }
             if (!empty($error_arr)) {
+                
                 return implode(',', $error_arr);
             }
         }
@@ -96,6 +95,7 @@ class Errors extends Service
 
                     return implode($separator, $errors);
                 } else {
+                    
                     return $errors;
                 }
             }

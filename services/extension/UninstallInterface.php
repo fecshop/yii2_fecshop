@@ -18,4 +18,5 @@ namespace fecshop\services\extension;
 interface UninstallInterface
 {
     public function run();
+    
 }

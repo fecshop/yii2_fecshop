@@ -69,6 +69,7 @@ class Appapi extends Service
             $message = $this->getMessageByCode($code);
         }
         if ($message) {
+            
             return [
                 'code'    => $code,
                 'message' => $message,
@@ -77,6 +78,7 @@ class Appapi extends Service
         } else { // 如果不存在，则说明系统内部调用不存在的code，报错。
             $code = $this->status_invalid_code;
             $message = $this->getMessageByCode($code);
+            
             return [
                 'code'    => $code,
                 'message' => $message,
@@ -92,6 +94,7 @@ class Appapi extends Service
     public function getMessageByCode($code)
     {
         $messageArr = $this->getMessageArr();
+        
         return isset($messageArr[$code]['message']) ? $messageArr[$code]['message'] : '';
     }
 
@@ -150,16 +153,14 @@ class Appapi extends Service
             $this->status_attack => [
                 'message' => 'access exception, the visit to determine the attack behavior',
             ],
-            
             /**
              * 用户部分的状态码
              */
             $this->account_no_login_or_login_token_timeout => [
                 'message' => 'account not login or token timeout',
             ],
-            
-            
         ];
+        
         return $arr;
     }
 }

@@ -31,17 +31,19 @@ class FavoriteMysqldb extends Service
         list($this->_favoriteModelName, $this->_favoriteModel) = \Yii::mapGet($this->_favoriteModelName);
     }
     
-    protected function actionGetPrimaryKey()
+    public function getPrimaryKey()
     {
         return 'id';
     }
 
-    protected function actionGetByPrimaryKey($val)
+    public function getByPrimaryKey($val)
     {
         $one = $this->_favoriteModel->findOne($val);
         if ($one[$this->getPrimaryKey()]) {
+            
             return $one;
         } else {
+            
             return new $this->_favoriteModelName();
         }
     }
@@ -51,7 +53,7 @@ class FavoriteMysqldb extends Service
      * @param $user_id | Int ，用户id
      * @return $this->_favoriteModel ，如果用户在该产品收藏，则返回相应model。
      */
-    protected function actionGetByProductIdAndUserId($product_id, $user_id = '')
+    public function getByProductIdAndUserId($product_id, $user_id = '')
     {
         if (!$user_id) {
             $identity = Yii::$app->user->identity;
@@ -63,6 +65,7 @@ class FavoriteMysqldb extends Service
                 'user_id'     => $user_id,
             ]);
             if ($one[$this->getPrimaryKey()]) {
+                
                 return $one;
             }
         }
@@ -73,7 +76,7 @@ class FavoriteMysqldb extends Service
      * @param $user_id | Int ，用户id
      * @return boolean，用户收藏该产品时，执行的操作。
      */
-    protected function actionAdd($product_id, $user_id)
+    public function add($product_id, $user_id)
     {
         $user_id = (int) $user_id;
         $productPrimaryKey = Yii::$service->product->getPrimaryKey();
@@ -84,7 +87,6 @@ class FavoriteMysqldb extends Service
 
             return;
         }
-        //echo $product_id;exit;
         $favoritePrimaryKey = Yii::$service->product->favorite->getPrimaryKey();
         $one = $this->_favoriteModel->findOne([
             'product_id' => $product_id,
@@ -154,7 +156,7 @@ class FavoriteMysqldb extends Service
      * 	'asArray' => true,
      * ]
      */
-    protected function actionList($filter)
+    public function list($filter)
     {
         $query = $this->_favoriteModel->find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
@@ -165,7 +167,7 @@ class FavoriteMysqldb extends Service
         ];
     }
 
-    protected function actionColl($filter)
+    public function coll($filter)
     {
         return $this->list($filter);
     }
@@ -180,7 +182,6 @@ class FavoriteMysqldb extends Service
         $user_id = $identity['id'];
         $favoritePrimaryKey = $this->getPrimaryKey();
         $one = $this->_favoriteModel->findOne([
-            //'_id'        => new \MongoDB\BSON\ObjectId($favorite_id),
             'user_id'    => $user_id,
             'product_id' => $product_id,
         ]);
@@ -198,7 +199,7 @@ class FavoriteMysqldb extends Service
      * @param $favorite_id | string
      * 通过id删除favorite
      */
-    protected function actionCurrentUserRemove($favorite_id)
+    public function currentUserRemove($favorite_id)
     {
         $identity = Yii::$app->user->identity;
         $user_id = $identity['id'];

@@ -40,7 +40,7 @@ class Product extends Service
      * ]
      * 通过搜索条件得到当类下的产品。
      */
-    protected function actionColl($filter)
+    public function coll($filter)
     {
         $category_id = isset($filter['category_id']) ? $filter['category_id'] : '';
         if (!$category_id) {
@@ -71,14 +71,14 @@ class Product extends Service
     /**
      * @param $filter | Array    和上面的函数 actionColl($filter) 类似。
      */
-    protected function actionGetFrontList($filter)
+    public function getFrontList($filter)
     {
         $filter['group'] = '$spu';
         $coll = Yii::$service->product->getFrontCategoryProducts($filter);
-        
         $collection = $coll['coll'];
         $count = $coll['count'];
         $arr = $this->convertToCategoryInfo($collection);
+        
         return [
             'coll' => $arr,
             'count'=> $count,
@@ -88,7 +88,7 @@ class Product extends Service
     /**
      * 将service取出来的数据，处理一下，然后前端显示。
      */
-    protected function actionConvertToCategoryInfo($collection)
+    public function convertToCategoryInfo($collection)
     {
         $arr = [];
         $defaultImg = Yii::$service->product->image->defautImg();
@@ -139,6 +139,7 @@ class Product extends Service
     protected function getPrices($price, $special_price, $special_from, $special_to)
     {
         if (Yii::$service->product->price->specialPriceisActive($price, $special_price, $special_from, $special_to)) {
+            
             return [$price, $special_price];
         }
 

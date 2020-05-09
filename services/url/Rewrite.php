@@ -53,7 +53,7 @@ class Rewrite extends Service
      * @param $urlKey | string
      * 通过重写后的urlkey字符串，去url_rewrite表中查询，找到重写前的url字符串。
      */
-    protected function actionGetOriginUrl($urlKey)
+    public function getOriginUrl($urlKey)
     {
         return $this->_urlRewrite->getOriginUrl($urlKey);
     }
@@ -61,7 +61,7 @@ class Rewrite extends Service
     /**
      * get artile's primary key.
      */
-    protected function actionGetPrimaryKey()
+    public function getPrimaryKey()
     {
         return $this->_urlRewrite->getPrimaryKey();
     }
@@ -69,14 +69,10 @@ class Rewrite extends Service
     /**
      * get artile model by primary key.
      */
-    protected function actionGetByPrimaryKey($primaryKey)
+    public function getByPrimaryKey($primaryKey)
     {
         return $this->_urlRewrite->getByPrimaryKey($primaryKey);
     }
-
-    //public function getById($id){
-    //    return $this->_article->getById($id);
-    //}
 
     /**
      * @param $filter|array
@@ -94,7 +90,7 @@ class Rewrite extends Service
      *     'asArray' => true,
      * ]
      */
-    protected function actionColl($filter = '')
+    public function coll($filter = '')
     {
         return $this->_urlRewrite->coll($filter);
     }
@@ -104,7 +100,7 @@ class Rewrite extends Service
      * @param $originUrlKey|string , article origin url key.
      * save $data to cms model,then,add url rewrite info to system service urlrewrite.
      */
-    protected function actionSave($one)
+    public function save($one)
     {
         return $this->_urlRewrite->save($one);
     }
@@ -113,7 +109,7 @@ class Rewrite extends Service
      * @param $ids | Array or String or Int
      * 删除相应的url rewrite 记录
      */
-    protected function actionRemove($ids)
+    public function remove($ids)
     {
         return $this->_urlRewrite->remove($ids);
     }
@@ -122,7 +118,7 @@ class Rewrite extends Service
      * @param $time | Int
      * 根据updated_at 更新时间，删除相应的url rewrite 记录
      */
-    protected function actionRemoveByUpdatedAt($time)
+    public function removeByUpdatedAt($time)
     {
         return $this->_urlRewrite->removeByUpdatedAt($time);
     }
@@ -130,7 +126,7 @@ class Rewrite extends Service
     /**
      * 返回url rewrite model 对应的query
      */
-    protected function actionFind()
+    public function find()
     {
         return $this->_urlRewrite->find();
     }
@@ -138,7 +134,7 @@ class Rewrite extends Service
     /**
      * 返回url rewrite 查询结果
      */
-    protected function actionFindOne($where)
+    public function findOne($where)
     {
         return $this->_urlRewrite->findOne($where);
     }
@@ -146,7 +142,7 @@ class Rewrite extends Service
     /**
      * 返回url rewrite model
      */
-    protected function actionNewModel()
+    public function newModel()
     {
         return $this->_urlRewrite->newModel();
     }

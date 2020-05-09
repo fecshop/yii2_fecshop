@@ -47,10 +47,11 @@ class Price extends Service
      * @param  $price 		 | Float  产品的价格
      * 得到当前货币状态下的产品的价格信息。
      */
-    protected function actionFormatPrice($price)
+    public function formatPrice($price)
     {
         $currencyInfo = $this->getCurrentInfo();
         $price = Yii::$service->helper->format->number_format($price * $currencyInfo['rate']);
+        
         return [
             'code'   => $currencyInfo['code'],
             'symbol' => $currencyInfo['symbol'],
@@ -62,7 +63,7 @@ class Price extends Service
      * @param $price | Float 产品价格
      * @return String ， 带有相应货币符号的价格
      */
-    protected function actionFormatSamplePrice($price)
+    public function formatSamplePrice($price)
     {
         $currencyInfo = $this->getCurrentInfo();
         $price = $price * $currencyInfo['rate'];
@@ -86,7 +87,7 @@ class Price extends Service
      *
      * @return float
      */
-    protected function actionGetFinalPrice(
+    public function getFinalPrice(
         $price,
         $special_price,
         $special_from,
@@ -113,12 +114,11 @@ class Price extends Service
      * @param $format | Int , 返回的价格的格式，0代表为美元格式，1代表为当前货币格式，2代表美元和当前货币格式都有
      * 通过产品以及个数，custonOptionSku 得到产品的最终价格
      */
-    protected function actionGetCartPriceByProductId($productId, $qty, $custom_option_sku, $format = 1)
+    public function getCartPriceByProductId($productId, $qty, $custom_option_sku, $format = 1)
     {
         $product = Yii::$service->product->getByPrimaryKey($productId);
         $custom_option_price = 0;
         $status = isset($product['status']) ? $product['status'] : 0;
-
         if ($product['price'] && Yii::$service->product->isActive($status)) {
             $price = $product['price'];
             $special_price = isset($product['special_price']) ? $product['special_price'] : 0;
@@ -126,7 +126,6 @@ class Price extends Service
             $special_to    = isset($product['special_to']) ? $product['special_to'] : '';
             $tier_price    = isset($product['tier_price']) ? $product['tier_price'] : [];
             $custom_option = isset($product['custom_option']) ? $product['custom_option'] : '';
-
             if (!empty($custom_option) && $custom_option_sku && isset($custom_option[$custom_option_sku])) {
                 if ($co = $custom_option[$custom_option_sku]) {
                     $custom_option_price = isset($co['price']) ? $co['price'] : 0;
@@ -162,7 +161,7 @@ class Price extends Service
      *	];
      * @param $format | Int , 返回的价格的格式，0代表为美元格式，1代表为当前货币格式，2代表美元和当前货币格式都有
      */
-    protected function actionGetCartPrice(
+    public function getCartPrice(
         $price,
         $special_price,
         $special_from,
@@ -177,7 +176,6 @@ class Price extends Service
         } else {
             $return_price = $price;
         }
-
         if ($qty > 1) {
             $return_price = $this->getTierPrice($qty, $tier_price, $return_price);
         }
@@ -194,6 +192,7 @@ class Price extends Service
                 'curr_price' => $format_price,
             ];
         } else {
+            
             return $return_price;
         }
     }
@@ -208,9 +207,10 @@ class Price extends Service
      *	];
      * 传递过来的tier_price 数组，必须是按照qty进行排序好了的数组
      */
-    protected function actionGetTierPrice($qty, $tier_price_arr, $price)
+    public function getTierPrice($qty, $tier_price_arr, $price)
     {
         if ($qty <= 1) {
+            
             return $price;
         }
         $t_price = $price;
@@ -218,14 +218,16 @@ class Price extends Service
             foreach ($tier_price_arr  as $one) {
                 $t_qty = $one['qty'];
                 $t_price = $one['price'];
-
                 if ($t_qty <= $qty) {
                     $parent_price = $t_price;
+                    
                     continue;
                 } else {
                     if ($parent_price) {
+                        
                         return $parent_price;
                     } else {
+                        
                         return $price;
                     }
                 }
@@ -246,24 +248,28 @@ class Price extends Service
      * @param  $special_to    | Int    产品的特检结束时间
      * @return bool
      */
-    protected function actionSpecialPriceisActive($price, $special_price, $special_from, $special_to)
+    public function specialPriceisActive($price, $special_price, $special_from, $special_to)
     {
         if (!$special_price || $special_price == 0.00) {  // 浮点数需要这样判断float 0
+        
             return false;
         }
         if ($this->ifSpecialPriceGtPriceFinalPriceEqPrice) {
             if ($special_price > $price) {
+                
                 return false;
             }
         }
         $nowTimeStamp = time();
         if ($special_from) {
             if ($special_from > $nowTimeStamp) {
+                
                 return false;
             }
         }
         if ($special_to) {
             if ($special_to < $nowTimeStamp) {
+                
                 return false;
             }
         }
@@ -291,7 +297,7 @@ class Price extends Service
      * @param  $special_to    | Int    产品的特检结束时间
      * @return $return | Array  产品的价格信息
      */
-    protected function actionGetCurrentCurrencyProductPriceInfo($price, $special_price, $special_from, $special_to)
+    public function getCurrentCurrencyProductPriceInfo($price, $special_price, $special_from, $special_to)
     {
         $price = (float)$price;
         $special_price = (float)$special_price;

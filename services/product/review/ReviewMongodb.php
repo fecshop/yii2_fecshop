@@ -32,7 +32,6 @@ class ReviewMongodb extends Service implements ReviewInterface
     public function init()
     {
         parent::init();
-        //$this->_viewService = Yii::$service->product->review;
         list($this->_reviewModelName, $this->_reviewModel) = \Yii::mapGet($this->_reviewModelName);
     }
     
@@ -52,13 +51,15 @@ class ReviewMongodb extends Service implements ReviewInterface
     public function isReviewRole($product_id)
     {
         if (!$this->getReviewService()->reviewOnlyOrderedProduct) {
+            
             return true;
         }
         $itmes = Yii::$service->order->item->getByProductIdAndCustomerId($product_id, $this->getReviewService()->reviewMonth);
-        //var_dump($itmes);exit;
         if ($itmes) {
+            
             return true;
         } else {
+            
             return false;
         }
     }
@@ -69,6 +70,7 @@ class ReviewMongodb extends Service implements ReviewInterface
     public function noActiveStatus()
     {
         $model = $this->_reviewModel;
+        
         return $model::NOACTIVE_STATUS;
     }
 
@@ -78,6 +80,7 @@ class ReviewMongodb extends Service implements ReviewInterface
     public function activeStatus()
     {
         $model = $this->_reviewModel;
+        
         return $model::ACTIVE_STATUS;
     }
 
@@ -87,6 +90,7 @@ class ReviewMongodb extends Service implements ReviewInterface
     public function refuseStatus()
     {
         $model = $this->_reviewModel;
+        
         return $model::REFUSE_STATUS;
     }
 
@@ -101,12 +105,11 @@ class ReviewMongodb extends Service implements ReviewInterface
      * @param $spu | String.
      * 通过spu找到评论总数。
      */
-    protected function actionGetCountBySpu($spu)
+    public function getCountBySpu($spu)
     {
         $where = [
             'product_spu' => $spu,
         ];
-
         if ($this->getReviewService()->filterByLang && ($currentLangCode = Yii::$service->store->currentLangCode)) {
             $where['lang_code'] = $currentLangCode;
         }
@@ -128,7 +131,7 @@ class ReviewMongodb extends Service implements ReviewInterface
      * ]
      * 通过spu找到评论listing.
      */
-    protected function actionGetListBySpu($filter)
+    public function getListBySpu($filter)
     {
         if ($this->getReviewService()->filterByLang && ($currentLangCode = Yii::$service->store->currentLangCode)) {
             $filter['where'][] = ['lang_code' => $currentLangCode];
@@ -147,7 +150,7 @@ class ReviewMongodb extends Service implements ReviewInterface
      *
      * 增加评论 前台增加评论调用的函数。
      */
-    protected function actionAddReview($review_data)
+    public function addReview($review_data)
     {
         //$this->initReviewAttr($review_data);
         $model = new $this->_reviewModelName();
@@ -156,7 +159,6 @@ class ReviewMongodb extends Service implements ReviewInterface
         }
         $model = $this->_reviewModel;
         $review_data['status'] = $model::NOACTIVE_STATUS;
-
         $review_data['store'] = Yii::$service->store->currentStore;
         $review_data['lang_code'] = Yii::$service->store->currentLangCode;
         $review_data['review_date'] = time();
@@ -165,7 +167,6 @@ class ReviewMongodb extends Service implements ReviewInterface
             $user_id = $identity['id'];
             $review_data['user_id'] = $user_id;
         }
-
         $review_data['ip'] = \fec\helpers\CFunc::get_real_ip();
         $saveStatus = Yii::$service->helper->ar->save($model, $review_data);
 
@@ -176,7 +177,7 @@ class ReviewMongodb extends Service implements ReviewInterface
      * @param $review_data | Array
      * 保存评论
      */
-    protected function actionUpdateReview($review_data)
+    public function updateReview($review_data)
     {
         //$this->initReviewAttr($review_data);
         $model = $this->_reviewModel->findOne([$this->getPrimaryKey()=> $review_data[$this->getPrimaryKey()]]);
@@ -201,7 +202,7 @@ class ReviewMongodb extends Service implements ReviewInterface
      * ]
      * 查看review 的列表
      */
-    protected function actionList($filter)
+    public function list($filter)
     {
         $query = $this->_reviewModel->find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
@@ -218,7 +219,7 @@ class ReviewMongodb extends Service implements ReviewInterface
      * 注意：因为每个产品的评论可能加入了新的字段，因此不能使用ActiveRecord的方式取出来，
      * 使用下面的方式可以把字段都取出来。
      */
-    protected function actionGetByReviewId($_id)
+    public function getByReviewId($_id)
     {
         return $this->_reviewModel->getCollection()->findOne([$this->getPrimaryKey() => $_id]);
     }
@@ -230,8 +231,10 @@ class ReviewMongodb extends Service implements ReviewInterface
     public function getByPrimaryKey($primaryKey)
     {
         if ($primaryKey) {
+            
             return $this->_reviewModel->findOne($primaryKey);
         } else {
+            
             return new $this->_reviewModelName();
         }
     }
@@ -269,7 +272,6 @@ class ReviewMongodb extends Service implements ReviewInterface
         $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
         $one['status'] = (int) $one['status'];
         $one['rate_star'] = (int) $one['rate_star'];
-
         if ($primaryVal) {
             $model = $this->_reviewModel->findOne($primaryVal);
             if (!$model) {
@@ -283,7 +285,6 @@ class ReviewMongodb extends Service implements ReviewInterface
             $primaryVal = new \MongoDB\BSON\ObjectId();
             $model->{$this->getPrimaryKey()} = $primaryVal;
         }
-        //$review_data['status'] = $this->_reviewModel->ACTIVE_STATUS;
         $model->review_date = time();
         unset($one[$this->getPrimaryKey()]);
         $saveStatus = Yii::$service->helper->ar->save($model, $one);
@@ -340,7 +341,7 @@ class ReviewMongodb extends Service implements ReviewInterface
      * @param $ids | Array
      * 通过 $ids 数组，批量审核通过评论
      */
-    protected function actionAuditReviewByIds($ids)
+    public function auditReviewByIds($ids)
     {
         $reviewModel = $this->_reviewModel;
         if (is_array($ids) && !empty($ids)) {
@@ -364,7 +365,7 @@ class ReviewMongodb extends Service implements ReviewInterface
      * @param $ids | Array
      * 通过 $ids 数组，批量审核评论拒绝
      */
-    protected function actionAuditRejectedReviewByIds($ids)
+    public function auditRejectedReviewByIds($ids)
     {
         $reviewModel = $this->_reviewModel;
         if (is_array($ids) && !empty($ids)) {
@@ -388,7 +389,7 @@ class ReviewMongodb extends Service implements ReviewInterface
      * @param $spu | String
      * 当评论保存，更新评论的总数，平均评分信息到产品表的所有spu
      */
-    protected function actionUpdateProductSpuReview($spu, $lang_code)
+    public function updateProductSpuReview($spu, $lang_code)
     {
         $reviewModel = $this->_reviewModel;
         $filter = [
@@ -409,7 +410,6 @@ class ReviewMongodb extends Service implements ReviewInterface
         $rate_total_arr['star_3'] = 0;
         $rate_total_arr['star_4'] = 0;
         $rate_total_arr['star_5'] = 0;
-        
         $rate_lang_total = 0;
         $rate_lang_total_arr['star_0'] = 0;
         $rate_lang_total_arr['star_1'] = 0;
@@ -417,9 +417,6 @@ class ReviewMongodb extends Service implements ReviewInterface
         $rate_lang_total_arr['star_3'] = 0;
         $rate_lang_total_arr['star_4'] = 0;
         $rate_lang_total_arr['star_5'] = 0;
-        
-        
-        
         $lang_count = 0;
         if (!empty($data) && is_array($data)) {
             foreach ($data as $one) {
@@ -466,7 +463,7 @@ class ReviewMongodb extends Service implements ReviewInterface
      * 	    'asArray' => true,
      * ]
      */
-    protected function actionGetReviewsByUserId($filter)
+    public function getReviewsByUserId($filter)
     {
         $query = $this->_reviewModel->find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);

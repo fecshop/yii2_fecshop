@@ -60,6 +60,7 @@ class ArticleMysqldb extends Service implements ArticleInterface
 
             return $one;
         } else {
+            
             return new $this->_articleModelName();
         }
     }
@@ -77,10 +78,11 @@ class ArticleMysqldb extends Service implements ArticleInterface
                 $model['title'] = unserialize($model['title']);
                 $model['meta_keywords'] = unserialize($model['meta_keywords']);
                 $model['meta_description'] = unserialize($model['meta_description']);
-                //var_dump($model);
+                
                 return $model;
             }
         }
+        
         return false;
     }
 
@@ -111,7 +113,7 @@ class ArticleMysqldb extends Service implements ArticleInterface
                 $coll[$k] = $one;
             }
         }
-        //var_dump($coll);
+        
         return [
             'coll' => $coll,
             'count'=> $query->limit(null)->offset(null)->count(),
@@ -146,7 +148,6 @@ class ArticleMysqldb extends Service implements ArticleInterface
                 $one[$attrName] = serialize($one[$attrName]);
             }
         }
-        
         unset($one['id']);
         $primaryKey = $this->getPrimaryKey();
         $saveStatus  = Yii::$service->helper->ar->save($model, $one);
@@ -154,9 +155,7 @@ class ArticleMysqldb extends Service implements ArticleInterface
 
         $originUrl = $originUrlKey.'?'.$this->getPrimaryKey() .'='. $primaryVal;
         $originUrlKey = isset($one['url_key']) ? $one['url_key'] : '';
-        
         $urlKey = Yii::$service->url->saveRewriteUrlKeyByStr($defaultLangTitle, $originUrl, $originUrlKey);
-        
         $model->url_key = $urlKey;
         $this->initStatus($model);
         $model->save();
@@ -165,6 +164,7 @@ class ArticleMysqldb extends Service implements ArticleInterface
         $model['title'] = unserialize($model['title']);
         $model['meta_keywords'] = unserialize($model['meta_keywords']);
         $model['meta_description'] = unserialize($model['meta_description']);
+        
         return $model->attributes;
     }
 

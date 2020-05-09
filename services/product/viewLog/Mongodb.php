@@ -55,6 +55,7 @@ class Mongodb extends Service
             $user_id = CUser::getCurrentUserId();
         }
         if (!$user_id) {
+            
             return;
         }
         $coll = $this->_logModel->find()->where([
@@ -80,7 +81,6 @@ class Mongodb extends Service
             'image'        => $productOb['image'],
             'name'            => $productOb['name'],
         ];
-
         if (isset($productOb['user_id']) && $productOb['user_id']) {
             $arr['user_id'] = $productOb['user_id'];
         } elseif ($currentUser = CUser::getCurrentUserId()) {
@@ -89,7 +89,6 @@ class Mongodb extends Service
             // if not give user_id, can not save history
             return;
         }
-
         $mongodbViewLog = $this->_logModel->getCollection();
         $mongodbViewLog->save($arr);
     }

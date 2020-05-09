@@ -41,8 +41,10 @@ class ArticleMongodb extends Service implements ArticleInterface
     public function getByPrimaryKey($primaryKey)
     {
         if ($primaryKey) {
+            
             return $this->_articleModel->findOne($primaryKey);
         } else {
+            
             return new $this->_articleModelName;
         }
     }
@@ -56,9 +58,11 @@ class ArticleMongodb extends Service implements ArticleInterface
         if ($urlKey) {
             $model = $this->_articleModel->findOne(['url_key' => '/'.$urlKey]);
             if (isset($model['url_key'])) {
+                
                 return $model;
             }
         }
+        
         return false;
     }
 
@@ -120,6 +124,7 @@ class ArticleMongodb extends Service implements ArticleInterface
         $this->initStatus($model);
         $model->save();
         $model['_id'] = (string)$model['_id'];
+        
         return $model->attributes;
     }
     
@@ -160,6 +165,7 @@ class ArticleMongodb extends Service implements ArticleInterface
                     $deleteAll = false;
                 }
             }
+            
             return $deleteAll;
         } else {
             $id = $ids;

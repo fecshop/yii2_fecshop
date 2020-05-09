@@ -51,6 +51,7 @@ class ProductApi extends Service
         $model = $this->_productModel;
         if (empty($post) || !is_array($post)) {
             $this->_error[] = 'post data is empty or is not array';
+            
             return ;
         }
         // 产品名字：【必填】 【多语言属性】
@@ -117,7 +118,6 @@ class ProductApi extends Service
         if ($category) {
             $this->_param['category'] = $category;
         }
-        
         // 选填, 是否下架， 如果不存在，或者不合法，则会被设置成有库存状态
         $is_in_stock     = $post['is_in_stock'];
         $allow_stock_arr = [$model::IS_IN_STOCK,$model::OUT_STOCK];
@@ -182,8 +182,6 @@ class ProductApi extends Service
                 $this->_error[] = '[tier_price] data must be array';
             }
         }
-        
-        
         // 选填 开始时间只要“年-月-日”部分，其他部分去除，然后取00:00:00的数据
         $new_product_from    = $post['new_product_from'];
         if ($new_product_from) {
@@ -222,112 +220,6 @@ class ProductApi extends Service
         } else {
             $this->_param['attr_group'] = $attr_group;
         }
-        /**
-         * 选填 当选择淘宝模式的产品时，一行数据是一个spu，各个sku的图片，库存，浮动价格，各个自定义属性的值等，就会存储到这个属性里面
-         * 譬如：
-         * "custom_option": {
-         * "red-s-s2-s3": {
-         * "my_color": "red",
-         * "my_size": "S",
-         * "my_size2": "S2",
-         * "my_size3": "S3",
-         * "sku": "red-s-s2-s3",
-         * "qty": NumberInt(99999),
-         * "price": 0,
-         * "image": "/2/01/20161024170457_10036.jpg"
-         * },
-         * "red-m-s2-s3": {
-         * "my_color": "red",
-         * "my_size": "M",
-         * "my_size2": "S2",
-         * "my_size3": "S3",
-         * "sku": "red-m-s2-s3",
-         * "qty": NumberInt(99999),
-         * "price": 0,
-         * "image": "/2/01/20161024170457_10036.jpg"
-         * },
-         * "red-l-s2-s3": {
-         * "my_color": "red",
-         * "my_size": "L",
-         * "my_size2": "S2",
-         * "my_size3": "S3",
-         * "sku": "red-l-s2-s3",
-         * "qty": NumberInt(99999),
-         * "price": 0,
-         * "image": "/2/01/20161024170457_10036.jpg"
-         * }
-         * }
-         *  需要进行如下检查：
-         *  1. 图片地址是否存在，不存在则报错
-         *  2. sku 存在，且在当前数组中sku 重复的，将会被去除
-         *  3. 通过属性组 attr_group 找到相应的custom option，查看里面的值，在这里是否都存在
-         *  4. qty 是否存在，不存在，则初始化为0  ，
-         *  5. price是否存在，不存在则初始化为0，
-         *  6. 数组的key，需要和sku相等，譬如 red-l-s2-s3 要等于下面的  "sku": "red-l-s2-s3"
-         *
-         */
-        /*
-        $custom_option = $post['custom_option'];
-        if (!empty($custom_option) && is_array($custom_option) && isset($customAttrGroup[$attr_group]['custom_options']) && $customAttrGroup[$attr_group]['custom_options']) {
-            $custom_option_arr = [];
-            // 1.
-            // 该属性组对应的 custom option 的数据配置结构
-            $attr_group_config = $customAttrGroup[$attr_group]['custom_options'];
-            foreach ($custom_option as $key => $info) {
-                // 1. 图片地址是否存在，不存在则报错
-                if (!isset($info['image']) || !$info['image']) {
-                    $this->_error[] = 'custom option: image can not empty';
-                }
-                // 2.sku 存在
-                if (!isset($info['sku']) || !$info['sku']) {
-                    $this->_error[] = 'custom option: sku can not empty';
-                }
-                // 4. qty 是否存在，不存在，则初始化为0
-                $info['qty'] = (int)$info['qty'];
-                if (!$info['qty']) {
-                    $info['qty'] = 0;
-                }
-                // 5. price是否存在，不存在则初始化为0，
-                $info['price'] = (float)$info['price'];
-                if (!$info['price']) {
-                    $info['price'] = 0;
-                }
-                // 3. 通过属性组 attr_group 找到相应的custom option，查看里面的值，在这里是否都存在
-                if (is_array($attr_group_config)) {
-                    // 遍历 custom option 的数据配置结构
-                    foreach ($attr_group_config as $attrKey => $custom_option_info) {
-                        // 当前行数据中，是否符合 数据配置结构
-                        $val = '';
-                        if (isset($info[$attrKey]) && $info[$attrKey]) {
-                            $val = $info[$attrKey];
-                        } else {
-                            $this->_error[] = '[custom option error]: (attr_group:'.$attr_group.') attr['.$attrKey.'] is exist in config file ,but current data is empty';
-                            // error： 缺失 $attrKey 存在数据配置结构中，但是当前的插入数据中不存在这个属性。
-                        }
-                        if (isset($custom_option_info['display']['data']) && is_array($custom_option_info['display']['data'])) {
-                            $attr_group_config_val_arr = $custom_option_info['display']['data'];
-                            if (in_array($val, $attr_group_config_val_arr)) {
-                                
-                                // success
-                            } else {
-                                $this->_error[] = '[custom option error]: (attr_group:'.$attr_group.') attr['.$attrKey.':'.$val.'] must exist in array ['.implode(',', $attr_group_config_val_arr).'] ';
-                                // error：$attrKey 这个属性在当前的插入数据中存在，但是值不合法，值必须存在于 "数据配置结构" 中对应的数据列表中
-                            }
-                        } else {
-                            $this->_error[] = '[custom option config error]: (attr_group:'.$attr_group.') attr['.$attrKey.'] config is not correct , it must exist: [\'display\'][\'data\']';
-                        }
-                    }
-                } else {
-                    $this->_error[] = '[custom option config error]: (attr_group:'.$attr_group.') , it must be array';
-                }
-                $custom_option_arr[$info['sku']] = $info;
-            }
-            if (!empty($custom_option_arr)) {
-                $this->_param['custom_option'] = $custom_option_arr;
-            }
-        }
-        */
-        
         // 选填
         $remark = $post['remark'];
         if ($remark) {
@@ -348,9 +240,6 @@ class ProductApi extends Service
         if ($see_also_see_sku) {
             $this->_param['see_also_see_sku'] = $see_also_see_sku;
         }
-        
-        
-        
         // 选填 产品状态
         $status = $post['status'];
         $allowStatus = [$model::STATUS_ENABLE,$model::STATUS_DISABLE];
@@ -363,7 +252,6 @@ class ProductApi extends Service
         if ($url_key) {
             $this->_param['url_key'] = $url_key;
         }
-        
         /**
          *  选填 产品的图片
          *  图片的格式如下：
@@ -473,6 +361,7 @@ class ProductApi extends Service
         }
         $this->checkPostDataRequireAndInt($post);
         if (!empty($this->_error)) {
+            
             return [
                 'code'    => 400,
                 'message' => '',
@@ -495,6 +384,7 @@ class ProductApi extends Service
                 $saveData['id'] = (string)$saveData['_id'];
                 unset($saveData['_id']);
             }
+            
             return [
                 'code'    => 200,
                 'message' => 'add product success',
@@ -503,6 +393,7 @@ class ProductApi extends Service
                 ]
             ];
         } else {
+            
             return [
                 'code'    => 400,
                 'message' => 'save category fail',

@@ -57,6 +57,7 @@ class StaticBlockMysqldb extends Service implements StaticBlockInterface
 
             return $one;
         } else {
+            
             return new $this->_staticBlockModelName();
         }
     }
@@ -102,7 +103,7 @@ class StaticBlockMysqldb extends Service implements StaticBlockInterface
                 $coll[$k] = $one;
             }
         }
-        //var_dump($one);
+        
         return [
             'coll' => $coll,
             'count'=> $query->limit(null)->offset(null)->count(),
@@ -160,6 +161,7 @@ class StaticBlockMysqldb extends Service implements StaticBlockInterface
         }
         $one = $query->one();
         if (!empty($one)) {
+            
             return false;
         }
 

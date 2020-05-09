@@ -21,29 +21,16 @@ use Yii;
 class Menu extends Service
 {
     public $rootCategoryId = '0';
-
-    //protected $_categoryModelName = '\fecshop\models\mongodb\Category';
-
-    //protected $_categoryModel;
-    
-    //public function init()
-    //{
-        //parent::init();
-        //list($this->_categoryModelName, $this->_categoryModel) = Yii::mapGet($this->_categoryModelName);
-    //}
-
     /**
      * @param $parentId | int
      * 得到分类的目录信息
      */
-    protected function actionGetCategoryMenuArr($parentId = '')
+    public function getCategoryMenuArr($parentId = '')
     {
-        //$model = $this->_categoryModel;
         $arr = [];
         if (!$parentId) {
             $parentId = $this->rootCategoryId;
         }
-        
         $categoryPrimaryKey = Yii::$service->category->getPrimaryKey();
         $orderBy = ['sort_order' => SORT_DESC];
         $filter = [
@@ -59,13 +46,6 @@ class Menu extends Service
         ];
         $collData = Yii::$service->category->coll($filter);
         $data = $collData['coll'];
-        //$data = $this->_categoryModel->find()->asArray()->select([
-        //    '_id', 'parent_id', 'name', 'url_key', 'menu_custom',
-        //])->where([
-        //    'parent_id' => $parentId,
-        //    'status'    => $model::STATUS_ENABLE,
-        //    'menu_show' => $model::MENU_SHOW,
-        //])->all();
         if (is_array($data) && !empty($data)) {
             foreach ($data as $category) {
                 $categoryOne = [

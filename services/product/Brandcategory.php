@@ -58,6 +58,7 @@ class Brandcategory extends Service
 
             return $one;
         } else {
+            
             return new $this->_modelName();
         }
     }
@@ -89,7 +90,7 @@ class Brandcategory extends Service
                 $coll[$k] = $one;
             }
         }
-        //var_dump($one);
+        
         return [
             'coll' => $coll,
             'count'=> $query->limit(null)->offset(null)->count(),
@@ -104,7 +105,6 @@ class Brandcategory extends Service
     {
         $currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
         $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
-        
         if ($primaryVal) {
             $model = $this->_model->findOne($primaryVal);
             if (!$model) {
@@ -174,7 +174,6 @@ class Brandcategory extends Service
             'fetchAll' => true,
             'asArray' => true,
         ];
-        
         $data = $this->coll($filter);
         $arr = [];
         if (is_array($data['coll']) && !empty($data['coll'])) {

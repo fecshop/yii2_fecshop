@@ -43,7 +43,7 @@ class Menu extends Service
      * home,frontCustomMenu,productCategory,behindCustomMenu.
      * 得到网站的分类导航栏菜单。
      */
-    protected function actionGetMenuData()
+    public function getMenuData()
     {
         $this->_homeUrl = CUrl::getHomeUrl();
         $arr = [];

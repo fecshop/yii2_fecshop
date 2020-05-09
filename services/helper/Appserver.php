@@ -215,12 +215,13 @@ class Appserver extends Service
             }
             $corsFilterArr['Access-Control-Allow-Credentials'] = true;
         }
-        return $corsFilterArr;
         
+        return $corsFilterArr;
     }
 
     public function getCorsAllowHeaders() {
         $fecshop_uuid = Yii::$service->session->fecshop_uuid;
+        
         return ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', $fecshop_uuid, 'fecshop-lang', 'fecshop-currency', 'access-token'];
     }
     /**
@@ -235,12 +236,10 @@ class Appserver extends Service
             if (isset($cors['Origin']) && $cors['Origin']) {
                 $corsFilterArr[] = 'Access-Control-Allow-Origin: ' .  implode(', ', $cors['Origin']);
             }
-            
             if (isset($cors['Access-Control-Allow-Headers']) && is_array($cors['Access-Control-Allow-Headers'])) {
                 $cors_allow_headers = array_merge($cors_allow_headers, $cors['Access-Control-Allow-Headers']);
             }
             $corsFilterArr[] = 'Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, ' . implode(', ', $cors_allow_headers);    
-            
             if (isset($cors['Access-Control-Allow-Methods']) && is_array($cors['Access-Control-Allow-Methods'])) {
                 $corsFilterArr[] = 'Access-Control-Allow-Methods: ' . implode(', ',$cors['Access-Control-Allow-Methods']);
             }
@@ -261,6 +260,7 @@ class Appserver extends Service
             $message = $this->getMessageByCode($code);
         }
         if ($message) {
+            
             return [
                 'code'    => $code,
                 'message' => $message,
@@ -270,6 +270,7 @@ class Appserver extends Service
             // 如果不存在，则说明系统内部调用不存在的 code，报错。
             $code = $this->status_invalid_code;
             $message = $this->getMessageByCode($code);
+            
             return [
                 'code'    => $code,
                 'message' => $message,
@@ -286,6 +287,7 @@ class Appserver extends Service
     public function getMessageByCode($code)
     {
         $messageArr = $this->getMessageArr();
+        
         return isset($messageArr[$code]['message']) ? $messageArr[$code]['message'] : '';
     }
 
@@ -343,8 +345,7 @@ class Appserver extends Service
             ],
             $this->status_attack => [
                 'message' => 'access exception, the visit to determine the attack behavior',
-            ],
-            
+            ], 
             /**
              * 用户部分的状态码
              */
@@ -357,7 +358,6 @@ class Appserver extends Service
             $this->account_register_invalid_data => [
                 'message' => 'account register data is invalid',
             ],
-            
             $this->account_login_invalid_email_or_password => [
                 'message' => 'account login email or password is not correct',
             ],
@@ -373,12 +373,9 @@ class Appserver extends Service
             $this->account_register_fail => [
                 'message' => 'account register fail',
             ],
-            
             $this->account_email_not_exist => [
                 'message' => 'account email not exist',
             ],
-            
-            
             $this->account_forget_password_token_timeout => [
                 'message' => 'account forget password token timeout',
             ],
@@ -388,12 +385,9 @@ class Appserver extends Service
             $this->account_forget_password_reset_fail => [
                 'message' => 'account forget password reset fail',
             ],
-            
-            
             $this->account_address_is_not_exist => [
                 'message' => 'account address id is not exist',
             ],
-            
             $this->account_address_save_fail => [
                 'message' => 'account address save fail',
             ],
@@ -418,9 +412,6 @@ class Appserver extends Service
             $this->account_wx_get_customer_by_openid_fail => [
                 'message' => 'you should bind wx openid with one account',
             ],
-            
-            
-            
             $this->no_account_openid_and_session_key => [
                 'message' => 'no_account_openid_and_session_key',
             ],
@@ -433,38 +424,30 @@ class Appserver extends Service
             $this->account_register_email_exit => [
                 'message' => 'account_register_email_exit',
             ],
-            
             $this->account_address_set_default_fail => [
                 'message' => 'account_address_set_default_fail',
             ],
-            
             $this->account_address_edit_param_invaild => [
                 'message' => 'account address edit param is invalid',
             ],
             $this->account_reorder_order_id_invalid => [
                 'message' => 'customer reorder  order id is invalid',
             ],
-            
             $this->account_favorite_id_not_exist => [
                 'message' => 'customer favorite id is not exit',
             ],
-            
             $this->account_facebook_login_error => [
                 'message' => 'login F-E-C-shop with facebook account error',
             ],
-            
             $this->account_google_login_error => [
                 'message' => 'login F-e-c-shop with google account error',
             ],
-            
-            
             /**
              * category
              */
             $this->category_not_exist => [
                 'message' => 'category is not exist',
             ],
-            
             /**
              * product
              */
@@ -474,8 +457,6 @@ class Appserver extends Service
             $this->product_not_active => [
                 'message' => 'product is not exist or off the shelf',
             ],
-            
-            
             $this->product_id_not_exist => [
                 'message' => 'product id is not exist',
             ],
@@ -500,16 +481,12 @@ class Appserver extends Service
             $this->cart_product_select_fail => [
                 'message' => 'cart product select fail',
             ],
-            
-            
-            
             /**
              * Order
              */
             $this->order_generate_product_stock_out => [
                 'message' => 'before generate order,check product stock out ',
             ],
-            
             $this->order_generate_fail => [
                 'message' => 'generate order fail',
             ],
@@ -543,7 +520,6 @@ class Appserver extends Service
             $this->order_not_find_increment_id_from_dbsession => [
                 'message' => 'can not find order increment id from db session storage',
             ],
-            
             $this->order_paypal_express_payment_fail => [
                 'message' => 'order pay by paypal express api, payment fail',
             ],
@@ -556,7 +532,6 @@ class Appserver extends Service
             $this->order_paypal_express_get_apiAddress_fail => [
                 'message' => 'order pay by paypal express api, fetch address fail',
             ],
-            
             $this->order_has_been_paid => [
                 'message' => 'order has bean paid',
             ],
@@ -569,16 +544,14 @@ class Appserver extends Service
             $this->order_wxpay_payment_fail => [
                 'message' => 'order pay by wxpay payment fail',
             ],
-            
-            
             /**
              * cms
              */
             $this->cms_article_not_exist => [
                 'message' => 'article is not exist',
             ],
-            
         ];
+        
         return $arr;
     }
 }

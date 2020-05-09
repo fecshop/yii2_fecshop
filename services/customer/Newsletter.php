@@ -74,7 +74,6 @@ class Newsletter extends Service
         return $this->_newsletter->getByPrimaryKey($primaryKey);
     }
     
-
     /*
      * example filter:
      * [

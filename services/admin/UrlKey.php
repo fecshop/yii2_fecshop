@@ -62,6 +62,7 @@ class UrlKey extends Service
                 }
             }
         }
+        
         return $this->_urlKeyTags[$key];
     }
 
@@ -82,6 +83,7 @@ class UrlKey extends Service
 
             return $one;
         } else {
+            
             return new $this->_modelName();
         }
     }
@@ -112,7 +114,7 @@ class UrlKey extends Service
                 $coll[$k] = $one;
             }
         }
-        //var_dump($one);
+        
         return [
             'coll' => $coll,
             'count'=> $query->limit(null)->offset(null)->count(),
@@ -273,6 +275,7 @@ class UrlKey extends Service
         }
         $one = $query->one();
         if (!empty($one)) {
+            
             return false;
         }
 
@@ -296,7 +299,6 @@ class UrlKey extends Service
                 }
 
                 $model->delete();
-                // delete roleUrlKey
                 Yii::$service->admin->roleUrlKey->removeByUrlKeyId($id);
             }
         } else {
@@ -308,7 +310,6 @@ class UrlKey extends Service
                 return false;
             }
             $model->delete();
-            // delete roleUrlKey
             Yii::$service->admin->roleUrlKey->removeByUrlKeyId($id);
         }
 

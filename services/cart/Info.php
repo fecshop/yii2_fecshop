@@ -139,9 +139,11 @@ class Info extends Service
             $product_custom_option = $product['custom_option'];
             $co_sku = Yii::$service->product->info->getProductCOSku($custom_option_arr, $product_custom_option);
             if ($co_sku) {
+                
                 return $co_sku;
             }
         }
+        
         return '';
     }
 }

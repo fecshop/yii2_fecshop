@@ -76,10 +76,12 @@ class Administer extends Service
                 return false;
             }
             $innerTransaction->commit();
+            
             return true;
         } catch (\Exception $e) {
             $innerTransaction->rollBack();
             Yii::$service->helper->errors->add($e->getMessage());
+            
             return false;
         }
         
@@ -124,10 +126,12 @@ class Administer extends Service
             }
             
             $innerTransaction->commit();
+            
             return true;
         } catch (\Exception $e) {
             $innerTransaction->rollBack();
             Yii::$service->helper->errors->add($e->getMessage());
+            
             return false;
         }
         
@@ -186,6 +190,7 @@ class Administer extends Service
         } catch (\Exception $e) {
             $innerTransaction->rollBack();
             Yii::$service->helper->errors->add($e->getMessage());
+            
             return false;
         }
         
@@ -225,6 +230,7 @@ class Administer extends Service
             // 执行应用的upgrade部分功能
             if (!Yii::$service->extension->testUpgradeAddons($extensionConfig['administer']['upgrade'], $modelOne)) {
                 $innerTransaction->rollBack();
+                
                 return false;
             }
             $innerTransaction->commit();
@@ -233,6 +239,7 @@ class Administer extends Service
         } catch (\Exception $e) {
             $innerTransaction->rollBack();
             Yii::$service->helper->errors->add($e->getMessage());
+            
             return false;
         }
         

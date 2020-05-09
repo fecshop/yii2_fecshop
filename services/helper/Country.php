@@ -968,9 +968,7 @@ class Country extends Service
                 'NX' => '宁夏回族自治区',
                 'XJ' => '新疆维吾尔自治区',
                 'XG' => '香港特别行政区',
-
             ],
-
         ];
 
         return $data;

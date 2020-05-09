@@ -48,7 +48,7 @@ class Breadcrumbs extends Service
      * $items format example. 将各个部分的链接加入到面包屑导航中
      * $items = ['name'=>'fashion handbag','url'=>'http://www.xxx.com'];.
      */
-    protected function actionAddItems($items)
+    public function addItems($items)
     {
         if ($this->active) {
             $this->_items[] = $items;
@@ -59,37 +59,17 @@ class Breadcrumbs extends Service
      * 通过上面的方法addItems($items)，把item加入进来后
      * 然后，通过该函数取出来。
      */
-    protected function actionGetItems()
+    public function getItems()
     {
         if ($this->active) {
             if (is_array($this->_items) && !empty($this->_items)) {
+                
                 return $this->_items;
             } else {
+                
                 return [];
             }
         }
     }
 
-    // generate Breadcrumbs html ,before generate , you should use addItems function to add breadcrumbs items.
-    /*
-    protected function actionGenerateHtml(){
-        $arr = [];
-        if($this->_items){
-            foreach($this->_items as $item){
-                $name = isset($item['name']) ? $item['name'] : '';
-                $url = isset($item['url']) ? $item['url'] : '';
-                if($name){
-                    if($url){
-                        $arr[] = '<a href="'.$url.'">'.$name.'</a>';
-                    }else{
-                        $arr[] = '<span>'.$name.'</span>';
-                    }
-                }
-            }
-        }
-        return $arr;
-        //if(!empty($arr))
-        //	return implode($this->intervalSymbol,$arr);
-    }
-    */
 }

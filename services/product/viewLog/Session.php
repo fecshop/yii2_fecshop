@@ -57,7 +57,6 @@ class Session extends Service
         } else {
             $logArr['user_id'] = CUser::getCurrentUserId();
         }
-
         if (!($session_history = Yii::$service->session->get($this->_sessionKey))) {
             $session_history = [];
         } elseif (($count = count($session_history)) >= $this->_maxProductCount) {

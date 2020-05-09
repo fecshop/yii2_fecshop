@@ -41,8 +41,10 @@ class StaticBlockMongodb extends Service implements StaticBlockInterface
     public function getByPrimaryKey($primaryKey)
     {
         if ($primaryKey) {
+            
             return $this->_staticBlockModel->findOne($primaryKey);
         } else {
+            
             return new $this->_staticBlockModelName();
         }
     }
@@ -128,6 +130,7 @@ class StaticBlockMongodb extends Service implements StaticBlockInterface
         $one = $query->one();
 
         if (!empty($one)) {
+            
             return false;
         }
 

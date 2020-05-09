@@ -103,11 +103,13 @@ class Config extends Service
         $this->_model->attributes = $one;
         if ($this->_model->validate()) {
             $this->_model->save(); 
+            
             return $this->_model[$primaryKey];
         } else {
             $errors = $this->_model->errors;
             Yii::$service->helper->errors->addByModelErrors($errors);
         }     
+        
         return null;
     }
     

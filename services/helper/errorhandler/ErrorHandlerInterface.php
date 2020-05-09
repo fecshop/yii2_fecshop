@@ -34,5 +34,5 @@ interface ErrorHandlerInterface
         $req_info=[]
     );
 
-    //public function remove($ids);
+    
 }

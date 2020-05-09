@@ -144,8 +144,10 @@ class Captcha extends Service
     public function getCode($code)
     {
         if (!$this->case_sensitive) {
+            
             return strtolower($code);
         } else {
+            
             return $this->code;
         }
     }

@@ -88,8 +88,6 @@ class Generate extends Service
             return false;
         } 
         
-        
-        
         return true;
     }
     
@@ -104,26 +102,31 @@ class Generate extends Service
         $addonPath = Yii::getAlias('@addons/'.$package.'/'.$addon_folder);
         // 创建文件夹
         if (!$this->createDir($addonPath)) {
+            
             return false;
         }
         // administer
         $administerPath = $addonPath . '/administer';
         if (!$this->createDir($administerPath)) {
+            
             return false;
         }
         // app/appfront
         $appfrontPath = $addonPath . '/app/appfront';
         if (!$this->createDir($appfrontPath)) {
+            
             return false;
         }
         // models
         $modelPath = $addonPath . '/models';
         if (!$this->createDir($modelPath)) {
+            
             return false;
         }
         // services
         $servicesPath = $addonPath . '/services';
         if (!$this->createDir($servicesPath)) {
+            
             return false;
         }
         
@@ -137,6 +140,7 @@ class Generate extends Service
             
             return false;
         }
+        
         return mkdir($dir,0777,true);
     }
     

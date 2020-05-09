@@ -73,6 +73,7 @@ class ErrorHandlerMysqldb extends Service implements ErrorHandlerInterface
         $model->request_info = serialize($req_info);
         $model->trace_string = $trace_string;
         $model->save();
+        
         return (string)$model[$this->getPrimaryKey()];
     }
     
@@ -82,6 +83,7 @@ class ErrorHandlerMysqldb extends Service implements ErrorHandlerInterface
     public function getByPrimaryKey($primaryKey)
     {
         if ($primaryKey) {
+            
             return $this->_errorHandlerModel->findOne($primaryKey);
         }
     }
@@ -111,6 +113,7 @@ class ErrorHandlerMysqldb extends Service implements ErrorHandlerInterface
                 $coll[$k] = $one;
             }
         }
+        
         return [
             'coll' => $coll,
             'count'=> $query->limit(null)->offset(null)->count(),

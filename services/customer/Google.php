@@ -42,13 +42,12 @@ class Google extends Service
         $googleapiinfo['GOOGLE_CLIENT_SECRET'] = isset($thirdLogin['google']['CLIENT_SECRET']) ? $thirdLogin['google']['CLIENT_SECRET'] : '';
         //echo $lib_google_base.'/Social.php';exit;
         if (!$googleapiinfo['GOOGLE_CLIENT_ID']  || !$googleapiinfo['GOOGLE_CLIENT_SECRET'] ) {
+            
             return '';
         }
         $lib_google_base = Yii::getAlias('@fecshop/lib/google');
         include $lib_google_base.'/Social.php';
-        
         $Social_obj = new \Social($redirectUrl, 1);
-
         $url = $Social_obj->google();
 
         return $url;

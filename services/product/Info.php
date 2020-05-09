@@ -21,14 +21,6 @@ use Yii;
  */
 class Info extends Service
 {
-    
-    //protected $_productModelName = '\fecshop\models\mongodb\Product';
-    //protected $_productModel;
-    
-    //public function __construct(){
-    //list($this->_productModelName,$this->_productModel) = \Yii::mapGet($this->_productModelName);
-    //}
-
     /**
      * @param $custome_option | Array
      * $custome_option = [
@@ -60,6 +52,7 @@ class Info extends Service
     public function validateProductCustomOption($custom_option, $product_custom_option)
     {
         if (empty($product_custom_option) && empty($custom_option)) {
+            
             return true; // 都为空，说明不需要验证。
         }
         if ($custom_option) {
@@ -72,6 +65,7 @@ class Info extends Service
             }
             foreach ($product_custom_option as $p_sku => $option) {
                 if ($p_sku == $co_sku) {
+                    
                     return true;
                 }
             }
@@ -119,6 +113,7 @@ class Info extends Service
                         }
                     }
                     if ($bool) {
+                        
                         return $co_sku;
                     }
                 }

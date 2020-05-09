@@ -41,8 +41,10 @@ class NewsletterMysqldb extends Service implements NewsletterInterface
     public function getByPrimaryKey($primaryKey)
     {
         if ($primaryKey) {
+            
             return $this->_newsletterModel->findOne($primaryKey);
         } else {
+            
             return new $this->_newsletterModelName();
         }
     }
@@ -83,6 +85,7 @@ class NewsletterMysqldb extends Service implements NewsletterInterface
         $one = $this->_newsletterModel->findOne(['email' => $emailAddress]);
         
         if ($one[$primaryKey]) {
+            
             return true;
         }
 
@@ -106,6 +109,7 @@ class NewsletterMysqldb extends Service implements NewsletterInterface
             return;
         } elseif ($this->emailIsExist($emailAddress)) {
             if ($isRegister) {
+                
                 return true;
             } else {
                 Yii::$service->helper->errors->add('ERROR,Your email address has subscribe , Please do not repeat the subscription');

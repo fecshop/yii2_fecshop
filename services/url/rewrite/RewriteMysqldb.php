@@ -10,7 +10,6 @@
 
 namespace fecshop\services\url\rewrite;
 
-//use fecshop\models\mysqldb\url\UrlRewrite;
 use Yii;
 use fecshop\services\Service;
 use yii\base\InvalidValueException;
@@ -50,6 +49,7 @@ class RewriteMysqldb extends Service implements RewriteInterface
             'custom_url_key' => $urlKey,
         ])->asArray()->one();
         if ($UrlData) {
+            
             return $UrlData['origin_url'];
         }
     }
@@ -73,6 +73,7 @@ class RewriteMysqldb extends Service implements RewriteInterface
 
             return $one;
         } else {
+            
             return new $this->_urlRewriteModelName();
         }
     }
@@ -106,7 +107,7 @@ class RewriteMysqldb extends Service implements RewriteInterface
                 $coll[$k] = $one;
             }
         }
-        //var_dump($one);
+        
         return [
             'coll' => $coll,
             'count'=> $query->limit(null)->offset(null)->count(),
@@ -156,8 +157,6 @@ class RewriteMysqldb extends Service implements RewriteInterface
                         $url_key = $model['url_key'];
                         $model->delete();
                     } else {
-
-                        //throw new InvalidValueException("ID:$id is not exist.");
                         Yii::$service->helper->errors->add('UrlRewrite Remove Errors:ID {id} is not exist.', ['id' => $id]);
                         $innerTransaction->rollBack();
 

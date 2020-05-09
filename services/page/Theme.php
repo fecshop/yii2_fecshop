@@ -54,14 +54,13 @@ class Theme extends Service
      * @return  array ，根据模板路径的优先级，以及得到各个模板路径，组合成数组
      * 数组前面的模板路径优先级最高
      */
-    protected function actionGetThemeDirArr()
+    public function getThemeDirArr()
     {
         if (!$this->_themeDirArr || empty($this->_themeDirArr)) {
             $arr = [];
             if ($localThemeDir = Yii::getAlias($this->localThemeDir)) {
                 $arr[] = $localThemeDir;
             }
-
             $thirdThemeDirArr = $this->thirdThemeDir;
             if (!empty($thirdThemeDirArr) && is_array($thirdThemeDirArr)) {
                 foreach ($thirdThemeDirArr as $theme) {
@@ -80,10 +79,11 @@ class Theme extends Service
      * @param $throwError | boolean，view文件找不到的时候是否抛出异常。
      * 根据模板路径的优先级，依次查找view文件，找到后，返回view文件的绝对路径。
      */
-    protected function actionGetViewFile($view, $throwError = true)
+    public function getViewFile($view, $throwError = true)
     {
         $view = trim($view);
         if (substr($view, 0, 1) == '@') {
+            
             return Yii::getAlias($view);
         }
         $relativeFile = '';
@@ -97,18 +97,18 @@ class Theme extends Service
             $relativeFile = $this->viewFileConfig[$routerPath];
             // 如果view是以@开头，则说明是绝对路径,直接返回
             if (substr($relativeFile, 0, 1) == '@') {
+                
                 return Yii::getAlias($relativeFile);
             }
         } else {
             $relativeFile .= Yii::$app->controller->id.'/'.$view.'.php';
         }
-        
-        
         $absoluteDir = Yii::$service->page->theme->getThemeDirArr();
         foreach ($absoluteDir as $dir) {
             if ($dir) {
                 $file = $dir.'/'.$relativeFile;
                 if (file_exists($file)) {
+                    
                     return $file;
                 }
             }
@@ -122,8 +122,10 @@ class Theme extends Service
                     $notExistFile[] = $file;
                 }
             }
+            
             throw new InvalidValueException('view file is not exist in'.implode(',', $notExistFile));
         } else {
+            
             return false;
         }
     }
@@ -131,7 +133,7 @@ class Theme extends Service
     /**
      * @param $dir | string 设置本地模板路径
      */
-    protected function actionSetLocalThemeDir($dir)
+    public function setLocalThemeDir($dir)
     {
         $this->localThemeDir = $dir;
     }
@@ -139,7 +141,7 @@ class Theme extends Service
     /**
      * @param $dir | string 设置第三方模板路径
      */
-    protected function actionSetThirdThemeDir($dir)
+    public function setThirdThemeDir($dir)
     {
         $this->thirdThemeDir = $dir;
     }

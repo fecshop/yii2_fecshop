@@ -68,7 +68,6 @@ class Echart extends Service
     {
         $this->i++;
         $div_id = "main_".$this->i;
-        
         $legendArr = [];
         $xAxis = [];
         $series = [];
@@ -91,7 +90,6 @@ class Echart extends Service
             $xAxisArr[] =  '\''.$s.'\'';
         }
         $xAxisStr = implode(',', $xAxisArr);
-        
         // 计算series
         $seriesArr = [];
         if (is_array($data)) {

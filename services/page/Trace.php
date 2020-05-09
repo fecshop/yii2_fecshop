@@ -78,6 +78,7 @@ class Trace extends Service
     public function getTraceCommonJsCode()
     {
         if ($this->traceJsEnable) {
+            
             return "<script type=\"text/javascript\">
     var _maq = _maq || [];
     _maq.push(['website_id', '" . $this->website_id . "']);
@@ -94,6 +95,7 @@ class Trace extends Service
     })();
 </script>";
         } else {
+            
             return '';
         }
     }
@@ -105,11 +107,13 @@ class Trace extends Service
     public function getTraceCategoryJsCode($categoryName)
     {
         if ($this->traceJsEnable && $categoryName) {
+            
             return "<script type=\"text/javascript\">
     var _maq = _maq || [];
     _maq.push(['category', '".$categoryName."']);
 </script>";
         } else {
+            
             return '';
         }
     }

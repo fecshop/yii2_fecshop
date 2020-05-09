@@ -55,6 +55,7 @@ class RoleUrlKey extends Service
 
             return $one;
         } else {
+            
             return new $this->_modelName();
         }
     }
@@ -85,7 +86,7 @@ class RoleUrlKey extends Service
                 $coll[$k] = $one;
             }
         }
-        //var_dump($one);
+        
         return [
             'coll' => $coll,
             'count'=> $query->limit(null)->offset(null)->count(),
@@ -147,8 +148,10 @@ class RoleUrlKey extends Service
                 $model->role_id = $roleId;
                 $model->save();
             }
+            
             return true;
         }
+        
         return false;
     }
 
@@ -169,6 +172,7 @@ class RoleUrlKey extends Service
         }
         $one = $query->one();
         if (!empty($one)) {
+            
             return false;
         }
 

@@ -37,8 +37,10 @@ class CategoryMongodb extends Service implements CategoryInterface
     public function getByPrimaryKey($primaryKey)
     {
         if ($primaryKey) {
+            
             return $this->_categoryModel->findOne($primaryKey);
         } else {
+            
             return new $this->_categoryModelName;
         }
     }
@@ -58,8 +60,10 @@ class CategoryMongodb extends Service implements CategoryInterface
     {
         if ($urlKey) {
             $urlKey = "/".trim($urlKey, "/");
+            
             return $this->_categoryModel->findOne(['url_key' => $urlKey]);
         } else {
+            
             return new $this->_categoryModelName;
         }
     }
@@ -78,6 +82,7 @@ class CategoryMongodb extends Service implements CategoryInterface
     public function getCategoryEnableStatus()
     {
         $model = $this->_categoryModel;
+        
         return $model::STATUS_ENABLE;
     }
 
@@ -87,6 +92,7 @@ class CategoryMongodb extends Service implements CategoryInterface
     public function getCategoryMenuShowStatus()
     {
         $model = $this->_categoryModel;
+        
         return $model::MENU_SHOW;
     }
 
@@ -246,10 +252,10 @@ class CategoryMongodb extends Service implements CategoryInterface
                     $deleteAll = false;
                 }
             }
+            
             return $deleteAll;
         } else {
             $id = $ids;
-            //echo $id;exit;
             $model = $this->_categoryModel->findOne($id);
             if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
                 $url_key = $model['url_key'];
@@ -262,6 +268,7 @@ class CategoryMongodb extends Service implements CategoryInterface
                 return false;
             }
         }
+        
         return true;
     }
 
@@ -327,6 +334,7 @@ class CategoryMongodb extends Service implements CategoryInterface
     {
         $one = $this->_categoryModel->find()->asArray()->where(['parent_id'=>$idVal])->one();
         if (!empty($one)) {
+            
             return true;
         }
 
@@ -366,6 +374,7 @@ class CategoryMongodb extends Service implements CategoryInterface
     protected function getParentCategory($parent_id)
     {
         if ($parent_id === '0') {
+            
             return [];
         }
         $category = $this->_categoryModel->find()->asArray()->where(['_id' => new \MongoDB\BSON\ObjectId($parent_id)])->one();
@@ -373,7 +382,6 @@ class CategoryMongodb extends Service implements CategoryInterface
             $currentUrlKey = $category['url_key'];
             $currentName = $category['name'];
             $currentId = (string) $category['_id'];
-
             $currentCategory[] = [
                 '_id'        => $currentId,
                 'name'       => $currentName,
@@ -384,6 +392,7 @@ class CategoryMongodb extends Service implements CategoryInterface
 
             return array_merge($parentCategory, $currentCategory);
         } else {
+            
             return [];
         }
     }
@@ -425,11 +434,6 @@ class CategoryMongodb extends Service implements CategoryInterface
 
     protected function getOneLevelCateChild($category)
     {
-        //'_id' 		=> $currentId,
-        //'name' 		=> $currentName,
-        //'url_key'	=> $currentUrlKey,
-        //$category['current'] = true;
-        //$data[0] = $category;
         $_id = $category['_id'];
         $name = $category['name'];
         $url_key = $category['url_key'];
@@ -454,7 +458,6 @@ class CategoryMongodb extends Service implements CategoryInterface
 
     protected function getAllParentCate($allParent)
     {
-        //var_dump($allParent);exit;
         $d = $allParent;
         $data = [];
         if (is_array($allParent) && !empty($allParent)) {
@@ -468,10 +471,7 @@ class CategoryMongodb extends Service implements CategoryInterface
                         'status' => $this->getCategoryEnableStatus(),
                         'menu_show'  => $this->getCategoryMenuShowStatus(),
                     ])->all();
-                    //var_dump($cate);
-                    //echo '$$$$$$$$$$';
                     if (is_array($cate) && !empty($cate)) {
-                        //echo '**********';
                         foreach ($cate as $one) {
                             $c_id = (string) $one['_id'];
                             $data[$c_id] = [
@@ -479,8 +479,6 @@ class CategoryMongodb extends Service implements CategoryInterface
                                 'url_key'    => $one['url_key'],
                                 'parent_id'    => $one['parent_id'],
                             ];
-                            //echo $category_id;
-                            //echo '&&&'.$c_id;
                             if (($c_id == $category_id) && !empty($d)) {
                                 $data[$c_id]['child'] = $this->getAllParentCate($d);
                             }
@@ -493,6 +491,7 @@ class CategoryMongodb extends Service implements CategoryInterface
                             }
                         }
                     }
+                    
                     break;
                 }
             }
@@ -506,7 +505,6 @@ class CategoryMongodb extends Service implements CategoryInterface
     }
     protected function getChildCate($category_id)
     {
-        //echo $category_id;
         $data = $this->_categoryModel->find()->asArray()->where([
             'parent_id' => $category_id,
             'status' => $this->getCategoryEnableStatus(),
@@ -518,7 +516,6 @@ class CategoryMongodb extends Service implements CategoryInterface
                 $currentUrlKey = $one['url_key'];
                 $currentName = $one['name'];
                 $currentId = (string) $one['_id'];
-
                 $arr[$currentId] = [
                     //'_id' 		=> $currentId,
                     'name'        => $currentName,
@@ -551,40 +548,38 @@ class CategoryMongodb extends Service implements CategoryInterface
             
             return false;
         }
-            $model = $this->_categoryModel->findOne($primaryVal);
-            if (!isset($model[$this->getPrimaryKey()]) || !$model[$this->getPrimaryKey()]) {
-                $model = new $this->_categoryModelName;
-                $idV = $one[$this->getPrimaryKey()];
-                //echo $this->getPrimaryKey();
-                //echo $idV;exit;
-                $model[$this->getPrimaryKey()] = $idV  ;
-                $model->created_at = time();
-                $model->created_user_id = \fec\helpers\CUser::getCurrentUserId();
-            } else {
-                $name =$model['name'];
-                $title = $model['title'];
-                $meta_keywords = $model['meta_keywords'];
-                $meta_description = $model['meta_description'];
-                $description = $model['description'];
-                //var_dump($title);var_dump($one['title']);
-                if (is_array($one['name']) && !empty($one['name'])) {
-                    $one['name'] = array_merge((is_array($name) ? $name : []), $one['name']);
-                }
-                if (is_array($one['title']) && !empty($one['title'])) {
-                    $one['title'] = array_merge((is_array($title) ? $title : []), $one['title']);
-                }
-                if (is_array($one['meta_keywords']) && !empty($one['meta_keywords'])) {
-                    $one['meta_keywords'] = array_merge((is_array($meta_keywords) ? $meta_keywords : []), $one['meta_keywords']);
-                }
-                if (is_array($one['meta_description']) && !empty($one['meta_description'])) {
-                    $one['meta_description'] = array_merge((is_array($meta_description) ? $meta_description : []), $one['meta_description']);
-                }
-                if (is_array($one['description']) && !empty($one['description'])) {
-                    $one['description'] = array_merge((is_array($description) ? $description : []), $one['description']);
-                }
+        $model = $this->_categoryModel->findOne($primaryVal);
+        if (!isset($model[$this->getPrimaryKey()]) || !$model[$this->getPrimaryKey()]) {
+            $model = new $this->_categoryModelName;
+            $idV = $one[$this->getPrimaryKey()];
+            //echo $this->getPrimaryKey();
+            //echo $idV;exit;
+            $model[$this->getPrimaryKey()] = $idV  ;
+            $model->created_at = time();
+            $model->created_user_id = \fec\helpers\CUser::getCurrentUserId();
+        } else {
+            $name =$model['name'];
+            $title = $model['title'];
+            $meta_keywords = $model['meta_keywords'];
+            $meta_description = $model['meta_description'];
+            $description = $model['description'];
+            //var_dump($title);var_dump($one['title']);
+            if (is_array($one['name']) && !empty($one['name'])) {
+                $one['name'] = array_merge((is_array($name) ? $name : []), $one['name']);
             }
-            //$parent_id = $model['parent_id'];
-        
+            if (is_array($one['title']) && !empty($one['title'])) {
+                $one['title'] = array_merge((is_array($title) ? $title : []), $one['title']);
+            }
+            if (is_array($one['meta_keywords']) && !empty($one['meta_keywords'])) {
+                $one['meta_keywords'] = array_merge((is_array($meta_keywords) ? $meta_keywords : []), $one['meta_keywords']);
+            }
+            if (is_array($one['meta_description']) && !empty($one['meta_description'])) {
+                $one['meta_description'] = array_merge((is_array($meta_description) ? $meta_description : []), $one['meta_description']);
+            }
+            if (is_array($one['description']) && !empty($one['description'])) {
+                $one['description'] = array_merge((is_array($description) ? $description : []), $one['description']);
+            }
+        }
         // 增加分类的级别字段level，从1级级别开始依次类推。
         if ($parent_id === '0') {
             $model['level'] = 1;
@@ -593,7 +588,6 @@ class CategoryMongodb extends Service implements CategoryInterface
             if ($parent_level = $parent_model['level']) {
                 $model['level'] = $parent_level + 1;
             }
-            
         }
         $model->updated_at = time();
         unset($one['_id']);
@@ -617,4 +611,5 @@ class CategoryMongodb extends Service implements CategoryInterface
 
         return $model;
     }
+    
 }

@@ -24,15 +24,11 @@ class XunSearch extends Service implements SearchInterface
 {
     public $searchIndexConfig;
 
-    //public $searchLang;
-
+    protected $_searchLangCode;
+    
     public $fuzzy = false;
 
     public $synonyms = false;
-
-    //protected $_productModelName = '\fecshop\models\mongodb\Product';
-
-    //protected $_productModel;
 
     protected $_searchModelName  = '\fecshop\models\xunsearch\Search';
 
@@ -41,20 +37,19 @@ class XunSearch extends Service implements SearchInterface
     public function init()
     {
         parent::init();
-        //list($this->_productModelName, $this->_productModel) = \Yii::mapGet($this->_productModelName);
         list($this->_searchModelName, $this->_searchModel) = \Yii::mapGet($this->_searchModelName);
     }
 
     /**
      * 初始化xunSearch索引.
      */
-    protected function actionInitFullSearchIndex()
+    public function initFullSearchIndex()
     {
     }
     protected function getProductSelectData()
     {
         $productPrimaryKey = Yii::$service->product->getPrimaryKey(); 
-        //echo $productPrimaryKey;exit;
+        
         return [
             $productPrimaryKey,
             'name',
@@ -75,9 +70,7 @@ class XunSearch extends Service implements SearchInterface
             'description',
             'created_at',
         ];
-        
     }
-    protected $_searchLangCode;
     
     protected function getActiveLangCode()
     {
@@ -89,12 +82,13 @@ class XunSearch extends Service implements SearchInterface
                 }
             }
         }
+        
         return $this->_searchLangCode;
     }
     /**
      * 将产品信息同步到xunSearch引擎中.
      */
-    protected function actionSyncProductInfo($product_ids, $numPerPage)
+    public function syncProductInfo($product_ids, $numPerPage)
     {
         if (is_array($product_ids) && !empty($product_ids)) {
             $productPrimaryKey    = Yii::$service->product->getPrimaryKey();
@@ -113,22 +107,18 @@ class XunSearch extends Service implements SearchInterface
                     $one['score'] = (int)$one['score'];
                     $one['is_in_stock'] = (int)$one['is_in_stock'];
                     $one['created_at'] = (int)$one['created_at'];
-                    
                     $one['price'] = (float)$one['price'];
                     $one['cost_price'] = (float)$one['cost_price'];
                     $one['special_price'] = (float)$one['special_price'];
                     $one['special_from'] = (int)$one['special_from'];
                     $one['special_to'] = (int)$one['special_to'];
                     $one['final_price'] = (float)$one['final_price'];
-                    //unset($one[$productPrimaryKey]);
-                    
                     $one_name = $one['name'];
                     $one_description = $one['description'];
                     $one_short_description = $one['short_description'];
                     $searchLangCode = $this->getActiveLangCode();
                     if (!empty($searchLangCode) && is_array($searchLangCode)) {
                         foreach ($searchLangCode as $langCode) {
-                            //echo $langCode;
                             $xunSearchModel = new $this->_searchModelName();
                             $xunSearchModel->_id = (string) $one[$productPrimaryKey];
                             $one['name'] = Yii::$service->fecshoplang->getLangAttrVal($one_name, 'name', $langCode);
@@ -141,19 +131,17 @@ class XunSearch extends Service implements SearchInterface
                             if ($errors = Yii::$service->helper->errors->get()) {
                                 // 报错。
                                 var_dump($errors);
-                                //return false;
                             }
                         }
                     }
                 }
             }
         }
-        //echo "XunSearch sync done ... \n";
         
         return true;
     }
 
-    protected function actionDeleteNotActiveProduct($nowTimeStamp)
+    public function deleteNotActiveProduct($nowTimeStamp)
     {
     }
 
@@ -163,14 +151,11 @@ class XunSearch extends Service implements SearchInterface
      * 您希望也被删除掉，那么，你可以通过这种方式批量删除掉产品
      * 然后重新跑一边同步脚本.
      */
-    protected function actionXunDeleteAllProduct($numPerPage, $i)
+    public function xunDeleteAllProduct($numPerPage, $i)
     {
-        //var_dump($index);
         $dbName = $this->_searchModel->projectName();
         // 删除索引
         Yii::$app->xunsearch->getDatabase($dbName)->getIndex()->clean();
-        //$index = Yii::$app->xunsearch->getDatabase($dbName)->index;
-
         echo "begin delete Xun Search Date \n";
         $nowTimeStamp = (int) $nowTimeStamp;
         $XunSearchData = $this->_searchModel->find()
@@ -185,13 +170,11 @@ class XunSearch extends Service implements SearchInterface
     /**
      * 得到搜索的产品列表.
      */
-    protected function actionGetSearchProductColl($select, $where, $pageNum, $numPerPage, $product_search_max_count)
+    public function getSearchProductColl($select, $where, $pageNum, $numPerPage, $product_search_max_count)
     {
         $collection = $this->fullTearchText($select, $where, $pageNum, $numPerPage, $product_search_max_count);
-
         $collection['coll'] = Yii::$service->category->product->convertToCategoryInfo($collection['coll']);
-        //var_dump($collection);
-        //exit;
+        
         return $collection;
     }
 
@@ -211,7 +194,6 @@ class XunSearch extends Service implements SearchInterface
             $XunSearchQuery = $this->_searchModel->find()->asArray();
             $XunSearchQuery->fuzzy($this->fuzzy);
             $XunSearchQuery->synonyms($this->synonyms);
-
             if (is_array($where) && !empty($where)) {
                 if (isset($where['$text']['$search']) && $where['$text']['$search']) {
                     $XunSearchQuery->where($where['$text']['$search']);
@@ -270,14 +252,11 @@ class XunSearch extends Service implements SearchInterface
                 } else {
                     $productIds[] = $d['_id'];
                 }
-                
             }
             $productIds = array_slice($productIds, $offset, $limit);
         }
-        
         $productPrimaryKey = Yii::$service->product->getPrimaryKey();
         if (!empty($productIds)) {
-            //
             foreach ($select as $sk => $se) {
                 if ($se == 'product_id') {
                     unset($select[$sk]);
@@ -295,7 +274,6 @@ class XunSearch extends Service implements SearchInterface
             /**
              * 下面的代码的作用：将结果按照上面in查询的顺序进行数组的排序，使结果和上面的搜索结果排序一致（_id）。
              */
-            //var_dump($data);exit;
             $s_data = [];
             foreach ($data as $one) {
                 if ($one[$productPrimaryKey]) {
@@ -316,19 +294,18 @@ class XunSearch extends Service implements SearchInterface
                 'count'=> $count,
             ];
         }
-        
     }
 
     /**
      * 得到搜索的sku列表侧栏的过滤.
      */
-    protected function actionGetFrontSearchFilter($filter_attr, $where)
+    public function getFrontSearchFilter($filter_attr, $where)
     {
-        //var_dump($where);
         $dbName = $this->_searchModel->projectName();
         $_search = Yii::$app->xunsearch->getDatabase($dbName)->getSearch();
         $text = isset($where['$text']['$search']) ? $where['$text']['$search'] : '';
         if (!$text) {
+            
             return [];
         }
         $sh = '';
@@ -341,8 +318,6 @@ class XunSearch extends Service implements SearchInterface
                 }
             }
         }
-        //echo $sh;
-
         $docs = $_search->setQuery($text.$sh)
             ->setFacets([$filter_attr])
             ->setFuzzy($this->fuzzy)
@@ -365,7 +340,7 @@ class XunSearch extends Service implements SearchInterface
     /**
      * 通过product_id删除搜索数据.
      */
-    protected function actionRemoveByProductId($product_id)
+    public function removeByProductId($product_id)
     {
         if (is_object($product_id)) {
             $product_id = (string) $product_id;

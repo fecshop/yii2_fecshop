@@ -51,17 +51,9 @@ class Article extends Service
     }
 
     /**
-     * Get Url by article's url key.
-     */
-    //public function getUrlByPath($urlPath){
-    //return Yii::$service->url->getHttpBaseUrl().'/'.$urlKey;
-    //return Yii::$service->url->getUrlByPath($urlPath);
-    //}
-
-    /**
      * get artile's primary key.
      */
-    protected function actionGetPrimaryKey()
+    public function getPrimaryKey()
     {
         return $this->_article->getPrimaryKey();
     }
@@ -69,7 +61,7 @@ class Article extends Service
     /**
      * get artile model by primary key.
      */
-    protected function actionGetByPrimaryKey($primaryKey)
+    public function getByPrimaryKey($primaryKey)
     {
         return $this->_article->getByPrimaryKey($primaryKey);
     }
@@ -78,7 +70,7 @@ class Article extends Service
      * @param $urlKey | String ,  对应表的url_key字段
      * 根据url_key 查询得到article model
      */
-    protected function actionGetByUrlKey($urlKey)
+    public function getByUrlKey($urlKey)
     {
         return $this->_article->getByUrlKey($urlKey);
     }
@@ -86,7 +78,7 @@ class Article extends Service
     /**
      * 得到category model的全名.
      */
-    protected function actionGetModelName()
+    public function getModelName()
     {
         return get_class($this->_article);
     }
@@ -107,7 +99,7 @@ class Article extends Service
      * 	    'asArray' => true,
      * ]
      */
-    protected function actionColl($filter = '')
+    public function coll($filter = '')
     {
         return $this->_article->coll($filter);
     }
@@ -117,12 +109,12 @@ class Article extends Service
      * @param $originUrlKey|string , article origin url key.
      * save $data to cms model,then,add url rewrite info to system service urlrewrite.
      */
-    protected function actionSave($one, $originUrlKey)
+    public function save($one, $originUrlKey)
     {
         return $this->_article->save($one, $originUrlKey);
     }
 
-    protected function actionRemove($ids)
+    public function remove($ids)
     {
         return $this->_article->remove($ids);
     }

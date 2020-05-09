@@ -68,7 +68,6 @@ class Currency extends Service
         // init default and base currency
         $this->defaultCurrency = Yii::$app->store->get('base_info', 'default_currency');
         $this->baseCurrecy = Yii::$app->store->get('base_info', 'base_currency');
-        
         // init all currency
         $currencys = Yii::$app->store->get('currency');
         if (is_array($currencys)) {
@@ -90,7 +89,7 @@ class Currency extends Service
      *               如果不传递参数，得到所有的货币
      *               如果传递参数，得到的是当前货币的信息。
      */
-    protected function actionGetCurrencys($currencyCode = '')
+    public function getCurrencys($currencyCode = '')
     {
         if (!$this->_currencys) {
             foreach ($this->currencys as $code => $info) {
@@ -119,9 +118,10 @@ class Currency extends Service
      * 得到当前货币的符号，譬如￥ $ 等。
      * 如果当前的货币在配置中找不到，则会强制改成默认货币
      */
-    protected function actionGetCurrentSymbol()
+    public function getCurrentSymbol()
     {
         if (isset($this->currencys[$this->getCurrentCurrency()]['symbol'])) {
+            
             return $this->currencys[$this->getCurrentCurrency()]['symbol'];
         }
     }
@@ -130,9 +130,10 @@ class Currency extends Service
      * @param $currencyCode | 货币简码
      * 得到货币的符号，譬如￥ $ 等。
      */
-    protected function actionGetSymbol($currencyCode)
+    public function getSymbol($currencyCode)
     {
         if (isset($this->currencys[$currencyCode]['symbol'])) {
+            
             return $this->currencys[$currencyCode]['symbol'];
         }
     }
@@ -142,6 +143,7 @@ class Currency extends Service
     public function getBaseSymbol()
     {
         if (isset($this->currencys[$this->baseCurrecy]['symbol'])) {
+            
             return $this->currencys[$this->baseCurrecy]['symbol'];
         }
     }
@@ -152,11 +154,12 @@ class Currency extends Service
      * current currency will set defaultCurrency, origin price will be return.
      * 通过传递默认货币的价格，得到当前货币的价格。
      */
-    protected function actionGetCurrentCurrencyPrice($price)
+    public function getCurrentCurrencyPrice($price)
     {
         $currencyCode  = $this->getCurrentCurrency();
         $currencyPrice = $this->getCurrencyPrice($price, $currencyCode);
         if ($currencyPrice !== null) {
+            
             return $currencyPrice;
         }
         /*
@@ -173,11 +176,12 @@ class Currency extends Service
      * property $currencyCode|String，货币简码,譬如 USD
      * 根据基础货币，得到相应货币的价格
      */
-    protected function actionGetCurrencyPrice($price, $currencyCode)
+    public function getCurrencyPrice($price, $currencyCode)
     {
         if (isset($this->currencys[$currencyCode]['rate'])) {
             $rate = $this->currencys[$currencyCode]['rate'];
             if ($rate) {
+                
                 return bcmul($price, $rate, 2);
             }
         }
@@ -192,7 +196,7 @@ class Currency extends Service
      *                                  需要特别注意的是：这种反推方法换算得到的基础货币的价格，和原来的基础货币价格，
      *                                  可能有0.01的误差，因为默认货币换算成当前货币的算法为小数点后两位进一法得到的。
      */
-    protected function actionGetBaseCurrencyPrice($current_price, $current_currency = '')
+    public function getBaseCurrencyPrice($current_price, $current_currency = '')
     {
         if (!$current_currency) {
             $current_currency = $this->getCurrentCurrency();
@@ -200,6 +204,7 @@ class Currency extends Service
         if (isset($this->currencys[$current_currency]['rate'])) {
             $rate = $this->currencys[$current_currency]['rate'];
             if ($rate) {
+                
                 return bcdiv($current_price, $rate, 2);
             }
         }
@@ -211,12 +216,14 @@ class Currency extends Service
      * 1. 如果 $this->defaultCurrency 和 $this->baseCurrecy 没有设置，将会报错。
      * 2. 如果 传递参数$currencyCode为空，则会使用默认货币
      */
-    protected function actionInitCurrency($currencyCode = '')
+    public function initCurrency($currencyCode = '')
     {
         if (!$this->defaultCurrency) {
+            
             throw new InvalidConfigException('defautlt currency must config');
         }
         if (!$this->baseCurrecy) {
+            
             throw new InvalidConfigException('base currency must config');
         }
         if (!$this->getCurrentCurrency()) {
@@ -237,7 +244,7 @@ class Currency extends Service
      *               'symbol' 	=> $symbol ,
      *               ]
      */
-    protected function actionGetCurrencyInfo($currencyCode = '')
+    public function getCurrencyInfo($currencyCode = '')
     {
         if (!$currencyCode) {
             $currencyCode = $this->getCurrentCurrency();
@@ -249,7 +256,7 @@ class Currency extends Service
     /**
      * 得到当前的货币。
      */
-    protected function actionGetCurrentCurrency()
+    public function getCurrentCurrency()
     {
         if (!$this->_currentCurrencyCode) {
             $this->_currentCurrencyCode = Yii::$service->session->get(self::CURRENCY_CURRENT);
@@ -262,7 +269,7 @@ class Currency extends Service
      * @param $currencyCode | String， 当前的货币简码
      * 设置当前的货币。
      */
-    protected function actionSetCurrentCurrency($currencyCode)
+    public function setCurrentCurrency($currencyCode)
     {
         if (!$this->isCorrectCurrency($currencyCode)) {
             $currencyCode = $this->defaultCurrency;
@@ -272,6 +279,7 @@ class Currency extends Service
                 Yii::$service->session->set(self::CURRENCY_CURRENT, $currencyCode);
             }
             $this->_currentCurrencyCode = $currencyCode;
+            
             return true;
         }
     }
@@ -285,6 +293,7 @@ class Currency extends Service
     public function appserverSetCurrentCurrency()
     {
         if ($this->_currentCurrencyCode) {
+            
             return true;
         }
         $header = Yii::$app->request->getHeaders();
@@ -309,8 +318,10 @@ class Currency extends Service
     protected function isCorrectCurrency($currencyCode)
     {
         if (isset($this->currencys[$currencyCode])) {
+            
             return true;
         } else {
+            
             return false;
         }
     }

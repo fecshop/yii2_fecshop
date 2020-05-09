@@ -54,6 +54,7 @@ class UserRole extends Service
 
             return $one;
         } else {
+            
             return new $this->_roleModelName();
         }
     }
@@ -85,7 +86,7 @@ class UserRole extends Service
                 $coll[$k] = $one;
             }
         }
-        //var_dump($one);
+        
         return [
             'coll' => $coll,
             'count'=> $query->limit(null)->offset(null)->count(),

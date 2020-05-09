@@ -25,20 +25,11 @@ class Category extends Service
      * @param $strVal | String
      * 把属性值转换成url格式的字符串，用于生成url.
      */
-    protected function actionAttrValConvertUrlStr($strVal)
+    public function attrValConvertUrlStr($strVal)
     {
         if ($strVal) {
+            
             return urlencode($strVal);
-            // 如果在其他url重写的需要，可以在这里添加一下字符串转换，添加后
-            // 函数actionUrlStrConvertAttrVal()也要做相应的转变
-            //if (!preg_match('/^[A-Za-z0-9-_ &]+$/', $strVal)) {
-            //    throw new InvalidValueException('"'.$strVal .'":contain special str , you can only contain special string [A-Za-z0-9-_ &]');
-            //}
-            //$convert = $this->strUrlRelation();
-            //foreach ($convert as $originStr => $nStr) {
-            //    $strVal = str_replace($originStr, $nStr, $strVal);
-            //}
-            //return $strVal;
         }
     }
 
@@ -46,16 +37,9 @@ class Category extends Service
      * @param $urlStr | String
      * 把url格式的字符串转换成属性值，用于解析url，得到相应的属性值
      */
-    protected function actionUrlStrConvertAttrVal($urlStr)
+    public function urlStrConvertAttrVal($urlStr)
     {
         return urldecode($urlStr);
-        // 如果在其他url重写的需要，可以在这里添加一下字符串转换，添加后
-        // 函数 actionAttrValConvertUrlStr()也要做相应的转变
-        //$convert = $this->strUrlRelation();
-        //foreach ($convert as $originStr => $nStr) {
-        //    $urlStr = str_replace($nStr, $originStr, $urlStr);
-        //}
-        //return $urlStr;
     }
 
     /**
@@ -76,7 +60,7 @@ class Category extends Service
      * @param $p|string  在url中用来表示分页的参数，一般用p来标示。
      * @param $pageBackToOne|bool 是否让p的页数回归第一页
      */
-    protected function actionGetFilterChooseAttrUrl($attrUrlStr, $val, $p = 'p', $pageBackToOne = true)
+    public function getFilterChooseAttrUrl($attrUrlStr, $val, $p = 'p', $pageBackToOne = true)
     {
         $val = $this->attrValConvertUrlStr($val);
         $str = $attrUrlStr.'='.$val;
@@ -89,7 +73,6 @@ class Category extends Service
                 $afterPUrl = $p.'=1';
             }
         }
-
         if ($currentRequestVal) {
             $originAttrUrlStr = $attrUrlStr . '=' . $this->attrValConvertUrlStr($currentRequestVal);
             $currentUrl = Yii::$service->url->getCurrentUrl();
@@ -152,13 +135,12 @@ class Category extends Service
      * @param $p|string  在url中用来表示分页的参数，一般用p来标示。
      * @param $pageBackToOne|bool 是否让p的页数回归第一页
      */
-    protected function actionGetFilterSortAttrUrl($arr, $p = '', $pageBackToOne = true)
+    public function getFilterSortAttrUrl($arr, $p = '', $pageBackToOne = true)
     {
         $sort = $arr['sort']['key'];
         $sortVal = $arr['sort']['val'];
         $dir = $arr['dir']['key'];
         $dirVal = $arr['dir']['val'];
-
         $originPUrl = '';
         if ($pageBackToOne && $p) {
             $pVal = Yii::$app->request->get($p);
@@ -167,22 +149,17 @@ class Category extends Service
                 $afterPUrl = $p.'=1';
             }
         }
-
         $sortVal = $this->attrValConvertUrlStr($sortVal);
         $sortStr = $sort.'='.$sortVal;
         $currentSortVal = Yii::$app->request->get($sort);
-
         $dirVal = $this->attrValConvertUrlStr($dirVal);
         $dirStr = $dir.'='.$dirVal;
         $currentDirVal = Yii::$app->request->get($dir);
-
         $str = $sortStr.'&'.$dirStr;
         if ($currentSortVal && $currentDirVal) {
             $originAttrUrlStr = $sort.'='.$currentSortVal.'&'.$dir.'='.$currentDirVal;
             $currentUrl = Yii::$service->url->getCurrentUrl();
-
             if ($originAttrUrlStr == $str) {
-                //return str_replace($originAttrUrlStr,$str,$currentUrl);
                 $url = $currentUrl;
                 if (strstr($currentUrl, '?'.$originAttrUrlStr.'&')) {
                     $url = str_replace('?'.$originAttrUrlStr.'&', '?', $currentUrl);
@@ -235,7 +212,6 @@ class Category extends Service
         }
     }
     
-    
     /**
      * 没有排序参数的url
      */
@@ -253,14 +229,4 @@ class Category extends Service
         return $ar['scheme'].'://'.$ar['host'].$ar['path'].($arr ? '?'.http_build_query($arr) : '');
     }
 
-    // 得到不选择这个属性的url
-    /*
-    protected function actionGetFilterUnChooseAttrUrl($attrUrlStr,$val){
-        $val = $this->attrValConvertUrlStr($val);
-        $str = $attrUrlStr.'='.$val;
-        $currentUrl = Yii::$service->url->getCurrentUrl();
-        $currentUrl = str_replace($str,'',$currentUrl);
-        return $currentUrl ;
-    }
-    */
 }

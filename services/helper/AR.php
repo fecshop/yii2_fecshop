@@ -106,6 +106,7 @@ class AR extends Service
                 }
             }
             if ($model->save()) {
+                
                 return $model;
             } else {
                 Yii::$service->helper->errors->add('model save fail');

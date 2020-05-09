@@ -23,8 +23,10 @@ class PayNotifyCallBack extends WxPayNotify
             && array_key_exists("result_code", $result)
             && $result["return_code"] == "SUCCESS"
             && $result["result_code"] == "SUCCESS") {
+                
             return true;
         }
+        
         return false;
     }
     
@@ -33,17 +35,19 @@ class PayNotifyCallBack extends WxPayNotify
     {
         \Yii::info("call back:" . json_encode($data), 'fecshop_debug');
         $notfiyOutput = [];
-        
         if (!array_key_exists("transaction_id", $data)) {
             $msg = "输入参数不正确";
+            
             return false;
         }
         //查询订单，判断订单真实性
         if (!$this->Queryorder($data["transaction_id"])) {
             $msg = "订单查询失败";
+            
             return false;
         }
         $arr = $this->getDataArray($data);
+        
         return \Yii::$service->payment->wxpay->ipnUpdateOrder($arr);
     }
     
@@ -53,6 +57,7 @@ class PayNotifyCallBack extends WxPayNotify
         foreach ($data as $k => $v) {
             $arr[$k] = $v;
         }
+        
         return $arr;
     }
 }

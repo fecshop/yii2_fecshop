@@ -48,6 +48,7 @@ class Wxpay extends Service
         parent::init();
         $wxpayConfigFile = Yii::getAlias($this->configFile);
         if (!is_file($wxpayConfigFile)) {
+            
             throw new InvalidConfigException('wxpay config file:['.$wxpayConfigFile.'] is not exist');
         }
         $appId = Yii::$app->store->get('payment_wxpay', 'wechat_service_app_id');
@@ -58,21 +59,13 @@ class Wxpay extends Service
         define('WX_APP_SECRET', $appSecret);
         define('WX_MCH_KEY', $mchKey);
         define('WX_MCH_ID', $mchId);
-        
         require_once($wxpayConfigFile);
-        
         $wxpayApiFile       = Yii::getAlias('@fecshop/lib/wxpay/lib/WxPay.Api.php');
-        //$wxpayDataFile      = Yii::getAlias('@fecshop/lib/wxpay/lib/WxPay.Data.php');
         $wxpayNotifyFile    = Yii::getAlias('@fecshop/lib/wxpay/lib/WxPay.Notify.php');
-        //$wxpayExceptionFile = Yii::getAlias('@fecshop/lib/wxpay/lib/WxPay.Exception.php');
-        
         $wxpayNativePayFile = Yii::getAlias('@fecshop/lib/wxpay/example/WxPay.NativePay.php');
         $wxpayLogFile       = Yii::getAlias('@fecshop/lib/wxpay/example/log.php');
-        
         require_once($wxpayApiFile);
-        //require_once($wxpayDataFile);
         require_once($wxpayNotifyFile);
-        //require_once($wxpayExceptionFile);
         require_once($wxpayNativePayFile);
         require_once($wxpayLogFile);
         //交易类型
@@ -85,10 +78,10 @@ class Wxpay extends Service
                 $this->tradeType = "NATIVE";
             } else {
                 throw new InvalidConfigException('you must config param [devide] in payment wxpay service');
+                
                 return ;
             }
         }
-        
         $this->_allowChangOrderStatus = [
             Yii::$service->order->payment_status_pending,
             Yii::$service->order->payment_status_processing,
@@ -102,7 +95,6 @@ class Wxpay extends Service
     {
         $notifyFile       = Yii::getAlias('@fecshop/services/payment/wxpay/notify.php');
         require_once($notifyFile);
-        
         \Yii::info('begin ipn', 'fecshop_debug');
         $notify = new \PayNotifyCallBack();
         $notify->Handle(false);
@@ -148,12 +140,14 @@ class Wxpay extends Service
             \Yii::info('check order totla amouont['.($order_total_amount * 100).' == '.$total_fee.']', 'fecshop_debug');
             // 微信支付的人民币单位为分
             if(bccomp($order_total_amount * 100, $total_fee) !== 0){
+                
                 return false;
             }
             \Yii::info('updateOrderInfo', 'fecshop_debug');
             // 更改订单状态
             if ($this->updateOrderInfo($incrementId, $transaction_id, false)) { //支付成功调用服务执行订单状态改变，清空购物车和发送邮件操作
                 \Yii::info('updateOrderInfo Success', 'fecshop_debug');
+                
                 return true;
             }
         }
@@ -195,7 +189,6 @@ class Wxpay extends Service
         $input->SetTrade_type($this->tradeType);
         $input->SetProduct_id($trade_info['product_ids']); //此为二维码中包含的商品ID
         $result = $notify->GetPayUrl($input);
-        //var_dump($result);exit;
         /**
          * var_dump($result);
          * array(11) {
@@ -213,7 +206,6 @@ class Wxpay extends Service
          * }
          **/
         //商户根据实际情况处理流程
-        //var_dump($result);exit;
         if ($result['return_code'] == "FAIL") {
             Yii::$service->helper->errors->add('Api error: {return_msg}',  ['return_msg' => $result['return_msg']]);
             
@@ -224,6 +216,7 @@ class Wxpay extends Service
             return false;
         }
         $scanCodeImgUrl =Yii::$service->url->getUrl('payment/wxpay/standard/qrcode', ['data' => urlencode($result['code_url'])]);
+        
         return [
             // 二维码图片的url
             'scan_code_img_url' => $scanCodeImgUrl,
@@ -265,6 +258,7 @@ class Wxpay extends Service
             
             $checkOrderStatus = Yii::$service->payment->wxpay->checkOrder($trade_state, $return_code, $trade_type, $out_trade_no, $total_amount, $seller_id, $auth_app_id);
             if ($checkOrderStatus) {
+                
                 return $this->updateOrderInfo($out_trade_no, $trade_no);
             }
         }
@@ -311,9 +305,11 @@ class Wxpay extends Service
                 if (is_array($products)) {
                     foreach ($products as $product) {
                         $productIds = $product['product_id'];
+                        
                         break;
                     }
                 }
+                
                 return [
                     'increment_id' => $increment_id,
                     'total_amount' => $total_amount,
@@ -333,16 +329,14 @@ class Wxpay extends Service
     {
         if ($trade_state != 'SUCCESS') {
             Yii::$service->helper->errors->add('request trade_state is not equle to SUCCESS');
+            
             return false;
         }
         if ($return_code != 'SUCCESS') {
             Yii::$service->helper->errors->add('request return_code is not equle to SUCCESS');
+            
             return false;
         }
-        //if ($trade_type != 'NATIVE') {
-        //    Yii::$service->helper->errors->add('request trade_type is not equle to NATIVE');
-        //    return false;
-        //}
         if (!$this->_order) {
             $this->_order = Yii::$service->order->getByIncrementId($out_trade_no);
             Yii::$service->payment->setPaymentMethod($this->_order['payment_method']);
@@ -356,11 +350,10 @@ class Wxpay extends Service
         $order_total_amount = Yii::$service->page->currency->getCurrencyPrice($base_grand_total, 'CNY');
         if ((string)($order_total_amount * 100) != $total_amount) { //由于微信中是以分为单位所以必须乘以100，二维码页面也已经作了处理，单位都是分,$order_total_amount * 100要转为字符串再比较
             Yii::$service->helper->errors->add('order increment id:{out_trade_no} , total_amount({total_amount}) is not equal to order_total_amount({order_total_amount})', ['out_trade_no'=>$out_trade_no , 'total_amount'=>$total_amount , 'order_total_amount'=>$order_total_amount ]);
-            //return ['o' => $order_total_amount * 100, 't' => $total_amount]; //测试时便于观察订单金额和微信实际支付的金额，生产环境要注释掉
+            
             return false;
         }
         
-    
         return true;
     }
     
@@ -380,6 +373,7 @@ class Wxpay extends Service
                 if ($isClearCart) {
                     Yii::$service->cart->clearCartProductAndCoupon();
                 }
+                
                 return true;
             }
         } else {
@@ -400,8 +394,6 @@ class Wxpay extends Service
             $this->_order = Yii::$service->order->getByIncrementId($increment_id);
             Yii::$service->payment->setPaymentMethod($this->_order['payment_method']);
         }
-        
-        // 【优化后的代码 ##】
         $orderstatus = Yii::$service->order->payment_status_confirmed;
         $updateArr['order_status'] = $orderstatus;
         $updateArr['txn_id']       = $trade_no; // 微信的交易号
@@ -417,29 +409,7 @@ class Wxpay extends Service
             // 发送邮件，以及其他的一些操作（订单支付成功后的操作）
             Yii::$service->order->orderPaymentCompleteEvent($this->_order['increment_id']);
         }
-        // 【优化后的代码 ##】
-         
-        /* 注释掉的原来代码，上面进行了优化，保证更改只有一次，这样发邮件也就只有一次了
-        // 如果订单状态已经是processing，那么，不需要更改订单状态了。
-        if ($this->_order['order_status'] == Yii::$service->order->payment_status_confirmed){
-
-            return true;
-        }
-        $order = $this->_order;
-        if (isset($order['increment_id']) && $order['increment_id']) {
-            // 如果支付成功，则更改订单状态为支付成功
-            $order->order_status = Yii::$service->order->payment_status_confirmed;
-            $order->txn_id = $trade_no; // 微信的交易号
-            // 更新订单信息
-            $order->save();
-            Yii::$service->order->orderPaymentCompleteEvent($order['increment_id']);
-            // 得到当前的订单信息
-            // $orderInfo = Yii::$service->order->getOrderInfoByIncrementId($order['increment_id']);
-            // 发送新订单邮件
-        	// Yii::$service->email->order->sendCreateEmail($orderInfo);
-            return true;
-        }
-        */
+        
         return true;
     }
     

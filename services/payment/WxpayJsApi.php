@@ -17,7 +17,7 @@ use Yii;
 use Monolog\Handler\IFTTTHandler;
 
 /**
- * Payment wxpay services.
+ * Payment wxpay jsapi services.
  * @author Alex Chang<1692576541@qq.com>
  * @since 1.0
  */
@@ -48,6 +48,7 @@ class WxpayJsApi extends Service
         parent::init();
         $wxpayConfigFile = Yii::getAlias($this->configFile);
         if (!is_file($wxpayConfigFile)) {
+            
             throw new InvalidConfigException('wxpay config file:['.$wxpayConfigFile.'] is not exist');
         }
         $appId = Yii::$app->store->get('payment_wxpay', 'wechat_service_app_id');
@@ -78,8 +79,6 @@ class WxpayJsApi extends Service
         //JSAPI--公众号支付、NATIVE--原生扫码支付、APP--app支付，统一下单接口trade_type的传参可参考这里
         //MICROPAY--刷卡支付，刷卡支付有单独的支付接口，不调用统一下单接口
         $this->tradeType     = 'JSAPI';
-        
-        
         $this->_allowChangOrderStatus = [
             Yii::$service->order->payment_status_pending,
             Yii::$service->order->payment_status_processing,
@@ -138,12 +137,14 @@ class WxpayJsApi extends Service
             \Yii::info('check order totla amouont['.($order_total_amount * 100).' == '.$total_fee.']', 'fecshop_debug');
             // 微信支付的人民币单位为分
             if(bccomp($order_total_amount * 100, $total_fee) !== 0){
+                
                 return false;
             }
             \Yii::info('updateOrderInfo', 'fecshop_debug');
             // 更改订单状态
             if ($this->updateOrderInfo($incrementId, $transaction_id, false)) { //支付成功调用服务执行订单状态改变，清空购物车和发送邮件操作
                 \Yii::info('updateOrderInfo Success', 'fecshop_debug');
+                
                 return true;
             }
         }
@@ -152,6 +153,7 @@ class WxpayJsApi extends Service
     public function getOpenidUrl($baseUrl)
     {
         $tools = new \JsApiPay();
+        
         return $tools->GetOpenidUrl($baseUrl);
     }
     
@@ -167,7 +169,6 @@ class WxpayJsApi extends Service
            
             return false;
         }
-        
         //①、获取用户openid
         $tools = new \JsApiPay();
         if (!$code) {
@@ -175,8 +176,6 @@ class WxpayJsApi extends Service
         } else {
             $openId = $tools->GetOpenidByCode($code);
         }
-        //echo $openId;exit;
-        
         //②、统一下单
         $input = new \WxPayUnifiedOrder();
         //$notify_url = Yii::$service->url->getUrl("payment/wxpayjsapi/ipn");    ////获取支付配置中的返回ipn url
@@ -209,18 +208,15 @@ class WxpayJsApi extends Service
             $isJsonFormat = false;
         }
         $jsApiParameters = $tools->GetJsApiParameters($order, $isJsonFormat);
-        //var_dump($jsApiParameters);
         //获取共享收货地址js函数参数
         $editAddress = $tools->GetEditAddressParameters($isJsonFormat);
-        //var_dump($editAddress);
-        //echo '3333333333333333<br>';
+        
         return [
             'jsApiParameters' => $jsApiParameters,
             'editAddress' => $editAddress,
             'total_amount' => $trade_info['total_amount'],
             'increment_id' => $trade_info['increment_id'],
-        ];
-        
+        ]; 
     }
     
     //打印输出数组信息
@@ -256,6 +252,7 @@ class WxpayJsApi extends Service
             
             $checkOrderStatus = Yii::$service->payment->wxpay->checkOrder($trade_state, $return_code, $trade_type, $out_trade_no, $total_amount, $seller_id, $auth_app_id);
             if ($checkOrderStatus) {
+                
                 return $this->updateOrderInfo($out_trade_no, $trade_no);
             }
         }
@@ -292,7 +289,6 @@ class WxpayJsApi extends Service
                 if (strlen($subject) > $this->subjectMaxLength) {
                     $subject = mb_substr($subject, 0, $this->subjectMaxLength);
                 }
-                //echo $subject;
                 $increment_id = $currentOrderInfo['increment_id'];
                 $base_grand_total = $currentOrderInfo['base_grand_total'];
                 $total_amount = Yii::$service->page->currency->getCurrencyPrice($base_grand_total, 'CNY');
@@ -302,9 +298,11 @@ class WxpayJsApi extends Service
                 if (is_array($products)) {
                     foreach ($products as $product) {
                         $productIds = $product['product_id'];
+                        
                         break;
                     }
                 }
+                
                 return [
                     'increment_id' => $increment_id,
                     'total_amount' => $total_amount,
@@ -324,14 +322,17 @@ class WxpayJsApi extends Service
     {
         if ($trade_state != 'SUCCESS') {
             Yii::$service->helper->errors->add('request trade_state is not equle to SUCCESS');
+            
             return false;
         }
         if ($return_code != 'SUCCESS') {
             Yii::$service->helper->errors->add('request return_code is not equle to SUCCESS');
+            
             return false;
         }
         if ($trade_type != 'NATIVE') {
             Yii::$service->helper->errors->add('request trade_type is not equle to NATIVE');
+            
             return false;
         }
         if (!$this->_order) {
@@ -347,11 +348,10 @@ class WxpayJsApi extends Service
         $order_total_amount = Yii::$service->page->currency->getCurrencyPrice($base_grand_total, 'CNY');
         if ((string)($order_total_amount * 100) != $total_amount) { //由于微信中是以分为单位所以必须乘以100，二维码页面也已经作了处理，单位都是分,$order_total_amount * 100要转为字符串再比较
             Yii::$service->helper->errors->add('order increment id:{out_trade_no} , total_amount({total_amount}) is not equal to order_total_amount({order_total_amount})', ['out_trade_no'=>$out_trade_no , 'total_amount'=>$total_amount , 'order_total_amount'=>$order_total_amount ]);
-            //return ['o' => $order_total_amount * 100, 't' => $total_amount]; //测试时便于观察订单金额和微信实际支付的金额，生产环境要注释掉
+            
             return false;
         }
         
-    
         return true;
     }
     
@@ -371,6 +371,7 @@ class WxpayJsApi extends Service
                 if ($isClearCart) {
                     Yii::$service->cart->clearCartProductAndCoupon();
                 }
+                
                 return true;
             }
         } else {
@@ -391,8 +392,6 @@ class WxpayJsApi extends Service
             $this->_order = Yii::$service->order->getByIncrementId($increment_id);
             Yii::$service->payment->setPaymentMethod($this->_order['payment_method']);
         }
-        
-        // 【优化后的代码 ##】
         $orderstatus = Yii::$service->order->payment_status_confirmed;
         $updateArr['order_status'] = $orderstatus;
         $updateArr['txn_id']       = $trade_no; // 微信的交易号
@@ -408,35 +407,13 @@ class WxpayJsApi extends Service
             // 发送邮件，以及其他的一些操作（订单支付成功后的操作）
             Yii::$service->order->orderPaymentCompleteEvent($this->_order['increment_id']);
         }
-        // 【优化后的代码 ##】
-         
-        /* 注释掉的原来代码，上面进行了优化，保证更改只有一次，这样发邮件也就只有一次了
-        // 如果订单状态已经是processing，那么，不需要更改订单状态了。
-        if ($this->_order['order_status'] == Yii::$service->order->payment_status_confirmed){
-
-            return true;
-        }
-        $order = $this->_order;
-        if (isset($order['increment_id']) && $order['increment_id']) {
-            // 如果支付成功，则更改订单状态为支付成功
-            $order->order_status = Yii::$service->order->payment_status_confirmed;
-            $order->txn_id = $trade_no; // 微信的交易号
-            // 更新订单信息
-            $order->save();
-            Yii::$service->order->orderPaymentCompleteEvent($order['increment_id']);
-            // 得到当前的订单信息
-            // $orderInfo = Yii::$service->order->getOrderInfoByIncrementId($order['increment_id']);
-            // 发送新订单邮件
-        	// Yii::$service->email->order->sendCreateEmail($orderInfo);
-            return true;
-        }
-        */
+        
         return true;
     }
     
-    // 支付宝的 标示
     public function getWxpayHandle()
     {
         return 'wxpay_standard';
     }
+    
 }

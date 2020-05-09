@@ -61,10 +61,13 @@ class ZipFile extends Service
                 zip_close($zip);
             }
         }else{
+            
             return false;
         }
+        
         return true;
     }
+    
     /**
      * 创建目录
      */
@@ -82,6 +85,7 @@ class ZipFile extends Service
             }
         }
     }
+    
 }
 
 

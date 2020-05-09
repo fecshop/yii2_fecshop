@@ -39,7 +39,8 @@ class SystemLog extends Service
         list($this->_modelName, $this->_model) = Yii::mapGet($this->_modelName);
     }
     
-    public function getSystemLogModel(){
+    public function getSystemLogModel()
+    {
         return $this->_model;
     }
     
@@ -60,6 +61,7 @@ class SystemLog extends Service
 
             return $one;
         } else {
+            
             return new $this->_modelName();
         }
     }
@@ -90,7 +92,7 @@ class SystemLog extends Service
                 $coll[$k] = $one;
             }
         }
-        //var_dump($one);
+        
         return [
             'coll' => $coll,
             'count'=> $query->limit(null)->offset(null)->count(),
@@ -100,6 +102,7 @@ class SystemLog extends Service
 	# 保存系统日志。
 	public function save(){
 		if (!$this->enableLog) {
+            
             return false;
         }
 		$systemLog = $this->_model;
@@ -116,14 +119,16 @@ class SystemLog extends Service
 			$systemLog->url = $url;
 			$systemLog->url_key = $url_key;
 			$systemLog->menu = $this->getMenuByUrlKey($url_key);
-			$systemLog->save();
+			return $systemLog->save();
 		}	
 	}
 	
 	public function getMenuByUrlKey($url_key){
 		if(!$url_key)
+            
 			return null;
 		$menuArr = Yii::$service->admin->urlKey->getUrlKeyAndLabelArr();
+        
 		return isset($menuArr[$url_key]) ? $menuArr[$url_key] : null;
 	}
 	

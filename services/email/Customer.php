@@ -180,6 +180,7 @@ class Customer extends Service
     {
         $forgotPasswordInfo = $this->emailTheme['forgotPassword'];
         if (isset($forgotPasswordInfo['passwordResetTokenExpire']) && $forgotPasswordInfo['passwordResetTokenExpire']) {
+            
             return $forgotPasswordInfo['passwordResetTokenExpire'];
         }
     }

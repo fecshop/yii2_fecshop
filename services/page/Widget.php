@@ -27,7 +27,13 @@ class Widget extends Service
     public $defaultObMethod = 'getLastData';
 
     public $widgetConfig;
-
+    
+    public  $_cache_arr = [
+        'head' => 'headBlockCache',
+        'header' => 'headerBlockCache',
+        'menu' => 'menuBlockCache',
+        'footer' => 'footerBlockCache',
+    ];
     /**
      * @param configKey   String or Array
      * 如果传递的是一个配置数组，内容格式如下：
@@ -52,7 +58,7 @@ class Widget extends Service
      * 由block提供，最终生成一个html区块，返回。
      * @param $parentThis 外部传递的数组变量，作为变量，可以在view中直接使用
      */
-    protected function actionRender($configKey, $parentThis = '')
+    public function render($configKey, $parentThis = '')
     {
         $config = '';
         if (is_array($configKey)) {
@@ -60,13 +66,14 @@ class Widget extends Service
             $configKey = '';
         } else if ($configKey){
             $configArr = explode('/', $configKey);
-
             if (count($configArr) < 2 ) {
+                
                 throw new InvalidValueException(" config key: '$configKey', format: `xxxx/xxxx`, you must config it with correct format");
             }
             if (isset($this->widgetConfig[$configArr[0]][$configArr[1]])) {
                 $config = $this->widgetConfig[$configArr[0]][$configArr[1]];
             } else {
+                
                 throw new InvalidValueException(" config key: '$configKey', can not find in  ".'Yii::$service->page->widget->widgetConfig'.', you must config it before use it.');
             }
         }
@@ -97,30 +104,31 @@ class Widget extends Service
      * 由block提供，最终生成一个html区块，返回。
      * @param $diConfig | array 数组变量，会注入$configKey中class对应的类变量
      */
-    protected function actionDiRender($configKey, $diConfig = [])
+    public function diRender($configKey, $diConfig = [])
     {
         if (!is_array($diConfig)) {
+            
             throw new InvalidValueException(" configParent: '$diConfig' must be array");
         }
-        //
-
         $config = '';
         if (is_array($configKey)) {
             $config = $configKey;
             $configKey = '';
         } else if ($configKey){
             $configArr = explode('/', $configKey);
-
             if (count($configArr) < 2 ) {
+                
                 throw new InvalidValueException(" config key: '$configKey', format: `xxxx/xxxx`, you must config it with correct format");
             }
             if (isset($this->widgetConfig[$configArr[0]][$configArr[1]])) {
                 $config = $this->widgetConfig[$configArr[0]][$configArr[1]];
             } else {
+                
                 throw new InvalidValueException(" config key: '$configKey', can not find in  ".'Yii::$service->page->widget->widgetConfig'.', you must config it before use it.');
             }
         }
         if (!isset($config['class']) || !$config['class']) {
+            
             throw new InvalidConfigException('in widget ['.$configKey.'],you enable cache ,you must config widget class .');
         }
         foreach ($diConfig as $k=>$v) {
@@ -136,10 +144,11 @@ class Widget extends Service
      * @param $parentThis | array or '' , 调用层传递的参数数组，可以在view中调用。
      *
      */
-    protected function actionRenderContentHtml($configKey, $config, $parentThis = '')
+    public function renderContentHtml($configKey, $config, $parentThis = '')
     {
         if (!isset($config['view']) || empty($config['view'])
         ) {
+            
             throw new InvalidConfigException('view and class must exist in array config!');
         }
         $params = [];
@@ -168,20 +177,13 @@ class Widget extends Service
         return Yii::$app->view->renderFile($viewFile, $params);
     }
 
-    public  $_cache_arr = [
-        'head' => 'headBlockCache',
-        'header' => 'headerBlockCache',
-        'menu' => 'menuBlockCache',
-        'footer' => 'footerBlockCache',
-    ];
-
     /**
      * @param $configKey | string , 标记，以及报错排查时使用的key。
      * @param $config,就是上面actionRender()方法中的参数，格式一样。
      * @param $parentThis | array or '' , 调用层传递的参数数组，可以在view中调用。
      *
      */
-    protected function actionRenderContent($configKey, $config, $parentThis = '')
+    public function renderContent($configKey, $config, $parentThis = '')
     {
         // 从配置中读取cache的enable状态
         $cacheEnable = false;
@@ -207,6 +209,7 @@ class Widget extends Service
 
                     return $content;
                 } else {
+                    
                     throw new InvalidConfigException($config['class'].' must implete fecshop\interfaces\block\BlockCache  when you use block cache .');
                 }
             }
@@ -225,20 +228,18 @@ class Widget extends Service
     {
         $view = trim($view);
         if (substr($view, 0, 1) == '@') {
+            
             return Yii::getAlias($view);
         }
         $absoluteDir = Yii::$service->page->theme->getThemeDirArr();
-
         foreach ($absoluteDir as $dir) {
             if ($dir) {
                 $file = $dir.'/'.$view;
-                //echo $file."<br/>";
                 if (file_exists($file)) {
                     return $file;
                 }
             }
         }
-
         // not find view file
         if ($throwError) {
             $notExistFile = [];
@@ -248,9 +249,12 @@ class Widget extends Service
                     $notExistFile[] = $file;
                 }
             }
+            
             throw new InvalidValueException('view file is not exist in'.implode(',', $notExistFile));
         } else {
+            
             return false;
         }
     }
+    
 }

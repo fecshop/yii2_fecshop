@@ -72,7 +72,4 @@ class Newsletter extends Service
     }
     
     
-    
-    
-    
 }

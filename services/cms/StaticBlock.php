@@ -51,20 +51,13 @@ class Staticblock extends Service
         }
         $currentService = $this->getStorageService($this);
         $this->_static_block = new $currentService();
-        /*
-        if ($this->storage == 'mongodb') {
-            $this->_static_block = new StaticBlockMongodb();
-        } elseif ($this->storage == 'mysqldb') {
-            $this->_static_block = new StaticBlockMysqldb();
-        }
-        */
     }
 
     /**
      * get store static block content by identify
      * example <?=  Yii::$service->cms->staticblock->getStoreContentByIdentify('home-big-img','appfront') ?>.
      */
-    protected function actionGetStoreContentByIdentify($identify, $app = 'common')
+    public function getStoreContentByIdentify($identify, $app = 'common')
     {
         $staticBlock    = $this->_static_block->getByIdentify($identify);
         $content        = isset($staticBlock['content'])?$staticBlock['content']:'';
@@ -98,7 +91,7 @@ class Staticblock extends Service
     /**
      * get artile's primary key.
      */
-    protected function actionGetPrimaryKey()
+    public function getPrimaryKey()
     {
         return $this->_static_block->getPrimaryKey();
     }
@@ -106,7 +99,7 @@ class Staticblock extends Service
     /**
      * get artile model by primary key.
      */
-    protected function actionGetByPrimaryKey($primaryKey)
+    public function getByPrimaryKey($primaryKey)
     {
         return $this->_static_block->getByPrimaryKey($primaryKey);
     }
@@ -127,7 +120,7 @@ class Staticblock extends Service
      *     'asArray' => true,
      * ]
      */
-    protected function actionColl($filter = '')
+    public function coll($filter = '')
     {
         return $this->_static_block->coll($filter);
     }
@@ -136,12 +129,12 @@ class Staticblock extends Service
      * @param $one|array , save one data .
      * save $data to cms model,then,add url rewrite info to system service urlrewrite.
      */
-    protected function actionSave($one)
+    public function save($one)
     {
         return $this->_static_block->save($one);
     }
 
-    protected function actionRemove($ids)
+    public function remove($ids)
     {
         return $this->_static_block->remove($ids);
     }

@@ -27,8 +27,6 @@ class AttrGroupMysqldb extends Service implements AttrGroupInterface
 
     protected $_attrGroupModel;
     
-    
-    
     public function init()
     {
         parent::init();
@@ -40,14 +38,13 @@ class AttrGroupMysqldb extends Service implements AttrGroupInterface
         return 'id';
     }
     
-    
-
     /**
      * 得到分类激活状态的值
      */
     public function getEnableStatus()
     {
         $model = $this->_attrGroupModel;
+        
         return $model::STATUS_ENABLE;
     }
     
@@ -55,12 +52,13 @@ class AttrGroupMysqldb extends Service implements AttrGroupInterface
     {
         if ($primaryKey) {
             $one = $this->_attrGroupModel->findOne($primaryKey);
+            
             return $one;
         } else {
+            
             return new $this->_attrGroupModel();
         }
     }
-    
     
     /*
      * example filter:
@@ -80,7 +78,6 @@ class AttrGroupMysqldb extends Service implements AttrGroupInterface
     {
         $query = $this->_attrGroupModel->find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
-        
         $coll = $query->all();
         //$arr = [];
         //foreach ($coll as $one) {
@@ -150,7 +147,6 @@ class AttrGroupMysqldb extends Service implements AttrGroupInterface
         ];
         $query = $this->_attrGroupModel->find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
-        
         $coll = $query->all();
         if (is_array($coll)) {
             foreach ($coll as $k => $groupOne) {
@@ -159,6 +155,7 @@ class AttrGroupMysqldb extends Service implements AttrGroupInterface
                     $coll[$k]['attr_ids'] = $attr_ids;
                 }
             }
+            
             return $coll;
         }
         

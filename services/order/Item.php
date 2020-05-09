@@ -34,7 +34,7 @@ class Item extends Service
     /**
      * 得到order 表的id字段。
      */
-    protected function actionGetPrimaryKey()
+    public function getPrimaryKey()
     {
         return 'item_id';
     }
@@ -44,13 +44,15 @@ class Item extends Service
      * @return Object($this->_itemModel)
      * 通过主键值，返回Order Model对象
      */
-    protected function actionGetByPrimaryKey($primaryKey)
+    public function getByPrimaryKey($primaryKey)
     {
         $one = $this->_itemModel->findOne($primaryKey);
         $primaryKey = $this->getPrimaryKey();
         if ($one[$primaryKey]) {
+            
             return $one;
         } else {
+            
             return new $this->_orderModelName();
         }
     }
@@ -61,10 +63,11 @@ class Item extends Service
      * @param $month | int, 几个月内的订单
      * 通过product_id和customerId，得到$month个月内下单支付成功的产品
      */
-    protected function actionGetByProductIdAndCustomerId($product_id, $month, $customer_id = 0)
+    public function getByProductIdAndCustomerId($product_id, $month, $customer_id = 0)
     {
         if (!$customer_id) {
             if (Yii::$app->user->isGuest) {
+                
                 return false;
             } else {
                 $customer_id = Yii::$app->user->identity->id;
@@ -90,6 +93,7 @@ class Item extends Service
             }
         }
         if (empty($order_ids)) {
+            
             return false;
         }
         $items = $this->_itemModel->find()->asArray()->where([
@@ -99,8 +103,10 @@ class Item extends Service
         ])
             ->all();
         if (!empty($items)) {
+            
             return $items;
         } else {
+            
             return false;
         }
     }
@@ -111,20 +117,19 @@ class Item extends Service
      * @return array
      *               通过order_id 得到所有的items
      */
-    protected function actionGetByOrderId($order_id, $onlyFromTable = false)
+    public function getByOrderId($order_id, $onlyFromTable = false)
     {
         $items = $this->_itemModel->find()->asArray()->where([
             'order_id' => $order_id,
         ])->all();
         if ($onlyFromTable) {
+            
             return $items;
         }
         foreach ($items as $k=>$one) {
             $product_id = $one['product_id'];
             $product_one = Yii::$service->product->getByPrimaryKey($product_id);
-
             $productSpuOptions = $this->getProductSpuOptions($product_one);
-            //var_dump($productSpuOptions);
             $items[$k]['spu_options'] = $productSpuOptions;
             $items[$k]['custom_option'] = $product_one['custom_option'];
             $items[$k]['custom_option_info'] = $this->getProductOptions($items[$k]);
@@ -140,12 +145,13 @@ class Item extends Service
      * @return array
      *               通过order_id 得到所有的items
      */
-    protected function actionGetByOrderIds($order_ids, $onlyFromTable = false)
+    public function getByOrderIds($order_ids, $onlyFromTable = false)
     {
         $items = $this->_itemModel->find()->asArray()->where([
             'in', 'order_id', $order_ids,
         ])->all();
         if ($onlyFromTable) {
+            
             return $items;
         }
         foreach ($items as $k=>$one) {
@@ -268,6 +274,7 @@ class Item extends Service
                 }
             }
         }
+        
         return $custom_option_info_arr;
     }
 
@@ -299,7 +306,7 @@ class Item extends Service
      * @param $order_id | Int
      * 保存订单的item信息
      */
-    protected function actionSaveOrderItems($items, $order_id, $store)
+    public function saveOrderItems($items, $order_id, $store)
     {
         /**
          * 由于是通过session查订单的方式，而不是新建，paypal报错可能多次下单（更新方式），
@@ -341,10 +348,12 @@ class Item extends Service
                 $saveStatus = $myOrderItem->save();
                 // 如果保存失败，直接返回。
                 if (!$saveStatus) {
+                    
                     return $saveStatus;
                 }
             }
         }
+        
         return true;
     }
     
@@ -366,7 +375,7 @@ class Item extends Service
      *              ]
      * 根据$filter 搜索参数数组，返回满足条件的订单数据。
      */
-    protected function actionColl($filter = '')
+    public function coll($filter = '')
     {
         $query  = $this->_itemModel->find();
         $query  = Yii::$service->helper->ar->getCollByFilter($query, $filter);

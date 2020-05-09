@@ -10,9 +10,6 @@
 
 namespace fecshop\services\product;
 
-//use fecshop\models\mongodb\Product;
-//use fecshop\models\mysqldb\product\ProductFlatQty;
-//use fecshop\models\mysqldb\product\ProductCustomOptionQty;
 use fecshop\services\Service;
 use Yii;
 
@@ -74,6 +71,7 @@ class Stock extends Service
     {
         if (!is_array($productIds)) {
             Yii::$service->helper->errors->add('ProductIds must be Array');
+            
             return false;
         }
         $data = $this->_flatQtyModel->find()->asArray()->where([
@@ -83,6 +81,7 @@ class Stock extends Service
         foreach ($data as $one) {
             $arr[$one['product_id']] = $one['qty'];
         }
+        
         return $arr;
     }
     
@@ -108,7 +107,6 @@ class Stock extends Service
         if (!isset($one['qty'])) {
             Yii::$service->helper->errors->add('save product qty error: product qty is empty');
         }
-        
         // 保存自定义部分的qty
         if (is_array($one['custom_option']) && !empty($one['custom_option'])) {
             $custom_option_qty = 0;
@@ -135,7 +133,6 @@ class Stock extends Service
             // 如果是custom option，主库存 = 各个custom option 的库存的相加和
             $one['qty'] = $custom_option_qty;
             $delete_sku_arr = array_diff($co_sku_arr, $product_sku_arr);
-            //var_dump($delete_sku_arr);
             // 删除掉产品中不存在customOptionSku对应的库存、
             if (!empty($delete_sku_arr) && is_array($delete_sku_arr)) {
                 $this->_COQtyModel->deleteAll([
@@ -155,6 +152,7 @@ class Stock extends Service
         }
         $productFlatQty->qty = $one['qty'];
         $productFlatQty->save();
+        
         return true;
     }
 
@@ -170,6 +168,7 @@ class Stock extends Service
         // 保存产品flat qty
         $this->_flatQtyModel->deleteAll(['product_id' => $product_id]);
         $this->_COQtyModel->deleteAll(['product_id' => $product_id]);
+        
         return true;
     }
     
@@ -196,7 +195,7 @@ class Stock extends Service
      *  **注意**：在调用该函数的时候必须使用事务，在返回false的时候要回滚。
      *  **注意**：在调用该函数的时候必须使用事务，在返回false的时候要回滚。
      */
-    protected function actionDeduct($items = [])
+    public function deduct($items = [])
     {
         if (!$items) {
             // 如果 $items 为空，则去购物车取数据。
@@ -206,6 +205,7 @@ class Stock extends Service
         // 如果items为空，则返回
         if (!is_array($items) || empty($items)) {
             Yii::$service->helper->errors->add('cart products is empty');
+            
             return false;
         }    
         // 查看产品的状态，上下架状态，以及产品库存检查是否够用。
@@ -217,10 +217,12 @@ class Stock extends Service
             // 购物车中的产品已经被删除，则会查询不到
             if (!$product['sku']) {
                 Yii::$service->helper->errors->add('product: [ {product_id} ] is not exist', ['product_id' => $product_id]);
+                
                 return false;
             } 
             $status = $this->productIsInStock($product, $sale_qty, $custom_option_sku);
             if (!$status) {
+                
                 return false;
             }
         } 
@@ -229,9 +231,9 @@ class Stock extends Service
          * 如果满足上架状态 && 零库存为1，则直接返回。
          */
         if ($this->zeroInventory) {
+            
             return true; // 零库存模式 不会更新产品库存。
         }
-        
         // 开始扣除库存。
         foreach ($items as $k=>$item) {
             $product_id         = $item['product_id'];
@@ -246,6 +248,7 @@ class Stock extends Service
                 );
                 if (empty($updateColumns)) {// 上面更新sql返回的更新行数如果为0，则说明更新失败，产品不存在，或者产品库存不够
                     Yii::$service->helper->errors->add('product: [ {product_name} ] is stock out', ['product_name' => $product_name]);
+                    
                     return false;
                 }
                 // 对于custom option（淘宝模式）的库存扣除
@@ -263,6 +266,7 @@ class Stock extends Service
                     );
                     if (empty($updateColumns)) {// 上面更新sql返回的更新行数如果为0，则说明更新失败，产品不存在，或者产品库存不够
                         Yii::$service->helper->errors->add('product: [ {product_name} ] is stock out', ['product_name' => $product_name]);
+                        
                         return false;
                     }
                 }
@@ -271,7 +275,6 @@ class Stock extends Service
         
         return true;
     }
-    
     
     /**
      * @var array $items
@@ -296,15 +299,13 @@ class Stock extends Service
      *  **注意**：在调用该函数的时候必须使用事务，在返回false的时候要回滚。
      *  **注意**：在调用该函数的时候必须使用事务，在返回false的时候要回滚。
      */
-    protected function actionUpdatebybase($items = [])
+    public function updatebybase($items = [])
     {
         if (empty($items) || !is_array($items)) {
             Yii::$service->helper->errors->add('param items is not array or is empty');
             
             return false;
         }
-        
-        
         // 查看产品的状态，上下架状态，以及产品库存检查是否够用。
         foreach ($items as $k=>$item) {
             $sku        = $item['sku'];
@@ -324,8 +325,6 @@ class Stock extends Service
             }
             $primaryKey = Yii::$service->product->getPrimaryKey();
             $items[$k]['product_id'] = (string)$product[$primaryKey];
-            
-            
         } 
         
         /**
@@ -345,12 +344,10 @@ class Stock extends Service
             $custom_option_sku  = $item['custom_option_sku'];
             if ($product_id && $sale_qty) {
                 // 应对高并发库存超卖的控制，扣除库存的时候，加上qty个数的查询，不满足查询条件则不扣除库存
-                
                 $updateColumns = $this->_flatQtyModel->updateAllCounters(
                     ['qty' => $sale_qty],
                     ['and', ['product_id' => $product_id], ['>=', 'qty', 0 - $sale_qty]]
                 );
-                
                 if (empty($updateColumns)) {// 上面更新sql返回的更新行数如果为0，则说明更新失败，产品不存在，或者产品库存不够
                     Yii::$service->helper->errors->add('product: [ {sku} ] is stock out', ['sku' => $sku]);
                     
@@ -397,9 +394,10 @@ class Stock extends Service
      * @return bool
      *              返还产品库存。如果在返还过程中产品不存在，也不会返回false
      */
-    protected function actionReturnQty($product_items)
+    public function returnQty($product_items)
     {
         if ($this->zeroInventory) {
+            
             return true; // 零库存模式不扣产品库存，也不需要返还库存。
         }
         // 开始扣除库存。
@@ -429,7 +427,7 @@ class Stock extends Service
      * @return bool
      *  查看产品库存
      */
-    protected function actionProductIsInStock($product, $sale_qty, $custom_option_sku, $checkDbQty = true)
+    public function productIsInStock($product, $sale_qty, $custom_option_sku, $checkDbQty = true)
     {
         $productPrimaryKey = Yii::$service->product->getPrimaryKey();
         $is_in_stock = $product['is_in_stock'];
@@ -479,7 +477,6 @@ class Stock extends Service
             $productFlatQty = $this->_flatQtyModel->find()->where([
                 'product_id' => $product_id
             ])->one();
-            
             if (!$productFlatQty['qty']) {
                 $productName = Yii::$service->store->getStoreAttrVal($product['name'], 'name');
                 Yii::$service->helper->errors->add(
@@ -494,13 +491,13 @@ class Stock extends Service
                         'Product Id: {product_id}, Product inventory is less than [{sale_qty}]',
                         ['product_id' => $product[$productPrimaryKey], 'sale_qty' => $sale_qty]
                     );
+                    
                 return false;
             }
         }
  
         return true;
     }
-    
     
     /**
      * @param $items | Array ， example:
@@ -541,7 +538,7 @@ class Stock extends Service
      *    购物车没有产品返回null
      *
      */
-    protected function actionCheckItemsQty()
+    public function checkItemsQty()
     {
         $cartInfo = Yii::$service->cart->getCartInfo(true);
         $items = isset($cartInfo['products']) ? $cartInfo['products'] : '';
@@ -584,9 +581,7 @@ class Stock extends Service
                         $productM = $this->_flatQtyModel->find()->where([
                             'product_id' => $product_id
                         ])->one();
-
                         if ($productM['qty']) {
-                            //echo $productM['qty'].'####'.$sale_qty.'<br>';
                             if ($productM['qty'] < $sale_qty) {
                                 $outStockProducts[] = [
                                     'product_id'        => $product_id,
@@ -630,11 +625,13 @@ class Stock extends Service
                 }
             }
             if (empty($outStockProducts)) {
+                
                 return [
                     'stockStatus'           => 1,
                     'outStockProducts'    => '',
                 ];
             } else {
+                
                 return [
                     'stockStatus'           => 2,
                     'outStockProducts'    => $outStockProducts,
@@ -642,6 +639,7 @@ class Stock extends Service
             }
         } else {
             Yii::$service->helper->errors->add('cart products is empty');
+            
             return null;
         }
     }
@@ -653,7 +651,7 @@ class Stock extends Service
      * @return bool
      *              检查产品是否是上架上台
      */
-    protected function actionCheckOnShelfStatus($is_in_stock)
+    public function checkOnShelfStatus($is_in_stock)
     {
         if ($is_in_stock == 1) {
             
@@ -674,8 +672,10 @@ class Stock extends Service
                 'product_id' => $product_id
             ])->one();
         if (isset($productFlatQty['qty'])) {
+            
             return $productFlatQty['qty'] ? $productFlatQty['qty'] : 0;
         } else {
+            
             return 0;
         }
     }
@@ -719,6 +719,7 @@ class Stock extends Service
                 $sku_arr[] = $one['custom_option_sku'];
             }
         }
+        
         return $sku_arr;
     }
     
@@ -734,9 +735,12 @@ class Stock extends Service
                 'custom_option_sku' => $custom_option_sku
             ])->one();
         if (isset($productCustomOptionQty['qty'])) {
+            
             return $productCustomOptionQty['qty'];
         } else {
+            
             return 0;
         }
     }
+    
 }
