@@ -172,7 +172,8 @@ csrfName = "<?= CRequest::getCsrfName() ?>";
 csrfVal = "<?= CRequest::getCsrfValue() ?>";
 $(document).ready(function(){
 	// set select all checkbox
-    selectall = "<?= Yii::$app->request->get('selectall') ?>";
+    // selectall = "<?= Yii::$app->request->get('selectall') ?>";
+    selectall = "<?=  \Yii::$service->helper->htmlEncode(Yii::$app->request->get('selectall')) ?>";
     selectAllChecked = false;
     if (selectall == 1) {
         selectAllChecked = true;
