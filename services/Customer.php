@@ -889,7 +889,21 @@ class Customer extends Service
         return null;
     }
     
-    
+    /**
+     * @param $openid | string 
+     * 通过微信小程序的openid 得到 user
+     */
+    public function getByWxMicroOpenid($openid)
+    {
+        $one = $this->_customerModel->findOne(['wx_micro_openid' => $openid]);
+        $primaryKey = $this->getPrimaryKey();
+        if ($one[$primaryKey]) {
+            
+            return $one;
+        } 
+        
+        return null;
+    }
 
     /**
      * 通过accessToek的方式，进行登出从操作。

@@ -284,7 +284,7 @@ class LoginController extends AppserverController
         $session_key = $wxUserInfo['session_key'];
         $openid = $wxUserInfo['openid'];
         // 通过 $openid  得到 user
-        $customer = Yii::$service->customer->getByWxOpenid($openid);
+        $customer = Yii::$service->customer->getByWxMicroOpenid($openid);
         // 如果$openid 没有 对应的customer，则需要先绑定或者创建相应的账户
         if (!$customer) {
             $code = Yii::$service->helper->appserver->account_wx_get_customer_by_openid_fail;
