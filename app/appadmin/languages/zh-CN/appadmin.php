@@ -709,7 +709,7 @@ return [
     'Mobile Enable' => '手机访问跳转',
     'Mobile Condition' => '手机跳转设备',
     'Mobile Redirect Domain' => '手机跳转域名',
-    'Mobile Https Enable' => '手机跳转http enable',
+    'Mobile Https Enable' => '手机跳转https enable',
     'Mobile Type' => '手机跳转网站类型',
     'Https Enable' => '是否开启Https',
     'Sitemap Dir' => 'Sitemap文件路径',
