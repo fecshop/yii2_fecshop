@@ -88,6 +88,19 @@ class Image extends Service
         
         $this->commonBaseDomain = Yii::$app->store->get('base_info', 'image_domain');
     }
+    /**
+     * 得到logo的url
+     */
+    public function getLogoImgUrl()
+    {
+        $logoImg = Yii::$app->store->get('base_info', 'logo_image');
+        if ($logoImg) {
+            
+            return $this->getUrlByRelativePath($logoImg);
+        }
+        
+        return Yii::$service->image->getImgUrl('appfront/custom/logo.png');
+    }
 
     /**
      * @param $str | String 图片的相对路径

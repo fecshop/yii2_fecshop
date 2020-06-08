@@ -11,7 +11,7 @@
 	<a class="icon icon-menu pull-left open-panel" data-panel="#panel-left-menu"></a>
 	<a href="<?= Yii::$service->url->homeUrl();  ?>"  external>
 		<h1 class='title header_logo'>
-			<img class="lazy" data-src="<?= Yii::$service->image->getImgUrl('appfront/custom/logo.png') ?>"  />
+			<img class="lazy" data-src="<?= $logoImgUrl ?>"  />
 		</h1>
 	</a>
 	<div class="pull-right">

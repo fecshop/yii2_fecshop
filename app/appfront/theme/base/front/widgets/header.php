@@ -79,7 +79,7 @@
 				<?= Yii::$service->page->widget->render('base/topsearch',$this); ?>
 			</div>
 			<div class="logo"><a titel="fecshop logo" href="<?= $homeUrl ?>" style="">
-				<img src="<?= Yii::$service->image->getImgUrl('appfront/custom/logo.png'); ?>"  />
+				<img src="<?= $logoImgUrl ?>"  />
 			</a></div>
 		</div><!--end .top_header-->
     </div><!--end .top_main_inner-->

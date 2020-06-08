@@ -23,6 +23,7 @@ class Headers implements BlockCache
             'stores'            => Yii::$service->store->getStoresLang(),
             'currency'            => Yii::$service->page->currency->getCurrencyInfo(),
             'currencys'            => Yii::$service->page->currency->getCurrencys(),
+            'logoImgUrl'      => Yii::$service->image->getLogoImgUrl(),
         ];
     }
 

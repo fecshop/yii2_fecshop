@@ -204,7 +204,7 @@ EOF;
                             processData: false,		//不可缺参数
                             success:function(data, textStatus){
                                 if(data.err == "0"){
-                                    alert(data.relative_path);
+                                    // alert(data.relative_path);
                                     $(".img_{$name}").val(data.relative_path);
                                     $(".cat_image_{$name}").attr("src",data.msg);
                                     $(".cat_image_{$name}").show();

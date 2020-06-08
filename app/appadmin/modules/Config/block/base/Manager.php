@@ -31,7 +31,7 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
         'default_currency',
         'base_currency',
         'image_domain',
-
+        'logo_image',
     ];
 
     public function init()
@@ -128,6 +128,15 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
                 ],
                 'require' => 1,
                 'remark' => '图片的域名,指向 appimage/ 目录的地址，或 OSS 的地址'
+            ],
+            
+            [
+                'label'  => Yii::$service->page->translate->__('Logo Image'),
+                'name' => 'logo_image',
+                'display' => [
+                    'type' => 'inputImage',
+                ],
+                'remark' => '',
             ],
 
         ];
