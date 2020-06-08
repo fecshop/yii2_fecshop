@@ -32,6 +32,7 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
         'base_currency',
         'image_domain',
         'logo_image',
+        'h5_logo_image',
     ];
 
     public function init()
@@ -138,7 +139,24 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
                 ],
                 'remark' => '',
             ],
+            
+            [
+                'label'  => Yii::$service->page->translate->__('Apphtml5 Image Logo'),
+                'name' => 'h5_logo_image',
+                'display' => [
+                    'type' => 'inputImage',
+                ],
+                'remark' => 'fecmall apphtml5 logo默认使用的是上面的统一logo，该处logo是为了方便扩展插件使用【譬如fecyo】',
+            ],
 
+            [
+                'label'  => Yii::$service->page->translate->__('Appserver Image Logo'),
+                'name' => 'appserver_logo_image',
+                'display' => [
+                    'type' => 'inputImage',
+                ],
+                'remark' => 'fecmall Appserver logo默认使用的是上面的统一logo，该处logo是为了方便扩展插件使用【譬如fecyo】',
+            ],
         ];
     }
 

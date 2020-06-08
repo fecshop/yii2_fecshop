@@ -183,6 +183,7 @@ EOF;
                     <a class="removeImgFile_{$name}"   href="javascript:void(0)" style="font-size: 20px; margin-left: 10px;margin-top: 10px;display: inline-block;color: #555;" >
                         <i class="fa fa-trash-o"></i>
                     </a>
+                    <span class="remark-text">{$remark}</span>
 			</p>
             <script>
                 $(document).ready(function(){
