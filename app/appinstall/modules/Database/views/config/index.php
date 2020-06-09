@@ -9,8 +9,9 @@ use fec\helpers\CRequest;
 <?= $errorInfo ?>
 
 
-<form action="" method="post">
+<form action="<?=  Yii::$app->homeUrl . '/database/config/index?database=1' ?>" method="post">
     <?php echo CRequest::getCsrfInputHtml(); ?>
+    
     <div class="form-group">
         <label for="name">Mysql数据库Host</label>
         <input type="text" class="form-control" value="<?= $editForm['host'] ? $editForm['host'] : '127.0.0.1' ?>"

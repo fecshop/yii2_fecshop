@@ -12,6 +12,9 @@ namespace fecshop\app\appinstall\modules\Database\controllers;
 use Yii;
 use yii\base\Exception;
 use yii\web\Controller;
+use fecshop\models\mysqldb\StoreDomain;
+use fecshop\models\mysqldb\StoreBaseConfig;
+
 
 /**
  * @author Terry Zhao <2358269014@qq.com>
@@ -62,6 +65,12 @@ class ConfigController extends Controller
     // 安装默认第一步页面
     public function actionIndex()
     {
+        $database = Yii::$app->request->get('database');
+        if (!$database) {
+            return $this->render('readme', []);
+        }
+        
+        
         $editForm = Yii::$app->request->post('editForm');
         if ($editForm && $this->checkDatabaseData($editForm)
             && $this->updateDatabaseConfig($editForm)) {
@@ -72,34 +81,15 @@ class ConfigController extends Controller
         }
         $errorInfo = Yii::$app->session->getFlash('database-errors');
         $errorInfo = $this->getErrorHtml($errorInfo);
+        
+        
         return $this->render($this->action->id, [
             'errorInfo' => $errorInfo,
             'editForm' => $editForm,
         ]);
     }
     
-    // 安装默认第一步页面
-    public function actionInitadminuser()
-    {
-        $editForm = Yii::$app->request->post('editForm');
-        if (is_array($editForm) && !empty($editForm)) {
-            $param = [
-                'username' => $editForm['username'],
-                'password' => $editForm['password'],
-            ];
-            if ($this->installUpdateUser($param)) {
-                $homeUrl = Yii::$app->homeUrl;
-                return $this->redirect($homeUrl . '/database/config/complete');
-                
-            }
-        }
-        $errorInfo = $this->getErrorHtml($this->_install_errors);
-        return $this->render($this->action->id, [
-            'errorInfo' => $errorInfo,
-            'editForm' => $editForm,
-        ]);
-        
-    }
+    
 
     // 数据库migrate页面
     public function actionMigrate()
@@ -228,10 +218,210 @@ class ConfigController extends Controller
             'errorInfo' => $errorInfo,
             'successInfo' => $successInfo,
             'initUrl' => Yii::$app->homeUrl . '/database/config/addtestdatainit',
-            'nextUrl' => Yii::$app->homeUrl . '/database/config/initadminuser',
+            'nextUrl' => Yii::$app->homeUrl . '/database/config/initdomain',
             //'migrateLog'  => $this->_migrateLog
         ]);
 
+    }
+    
+    // 域名部分
+    public function actionInitdomain()
+    {
+        $editForm = Yii::$app->request->post('editForm');
+        if (is_array($editForm) && !empty($editForm)) {
+            $appfront_domain = $editForm['appfront_domain'];
+            $img_domain = $editForm['img_domain'];
+            $mall_type = $editForm['mall_type'];
+            if ($appfront_domain && $img_domain && $mall_type) {
+                $this->updateDomainConfig($editForm);
+                
+                return $this->redirect(Yii::$app->homeUrl . '/database/config/initadminuser');
+            } else {
+                $this->_install_errors .= 'pc域名,图片域名, 商城类型 不能为空';
+            }
+        }
+        $errorInfo = $this->getErrorHtml($this->_install_errors);
+        return $this->render($this->action->id, [
+            'errorInfo' => $errorInfo,
+            'editForm' => $editForm,
+            'demoDomainList' => $this->getDemoDomainList(),
+        ]);
+        
+    }
+    
+    // 将提交的信息更新到数据库
+    public function updateDomainConfig($editForm)
+    {
+        $appfront_domain = $editForm['appfront_domain'];
+        $img_domain = $editForm['img_domain'];
+        $apphtml5_domain = $editForm['apphtml5_domain'];
+        $appserver_domain = $editForm['appserver_domain'];
+        $mall_type = $editForm['mall_type'];   // 商城类型
+        $baseCurrencyCode = '';
+        $storeLanguageCode = '';
+        $storeLanguageName = '';
+        
+        if ($mall_type == 'china') {
+            $baseCurrencyCode = 'CNY';
+            $storeLanguageCode = 'zh-CN';
+            $storeLanguageName = '中文';
+        } else {
+            $baseCurrencyCode = 'USD';
+            $storeLanguageCode = 'en-US';
+            $storeLanguageName = 'English';
+        }
+        // pc 
+        if ($appfront_domain) {
+            // appfront 更新
+            $appfrontOne = StoreDomain::findOne([
+                'app_name' => 'appfront',
+                'status' => 1,
+            ]);
+            if ($appfrontOne['id']) {
+                $appfrontOne['key'] = $appfront_domain;
+                $appfrontOne['lang'] = $storeLanguageCode;
+                $appfrontOne['lang_name'] = $storeLanguageName;
+                $appfrontOne['currency'] = $baseCurrencyCode;
+                $appfrontOne['mobile_type'] = 'apphtml5';
+                if ($apphtml5_domain) {
+                    $appfrontOne['mobile_redirect_domain'] = $apphtml5_domain;
+                } else {
+                    $appfrontOne['mobile_enable'] = 2;
+                }
+                $appfrontOne['updated_at'] = time();
+                
+                $appfrontOne->save();
+            }
+        }
+        if ($apphtml5_domain) {
+            // apphtml5 更新
+            $apphtml5One = StoreDomain::findOne([
+                'app_name' => 'apphtml5',
+                'status' => 1,
+            ]);
+            if ($apphtml5One['id']) {
+                $apphtml5One['key'] = $apphtml5_domain;
+                $apphtml5One['lang'] = $storeLanguageCode;
+                $apphtml5One['lang_name'] = $storeLanguageName;
+                $apphtml5One['currency'] = $baseCurrencyCode;
+                
+                $apphtml5One['updated_at'] = time();
+                $apphtml5One->save();
+            }
+        }
+        // base_info
+        if ($img_domain) {
+            $baseConfig = StoreBaseConfig::findOne([
+                'key' => 'base_info',
+            ]);
+            if ($baseConfig['id']) {
+                $configArr = unserialize($baseConfig['value']);
+                $configArr['image_domain'] = 'http://'.$img_domain;
+                $configArr['base_currency'] = $baseCurrencyCode;
+                
+                $baseConfig['value'] = serialize($configArr);
+                $baseConfig['updated_at'] = time();
+                $baseConfig->save();
+            }
+        }
+        // 设置汇率  // {s:13:"currency_code";s:3:"CNY";s:15:"currency_symbol";s:3:"￥";s:13:"currency_rate";s:3:"6.3";}}
+        if ($mall_type == 'china') {
+            $baseConfig = StoreBaseConfig::findOne([
+                'key' => 'currency',
+            ]);
+            if ($baseConfig['id']) {
+                $configArr = [
+                    [
+                        'currency_code' => $baseCurrencyCode,
+                        'currency_symbol' => '￥',
+                        'currency_rate' => 1,
+                    ]
+                ];
+                
+                $baseConfig['value'] = serialize($configArr);
+                $baseConfig['updated_at'] = time();
+                $baseConfig->save();
+            }
+        }
+        
+        
+        if ($appserver_domain) {
+            $baseConfig = StoreBaseConfig::findOne([
+                'key' => 'appserver_store',
+            ]);
+            if ($baseConfig['id']) {
+                $configArr = unserialize($baseConfig['value']);
+                $configArr['key'] = $appserver_domain;
+                $configArr['lang'] = $storeLanguageCode;
+                $configArr['lang_name'] = $storeLanguageName;
+                $configArr['currency'] = $baseCurrencyCode;
+                
+                $baseConfig['value'] = serialize($configArr);
+                $baseConfig['updated_at'] = time();
+                $baseConfig->save();
+            }
+        }
+        
+        
+    }
+    
+    public function getDemoDomainList()
+    {
+        $domainStr = $_SERVER['SERVER_NAME'];
+        $domainArr = explode('.', $domainStr);
+        $subDomainStr = '';
+        if (count($domainArr) == 2) {
+            $subDomainStr = $domainStr;
+        } else if  (count($domainArr) == 3) {
+            $subDomainStr = $domainArr[1].'.'.$domainArr[2];
+        } else {
+            
+            return [
+                'demo_pc_domain' => '',
+                'demo_admin_domain' => '',
+                'demo_img_domain' => '',
+                'demo_h5_domain' => '',
+                'demo_appserver_domain' => '',
+                'demo_appapi_domain' => '',
+                'demo_appbdmin_domain' => '',
+            ];
+        }
+        
+        return [
+            'demo_pc_domain' => 'www.' . $subDomainStr,
+            'demo_admin_domain' => 'appadmin.' . $subDomainStr,
+            'demo_img_domain' => 'img.' . $subDomainStr,
+            'demo_h5_domain' => 'm.' . $subDomainStr,
+            'demo_appserver_domain' => 'appserver.' . $subDomainStr,
+            'demo_appapi_domain' => 'appapi.' . $subDomainStr,
+            'demo_appbdmin_domain' => 'appbdmin.' . $subDomainStr,
+        ];
+    }
+    
+    
+    
+    
+    // 安装默认第一步页面
+    public function actionInitadminuser()
+    {
+        $editForm = Yii::$app->request->post('editForm');
+        if (is_array($editForm) && !empty($editForm)) {
+            $param = [
+                'username' => $editForm['username'],
+                'password' => $editForm['password'],
+            ];
+            if ($this->installUpdateUser($param)) {
+                $homeUrl = Yii::$app->homeUrl;
+                return $this->redirect($homeUrl . '/database/config/complete');
+                
+            }
+        }
+        $errorInfo = $this->getErrorHtml($this->_install_errors);
+        return $this->render($this->action->id, [
+            'errorInfo' => $errorInfo,
+            'editForm' => $editForm,
+        ]);
+        
     }
 
     // 进行sql migrate ，产品图片的复制

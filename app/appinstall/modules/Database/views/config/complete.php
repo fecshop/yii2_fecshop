@@ -11,14 +11,16 @@
 <br/>
 
 <?php echo CRequest::getCsrfInputHtml();  ?>
-<p style="font-size:16px;line-height:25px;">您还需要进行如下的步骤：</p>
+<p style="font-size:16px;line-height:25px;"><b>您还需要进行如下的步骤：</b></p>
 
-<p style="font-size:16px;line-height:25px;">1.需要设置安全权限（根目录执行，win不需要执行）：<span style="color:#c7254e">chmod 644 common/config/main-local.php</span></p>
+<p style="font-size:16px;line-height:25px;">设置安全权限(window不需要执行）,Fecmall安装根目录执行命令行：<code>chmod 644 common/config/main-local.php</code></p>
 
-<p style="font-size:16px;line-height:25px;">2.删除安装文件 <span style="color:#c7254e">install.php</span>（非必须执行，安装完成后访问install.php会被阻止执行，不过删除掉这个文件会处理的更彻底）(文件路径为：appfront/web/install.php),  </p>
 
-<p style="font-size:16px;line-height:25px;">3.访问后台（访问nginx配置的后台appadmin域名),  继续进行安装配置。 </p>
+<p style="font-size:16px;line-height:25px;">对于本地环境无所谓，但是线上环境为了安全，请必须设置数据库配置文件644</p>
 
+<br/><br/>
+
+<a target="_blank" href="<?=  'http://'.$_SERVER['SERVER_NAME']  ?>" class="btn btn-default btn-lg">访问PC商城</a>
 
 <br/>
 <br/>
