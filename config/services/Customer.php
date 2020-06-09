@@ -61,6 +61,9 @@ return [
                 'class'        => 'fecshop\services\customer\Google',
 
             ],
+            'contacts' => [
+                'class'        => 'fecshop\services\customer\Contacts',
+            ],
         ],
     ],
 ];

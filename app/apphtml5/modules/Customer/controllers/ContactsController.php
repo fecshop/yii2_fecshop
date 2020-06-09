@@ -29,6 +29,7 @@ class ContactsController extends AppfrontController
     {
         $editForm = Yii::$app->request->post('editForm');
         if (!empty($editForm)) {
+            $editForm = \Yii::$service->helper->htmlEncode($editForm);
             $this->getBlock()->saveContactsInfo($editForm);
         }
         $data = $this->getBlock()->getLastData();

@@ -29,6 +29,7 @@ return [
                     'sales_order_manager' 						=> 'Sales-Order',
 					'sales_coupon_manager' 					    => 'Sales-Coupon',
                     'customer_account' 							    => 'Customer-Account',
+                    'customer_contacts' 							    => 'Customer-Contacts',
 					'customer_newsletter' 						    => 'Customer-Newsletter',
                     'cms_page' 										    => 'CMS-Page',
 					'cms_static_block' 								=> 'CMS-StaticBlock',
@@ -211,6 +212,10 @@ return [
                                     'account' => [
                                         'label' => 'Manager Account',
                                         'url_key' => '/customer/account/index',
+                                    ],
+                                    'contacts' => [
+                                        'label' => 'Customer Contacts',
+                                        'url_key' => '/customer/contacts/index',
                                     ],
                                 ],
                             ],

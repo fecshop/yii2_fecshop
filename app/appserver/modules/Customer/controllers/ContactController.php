@@ -117,6 +117,7 @@ class ContactController extends AppserverController
             'comment'       => $comment,
             'email'         => $email,
         ];
+        $paramData = \Yii::$service->helper->htmlEncode($paramData);
         if (Yii::$service->email->customer->sendContactsEmail($paramData)) {
             $code = Yii::$service->helper->appserver->status_success;
             $data = [

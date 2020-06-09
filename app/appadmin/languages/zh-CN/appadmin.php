@@ -836,10 +836,26 @@ return [
     'Brand Name' => '品牌名称',
     'Website Url' => '官网',
     'Product Brand Image Upload' => '品牌图片上传',
+    'Contacts Comment' => '用户留言',
+    'Customer Contacts' => '用户留言',
+    'Customer Contacts View' => '用户留言详细',
+    'Customer Contacts List' => '用户留言列表',
+    'Customer-Contacts' => '用户-用户留言',
     '' => '',
     '' => '',
     '' => '',
     '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    
     
     
     

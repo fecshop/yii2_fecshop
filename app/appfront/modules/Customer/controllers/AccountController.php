@@ -54,6 +54,7 @@ class AccountController extends AppfrontController
         }
         $param = Yii::$app->request->post('editForm');
         if (!empty($param) && is_array($param)) {
+            $param = \Yii::$service->helper->htmlEncode($param);
             $this->getBlock()->login($param);
             if (!Yii::$app->user->isGuest) {
                 return Yii::$service->customer->loginSuccessRedirect('customer/account');
