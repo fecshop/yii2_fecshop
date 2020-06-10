@@ -31,6 +31,22 @@ class m200608_081516_fecshop_tables extends Migration
         foreach ($arr as $sql) {
             $this->execute($sql);
         }
+        
+        // 1
+        $this->execute("INSERT INTO `admin_url_key` (`name`, `tag`, `tag_sort_order`, `url_key`, `created_at`, `updated_at`, `can_delete`) VALUES ('Customer Contacts List', 'customer_contacts', 1, '/customer/contacts/index', 1591670263, 1591670263, 1)");
+        
+        $lastInsertId = $this->db->getLastInsertID() ;
+        
+        $this->execute("INSERT INTO `admin_role_url_key` (`role_id`, `url_key_id`, `created_at`, `updated_at`) VALUES (4, " . $lastInsertId . ", 1585655278, 1585655278)");
+        
+        
+        // 2
+        $this->execute("INSERT INTO `admin_url_key` (`name`, `tag`, `tag_sort_order`, `url_key`, `created_at`, `updated_at`, `can_delete`) VALUES ('Customer Contacts View', 'customer_contacts', 2, '/customer/contacts/manageredit', 1591670290, 1591670290, 1)");
+        
+        $lastInsertId = $this->db->getLastInsertID() ;
+        
+        $this->execute("INSERT INTO `admin_role_url_key` (`role_id`, `url_key_id`, `created_at`, `updated_at`) VALUES (4, " . $lastInsertId . ", 1585655278, 1585655278)");
+
     }
 
     /**
