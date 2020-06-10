@@ -66,5 +66,5 @@ use fec\helpers\CRequest;
     </div>
     -->
     
-    <button type="submit" class="btn btn-default">提交</button>
+    <button type="submit" class="btn btn-default">下一步</button>
 </form>

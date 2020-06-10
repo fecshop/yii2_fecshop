@@ -23,5 +23,5 @@ use fec\helpers\CRequest;
         <input type="password" class="form-control" required value="<?= $editForm['password'] ?>"
                name="editForm[password]" placeholder="超级账户密码">
     </div>
-    <button type="submit" class="btn btn-default">提交</button>
+    <button type="submit" class="btn btn-default">下一步</button>
 </form>

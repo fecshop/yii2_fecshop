@@ -106,7 +106,7 @@ class ConfigController extends Controller
                 return $this->render('migratesuccess', [
                     'successInfo' => $successInfo,
                     'nextUrl' => Yii::$app->homeUrl . '/database/config/addtestdata',
-                    'skipUrl' => Yii::$app->homeUrl . '/database/config/complete',
+                    'skipUrl' => Yii::$app->homeUrl . '/database/config/initdomain',
                 ]);
             } else {
                 $errors = 'migrate 失败，你可以在logs文件中查看具体原因（@appfront/config/main.php中log组件，对应的logFile配置，查看该log文件，如果没有可以手动创建该log文件，清空数据库，重新执行该操作）';
