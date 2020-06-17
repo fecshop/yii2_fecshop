@@ -42,5 +42,5 @@ use fec\helpers\CRequest;
                placeholder="Mysql数据库密码">
     </div>
 
-    <button type="submit" class="btn btn-default">提交</button>
+    <button type="submit" class="btn btn-default">下一步</button>
 </form>

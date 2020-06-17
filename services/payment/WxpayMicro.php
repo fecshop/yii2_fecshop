@@ -170,7 +170,7 @@ class WxpayMicro extends Service
         //①、获取用户openid
         $tools = new \JsApiPay();
         $identity = Yii::$app->user->identity;
-        $openId = $identity->wx_openid;
+        $openId = $identity->wx_micro_openid;
         //②、统一下单
         $input = new \WxPayUnifiedOrder();
         $notify_url = Yii::$service->url->getUrl("payment/wxpayjsapi/ipn");    ////获取支付配置中的返回ipn url
