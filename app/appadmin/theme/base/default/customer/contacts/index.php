@@ -26,7 +26,7 @@ use fec\helpers\CRequest;
 </div>
 <div class="pageContent">
 	<div class="panelBar">
-		<?= $editBar;  ?>
+		
 	</div>
 	<div class="panelBar">
 		<?= $toolBar; ?>
