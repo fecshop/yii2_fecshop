@@ -47,8 +47,14 @@ class Wx extends Service
         define('WX_MCH_ID', $mchId);
         require_once($wxpayConfigFile);
         // 通过上面的小程序，设置配置信息 
-        $this->microProgramAppId = \WxPayConfig::APPID;
-        $this->microProgramSecret = \WxPayConfig::APPSECRET;
+        if (class_exists('\WxPayConfig')) {
+            $this->microProgramAppId = \WxPayConfig::APPID;
+            $this->microProgramSecret = \WxPayConfig::APPSECRET;
+        } else if (class_exists('\WxPayMicroConfig')) {
+            $this->microProgramAppId = \WxPayMicroConfig::APPID;
+            $this->microProgramSecret = \WxPayMicroConfig::APPSECRET;
+        }
+        
     }
     
     /**

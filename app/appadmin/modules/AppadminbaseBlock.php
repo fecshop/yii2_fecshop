@@ -78,6 +78,7 @@ class AppadminbaseBlock extends BaseObject
      */
     public function init()
     {
+        parent::init();
         if (!($this instanceof AppadminbaseBlockInterface)) {
             echo  'Managere  must implements fecshop\app\appadmin\interfaces\base\AppadminbaseBlockInterface';
             exit;

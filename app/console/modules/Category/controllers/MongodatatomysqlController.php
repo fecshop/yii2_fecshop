@@ -23,8 +23,9 @@ class MongodatatomysqlController extends Controller
     
     public function init()
     {
-        Yii::$service->category->changeToMongoStorage();
         parent::init();
+        Yii::$service->category->changeToMongoStorage();
+        
     }
     
     /**

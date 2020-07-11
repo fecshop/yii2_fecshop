@@ -33,6 +33,7 @@ class AppadminbaseBlockEdit extends BaseObject
 
     public function init()
     {
+        parent::init();
         if (!($this instanceof AppadminbaseBlockEditInterface)) {
             echo  json_encode([
                     'statusCode'=>'300',

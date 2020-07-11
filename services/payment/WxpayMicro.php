@@ -45,9 +45,9 @@ class WxpayMicro extends Service
     {
         ini_set('date.timezone', 'Asia/Shanghai');
         parent::init();
-        $wxpayConfigFile = Yii::getAlias($this->configFile);
-        if (!is_file($wxpayConfigFile)) {
-            throw new InvalidConfigException('wxpay config file:['.$wxpayConfigFile.'] is not exist');
+        $wxPayMicroConfigFile = Yii::getAlias($this->configFile);
+        if (!is_file($wxPayMicroConfigFile)) {
+            throw new InvalidConfigException('wxpay config file:['.$wxPayMicroConfigFile.'] is not exist');
         }
         $appId = Yii::$app->store->get('payment_wxpay', 'wechat_micro_app_id' );
         $appSecret = Yii::$app->store->get('payment_wxpay', 'wechat_micro_app_secret');
@@ -57,7 +57,7 @@ class WxpayMicro extends Service
         define('WX_APP_SECRET', $appSecret);
         define('WX_MCH_KEY', $mchKey);
         define('WX_MCH_ID', $mchId);
-        require_once($wxpayConfigFile);
+        require_once($wxPayMicroConfigFile);
         
         $wxpayApiFile       = Yii::getAlias('@fecshop/lib/wxpay/lib/WxPay.Api.php');
         //$wxpayDataFile      = Yii::getAlias('@fecshop/lib/wxpay/lib/WxPay.Data.php');

@@ -20,7 +20,7 @@ class AppfrontModule extends \yii\base\Module
     public function init()
     {
         # 以下代码必须指定
-
+        parent::init();
         //$this->_currentDir			= 	__DIR__ ;
         //$this->_currentNameSpace	=   __NAMESPACE__;
 

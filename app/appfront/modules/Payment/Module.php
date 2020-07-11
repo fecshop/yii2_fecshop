@@ -23,6 +23,7 @@ class Module extends AppfrontModule
 
     public function init()
     {
+        parent::init();
         // 以下代码必须指定
         $nameSpace = __NAMESPACE__;
         // 如果 Yii::$app 对象是由类\yii\web\Application 实例化出来的。
@@ -41,6 +42,6 @@ class Module extends AppfrontModule
 
         // 设置该模块的view(theme)的默认layout文件。
         Yii::$service->page->theme->layoutFile = 'one_step_checkout.php';
-        parent::init();
+        
     }
 }

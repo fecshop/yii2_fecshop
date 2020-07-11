@@ -21,6 +21,7 @@ class Module extends \yii\base\Module
     
     public function init()
     {
+        parent::init();
         // 以下代码必须指定
         $nameSpace = __NAMESPACE__;
         // 如果 Yii::$app 对象是由类\yii\web\Application 实例化出来的。
@@ -31,6 +32,5 @@ class Module extends \yii\base\Module
             $this->blockNamespace = $nameSpace . '\\block';
         }
         $this->layout = 'main.php';
-        parent::init();
     }
 }

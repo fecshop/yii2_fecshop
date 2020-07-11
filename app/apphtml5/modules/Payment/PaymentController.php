@@ -23,6 +23,7 @@ class PaymentController extends AppfrontController
 
     public function init()
     {
+        parent::init();
         $homeUrl = Yii::$service->url->homeUrl();
         $this->_increment_id = Yii::$service->order->getSessionIncrementId();
         if (!$this->_increment_id) {
@@ -36,6 +37,5 @@ class PaymentController extends AppfrontController
             exit;
         }
 
-        parent::init();
     }
 }

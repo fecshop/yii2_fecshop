@@ -11,6 +11,7 @@ class Module extends AppapiModule
 
     public function init()
     {
+        parent::init();
         // 以下代码必须指定
         $nameSpace = __NAMESPACE__;
         // web controller
@@ -19,6 +20,6 @@ class Module extends AppapiModule
         // 指定默认的man文件
         //$this->layout = "home.php";
         //Yii::$service->page->theme->layoutFile = 'home.php';
-        parent::init();
+        
     }
 }

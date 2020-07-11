@@ -20,8 +20,9 @@ class WxpayjsapiController extends PaymentController
 {
     public $enableCsrfValidation = false;
     
-    public function init(){
-        
+    public function init()
+    {
+        parent::init();
     }
     
     /**
@@ -29,7 +30,7 @@ class WxpayjsapiController extends PaymentController
      */
     public function actionStart()
     {
-        parent::init();
+        
         Yii::$service->page->theme->layoutFile = 'wxpay_jsapi.php';
         $data = Yii::$service->payment->wxpayJsApi->getScanCodeStart();
         $data['success_url'] = Yii::$service->payment->getStandardSuccessRedirectUrl();

@@ -30,6 +30,7 @@ class AppfrontController extends FecController
      */
     public function init()
     {
+        parent::init();
         /**
          * 如果模板路径没有配置，则配置模板路径
          */

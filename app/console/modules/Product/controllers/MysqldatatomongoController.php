@@ -23,8 +23,9 @@ class MysqldatatomongoController extends Controller
     
     public function init()
     {
-        Yii::$service->product->changeToMysqlStorage();
         parent::init();
+        Yii::$service->product->changeToMysqlStorage();
+        
     }
     
     

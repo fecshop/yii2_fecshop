@@ -87,7 +87,6 @@ class Product extends ActiveRecord
                 'short_description',
                 'custom_option',
                 'remark',
-                
                 'long',            // 长
                 'width',           // 宽
                 'high',            // 高
