@@ -88,6 +88,7 @@ class LoginController extends \fecadmin\controllers\LoginController
      */
     public function init()
     {
+        parent::init();
         if (!Yii::$service->page->theme->fecshopThemeDir) {
             Yii::$service->page->theme->fecshopThemeDir = Yii::getAlias(CConfig::param('appadminBaseTheme'));
         }
