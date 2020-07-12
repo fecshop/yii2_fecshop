@@ -26,6 +26,35 @@ class LogoutController extends Controller
 	public $enableCsrfValidation = true;
     public $blockNamespace;
     
+    
+    /**
+     * init theme component property : $fecshopThemeDir and $layoutFile
+     * $fecshopThemeDir is appfront base theme directory.
+     * layoutFile is current layout relative path.
+     */
+    public function init()
+    {
+        parent::init();
+        if (!Yii::$service->page->theme->fecshopThemeDir) {
+            Yii::$service->page->theme->fecshopThemeDir = Yii::getAlias(CConfig::param('appadminBaseTheme'));
+        }
+        if (!Yii::$service->page->theme->layoutFile) {
+            Yii::$service->page->theme->layoutFile = CConfig::param('appadminBaseLayoutName');
+        }
+        // 设置本地模板路径
+        $localThemeDir = Yii::$app->params['localThemeDir'];
+        if($localThemeDir){
+            Yii::$service->page->theme->setLocalThemeDir($localThemeDir);
+        }
+        /*
+         *  set i18n translate category.
+         */
+        Yii::$service->page->translate->category = 'appadmin';
+        /*
+         * 自定义Yii::$classMap,用于重写
+         */
+    }
+    
     public function actionIndex()
     {
         $currentLang = Yii::$service->admin->getCurrentLangCode();
@@ -46,36 +75,6 @@ class LogoutController extends Controller
         //$this->redirect("/fecadmin/login/index",200)->send();
     }
     
-    
-    /**
-     * init theme component property : $fecshopThemeDir and $layoutFile
-     * $fecshopThemeDir is appfront base theme directory.
-     * layoutFile is current layout relative path.
-     */
-    public function init()
-    {
-        if (!Yii::$service->page->theme->fecshopThemeDir) {
-            Yii::$service->page->theme->fecshopThemeDir = Yii::getAlias(CConfig::param('appadminBaseTheme'));
-        }
-        if (!Yii::$service->page->theme->layoutFile) {
-            Yii::$service->page->theme->layoutFile = CConfig::param('appadminBaseLayoutName');
-        }
-        // 设置本地模板路径
-        $localThemeDir = Yii::$app->params['localThemeDir'];
-        if($localThemeDir){
-            Yii::$service->page->theme->setLocalThemeDir($localThemeDir);
-        }
-        /*
-         *  set i18n translate category.
-         */
-        Yii::$service->page->translate->category = 'appadmin';
-        /*
-         * 自定义Yii::$classMap,用于重写
-         */
-    }
-
-    
-
     /**
      * @param $view|string , (only) view file name ,by this module id, this controller id , generate view relative path.
      * @param $params|Array,

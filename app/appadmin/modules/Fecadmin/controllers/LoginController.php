@@ -26,6 +26,32 @@ class LoginController extends \fecadmin\controllers\LoginController
 	public $enableCsrfValidation = true;
     public $blockNamespace;
     
+    /**
+     * init theme component property : $fecshopThemeDir and $layoutFile
+     * $fecshopThemeDir is appfront base theme directory.
+     * layoutFile is current layout relative path.
+     */
+    public function init()
+    {
+        parent::init();
+        if (!Yii::$service->page->theme->fecshopThemeDir) {
+            Yii::$service->page->theme->fecshopThemeDir = Yii::getAlias(CConfig::param('appadminBaseTheme'));
+        }
+        if (!Yii::$service->page->theme->layoutFile) {
+            Yii::$service->page->theme->layoutFile = CConfig::param('appadminBaseLayoutName');
+        }
+        // 设置本地模板路径
+        $localThemeDir = Yii::$app->params['localThemeDir'];
+        if($localThemeDir){
+            Yii::$service->page->theme->setLocalThemeDir($localThemeDir);
+        }
+        /*
+         *  set i18n translate category.
+         */
+        Yii::$service->page->translate->category = 'appadmin';
+        Yii::$service->page->theme->layoutFile = 'login.php';  
+    }
+    
     public function actionIndex()
     {
         $langCode = Yii::$app->request->get('lang');
@@ -79,35 +105,6 @@ class LoginController extends \fecadmin\controllers\LoginController
         exit;
     }
    
-    
-    
-    /**
-     * init theme component property : $fecshopThemeDir and $layoutFile
-     * $fecshopThemeDir is appfront base theme directory.
-     * layoutFile is current layout relative path.
-     */
-    public function init()
-    {
-        if (!Yii::$service->page->theme->fecshopThemeDir) {
-            Yii::$service->page->theme->fecshopThemeDir = Yii::getAlias(CConfig::param('appadminBaseTheme'));
-        }
-        if (!Yii::$service->page->theme->layoutFile) {
-            Yii::$service->page->theme->layoutFile = CConfig::param('appadminBaseLayoutName');
-        }
-        // 设置本地模板路径
-        $localThemeDir = Yii::$app->params['localThemeDir'];
-        if($localThemeDir){
-            Yii::$service->page->theme->setLocalThemeDir($localThemeDir);
-        }
-        /*
-         *  set i18n translate category.
-         */
-        Yii::$service->page->translate->category = 'appadmin';
-        Yii::$service->page->theme->layoutFile = 'login.php';  
-    }
-
-    
-
     /**
      * @param $view|string , (only) view file name ,by this module id, this controller id , generate view relative path.
      * @param $params|Array,
