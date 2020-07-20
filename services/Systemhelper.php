@@ -97,11 +97,11 @@ class Systemhelper extends Service
                 if ($orderTime >= $today0Time) {
                     $orderTodayTotalCount +=1;
                     $orderTodayTotalBaseSale += $baseGrandTotal;
-                    $orderYestCustomer[$customer_id] = $customer_id;
+                    $orderTodayCustomer[$customer_id] = $customer_id;
                 } else {
                     $orderYestTotalCount +=1;
                     $orderYestTotalBaseSale += $baseGrandTotal;
-                    $orderTodayCustomer[$customer_id] = $customer_id;
+                    $orderYestCustomer[$customer_id] = $customer_id;
                 }
             }
         }

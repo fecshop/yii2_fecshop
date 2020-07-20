@@ -160,7 +160,16 @@ class Url extends Service
     {
         return Yii::$service->url->rewrite->getOriginUrl($urlKey);
     }
-
+    
+    public function getDefaultStoreUrl($url_key, $params = [])
+    {
+        $defaultStore = Yii::$service->storeDomain->getDefaultStore();
+        $domain = $defaultStore['key'];
+        $https = $defaultStore['https_enable'] == 1 ? true : false;
+        
+        
+        return $this->getUrlByDomain($url_key, $params, $https, $domain);
+    }
     /**
      * @param $url_key | String  urlKey的值
      * @param $params | Array 。url里面个各个参数

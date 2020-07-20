@@ -165,4 +165,14 @@ class StoreDomain extends Service
 
         return true;
     }
+    /**
+     * 目前这个函数是为了后台点击产品url，进入到产品详情
+     * 这里得到store domain
+     */
+    public function getDefaultStore()
+    {
+        $one = $this->_model->findOne(['status' => 1, 'app_name' => 'appfront']);
+        
+        return $one;
+    }
 }
