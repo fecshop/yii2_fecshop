@@ -567,7 +567,9 @@ html body .grid .gridTbody .selected {
 }
 
 
-
+.xhe_vista .xheIframeArea{
+    height:280px !important;
+}
 
 
 
