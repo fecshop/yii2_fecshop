@@ -144,6 +144,7 @@ class Order extends Service
             $this->status_holded,
             $this->status_processing,
             $this->status_dispatched,
+            $this->status_received,
             $this->status_completed,
         ];
     }
@@ -163,6 +164,7 @@ class Order extends Service
             $this->status_holded                    => $this->status_holded,
             $this->status_processing                => $this->status_processing,
             $this->status_dispatched                => $this->status_dispatched,
+            $this->status_received                => $this->status_received,
             $this->status_refunded                  => $this->status_refunded,
             $this->status_completed                 => $this->status_completed,
         ];
@@ -183,6 +185,7 @@ class Order extends Service
             $this->status_holded                    => '审核订单('.$this->status_holded.')',
             $this->status_processing                => '备货中订单('.$this->status_processing.')',
             $this->status_dispatched                => '已发货订单('.$this->status_dispatched.')',
+            $this->status_received                => '已收货订单('.$this->status_received.')',
             $this->status_refunded                  => '已退款订单('.$this->status_refunded.')',
             $this->status_completed                 => '已完成订单('.$this->status_completed.')',
         ];
