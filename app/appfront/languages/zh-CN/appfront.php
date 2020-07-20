@@ -381,7 +381,18 @@ return [
     'wxpay_standard' => '微信扫码支付',
     'wxpay_jsapi' => '微信JsApi支付',
     'wxpay_h5' => '微信H5支付',
- 
+    'payment_pending' => '未支付',
+    'payment_processing' => '支付中',
+    'payment_confirmed' => '已支付',
+    'payment_suspected_fraud' => '欺诈',
+    'payment_canceled' => '支付取消',
+    'holded' => '挂起',
+    'processing' => '订单待备货',
+    'dispatched' => '订单已发货',
+    'received' => '订单已收货',
+    'refunded' => '订单已退款',
+    'completed' => '订单已完成',
+    'canceled' => '订单已取消',
  
  
  
