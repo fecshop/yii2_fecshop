@@ -325,7 +325,7 @@ use fecshop\app\appfront\helper\Format;
 									<?php foreach($order['products'] as $product){ ?>
 									<tr id="order-item-row" class="border first">	
 										<td>
-											<a href="<?= '#' //Yii::$service->url->getUrl($product['redirect_url']) ; ?>">
+											<a target="_blank" href="<?=  Yii::$service->url->getDefaultStoreUrl($product['redirect_url']) ; ?>">
 												<h3 class="product-name">
 													<?= $product['name'] ?>
 												</h3>
@@ -345,11 +345,15 @@ use fecshop\app\appfront\helper\Format;
 											
 										</td>
 										<td>
-											<a href="<?=  Yii::$service->url->getUrl($product['redirect_url']) ; ?>">
+											<a target="_blank" href="<?=  Yii::$service->url->getDefaultStoreUrl($product['redirect_url']) ; ?>">
 												<img src="<?= Yii::$service->product->image->getResize($product['image'],[100,100],false) ?>" alt="<?= $product['name'] ?>" width="75" height="75">
 											</a>
 										</td>
-										<td><?= $product['sku'] ?></td>
+										<td>
+                                            <a target="_blank" href="<?=  Yii::$service->url->getDefaultStoreUrl($product['redirect_url']) ; ?>">
+                                                <?= $product['sku'] ?>
+                                            </a>
+                                        </td>
 										<td class="a-right">
 											<span class="price-excl-tax">
 												<span class="cart-price">
