@@ -175,6 +175,7 @@ class CategoryMongodb extends Service implements CategoryInterface
         unset($one['_id']);
         $one['status']    = (int)$one['status'];
         $one['menu_show'] = (int)$one['menu_show'];
+        $one['sort_order']    = (int)$one['sort_order'];
         $allowMenuShowArr = [ $model::MENU_SHOW, $model::MENU_NOT_SHOW];
         if (!in_array($one['menu_show'], $allowMenuShowArr)) {
             $one['menu_show'] = $model::MENU_SHOW;
@@ -304,7 +305,12 @@ class CategoryMongodb extends Service implements CategoryInterface
         } else {
             $where = ['parent_id' => $rootCategoryId];
         }
-        $categorys = $this->_categoryModel->find()->asArray()->where($where)->all();
+        $orderBy = ['sort_order' => SORT_DESC];
+        $categorys = $this->_categoryModel->find()
+            ->asArray()
+            ->where($where)
+            ->orderBy($orderBy)
+            ->all();
         //var_dump($categorys);exit;
         $idKey = $this->getPrimaryKey();
         if (!empty($categorys)) {
