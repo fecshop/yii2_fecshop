@@ -107,7 +107,7 @@ class Index  extends \yii\base\BaseObject
             'products'          => $products,
             'query_item'        => $query_item,
             'refine_by_info'    => $this->getRefineByInfo(),
-            'filter_info'       => $this->getFilterInfo(),
+            'filter_info'       => Yii::$service->category->getFilterInfo($this->_category, $this->_where),
             'filter_price'      => $this->getFilterPrice(),
             'filter_category'   => $this->getFilterCategoryHtml(),
             'page_count'        => $page_count,
@@ -260,20 +260,7 @@ class Index  extends \yii\base\BaseObject
      */
     protected function getFilterAttr()
     {
-        if (!$this->_filter_attr) {
-            $appName = Yii::$service->helper->getAppName();
-            $filter_default = Yii::$app->store->get($appName.'_catalog','category_filter_attr');
-            $filter_default = explode(',',$filter_default);
-            $current_fileter_select       = $this->_category['filter_product_attr_selected'];
-            $current_fileter_unselect     = $this->_category['filter_product_attr_unselected'];
-            $current_fileter_select_arr   = $this->getFilterArr($current_fileter_select);
-            $current_fileter_unselect_arr = $this->getFilterArr($current_fileter_unselect);
-            $filter_attrs                 = array_merge($filter_default, $current_fileter_select_arr);
-            $filter_attrs                 = array_diff($filter_attrs, $current_fileter_unselect_arr);
-            $this->_filter_attr           = $filter_attrs;
-        }
-
-        return $this->_filter_attr;
+        return Yii::$service->category->getFilterAttr($this->_category);
     }
     /**
      * 得到分类侧栏用于属性过滤的部分数据
@@ -291,11 +278,15 @@ class Index  extends \yii\base\BaseObject
                 $attr = Yii::$service->url->category->urlStrConvertAttrVal($k);
                 //echo $attr;
                 if (in_array($attr, $filter_attrs)) {
+                    $refine_attr_str = '';
                     if ($attr == 'price') {
                         $refine_attr_str = $this->getFormatFilterPrice($v);
                         //$refine_attr_str = Yii::$service->url->category->urlStrConvertAttrVal($v);
                     } else {
-                        $refine_attr_str = Yii::$service->url->category->urlStrConvertAttrVal($v);
+                        $refine_attr_str = Yii::$service->category->getCustomCategoryFilterAttrItemLabel($k, $v);
+                        if (!$refine_attr_str) {
+                            $refine_attr_str = Yii::$service->url->category->urlStrConvertAttrVal($v);
+                        }
                     }
                     $removeUrlParamStr = $k.'='.$v;
                     $refine_attr_url   = Yii::$service->url->removeUrlParamVal($currentUrl, $removeUrlParamStr);
@@ -317,21 +308,7 @@ class Index  extends \yii\base\BaseObject
 
         return $refineInfo;
     }
-    /**
-     * 侧栏除价格外的其他属性过滤部分
-     */
-    protected function getFilterInfo()
-    {
-        $filter_info  = [];
-        $filter_attrs = $this->getFilterAttr();
-        foreach ($filter_attrs as $attr) {
-            if ($attr != 'price') {
-                $filter_info[$attr] = Yii::$service->product->getFrontCategoryFilter($attr, $this->_where);
-            }
-        }
-
-        return $filter_info;
-    }
+    
     /**
      * 侧栏价格过滤部分
      */
@@ -371,26 +348,7 @@ class Index  extends \yii\base\BaseObject
 
         return $str;
     }
-    /**
-     * @param $str | String
-     * 字符串转换成数组。
-     */
-    protected function getFilterArr($str)
-    {
-        $arr = [];
-        if ($str) {
-            $str = str_replace('，', ',', $str);
-            $str_arr = explode(',', $str);
-            foreach ($str_arr as $a) {
-                $a = trim($a);
-                if ($a) {
-                    $arr[] = trim($a);
-                }
-            }
-        }
-
-        return $arr;
-    }
+    
     /**
      * 用于搜索条件的排序部分
      */
