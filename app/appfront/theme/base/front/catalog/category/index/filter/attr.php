@@ -14,39 +14,37 @@
 //echo Yii::$service->url->category->urlFormat('df-_ ??&sad');
 if(isset($parentThis['filters']) && !empty($parentThis['filters']) && is_array($parentThis['filters'])):
 	foreach($parentThis['filters']  as $attr => $filter):
-		$attrUrlStr = Yii::$service->url->category->attrValConvertUrlStr($attr);
-		if(is_array($filter) && !empty($filter)):
+        $attrLabel = $filter['label'];
+        $attrName = $filter['name'];
+		if(is_array($filter['items']) && !empty($filter['items'])):
 			$i = 0;
-			foreach($filter as $item):
-				$val    = $item['_id'];
-				$count  = $item['count'];
-				if($val):
+			foreach($filter['items'] as $item):
+            //var_dump($item);exit;
+				$itemName    = $item['_id'];
+                $itemLabel    = $item['label'];
+                $itemCount    = $item['count'];
+                $itemUrl    = $item['url'];
+                $selected    = $item['selected'];
+				if($itemName):
 					$i++;
 					if($i == 1):
 ?>                      
 						<div class="filter_attr">
                             <div class="filter_attr_title">
-                                <?= Yii::$service->page->translate->__($attr); ?>
+                                <?= Yii::$service->page->translate->__($attrLabel); ?>
                             </div>
                             <div class="filter_attr_info">			
-<?php                         
-					endif;
-					$urlInfo = Yii::$service->url->category->getFilterChooseAttrUrl($attrUrlStr,$val,'p');
-					$url = $urlInfo['url'];
-					$selected = $urlInfo['selected'] ? 'class="checked"' : '';
-?>					
-                                <a <?= $selected;?> href="<?= $url;?>"><?= Yii::$service->page->translate->__($val); ?>(<?= $count; ?>)</a><br/>
-<?php
-                endif;
-			endforeach;
-			if($i >= 1): 
-?>            
+                    <?php endif; ?>				
+                                <a <?= $selected ? 'class="checked"' : '';?> href="<?= $itemUrl;?>">
+                                    <?= $itemLabel; ?>(<?= $itemCount; ?>)
+                                </a><br/>
+                <?php endif; ?>
+			<?php endforeach; ?>
+		<?php if($i >= 1): ?>            
                             </div>
                         </div>
-<?php                
-			endif;
-		endif;
-	endforeach;
-endif;
-?>
+        <?php endif; ?>
+	<?php endif; ?>
+	<?php endforeach; ?>
+<?php endif; ?>
 </div>

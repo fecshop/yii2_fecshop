@@ -231,5 +231,200 @@ class Category extends Service
         return $this->_category->excelSave($categoryArr);
     }
     
+    protected $_filter_attr;
+    /**
+     * 得到分类侧栏属性过滤的产品属性数组
+     */
+    public function getFilterAttr($categoryM)
+    {
+        if (!$this->_filter_attr) {
+            $appName = Yii::$service->helper->getAppName();
+            $filter_default = Yii::$app->store->get($appName.'_catalog','category_filter_attr');
+            $filter_default = explode(',',$filter_default);
+            $current_fileter_select = $categoryM['filter_product_attr_selected'];
+            $current_fileter_unselect = $categoryM['filter_product_attr_unselected'];
+            $current_fileter_select_arr = $this->getFilterArr($current_fileter_select);
+            $current_fileter_unselect_arr = $this->getFilterArr($current_fileter_unselect);
+            $filter_attrs = array_merge($filter_default, $current_fileter_select_arr);
+            $filter_attrs = array_diff($filter_attrs, $current_fileter_unselect_arr);
+            $this->_filter_attr = $filter_attrs;
+            $this->_filter_attr[] = 'brand_id';
+        }
+        //var_dump($this->_filter_attr);
+        
+        //echo 1;
+        return $this->_filter_attr;
+    }
     
+    protected $_customCategoryFilterAttrInfo;
+    /**
+     * 分类页面-属性过滤-自定义属性以及属性值。
+     *
+     *
+     */
+    public function customCategoryFilterAttrInfo()
+    {
+        if (!$this->_customCategoryFilterAttrInfo) {
+            $this->_customCategoryFilterAttrInfo = [
+                'brand_id' => [
+                    'label' => 'Brand',
+                    'items' => Yii::$service->product->brand->getAllBrandIdAndNames(),
+                    /*
+                    [
+                        1 => '华为',
+                        3 => '小米',
+                        4 => '大华',
+                    ],
+                    */
+                ],
+            ];
+        }
+        
+        return $this->_customCategoryFilterAttrInfo;
+    }
+    /**
+     * @param $attr | string, 属性名称
+     * @param $attrVal | string, 属性值
+     * 得到自定义的属性值。
+     */
+    public function getCustomCategoryFilterAttrItemLabel($attr, $attrVal)
+    {
+        $customAttrInfo = $this->customCategoryFilterAttrInfo();
+        if (isset($customAttrInfo[$attr]['items'][$attrVal]) && $customAttrInfo[$attr]['items'][$attrVal]) {
+            
+            return $customAttrInfo[$attr]['items'][$attrVal];
+        }
+        
+        return '';
+    }
+    
+    /**
+     * @param $categoryM | object, category model
+     * @param $whereParam | array, 分类数据过滤的where数组
+     * @param $chosenAttrs | array， appserver入口传递的数组，appfront，apphtml5忽视
+     * @return 
+        [
+            'color' => [
+                'name' => 'color',
+                'label'  => 'Colour',
+                'items' => [
+                    ['name' => 'white', 'label' => 'White', 'count' => 3, 'url'=> 'http://www.xx.com/xxxx', 'selected' = true],
+                    ['name' => 'multicolor', 'label' => 'White',  'count' => 6, 'url'=> 'http://www.xx.com/xxxx', 'selected' = false],
+                    ['name' => 'black', 'label' => 'White', 'count' => 13, 'url'=> 'http://www.xx.com/xxxx', 'selected' = false],
+                ],
+            ],
+            'size' => [
+                'name' => 'size',
+                'label' => 'Size',
+                'items' => [
+                    ['name' => 's', 'label' => 'S', 'count' => 3, 'url'=> 'http://www.xx.com/xxxx', 'selected' = true],
+                    ['name' => 'm', 'label' => 'M',  'count' => 6, 'url'=> 'http://www.xx.com/xxxx', 'selected' = false],
+                    ['name' => 'l', 'label' => 'L', 'count' => 13, 'url'=> 'http://www.xx.com/xxxx', 'selected' = false],
+                ],
+            ],
+        ]
+     */
+    public function getFilterInfo($categoryM, $whereParam, $chosenAttrs = [])
+    {
+        $filter_info = [];
+        $filter_attrs = $this->getFilterAttr($categoryM);
+        $customAttrInfo = $this->customCategoryFilterAttrInfo();
+        if (is_array($filter_attrs) && !empty($filter_attrs)) {
+            foreach ($filter_attrs as $attr) {
+                if ($attr != 'price') {
+                    $attrFilterItem = [];
+                    $attrFilterItem['name'] = $attr;
+                    $attrLabel = '';
+                    // filter
+                    $attrFilter = Yii::$service->product->getFrontCategoryFilter($attr, $whereParam);
+                    if (isset($customAttrInfo[$attr]) && $customAttrInfo[$attr]) {
+                        $attrLabel = $customAttrInfo[$attr]['label'];
+                    }
+                    // 非api入口
+                    if (!Yii::$service->helper->isApiApp()) {
+                        if (!$attrLabel) {
+                            $attrLabel = Yii::$service->page->translate->__($attr);
+                        }
+                        $attrFilterItem['label'] = $attrLabel;
+                        $attrUrlStr = Yii::$service->url->category->attrValConvertUrlStr($attr);
+                    } else {
+                        if (!$attrLabel) {
+                            $attrLabel = preg_replace_callback('/([-_]+([a-z]{1}))/i',function($matches){
+                                return ' '.strtoupper($matches[2]);
+                            },$attr);
+                        }
+                        $attrFilterItem['label'] = $attrLabel;
+                    }
+                    // 处理items
+                    if (is_array($attrFilter) && !empty($attrFilter)) {
+                        // var_dump($attrFilter);exit;
+                        foreach ($attrFilter as $k=>$item) {
+                            $itemName    = $item['_id'];
+                            if (!$itemName) {
+                                continue;
+                            }
+                            $itemLabel = $this->getCustomCategoryFilterAttrItemLabel($attr, $itemName);
+                            // 非appapi入口
+                            if (!Yii::$service->helper->isApiApp()) {
+                                $count  = $item['count'];
+                                if (!$itemLabel) {
+                                    $itemLabel = Yii::$service->page->translate->__($itemName);
+                                }
+                                $urlInfo = Yii::$service->url->category->getFilterChooseAttrUrl($attrUrlStr, $itemName, 'p');
+                                $url = $urlInfo['url'];
+                                $selected = $urlInfo['selected'] ? true : false;
+                                $attrFilterItem['items'][] = [
+                                    '_id' => $itemName,
+                                    'label' => $itemLabel, 
+                                    'count' => $count, 
+                                    'url'=> $url, 
+                                    'selected' => $selected,
+                                ];
+                            } else { // appserver 入口
+                                $chosenAttrArr = json_decode($chosenAttrs,true);
+                                if(isset($chosenAttrArr[$attr]) && $chosenAttrArr[$attr] == $item['_id']){
+                                    $item['selected'] = true;
+                                } else {
+                                    $item['selected'] = false;
+                                }
+                                if (!$itemLabel) {
+                                    $itemLabel = Yii::$service->page->translate->__($itemName);
+                                }
+                                $item['label'] = $itemLabel;
+                                
+                                $attrFilterItem['items'][$k] = $item;
+                            }
+                        }
+                    }
+                    if (is_array($attrFilterItem['items']) && !empty($attrFilterItem['items'])) {
+                        $filter_info[$attr] = $attrFilterItem;
+                    }
+                    
+                }
+            }
+        }
+        
+        return $filter_info;
+    }
+    
+    /**
+     * @param $str | String
+     * 字符串转换成数组。
+     */
+    protected function getFilterArr($str)
+    {
+        $arr = [];
+        if ($str) {
+            $str = str_replace('，', ',', $str);
+            $str_arr = explode(',', $str);
+            foreach ($str_arr as $a) {
+                $a = trim($a);
+                if ($a) {
+                    $arr[] = trim($a);
+                }
+            }
+        }
+
+        return $arr;
+    }
 }
