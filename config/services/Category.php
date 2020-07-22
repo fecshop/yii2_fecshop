@@ -8,6 +8,18 @@
 return [
     'category' => [
         'class' => 'fecshop\services\Category',
+        'customCategoryFilterAttr' => [
+            /*
+            'brand_id' => [
+                'label' => 'Brand',
+                'items' =>  [
+                    1 => '华为',
+                    3 => '小米',
+                    4 => '大华',
+                ],
+            ],
+            */
+        ],
         // 子服务
         'childService' => [
             'product' => [

@@ -36,7 +36,22 @@ class Category extends Service
      * 如果设置了路径，则使用自定义的路径
      */
     public $storagePath = '';
-
+    
+    /**
+     * 自定义分类过滤属性信息，数据例子如下，您可以在配置中注入
+     * [
+            'brand_id' => [
+                'label' => 'Brand',
+                'items' =>  [
+                    1 => '华为',
+                    3 => '小米',
+                    4 => '大华',
+                ],
+            ],
+        ]
+      */
+    public $customCategoryFilterAttr;
+    
     /**
      * @var \fecshop\services\category\CategoryInterface
      */
@@ -256,28 +271,22 @@ class Category extends Service
         return $this->_filter_attr;
     }
     
+    
     protected $_customCategoryFilterAttrInfo;
     /**
      * 分类页面-属性过滤-自定义属性以及属性值。
-     *
-     *
      */
     public function customCategoryFilterAttrInfo()
     {
         if (!$this->_customCategoryFilterAttrInfo) {
-            $this->_customCategoryFilterAttrInfo = [
-                'brand_id' => [
-                    'label' => 'Brand',
-                    'items' => Yii::$service->product->brand->getAllBrandIdAndNames(),
-                    /*
-                    [
-                        1 => '华为',
-                        3 => '小米',
-                        4 => '大华',
-                    ],
-                    */
-                ],
+            $customCategoryFilterAttr = $this->customCategoryFilterAttr;
+            // 加入品牌
+            $customCategoryFilterAttr['brand_id'] = [
+                'label' => 'Brand',
+                'items' => Yii::$service->product->brand->getAllBrandIdAndNames(),
             ];
+                
+            $this->_customCategoryFilterAttrInfo = $customCategoryFilterAttr;
         }
         
         return $this->_customCategoryFilterAttrInfo;
