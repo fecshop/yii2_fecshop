@@ -393,7 +393,7 @@ return [
     'refunded' => '订单已退款',
     'completed' => '订单已完成',
     'canceled' => '订单已取消',
- 
+    'Brand' => '品牌',
  
  
  

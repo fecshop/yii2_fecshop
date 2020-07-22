@@ -414,7 +414,7 @@ return [
     'wxpay_standard' => '微信扫码支付',
     'wxpay_jsapi' => '微信JsApi支付',
     'wxpay_h5' => '微信H5支付',
-
+    'Brand' => '品牌',
 
 
 
