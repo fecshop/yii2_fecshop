@@ -278,10 +278,12 @@ class Index extends \yii\base\BaseObject
                     }
                     $removeUrlParamStr = $k.'='.$v;
                     $refine_attr_url = Yii::$service->url->removeUrlParamVal($currentUrl, $removeUrlParamStr);
+                    $attrLabel = Yii::$service->category->getCustomCategoryFilterAttrLabel($attr);
                     $refineInfo[] = [
                         'name' =>  $refine_attr_str,
                         'url'  =>  $refine_attr_url,
                         'attr' => $attr,
+                        'attrLabel' => $attrLabel,
                     ];
                 }
             }

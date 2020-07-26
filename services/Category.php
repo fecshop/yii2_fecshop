@@ -307,6 +307,17 @@ class Category extends Service
         return '';
     }
     
+    public function getCustomCategoryFilterAttrLabel($attr)
+    {
+        $customAttrInfo = $this->customCategoryFilterAttrInfo();
+        if (isset($customAttrInfo[$attr]['label']) && $customAttrInfo[$attr]['label']) {
+            
+            return $customAttrInfo[$attr]['label'];
+        }
+        
+        return $attr;
+    }
+    
     /**
      * @param $categoryM | object, category model
      * @param $whereParam | array, 分类数据过滤的where数组

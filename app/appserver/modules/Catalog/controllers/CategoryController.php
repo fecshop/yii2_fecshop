@@ -366,9 +366,11 @@ class CategoryController extends AppserverController
                 if (!$refine_attr_str) {
                     $refine_attr_str = Yii::$service->page->translate->__($val);
                 }
+                $attrLabel = Yii::$service->category->getCustomCategoryFilterAttrLabel($attr);
                 $refineInfo[] = [
                     'attr' =>  $attr,
                     'val'  =>  $refine_attr_str,
+                    'attrLabel' => $attrLabel,
                 ];
             }
         }
@@ -376,13 +378,15 @@ class CategoryController extends AppserverController
         if($currenctPriceFilter){
             $refineInfo[] = [
                 'attr' =>  $this->_filterPrice,
+                'attrLabel' => $this->_filterPrice,
                 'val'  =>  $currenctPriceFilter,
             ];
         }
         
         if (!empty($refineInfo)) {
             $arr[] = [
-                'attr'   => 'clearAll',
+                'attr'   => 'clear All',
+                'attrLabel' =>'clear All',
                 'val'    => Yii::$service->page->translate->__('clear all'),
             ];
             $refineInfo = array_merge($arr, $refineInfo);
