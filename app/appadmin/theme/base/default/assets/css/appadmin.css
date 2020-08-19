@@ -166,31 +166,23 @@ span.error{
 }
 .page .panelBar{padding:10px 0}
 
-
-
-
-
-
-
 #layout #sidebar{
-        background: #20222A;
-        left:0px;
-        border:none;
-        padding-top:0px;
+    background: #20222A;
+    left:0px;
+    border:none;
+    padding-top:0px;
 }
 #sidebar  .accordion {
-        background: #20222A;
-        padding-left:0;
+    background: #20222A;
+    padding-left:10px;
 }
 
 #sidebar  .tree ul{
-        background: #20222A;
+    background: #20222A;
 }
 
-
-
 #sidebar  .tree .selected{
-        background: #009688 !important
+    background: #009688 !important
 }
 
 #sidebar .tree li a, #sidebar .tree li span {
