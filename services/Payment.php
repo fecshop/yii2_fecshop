@@ -272,11 +272,8 @@ class Payment extends Service
                 }
                 $label = $info['label'];
                 $imageUrl = '';
-                if (is_array($info['image'])) {
-                    list($iUrl, $l) = $info['image'];
-                    if ($iUrl) {
-                        $imageUrl = Yii::$service->image->getImgUrl($iUrl, $l);
-                    }
+                if (isset($info['image']) && $info['image']) {
+                    $imageUrl = Yii::$service->image->getImgUrl($info['image']);
                 }
                 $supplement = $info['supplement'];
                 $arr[$payment_type] = [
