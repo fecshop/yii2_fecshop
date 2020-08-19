@@ -90,6 +90,9 @@ class Menu extends Service
         $cMenu = [];
         if (is_array($customMenu) && !empty($customMenu)) {
             foreach ($customMenu as $k=>$menu) {
+				if (!is_array($menu)) {
+					continue;
+				}
                 $name           = Yii::$service->page->translate->__($menu['name']);
                 $menu['name']   = $name;
                 $urlPath        = $menu['urlPath'];
