@@ -598,7 +598,7 @@ class CategoryMysqldb extends Service implements CategoryInterface
                 $currentId = (string) $one['id'];
                 
                 $arr[$currentId] = [
-                    //'_id' 		=> $currentId,
+                    'category_id' 		=> $currentId,
                     'name'        => $currentName,
                     'url_key'    => $currentUrlKey,
                     'parent_id'    => $one['parent_id'],

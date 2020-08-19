@@ -523,7 +523,7 @@ class CategoryMongodb extends Service implements CategoryInterface
                 $currentName = $one['name'];
                 $currentId = (string) $one['_id'];
                 $arr[$currentId] = [
-                    //'_id' 		=> $currentId,
+                    'category_id' 		=> $currentId,
                     'name'        => $currentName,
                     'url_key'    => $currentUrlKey,
                     'parent_id'    => $one['parent_id'],
