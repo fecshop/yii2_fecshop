@@ -499,7 +499,7 @@ class Customer extends Service
     {
         if (is_string($identify)) {
             $email = $identify;
-            $one = $this->actionGetAvailableUserIdentityByEmail($email);
+            $one = $this->getAvailableUserIdentityByEmail($email);
         } else {
             $one = $identify;
         }
