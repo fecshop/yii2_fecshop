@@ -564,7 +564,9 @@ html body .grid .gridTbody .selected {
 }
 
 
-
+.pageContent.systemConfig{
+    background:#fff;
+}
 
 
 
