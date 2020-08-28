@@ -18,7 +18,7 @@ use fec\helpers\CRequest;
 	<?=  $pagerForm;  ?>
 </form>
 
-<div class="pageContent">
+<div class="pageContent" style="background:#fff;">
 	<div class="panelBar">
 		<?= $toolBar; ?>
 	</div>
