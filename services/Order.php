@@ -579,14 +579,14 @@ class Order extends Service
     }
 
     /**
-     * @param $address | Array 货运地址
+     * @param $address | Array 货运地址数组，数组里的具体子项，可以在函数中查看
      * @param $shipping_method | String 货运快递方式
-     * @param $payment_method | Array 支付方式、
+     * @param $payment_method | String 支付方式、
      * @param $clearCartAndDeductStock | boolean 是否清空购物车，并扣除库存，这种情况是先 生成订单，在支付的情况下失败的处理方式。
      * @param $token | string 代表 通过payment_token得到order，然后更新order信息的方式生成order，这个是paypal购物车express支付对应的功能
      * @param $order_remark | string , 订单备注
      * @return bool 通过购物车的数据生成订单是否成功
-     *              通过购物车中的产品信息，以及传递的货运地址，货运快递方式，支付方式生成订单。
+     * 通过购物车中的产品信息，以及传递的货运地址，货运快递方式，支付方式生成订单。
      */
     public function generateOrderByCart($address, $shipping_method, $payment_method, $clearCart = true, $token = '', $order_remark = '')
     {
