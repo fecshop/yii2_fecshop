@@ -80,6 +80,13 @@ class Asset extends Service
         $view->assetManager->forceCopy = $this->forceCopy;
         $assetArr = [];
         $themeDir = Yii::$service->page->theme->getThemeDirArr();
+        // 根据模板路径的优先级，初始化asset数组顺序，进而决定css的优先级
+        $assetThemeDirs = array_reverse($themeDir);
+        foreach ($assetThemeDirs as $assetThemeDir) {
+            $dir2 = $assetThemeDir.'/'.$this->defaultDir.'/';
+            $assetArr[$dir2] = [];
+        }
+        // 根据模板的优先级，查找js和css文件
         if (is_array($themeDir) && !empty($themeDir)) {
             if (is_array($this->jsOptions) && !empty($this->jsOptions)) {
                 foreach ($this->jsOptions as $jsOption) {
