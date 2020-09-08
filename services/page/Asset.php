@@ -88,8 +88,11 @@ class Asset extends Service
         foreach ($assetThemeDirs as $assetThemeDir) {
             $dir2 = $assetThemeDir.'/'.$this->defaultDir.'/';
             $assetArr[$dir2] = [];
-            $publishDir = $view->assetManager->publish($dir2);
-            $publishArr[$dir2] = $publishDir;
+            if(is_dir($dir2)) {
+                $publishDir = $view->assetManager->publish($dir2);
+                $publishArr[$dir2] = $publishDir;
+            }
+            
         }
         $jsV = '?v='.$this->jsVersion;
         $cssV = '?v='.$this->cssVersion;
