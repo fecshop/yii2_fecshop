@@ -676,7 +676,7 @@ class ProductMysqldb extends Service implements ProductInterface
      */
     public function getCategoryIdsByProductIds($product_ids)
     {
-        if (empty($product_ids) || ！is_array($product_ids)) {
+        if (empty($product_ids) || !is_array($product_ids)) {
             
             return [];
         }
