@@ -156,6 +156,7 @@ class Address extends Service
                             'email' => $email,
                             'telephone' => $telephone,
                             'street1' => $street1,
+                            'street2' => $street2,
                             'is_default' => $is_default,
                             'city' => $city,
                             'state' => $state,
