@@ -107,12 +107,12 @@ EOF;
                             $inputStringLangRequire = 0;
                         }
 
-                        $tabLangTitle .= '<li><a href="javascript:;"><span>'.$lang.'</span></a></li>';
+                        $tabLangTitle .= '<li lang="'.$lang.'" class="'.$lang.'"><a href="javascript:;"><span>'.$lang.'</span></a></li>';
                         $langAttrName = Yii::$service->fecshoplang->getLangAttrName($name, $lang);
                         $t_val = isset($value[$langAttrName]) ? $value[$langAttrName] : '';
                         // 对于含有 " 的字符串进行处理
                         $t_val =  str_replace('"', '&quot;', $t_val) ;
-                        $tabLangInput .= '<div>
+                        $tabLangInput .= '<div lang="'.$lang.'" class="tabsC '.$lang.'">
 								<p class="edit_p">
 									<label>'.$label.'['.$lang.']：</label>
 									<input type="text"  value="'.$t_val.'" size="30" name="'.$this->_editFormData.'['.$name.']['.$langAttrName.']" class="textInput '.$inputStringLangRequire.' ">
@@ -122,7 +122,7 @@ EOF;
 							</div>';
                     }
                     $this->_lang_attr .= <<<EOF
-						<div class="tabs" currentIndex="0" eventType="click" style="margin:10px 0;">
+						<div class="tabs {$name} " currentIndex="0" eventType="click" style="margin:10px 0;">
 							<div class="tabsHeader">
 								<div class="tabsHeaderContent">
 									<ul>
@@ -333,6 +333,45 @@ EOF;
                             );
                         </script>
 EOF;
+            } elseif ($display_type == 'searchSelect') {
+                $data = isset($display['data']) ? $display['data'] : '';
+                //var_dump($data);
+                //echo $value;
+                $select_str = '';
+                if (is_array($data)) {
+                    $idsji++;
+                    $selectId = $idsj.$idsji;
+                    $select_str .= <<<EOF
+								<select id="{$selectId}" class=" {$require}" name="{$this->_editFormData}[{$name}]" style="min-width:100px;" >
+EOF;
+                    $select_str .= '<option value="">'.$label.'</option>';
+                    $editSelectChosen = false;
+                    foreach ($data as $k => $v) {
+                        if ($value == $k) {
+                            //echo $value."#".$k;
+                            $select_str .= '<option selected value="'.$k.'">'.$v.'</option>';
+                            $editSelectChosen = true;
+                        } else {
+                            $select_str .= '<option value="'.$k.'">'.$v.'</option>';
+                        }
+                    }
+                    if (!$editSelectChosen) {
+                        $select_str .= '<option selected value="'.$value.'">'.$value.'</option>';
+                    }
+                    $select_str .= '</select>';
+                }
+
+                $str .= <<<EOF
+						<p class="edit_p">
+							<label>{$label}：</label>
+								{$select_str}
+                                <span class="remark-text">{$remark}</span>
+						</p>
+                        <script type="text/javascript">
+                            $('#{$selectId}').select2();
+                        </script>
+EOF;
+            
             } elseif ($display_type == 'textarea') {
                 $notEditor = isset($display['notEditor']) ? $display['notEditor'] : false;
                 $edittorClass='editor';
@@ -358,10 +397,10 @@ EOF;
                         } else {
                             $inputStringLangRequire = 0;
                         }
-                        $tabLangTitle .= '<li><a href="javascript:;"><span>'.$lang.'</span></a></li>';
+                        $tabLangTitle .= '<li lang="'.$lang.'" class="'.$lang.'"><a href="javascript:;"><span>'.$lang.'</span></a></li>';
                         $tabLangTextarea .= '
-						<div>
-							<fieldset id="fieldset_table_qbe">
+						<div lang="'.$lang.'" class="tabsC '.$lang.'"  ee=3>
+							<fieldset id="fieldset_table_qbe" dd=2>
 								<legend style="color:#009688">'.$label.'['.$lang.']：</legend>
 								<div>
 									<div class="unit">
@@ -372,7 +411,7 @@ EOF;
 						</div>';
                     }
                     $this->_textareas .= <<<EOF
-						<div class="tabs" currentIndex="0" eventType="click" style="margin:10px 0;">
+						<div class="tabs {$name}" currentIndex="0" eventType="click" style="margin:10px 0;">
 							<div class="tabsHeader">
 								<div class="tabsHeaderContent">
 									<ul>
