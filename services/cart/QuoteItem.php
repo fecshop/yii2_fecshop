@@ -323,6 +323,7 @@ class QuoteItem extends Service
                                 'sku'               => $product_one['sku'],
                                 'name'              => Yii::$service->store->getStoreAttrVal($product_one['name'], 'name'),
                                 'qty'               => $qty,
+                                'brand_id'               => $product_one['brand_id'],
                                 'custom_option_sku' => $custom_option_sku,
                                 'product_price'     => $product_price,
                                 'product_row_price' => $product_row_price,
