@@ -115,7 +115,8 @@ class Edit
         }
         $stateHtml = Yii::$service->helper->country->getStateOptionsByContryCode($country, $state);
         if (!$stateHtml) {
-            $stateHtml = '<input id="state" name="address[state]" value="'.$state.'" title="State" class="input-text" style="" type="text">';
+            $placeholder = 'placeholder="'.Yii::$service->page->translate->__('State').'"';
+            $stateHtml = '<input id="state" '.$placeholder.' name="address[state]" value="'.$state.'" title="State" class="input-text" style="" type="text">';
         } else {
             $stateHtml = '<select id="address:state" class="address_state validate-select" title="State" name="address[state]">
 							<option value="">'.
