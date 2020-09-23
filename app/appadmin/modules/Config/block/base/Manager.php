@@ -27,6 +27,9 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
     public $_key = 'base_info';
     public $_type;
     protected $_attrArr = [
+        'company_name',
+        'company_person',
+        'company_phone',
         'default_lang',
         'default_currency',
         'base_currency',
@@ -93,6 +96,36 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
 
         return [
             // 需要配置
+            
+            [
+                'label' => Yii::$service->page->translate->__('Company Name'),
+                'name' => 'company_name',
+                'display' => [
+                    'type' => 'inputString',
+                ],
+                'require' => 1,
+                'remark' => '公司名称'
+            ],
+            [
+                'label' => Yii::$service->page->translate->__('Company Person'),
+                'name' => 'company_person',
+                'display' => [
+                    'type' => 'inputString',
+                ],
+                'require' => 1,
+                'remark' => '公司联系人'
+            ],
+            [
+                'label' => Yii::$service->page->translate->__('Company Phone'),
+                'name' => 'company_phone',
+                'display' => [
+                    'type' => 'inputString',
+                ],
+                'require' => 1,
+                'remark' => '公司联系电话'
+            ],
+            
+            
             [
                 'label' => Yii::$service->page->translate->__('Default Base Lang'),
                 'name' => 'default_lang',
