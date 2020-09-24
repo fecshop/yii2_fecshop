@@ -163,4 +163,45 @@ class ProductinfoController extends CatalogController
         // 上面的代码都是权限判断，存在权限，才进行下面删除的操作。
         $data = $this->getBlock('manageredit')->delete();
     }
+    
+    /**
+     * 检查spu的唯一性
+     */
+    public function actionSpucode()
+    {
+        // 产品原来的id，新建产品为空
+        $product_id = Yii::$app->request->get('product_id');
+        // 产品原来的spu，新建产品为空
+        $product_spu = Yii::$app->request->get('product_spu');
+        // 编辑产品的spu。
+        $spu = Yii::$app->request->get('spu');
+        // 编辑产品的spu为空，或，和原来的spu相同，则。
+        if (!$spu || ($spu == $product_spu)) {
+            echo json_encode([
+                'statusCode' => '200',
+                'message' => 'spu is unique',
+            ]);
+            exit;
+        }
+        $where[] = ['spu' => $spu];
+        $filter = [
+            'asArray' => true,
+            'where' => $where,
+        ];
+        $data = Yii::$service->product->coll($filter);
+        if ($data['count'] < 1 ) {
+            echo json_encode([
+                'statusCode' => '200',
+                'message' => 'spu is unique',
+            ]);
+            exit;
+        } else {
+            echo json_encode([
+                'statusCode' => '300',
+                'message' => 'spu is not unique',
+            ]);
+            exit;
+        }
+        
+    }
 }
