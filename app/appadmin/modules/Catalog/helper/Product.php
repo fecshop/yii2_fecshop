@@ -20,8 +20,8 @@ class Product
     public static function getStatusArr()
     {
         return [
-            1 => Yii::$service->page->translate->__('Enable'),
-            2 => Yii::$service->page->translate->__('Disable'),
+            1 => Yii::$service->page->translate->__('Product Enable'),
+            2 => Yii::$service->page->translate->__('Product Disable'),
         ];
     }
 
