@@ -846,6 +846,8 @@ return [
     'Company Person' => '公司联系人',
     'Company Phone' => '公司联系电话',
     'Volume weight (Kg) {link_a}   Formula {link_b} ' => '体积重(Kg) {link_a}公式{link_b}',
+    'Product Enable' => '上架',
+    'Product Disable' => '下架',
     '' => '',
     '' => '',
     '' => '',
