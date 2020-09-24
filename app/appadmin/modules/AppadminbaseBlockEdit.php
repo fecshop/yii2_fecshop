@@ -113,7 +113,7 @@ EOF;
                         // 对于含有 " 的字符串进行处理
                         $t_val =  str_replace('"', '&quot;', $t_val) ;
                         $tabLangInput .= '<div lang="'.$lang.'" class="tabsC '.$lang.'">
-								<p class="edit_p">
+								<p class="edit_p product_'.$name.'">
 									<label>'.$label.'['.$lang.']：</label>
 									<input type="text"  value="'.$t_val.'" size="30" name="'.$this->_editFormData.'['.$name.']['.$langAttrName.']" class="textInput '.$inputStringLangRequire.' ">
                                     <span class="remark-text">'.$remark .'</span>
@@ -142,7 +142,7 @@ EOF;
                     // 对于含有 " 的字符串进行处理
                     $value =  str_replace('"', '&quot;', $value) ;
                     $str .= <<<EOF
-							<p class="edit_p">
+							<p class="edit_p product_{$name}">
 								<label>{$label}：</label>
 								<input type="text"  value="{$value}" size="30" name="{$this->_editFormData}[{$name}]" class="textInput {$require} ">
                                 <span class="remark-text">{$remark}</span>
@@ -155,7 +155,7 @@ EOF;
                 }
                 $valueData = $value ? date('Y-m-d', $value) : '';
                 $str .= <<<EOF
-						<p class="edit_p">
+						<p class="edit_p product_{$name}">
 							<label>{$label}：</label>
 							<input type="text"  value="{$valueData}" size="30" name="{$this->_editFormData}[{$name}]" class="date textInput {$require} ">
                             <span class="remark-text">{$remark}</span>
@@ -172,7 +172,7 @@ EOF;
                 $uploadError = Yii::$service->page->translate->__('Upload Error');
                 $imgUploadUrl = Yii::$service->url->getUrl('cms/xeditor/imageupload');
                 $str .= <<<EOF
-			<p class="edit_p" style="height:50px;">  
+			<p class="edit_p product_{$name}" style="height:50px;">  
                     <label style="float:none;display:inline-block;">{$label} :</label>
                     <input type="hidden" class="textInput thumbnail_image img_{$name}" value="{$value}" name="{$this->_editFormData}[{$name}]" style="width:550px;">
                     <span style="width:80px;display:inline-block;">
@@ -235,7 +235,7 @@ EOF;
                 }
                 $valueData = $value ? date('Y-m-d H:i:s', $value) : '';
                 $str .= <<<EOF
-						<p class="edit_p">
+						<p class="edit_p product_{$name}">
 							<label>{$label}：</label>
 							<input type="text" datefmt="yyyy-MM-dd HH:mm:ss"  value="{$valueData}" size="30" name="{$this->_editFormData}[{$name}]" class="date textInput {$require} ">
                             <span class="remark-text">{$remark}</span>
@@ -243,7 +243,7 @@ EOF;
 EOF;
             } elseif ($display_type == 'inputEmail') {
                 $str .= <<<EOF
-						<p class="edit_p">
+						<p class="edit_p product_{$name}">
 							<label>{$label}：</label>
 							<input type="text"  value="{$value}" size="30" name="{$this->_editFormData}[{$name}]" class="email textInput {$require} ">
                             <span class="remark-text">{$remark}</span>
@@ -251,7 +251,7 @@ EOF;
 EOF;
             } elseif ($display_type == 'stringText') {
                 $str .= <<<EOF
-						<p class="edit_p">
+						<p class="edit_p product_{$name}">
 							<label>{$label}：</label>
 							{$value}
                             <span class="remark-text">{$remark}</span>
@@ -259,7 +259,7 @@ EOF;
 EOF;
             } elseif ($display_type == 'inputPassword') {
                 $str .= <<<EOF
-						<p class="edit_p">
+						<p class="edit_p product_{$name}">
 							<label>{$label}：</label>
 							<input type="password"  value="" size="30" name="{$this->_editFormData}[{$name}]" class=" textInput {$require} ">
                             <span class="remark-text">{$remark}</span>
@@ -287,7 +287,7 @@ EOF;
                 }
 
                 $str .= <<<EOF
-						<p class="edit_p">
+						<p class="edit_p product_{$name}">
 							<label>{$label}：</label>
 								{$select_str}
                                 <span class="remark-text">{$remark}</span>
@@ -322,7 +322,7 @@ EOF;
                 }
 
                 $str .= <<<EOF
-						<p class="edit_p">
+						<p class="edit_p product_{$name}">
 							<label>{$label}：</label>
 								{$select_str}
                                 <span class="remark-text">{$remark}</span>
@@ -362,7 +362,7 @@ EOF;
                 }
 
                 $str .= <<<EOF
-						<p class="edit_p">
+						<p class="edit_p product_{$name}">
 							<label>{$label}：</label>
 								{$select_str}
                                 <span class="remark-text">{$remark}</span>
