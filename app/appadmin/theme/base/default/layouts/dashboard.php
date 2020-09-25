@@ -36,7 +36,7 @@ $jsOptions = [
 		'js'	=>[
 			'js/appadmin.js',
             'js/jquery-editable-select.js',
-            'js/select2.min.js',
+             'js/select2.min.js',
 		],
         // js 放到尾部
         'options' => [
@@ -47,6 +47,7 @@ $jsOptions = [
     [
 		'js'	=>[
             'js/echarts.min.js',
+           
 		],
         // js 放到尾部
         'options' => [
