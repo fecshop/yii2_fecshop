@@ -85,6 +85,7 @@ EOF;
             $name = $column['name'];
             $remark = Yii::$service->page->translate->__($column['remark']);
             $require = $column['require'] ? 'required' : '';
+            $default = $column['default'] ?  $column['default'] : 0;
             $label = $column['label'] ? $column['label'] : $this->_one->getAttributeLabel($name);
             $display = isset($column['display']) ? $column['display'] : '';
             if (empty($display)) {
@@ -270,13 +271,15 @@ EOF;
                 //var_dump($data);
                 //echo $value;
                 $select_str = '';
+                
+                $selectedV = $value ? $value : $default;
                 if (is_array($data)) {
                     $select_str .= <<<EOF
 								<select class="select_{$name} combox {$require}" name="{$this->_editFormData}[{$name}]" >
 EOF;
                     $select_str .= '<option value="">'.$label.'</option>';
                     foreach ($data as $k => $v) {
-                        if ($value == $k) {
+                        if ($selectedV == $k) {
                             //echo $value."#".$k;
                             $select_str .= '<option selected="selected" value="'.$k.'">'.$v.'</option>';
                         } else {
@@ -295,6 +298,7 @@ EOF;
 EOF;
             } elseif ($display_type == 'editSelect') {
                 $data = isset($display['data']) ? $display['data'] : '';
+                $selectedV = $value ? $value : $default;
                 //var_dump($data);
                 //echo $value;
                 $select_str = '';
@@ -307,7 +311,7 @@ EOF;
                     $select_str .= '<option value="">'.$label.'</option>';
                     $editSelectChosen = false;
                     foreach ($data as $k => $v) {
-                        if ($value == $k) {
+                        if ($selectedV == $k) {
                             //echo $value."#".$k;
                             $select_str .= '<option selected value="'.$k.'">'.$v.'</option>';
                             $editSelectChosen = true;
@@ -335,6 +339,7 @@ EOF;
 EOF;
             } elseif ($display_type == 'searchSelect') {
                 $data = isset($display['data']) ? $display['data'] : '';
+                $selectedV = $value ? $value : $default;
                 //var_dump($data);
                 //echo $value;
                 $select_str = '';
@@ -347,7 +352,7 @@ EOF;
                     $select_str .= '<option value="">'.$label.'</option>';
                     $editSelectChosen = false;
                     foreach ($data as $k => $v) {
-                        if ($value == $k) {
+                        if ($selectedV == $k) {
                             //echo $value."#".$k;
                             $select_str .= '<option selected value="'.$k.'">'.$v.'</option>';
                             $editSelectChosen = true;
