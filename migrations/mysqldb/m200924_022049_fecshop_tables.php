@@ -19,6 +19,13 @@ class m200924_022049_fecshop_tables extends Migration
         
         $this->execute("INSERT INTO `admin_role_url_key` (`role_id`, `url_key_id`, `created_at`, `updated_at`) VALUES (4, " . $lastInsertId . ", 1585655278, 1585655278)");
         
+        // 2
+        $this->execute("INSERT INTO `admin_url_key` (`name`, `tag`, `tag_sort_order`, `url_key`, `created_at`, `updated_at`, `can_delete`) VALUES ('Catalog Product AttrGroup', 'catalog_product_info_manager', 22, '/catalog/productinfo/getattrgroupinfo', 1601025890, 1601025890, 1)");
+        
+        $lastInsertId = $this->db->getLastInsertID() ;
+        
+        $this->execute("INSERT INTO `admin_role_url_key` (`role_id`, `url_key_id`, `created_at`, `updated_at`) VALUES (4, " . $lastInsertId . ", 1585655278, 1585655278)");
+        
     }
 
     /**
