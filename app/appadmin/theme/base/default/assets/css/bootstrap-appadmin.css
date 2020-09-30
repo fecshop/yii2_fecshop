@@ -474,7 +474,7 @@ select{
     min-width: 148px;
 }
 
-.pageContent .pageForm p.edit_p ,  .pageFormContent .pageForm p.edit_p{margin:0; height:35px;}
+.pageContent .pageForm p.edit_p ,  .pageFormContent .pageForm p.edit_p{margin:10px 0 0 ; height:35px;}
 
 
 .pageFormContent p.edit_p select, .pageFormContent p.edit_p input{margin-left:0px;}
