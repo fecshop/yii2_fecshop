@@ -164,18 +164,12 @@ class ProductinfoController extends CatalogController
         $data = $this->getBlock('manageredit')->delete();
     }
     
-    /**
-     * 检查spu的唯一性
-     */
+    
     public function actionSpucode()
     {
-        // 产品原来的id，新建产品为空
         $product_id = Yii::$app->request->get('product_id');
-        // 产品原来的spu，新建产品为空
         $product_spu = Yii::$app->request->get('product_spu');
-        // 编辑产品的spu。
-        $spu = Yii::$app->request->get('spu');
-        // 编辑产品的spu为空，或，和原来的spu相同，则。
+        $spu = Yii::$app->request->get('spu');// 
         if (!$spu || ($spu == $product_spu)) {
             echo json_encode([
                 'statusCode' => '200',
@@ -190,9 +184,11 @@ class ProductinfoController extends CatalogController
         ];
         $data = Yii::$service->product->coll($filter);
         if ($data['count'] < 1 ) {
+            $randomSku = $spu.'-'.$this->getRandom();
             echo json_encode([
                 'statusCode' => '200',
                 'message' => 'spu is unique',
+                'randomSku' => $randomSku,
             ]);
             exit;
         } else {
@@ -203,5 +199,20 @@ class ProductinfoController extends CatalogController
             exit;
         }
         
+    }
+    
+    /**
+     * generate random string.
+     */
+    protected function getRandom($length = 6)
+    {
+        $str = null;
+        $strPol = '123456789';
+        $max = strlen($strPol) - 1;
+        for ($i = 0; $i < $length; $i++) {
+            $str .= $strPol[rand(0, $max)]; //rand($min,$max)生成介于min和max两个数之间的一个随机整数
+        }
+
+        return $str;
     }
 }
