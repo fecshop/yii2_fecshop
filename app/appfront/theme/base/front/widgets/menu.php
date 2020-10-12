@@ -23,7 +23,7 @@
 						<div class="trends_item clearfix">
 							<?php foreach($childMenu1 as $category2): ?>
 								<dl>
-									<dt><a href="<?= $category2['url'] ?>"><?= $category2['name'] ?></dt>
+									<dt><a href="<?= $category2['url'] ?>"><?= $category2['name'] ?></a></dt>
 									<?php $childMenu2 = isset($category2['childMenu']) ? $category2['childMenu'] : null;   ?>
 									<?php if(is_array($childMenu2) && !empty($childMenu2)): ?>
 										<?php foreach($childMenu2 as $category3): ?>
