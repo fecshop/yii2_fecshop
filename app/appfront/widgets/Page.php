@@ -206,7 +206,61 @@ class Page
             'pageParam' => $this->page,
         ];
     }
+    
+    
+    public function getMiniBar()
+    {
+        $this->page = $this->page ? $this->page : 'p';
+        $spaceShowNum = 4;
+        $productNumPerPage = $this->numPerPage;
+        $countTotal = $this->countTotal;
+        $pageNum = $this->pageNum;
 
+        $maxPageNum = ceil($countTotal / $productNumPerPage);
+        if ($pageNum > $maxPageNum) {
+            $pageNum = $maxPageNum;
+        }
+        
+        $prevPage = '';
+        $nextPage = '';
+        if ($pageNum > 1) {
+            $prevPage = $pageNum - 1;
+            $prevPage = [
+                $this->page        => $prevPage,
+                'url'    => $this->getPageUrl($pageNum, $prevPage),
+            ];
+        }
+        if ($pageNum != $maxPageNum) {
+            $nextPage = $pageNum + 1;
+            $nextPage = [
+                $this->page        => $nextPage,
+                'url'    => $this->getPageUrl($pageNum, $nextPage),
+            ];
+        }
+        $currentPage = [
+            $this->page        => $pageNum,
+        ];
+        return [
+            'prevPage'        => $prevPage,
+            'nextPage'        => $nextPage,
+            'pageNum'        => $this->pageNum,
+            'numPerPage'    => $this->numPerPage,
+            'pageCount'      => $this->getPageCount(),
+        ];
+        
+    }
+    
+    public function getPageCount()
+    {
+        $pageCount = 0;
+        if ($this->numPerPage > 0) {
+            $pageCount = ceil ($this->countTotal / $this->numPerPage );
+        }
+        
+        return $pageCount;
+    }
+    
+    
     public function getPageUrl($currentPage, $showPage)
     {
         $currentUrl = Yii::$service->url->getCurrentUrl();

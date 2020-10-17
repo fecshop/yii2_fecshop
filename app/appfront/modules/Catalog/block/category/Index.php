@@ -99,8 +99,10 @@ class Index extends \yii\base\BaseObject
             'image'                 => $this->_category['image'] ? Yii::$service->category->image->getUrl($this->_category['image']) : '',
             'description'           => Yii::$service->store->getStoreAttrVal($this->_category['description'], 'description'),
             'products'              => $products,
+            'product_count'              => $this->_productCount,
             'query_item'            => $this->getQueryItem(),
             'product_page'          => $this->getProductPage(),
+            'product_mini_page'   => $this->getProductMiniPage(),
             'refine_by_info'        => $this->getRefineByInfo(),
             'filter_info'           => Yii::$service->category->getFilterInfo($this->_category, $this->_where),
             'filter_price'          => $this->getFilterPrice(),
@@ -151,6 +153,29 @@ class Index extends \yii\base\BaseObject
         //exit;
         return $str;
     }
+    
+    /**
+     * 得到产品页面的toolbar部分
+     * 也就是分类页面的分页工具条部分。
+     */
+    protected function getProductMiniPage()
+    {
+        $productNumPerPage = $this->getNumPerPage();
+        $productCount = $this->_productCount;
+        $pageNum = $this->getPageNum();
+        $config = [
+            'class'        => 'fecshop\app\appfront\widgets\Page',
+            'view'        => 'widgets/page_mini.php',
+            'method'    => 'getMiniBar',
+            'pageNum'        => $pageNum,
+            'numPerPage'    => $productNumPerPage,
+            'countTotal'    => $productCount,
+            'page'            => $this->_page,
+        ];
+
+        return Yii::$service->page->widget->renderContent('category_product_page', $config);
+    }
+    
     /**
      * 得到产品页面的toolbar部分
      * 也就是分类页面的分页工具条部分。
