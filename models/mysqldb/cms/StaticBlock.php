@@ -17,6 +17,10 @@ use yii\db\ActiveRecord;
  */
 class StaticBlock extends ActiveRecord
 {
+    const STATUS_DELETED = 10;
+    const STATUS_ACTIVE = 1;
+    const STATUS_DISACTIVE = 2;
+    
     public static function tableName()
     {
         return '{{%static_block}}';

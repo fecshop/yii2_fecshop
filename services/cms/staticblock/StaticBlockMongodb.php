@@ -53,6 +53,7 @@ class StaticBlockMongodb extends Service implements StaticBlockInterface
     {
         return $this->_staticBlockModel->find()->asArray()->where([
             'identify' => $identify,
+            'status'  => $this->getEnableStatus()
         ])->one();
     }
 
@@ -159,5 +160,20 @@ class StaticBlockMongodb extends Service implements StaticBlockInterface
         }
 
         return true;
+    }
+    
+    
+    public function getEnableStatus()
+    {
+        $model = $this->_staticBlockModel;
+        
+        return $model::STATUS_ACTIVE;
+    }
+    
+    public function getDisableStatus()
+    {
+        $model = $this->_staticBlockModel;
+        
+        return $model::STATUS_DISACTIVE;
     }
 }

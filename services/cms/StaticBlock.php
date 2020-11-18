@@ -60,8 +60,12 @@ class Staticblock extends Service
     public function getStoreContentByIdentify($identify, $app = 'common')
     {
         $staticBlock    = $this->_static_block->getByIdentify($identify);
-        $content        = isset($staticBlock['content'])?$staticBlock['content']:'';
-        $storeContent   = Yii::$service->store->getStoreAttrVal($content, 'content');
+        // 没有可用的static block
+        if (!isset($staticBlock['content']) || !$staticBlock['content']) {
+            
+            return '';
+        }
+        $storeContent   = Yii::$service->store->getStoreAttrVal($staticBlock['content'], 'content');
         $_params_       = $this->getStaticBlockVariableArr($app);
         ob_start();
         ob_implicit_flush(false);
@@ -138,4 +142,16 @@ class Staticblock extends Service
     {
         return $this->_static_block->remove($ids);
     }
+    
+   
+    public function getEnableStatus()
+    {
+        return $this->_static_block->getEnableStatus();
+    }
+    
+    public function getDisableStatus()
+    {
+        return $this->_static_block->getDisableStatus();
+    }
+    
 }

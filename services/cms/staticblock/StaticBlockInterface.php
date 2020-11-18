@@ -24,4 +24,9 @@ interface StaticBlockInterface
     public function save($one);
 
     public function remove($ids);
+    
+    public function getEnableStatus();
+    
+    public function getDisableStatus();
+    
 }
