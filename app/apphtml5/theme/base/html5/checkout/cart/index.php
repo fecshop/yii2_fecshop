@@ -106,7 +106,7 @@ use fec\helpers\CRequest;
 						</div>
                         <div class="row no-gutter">
 							<div class="col-66"><?= Yii::$service->page->translate->__('Sub Weight');?> :  </div>
-							<div class="col-33"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['product_weight']); ?> Kg</div>
+							<div class="col-33"><?=  $currency_info['symbol'];  ?><?= Format::price($cart_info['product_weight']); ?> g</div>
 						</div>
                         <div class="row no-gutter">
 							<div class="col-66"><?= Yii::$service->page->translate->__('Sub Volume');?> :  </div>

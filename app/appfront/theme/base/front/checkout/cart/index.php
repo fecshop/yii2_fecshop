@@ -105,7 +105,7 @@ use fec\helpers\CRequest;
                                     
                                     <td class="a-right">
 										<span class="cart-price">
-											<span class="price"><?= Format::price($product_one['product_weight']); ?>Kg</span>                
+											<span class="price"><?= Format::price($product_one['product_weight']); ?>g</span>                
 										</span>
 									</td>
                                     
@@ -134,7 +134,7 @@ use fec\helpers\CRequest;
                                     
                                     <td class="a-right">
 										<span class="cart-price">
-											<span class="price"><?= Format::price($product_one['product_row_weight']); ?>Kg</span>                            
+											<span class="price"><?= Format::price($product_one['product_row_weight']); ?>g</span>                            
 										</span>
 									</td>
                                     
@@ -210,7 +210,7 @@ use fec\helpers\CRequest;
                                         </td>
 										<td style="" class="a-right">
 											<span class="price">
-                                                <?= Format::price($cart_info['product_weight']); ?> Kg
+                                                <?= Format::price($cart_info['product_weight']); ?> g
                                             </span>    
                                         </td>
 									</tr>
