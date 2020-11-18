@@ -140,6 +140,9 @@ class RoleUrlKey extends Service
             $this->_model->deleteAll([
                 'role_id' => $roleId
             ]);
+            $bootUrlKeyIds = Yii::$service->admin->urlKey->getBootUrlKeyIds();
+            $url_key_ids = array_merge($url_key_ids, $bootUrlKeyIds);
+            $url_key_ids = array_unique($url_key_ids);
             foreach ($url_key_ids as $url_key_id) {
                 $model = new $this->_modelName();
                 $model->created_at = time();
