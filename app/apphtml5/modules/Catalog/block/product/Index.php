@@ -32,6 +32,7 @@ class Index
     protected $_image_thumbnails;
     // 在产品详细页面，在产品描述部分显示的产品图片列表
     protected $_image_detail;
+    protected $_brandName;
     /**
      * 为了可以使用rewriteMap，use 引入的文件统一采用下面的方式，通过Yii::mapGet()得到className和Object
      */
@@ -89,6 +90,7 @@ class Index
             'description'               => Yii::$service->store->getStoreAttrVal($this->_product['description'], 'description'),
             '_id'                       => $this->_product[$productPrimaryKey],
             'buy_also_buy'              => $this->getProductBySkus($skus),
+            'brand_name' => $this->_brandName,
         ];
     }
     
@@ -96,7 +98,7 @@ class Index
         $gArr = [];
         if ($this->_product['brand_id']) {
             $brandName = Yii::$service->page->translate->__('brand');
-            $gArr[$brandName] = Yii::$service->product->brand->getBrandNameById($this->_product['brand_id']);
+            $this->_brandName = $gArr[$brandName] = Yii::$service->product->brand->getBrandNameById($this->_product['brand_id']);
         }
         // 增加重量，长宽高，体积重等信息
         if ($this->_product['weight']) {
