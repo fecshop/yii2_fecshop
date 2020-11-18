@@ -634,25 +634,32 @@ class Customer extends Service
     
     /**
      * Remove customer by primary key value
-     * @param int $id the primary key value
+     * @param  $ids |  int or array, the primary key value
      * @return bool
      * @throws
      */
-    public function remove($id)
+    public function remove($ids)
     {
-        if (!$id) {
+        if (!$ids) {
             Yii::$service->helper->errors->add('remove id is empty');
             
             return false;
         }
-
-        $model = $this->_customerModel->findOne($id);
-        if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
-            $model->delete();
+        if (is_array($ids) && !empty($ids)) {
+            foreach ($ids as $id) {
+                $model = $this->_customerModel->findOne($id);
+                if (isset($model[$this->getPrimaryKey()]) && !empty($model[$this->getPrimaryKey()])) {
+                    $model->delete();
+                } else {
+                    Yii::$service->helper->errors->add("customer Remove Errors:ID:$id is not exist.");
+                    
+                    return false;
+                }
+            }
         } else {
-            Yii::$service->helper->errors->add("customer Remove Errors:ID:$id is not exist.");
-            
-            return false;
+            $id = $ids;
+            $model = $this->_customerModel->findOne($id);
+            $model->delete();
         }
         
         return true;
