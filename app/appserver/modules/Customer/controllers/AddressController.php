@@ -140,6 +140,7 @@ class AddressController extends AppserverTokenController
             foreach($coll['coll'] as $one){
                 $one['stateName'] = Yii::$service->helper->country->getStateByContryCode($one['country'],$one['state']);
                 $one['countryName'] = Yii::$service->helper->country->getCountryNameByKey($one['country']); 
+                $one['address_id'] = (int)$one['address_id'];
                 $arr[] = $one;
             }
         }
