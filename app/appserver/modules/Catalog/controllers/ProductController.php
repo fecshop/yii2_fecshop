@@ -34,6 +34,7 @@ class ProductController extends AppserverController
     protected $_image_thumbnails;
     // 在产品详细页面，在产品描述部分显示的产品图片列表
     protected $_image_detail;
+    protected $_brandName;
     /**
      * 为了可以使用rewriteMap，use 引入的文件统一采用下面的方式，通过Yii::mapGet()得到className和Object
      */
@@ -270,6 +271,7 @@ class ProductController extends AppserverController
                 'description'               => Yii::$service->store->getStoreAttrVal($this->_product['description'], 'description'),
                 '_id'                       => (string)$this->_product[$productPrimaryKey],
                 'buy_also_buy'              => $this->getProductBySkus(),
+                'brand_name' => $this->_brandName,
             ]
         ];
         $responseData = Yii::$service->helper->appserver->getResponseData($code, $data,$message);
@@ -337,6 +339,10 @@ class ProductController extends AppserverController
     
     public function getGroupAttrArr($groupAttrInfo){
         $gArr = [];
+        if ($this->_product['brand_id']) {
+            $brandName = Yii::$service->page->translate->__('brand');
+            $this->_brandName = $gArr[$brandName] = Yii::$service->product->brand->getBrandNameById($this->_product['brand_id']);
+        }
         // 增加重量，长宽高，体积重等信息
         if ($this->_product['weight']) {
             $weightName = Yii::$service->page->translate->__('weight');
