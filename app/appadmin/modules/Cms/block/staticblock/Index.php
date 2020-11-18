@@ -130,6 +130,16 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
                 'lang'            => true,
             ],
             [
+                'orderField'    => 'status',
+                'label'           => Yii::$service->page->translate->__('Status'),
+                'width'          => '50',
+                'align'           => 'left',
+                'display'        => [                    // select 类型的值
+                    1 => Yii::$service->page->translate->__('Enable'),
+                    2 => Yii::$service->page->translate->__('Disable'),
+                ],
+            ],
+            [
                 'orderField'    => 'identify',
                 'label'           => Yii::$service->page->translate->__('Identify'),
                 'width'          => '50',

@@ -18,10 +18,16 @@ namespace fecshop\services\cms\article;
 interface ArticleInterface
 {
     public function getByPrimaryKey($primaryKey);
-
+    
+    public function getActivePageByPrimaryKey($primaryKey);
+    
     public function coll($filter);
 
     public function save($one, $originUrlKey);
 
     public function remove($ids);
+    
+    public function getEnableStatus();
+    
+    public function getDisableStatus();
 }

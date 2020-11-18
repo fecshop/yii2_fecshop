@@ -48,6 +48,28 @@ class ArticleMongodb extends Service implements ArticleInterface
             return new $this->_articleModelName;
         }
     }
+    
+    public function getActivePageByPrimaryKey($primaryKey)
+    {
+        if ($primaryKey) {
+            $pK = $this->getPrimaryKey();
+            $one = $this->_articleModel->findOne([
+                $pK => $primaryKey,
+                'status' =>$this->getEnableStatus(),
+            ]);
+            if ($one) {
+                foreach ($this->_lang_attr as $attrName) {
+                    if (isset($one[$attrName])) {
+                        $one[$attrName] = unserialize($one[$attrName]);
+                    }
+                }
+                // echo 1;exit;
+                return $one;
+            }
+        }
+        
+        return null;
+    }
 
     /**
      * @param $urlKey | String ,  对应表的url_key字段
@@ -56,7 +78,10 @@ class ArticleMongodb extends Service implements ArticleInterface
     public function getByUrlKey($urlKey)
     {
         if ($urlKey) {
-            $model = $this->_articleModel->findOne(['url_key' => '/'.$urlKey]);
+            $model = $this->_articleModel->findOne([
+                'url_key' => '/'.$urlKey,
+                'status' =>$this->getEnableStatus(),
+            ]);
             if (isset($model['url_key'])) {
                 
                 return $model;
@@ -183,4 +208,19 @@ class ArticleMongodb extends Service implements ArticleInterface
 
         return true;
     }
+    
+    public function getEnableStatus()
+    {
+        $model = $this->_articleModel;
+        
+        return $model::STATUS_ACTIVE;
+    }
+    
+    public function getDisableStatus()
+    {
+        $model = $this->_articleModel;
+        
+        return $model::STATUS_DISACTIVE;
+    }
+}
 }

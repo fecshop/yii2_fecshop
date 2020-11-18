@@ -16,6 +16,10 @@ class ArticleController extends AppfrontController
     public function actionIndex()
     {
         $data = $this->getBlock()->getLastData();
+        if (!is_array($data) && empty($data)) {
+            
+            return Yii::$service->url->redirect404();
+        }
 
         return $this->render($this->action->id, $data);
     }

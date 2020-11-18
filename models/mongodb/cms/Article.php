@@ -20,6 +20,7 @@ class Article extends ActiveRecord
     
     const STATUS_DELETED = 10;
     const STATUS_ACTIVE = 1;
+    const STATUS_DISACTIVE = 2;
     
     /**
      * mongodb collection 的名字，相当于mysql的table name

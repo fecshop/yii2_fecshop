@@ -65,6 +65,14 @@ class Article extends Service
     {
         return $this->_article->getByPrimaryKey($primaryKey);
     }
+    
+    /**
+     * get active artile model by primary key.
+     */
+    public function getActivePageByPrimaryKey($primaryKey)
+    {
+        return $this->_article->getActivePageByPrimaryKey($primaryKey);
+    }
 
     /**
      * @param $urlKey | String ,  对应表的url_key字段
@@ -118,4 +126,17 @@ class Article extends Service
     {
         return $this->_article->remove($ids);
     }
+    
+    public function getEnableStatus()
+    {
+        return $this->_article->getEnableStatus();
+    }
+    
+    public function getDisableStatus()
+    {
+        return $this->_article->getDisableStatus();
+    }
+    
+    
+    
 }

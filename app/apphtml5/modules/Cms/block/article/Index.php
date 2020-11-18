@@ -16,11 +16,12 @@ class Index
 
     public function getLastData()
     {
-
-        //echo Yii::$service->page->translate->__('fecshop,{username}', ['username' => 'terry']);
         $this->initHead();
-        // change current layout File.
-        //Yii::$service->page->theme->layoutFile = 'home.php';
+        if (!$this->_artile) {
+            
+            return null;
+        }
+        
         return [
             'title' => $this->_title,
             'content' => Yii::$service->store->getStoreAttrVal($this->_artile['content'], 'content'),
@@ -32,7 +33,7 @@ class Index
     {
         $primaryKey = Yii::$service->cms->article->getPrimaryKey();
         $primaryVal = CRequest::param($primaryKey);
-        $article = Yii::$service->cms->article->getByPrimaryKey($primaryVal);
+        $article = Yii::$service->cms->article->getActivePageByPrimaryKey($primaryVal);
         $this->_artile = $article;
 
         Yii::$app->view->registerMetaTag([
