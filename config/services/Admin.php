@@ -77,7 +77,7 @@ return [
                         'child' => [
                             // 二级类
                             'product_manager' => [
-                                'label' => 'Manager Product',
+                                'label' => 'Manage Product',
                                 'child' => [
                                     // 三级类
                                     'product_info_manager' => [
@@ -124,7 +124,7 @@ return [
                                 ]
                             ],
                             'category_manager' => [
-                                'label' => 'Manager Category',
+                                'label' => 'Manage Category',
                                 'child' => [
                                     // 三级类
                                     'category_info_manager' => [
@@ -156,7 +156,7 @@ return [
                         'label' => 'Extension Center',
                         'child' => [
                             'extension_manager' => [
-                                'label' => 'Extensions Manager',
+                                'label' => 'Manage Extensions',
                                 'child' => [
                                     'extension_market' => [
                                         'label' => 'Extention Market',
@@ -183,13 +183,13 @@ return [
                         ],
                     ],
                     'sales' => [
-                        'label' => 'Mall Manager',
+                        'label' => 'Mall Manage',
                         'child' => [
                             'order' => [
                                 'label' => 'Order',
                                 'child' => [
                                     'order_manager' => [
-                                        'label' => 'Manager Order',
+                                        'label' => 'Manage Order',
                                         'url_key' => '/sales/orderinfo/manager',
                                     ],
                                     'order_config' => [
@@ -210,7 +210,7 @@ return [
                                 'label' => 'Customer',
                                 'child' => [
                                     'account' => [
-                                        'label' => 'Manager Account',
+                                        'label' => 'Manage Account',
                                         'url_key' => '/customer/account/index',
                                     ],
                                     'contacts' => [
@@ -391,7 +391,7 @@ return [
                         'label' => 'CMS',
                         'child' => [
                             'page' => [
-                                'label' => 'Manager Page',
+                                'label' => 'Manage Page',
                                 'url_key' => '/cms/article/index',
                             ],
                             'staticblock' => [
@@ -411,15 +411,15 @@ return [
                                         'url_key' => '/fecadmin/myaccount/index',
                                     ],
                                     'account_manager' => [
-                                        'label' => 'Manager Account',
+                                        'label' => 'Manage Account',
                                         'url_key' => '/fecadmin/account/manager',
                                     ],
                                     'role_manager' => [
-                                        'label' => 'Manager Role',
+                                        'label' => 'Manage Role',
                                         'url_key' => '/fecadmin/role/manager',
                                     ],
                                     'resource_manager' => [
-                                        'label' => 'Manager Resource',
+                                        'label' => 'Manage Resource',
                                         'url_key' => '/fecadmin/resource/manager',
                                     ],
                                 ],
@@ -437,7 +437,7 @@ return [
                                 'url_key' => '/fecadmin/logtj/index',
                             ],
                             'cache' => [
-                                'label' => 'Manager Cache',
+                                'label' => 'Manage Cache',
                                 'url_key' => '/fecadmin/cache/index',
                             ],
                             'config' => [
