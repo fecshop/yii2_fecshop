@@ -254,6 +254,10 @@ class CategoryController extends AppserverController
     protected function getFilterCategory()
     {
         $arr = [];
+        if (!Yii::$service->category->isEnableFilterSubCategory()) {
+            
+            return $arr;
+        }
         $category_id = $this->_primaryVal;
         $parent_id = $this->_category['parent_id'];
         $filter_category = Yii::$service->category->getFilterCategory($category_id, $parent_id);
@@ -442,10 +446,14 @@ class CategoryController extends AppserverController
      */
     protected function getFilterPrice()
     {
-        $symbol = Yii::$service->page->currency->getCurrentSymbol();
         
-        $currenctPriceFilter = Yii::$app->request->get('filterPrice');
         $filter = [];
+        if (!Yii::$service->category->isEnableFilterPrice()) {
+            
+            return $filter;
+        }
+        $symbol = Yii::$service->page->currency->getCurrentSymbol();
+        $currenctPriceFilter = Yii::$app->request->get('filterPrice');
         //$priceInfo = Yii::$app->controller->module->params['category_query'];
         $appName = Yii::$service->helper->getAppName();
         $category_query_priceRange = Yii::$app->store->get($appName.'_catalog','category_query_priceRange');

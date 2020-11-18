@@ -154,6 +154,10 @@ class Index  extends \yii\base\BaseObject
         if (!$filter_category) {
             $filter_category = $this->getFilterCategory();
         }
+        if (!Yii::$service->category->isEnableFilterSubCategory()) {
+            
+            return $str;
+        }
         if (is_array($filter_category) && !empty($filter_category)) {
             $str .= '<ul>';
             foreach ($filter_category as $cate) {
@@ -317,6 +321,10 @@ class Index  extends \yii\base\BaseObject
     protected function getFilterPrice()
     {
         $filter = [];
+        if (!Yii::$service->category->isEnableFilterPrice()) {
+            
+            return $filter;
+        }
         //$priceInfo = Yii::$app->controller->module->params['category_query'];
         $appName = Yii::$service->helper->getAppName();
         $category_query_priceRange = Yii::$app->store->get($appName.'_catalog','category_query_priceRange');

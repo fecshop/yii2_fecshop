@@ -447,4 +447,46 @@ class Category extends Service
 
         return $arr;
     }
+    /**
+     * 是否在分类产品列表页面，进行价格过滤
+     */
+    public function isEnableFilterPrice()
+    {
+        $appName = Yii::$service->helper->getAppName();
+        $category_filter_price = Yii::$app->store->get($appName.'_catalog','category_filter_price');
+        if ($category_filter_price == Yii::$app->store->enable) {
+            
+            return true;
+        }
+        
+        return false;
+    }
+    
+    
+    /**
+     * 是否在分类产品列表页面，进行子分类显示
+     */
+    public function isEnableFilterSubCategory()
+    {
+        $appName = Yii::$service->helper->getAppName();
+        $category_filter_category = Yii::$app->store->get($appName.'_catalog','category_filter_category');
+        if ($category_filter_category == Yii::$app->store->enable) {
+            
+            return true;
+        }
+        
+        return false;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
