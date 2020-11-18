@@ -289,25 +289,8 @@
 				getCOUrl = "<?= Yii::$service->url->getUrl('catalog/product/getcoprice'); ?>";
 				product_id = $(".product_view_id").val();		
 				qty = $(".qty").val();
-				custom_option_sku = '';
-				for(x in custom_option_arr){
-					one = custom_option_arr[x];	
-					j = 1;
-					$(".product_custom_options .pg .rg ul.required").each(function(){
-						val = $(this).find("li.current a.current").attr("value");
-						attr  = $(this).find("li.current a.current").attr("attr");
-						if(one[attr] != val){
-							j = 0;
-							//break;
-						}
-					});
-					if(j){
-						custom_option_sku = one['sku'];
-						break;
-					}
-				}
+				
 				$data = {
-					custom_option_sku:custom_option_sku,
 					qty:qty,
 					product_id:product_id
 				};
