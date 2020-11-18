@@ -57,6 +57,20 @@ class AdminUserResetPassword extends AdminUser{
 				$this->addError($attribute, 'Password and PasswordRepeat is Inconsistent!');
 				return;
 			}
+            
+            if($this->id){
+                if($this->new_password && strlen($this->new_password) < 6){
+                    $this->addError($attribute,"new password must >=6");
+                }
+            }else{
+                if(!$this->new_password){
+                    $this->addError($attribute,"new_password can not empty");
+                } else if (strlen($this->new_password) < 6) {
+                    $this->addError($attribute,"new_password must >=6");
+                } else if (!strlen($this->new_password) >= 100) {
+                    $this->addError($attribute,"new_password must <= 100");
+                }
+            }
 			
         }
 	}

@@ -84,7 +84,7 @@ class AdminUserForm extends AdminUser {
     
     public function validatePasswordFormat($attribute, $params){
         if($this->id){
-            if($this->password && strlen($this->password) <= 6){
+            if($this->password && strlen($this->password) < 6){
                 $this->addError($attribute,"password must >=6");
             }
         }else{
