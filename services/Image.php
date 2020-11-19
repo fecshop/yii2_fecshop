@@ -101,6 +101,15 @@ class Image extends Service
         
         return Yii::$service->image->getImgUrl('appfront/custom/logo.png');
     }
+    
+    /**
+     * 得到logo的url
+     */
+    public function getFecmallLogoImgUrl()
+    {
+        
+        return Yii::$service->image->getImgUrl('appfront/custom/logo.png');
+    }
 
     /**
      * @param $str | String 图片的相对路径
