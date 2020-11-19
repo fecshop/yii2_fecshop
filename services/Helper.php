@@ -33,7 +33,16 @@ class Helper extends Service
     protected $_app_name;
 
     protected $_param;
-
+    
+    /**
+     * Returns a string representing the current version of the Yii framework.
+     * @return string the version of Yii framework
+     */
+    public  function getVersion()
+    {
+        return '2.8.4';
+    }
+    
     /**
      * 得到当前的app入口的名字，譬如 appfront apphtml5  appserver等.
      */
