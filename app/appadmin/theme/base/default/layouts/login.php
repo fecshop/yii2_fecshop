@@ -91,7 +91,9 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
                      <li><a target="_blank" href="http://www.fecmall.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-appadmin-about.html"><?= Yii::$service->page->translate->__('Introduction'); ?></a></li>
                      <li><a target="_blank" href="http://www.fecmall.com/wendang"><?= Yii::$service->page->translate->__('Fecmall Detailed'); ?></a></li>
                      <li><a target="_blank" href="http://www.fecmall.com/doc/fecshop-guide/develop/cn-1.0/guide-fecshop-appadmin-about.html"><?= Yii::$service->page->translate->__('How to get started quickly?'); ?></a></li>
-                 </ul>
+                     <li>当前版本：<?= Yii::$service->helper->getVersion()  ?></li>
+                        
+                </ul>
 
              </div>
          </div>

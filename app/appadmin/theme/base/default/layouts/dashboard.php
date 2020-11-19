@@ -320,6 +320,9 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
             <a style="text-decoration:none" href="http://www.fecmall.com" target="_blank">
                 <?= Yii::$service->page->translate->__('Fecmall Team'); ?> - www.fecmall.com
             </a>
+            <span style="padding-left:14px">
+                当前版本：<a  target="_blank" href="https://github.com/fecshop/yii2_fecshop/releases"><?= Yii::$service->helper->getVersion()  ?></a>
+            </span>
         </div>
     </div>
 </footer>
