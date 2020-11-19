@@ -68,6 +68,7 @@ $config = [
         // 404页面对应的url key
         'errorHandler' => [
             'errorAction' => 'site/helper/error',
+            'exceptionView' => '@fecshop/yii/views/errorHandler/exception.php',
         ],
         // 首页对应的url key
         'urlManager' => [
