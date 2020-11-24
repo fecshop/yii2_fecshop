@@ -50,6 +50,36 @@ class Helper extends Service
     {
         return   Yii::$app->params['appName'];
     }
+    
+    public function getBaseWebsiteName()
+    {
+        $websiteName = Yii::$app->store->get('base_info', 'company_name');
+        if (!$websiteName) {
+            $websiteName = 'FECMALL.COM';
+        }
+        
+        return $websiteName;
+    }
+    
+    public function getBaseWebsitePerson()
+    {
+        $websitePerson = Yii::$app->store->get('base_info', 'company_person');
+        if (!$websitePerson) {
+            $websitePerson = 'FECMALL.COM';
+        }
+        
+        return $websitePerson;
+    }
+    
+    public function getBaseWebsitePhone()
+    {
+        $websitePhone = Yii::$app->store->get('base_info', 'company_phone');
+        if (!$websitePhone) {
+            $websitePhone = 'FECMALL.COM';
+        }
+        
+        return $websitePhone;
+    }
 
     /**
      * @param $var | String Or Array 需要进行Html::encode()操作的变量。

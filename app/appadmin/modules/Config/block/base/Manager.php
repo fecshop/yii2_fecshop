@@ -98,32 +98,33 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
             // 需要配置
             
             [
-                'label' => Yii::$service->page->translate->__('Company Name'),
+                'label' => Yii::$service->page->translate->__('Website Name'),
                 'name' => 'company_name',
                 'display' => [
                     'type' => 'inputString',
                 ],
-                'require' => 1,
-                'remark' => '公司名称'
+                'require' => 0,
+                'remark' => Yii::$service->page->translate->__('Website Name'),
             ],
             [
-                'label' => Yii::$service->page->translate->__('Company Person'),
+                'label' => Yii::$service->page->translate->__('Website Person'),
                 'name' => 'company_person',
                 'display' => [
                     'type' => 'inputString',
                 ],
-                'require' => 1,
-                'remark' => '公司联系人'
+                'require' => 0,
+                'remark' => Yii::$service->page->translate->__('Website Person'),
             ],
             [
-                'label' => Yii::$service->page->translate->__('Company Phone'),
+                'label' => Yii::$service->page->translate->__('Website Phone'),
                 'name' => 'company_phone',
                 'display' => [
                     'type' => 'inputString',
                 ],
-                'require' => 1,
-                'remark' => '公司联系电话'
+                'require' => 0,
+                'remark' => Yii::$service->page->translate->__('Website Phone'),
             ],
+            
             
             
             [
