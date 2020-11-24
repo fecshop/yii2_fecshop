@@ -266,11 +266,17 @@ use fec\helpers\CRequest;
                         message = data.message;
                         alertMsg.error(message)
                     } else {
-                        alertMsg.error("错误");
+                        alertMsg.error(data);
                     }
                     //
                 },
-                error:function(){
+                error:function(data, textStatus){
+                    if (data && data.responseText) {
+                        console.log(data.responseText);
+                        alertMsg.error(data.responseText);
+                    } else {
+                        alertMsg.error("在线安装失败，请刷新页面，重新安装");
+                    }
                     
                 }
             });
@@ -307,11 +313,17 @@ use fec\helpers\CRequest;
                         message = data.message;
                         alertMsg.error(message)
                     } else {
-                        alertMsg.error("错误");
+                        alertMsg.error(data);
                     }
                     //
                 },
-                error:function(){
+                error:function(data, textStatus){
+                    if (data && data.responseText) {
+                        console.log(data.responseText);
+                        alertMsg.error(data.responseText);
+                    } else {
+                        alertMsg.error("在线安装失败，请刷新页面，重新安装");
+                    }
                     
                 }
             });
@@ -351,22 +363,22 @@ use fec\helpers\CRequest;
                                 message = data.message;
                                 alertMsg.error(message)
                             } else {
-                                alertMsg.error("错误");
+                                alertMsg.error(data);
                             }
                             //
                         },
-                        error:function(){
-                            
+                        error:function(data, textStatus){
+                            if (data && data.responseText) {
+                                console.log(data.responseText);
+                                alertMsg.error(data.responseText);
+                            } else {
+                                alertMsg.error("在线安装失败，请刷新页面，重新安装");
+                            }
                         }
                     });
-                    
-                    
-                    
-                    
                 },
                 cancelCall : function() {
-                    
-                    
+                     
                 }
             });
             
@@ -401,12 +413,17 @@ use fec\helpers\CRequest;
                         message = data.message;
                         alertMsg.error(message)
                     } else {
-                        alertMsg.error("错误");
+                        alertMsg.error(data);
                     }
                     //
                 },
-                error:function(){
-                    
+                error:function(data, textStatus){
+                    if (data && data.responseText) {
+                        console.log(data.responseText);
+                        alertMsg.error(data.responseText);
+                    } else {
+                        alertMsg.error("在线安装失败，请刷新页面，重新安装");
+                    }
                 }
             });
         });
@@ -440,12 +457,17 @@ use fec\helpers\CRequest;
                         message = data.message;
                         alertMsg.error(message)
                     } else {
-                        alertMsg.error("错误");
+                        alertMsg.error(data);
                     }
                     //
                 },
-                error:function(){
-                    
+                error:function(data, textStatus){
+                    if (data && data.responseText) {
+                        console.log(data.responseText);
+                        alertMsg.error(data.responseText);
+                    } else {
+                        alertMsg.error("在线安装失败，请刷新页面，重新安装");
+                    }
                 }
             });
         });
@@ -481,12 +503,17 @@ use fec\helpers\CRequest;
                         message = data.message;
                         alertMsg.error(message)
                     } else {
-                        alertMsg.error("错误");
+                        alertMsg.error(data);
                     }
                     //
                 },
-                error:function(){
-                    
+                error:function(data, textStatus){
+                    if (data && data.responseText) {
+                        console.log(data.responseText);
+                        alertMsg.error(data.responseText);
+                    } else {
+                        alertMsg.error("在线安装失败，请刷新页面，重新安装");
+                    }
                 }
             });
         });
