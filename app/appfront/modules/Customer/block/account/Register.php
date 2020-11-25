@@ -16,7 +16,7 @@ use Yii;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Register
+class Register extends \yii\base\BaseObject
 {
     public function getLastData($param)
     {

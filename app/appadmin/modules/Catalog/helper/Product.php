@@ -10,12 +10,13 @@
 namespace fecshop\app\appadmin\modules\Catalog\helper;
 
 use Yii;
+
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-// use fecshop\app\appadmin\modules\Catalog\helper\Product as ProductHelper;
-class Product
+ 
+class Product extends \yii\base\BaseObject
 {
     public static function getStatusArr()
     {

@@ -15,7 +15,7 @@ use Yii;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Resetpassword
+class Resetpassword extends \yii\base\BaseObject
 {
     public function getLastData()
     {

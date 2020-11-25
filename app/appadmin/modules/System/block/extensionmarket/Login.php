@@ -20,7 +20,7 @@ use Yii;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Login 
+class Login extends \yii\base\BaseObject
 {
 
     /**

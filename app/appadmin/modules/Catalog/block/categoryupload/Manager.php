@@ -12,13 +12,14 @@ namespace fecshop\app\appadmin\modules\Catalog\block\categoryupload;
 use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockInterface;
 use fecshop\app\appadmin\modules\AppadminbaseBlock;
 use Yii;
+use yii\base\BaseObject;
 
 /**
  * block cms\article.
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Manager 
+class Manager extends BaseObject
 {
     
     public $_fileFullDir;

@@ -16,7 +16,7 @@ use yii\base\InvalidValueException;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Index
+class Index extends \yii\base\BaseObject
 {
     // 当前的搜索词
     protected $_searchText;

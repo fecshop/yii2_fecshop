@@ -15,7 +15,7 @@ use Yii;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Index
+class Index extends \yii\base\BaseObject
 {
     protected $_payment_method;
     protected $_shipping_method;
@@ -28,6 +28,8 @@ class Index
     protected $_cartAddress;
     protected $_cart_address;
     protected $_cart_info;
+    protected $_address;
+    protected $_countrySelect;
 
     public function getLastData()
     {

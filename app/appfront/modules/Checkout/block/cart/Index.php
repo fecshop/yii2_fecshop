@@ -15,7 +15,7 @@ use Yii;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Index
+class Index extends \yii\base\BaseObject
 {
     public function getLastData()
     {
@@ -179,7 +179,7 @@ class Index
             'name' => 'description',
             'content' => 'checkout cart page',
         ]);
-        $this->_title = 'checkout cart page';
-        Yii::$app->view->title = $this->_title;
+        $title = 'checkout cart page';
+        Yii::$app->view->title = $title;
     }
 }

@@ -15,7 +15,7 @@ use Yii;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class CustomOption
+class CustomOption extends \yii\base\BaseObject
 {
     public $custom_option;
     public $attr_group;

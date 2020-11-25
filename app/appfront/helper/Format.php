@@ -13,7 +13,7 @@ namespace fecshop\app\appfront\helper;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Format
+class Format extends \yii\base\BaseObject
 {
     /**
      * @param $price | Float ,价格

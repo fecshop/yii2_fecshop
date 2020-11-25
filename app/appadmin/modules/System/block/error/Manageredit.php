@@ -20,7 +20,7 @@ use Yii;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Manageredit //extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInterface
+class Manageredit extends \yii\base\BaseObject
 {
     
     // 传递给前端的数据 显示编辑form

@@ -8,7 +8,7 @@ namespace fecshop\app\apphtml5\modules\Cms\block\home;
 
 use Yii;
 
-class Index
+class Index extends \yii\base\BaseObject
 {
     public function getLastData()
     {

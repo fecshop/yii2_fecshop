@@ -16,7 +16,7 @@ use Yii;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Lists
+class Lists extends \yii\base\BaseObject
 {
     public $product_id;
     public $spu;

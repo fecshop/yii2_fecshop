@@ -11,13 +11,14 @@ namespace fecshop\app\appadmin\modules\Sales\block\orderinfo;
 
 use fec\helpers\CUrl;
 use Yii;
+use yii\base\BaseObject;
 
 /**
  * block cms\article.
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Manageredit
+class Manageredit extends BaseObject
 {
     public $_saveUrl;
 

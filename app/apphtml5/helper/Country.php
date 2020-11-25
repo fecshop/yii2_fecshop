@@ -15,7 +15,7 @@ use Yii;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Country
+class Country extends \yii\base\BaseObject
 {
     /**废弃    
      * 快捷支付，得到省的html

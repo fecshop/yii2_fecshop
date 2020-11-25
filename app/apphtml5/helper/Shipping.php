@@ -13,6 +13,6 @@ namespace fecshop\app\apphtml5\helper;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Shipping
+class Shipping extends \yii\base\BaseObject
 {
 }

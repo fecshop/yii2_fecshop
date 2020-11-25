@@ -15,9 +15,8 @@ use Yii;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Start
+class Start extends \yii\base\BaseObject
 {
-    
     
     public function startPayment()
     {

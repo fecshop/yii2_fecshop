@@ -15,7 +15,7 @@ use Yii;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Edit
+class Edit extends \yii\base\BaseObject
 {
     public $_address_id;
     public $_country;

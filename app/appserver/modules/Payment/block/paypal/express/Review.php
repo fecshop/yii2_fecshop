@@ -15,7 +15,7 @@ use Yii;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Review
+class Review extends \yii\base\BaseObject
 {
     
     protected $_payment_method;

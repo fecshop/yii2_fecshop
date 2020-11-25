@@ -15,7 +15,7 @@ use Yii;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Wxplaceorder
+class Wxplaceorder extends \yii\base\BaseObject
 {
     /**
      * 用户的账单地址信息，通过用户传递的信息计算而来。

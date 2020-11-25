@@ -13,7 +13,7 @@ namespace fecshop\app\apphtml5\modules\Customer\block\point;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Index
+class Index extends \yii\base\BaseObject
 {
     public function getLastData()
     {

@@ -16,7 +16,7 @@ use Yii;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Index
+class Index extends \yii\base\BaseObject
 {
     // 当前产品
     protected $_product;
@@ -38,14 +38,16 @@ class Index
      */
     protected $_reviewHelperName = '\fecshop\app\appfront\modules\Catalog\helpers\Review';
     protected $_reviewHelper;
+    protected $_currentSpuAttrValArr;
+    protected $_spuAttrShowAsImgArr;
     
-    public function __construct()
+    public function init()
     {
         /**
          * 通过Yii::mapGet() 得到重写后的class类名以及对象。Yii::mapGet是在文件@fecshop\yii\Yii.php中
          */
         list($this->_reviewHelperName,$this->_reviewHelper) = Yii::mapGet($this->_reviewHelperName);  
-        
+        parent::init();
     }
     
     public function getLastData()

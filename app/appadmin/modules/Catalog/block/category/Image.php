@@ -10,12 +10,13 @@
 namespace fecshop\app\appadmin\modules\Catalog\block\category;
 
 use Yii;
+use yii\base\BaseObject;
 
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Image
+class Image extends BaseObject
 {
     public function upload()
     {

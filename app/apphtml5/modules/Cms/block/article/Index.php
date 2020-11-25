@@ -9,7 +9,7 @@ namespace fecshop\app\apphtml5\modules\Cms\block\article;
 use fec\helpers\CRequest;
 use Yii;
 
-class Index
+class Index extends \yii\base\BaseObject
 {
     protected $_artile;
     protected $_title;

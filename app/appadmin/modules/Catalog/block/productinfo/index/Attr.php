@@ -18,7 +18,7 @@ use Yii;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Attr
+class Attr extends \yii\base\BaseObject
 {
     protected $_currentAttrGroup;
     protected $_attrInfo;

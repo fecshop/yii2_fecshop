@@ -11,13 +11,14 @@ namespace fecshop\app\appadmin\modules\Catalog\block\productinfo;
 
 use fec\helpers\CRequest;
 use Yii;
+use yii\base\BaseObject;
 
 /**
  * block cms\article.
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Getproductcategory
+class Getproductcategory extends BaseObject
 {
     public function getProductCategory()
     {
