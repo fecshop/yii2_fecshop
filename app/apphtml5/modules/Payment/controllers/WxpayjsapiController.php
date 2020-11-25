@@ -9,28 +9,41 @@
 
 namespace fecshop\app\apphtml5\modules\Payment\controllers;
 
-use fecshop\app\apphtml5\modules\Payment\PaymentController;
+use fecshop\app\apphtml5\modules\AppfrontController;
 use Yii;
 
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class WxpayjsapiController extends PaymentController
+class WxpayjsapiController extends AppfrontController
 {
     public $enableCsrfValidation = false;
+    protected $_increment_id;
+    protected $_order_model;
     
-    public function init()
+    
+    public function initFunc()
     {
-        parent::init();
+        $homeUrl = Yii::$service->url->homeUrl();
+        $this->_increment_id = Yii::$service->order->getSessionIncrementId();
+        if (!$this->_increment_id) {
+            Yii::$service->url->redirect($homeUrl);
+            exit;
+        }
+
+        $this->_order_model = Yii::$service->order->GetByIncrementId($this->_increment_id);
+        if (!isset($this->_order_model['increment_id'])) {
+            Yii::$service->url->redirect($homeUrl);
+            exit;
+        }
     }
-    
     /**
      * 支付开始页面.
      */
     public function actionStart()
     {
-        
+        $this->initFunc();
         Yii::$service->page->theme->layoutFile = 'wxpay_jsapi.php';
         $data = Yii::$service->payment->wxpayJsApi->getScanCodeStart();
         $data['success_url'] = Yii::$service->payment->getStandardSuccessRedirectUrl();
@@ -53,6 +66,7 @@ class WxpayjsapiController extends PaymentController
      */
     public function actionSuccess()
     {
+        $this->initFunc();
         $data = [
             'increment_id' => $this->_increment_id,
         ];

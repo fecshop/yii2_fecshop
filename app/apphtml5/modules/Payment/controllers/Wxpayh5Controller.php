@@ -90,6 +90,7 @@ class Wxpayh5Controller extends AppfrontController
      */
     public function actionSuccess()
     {
+        $this->initFunc();
         $data = [
             'increment_id' => $this->_increment_id,
         ];
