@@ -920,6 +920,80 @@ class ProductMysqldb extends Service implements ProductInterface
         
         return $arr;
     }
+    
+    /**
+     * 相同spu下面的所有sku，只显示一个，取score值最高的那个显示
+     *[
+     *	'category_id' 	=> 1,
+     *	'pageNum'		=> 2,
+     *	'numPerPage'	=> 50,
+     *	'orderBy'		=> 'name',
+     *	'where'			=> [
+     *     'and',
+     *		['>','price',11],
+     *		['<','price',22],
+     *	],
+     *	'select'		=> ['xx','yy'],
+     *	'group'			=> '$spu',
+     * ]
+     * 得到分类下的产品，在这里需要注意的是：
+     * 1.同一个spu的产品，有很多sku，但是只显示score最高的产品，这个score可以通过脚本取订单的销量（最近一个月，或者
+     *   最近三个月等等），或者自定义都可以。
+     * 2.结果按照filter里面的orderBy排序
+     * 3.由于使用的是mongodb的aggregate(管道)函数，因此，此函数有一定的限制，就是该函数
+     *   处理后的结果不能大约32MB，因此，如果一个分类下面的产品几十万的时候可能就会出现问题，
+     *   这种情况可以用专业的搜索引擎做聚合工具。
+     *   不过，对于一般的用户来说，这个不会成为瓶颈问题，一般一个分类下的产品不会出现几十万的情况。
+     * 4.最后就得到spu唯一的产品列表（多个spu相同，sku不同的产品，只要score最高的那个）.
+     */
+    public function getProductsGroupBySpu($filter)
+    {
+        $orderBy = $filter['orderBy'];
+        $pageNum = $filter['pageNum'];
+        $numPerPage = $filter['numPerPage'];
+        $select = $filter['select'];
+        $where = $filter['where'];
+        if (empty($where) || !is_array($where)) {
+            
+            return [];
+        }
+        // 1.先按照score排序
+        $subQuery = $this->_productModel->find()
+                    ->select($select)
+                    ->where($where)
+                    ->andWhere(['status' => $this->getEnableStatus()])
+                    ->orderBy(['score' => SORT_DESC])
+                    ;
+        // 总数    
+        $product_total_count = (new Query())
+                    ->from(['product2' => $subQuery])
+                    ->groupBy('spu')
+                    ->count();
+        // 2.上面score排序的结果进行group，这样，score最大值的产品就会作为group后的产品，显示到分类中。
+        $subQuery2 =  (new Query())
+                    ->from(['product2' => $subQuery])
+                    ->groupBy('spu');
+        // 进行查询coll
+        $products = (new Query())  //->select($field)
+			->from(['product' => $subQuery2]) // 在这里使用了子查询
+            ->orderBy($orderBy)
+            ->offset(($pageNum -1) * $numPerPage)
+            ->limit($numPerPage)
+			->createCommand()
+            ->queryAll();
+        foreach ($products as $k => $product) {
+            $products[$k]['name'] = unserialize($product['name']);
+            $products[$k]['image'] = unserialize($product['image']);
+        }
+        
+        return [
+            'coll' => $products,
+            'count' => $product_total_count,
+        ];
+    }
+    
+    
+    
     /**
      * 得到分类页面的产品列表
      * $filter 参数的详细，参看函数 getFrontCategoryProductsGroupBySpu($filter);

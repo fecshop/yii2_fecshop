@@ -533,6 +533,11 @@ class Product extends Service
     {
         return $this->_product->getProducts($filter);
     }
+    
+    public function getProductsGroupBySpu($filter)
+    {
+        return $this->_product->getProductsGroupBySpu($filter);
+    }
 
     /**
      * @param  $product_id_arr | Array
