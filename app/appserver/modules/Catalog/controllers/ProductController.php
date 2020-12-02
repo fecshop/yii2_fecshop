@@ -505,6 +505,10 @@ class ProductController extends AppserverController
         return Yii::$service->product->spuCollData($select, $this->_productSpuAttrArr, $spu);
     }
 
+    
+    // 商城产品页面spu属性，显示在第一排的属性
+    protected $_spuAttrShowAsTop;
+    protected $_spuAttrShowAsTopArr;
     /**
      * @return Array得到spu下面的sku的spu属性的数据。用于在产品
      * 得到spu下面的sku的spu属性的数据。用于在产品详细页面显示其他的sku
@@ -516,34 +520,32 @@ class ProductController extends AppserverController
         $groupAttr = Yii::$service->product->getGroupAttr($this->_product['attr_group']);
         // 当前的产品对应的spu属性组的属性，譬如 ['color','size','myyy']
         $this->_productSpuAttrArr = Yii::$service->product->getSpuAttr($this->_product['attr_group']);
+        if (!is_array($this->_productSpuAttrArr) || empty($this->_productSpuAttrArr)) {
+            
+            return;
+        }
+        $this->_spuAttrShowAsTop = $this->_productSpuAttrArr[0];
         //var_dump($this->_productSpuAttrArr);exit;
         $this->_spuAttrShowAsImg = Yii::$service->product->getSpuImgAttr($this->_product['attr_group']);
-        if (!is_array($this->_productSpuAttrArr) || empty($this->_productSpuAttrArr)) {
-            return [];
-        }
-        // 当前的spu属性对应值数组 $['color'] = 'red'
-
         $this->_currentSpuAttrValArr = [];
         foreach ($this->_productSpuAttrArr as $spuAttr) {
             if (isset($this->_product['attr_group_info']) && $this->_product['attr_group_info']) {  // mysql
                 $attr_group_info = $this->_product['attr_group_info'];
                 $spuAttrVal = $attr_group_info[$spuAttr];
             } else {
-                //$spuAttrVal = $this->_product[$spuAttr];
                 $spuAttrVal = isset($this->_product[$spuAttr]) ? $this->_product[$spuAttr] : '';
             }
+            
             if ($spuAttrVal) {
                 $this->_currentSpuAttrValArr[$spuAttr] = $spuAttrVal;
             } else {
                 // 如果某个spuAttr的值为空，则退出，这个说明产品数据有问题。
-                return [];
+                return;
             }
         }
         // 得到当前的spu下面的所有的值
-        $productPrimaryKey = Yii::$service->product->getPrimaryKey();
-        $select = [$productPrimaryKey, 'name', 'image', 'url_key'];
+        $select = ['name', 'image', 'url_key'];
         $data = $this->getSpuData($select);
-        //var_dump($data);
         $spuValColl = [];
         // 通过值，找到spu。
         $reverse_val_spu = [];
@@ -557,7 +559,7 @@ class ProductController extends AppserverController
 
                 //$active = 'class="active"';
                 $one['main_img'] = isset($one['image']['main']['image']) ? $one['image']['main']['image'] : '';
-                $one['url'] = '/catalog/product/'.(string)$one[$productPrimaryKey];
+                $one['url'] = Yii::$service->url->getUrl($one['url_key']);
                 $reverse_val_spu[$reverse_key] = $one;
                 $showAsImgVal = $one[$this->_spuAttrShowAsImg];
                 if ($showAsImgVal) {
@@ -565,8 +567,16 @@ class ProductController extends AppserverController
                         $this->_spuAttrShowAsImgArr[$showAsImgVal] = $one;
                     }
                 }
+                // 显示在顶部的spu属性（当没有图片属性的时候使用）
+                $showAsTopVal = $one[$this->_spuAttrShowAsTop];
+                if ($showAsTopVal) {
+                    if (!isset($this->_spuAttrShowAsTopArr[$this->_spuAttrShowAsTop])) {
+                        $this->_spuAttrShowAsTopArr[$showAsTopVal] = $one;
+                    }
+                }
             }
         }
+        
         // 得到各个spu属性对应的值的集合。
         foreach ($spuValColl as $spuAttr => $attrValArr) {
             $spuValColl[$spuAttr] = array_unique($attrValArr);
@@ -578,20 +588,14 @@ class ProductController extends AppserverController
             $attr_coll = [];
             foreach ($attrValArr as $attrVal) {
                 $attr_info = $this->getSpuAttrInfo($spuAttr, $attrVal, $reverse_val_spu);
-                
-                
-                $attr_info['attr_val'] = Yii::$service->page->translate->__($attr_info['attr_val']);
                 $attr_coll[] = $attr_info;
-                //[
-                //    'attr_val' => $attr,
-                //];
             }
             $spuShowArr[] = [
-                'label' =>  Yii::$service->page->translate->__($spuAttr),
+                'label' => $spuAttr,
                 'value' => $attr_coll,
             ];
         }
-        //var_dump($spuShowArr);exit;
+
         return $spuShowArr;
     }
     // spu属性部分
@@ -610,8 +614,6 @@ class ProductController extends AppserverController
         $return = [];
         $return['attr_val'] = $attrVal;
         $return['active'] = 'noactive';
-
-        //echo $reverse_key."<br/>";
         if (isset($reverse_val_spu[$reverse_key]) && is_array($reverse_val_spu[$reverse_key])) {
             $return['active'] = 'active';
             $arr = $reverse_val_spu[$reverse_key];
@@ -619,9 +621,9 @@ class ProductController extends AppserverController
                 $return[$k] = $v;
             }
             if ($spuAttr == $this->_spuAttrShowAsImg) {
-                $return['show_as_img'] = Yii::$service->product->image->getResize($arr['main_img'],[50,55],false);
+                $return['show_as_img'] = $arr['main_img'];
             }
-        } else {
+        } else if ($this->_spuAttrShowAsImg){
             // 如果是图片，不存在，则使用备用的。
             if ($spuAttr == $this->_spuAttrShowAsImg) {
                 $return['active'] = 'active';
@@ -631,15 +633,23 @@ class ProductController extends AppserverController
                         $return[$k] = $v;
                     }
                 }
-                $return['show_as_img'] = Yii::$service->product->image->getResize($arr['main_img'],[50,55],false);
-              
+                $return['show_as_img'] = $arr['main_img'];
+            }
+        } else if ($this->_spuAttrShowAsTop){
+            if ($spuAttr == $this->_spuAttrShowAsTop) {
+                $return['active'] = 'active';
+                $arr = $this->_spuAttrShowAsTopArr[$attrVal];
+                if (is_array($arr) && !empty($arr)) {
+                    foreach ($arr as $k=>$v) {
+                        $return[$k] = $v;
+                    }
+                }
             }
         }
         if ($active) {
             $return['active'] = 'current';
         }
-        $productPrimaryKey = Yii::$service->product->getPrimaryKey();
-        $return['_id'] = (string)$return[$productPrimaryKey];
+
         return $return;
     }
 

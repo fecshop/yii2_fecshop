@@ -272,6 +272,9 @@ class Index extends \yii\base\BaseObject
         return Yii::$service->product->spuCollData($select, $this->_productSpuAttrArr, $spu);
     }
 
+    // 商城产品页面spu属性，显示在第一排的属性
+    protected $_spuAttrShowAsTop;
+    protected $_spuAttrShowAsTopArr;
     /**
      * @return Array得到spu下面的sku的spu属性的数据。用于在产品
      * 得到spu下面的sku的spu属性的数据。用于在产品详细页面显示其他的sku
@@ -283,13 +286,13 @@ class Index extends \yii\base\BaseObject
         $groupAttr = Yii::$service->product->getGroupAttr($this->_product['attr_group']);
         // 当前的产品对应的spu属性组的属性，譬如 ['color','size','myyy']
         $this->_productSpuAttrArr = Yii::$service->product->getSpuAttr($this->_product['attr_group']);
-        //var_dump($this->_productSpuAttrArr);exit;
-        $this->_spuAttrShowAsImg = Yii::$service->product->getSpuImgAttr($this->_product['attr_group']);
         if (!is_array($this->_productSpuAttrArr) || empty($this->_productSpuAttrArr)) {
+            
             return;
         }
-        // 当前的spu属性对应值数组 $['color'] = 'red'
-
+        $this->_spuAttrShowAsTop = $this->_productSpuAttrArr[0];
+        //var_dump($this->_productSpuAttrArr);exit;
+        $this->_spuAttrShowAsImg = Yii::$service->product->getSpuImgAttr($this->_product['attr_group']);
         $this->_currentSpuAttrValArr = [];
         foreach ($this->_productSpuAttrArr as $spuAttr) {
             if (isset($this->_product['attr_group_info']) && $this->_product['attr_group_info']) {  // mysql
@@ -330,8 +333,16 @@ class Index extends \yii\base\BaseObject
                         $this->_spuAttrShowAsImgArr[$showAsImgVal] = $one;
                     }
                 }
+                // 显示在顶部的spu属性（当没有图片属性的时候使用）
+                $showAsTopVal = $one[$this->_spuAttrShowAsTop];
+                if ($showAsTopVal) {
+                    if (!isset($this->_spuAttrShowAsTopArr[$this->_spuAttrShowAsTop])) {
+                        $this->_spuAttrShowAsTopArr[$showAsTopVal] = $one;
+                    }
+                }
             }
         }
+        
         // 得到各个spu属性对应的值的集合。
         foreach ($spuValColl as $spuAttr => $attrValArr) {
             $spuValColl[$spuAttr] = array_unique($attrValArr);
@@ -344,10 +355,6 @@ class Index extends \yii\base\BaseObject
             foreach ($attrValArr as $attrVal) {
                 $attr_info = $this->getSpuAttrInfo($spuAttr, $attrVal, $reverse_val_spu);
                 $attr_coll[] = $attr_info;
-
-                //[
-                //    'attr_val' => $attr,
-                //];
             }
             $spuShowArr[] = [
                 'label' => $spuAttr,
@@ -373,8 +380,6 @@ class Index extends \yii\base\BaseObject
         $return = [];
         $return['attr_val'] = $attrVal;
         $return['active'] = 'noactive';
-
-        //echo $reverse_key."<br/>";
         if (isset($reverse_val_spu[$reverse_key]) && is_array($reverse_val_spu[$reverse_key])) {
             $return['active'] = 'active';
             $arr = $reverse_val_spu[$reverse_key];
@@ -384,7 +389,7 @@ class Index extends \yii\base\BaseObject
             if ($spuAttr == $this->_spuAttrShowAsImg) {
                 $return['show_as_img'] = $arr['main_img'];
             }
-        } else {
+        } else if ($this->_spuAttrShowAsImg){
             // 如果是图片，不存在，则使用备用的。
             if ($spuAttr == $this->_spuAttrShowAsImg) {
                 $return['active'] = 'active';
@@ -395,6 +400,16 @@ class Index extends \yii\base\BaseObject
                     }
                 }
                 $return['show_as_img'] = $arr['main_img'];
+            }
+        } else if ($this->_spuAttrShowAsTop){
+            if ($spuAttr == $this->_spuAttrShowAsTop) {
+                $return['active'] = 'active';
+                $arr = $this->_spuAttrShowAsTopArr[$attrVal];
+                if (is_array($arr) && !empty($arr)) {
+                    foreach ($arr as $k=>$v) {
+                        $return[$k] = $v;
+                    }
+                }
             }
         }
         if ($active) {
