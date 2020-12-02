@@ -46,7 +46,7 @@ class Index extends \yii\base\BaseObject
             ],
             'asArray' => true,
         ];
-        $data = Yii::$service->product->favorite->list($filter);
+        $data = Yii::$service->product->favorite->lists($filter);
         $coll = $data['coll'];
         $count = $data['count'];
         $pageToolBar = $this->getProductPage($count);

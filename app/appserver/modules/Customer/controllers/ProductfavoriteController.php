@@ -46,7 +46,7 @@ class ProductfavoriteController extends AppserverTokenController
             ],
             'asArray' => true,
         ];
-        $data  = Yii::$service->product->favorite->list($filter);
+        $data  = Yii::$service->product->favorite->lists($filter);
         $coll  = $data['coll'];
         $count = $data['count'];
         $product_arr = $this->getProductInfo($coll);

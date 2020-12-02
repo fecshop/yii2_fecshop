@@ -202,7 +202,7 @@ class ReviewMongodb extends Service implements ReviewInterface
      * ]
      * 查看review 的列表
      */
-    public function list($filter)
+    public function lists($filter)
     {
         $query = $this->_reviewModel->find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
@@ -257,7 +257,7 @@ class ReviewMongodb extends Service implements ReviewInterface
      */
     public function coll($filter = '')
     {
-        return $this->list($filter);
+        return $this->lists($filter);
     }
 
     /**

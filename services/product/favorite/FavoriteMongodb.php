@@ -156,7 +156,7 @@ class FavoriteMongodb extends Service
      * 	'asArray' => true,
      * ]
      */
-    public function list($filter)
+    public function lists($filter)
     {
         $query = $this->_favoriteModel->find();
         $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
@@ -169,7 +169,7 @@ class FavoriteMongodb extends Service
 
     public function coll($filter)
     {
-        return $this->list($filter);
+        return $this->lists($filter);
     }
     
     /**

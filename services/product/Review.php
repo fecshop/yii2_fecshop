@@ -159,9 +159,9 @@ class Review extends Service
     /**
      * 查看review 的列表
      */
-    public function list($filter)
+    public function lists($filter)
     {
-        return $this->_review->list($filter);
+        return $this->_review->lists($filter);
     }
     
     public function getByReviewId($_id)
