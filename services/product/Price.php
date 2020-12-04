@@ -50,7 +50,7 @@ class Price extends Service
     public function formatPrice($price)
     {
         $currencyInfo = $this->getCurrentInfo();
-        $price = Yii::$service->helper->format->number_format($price * $currencyInfo['rate']);
+        $price = Yii::$service->helper->format->numberFormat($price * $currencyInfo['rate']);
         
         return [
             'code'   => $currencyInfo['code'],
@@ -67,7 +67,7 @@ class Price extends Service
     {
         $currencyInfo = $this->getCurrentInfo();
         $price = $price * $currencyInfo['rate'];
-        $price = Yii::$service->helper->format->number_format($price);
+        $price = Yii::$service->helper->format->numberFormat($price);
 
         return $currencyInfo['symbol'].$price;
     }

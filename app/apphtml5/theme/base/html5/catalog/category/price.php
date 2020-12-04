@@ -11,11 +11,11 @@
 	<?php if(isset($special_price) && !empty($special_price)){ $sp = 'sp'; }  ?>
 	
 	<div class="price <?= $sp ?>">
-		<?= $price['symbol'].Yii::$service->helper->format->number_format($price['value']) ?>
+		<?= $price['symbol'].Yii::$service->helper->format->numberFormat($price['value']) ?>
 	</div>
 	<?php if(isset($special_price) && !empty($special_price)):  ?>
 	<div class="special_price">
-		<?= $special_price['symbol'].Yii::$service->helper->format->number_format($special_price['value']) ?>
+		<?= $special_price['symbol'].Yii::$service->helper->format->numberFormat($special_price['value']) ?>
 	</div>
 	<div class="clear"></div>
 	<?php endif;  ?>

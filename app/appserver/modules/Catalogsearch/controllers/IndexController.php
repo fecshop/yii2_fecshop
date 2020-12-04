@@ -355,10 +355,10 @@ class IndexController extends AppserverController
                     $products[$k]['price'] = isset($priceInfo['price']) ? $priceInfo['price'] : '';
                     $products[$k]['special_price'] = isset($priceInfo['special_price']) ? $priceInfo['special_price'] : '';
                     if (isset($products[$k]['special_price']['value'])) {
-                        $products[$k]['special_price']['value'] = Yii::$service->helper->format->number_format($products[$k]['special_price']['value']);
+                        $products[$k]['special_price']['value'] = Yii::$service->helper->format->numberFormat($products[$k]['special_price']['value']);
                     }
                     if (isset($products[$k]['price']['value'])) {
-                        $products[$k]['price']['value'] = Yii::$service->helper->format->number_format($products[$k]['price']['value']);
+                        $products[$k]['price']['value'] = Yii::$service->helper->format->numberFormat($products[$k]['price']['value']);
                     }
                     if($i%2 === 0){
                         $arr = $products[$k];

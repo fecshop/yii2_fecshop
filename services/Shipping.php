@@ -106,7 +106,7 @@ class Shipping extends Service
      */
     public function getVolume($long, $width, $high)
     {
-        return Yii::$service->helper->format->number_format($long * $width * $high);
+        return Yii::$service->helper->format->numberFormat($long * $width * $high);
     }
     
     /**
@@ -202,8 +202,8 @@ class Shipping extends Service
             $currCost = Yii::$service->page->currency->getCurrentCurrencyPrice($baseCost);
             
             return [
-                'currCost'  => Yii::$service->helper->format->number_format($currCost, 2),
-                'baseCost'  => Yii::$service->helper->format->number_format($baseCost, 2),
+                'currCost'  => Yii::$service->helper->format->numberFormat($currCost, 2),
+                'baseCost'  => Yii::$service->helper->format->numberFormat($baseCost, 2),
             ];
         }
     }

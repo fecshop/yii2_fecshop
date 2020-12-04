@@ -502,10 +502,10 @@ class Paypal extends Service
         // 得到购物车的信息，通过购物车信息填写。
         $orderInfo      = Yii::$service->order->getInfoByPaymentToken($token);
         $currency       = Yii::$service->page->currency->getCurrentCurrency();
-        $grand_total    = Yii::$service->helper->format->number_format($orderInfo['grand_total']);
-        $subtotal       = Yii::$service->helper->format->number_format($orderInfo['subtotal']);
-        $shipping_total = Yii::$service->helper->format->number_format($orderInfo['shipping_total']);
-        $discount_amount= Yii::$service->helper->format->number_format($orderInfo['subtotal_with_discount']);
+        $grand_total    = Yii::$service->helper->format->numberFormat($orderInfo['grand_total']);
+        $subtotal       = Yii::$service->helper->format->numberFormat($orderInfo['subtotal']);
+        $shipping_total = Yii::$service->helper->format->numberFormat($orderInfo['shipping_total']);
+        $discount_amount= Yii::$service->helper->format->numberFormat($orderInfo['subtotal_with_discount']);
         $subtotal       = $subtotal - $discount_amount;
         $nvp_array['PAYMENTREQUEST_0_SHIPTOSTREET']         = $orderInfo['customer_address_street1'].' '.$orderInfo['customer_address_street2'];
         $nvp_array['PAYMENTREQUEST_0_SHIPTOCITY']           = $orderInfo['customer_address_city'];
@@ -525,7 +525,7 @@ class Paypal extends Service
         foreach ($orderInfo['products'] as $item) {
             $nvp_array['L_PAYMENTREQUEST_0_QTY'.$i]     = $item['qty'];
             $nvp_array['L_PAYMENTREQUEST_0_NUMBER'.$i]  = $item['sku'];
-            $nvp_array['L_PAYMENTREQUEST_0_AMT'.$i]     = Yii::$service->helper->format->number_format($item['price']);
+            $nvp_array['L_PAYMENTREQUEST_0_AMT'.$i]     = Yii::$service->helper->format->numberFormat($item['price']);
             $nvp_array['L_PAYMENTREQUEST_0_NAME'.$i]    = $item['name'];
             $nvp_array['L_PAYMENTREQUEST_0_CURRENCYCODE'.$i] = $currency;
             $i++;
@@ -629,9 +629,9 @@ class Paypal extends Service
         // 得到购物车的信息，通过购物车信息填写。
         $orderInfo      = Yii::$service->order->getCurrentOrderInfo();
         $currency       = $orderInfo['order_currency_code'];
-        $grand_total    = Yii::$service->helper->format->number_format($orderInfo['grand_total']);
-        $subtotal       = Yii::$service->helper->format->number_format($orderInfo['subtotal']);
-        $shipping_total = Yii::$service->helper->format->number_format($orderInfo['shipping_total']);
+        $grand_total    = Yii::$service->helper->format->numberFormat($orderInfo['grand_total']);
+        $subtotal       = Yii::$service->helper->format->numberFormat($orderInfo['subtotal']);
+        $shipping_total = Yii::$service->helper->format->numberFormat($orderInfo['shipping_total']);
         $discount_amount= $orderInfo['subtotal_with_discount'] ? $orderInfo['subtotal_with_discount'] : 0;
         $subtotal = $subtotal - $discount_amount;
         $nvp_array['PAYMENTREQUEST_0_CURRENCYCODE'] = $currency;
@@ -645,7 +645,7 @@ class Paypal extends Service
         foreach ($orderInfo['products'] as $item) {
             $nvp_array['L_PAYMENTREQUEST_0_QTY'.$i] = $item['qty'];
             $nvp_array['L_PAYMENTREQUEST_0_NUMBER'.$i] = $item['sku'];
-            $nvp_array['L_PAYMENTREQUEST_0_AMT'.$i] = Yii::$service->helper->format->number_format($item['price']);
+            $nvp_array['L_PAYMENTREQUEST_0_AMT'.$i] = Yii::$service->helper->format->numberFormat($item['price']);
             $nvp_array['L_PAYMENTREQUEST_0_NAME'.$i] = $item['name'];
             $nvp_array['L_PAYMENTREQUEST_0_CURRENCYCODE'.$i] = $currency;
             $i++;

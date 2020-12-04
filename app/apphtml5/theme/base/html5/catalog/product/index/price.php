@@ -10,14 +10,14 @@
 <?php  $price_info = $parentThis['price_info'];   ?>
 <?php if(isset($price_info['special_price']['value'])):  ?>			
 	<div class="special_price special_active">
-		<?= $price_info['special_price']['symbol']  ?><?= Yii::$service->helper->format->number_format($price_info['special_price']['value']) ?>
+		<?= $price_info['special_price']['symbol']  ?><?= Yii::$service->helper->format->numberFormat($price_info['special_price']['value']) ?>
 	</div>
 	<div class="price special_active">
-		<?= $price_info['price']['symbol']  ?><?= Yii::$service->helper->format->number_format($price_info['price']['value']) ?>
+		<?= $price_info['price']['symbol']  ?><?= Yii::$service->helper->format->numberFormat($price_info['price']['value']) ?>
 	</div>
 	<div class="clear"></div>
 <?php else:  ?>
 	<div class="price no-special">
-		<?= $price_info['price']['symbol']  ?><?= Yii::$service->helper->format->number_format($price_info['price']['value']) ?>
+		<?= $price_info['price']['symbol']  ?><?= Yii::$service->helper->format->numberFormat($price_info['price']['value']) ?>
 	</div>
 <?php endif; ?>

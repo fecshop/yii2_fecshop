@@ -32,10 +32,10 @@ use fec\helpers\CRequest;
                 $mb = 1024 * 1024;
                 if ($addon_one['addon_info']['zip_size']  <  $mb) {
                     $symbol = 'KB';
-                    $val = Yii::$service->helper->format->number_format($addon_one['addon_info']['zip_size'] / 1024);
+                    $val = Yii::$service->helper->format->numberFormat($addon_one['addon_info']['zip_size'] / 1024);
                 } else {
                     $symbol = 'MB';
-                    $val = Yii::$service->helper->format->number_format($addon_one['addon_info']['zip_size'] / $mb);
+                    $val = Yii::$service->helper->format->numberFormat($addon_one['addon_info']['zip_size'] / $mb);
                 
                 }
                 $zip_size = $val. $symbol ;

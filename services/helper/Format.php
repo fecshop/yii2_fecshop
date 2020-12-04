@@ -26,7 +26,7 @@ class Format extends Service
      * @return $number | Float
      * 返回格式化形式的float小数，譬如2 会变成2.00
      */
-    public function number_format($number, $bits = 2)
+    public function numberFormat($number, $bits = 2)
     {
         return number_format($number, $bits, '.', '');
     }

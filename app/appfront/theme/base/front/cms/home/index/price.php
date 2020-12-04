@@ -8,9 +8,9 @@
  */
 ?>
 <p class="proPrice">
-    <?php $price['value'] = Yii::$service->helper->format->number_format($price['value'])  ?>
+    <?php $price['value'] = Yii::$service->helper->format->numberFormat($price['value'])  ?>
 	<?php if(isset($special_price) && !empty($special_price)):  ?>
-        <?php $special_price['value'] = Yii::$service->helper->format->number_format($special_price['value'])  ?>
+        <?php $special_price['value'] = Yii::$service->helper->format->numberFormat($special_price['value'])  ?>
 		<span class="bizhong"><?= $special_price['code'] ?></span><span orgp="<?= $special_price['value'] ?>" class="my_shop_price f14"><span class="icon"><?= $special_price['symbol'] ?></span><?= $special_price['value'] ?></span>
 		<span class="bizhong"><?= $price['code'] ?></span><del orgp="<?= $price['value'] ?>" class="my_shop_price"><span class="icon"><?= $price['symbol'] ?></span><?= $price['value'] ?></del>
 	

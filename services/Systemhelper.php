@@ -138,13 +138,13 @@ class Systemhelper extends Service
             ],
             'yestday' => [
                 'order_count' => $orderYestTotalCount,
-                'order_base_sale' => Yii::$service->helper->format->number_format($orderYestTotalBaseSale),
+                'order_base_sale' => Yii::$service->helper->format->numberFormat($orderYestTotalBaseSale),
                 'order_customer_count' => $orderYestCustomerCount,
                 'register_customer_count' => $yestCustomerCount,
             ],
             'today' => [
                 'order_count' => $orderTodayTotalCount,
-                'order_base_sale' => Yii::$service->helper->format->number_format($orderTodayTotalBaseSale),
+                'order_base_sale' => Yii::$service->helper->format->numberFormat($orderTodayTotalBaseSale),
                 'order_customer_count' => $orderTodayCustomerCount,
                 'register_customer_count' => $todayCustomerCount,
             ],

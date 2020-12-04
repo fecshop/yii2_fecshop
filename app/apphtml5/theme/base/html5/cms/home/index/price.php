@@ -9,7 +9,7 @@
 ?>
 <p class="proPrice">
 	<?php if(isset($special_price) && !empty($special_price)):  ?>
-        <?php  $special_price['value'] = Yii::$service->helper->format->number_format($special_price['value']);  ?>
+        <?php  $special_price['value'] = Yii::$service->helper->format->numberFormat($special_price['value']);  ?>
 		<span class="bizhong"><?= $special_price['code'] ?></span>
         <span orgp="<?= $special_price['value'] ?>" class="my_shop_price f14">
             <span class="icon"><?= $special_price['symbol'] ?></span><?= $special_price['value'] ?>
@@ -19,7 +19,7 @@
             <span class="icon"><?= $price['symbol'] ?></span><?= $price['value'] ?>
         </del>
 	<?php else: ?>
-        <?php  $price['value'] = Yii::$service->helper->format->number_format($price['value']);  ?>
+        <?php  $price['value'] = Yii::$service->helper->format->numberFormat($price['value']);  ?>
 		<span class="bizhong"><?= $price['code'] ?></span>
         <span orgp="<?= $price['value'] ?>" class="my_shop_price f14">
             <span class="icon"><?= $price['symbol'] ?></span><?= $price['value'] ?>
