@@ -222,5 +222,5 @@ class ArticleMongodb extends Service implements ArticleInterface
         
         return $model::STATUS_DISACTIVE;
     }
-}
+
 }
