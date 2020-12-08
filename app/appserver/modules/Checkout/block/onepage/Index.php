@@ -30,6 +30,10 @@ class Index extends \yii\base\BaseObject
     protected $_cart_address;
     protected $_cart_info;
     protected $is_empty_cart = false;
+    protected $_address;
+    protected $_countrySelect;
+
+
     public function getLastData()
     {
         //$shipping_method = 'middle_shipping';
