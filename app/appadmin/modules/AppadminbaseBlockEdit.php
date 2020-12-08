@@ -158,7 +158,7 @@ EOF;
                 $str .= <<<EOF
 						<p class="edit_p product_{$name}">
 							<label>{$label}：</label>
-							<input type="text"  value="{$valueData}" size="30" name="{$this->_editFormData}[{$name}]" class="date textInput {$require} ">
+							<input autocomplete="off" type="text"  value="{$valueData}" size="30" name="{$this->_editFormData}[{$name}]" class="date textInput {$require} ">
                             <span class="remark-text">{$remark}</span>
                         </p>
 EOF;
@@ -238,7 +238,7 @@ EOF;
                 $str .= <<<EOF
 						<p class="edit_p product_{$name}">
 							<label>{$label}：</label>
-							<input type="text" datefmt="yyyy-MM-dd HH:mm:ss"  value="{$valueData}" size="30" name="{$this->_editFormData}[{$name}]" class="date textInput {$require} ">
+							<input autocomplete="off" type="text" datefmt="yyyy-MM-dd HH:mm:ss"  value="{$valueData}" size="30" name="{$this->_editFormData}[{$name}]" class="date textInput {$require} ">
                             <span class="remark-text">{$remark}</span>
                         </p>
 EOF;
