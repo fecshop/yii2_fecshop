@@ -58,9 +58,9 @@ class Index extends \yii\base\BaseObject
         return [
             'searchText'        => $this->_searchText,
             'title'             => $this->_title,
-            'name'              => Yii::$service->store->getStoreAttrVal($this->_category['name'], 'name'),
-            'image'             => $this->_category['image'] ? Yii::$service->category->image->getUrl($this->_category['image']) : '',
-            'description'       => Yii::$service->store->getStoreAttrVal($this->_category['description'], 'description'),
+           // 'name'              => Yii::$service->store->getStoreAttrVal($this->_category['name'], 'name'),
+           // 'image'             => $this->_category['image'] ? Yii::$service->category->image->getUrl($this->_category['image']) : '',
+           // 'description'       => Yii::$service->store->getStoreAttrVal($this->_category['description'], 'description'),
             'products'          => $products,
             'query_item'        => $this->getQueryItem(),
             'product_page'      => $this->getProductPage(),
