@@ -856,7 +856,7 @@ return [
     'username' => '账号',
     'Version' => '当前版本',
     'FECMALL ADMIN' => 'Fecmall Admin 后台系统',
-    '' => '',
+    'Product Spu' => '商品编码(SPU)',
     '' => '',
     '' => '',
     '' => '',
