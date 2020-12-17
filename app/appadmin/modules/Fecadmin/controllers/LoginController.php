@@ -55,9 +55,10 @@ class LoginController extends \fecadmin\controllers\LoginController
     public function actionIndex()
     {
         $langCode = Yii::$app->request->get('lang');
-        if ($langCode) {
-            Yii::$service->admin->setCurrentLangCode($langCode);
+        if (!$langCode) {
+            $langCode = 'zh';
         }
+        Yii::$service->admin->setCurrentLangCode($langCode);
         $isGuest = Yii::$app->user->isGuest;
         //echo $isGuest;exit;
         if(!$isGuest){
