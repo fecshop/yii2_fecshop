@@ -34,11 +34,11 @@ use fecadmin\models\AdminRole;
 				<?= $lang_attr ?>
 				<?= $textareas ?>
 				<fieldset id="fieldset_table_qbe">
-					<legend style="color:#cc0000"><?= Yii::$service->page->translate->__('Example') ?></legend>
-					<div>
+					<legend style="color:#888"><?= Yii::$service->page->translate->__('Example') ?></legend>
+					<div><br/>
 							<b><?= Yii::$service->page->translate->__('Store Key') ?></b>: 
                             fecshop.appfront.fancyecommerce.com,fecshop.appfront.fancyecommerce.com/fr
-                            <br/> 
+                            <br/>  <br/>
 							<b><?= Yii::$service->page->translate->__('Language Name') ?></b>: Example: English, Français,中文
                             <br/> <br/> <b><?= Yii::$service->page->translate->__('Local Theme Dir') ?></b>: Example: @appfront/theme/terry/theme01
                             <br/> <br/> <b><?= Yii::$service->page->translate->__('Third Theme Dir') ?></b>: Example: @mmm/theme/terry/theme01,@mmm/theme/terry/theme02

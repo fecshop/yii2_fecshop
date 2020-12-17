@@ -589,6 +589,24 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
         background:rgba(0,0,0,0.1);
 }
 
+/*滚动条样式*/
+.dialog .pageContent .pageFormContent::-webkit-scrollbar {/*滚动条整体样式*/
+        width:4px;/*高宽分别对应横竖滚动条的尺寸*/
+        height:4px;
+}
+.dialog .pageContent .pageFormContent::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+        border-radius:5px;
+        -webkit-box-shadow: inset005pxrgba(0,0,0,0.2);
+        background:rgba(0,0,0,0.2);
+}
+.dialog .pageContent .pageFormContent::-webkit-scrollbar-track {/*滚动条里面轨道*/
+        -webkit-box-shadow: inset005pxrgba(0,0,0,0.2);
+        border-radius:0;
+        background:rgba(0,0,0,0.1);
+}
+
+
+
 
 .pageFormContent p{height:31px;}
 
