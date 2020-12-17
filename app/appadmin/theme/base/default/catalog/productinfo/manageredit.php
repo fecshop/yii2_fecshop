@@ -221,7 +221,7 @@ function thissubmit(thiss){
 					<input type="hidden"  value="<?=  $product_id; ?>" size="30" name="product_id" class="textInput ">
 				
 					<fieldset id="fieldset_table_qbe">
-						<legend style="color:#009688"><?=  Yii::$service->page->translate->__('Product attribute group switching: Please switch the product attribute group before editing') ?></legend>
+						<legend style=""><?=  Yii::$service->page->translate->__('Product attribute group switching: Please switch the product attribute group before editing') ?></legend>
 						<div>
 							<p class="edit_p" style="padding: 5px 0 0 10px;  height: 20px;">
 								<?= $attrGroup ?>

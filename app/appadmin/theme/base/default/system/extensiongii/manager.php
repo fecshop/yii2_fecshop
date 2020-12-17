@@ -27,7 +27,7 @@ use fecadmin\models\AdminRole;
 			
         
                 <fieldset id="fieldset_table_qbe">
-					<legend style="color:#cc0000">Gii生成应用</legend>
+					<legend style="color:#888">Gii生成应用</legend>
 					<div>
                         <p class="edit_p">
                             <label><?= Yii::$service->page->translate->__('Extension Package'); ?></label>

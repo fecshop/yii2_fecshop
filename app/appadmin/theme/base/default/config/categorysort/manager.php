@@ -171,10 +171,10 @@ function thissubmit(thiss){
     color:#777;
 }
 .category_sorts table thead tr th{
-	 background: #ddd none repeat scroll 0 0;
+	background: #ddd none repeat scroll 0 0;
     border: 1px solid #ccc;
-    padding: 4px 10px;
-    width: 100px;
+    padding: 8px 10px;
+    width: 220px;
 }
 
 .category_sorts table tbody tr td{

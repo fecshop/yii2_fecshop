@@ -226,14 +226,14 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
                 'label'           => Yii::$service->page->translate->__('Created At'),
                 'width'          => '100',
                 'align'           => 'left',
-                'convert'       => ['int' => 'datetime'],
+                'convert'       => ['int' => 'date'],
             ],
             [
                 'orderField'    => 'updated_at',
                 'label'           => Yii::$service->page->translate->__('Updated At'),
                 'width'          => '100',
                 'align'           => 'left',
-                'convert'       => ['int' => 'datetime'],
+                'convert'       => ['int' => 'date'],
             ],
         ];
 

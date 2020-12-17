@@ -172,12 +172,20 @@ use fec\helpers\CRequest;
     background: #f0ad4e !important;
     color:#fff;
     padding:5px 10px;
+    white-space: pre;
+    height: 15px;
+    display: inline-block;
+    margin-bottom: 10px;
 }
 
 .local_install_test{
-    background: #5e72e4 !important;
-    color:#fff;
-    padding:5px 10px;
+        background: #5e72e4 !important;
+    color: #fff;
+    padding: 5px 10px;
+    white-space: pre;
+    height: 15px;
+    display: inline-block;
+    margin-bottom: 10px;
 }
 
 
@@ -222,6 +230,8 @@ use fec\helpers\CRequest;
 .handbutton:hover{
     opacity:0.8
 }
+
+.panelBar{border:none;}
 
 </style>
 

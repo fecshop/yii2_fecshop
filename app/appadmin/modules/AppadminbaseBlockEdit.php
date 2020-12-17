@@ -406,7 +406,7 @@ EOF;
                         $tabLangTextarea .= '
 						<div lang="'.$lang.'" class="tabsC '.$lang.'"  ee=3>
 							<fieldset id="fieldset_table_qbe" dd=2>
-								<legend style="color:#009688">'.$label.'['.$lang.']：</legend>
+								<legend style="color:#555">'.$label.'['.$lang.']：</legend>
 								<div>
 									<div class="unit">
 										<textarea '.$uploadImgUrl.' '.$uploadFlashUrl.'  '.$uploadLinkUrl.'  '.$uploadMediaUrl.'  class="'.$edittorClass.' '.$inputStringLangRequire.'"  rows="'.$rows.'" cols="'.$cols.'" name="'.$this->_editFormData.'['.$name.']['.$langAttrName.']"  style="width:98%" >'.$value[$langAttrName].'</textarea>
@@ -436,7 +436,7 @@ EOF;
                 } else {
                     $this->_textareas .= <<<EOF
 						<fieldset id="fieldset_table_qbe">
-							<legend style="color:#009688">{$label}：</legend>
+							<legend style="color:#555">{$label}：</legend>
 							<div>
 								<textarea  class="{$edittorClass}" name="{$this->_editFormData}[{$name}]" rows="{$rows}" cols="{$cols}" name="{$this->_editFormData}[{$name}]"  {$uploadImgUrl}  {$uploadFlashUrl}  {$uploadLinkUrl}   {$uploadMediaUrl} >{$value}</textarea>
                                 <span class="remark-text">{$remark}</span>

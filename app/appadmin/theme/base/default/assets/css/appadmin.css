@@ -10,7 +10,7 @@ table.list .hover{
 
 .productimg tr td input{width:100px;}
 
-.pageHeader form table tr td input{margin-left:4px;}
+.pageHeader form table tr td input{margin-left:4px; height:18px;     min-width: 100px;}
 
 
 .pageFormContent p.edit_p span{
@@ -50,7 +50,7 @@ table.list .hover{
 .panelBar .pages span{
     float: left;
     line-height: 26px;
-    margin: 0px 5px;
+    margin: 3px 5px;
 }
 
 .dialog .dialogHeader, .dialog .dialogHeader_r,.dialog .dialogHeader_c{
@@ -82,7 +82,7 @@ table.list .hover{
 }
 
 .tabs .tabsHeader{
-    border-bottom:  1px solid #b8d0d6;
+    border-bottom:  2px solid #eaeaea;
 }
 
 .dialog .formBar{
@@ -121,7 +121,13 @@ table.list thead tr{background:#fff}
 }
 
 .dialogBackground{
-    background:#ddd;
+        position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: .5;
+    background: #000;
 }
 
 fieldset{
@@ -145,20 +151,38 @@ span.error{
 }
 
 .panelBar .toolBar a{
-    background-color: #eee;
-    border: 1px solid #ccc;
-    background-image:none;
+    background-color: #409eff;
+    border: 1px solid #409eff;
+    background-image: none;
+    color: #fff;
+    padding: 2px 10px;
+    border-radius: .25rem;
 }
 
+.panelBar li{overflow:inherit}
+
+.panelBar .toolBar a:hover{
+       background: rgb(59, 146, 236)
+    }
+
  .panelBar .toolBar li.hover a{
-    background-color: #ddd;
-    border: 1px solid #bbb; 
-    background-image:none;
+    background-color: rgb(59, 146, 236);
+    border: 1px solid  rgb(59, 146, 236);
+    background-image: none;
+    color: #fff;
+    border-radius: .25rem;
+        float: none;
+    display: inline-block;
+    height: auto;
+    padding: 2px 10px;
+    line-height: auto;
+    cursor: pointer;
+    
+    
  }
 
 .panelBar .toolBar span, .panelBar .toolBar li.hover span{
-    height:21px;
-    background-image:none;
+   
 }
 
 .panelBar .toolBar li, .panelBar .toolBar li.hover{
@@ -173,7 +197,7 @@ span.error{
     padding-top:0px;
 }
 #sidebar  .accordion {
-    background: #20222A;
+    background: rgb(48, 65, 86);
     padding-left:10px;
 }
 
@@ -182,7 +206,20 @@ span.error{
 }
 
 #sidebar  .tree .selected{
-    background: #009688 !important
+    background: none;
+}
+
+#sidebar  .tree .selected{
+    background: none;
+}
+
+#sidebar  .tree  > li > ul > li > div:hover{
+    background: #001528!important;
+}
+
+
+#sidebar .tree li .selected a{
+    color:rgb(64, 158, 255)
 }
 
 #sidebar .tree li a, #sidebar .tree li span {
@@ -250,7 +287,9 @@ span.error{
 }
 
 
-
+body .tabsPage .tabsPageContent{
+    background:#fff;
+}
 
 .tabsPage .tabsPageContent::-webkit-scrollbar {/*滚动条整体样式*/
             width: 1px;     /*高宽分别对应横竖滚动条的尺寸*/
@@ -268,7 +307,7 @@ span.error{
         }
 
 .accordion .accordionContent{
-    background-color:rgba(0,0,0,.3)!important;
+    background-color:#1f2d3d!important;
     border:none;
     padding-top:5px;
 }
@@ -412,24 +451,33 @@ body .background{
 
 
 #container .tabsPage .tabsPageHeader{
-    height: 30px;
+    height: 40px;
 }
 
 #container .tabsPage .tabsPageHeaderContent{
-    height: 30px;
+    height: 40px;
 }
 
 #container .tabsPage .tabsPageHeader ul{
-    height: 30px;
+    height: 40px;
 }
 
 #container .tabsPage .tabsPageHeader li, #container  .tabsPage .tabsPageHeader li a, #container  .tabsPage .tabsPageHeader li span{
-    height: 30px;
-    line-height: 30px;
-    font-size: 10px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    padding-top:0;
+    color:#777;
 }
 
+#container  .tabsPage .tabsPageHeader li span:hover{
+    color:#555;
+}
 
+.tabsPage .tabsPageHeader li.selected a{
+    font-weight:500;
+    color: #97a8be;
+}
 
 .layui-icon {
     font-family: layui-icon!important;
@@ -481,7 +529,7 @@ body .background{
 
 .upload-image{
     margin: 10px 0 0;
-    background: #009688;
+    background: #409eff;
     border: none;
     color: #fff;
     border-radius: .25rem;
@@ -489,12 +537,16 @@ body .background{
     padding: 0 19px;
 }
 
+.upload-image span{
+    color: #fff;
+}
+
 .upload-image:hover{
     opacity:0.8
 }
 
 .grid .gridHeader th.hover, .grid .gridHeader th.thSelected{ 
-    border-color: #009688
+    border-color: #409eff
 }
 
 
@@ -520,9 +572,10 @@ body .background{
 
 
 fieldset legend {
-    padding: 2px;
-    border: 1px dotted #009688;
-    font-weight: bold;
+        padding: 2px;
+    border: 1px dotted #aaa;
+    font-weight: 500;
+    color:#999;
 }
 
 .dialog .pageFormContent, .dialog .viewInfo{
@@ -567,6 +620,48 @@ html body .grid .gridTbody .selected {
 .pageContent.systemConfig{
     background:#fff;
 }
+
+
+.tabsPage .tabsPageHeader  .navTab-tab  li .close{display:none;}
+
+body .pageHeader form table tr td input:focus{
+    border-color:rgb(70, 161, 254)
+}
+
+.pageHeader form table tr td input:hover{
+    border-color:#aaa
+}
+
+
+body .combox .select a:focus{
+    border-color:rgb(70, 161, 254)
+}
+
+.combox .select a:hover{
+    border-color:#aaa
+}
+
+.combox .select a {
+    padding: 0 22px 0 6px;
+    line-height: 30px;
+    height: 30px;
+    background-position: 99% -47px;
+    width: auto;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -125,6 +125,7 @@ body {
     line-height: 40px;
     background: none;
     font-size: 14px;
+    color:#909399;
 }
 
 
@@ -135,8 +136,8 @@ body {
 
 .grid .gridHeader th {
     border: none;
-    border-bottom: 1px solid #dee2e6;
-    border-top: 1px solid #dee2e6;
+        border-bottom: 1px solid #ebeef5;
+    border-top: 1px solid #ebeef5;
 }
 
 .tabsPage .tabsPageContent {
@@ -149,7 +150,7 @@ td {}
 .panelBar {
     background: #fff;
     border-bottom: none;
-    /* height: 40px; */
+    height: 32px;
     float: left;
     padding: 15px 0;
     font-size: 14px;
@@ -164,6 +165,7 @@ td {}
     padding: 0 5px;
     line-height: 23px;
     border: none;
+    color:#fff;
 }
 
 .panelBar .toolBar span .fa {
@@ -258,13 +260,15 @@ td {}
     line-height: 1.5;
     border-radius: .25rem;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-    background: #009688  !important;
+    background: #409eff  !important;
     color: #ffffff !important;
+    padding-left:18px;
+    padding-right:18px;
 }
 
 
 .button:hover, .buttonActive:hover, .buttonDisabled:hover{
-    background: #009688  !important;
+    background: rgb(59, 146, 236) !important;
     opacity:.8;
 }
 .button, .button span, .buttonDisabled, .buttonDisabled span, .buttonActive, .buttonActive span, .button .buttonContent, .buttonHover, .buttonHover .buttonContent, .buttonActive .buttonContent, .buttonActiveHover, .buttonActiveHover .buttonContent, .buttonDisabled .buttonContent {
@@ -306,7 +310,7 @@ a.btnAdd, a.btnDel, a.btnView, a.btnEdit, a.btnSelect, a.btnInfo, a.btnAssign, a
 
 .pagination {
     background: none;
-    margin-top: 1px;
+    margin-top: 5px;
 }
 
 
@@ -315,7 +319,7 @@ a.btnAdd, a.btnDel, a.btnView, a.btnEdit, a.btnSelect, a.btnInfo, a.btnAssign, a
 }
 
 .pagination li.selected a {
-    color: #009688;
+    color: rgb(64, 158, 255);
 }
 
 .pagination a, .pagination li.hover a, .pagination li span {
@@ -344,6 +348,7 @@ a.btnAdd, a.btnDel, a.btnView, a.btnEdit, a.btnSelect, a.btnInfo, a.btnAssign, a
 
 .tabsPage .tabsPageHeader li.main span {
     padding: 0;
+    color:#888;
 }
 
 .tabsPage .tabsPageHeaderContent {
@@ -367,8 +372,8 @@ div#navTab {
 }
 
 .tabsPage .tabsPageHeader li.selected {
-    border-left: 1px solid #b8d0d6;
-    border-right: 1px solid #b8d0d6;
+    border-left: none;
+    border-right: none;
     position:relative;
 }
 .tabsPage .tabsPageHeader li.selected:after{content:'';position:absolute;left:0;height: 5px;background: #ffffff;bottom: -4px;z-index: 999;width:100%;}
@@ -444,11 +449,11 @@ select{
 
 .grid .gridTbody td {
     border: none;
-    border-bottom: solid 1px #e7e7e7;
+    border-bottom: solid 1px #ebeef5;
 }
 
 .dialog .grid .gridTbody td,   #container .grid .gridTbody td{
-    padding: 4px;
+    padding: 10px 0;
 }
 
 .dialog .grid table thead th .gridCol, #container .grid table thead th .gridCol{
@@ -481,16 +486,109 @@ select{
 
 
 
+.grid .gridTbody td div span{color:rgb(96, 98, 102);font-size:14px; }
+
+
+.grid .gridTbody td { padding:10px 0 }
+
+
+.dialog .dialogHeader, .dialog .dialogHeader_r, .dialog .dialogHeader_c{height:30px;}
+
+.dialog .dialogHeader h1 {
+    display: block;
+    overflow: hidden;
+    height: auto;
+    padding: 10px;
+    line-height: 28px;
+    background: none;
+    color: #303133;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+
+.tabs .tabsHeader li span, body .pageForm .pageFormContent p.edit_p label , .grid .gridTbody td div , .pageFormContent label{
+    color:rgb(48, 49, 51);
+    font-size:14px;
+    
+}
+
+.tree.treeFolder, .tree.treeFolder a{
+    font-size:12px;
+}
+
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td{
+    color:rgb(48, 49, 51);
+    font-size:14px;
+}
+
+.tabs .tabsHeader li{border:none;}
+
+
+.tabs .tabsHeader li.selected{
+    border:none;
+}
+
+
+.tabs .tabsHeader li.selected span{
+    color:rgb(64, 158, 255);
+    font-weight:500;
+}
+
+
+.tabs .tabsContent{
+    padding:10px;
+}
+
+
+
+.edit_p label{
+    font-size:14px;
+    color:rgb(48, 49, 51);
+}
+
+.tabs .tabsContent{
+    border-width:0;
+}
 
 
 
 
 
+/*滚动条样式*/
+.tabs .tabsContent::-webkit-scrollbar {/*滚动条整体样式*/
+        width:4px;/*高宽分别对应横竖滚动条的尺寸*/
+        height:4px;
+}
+.tabs .tabsContent::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+        border-radius:5px;
+        -webkit-box-shadow: inset005pxrgba(0,0,0,0.2);
+        background:rgba(0,0,0,0.2);
+}
+.tabs .tabsContent::-webkit-scrollbar-track {/*滚动条里面轨道*/
+        -webkit-box-shadow: inset005pxrgba(0,0,0,0.2);
+        border-radius:0;
+        background:rgba(0,0,0,0.1);
+}
 
 
+/*滚动条样式*/
+.grid .gridScroller::-webkit-scrollbar {/*滚动条整体样式*/
+        width:4px;/*高宽分别对应横竖滚动条的尺寸*/
+        height:4px;
+}
+.grid .gridScroller::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+        border-radius:5px;
+        -webkit-box-shadow: inset005pxrgba(0,0,0,0.2);
+        background:rgba(0,0,0,0.2);
+}
+.grid .gridScroller::-webkit-scrollbar-track {/*滚动条里面轨道*/
+        -webkit-box-shadow: inset005pxrgba(0,0,0,0.2);
+        border-radius:0;
+        background:rgba(0,0,0,0.1);
+}
 
 
-
-
-
+.pageFormContent p{height:31px;}
 

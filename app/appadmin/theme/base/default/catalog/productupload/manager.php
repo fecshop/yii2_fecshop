@@ -17,7 +17,7 @@ use fec\helpers\CRequest;
 		<div class="pageFormContent" layoutH="56">
 			<?=  CRequest::getCsrfInputHtml();  ?>
             <fieldset id="fieldset_table_qbe">
-					<legend style="color:#cc0000">产品文件上传</legend>
+					<legend style="color:#888">产品文件上传</legend>
                     <div  style="padding:10px;">
                         <input name="file" type="file"  style="float:left"/>
                         <br><br><br>
