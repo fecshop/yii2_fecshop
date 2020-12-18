@@ -233,10 +233,11 @@ class Role extends Service
     }
 
     /**
+     * * @param $fromCache | boolean, 是否使用缓存？
      * @return array
      * 得到当前用户的可用的resources数组
      */
-    public function getCurrentRoleResources(){
+    public function getCurrentRoleResources($fromCache=true){
         if (!$this->_current_role_resources) {
             if (Yii::$app->user->isGuest) {
                 
@@ -264,7 +265,7 @@ class Role extends Service
                 return [];
             }
 
-            $this->_current_role_resources = $this->getRoleResourcesByRoleIds($role_ids);
+            $this->_current_role_resources = $this->getRoleResourcesByRoleIds($role_ids, $fromCache);
         }
 
         return $this->_current_role_resources;
@@ -272,16 +273,20 @@ class Role extends Service
     
     /**
      * @param array $role_ids
+     * @param $fromCache | boolean, 是否使用缓存？
      * @return array , 包含url_key_id的数组
      *  通过$role_ids数组，获得相应的所有url_key_id数组
      */
-    public function getRoleResourcesByRoleIds($role_ids){
+    public function getRoleResourcesByRoleIds($role_ids, $fromCache=true){
         if (empty($role_ids)) {
             return [];
         }
         sort($role_ids);
         $role_ids_cache_str = self::ADMIN_ROLEIDS_RESOURCES . implode('-', $role_ids);
-        $resources = Yii::$app->cache->get($role_ids_cache_str);
+        $resources = null;
+        if ($fromCache) {
+            $resources = Yii::$app->cache->get($role_ids_cache_str);
+        }
         if (!$resources) {
             // 通过role_ids 得到url_keys
             $roleUrlKeys = Yii::$service->admin->roleUrlKey->coll([

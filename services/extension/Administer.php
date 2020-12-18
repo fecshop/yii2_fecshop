@@ -24,7 +24,14 @@ class Administer extends Service
     public $uninstallRemoveFile = true;
     
     public $currentNamespace;
-    
+    /**
+     * 
+     */
+    public function reflushAdminMenuRoleCache()
+    {
+        // 获取RoleResource，参数false代表绕过cache，计算，并重新写入cache
+        return Yii::$service->admin->role->getCurrentRoleResources(false);
+    }
     /**
      * 1.插件的安装
      * @param $extension_name | string ， 插件名称（唯一）
@@ -76,6 +83,7 @@ class Administer extends Service
                 return false;
             }
             $innerTransaction->commit();
+            $this->reflushAdminMenuRoleCache();
             
             return true;
         } catch (\Exception $e) {
@@ -124,8 +132,8 @@ class Administer extends Service
                 
                 return false;
             }
-            
             $innerTransaction->commit();
+            $this->reflushAdminMenuRoleCache();
             
             return true;
         } catch (\Exception $e) {
@@ -185,6 +193,7 @@ class Administer extends Service
                 return false;
             }
             $innerTransaction->commit();
+            $this->reflushAdminMenuRoleCache();
             
             return true;
         } catch (\Exception $e) {
@@ -234,6 +243,7 @@ class Administer extends Service
                 return false;
             }
             $innerTransaction->commit();
+            $this->reflushAdminMenuRoleCache();
             
             return true;
         } catch (\Exception $e) {
@@ -309,7 +319,8 @@ class Administer extends Service
             // 从配置中获取，是否进行应用文件夹的删除，如果是，则进行文件的删除。
             Yii::$service->helper->deleteDir($installPath);
         }
-        
+        $this->reflushAdminMenuRoleCache();
+            
         return true;
     }
     
@@ -365,7 +376,8 @@ class Administer extends Service
             // 从配置中获取，是否进行应用文件夹的删除，如果是，则进行文件的删除。
             Yii::$service->helper->deleteDir($installPath);
         }
-        
+        $this->reflushAdminMenuRoleCache();
+            
         return true;
     }
     
