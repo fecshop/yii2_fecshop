@@ -256,6 +256,11 @@ return [
                                         'url_key' => '/config/email/manager',
                                     ],
                                     
+                                    'fa' => [
+                                        'label' => 'FA Config',
+                                        'url_key' => '/config/fa/manager',
+                                    ],
+                                    
                                 ],
                             ],
                             
