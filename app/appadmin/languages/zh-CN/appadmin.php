@@ -857,6 +857,13 @@ return [
     'Version' => '当前版本',
     'FECMALL ADMIN' => 'Fecmall Admin 后台系统',
     'Product Spu' => '商品编码(SPU)',
+    
+    'Config FA Manager' => 'FA 数据分析配置-查看',
+    'Config FA Save' => 'FA 数据分析配置-保存',
+    'FA Config' => 'FA 数据分析配置',
+    'FA Base Config' => 'FA基础配置',
+    'FA Data Ayalysis' => 'FA数据分析',
+    'FA Domain' => 'FA域名',
     '' => '',
     '' => '',
     '' => '',
