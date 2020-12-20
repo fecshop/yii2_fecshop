@@ -20,12 +20,13 @@ use Yii;
  */
 class Trace extends Service
 {
-    public $traceJsEnable = true;  // 是否打开js追踪
+    public $traceJsEnable = false;  // 是否打开js追踪
 
     public $website_id;     // 网站的id，在trace系统中获取
 
     public $trace_url;      // trace系统接收数据的url，在trace系统中获取
-
+    
+    // trace js收集的数据，将发送到该api
     public $trace_api_url;
 
     // 通过trace系统得到的token
@@ -71,31 +72,74 @@ class Trace extends Service
     const PAYMENT_PENDING_ORDER = 'payment_pending_order';
 
     const PAYMENT_SUCCESS_ORDER = 'payment_success_order';
+    
+    
+    
+    public function init()
+    {
+        parent::init();
+        // 是否开启
+        $traceJsEnable = Yii::$app->store->get('fa_info', 'status');
+        if ($traceJsEnable == Yii::$app->store->enable) {
+            $this->traceJsEnable = true;
+        }
+        // FA 域名获取
+        $faDomain = Yii::$app->store->get('fa_info', 'fa_domain');
+        if (!$faDomain) {
+            $this->traceJsEnable = false;
+        }
+        // 设置trace url
+        $traceJsUrl = $faDomain . '/fec_trace.js';
+        $this->trace_url = $traceJsUrl;
+        
+        $traceApiUrl = $faDomain . '/trace/js';
+        $this->trace_api_url = $traceApiUrl;
+        
+        // FA website id
+        $faWebsiteId = Yii::$app->store->get('fa_info', 'website_id');
+        if ($faWebsiteId) {
+            $this->website_id = $faWebsiteId;
+        }
+        // FA Access Token
+        $faAccessToken = Yii::$app->store->get('fa_info', 'access_token');
+        if ($faAccessToken) {
+            $this->access_token = $faAccessToken;
+        }
+        // FA Api Timeout
+        $faApiTimeout = Yii::$app->store->get('fa_info', 'api_time_out');
+        if ($faApiTimeout) {
+            $this->api_time_out = $faApiTimeout;
+        }
+        
+    }
+    
 
     /**
      * @return String, 通用的js部分，需要先设置 website_id 和 trace_url
      */
     public function getTraceCommonJsCode()
     {
-        if ($this->traceJsEnable) {
+        if (!$this->traceJsEnable) {
             
-            return "<script type=\"text/javascript\">
+            return '';
+        }
+            
+        return "<script type=\"text/javascript\">
     var _maq = _maq || [];
     _maq.push(['website_id', '" . $this->website_id . "']);
     _maq.push(['fec_store', '" . Yii::$service->store->currentStore . "']);
     _maq.push(['fec_lang', '" . Yii::$service->store->currentLangCode . "']);
     _maq.push(['fec_app', '" . Yii::$service->store->getCurrentAppName() . "']);
     _maq.push(['fec_currency', '" . Yii::$service->page->currency->getCurrentCurrency() . "']);
+
+
     (function() {
         var ma = document.createElement('script'); ma.type = 'text/javascript'; ma.async = true;
         ma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + '".$this->trace_url."';
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ma, s);
     })();
 </script>";
-        } else {
-            
-            return '';
-        }
+        
     }
 
     /**
@@ -124,11 +168,13 @@ class Trace extends Service
     public function getTraceProductJsCode($sku)
     {
         if ($this->traceJsEnable && $sku) {
+            
             return "<script type=\"text/javascript\">
     var _maq = _maq || [];
     _maq.push(['sku', '".$sku."']);
 </script>";
         } else {
+            
             return '';
         }
     }
@@ -153,11 +199,13 @@ class Trace extends Service
     public function getTraceCartJsCode($cart)
     {
         if ($this->traceJsEnable && $cart) {
+            
             return "<script type=\"text/javascript\">
     var _maq = _maq || [];
     _maq.push(['cart', ".$cart."]);
 </script>";
         } else {
+            
             return '';
         }
     }
@@ -173,11 +221,13 @@ class Trace extends Service
     public function getTraceSearchJsCode($search)
     {
         if ($this->traceJsEnable && $search) {
+            
             return "<script type=\"text/javascript\">
     var _maq = _maq || [];
     _maq.push(['search', ".$search." ]);
 </script>";
         } else {
+            
             return '';
         }
     }
