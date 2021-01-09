@@ -51,8 +51,8 @@ class AppadminbaseBlockEdit extends BaseObject
     
     public function getVal($name, $column)
     {
-        return ($this->_one[$name] || $this->_one[$name] === 0) ? $this->_one[$name] : $column['default'];
-    }  
+        return ($this->_one[$name] || $this->_one[$name] === 0 || $this->_one[$name] === (float)0) ? $this->_one[$name] : $column['default'];
+    } 
 
     public function getEditBar($editArr = [])
     {
