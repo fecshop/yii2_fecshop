@@ -136,6 +136,7 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
 				</div>
 			</div>
 		</div>
+        <?= Yii::$service->helper->echart->setDashboardBaseI(); ?>
 		<div id="container">
 			<div id="navTab" class="tabsPage" style="position: relative;">
 				<div class="tabsPageHeader">
@@ -156,7 +157,7 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
 					
 				</div>
                 
-                  <div class="headerNav" style="position: absolute;right: 25px; top: 0; width: 200px;  height: 30px; z-index: 999999;">
+                  <div class="headerNav" style="position: absolute;right: 25px; top: 0; width: 200px;  height: 30px; z-index: 99;">
                         <span style="font-size:14px;line-height: 40px;  color: #97a8be;  display: block;   height: 21px;  position: absolute; right: 125px; top: 0px;  z-index: 31; width: 100px;">
                         <?= Yii::$service->page->translate->__('Hello'); ?>: <?= \fec\helpers\CUser::getCurrentUsername();   ?>
                         </span>
