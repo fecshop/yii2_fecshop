@@ -92,7 +92,7 @@ class Trace extends Service
         $traceJsUrl = $faDomain . '/fec_trace.js';
         $this->trace_url = $traceJsUrl;
         
-        $traceApiUrl = $faDomain . '/trace/js';
+        $traceApiUrl = $faDomain . '/trace/api';
         $this->trace_api_url = $traceApiUrl;
         
         // FA website id
@@ -165,13 +165,14 @@ class Trace extends Service
      * @return String, 产品页面的js Code
      * <?= Yii::$service->page->trace->getTraceProductJsCode($sku)  ?>
      */
-    public function getTraceProductJsCode($sku)
+    public function getTraceProductJsCode($sku, $spu='')
     {
         if ($this->traceJsEnable && $sku) {
             
             return "<script type=\"text/javascript\">
     var _maq = _maq || [];
     _maq.push(['sku', '".$sku."']);
+    _maq.push(['spu', '".$spu."']);
 </script>";
         } else {
             
