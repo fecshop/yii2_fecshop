@@ -32,7 +32,18 @@ use fecshop\services\Service;
 class Echart extends Service
 {
     protected $i = 0;
-
+    
+    public function setBaseI($i)
+    {
+        $this->i = $i;
+    }
+    /**
+     * 用于登陆后台的dashboard页面的几个趋势图，的初始化。
+     */
+    public function setDashboardBaseI()
+    {
+        $this->setBaseI(10000);
+    }
     /**
      *  @param $data | Array, 用来展示图标的数据。 - 折线
      *  $data = [
@@ -61,20 +72,26 @@ class Echart extends Service
      * @param $title | String，标题
      * @param $width | Int，图表的长度
      * @param $height | Int，图标的高度
+     * @param $isShow | boolean, 是否默认显示曲线
      * @return string 返回X-Y线性图表
      *
      */
-    public function getLine($data, $legend = false, $yPrex = '', $width = '100%', $height = '400px', $title = '')
+    public function getLine($data, $legend = false, $yPrex = '', $width = '100%', $height = '400px', $title = '', $isShow=true)
     {
         $this->i++;
         $div_id = "main_".$this->i;
         $legendArr = [];
+        $showArr = [];
         $xAxis = [];
         $series = [];
         $legendStr = '';
+        $showStr = '';
+        $isShow = $isShow ? 'true' : 'false';
+        
         if (is_array($data)) {
             foreach ($data as $key => $info) {
-                $legendArr[] = '\''.$key.'\'';
+                $legendArr[] = '\''.\Yii::$service->page->translate->__($key).'\'';
+                $showArr[] = '\''.$key.'\':'.$isShow;
                 if (is_array($info)) {
                     foreach ($info as $x => $y) {
                         $xAxis[] = $x;
@@ -83,6 +100,9 @@ class Echart extends Service
             }
         }
         $legendStr = implode(',', $legendArr);
+        $showStr = implode(',', $showArr);
+        
+        
         $xAxis = array_unique($xAxis);
         sort($xAxis);
         $xAxisArr = [];
@@ -153,7 +173,8 @@ class Echart extends Service
         if ($legend) {
             $str .= "
             legend: {
-                data:[".$legendStr."]
+                data:[".$legendStr."],
+                selected:{".$showStr."}
             },
             ";
         }
@@ -194,4 +215,91 @@ class Echart extends Service
         
         return $str;
     }
+    
+    /**
+     * @param $data | array，example
+     * [
+     *    ['name'=> '张三', 'value'=>'12'],
+     *    ['name'=> 'li三', 'value'=>'1']
+     *    ['name'=> 'wang五', 'value'=>'62']
+     * ]
+     * @param $width | int, 饼图长度
+     * @param $height | int, 饼图高度
+     * @param $title | string, 标题
+     * 通过该数组，快速的返回echart的饼图，将函数返回的值，直接输出即可显示饼图
+     */
+    public function getPie($data,  $isShow=true, $width=1200, $height=600, $title='')
+    {
+        $this->i++;
+        $div_id = "main_".$this->i;
+        $legendArr = [];
+        $showArr = [];
+        $seriesArr = [];
+        $legendStr = '';
+        $showStr = '';
+        $seriesStr = [];
+        $isShow = $isShow ? 'true' : 'false';
+        
+        if (is_array($data)) {
+            foreach ($data as $one) {
+                $name = $one['name'];
+                $val = $one['value'];
+                $legendArr[] = '\''.$name.'\'';
+                $showArr[] = '\''.$name.'\':'.$isShow;
+                $seriesArr[] = '{\'name\':\''.$name.'\',\'value\':\''.$val.'\'}';
+            }
+        }
+        $legendStr = implode(',', $legendArr);
+        $showStr = implode(',', $showArr);
+        $seriesStr = implode(',', $seriesArr);
+        $str = "
+            <div class='echart_line_containter' id='".$div_id."' style='width:".$width."px;height:".$height."px;'></div>
+            <script type=\"text/javascript\">
+            $(document).ready(function(){ 
+            var myChart".$div_id." = echarts.init(document.getElementById('".$div_id."'));
+            var option = {
+                title: {
+                    text: '".$title."',
+                    subtext: '',
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b} : {c} ({d}%)'
+                },
+                legend: {
+                    type: 'scroll',
+                    orient: 'vertical',
+                    left: 10,
+                    top: 20,
+                    bottom: 20,
+                    data: [".$legendStr."],
+                    selected: {".$showStr."}
+                },
+                series: [
+                    {
+                        name: '姓名',
+                        type: 'pie',
+                        radius: '55%',
+                        center: ['50%', '50%'],
+                        data: [".$seriesStr."],
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            };
+            myChart".$div_id.".setOption(option);
+            });
+            </script>
+        ";
+        
+        return $str;
+    }
+    
+    
 }
