@@ -20,6 +20,8 @@ use fecshop\services\Service;
  */
 class Role extends Service
 {
+    public $cacheRoleIdsTimeout = 3600;
+    
     const ADMIN_ROLEIDS_RESOURCES = 'admin_roleids_resources';
     
     public $numPerPage = 20;
@@ -238,7 +240,7 @@ class Role extends Service
      * 得到当前用户的可用的resources数组
      */
     public function getCurrentRoleResources($fromCache=true){
-        if (!$this->_current_role_resources) {
+        if (!$this->_current_role_resources || !$fromCache) {
             if (Yii::$app->user->isGuest) {
                 
                 return [];
@@ -318,11 +320,12 @@ class Role extends Service
                 }
             }
             
-            Yii::$app->cache->set($role_ids_cache_str, $urlKeyIds);
+            Yii::$app->cache->set($role_ids_cache_str, $urlKeyIds, $cacheRoleIdsTimeout);
             
             return $urlKeyIds;
         }
         
         return $resources;
     }
+    
 }
