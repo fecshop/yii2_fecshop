@@ -866,6 +866,18 @@ return [
     'FA Domain' => 'FA域名',
     'Thrid Trace Js' => '第三方追踪Js片段',
     'Generate' => '生成',
+    'payment_pending' => '未支付',
+    'payment_processing' => '支付中',
+    'payment_confirmed' => '已支付',
+    'payment_suspected_fraud' => '',
+    'payment_canceled' => '欺诈订单',
+    'holded' => '订单挂起',
+    'processing' => '备货中',
+    'dispatched' => '已发货',
+    'received' => '已收货',
+    'refunded' => '已退款',
+    'completed' => '已完成',
+    'canceled' => '已取消',
     '' => '',
     '' => '',
     '' => '',
@@ -873,6 +885,9 @@ return [
     '' => '',
     '' => '',
     '' => '',
+    '' => '',
+    '' => '',
+    
     
     
     

@@ -232,6 +232,11 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
                     $str .= '<td>'.$val.'</td>';
                     continue;
                 }
+                if ($orderField == 'order_status') {
+                    $val = Yii::$service->page->translate->__($val);
+                    $str .= '<td>'.$val.'</td>';
+                    continue;
+                }
                 if ($val) {
                     if (isset($field['display']) && !empty($field['display'])) {
                         $display = $field['display'];
