@@ -74,6 +74,8 @@ return [
                     // 一级大类
                     'catalog' => [
                         'label' => 'Category & Prodcut',
+                        'enable' => true,  // 显示和隐藏菜单选项的开关，true代表显示，false代表隐藏
+                        'sort_order' => 1, // 菜单排序，如果不设置 sort_order， 默认值为0，倒序排列，该值越大，越排在前面
                         'child' => [
                             // 二级类
                             'product_manager' => [

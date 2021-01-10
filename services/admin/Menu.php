@@ -27,19 +27,59 @@ class Menu extends Service
     /**
      * @return Array , 得到后台菜单配置。
      */
-    public function getConfigMenu(){
-        $menu = $this->menuConfig;
+    public function getConfigMenu($menu='')
+    {
+        if (empty($menu)) {
+            $menu = $this->menuConfig;
+        }
+        /**
+         * 进行sort_order排序，以及enable处理
+         */
+        if (is_array($menu) && !empty($menu)) {
+            $menu = $this->arraySortAndRemoveDisableMenu($menu, 'sort_order', 'desc');
+            foreach ($menu as $k=>$one) {
+                if (isset($one['child']) && is_array($one['child']) && !empty($one['child'])) {
+                    $menu[$k]['child'] = $this->getConfigMenu($one['child']);
+                }
+            }
+        }
 
         return $menu;
     }
+    /**
+     * 排序菜单函数，并且去掉status值为false的子项
+     */
+    public function arraySortAndRemoveDisableMenu($array, $keys, $dir='asc')
+    {  
+		$keysvalue = $new_array = array();  
+		foreach ($array as $k=>$v){  
+            // 如果enable设置值为false，则代表隐藏掉该菜单
+            if (isset($v['enable']) && $v['enable'] === false) {
+                continue;
+            }
+			$keysvalue[$k] = isset($v[$keys]) ? $v[$keys] : 0; 
+		}  
+		if($dir == 'asc'){  
+			asort($keysvalue);  
+		}else{  
+			arsort($keysvalue);  
+		}  
+		reset($keysvalue);  
+		foreach ($keysvalue as $k=>$v){  
+			$new_array[$k] = $array[$k];  
+		}  
+		return $new_array;  
+	}
     
-    public function getLeftMenuHtml(){
+    public function getLeftMenuHtml()
+    {
         $menuArr = $this->getConfigMenu();
 
         return $this->getLeftMenuTreeHtml($menuArr);
     }
 
-    public function getRoleUrlKey(){
+    public function getRoleUrlKey()
+    {
         
         return Yii::$service->admin->role->getCurrentRoleResources();
     }
@@ -85,7 +125,8 @@ class Menu extends Service
      * @param $i | int， 菜单层级
      * 得到后台显示菜单（左侧）
      */
-    public function getLeftMenuTreeHtml($treeArr='', $i=1){
+    public function getLeftMenuTreeHtml($treeArr='', $i=1)
+    {
         $str = '';
         foreach ($treeArr as $node) {
             // 二次开发的过程中，如果fecshop后台的某些菜单想不显示，那么可以在配置中将active设置成false
@@ -135,7 +176,8 @@ class Menu extends Service
         return $str;
     }
 
-    public function hasChild($node){
+    public function hasChild($node)
+    {
         if (isset($node['child']) && !empty($node['child'])) {
             
             return true;
