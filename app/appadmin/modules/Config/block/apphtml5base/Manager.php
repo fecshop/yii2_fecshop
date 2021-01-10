@@ -30,7 +30,7 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
         'assetForceCopy',
         'js_version',
         'css_version',
-         
+        'third_trace_js',
     ];
     
     public function init()
@@ -106,7 +106,15 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
                 ],
                 'remark' => 'Css Url的后缀参数，线上发新版本更新css，可以将这个值+1，这样可以让浏览器不加载浏览器缓存',
             ],
-            
+            [
+                'label'  => Yii::$service->page->translate->__('Thrid Trace Js'),
+                'name' => 'third_trace_js',
+                'display' => [
+                    'type' => 'textarea',
+                    'notEditor' => true,
+                ],
+                'remark' => '您可以在这里添加百度统计js，Google Analysis js代码，或者GTM(Google Tag Manager) js等（多个js片段，譬如GTM，将2个js代码片段换行添加在这里即可）',
+            ],
         ];
     }
     

@@ -31,6 +31,9 @@ class Trace extends Service
 
     // 通过trace系统得到的token
     public $access_token;
+    
+    // 第三方追踪js
+    public $thirdTraceJsStr;
 
     // api发送数据给trace系统的最大等待时间，超过这个时间将不继续等待
     public $api_time_out = 1;
@@ -88,6 +91,11 @@ class Trace extends Service
         if (!$faDomain) {
             $this->traceJsEnable = false;
         }
+        // 第三方追踪js片段
+        $appName = Yii::$service->helper->getAppName();
+        $this->thirdTraceJsStr = Yii::$app->store->get($appName.'_base', 'third_trace_js');
+        
+        
         // 设置trace url
         $traceJsUrl = $faDomain . '/fec_trace.js';
         $this->trace_url = $traceJsUrl;
@@ -113,6 +121,7 @@ class Trace extends Service
         
     }
     
+    
 
     /**
      * @return String, 通用的js部分，需要先设置 website_id 和 trace_url
@@ -124,7 +133,7 @@ class Trace extends Service
             return '';
         }
             
-        return "<script type=\"text/javascript\">
+        $traceJs = "<script type=\"text/javascript\">
     var _maq = _maq || [];
     _maq.push(['website_id', '" . $this->website_id . "']);
     _maq.push(['fec_store', '" . Yii::$service->store->currentStore . "']);
@@ -138,8 +147,11 @@ class Trace extends Service
         ma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + '".$this->trace_url."';
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ma, s);
     })();
-</script>";
-        
+</script>
+";
+
+
+        return $traceJs . $this->thirdTraceJsStr;
     }
 
     /**

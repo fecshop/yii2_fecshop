@@ -34,7 +34,9 @@ use fecadmin\models\AdminRole;
 					</div>
 				</fieldset>
 				<?= $lang_attr ?>
-				<?= $textareas ?>
+                <div class="textareast">
+                    <?= $textareas ?>
+                </div>
 		</div>
 	
 		<div class="formBar">
@@ -52,6 +54,24 @@ use fecadmin\models\AdminRole;
 </div>	
 
 <style>
+
+.textareast fieldset > div {padding:10px;}
+
+.textareast fieldset textarea{
+    display: block;
+    width: 70%;
+    height: 200px;
+    float: none;
+    }
+.pageFormContent .textInput{
+    float: none;
+}
+.textareast fieldset  .remark-text{
+    display: block;
+    float: none;
+    margin: 15px 3px;
+}
+
 .pageForm  .pageFormContent .edit_p{
     width:100%;
     line-height:35px;
