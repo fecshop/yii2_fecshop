@@ -41,6 +41,9 @@ class ExtensiongiiController extends SystemController
         // 如果提交数据，进行生成应用文件
         $param = Yii::$app->request->post('editFormData');
         if (!empty($param) && is_array($param)) {
+            // 进行了改动，将 addon_folder addon_name 设置成和 namespaces 一样的值即可
+            $param['addon_folder'] = $param['namespaces'];
+            $param['addon_name'] = $param['namespaces'];
             if (!Yii::$service->extension->generate->createAddonsFiles($param)) {
                 $errors = Yii::$service->helper->errors->get(',');
                 echo  json_encode([

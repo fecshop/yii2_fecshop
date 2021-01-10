@@ -31,13 +31,16 @@ use fecadmin\models\AdminRole;
 				<input class=" "  title="Password" value="" name="editForm[password]" id="password" type="password" size="30" />
 			</p>
             <br/><br/>
+            
 		</div>	
 		<div class="buttonActive" style="margin-left:8px;">
             <div class="buttonContent">
                 <button type="submit">登陆</button>
             </div>
+            
         </div>
-			
-		
+        <div style="float: right;   color: #777; margin: 10px 30px 0 0;">
+            没有账户? 点击<a href="http://addons.fecmall.com/customer/account/register" target="_blank">这里注册</a>	
+		</div>
 	</form>
 </div>
