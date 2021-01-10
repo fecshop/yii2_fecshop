@@ -75,6 +75,7 @@ $cssOptions = [
 			'css/bootstrap-appadmin.css',
             'css/jquery-editable-select.css',
             'css/select2.min.css',
+            'font-awesome/css/font-awesome.min.css',
 		],
         // 将css放到最后面
         'options' => [
@@ -97,7 +98,7 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
 
     <?= Html::csrfMetaTags() ?>
     <title><?= $this->title ? Html::encode($this->title) : Yii::$service->page->translate->__('Fecmall Admin Manager System') ?></title>
-	<link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" >
+    
 	<?php $this->head() ?>
 <script> 
 
