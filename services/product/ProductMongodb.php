@@ -879,6 +879,7 @@ class ProductMongodb extends Service implements ProductInterface
             $where_c[] = [$k => $v];
         }
         $filter = [
+            'select' 	=> $select,
             'numPerPage' 	=> $numPerPage,
      		'pageNum'		    => $pageNum,
       		'orderBy'	        => $orderBy,

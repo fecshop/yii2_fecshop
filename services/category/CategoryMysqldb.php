@@ -372,6 +372,10 @@ class CategoryMysqldb extends Service implements CategoryInterface
         } else {
             $where = ['parent_id' => $rootCategoryId];
         }
+        if ($appserver) {
+            $where['status']= $this->getCategoryEnableStatus();
+            $where['menu_show']= $this->getCategoryMenuShowStatus();
+        }
         $orderBy = ['sort_order' => SORT_DESC];
         $categorys = $this->_categoryModel->find()
                     ->asArray()

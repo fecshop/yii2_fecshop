@@ -1048,6 +1048,7 @@ class ProductMysqldb extends Service implements ProductInterface
         $numPerPage = $filter['numPerPage'];
         $select = $filter['select'];
         $filter = [
+            'select' 	=> $select,
             'numPerPage' 	=> $numPerPage,
      		'pageNum'		    => $pageNum,
       		'orderBy'	        => $orderBy,
