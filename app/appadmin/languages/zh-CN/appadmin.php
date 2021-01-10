@@ -865,7 +865,7 @@ return [
     'FA Data Ayalysis' => 'FA数据分析',
     'FA Domain' => 'FA域名',
     'Thrid Trace Js' => '第三方追踪Js片段',
-    '' => '',
+    'Generate' => '生成',
     '' => '',
     '' => '',
     '' => '',
