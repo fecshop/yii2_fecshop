@@ -258,6 +258,17 @@ EOF;
                             <span class="remark-text">{$remark}</span>
 						</p>
 EOF;
+            } elseif ($display_type == 'arrayStringText') {  // 将mongo数组转换成字符串展示
+                if (is_array($value)) {
+                    $value = implode(',', $value);
+                }
+                $str .= <<<EOF
+						<p class="edit_p product_{$name}">
+							<label>{$label}：</label>
+							<input type="text"  value="{$value}" size="30"  class="email textInput ">
+                            <span class="remark-text">{$remark}</span>
+						</p>
+EOF;
             } elseif ($display_type == 'inputPassword') {
                 $str .= <<<EOF
 						<p class="edit_p product_{$name}">
