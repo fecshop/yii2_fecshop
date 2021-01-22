@@ -544,7 +544,10 @@ class ProductController extends AppserverController
             }
         }
         // 得到当前的spu下面的所有的值
-        $select = ['name', 'image', 'url_key'];
+        $productPrimaryKey = Yii::$service->product->getPrimaryKey();
+        $select = [$productPrimaryKey, 'name', 'image', 'url_key'];
+        
+        //$select = ['name', 'image', 'url_key'];
         $data = $this->getSpuData($select);
         $spuValColl = [];
         // 通过值，找到spu。
@@ -559,7 +562,7 @@ class ProductController extends AppserverController
 
                 //$active = 'class="active"';
                 $one['main_img'] = isset($one['image']['main']['image']) ? $one['image']['main']['image'] : '';
-                $one['url'] = Yii::$service->url->getUrl($one['url_key']);
+                $one['url'] = '/catalog/product/'.(string)$one[$productPrimaryKey];
                 $reverse_val_spu[$reverse_key] = $one;
                 $showAsImgVal = $one[$this->_spuAttrShowAsImg];
                 if ($showAsImgVal) {
@@ -588,10 +591,12 @@ class ProductController extends AppserverController
             $attr_coll = [];
             foreach ($attrValArr as $attrVal) {
                 $attr_info = $this->getSpuAttrInfo($spuAttr, $attrVal, $reverse_val_spu);
+                $attr_info['attr_val'] = Yii::$service->page->translate->__($attr_info['attr_val']);
                 $attr_coll[] = $attr_info;
             }
             $spuShowArr[] = [
-                'label' => $spuAttr,
+                //'label' => $spuAttr,
+                'label' =>  Yii::$service->page->translate->__($spuAttr),
                 'value' => $attr_coll,
             ];
         }
@@ -621,7 +626,7 @@ class ProductController extends AppserverController
                 $return[$k] = $v;
             }
             if ($spuAttr == $this->_spuAttrShowAsImg) {
-                $return['show_as_img'] = $arr['main_img'];
+                $return['show_as_img'] = Yii::$service->product->image->getResize($arr['main_img'],[50,55],false);
             }
         } else if ($this->_spuAttrShowAsImg){
             // 如果是图片，不存在，则使用备用的。
@@ -633,7 +638,7 @@ class ProductController extends AppserverController
                         $return[$k] = $v;
                     }
                 }
-                $return['show_as_img'] = $arr['main_img'];
+                $return['show_as_img'] = Yii::$service->product->image->getResize($arr['main_img'],[50,55],false);
             }
         } else if ($this->_spuAttrShowAsTop){
             if ($spuAttr == $this->_spuAttrShowAsTop) {
@@ -649,7 +654,9 @@ class ProductController extends AppserverController
         if ($active) {
             $return['active'] = 'current';
         }
-
+        $productPrimaryKey = Yii::$service->product->getPrimaryKey();
+        $return['_id'] = (string)$return[$productPrimaryKey];
+        
         return $return;
     }
 
