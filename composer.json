@@ -27,7 +27,7 @@
     "yiisoft/yii2-swiftmailer": "2.0.7",
     "yiisoft/yii2": ">=2.0.40" ,
     "fancyecommerce/fec":">=1.2.0",
-    "fancyecommerce/fec_admin":">=1.4.1",
+    "fancyecommerce/fec_admin":">=1.4.2",
     "ramsey/uuid": "*",
     "facebook/graph-sdk": "*",
     "hightman/xunsearch": "*@beta"
