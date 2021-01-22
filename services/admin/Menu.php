@@ -27,7 +27,18 @@ class Menu extends Service
     /**
      * @return Array , 得到后台菜单配置。
      */
+    protected $_configMenu;
     public function getConfigMenu($menu='')
+    {
+        if (!$this->_configMenu) {
+            
+            $this->_configMenu = $this->getConfigMenuArr();
+        }
+        
+        return $this->_configMenu;
+    }
+    
+    public function getConfigMenuArr($menu='')
     {
         if (empty($menu)) {
             $menu = $this->menuConfig;
@@ -39,12 +50,13 @@ class Menu extends Service
             $menu = $this->arraySortAndRemoveDisableMenu($menu, 'sort_order', 'desc');
             foreach ($menu as $k=>$one) {
                 if (isset($one['child']) && is_array($one['child']) && !empty($one['child'])) {
-                    $menu[$k]['child'] = $this->getConfigMenu($one['child']);
+                    $menu[$k]['child'] = $this->getConfigMenuArr($one['child']);
                 }
             }
         }
 
         return $menu;
+        
     }
     /**
      * 排序菜单函数，并且去掉status值为false的子项
@@ -71,10 +83,14 @@ class Menu extends Service
 		return $new_array;  
 	}
     
+    
+    
     public function getLeftMenuHtml()
     {
         $menuArr = $this->getConfigMenu();
-
+        $currentUrlk = $this->getCurrentUrlK();
+        
+        $menuArr = $menuArr[$currentUrlk]['child'];
         return $this->getLeftMenuTreeHtml($menuArr);
     }
 
@@ -119,7 +135,68 @@ class Menu extends Service
         
         return false;
     }
-
+    
+    public $defaultUrlK = 'catalog';
+    public $urlKparam = 'url_k';
+    protected $_currentUrlK = '';
+    public function getCurrentUrlK()
+    {
+        if (!$this->_currentUrlK) {
+            $urlK = Yii::$app->request->get($this->urlKparam);
+            if (!$urlK) {
+                $urlK = $this->defaultUrlK;
+            }
+            if (!$urlK) {
+                $menuArr = $this->getConfigMenu();
+                if (is_array($menuArr) && !empty($menuArr)) {
+                    foreach ($menuArr as $k=>$v) {
+                        $urlK = $k;
+                        break;
+                    }
+                }
+            }
+            $this->_currentUrlK = $urlK;
+        }
+        
+        return $this->_currentUrlK;
+    }
+    
+    public function getTopMenuHtml()
+    {
+        $menuArr = $this->getConfigMenu();
+        $str = '';
+        $currentUrlK = $this->getCurrentUrlK();
+        //echo $currentUrlK;exit;
+        foreach ($menuArr as $urlK =>$node) {
+            // 二次开发的过程中，如果fecshop后台的某些菜单想不显示，那么可以在配置中将active设置成false
+            if (isset($node['active']) && $node['active'] === false) {
+                
+                continue;
+            }
+            $name = Yii::$service->page->translate->__($node["label"]);
+            $url_key = $node["url_key"];
+            $roleUrlKeys = $this->getRoleUrlKey();
+            if ($url_key) {
+                if (!isset($roleUrlKeys[$url_key]) || !$roleUrlKeys[$url_key]) {
+                    
+                    continue;
+                }
+            } else if (!$this->hasChildRoleUrlKey($node, $roleUrlKeys)) {  // 查看所有的子菜单，是否存在某个urlkey存在于$roleUrlKeys
+                
+                continue;
+            }
+            $selected = '';
+            if ($currentUrlK == $urlK) {
+                $selected = 'class="selected"';
+            }
+            $str .= '<li '.$selected.'><a href="javascript:void()"  onclick="window.location.href=\''.Yii::$service->url->getUrl('/', [$this->urlKparam => $urlK]). '\'"><span>'.$name.'</span></a></li>';
+            
+        }
+        
+        return $str;
+        
+    }
+    
     /**
      * @param $treeArr | array，菜单数组
      * @param $i | int， 菜单层级
@@ -128,6 +205,10 @@ class Menu extends Service
     public function getLeftMenuTreeHtml($treeArr='', $i=1)
     {
         $str = '';
+        if (!is_array($treeArr) || empty($treeArr)) {
+            
+            return $str;
+        }
         foreach ($treeArr as $node) {
             // 二次开发的过程中，如果fecshop后台的某些菜单想不显示，那么可以在配置中将active设置成false
             if (isset($node['active']) && $node['active'] === false) {
