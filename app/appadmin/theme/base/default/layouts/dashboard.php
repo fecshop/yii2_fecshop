@@ -122,29 +122,32 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
 <body>
 <?php $this->beginBody() ?>
 	<div id="layout">
-		<div id="leftside">
+		<div id="header">
 			
+			<div id="navMenu">
+				<ul style="width:100%">
+					<?= Yii::$service->admin->menu->getTopMenuHtml();  ?>
+                    <li style="float:right;margin-right:10px;">
+                        <span>Fecmall 后台管理系统</span>
+                    </li>
+				</ul>
+			</div>
+		</div>
+        
+        <div id="leftside" style="top:35px">
 			<div id="sidebar">
-				<div class="toggleCollapse" style="background:rgb(48, 65, 86) !important;overflow: visible;">
-					<h2 style="font-size:15px;font-weight:100;    padding-top: 10px;padding-bottom: 10px;box-shadow: none;color:#fff"><?= Yii::$service->page->translate->__('FECMALL'); ?></h2>
-					<div><i class="fa fa-list"></i></div>
-                    
-				</div>
-
 				<div class="accordion" fillSpace="sidebar">
-                    
 					<?= Yii::$service->admin->menu->getLeftMenuHtml();  ?>
 				</div>
 			</div>
 		</div>
         <?= Yii::$service->helper->echart->setDashboardBaseI(); ?>
-		<div id="container">
+		<div id="container" style="top:35px">
 			<div id="navTab" class="tabsPage" style="position: relative;">
 				<div class="tabsPageHeader">
 					<div class="tabsPageHeaderContent"><!-- 显示左右控制时添加 class="tabsPageHeaderMargin" -->
 						<ul class="navTab-tab">
 							<li tabid="main" class="main">
-                            
                                 <a href="javascript:;">
                                     <span style="width: auto; padding: 0 10px;   text-align: left;">
                                         <span class="home_icon" style="padding-left:0;"><?= Yii::$service->page->translate->__('My Main Page'); ?></span>
@@ -152,13 +155,11 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
                                 </a>
                                 /
                             </li>
-                            
 						</ul>
 					</div>
-					
 				</div>
                 
-                  <div class="headerNav" style="position: absolute;right: 25px; top: 0; width: 200px;  height: 30px; z-index: 99;">
+                  <div class="headerNav" style="position: absolute;right: 10px; top: 0; width: 200px;  height: 30px; z-index: 99;">
                         <span style="font-size:14px;line-height: 40px;  color: #97a8be;  display: block;   height: 21px;  position: absolute; right: 125px; top: 0px;  z-index: 31; width: 100px;">
                         <?= Yii::$service->page->translate->__('Hello'); ?>: <?= \fec\helpers\CUser::getCurrentUsername();   ?>
                         </span>
