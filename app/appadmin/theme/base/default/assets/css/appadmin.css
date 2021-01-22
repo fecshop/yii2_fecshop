@@ -650,11 +650,19 @@ body .combox .select a:focus{
 }
 
 
+#navMenu, #navMenu li, #navMenu li.selected a, #navMenu li.selected span{
+    background:none;
+}
+#navMenu{
+    background-color:#428bca
+}
 
-
-
-
-
+#navMenu li.selected{
+    background-color:#337ab7;
+}
+#navMenu li.selected span{
+    color:#fff;
+}
 
 
 
