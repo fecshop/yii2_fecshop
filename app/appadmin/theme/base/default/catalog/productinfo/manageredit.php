@@ -216,7 +216,7 @@ function thissubmit(thiss){
 					</ul>
 				</div>
 			</div>
-			<div class="tabsContent" style="height:550px;overflow:auto;">
+			<div class="productPage tabsContent" style="height:550px;overflow:auto;">
 				<div>
 					<input type="hidden"  value="<?=  $product_id; ?>" size="30" name="product_id" class="textInput ">
 				
@@ -410,3 +410,10 @@ function thissubmit(thiss){
 	</form>
 </div>	
 
+<script>
+    var div = document.getElementById("container");
+    var w = div.offsetWidth;    // 返回元素的总宽度
+    var h = div.offsetHeight;    // 返回元素的总高度
+    var vsss = h*0.95 - 150;
+    $(".pageForm > .tabs >.tabsContent").css("height", vsss+'px');
+</script>
