@@ -103,9 +103,13 @@ class Stock extends Service
     {
         if (!$product_id) {
             Yii::$service->helper->errors->add('save product qty error: product is empty');
+            
+            return false;
         }
         if (!isset($one['qty'])) {
             Yii::$service->helper->errors->add('save product qty error: product qty is empty');
+            
+            return false;
         }
         // 保存自定义部分的qty
         if (is_array($one['custom_option']) && !empty($one['custom_option'])) {
