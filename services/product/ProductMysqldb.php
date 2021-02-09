@@ -1415,4 +1415,50 @@ class ProductMysqldb extends Service implements ProductInterface
         return $model;
     }
     
+    
+    
+    public function updateStockAndPrice($item)
+    {
+        $sku = $item['sku'];
+        $price = $item['price'];
+        $special_price = $item['special_price'];
+        $qty = $item['qty'];
+        $qty = $item['qty'] ? $item['qty'] : 0;
+        $special_price = $item['special_price'] ? $item['special_price'] : 0;
+        if (!$sku) {
+            Yii::$service->helper->errors->add('sku is empty');
+            
+            return false;
+        }
+        if (!$price) {
+            Yii::$service->helper->errors->add('price is empty');
+            
+            return false;
+        }
+        $productM = $this->_productModel->findOne(['sku' => $sku]);
+        
+        //$productM = Yii::$service->product->getBySku($sku, false);
+        if (!$productM) {
+            Yii::$service->helper->errors->add('product is not exist');
+            
+            return false;
+        }
+        $primaryKey = $this->getPrimaryKey();
+        $productId = $productM[$primaryKey];
+        // 覆盖产品库存
+        if (!Yii::$service->product->stock->saveProductStock($productId, ['qty' => $qty])) {
+            
+            return false;
+        }
+        // 修改价格
+        
+        $productM['price'] = $price;
+        $productM['special_price'] = $special_price;
+        $productM['qty'] = $qty;
+        $productM['updated_at'] = time();
+        $productM->save();
+        
+        return true;
+    }
+    
 }

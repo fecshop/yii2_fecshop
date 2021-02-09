@@ -487,6 +487,11 @@ class Product extends Service
     {
         return $this->_product->getBySku($sku, $returnArr);
     }
+    
+    public function updateStockAndPrice($item)
+    {
+        return $this->_product->updateStockAndPrice($item);
+    }
 
     /**
      * @param $spu | string
