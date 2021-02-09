@@ -107,7 +107,59 @@ class Attr extends Service
      */
     public function save($one)
     {
+        if (!$this->checkSaveOne($one)) {
+            
+            return false;
+        }
+        
         return $this->_attr->save($one);
+    }
+    
+    public function checkSaveOne($one)
+    {
+        $attr_type = $one['attr_type'];
+        $attrTypes = $this->getAttrTypes();
+        if (!isset($attrTypes[$attr_type])) {
+            Yii::$service->helper->errors->add('attr_type is not correct');
+            
+            return false;
+        }
+        $display_type = $one['display_type'];
+        $displayTypes = $this->getDisplayTypes();
+        if (!isset($displayTypes[$display_type])) {
+            Yii::$service->helper->errors->add('display_type is not correct');
+            
+            return false;
+        }
+        $db_type = $one['db_type'];
+        $dbTypes = $this->getDbTypes();
+        if (!isset($dbTypes[$db_type])) {
+            Yii::$service->helper->errors->add('db_type is not correct');
+            
+            return false;
+        }
+        
+        $statusArr = [1,2];
+        $status = $one['status'];
+        if (!in_array($status, $statusArr)) {
+            Yii::$service->helper->errors->add('status is not correct');
+            
+            return false;
+        }
+        $show_as_img = $one['show_as_img'];
+        if (!in_array($show_as_img, $statusArr)) {
+            Yii::$service->helper->errors->add('show_as_img is not correct');
+            
+            return false;
+        }
+        $is_require = $one['is_require'];
+        if (!in_array($is_require, $statusArr)) {
+            Yii::$service->helper->errors->add('is_require is not correct');
+            
+            return false;
+        }
+        
+        return true;
     }
 
     public function remove($ids)
