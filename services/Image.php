@@ -242,6 +242,40 @@ class Image extends Service
     }
     
     /**
+     * @param $fileName | string,  文件名称
+     * @param $fileStream |string, 图片文件的二进制字符。
+     */
+    public function saveStreamImg($fileName, $fileStream)
+    {
+        $newName = $this->generateImgName($fileName);
+        if (!$newName) {
+            Yii::$service->helper->errors->add('generate img name fail');
+            
+            return false;
+        }
+        $arr = explode('.', $fileName);
+        $fileType = '.'.$arr[count($arr)-1];
+        $imgFileType = [
+            '.jpg', '.jpeg', '.gif', '.png',
+        ];
+        if (!in_array($fileType, $imgFileType)) {
+            Yii::$service->helper->errors->add('image file type ['.$fileType. '] is not allow ');
+            
+            return false;
+        }
+        // process image name.
+        $imgSavedRelativePath = $this->getImgSavedRelativePath($newName);
+        
+        $fpDst = fopen($this->getCurrentBaseImgDir().$imgSavedRelativePath, "wb");
+        fwrite($fpDst, $fileStream);
+        fclose($fpDst);
+        $imgUrl = $this->getUrlByRelativePath($imgSavedRelativePath);
+        $imgPath = $this->getDirByRelativePath($imgSavedRelativePath);
+
+        return [$imgSavedRelativePath, $imgUrl, $imgPath, $newName];
+    }
+    
+    /**
      * @param $param_img_file | Array .
      * 上传产品图片，
      * 如果成功，保存产品相对路径，譬如： '/b/i/big.jpg'
@@ -268,7 +302,7 @@ class Image extends Service
         }
         // process image name.
         $imgSavedRelativePath = $this->getImgSavedRelativePath($newName);
-        $isMoved = @move_uploaded_file($file, $this->GetCurrentBaseImgDir().$imgSavedRelativePath);
+        $isMoved = @move_uploaded_file($file, $this->getCurrentBaseImgDir().$imgSavedRelativePath);
         if ($isMoved) {
             $imgUrl = $this->getUrlByRelativePath($imgSavedRelativePath);
             $imgPath = $this->getDirByRelativePath($imgSavedRelativePath);
