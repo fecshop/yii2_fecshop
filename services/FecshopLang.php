@@ -86,7 +86,36 @@ class Fecshoplang extends Service
 
         return $this->_adminLangCode;
     }
+    protected $_allLanguages;
+    /**
+     * @return array
+     * 得到所有的语言参数
+     */
+    public function getAllLanguages()
+    {
+        if (!$this->_allLanguages) {
+            if (empty($this->allLangCode) || !is_array($this->allLangCode)) {
+                $this->_allLanguages = [];
+                
+                return $this->_allLanguages;
+            }
+            
+            foreach ($this->allLangCode as $lang_name => $codeInfo) {
+                $isDefaulltLang = false;
+                $lang_code = $codeInfo['code'];
+                if ($this->defaultLangCode == $lang_code) {
+                    $isDefaulltLang = true;
+                }
+                $this->_allLanguages[] = [
+                    'name' => $lang_name,
+                    'code'   => $lang_code,
+                    'is_default' => $isDefaulltLang,
+                ];
+            }
+        }
 
+        return $this->_allLanguages;
+    }
     /**
      * 得到所有的语言简码，譬如：en,es,fr,zh,de等
      */
