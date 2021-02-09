@@ -111,7 +111,7 @@ class AttrGroupMysqldb extends Service implements AttrGroupInterface
         $model      = Yii::$service->helper->ar->save($model, $one);
         $primaryVal = $model[$primaryKey];
 
-        return true;
+        return $model;
     }
     
     public function remove($ids)

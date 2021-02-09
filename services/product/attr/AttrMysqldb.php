@@ -108,7 +108,7 @@ class AttrMysqldb extends Service implements AttrInterface
         $model      = Yii::$service->helper->ar->save($model, $one);
         $primaryVal = $model[$primaryKey];
 
-        return true;
+        return $model;
     }
     
     public function remove($ids)
