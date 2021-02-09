@@ -25,12 +25,29 @@ class ProductController extends AppapiTokenController
     public function actionList(){
         
         $page = Yii::$app->request->get('page');
+        $third_product_code = Yii::$app->request->get('third_product_code');
+        $third_refer_code = Yii::$app->request->get('third_refer_code');
+        $spu = Yii::$app->request->get('spu');
+        $whereArr = [];
+        if ($third_product_code) {
+            $whereArr[] = ['third_product_code' => $third_product_code ];
+        }
+        if ($third_refer_code) {
+            $whereArr[] = ['third_refer_code' => $third_refer_code ];
+        }
+        if ($spu) {
+            $whereArr[] = ['spu' => $spu ];
+        }
         $page = $page ? $page : 1;
         $filter = [
             'numPerPage'    => $this->numPerPage,
             'pageNum'       => $page,
             'asArray'       => true,
         ];
+        if (!empty($whereArr)) {
+            $filter['where'] = $whereArr;
+        }
+        //var_dump($filter);exit;
         $data  = Yii::$service->product->coll($filter);
         $coll  = $data['coll'];
         foreach ($coll as $k => $one) {
@@ -52,6 +69,12 @@ class ProductController extends AppapiTokenController
             return [
                 'code'    => 200,
                 'message' => 'fetch product success',
+                'data'    => $coll,
+            ];
+        } else if ($pageCount == 0){
+            return [
+                'code'    => 200,
+                'message' => 'no product',
                 'data'    => $coll,
             ];
         } else {
@@ -169,34 +192,7 @@ class ProductController extends AppapiTokenController
             ];
         }
         $param = Yii::$app->request->post();
-        /*
-        $name               ? ($param['name'] = $name)                    : '';
-        $title              ? ($param['title'] = $title)                        : '';
-        $meta_keywords      ? ($param['meta_keywords'] = $meta_keywords)        : '';
-        $meta_description   ? ($param['meta_description'] = $meta_description)  : '';
-        $status             ? ($param['status'] = $status)                      : '';
         
-        $weight             ? ($param['weight'] = $weight)                      : '';
-        $qty                ? ($param['qty'] = $qty)                      : '';
-        $is_in_stock        ? ($param['is_in_stock'] = $is_in_stock)                      : '';
-        $category           ? ($param['category'] = $category)                      : '';
-        $price              ? ($param['price'] = $price)                      : '';
-        $special_price      ? ($param['special_price'] = $special_price)                      : '';
-        $special_from       ? ($param['special_from'] = $special_from)                      : '';
-        $special_to         ? ($param['special_to'] = $special_to)                      : '';
-        $cost_price         ? ($param['cost_price'] = $cost_price)                      : '';
-        
-        $tier_price         ? ($param['tier_price'] = $tier_price)                      : '';
-        $new_product_from   ? ($param['new_product_from'] = $new_product_from)                      : '';
-        $new_product_to     ? ($param['new_product_to'] = $new_product_to)                      : '';
-        $short_description  ? ($param['short_description'] = $short_description)                      : '';
-        $remark             ? ($param['remark'] = $remark)                      : '';
-        $relation_sku       ? ($param['relation_sku'] = $relation_sku)                      : '';
-        $buy_also_buy_sku   ? ($param['buy_also_buy_sku'] = $buy_also_buy_sku)                      : '';
-        $see_also_see_sku   ? ($param['see_also_see_sku'] = $see_also_see_sku)                      : '';
-        $cost_price         ? ($param['cost_price'] = $cost_price)                      : '';
-        $description        ? ($param['description'] = $description)                    : '';
-       */
         $primaryKey         = Yii::$service->product->getPrimaryKey();
         $param[$primaryKey] = $id;
         
@@ -359,6 +355,74 @@ class ProductController extends AppapiTokenController
             'message' => 'update stock success',
             'data'    => []
         ];
+        
+    }
+    
+    
+    /**
+     * Shopfw Add One Api：采集工具Shopfw新增产品数据的api
+     */
+    public function actionShopfwaddone(){
+        //var_dump(Yii::$app->request->post());exit;
+        
+        $products = Yii::$app->request->post('products');
+        
+        $data = Yii::$service->product->productapi->insertByShopfwPost($products);
+        
+        if ($data) {
+            return [
+                'code'    => 200,
+                'message' => 'add product success',
+                'data'    => [
+                    'addData' => $data,
+                ]
+            ];
+        }
+        
+        return [
+            'code'    => 400,
+            'message' => 'add product fail',
+            'data'    => [
+                'error' => Yii::$service->helper->errors->get(', '),
+            ]
+        ];
+    }
+    
+    
+    public function actionUpdatestockandqty()
+    {
+        $items = Yii::$app->request->post('items');
+        if (!is_array($items) || empty($items)) {
+            return [
+                'code'    => 400,
+                'message' => 'items is not array ',
+                'data'    => [
+                    'error' => 'items is not array ',
+                ]
+            ];
+        }
+        
+        foreach ($items as $item) {
+            Yii::$service->product->updateStockAndPrice($item);
+        }
+        $errors = Yii::$service->helper->errors->get(', ');
+        if ($errors) {
+            
+            return [
+                'code'    => 400,
+                'message' => 'updateStockAndQty fail',
+                'data'    => [
+                    'error' => $errors,
+                ]
+            ];
+        }
+        
+        return [
+            'code'    => 200,
+            'message' => 'add product success',
+            'data'    => [ ]
+        ];
+        
     }
     
 }
