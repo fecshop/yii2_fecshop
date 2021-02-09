@@ -106,9 +106,45 @@ class AttrGroup extends Service
      */
     public function save($one)
     {
+        if (!$this->checkSaveOne($one)) {
+            
+            return false;
+        }
+        $attr_ids = $one['attr_ids'];
+        if (is_array($attr_ids)) {
+            $one['attr_ids'] = serialize($attr_ids);
+        }
+        
         return $this->_attrGroup->save($one);
     }
-
+    
+    public function checkSaveOne($one)
+    {
+        $statusArr = [1,2];
+        $status = $one['status'];
+        if (!in_array($status, $statusArr)) {
+            Yii::$service->helper->errors->add('status is not correct');
+            
+            return false;
+        }
+        $attr_ids = $one['attr_ids'];
+        if (!$attr_ids) {
+            Yii::$service->helper->errors->add('attr_ids can not empty');
+            
+            return false;
+        }
+        if (is_array($attr_ids) && !empty($attr_ids)) {
+            foreach ($attr_ids as $one) {
+                if (!isset($one['attr_id']) || !$one['attr_id']) {
+                    Yii::$service->helper->errors->add('attr_ids item attr_id can not empty');
+                    
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    
     public function remove($ids)
     {
         return $this->_attrGroup->remove($ids);
