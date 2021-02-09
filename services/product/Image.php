@@ -103,7 +103,22 @@ class Image extends Service
     {
         return Yii::$service->image->GetImgDir($this->imageFloder.$str, 'common');
     }
+    
+    /**
+     * @param $fileName | string,  文件名称
+     * @param $fileStream |string, 图片文件的二进制字符。
+     */
+    public function saveProductStreamImg($fileName, $fileStream)
+    {
+        Yii::$service->image->imageFloder = $this->imageFloder;
+        Yii::$service->image->allowImgType = $this->allowImgType;
+        if ($this->maxUploadMSize) {
+            Yii::$service->image->setMaxUploadSize($this->maxUploadMSize);
+        }
 
+        return Yii::$service->image->saveStreamImg($fileName, $fileStream);
+    }
+    
     /**
      * @param $param_img_file | Array .
      * upload image from web page , you can get image from $_FILE['XXX'] ,
