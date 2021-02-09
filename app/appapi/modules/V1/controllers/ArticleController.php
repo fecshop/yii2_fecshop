@@ -22,7 +22,8 @@ class ArticleController extends AppapiTokenController
     /**
      * Get Lsit Api：得到article 列表的api
      */
-    public function actionList(){
+    public function actionList()
+    {
         
         $page = Yii::$app->request->get('page');
         $page = $page ? $page : 1;
@@ -64,7 +65,8 @@ class ArticleController extends AppapiTokenController
     /**
      * Get One Api：根据url_key 和 id 得到article 列表的api
      */
-    public function actionFetchone(){
+    public function actionFetchone()
+    {
         $url_key       = Yii::$app->request->get('url_key');
         $primaryKeyVal = Yii::$app->request->get('id');
         $data          = [];
@@ -105,7 +107,8 @@ class ArticleController extends AppapiTokenController
     /**
      * Add One Api：新增一条记录的api
      */
-    public function actionAddone(){
+    public function actionAddone()
+    {
         //var_dump(Yii::$app->request->post());exit;
         // 选填
         $url_key            = Yii::$app->request->post('url_key');
@@ -169,7 +172,8 @@ class ArticleController extends AppapiTokenController
     /**
      * Update One Api：更新一条记录的api
      */
-    public function actionUpdateone(){
+    public function actionUpdateone()
+    {
         $id            = Yii::$app->request->post('id');
         // 选填
         $url_key            = Yii::$app->request->post('url_key');
@@ -230,7 +234,8 @@ class ArticleController extends AppapiTokenController
     /**
      * Delete One Api：删除一条记录的api
      */
-    public function actionDeleteone(){
+    public function actionDeleteone()
+    {
         $ids            = Yii::$app->request->post('ids');
         Yii::$service->cms->article->remove($ids);
         $errors = Yii::$service->helper->errors->get();

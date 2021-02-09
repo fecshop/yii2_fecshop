@@ -22,12 +22,15 @@ class CategoryController extends AppapiTokenController
     /**
      * Get Lsit Api：得到Category 列表的api
      */
-    public function actionList(){
+    public function actionList()
+    {
         
         $page = Yii::$app->request->get('page');
+        $numPerPage = Yii::$app->request->get('numPerPage');
         $page = $page ? $page : 1;
+        $numPerPage = $numPerPage > 0 ? $numPerPage : $this->numPerPage;
         $filter = [
-            'numPerPage'    => $this->numPerPage,
+            'numPerPage'    =>  $numPerPage,
             'pageNum'       => $page,
             'asArray'       => true,
         ];
@@ -41,13 +44,13 @@ class CategoryController extends AppapiTokenController
             }
         }
         $count = $data['count'];
-        $pageCount = ceil($count / $this->numPerPage);
+        $pageCount = ceil($count / $numPerPage);
         $serializer = new \yii\rest\Serializer();
         Yii::$app->response->getHeaders()
             ->set($serializer->totalCountHeader, $count)
             ->set($serializer->pageCountHeader, $pageCount)
             ->set($serializer->currentPageHeader, $page)
-            ->set($serializer->perPageHeader, $this->numPerPage);
+            ->set($serializer->perPageHeader, $numPerPage);
         if ($page <= $pageCount ) {
             return [
                 'code'    => 200,
