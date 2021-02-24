@@ -24,6 +24,12 @@ class m210208_120952_fecshop_tables extends Migration
             "
                 ALTER TABLE `product_flat` ADD INDEX ( `third_refer_code` )
             ",
+            "
+                ALTER TABLE `product_attribute` ADD `remote_id` INT( 11 ) NULL COMMENT '通过api同步的远程id', ADD INDEX ( `remote_id` )
+            ",
+            "
+                ALTER TABLE `product_attribute_group` ADD `remote_id` INT( 11 ) NULL COMMENT '通过api同步的远程id', ADD INDEX ( `remote_id` )
+            ",
         ];
 
         foreach ($arr as $sql) {
