@@ -562,11 +562,16 @@ class Product extends Service
      * 保存产品（插入和更新），以及保存产品的自定义url
      * 如果提交的数据中定义了自定义url，则按照自定义url保存到urlkey中，如果没有自定义urlkey，则会使用name进行生成。
      */
-    public function save($one, $originUrlKey = 'catalog/product/index', $isLoginUser=true)
+    public function save($one, $originUrlKey = 'catalog/product/index')
     {
-        return $this->_product->save($one, $originUrlKey, $isLoginUser);
+        return $this->_product->save($one, $originUrlKey);
     }
-
+    
+    public function upsert($one, $originUrlKey = 'catalog/product/index')
+    {
+        return $this->_product->upsert($one, $originUrlKey);
+    }
+    
     /**
      * @param $ids | Array or String
      * 删除产品，如果ids是数组，则删除多个产品，如果是字符串，则删除一个产品
