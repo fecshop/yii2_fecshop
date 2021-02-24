@@ -104,7 +104,63 @@ class Url extends Service
 
         return $urlKey;
     }
+    
+    
+    /**
+     * save custom url to mongodb collection url_rewrite.
+     * @param $str|String, example:  fashion handbag women
+     * @param $originUrl|string , origin url ,example: /cms/home/index?id=5
+     * @param $originUrlKey|String,origin url key, it can be empty ,or generate by system , or custom url key.
+     * @param $type|String, url rewrite type.
+     * @return rewrite Key.
+     */
+    public function saveRewriteUrlKeyByUpsert($str, $originUrl, $originUrlKey, $type = 'system')
+    {
+        $str = trim($str);
+        $originUrl = $originUrl ? '/'.trim($originUrl, '/') : '';
+        $originUrlKey = $originUrlKey ? '/'.trim($originUrlKey, '/') : '';
+        if (!$originUrlKey || !$originUrl) {
+            
+            return;
+        }
+        /**
+         * if originUrlKey and  originUrl is exist in url rewrite collectons.
+         */ 
+        $model = $this->find();
+        // 如果已经存在，那么直接返回
+        $data_one = $model->where([
+            'custom_url_key'    => $originUrlKey,
+            'origin_url'        => $originUrl,
+        ])->one();
+        if (isset($data_one['custom_url_key'])) {
 
+            return $originUrlKey;
+        }
+        
+        // 清除掉相同 custom_url_key 的内容
+        $model = $this->find();
+        $mOne = $model->where(['custom_url_key' => $originUrlKey])->one();
+        if ($mOne) {
+            $mOne->delete();
+        }
+        
+        $UrlRewrite = $this->findOne([
+            'origin_url' => $originUrl,
+        ]);
+        
+        if (!isset($UrlRewrite['origin_url'])) {
+            $UrlRewrite = $this->newModel();
+            $UrlRewrite->created_at = time();
+        }
+        $UrlRewrite->updated_at = time();
+        $UrlRewrite->type = $type;
+        $UrlRewrite->custom_url_key = $originUrlKey;
+        $UrlRewrite->origin_url = $originUrl;
+        $UrlRewrite->save();
+
+        return $originUrlKey;
+    }
+    
     /**
      * @param $url_key|string
      * remove url rewrite data by $url_key,which is custom url key that saved in custom url modules,like articcle , product, category ,etc..
