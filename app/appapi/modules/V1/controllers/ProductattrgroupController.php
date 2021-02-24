@@ -106,6 +106,74 @@ class ProductattrgroupController extends AppapiTokenController
             ];
         } 
     }
+    
+    /**
+     * Update One Api：更新一条记录的api
+     */
+    public function actionUpsertone()
+    {
+        $remote_id = Yii::$app->request->post('remote_id');
+        $name = Yii::$app->request->post('name');
+        $status = Yii::$app->request->post('status');
+        $attr_ids = Yii::$app->request->post('attr_ids');
+        if (!$remote_id) {
+            return [
+                'code'    => 400,
+                'message' => 'update product attr group id can not empty',
+                'data'    => [
+                    'error' => 'update product attr group id can not empty',
+                ],
+            ];
+        }
+        if (!is_array($attr_ids) || empty($attr_ids)) {
+            return [
+                'code'    => 400,
+                'message' => 'attr_ids must be array and can not empty',
+                'data'    => [
+                    'error' => 'attr_ids must be array and can not empty',
+                ],
+            ];
+        }
+        $primaryKey = Yii::$service->product->attrGroup->getPrimaryKey();
+        $param = [
+            'remote_id'           => $remote_id,
+            'name'             => $name,
+            'status'     => $status,
+            'attr_ids'  => $attr_ids,
+        ];
+        // 转换 $attr_ids, 将远程的id转换成fecmall本地的id
+        foreach ($attr_ids as $k=>$one) {
+            $remote_attr_id = $one['attr_id'];
+            $attrM = Yii::$service->product->attr->getByRemoteId($remote_attr_id);
+            $local_attr_id = '';
+            if ($attrM && isset($attrM['id'])) {
+                $local_attr_id = $attrM['id'];
+            }
+            $attr_ids[$k]['attr_id'] = $local_attr_id;
+        }
+        $saveData = Yii::$service->product->attrGroup->save($param);
+        if (isset($saveData['attr_ids']) && $saveData['attr_ids']) {
+            $saveData['attr_ids'] = unserialize($saveData['attr_ids']);
+        }
+        if (!$saveData) {
+            $errors = Yii::$service->helper->errors->get(', ');
+            return [
+                'code'    => 400,
+                'message' => 'update product attr group fail',
+                'data'    => [
+                    'error' => $errors,
+                ],
+            ];
+        }
+        return [
+            'code'    => 200,
+            'message' => 'update product attr group success',
+            'data'    => [
+                'addData' => $saveData,
+            ]
+        ];
+    }
+    
     /**
      * Add One Api：新增一条记录的api
      */
@@ -191,6 +259,7 @@ class ProductattrgroupController extends AppapiTokenController
             ]
         ];
     }
+    
     /**
      * Delete One Api：删除一条记录的api
      */
