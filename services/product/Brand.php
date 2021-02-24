@@ -126,11 +126,43 @@ class Brand extends Service
         $primaryKey = $this->getPrimaryKey();
         $model      = Yii::$service->helper->ar->save($model, $one);
         $primaryVal = $model[$primaryKey];
-
-        return true;
+        foreach ($this->_lang_attr as $attr) {
+            $model[$attr] = $model[$attr] ? unserialize($model[$attr]) : '';
+        }
+        return $model;
     }
 
-
+    public function upsert($one)
+    {
+        $currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
+        $primaryVal = $one['id'];
+        //var_dump($one);exit;
+        if (!$primaryVal) {
+            Yii::$service->helper->errors->add('id can not empty');
+            
+            return;
+        }
+        $model = $this->_model->findOne($primaryVal);
+        if (!$model) {
+            $model = new $this->_modelName();
+            $model->created_at = time();
+            $model->id = $primaryVal;
+        }
+        $model->updated_at = time();
+        foreach ($this->_lang_attr as $attrName) {
+            if (is_array($one[$attrName]) && !empty($one[$attrName])) {
+                $one[$attrName] = serialize($one[$attrName]);
+            }
+        }
+        $primaryKey = $this->getPrimaryKey();
+        $model      = Yii::$service->helper->ar->save($model, $one);
+        $primaryVal = $model[$primaryKey];
+        foreach ($this->_lang_attr as $attr) {
+            $model[$attr] = $model[$attr] ? unserialize($model[$attr]) : '';
+        }
+        return $model;
+    }
+    
     public function remove($ids)
     {
         if (!$ids) {
