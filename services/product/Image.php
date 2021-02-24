@@ -107,8 +107,9 @@ class Image extends Service
     /**
      * @param $fileName | string,  文件名称
      * @param $fileStream |string, 图片文件的二进制字符。
+     * @param $imgSavedRelativePath | string, 图片存放的相对路径，设置该值后，图片将保存到这个相对路径，如果该路径下已经存在文件，则将会覆盖。
      */
-    public function saveProductStreamImg($fileName, $fileStream)
+    public function saveProductStreamImg($fileName, $fileStream, $imgSavedRelativePath='')
     {
         Yii::$service->image->imageFloder = $this->imageFloder;
         Yii::$service->image->allowImgType = $this->allowImgType;
@@ -116,7 +117,7 @@ class Image extends Service
             Yii::$service->image->setMaxUploadSize($this->maxUploadMSize);
         }
 
-        return Yii::$service->image->saveStreamImg($fileName, $fileStream);
+        return Yii::$service->image->saveStreamImg($fileName, $fileStream, $imgSavedRelativePath);
     }
     
     /**
