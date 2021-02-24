@@ -14,7 +14,7 @@
 		<?= Yii::$service->page->widget->render('base/breadcrumbs',$this); ?>
 		<div class="menu_category">
 			<div class="category_img">
-				<a href="#"><?=  $image ? '<img style="width:980px;" src="'.$image.'"/>' : '';?><a>
+				<a href="#"><?=  $image ? '<img style="width:auto;max-height:120px" src="'.$image.'"/>' : '';?><a>
 			</div>
 			<div class="category_description">
 				<h1><?=  $name ?></h1>
