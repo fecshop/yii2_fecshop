@@ -106,6 +106,63 @@ class ProductattrController extends AppapiTokenController
             ];
         } 
     }
+    
+    /**
+     * Upsert One Api：更新一条记录的api
+     */
+    public function actionUpsertone()
+    {
+        $remote_id = Yii::$app->request->post('remote_id');
+        $attr_type = Yii::$app->request->post('attr_type');
+        $name = Yii::$app->request->post('name');
+        $status = Yii::$app->request->post('status');
+        $db_type = Yii::$app->request->post('db_type');
+        $show_as_img = Yii::$app->request->post('show_as_img');
+        $display_type = Yii::$app->request->post('display_type');
+        $display_data = Yii::$app->request->post('display_data');
+        $is_require = Yii::$app->request->post('is_require');
+        $primaryKey = Yii::$service->product->attr->getPrimaryKey();
+        $param = [
+            'remote_id'           => $remote_id,
+            'attr_type'           => $attr_type,
+            'name'             => $name,
+            'status'     => $status,
+            'db_type'  => $db_type,
+            'show_as_img'           => $show_as_img,
+            'display_type'            => $display_type,
+            'display_data'            => $display_data,
+            'is_require'            => $is_require,
+            'db_type'   => 'String',
+        ];
+        if (!$remote_id) {
+            return [
+                'code'    => 400,
+                'message' => 'update product attr group remote_id can not empty',
+                'data'    => [
+                    'error' => 'update product attr group remote_id can not empty',
+                ],
+            ];
+        }
+        $saveData = Yii::$service->product->attr->save($param);
+        if (!$saveData) {
+            $errors = Yii::$service->helper->errors->get(', ');
+            return [
+                'code'    => 400,
+                'message' => 'update product attr fail',
+                'data'    => [
+                    'error' => $errors,
+                ],
+            ];
+        }
+        return [
+            'code'    => 200,
+            'message' => 'update product attr success',
+            'data'    => [
+                'addData' => $saveData,
+            ]
+        ];
+    }
+    
     /**
      * Add One Api：新增一条记录的api
      */
@@ -207,6 +264,7 @@ class ProductattrController extends AppapiTokenController
             ]
         ];
     }
+    
     /**
      * Delete One Api：删除一条记录的api
      */
