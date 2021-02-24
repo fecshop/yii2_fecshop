@@ -519,6 +519,108 @@ class ProductMysqldb extends Service implements ProductInterface
     }
     
     
+    
+    /**
+     * @param $one|array , 产品数据数组
+     * @param $originUrlKey|string , 产品的原来的url key ，也就是在前端，分类的自定义url。
+     * 保存产品（插入和更新），以及保存产品的自定义url
+     * 如果提交的数据中定义了自定义url，则按照自定义url保存到urlkey中，如果没有自定义urlkey，则会使用name进行生成。
+     */
+    public function upsert($one, $originUrlKey = 'catalog/product/index')
+    {
+        if (!$this->initSave($one)) {
+            
+            return false;
+        }
+        $url_key = isset($one['url_key']) ? $one['url_key'] : ''; 
+        unset($one['url_key']);
+        $currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
+        $primaryVal = $one['id'];
+        // 得到group spu attr
+        $attr_group = $one['attr_group'];
+        $groupSpuAttrs = Yii::$service->product->getGroupSpuAttr($attr_group);
+        $spuAttrArr = [];
+        if (is_array($groupSpuAttrs)) {
+            foreach ($groupSpuAttrs as $groupSpuOne) {
+                $spuAttrArr[$groupSpuOne['name']] = $one[$groupSpuOne['name']];
+            }
+        }
+        if (!$primaryVal) {
+            Yii::$service->helper->errors->add('Product id can not empty');
+
+            return false;
+        }
+        $hasProduct = true; 
+        $model = $this->_productModel->findOne($primaryVal);
+        if (!$model) {
+            $model = new $this->_productModelName();
+            $model->created_at = time();
+            $model->id = $one['id'];
+            $created_user_id = Yii::$app->user->identity->id;
+            $model->created_user_id = $created_user_id ;
+            $hasProduct = false; 
+        }
+        //验证sku 是否重复
+        $product_one = $this->_productModel->find()->asArray()->where([
+            '<>', $this->getPrimaryKey(), $primaryVal,
+        ])->andWhere([
+            'sku' => $one['sku'],
+        ])->one();
+        if ($product_one['sku']) {
+            Yii::$service->helper->errors->add('Product Sku is exist，please use other sku');
+
+            return false;
+        }
+        // spu 下面的各个sku的spu属性不能相同
+        if (!empty($spuAttrArr)) {
+            $product_colls = $this->_productModel->find()->asArray()->where([
+                '<>', $this->getPrimaryKey(), $primaryVal,
+            ])->andWhere([
+                'spu' => $one['spu'],
+            ])->all();
+            if (!$this->checkSpuAttrUnique($spuAttrArr, $product_colls)) {
+                return false;
+            }
+        }
+        
+        $model->updated_at = time();
+        // 计算出来产品的最终价格。
+        $one['final_price'] = Yii::$service->product->price->getFinalPrice($one['price'], $one['special_price'], $one['special_from'], $one['special_to']);
+        $one['score'] = (int) $one['score'];
+        unset($one['id']);
+        unset($one['custom_option']);
+        /**
+         * 保存产品
+         */
+        $defaultLangTitle = Yii::$service->fecshoplang->getDefaultLangAttrVal($one['name'], 'name');
+        $one = $this->serializeSaveData($one);
+        $saveStatus = Yii::$service->helper->ar->save($model, $one);
+        $product_id = $model->{$this->getPrimaryKey()};
+        // 保存分类
+        $this->updateProductCategory($one['category'], $product_id);
+        // 自定义url部分
+        if ($originUrlKey) {
+            $originUrl = $originUrlKey.'?'.$this->getPrimaryKey() .'='. $product_id;
+            $originUrlKey = $url_key;
+            $urlKey = Yii::$service->url->saveRewriteUrlKeyByUpsert($defaultLangTitle, $originUrl, $originUrlKey);
+            $model->url_key = $urlKey;
+            $model->save();
+        }
+        /**
+         * 更新产品库存。只有插入的时候才更新库存，更新产品数据的时候不更新库存
+         */
+        if (!$hasProduct) {
+            Yii::$service->product->stock->saveProductStock($product_id, $one);
+        }
+        
+        /**
+         * 更新产品信息到搜索表。
+         */
+        Yii::$service->search->syncProductInfo([$product_id]);
+        
+        return $model;
+    }
+    
     /**
      * @param $one|array , 产品数据数组
      * 用于将mongodb的数据，同步到mysql中 
