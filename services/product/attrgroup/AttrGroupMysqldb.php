@@ -95,12 +95,19 @@ class AttrGroupMysqldb extends Service implements AttrGroupInterface
     public function save($one)
     {
         $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
+        $remoteId = isset($one['remote_id']) ? $one['remote_id'] : '';
         if ($primaryVal) {
             $model = $this->_attrGroupModel->findOne($primaryVal);
             if (!$model) {
                 Yii::$service->helper->errors->add('Product attr group {primaryKey} is not exist', ['primaryKey' => $this->getPrimaryKey()]);
 
                 return;
+            }
+        } else if ($remoteId) {    
+            $model = $this->_attrGroupModel->findOne(['remote_id' => $remoteId]);
+            if (!$model) {
+                $model = new $this->_attrGroupModelName();
+                $model->created_at = time();
             }
         } else {
             $model = new $this->_attrGroupModelName();
