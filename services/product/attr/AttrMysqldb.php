@@ -59,6 +59,21 @@ class AttrMysqldb extends Service implements AttrInterface
         }
     }
     
+    public function getByRemoteId($remoteId)
+    {
+        if (!$remoteId) {
+            
+            return null;
+        } 
+        $one = $this->_attrModel->findOne(['remote_id' => $remoteId]);
+        if (!isset($one['remote_id']) || !$one['remote_id']){
+            
+            return null;
+        }
+        
+        return $one;
+    }
+    
     /*
      * example filter:
      * [
@@ -92,12 +107,19 @@ class AttrMysqldb extends Service implements AttrInterface
     public function save($one)
     {
         $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
+        $remoteId = isset($one['remote_id']) ? $one['remote_id'] : '';
         if ($primaryVal) {
             $model = $this->_attrModel->findOne($primaryVal);
             if (!$model) {
                 Yii::$service->helper->errors->add('Product attr {primaryKey} is not exist', ['primaryKey' => $this->getPrimaryKey()]);
 
                 return;
+            }
+        } else if ($remoteId) {    
+            $model = $this->_attrModel->findOne(['remote_id' => $remoteId]);
+            if (!$model) {
+                $model = new $this->_attrModelName();
+                $model->created_at = time();
             }
         } else {
             $model = new $this->_attrModelName();
