@@ -188,6 +188,12 @@ class Category extends Service
     {
         return $this->_category->save($one, $originUrlKey);
     }
+    
+    public function upsert($one, $originUrlKey = 'catalog/category/index')
+    {
+        return $this->_category->upsert($one, $originUrlKey);
+    }
+    
     /**
      *
      */

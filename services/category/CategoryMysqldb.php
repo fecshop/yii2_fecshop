@@ -258,6 +258,58 @@ class CategoryMysqldb extends Service implements CategoryInterface
     
         return $model;
     }
+    
+    
+
+    /**
+     * @param $one|array , upsert one data . 分类数组
+     * @param $originUrlKey|string , 分类的在修改之前的url key.（在数据库中保存的url_key字段，如果没有则为空）
+     * 保存分类，同时生成分类的伪静态url（自定义url），如果按照name生成的url或者自定义的urlkey存在，系统则会增加几个随机数字字符串，来增加唯一性。
+     * upsert,就是update和insert的结合体，如果当前$one['id']对应的分类存在则更新，如果不存在则插入
+     */
+    public function upsert($one, $originUrlKey = 'catalog/category/index')
+    {
+        $primaryKey = $this->getPrimaryKey();
+        $primaryVal = isset($one['id']) ? $one['id'] : '';
+        unset($one['id']);
+        if (!$primaryVal) {
+            Yii::$service->helper->errors->add('id can not empty');
+            
+            return;
+        }
+        $model = $this->_categoryModel->findOne($primaryVal);
+        if (!$model) {
+            $model = new $this->_categoryModelName;
+            $model[$primaryKey] = $primaryVal;
+            $model->created_at = time();
+            $model->created_user_id = \fec\helpers\CUser::getCurrentUserId();
+        }
+        
+        $model->updated_at = time();
+        
+        $one['status']    = (int)$one['status'];
+        $one['menu_show'] = (int)$one['menu_show'];
+        $allowMenuShowArr = [ $model::MENU_SHOW, $model::MENU_NOT_SHOW];
+        if (!in_array($one['menu_show'], $allowMenuShowArr)) {
+            $one['menu_show'] = $model::MENU_SHOW;
+        }
+        $allowStatusArr = [ $model::STATUS_ENABLE, $model::STATUS_DISABLE];
+        if (!in_array($one['status'], $allowStatusArr)) {
+            $one['status'] = $model::STATUS_ENABLE;
+        }
+        $defaultLangName = Yii::$service->fecshoplang->getDefaultLangAttrVal($one['name'], 'name');
+        $one = $this->serializeSaveData($one);
+        $saveStatus = Yii::$service->helper->ar->save($model, $one);
+        $primaryVal = $model->id;
+        $originUrl = $originUrlKey.'?'.$this->getPrimaryKey() .'='. $primaryVal;
+        $originUrlKey = isset($one['url_key']) ? $one['url_key'] : '';
+        $defaultLangTitle = $defaultLangName;
+        $urlKey = Yii::$service->url->saveRewriteUrlKeyByStr($defaultLangTitle, $originUrl, $originUrlKey);
+        $model->url_key = $urlKey;
+        $model->save();
+    
+        return $model;
+    }
     /** 
      * @param $arr | array
      * 用于同步mongodb数据库到mysql数据库中
