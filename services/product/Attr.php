@@ -94,6 +94,13 @@ class Attr extends Service
     {
         return $this->_attr->getByPrimaryKey($primaryKey);
     }
+    /**
+     * get artile model by primary key.
+     */
+    public function getByRemoteId($remoteId)
+    {
+        return $this->_attr->getByRemoteId($remoteId);
+    }
     
     public function coll($filter = '')
     {
@@ -111,7 +118,9 @@ class Attr extends Service
             
             return false;
         }
-        
+        if (is_array($one['display_data'])) {
+            $one['display_data'] = serialize($one['display_data']);
+        }
         return $this->_attr->save($one);
     }
     
