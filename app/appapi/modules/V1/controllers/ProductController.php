@@ -125,10 +125,55 @@ class ProductController extends AppapiTokenController
     /**
      * Add One Api：新增一条记录的api
      */
-    public function actionAddone(){
+    public function actionAddone()
+    {
         //var_dump(Yii::$app->request->post());exit;
         $data = Yii::$service->product->productapi->insertByPost();
+        
         return $data;
+    }
+    /**
+     * Upsert One Api：新增一条记录的api
+     */
+    public function actionUpsertone()
+    {
+        //var_dump(Yii::$app->request->post());exit;
+        $productOne = Yii::$app->request->post('product');
+        $spu = $productOne['spu'];
+        Yii::$service->product->addGroupAttrs($productOne['attr_group']);
+        $originUrlKey   = 'catalog/product/index';
+        // 如果已经存在产品，则不更新库存
+        $productM = Yii::$service->product->getByPrimaryKey($productOne['id']);
+        if (isset($productM['sku']) && $productM['sku']) {
+            unset($productOne['qty']);
+        }
+        $saveData       = Yii::$service->product->upsert($productOne, $originUrlKey);
+        $errors         = Yii::$service->helper->errors->get();
+        if (!$errors) {
+            $saveData = $saveData->attributes;
+            if (isset($saveData['_id'])) {
+                $saveData['id'] = (string)$saveData['_id'];
+                unset($saveData['_id']);
+            }
+            
+            return [
+                'code'    => 200,
+                'message' => 'add product success',
+                'data'    => [
+                    'addData' => $saveData,
+                ]
+            ];
+        } else {
+            
+            return [
+                'code'    => 400,
+                'message' => 'save product fail',
+                'data'    => [
+                    'error' => $errors,
+                ],
+            ];
+        }
+        
     }
     /**
      * Update One Api：更新一条记录的api
