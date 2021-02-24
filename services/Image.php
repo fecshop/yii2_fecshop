@@ -244,27 +244,52 @@ class Image extends Service
     /**
      * @param $fileName | string,  文件名称
      * @param $fileStream |string, 图片文件的二进制字符。
+     * @param $imgFileSaveRelativePath | string, 图片存放的相对路径，设置该值后，图片将保存到这个相对路径，如果该路径下已经存在文件，则将会覆盖。
      */
-    public function saveStreamImg($fileName, $fileStream)
+    public function saveStreamImg($fileName, $fileStream, $imgFileSaveRelativePath='')
     {
-        $newName = $this->generateImgName($fileName);
-        if (!$newName) {
-            Yii::$service->helper->errors->add('generate img name fail');
-            
-            return false;
+        $imgFileSaveRelativePath = trim($imgFileSaveRelativePath, '/');
+        $imgFileSaveRelativePathArr = explode('/', $imgFileSaveRelativePath);
+        if ($imgFileSaveRelativePath && count($imgFileSaveRelativePathArr) == 3) {
+            $newName = $imgFileSaveRelativePathArr[2];
+            if (!$newName) {
+                Yii::$service->helper->errors->add('generate img name fail');
+                
+                return false;
+            }
+            $arr = explode('.', $fileName);
+            $fileType = '.'.$arr[count($arr)-1];
+            $imgFileType = [
+                '.jpg', '.jpeg', '.gif', '.png',
+            ];
+            if (!in_array($fileType, $imgFileType)) {
+                Yii::$service->helper->errors->add('image file type ['.$fileType. '] is not allow ');
+                
+                return false;
+            }
+            // process image name.
+            $imgSavedRelativePath = $this->getImgSavedRelativePath($newName, $imgFileSaveRelativePath);
+        } else {
+            $newName = $this->generateImgName($fileName);
+            if (!$newName) {
+                Yii::$service->helper->errors->add('generate img name fail');
+                
+                return false;
+            }
+            $arr = explode('.', $fileName);
+            $fileType = '.'.$arr[count($arr)-1];
+            $imgFileType = [
+                '.jpg', '.jpeg', '.gif', '.png',
+            ];
+            if (!in_array($fileType, $imgFileType)) {
+                Yii::$service->helper->errors->add('image file type ['.$fileType. '] is not allow ');
+                
+                return false;
+            }
+            // process image name.
+            $imgSavedRelativePath = $this->getImgSavedRelativePath($newName);
         }
-        $arr = explode('.', $fileName);
-        $fileType = '.'.$arr[count($arr)-1];
-        $imgFileType = [
-            '.jpg', '.jpeg', '.gif', '.png',
-        ];
-        if (!in_array($fileType, $imgFileType)) {
-            Yii::$service->helper->errors->add('image file type ['.$fileType. '] is not allow ');
-            
-            return false;
-        }
-        // process image name.
-        $imgSavedRelativePath = $this->getImgSavedRelativePath($newName);
+        
         
         $fpDst = fopen($this->getCurrentBaseImgDir().$imgSavedRelativePath, "wb");
         fwrite($fpDst, $fileStream);
@@ -319,25 +344,35 @@ class Image extends Service
      * if image file is exsit , image file name will be change  to a not existed file name( by add radom string to file name ).
      * return image saved relative path , like /a/d/advert.jpg.
      */
-    protected function getImgSavedRelativePath($name)
+    protected function getImgSavedRelativePath($name,$imgFileSaveRelativePath='')
     {
         list($imgName, $imgType) = explode('.', $name);
         if (!$imgName || !$imgType) {
             throw new InvalidValueException('image file name and type is not correct');
         }
-        if (strlen($imgName) < 2) {
-            $imgName .= time(). mt_rand(100, 999);
-        }
-        $first_str = substr($imgName, 0, 1);
-        $two_str = substr($imgName, 1, 2);
-        $imgSaveFloder = CDir::createFloder($this->GetCurrentBaseImgDir(), [$first_str, $two_str]);
-        if ($imgSaveFloder) {
-            $imgName = $this->getUniqueImgNameInPath($imgSaveFloder, $imgName, $imgType);
-            $relative_floder = '/'.$first_str.'/'.$two_str.'/';
+        // 对于自定义存储路径的处理
+        if ($imgFileSaveRelativePath) {
+            $imgFileSaveRelativePathArr = explode('/', $imgFileSaveRelativePath);
+            $first_str = $imgFileSaveRelativePathArr[0];
+            $two_str = $imgFileSaveRelativePathArr[1];
+            $imgSaveFloder = CDir::createFloder($this->getCurrentBaseImgDir(), [$first_str, $two_str]);
+            
+            return '/'.$imgFileSaveRelativePath;
+        } else {
+            if (strlen($imgName) < 2) {
+                $imgName .= time(). mt_rand(100, 999);
+            }
+            $first_str = substr($imgName, 0, 1);
+            $two_str = substr($imgName, 1, 2);
+            $imgSaveFloder = CDir::createFloder($this->getCurrentBaseImgDir(), [$first_str, $two_str]);
+            if ($imgSaveFloder) {
+                $imgName = $this->getUniqueImgNameInPath($imgSaveFloder, $imgName, $imgType);
+                $relative_floder = '/'.$first_str.'/'.$two_str.'/';
 
-            return $relative_floder.$imgName;
+                return $relative_floder.$imgName;
+            }
         }
-
+        
         return false;
     }
 
