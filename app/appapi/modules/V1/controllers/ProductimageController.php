@@ -28,6 +28,7 @@ class ProductimageController extends AppapiTokenController
         //echo 1;exit;
         $fileName = Yii::$app->request->post('imgFileName');
         $imgFileBase64Code = Yii::$app->request->post('imgFileBase64Code');
+        $imgFileSaveRelativePath = Yii::$app->request->post('imgFileSaveRelativePath');
         $errors = '';
         if (!$fileName) {
             $errors .= 'post param imgFileName is empty, ';
@@ -60,7 +61,7 @@ class ProductimageController extends AppapiTokenController
             ];
         }
         //echo $fileStream;exit;
-        list($imgSavedRelativePath, $imgUrl, $imgPath, $newName) = Yii::$service->product->image->saveProductStreamImg($fileName, $fileStream);
+        list($imgSavedRelativePath, $imgUrl, $imgPath, $newName) = Yii::$service->product->image->saveProductStreamImg($fileName, $fileStream, $imgFileSaveRelativePath);
         if (!$imgUrl ||  !$imgPath) {
             return [
                 'code'    => 400,
@@ -72,7 +73,7 @@ class ProductimageController extends AppapiTokenController
         }
         return [
             'code'    => 200,
-            'message' => 'fetch product attr success',
+            'message' => 'save product stream img success',
             'data'    => [
                 'imgUrl' => $imgUrl,
                 'imgRelativePath' => $imgSavedRelativePath,
