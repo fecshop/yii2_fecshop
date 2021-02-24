@@ -354,6 +354,7 @@ class ProductApi extends Service
         }
     }
     
+    
     public function insertByPost($post = [])
     {
         if (empty($post)) {
@@ -558,6 +559,28 @@ class ProductApi extends Service
         } else {
             $this->_param['weight'] = $weight;
         }
+        
+        
+        $third_refer_url = $post['third_refer_url'];
+        if (!$third_refer_url) {
+            $this->_error[] = '[third_refer_url] can not empty';
+        } else {
+            $this->_param['third_refer_url'] = $third_refer_url;
+        }
+        
+        $third_refer_code = $post['third_refer_code'];
+        if (!$third_refer_code) {
+            $this->_error[] = '[third_refer_code] can not empty';
+        } else {
+            $this->_param['third_refer_code'] = $third_refer_code;
+        }
+        
+        $third_product_code = $post['third_product_code'];
+        if ($third_product_code) {
+           
+            $this->_param['third_product_code'] = $third_product_code;
+        }
+        
         // 产品价格：【必填】 强制转换成float类型
         $price          = (float)$post['price'];
         if (!$price) {
