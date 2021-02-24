@@ -15,7 +15,7 @@ use yii\web\IdentityInterface;
 
 /**
  * Customer service.
- * @property \fecshop\services\Customer\Address $address
+ * @property \fecshop\services\customer\Address $address
  * @property \fecshop\services\customer\Newsletter $newsletter
  * @property \fecshop\services\customer\Affiliate $affiliate
  * @property \fecshop\services\customer\Coupon $coupon

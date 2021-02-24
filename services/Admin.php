@@ -15,13 +15,13 @@ use Yii;
 /**
  * Admin services.
  *
- * @property \fecshop\services\customer\UrlKey $urlKey
- * @property \fecshop\services\customer\RoleUrlKey $roleUrlKey
- * @property \fecshop\services\customer\Role $role
- * @property \fecshop\services\customer\Config $config
- * @property \fecshop\services\customer\UserRole $userRole
- * @property \fecshop\services\customer\SystemLog $systemLog
- * @property \fecshop\services\customer\Menu $menu
+ * @property \fecshop\services\admin\UrlKey $urlKey
+ * @property \fecshop\services\admin\RoleUrlKey $roleUrlKey
+ * @property \fecshop\services\admin\Role $role
+ * @property \fecshop\services\admin\Config $config
+ * @property \fecshop\services\admin\UserRole $userRole
+ * @property \fecshop\services\admin\SystemLog $systemLog
+ * @property \fecshop\services\admin\Menu $menu
  *
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0

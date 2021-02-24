@@ -11,8 +11,8 @@
 namespace fecshop\services;
 
 /**
- * @property \fecshop\services\customer\Article $article
- * @property \fecshop\services\customer\StaticBlock $staticblock
+ * @property \fecshop\services\cms\Article $article
+ * @property \fecshop\services\cms\StaticBlock $staticblock
  *
  * Cms services.
  * @author Terry Zhao <2358269014@qq.com>
