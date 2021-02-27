@@ -28,6 +28,7 @@ class ExtensiongiiController extends SystemController
             $data = [
                 'guest' => true,
             ];
+            
             return $this->render($this->action->id, $data);
         }
         // 获取我的应用信息，如果获取失败，说明需要重新登陆
