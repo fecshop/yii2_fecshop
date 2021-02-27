@@ -91,6 +91,32 @@ class Generate extends Service
         return true;
     }
     
+    public function adminUrlKeyInstallSqlGenerate($sqlStr)
+    {
+        $sqlArr = explode(PHP_EOL, $sqlStr);
+        $jArr = [];
+        foreach ($sqlArr as $sqlOne) {
+            $sqlOnestr = trim($sqlOne);
+            if (!$sqlOnestr){
+                continue;
+            }
+            $sqlOneArr = explode(',', $sqlOnestr);
+            $arr2 = [];
+            $arr2[] = $sqlOneArr[1];
+            $arr2[] = $sqlOneArr[2];
+            $arr2[] = $sqlOneArr[3];
+            $arr2[] = $sqlOneArr[4];
+            $arr2[] = time();
+            $arr2[] = time();
+            $str2 = implode(',', $arr2);
+            $param = ['adminUrlKey' => $str2];
+            $viewFile = '@fecshop/services/extension/generate/adminUrlKey.php';
+            $jArr[] = Yii::$app->view->renderFile($viewFile, $param);
+        }
+        
+        return implode(PHP_EOL, $jArr);
+    }
+    
     public function createFolder($param)
     {
         $package = isset($param['package']) ? $param['package'] : '';
