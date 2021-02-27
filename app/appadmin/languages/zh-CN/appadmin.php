@@ -879,7 +879,7 @@ return [
     'completed' => '已完成',
     'canceled' => '已取消',
     'Cart & Coupon' => '购物车&优惠券',
-    '' => '',
+    'Admin Url Key Sql Gii' => '后台菜单Sql Gii',
     '' => '',
     '' => '',
     '' => '',
