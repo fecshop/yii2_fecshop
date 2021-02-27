@@ -278,6 +278,21 @@ class Index extends \yii\base\BaseObject
             
             return;
         }
+        // 得到当前的spu下面的所有的值
+        $select = ['name', 'image', 'url_key'];
+        $data = $this->getSpuData($select);
+        // 如果某个spu规格属性，在某个sku中不存在值，则就会被清除掉
+        if (is_array($data) && !empty($data)) {
+            foreach ($this->_productSpuAttrArr as $k=>$spuAttr){
+                foreach ($data as $one) {
+                    if (!isset($one[$spuAttr]) || !$one[$spuAttr]) {
+                        unset($this->_productSpuAttrArr[$k]);
+                        break;
+                    }
+                }
+            }
+        }
+        
         $this->_spuAttrShowAsTop = $this->_productSpuAttrArr[0];
         //var_dump($this->_productSpuAttrArr);exit;
         $this->_spuAttrShowAsImg = Yii::$service->product->getSpuImgAttr($this->_product['attr_group']);
@@ -297,9 +312,7 @@ class Index extends \yii\base\BaseObject
                 return;
             }
         }
-        // 得到当前的spu下面的所有的值
-        $select = ['name', 'image', 'url_key'];
-        $data = $this->getSpuData($select);
+        
         $spuValColl = [];
         // 通过值，找到spu。
         $reverse_val_spu = [];
@@ -352,6 +365,7 @@ class Index extends \yii\base\BaseObject
 
         return $spuShowArr;
     }
+    
     // spu属性部分
     protected function getSpuAttrInfo($spuAttr, $attrVal, $reverse_val_spu)
     {

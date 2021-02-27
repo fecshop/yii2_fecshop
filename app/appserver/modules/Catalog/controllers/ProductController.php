@@ -524,6 +524,21 @@ class ProductController extends AppserverController
             
             return;
         }
+        // 得到当前的spu下面的所有的值
+        $select = ['name', 'image', 'url_key'];
+        $data = $this->getSpuData($select);
+        // 如果某个spu规格属性，在某个sku中不存在值，则就会被清除掉
+        if (is_array($data) && !empty($data)) {
+            foreach ($this->_productSpuAttrArr as $k=>$spuAttr){
+                foreach ($data as $one) {
+                    if (!isset($one[$spuAttr]) || !$one[$spuAttr]) {
+                        unset($this->_productSpuAttrArr[$k]);
+                        break;
+                    }
+                }
+            }
+        }
+        
         $this->_spuAttrShowAsTop = $this->_productSpuAttrArr[0];
         //var_dump($this->_productSpuAttrArr);exit;
         $this->_spuAttrShowAsImg = Yii::$service->product->getSpuImgAttr($this->_product['attr_group']);
@@ -543,12 +558,7 @@ class ProductController extends AppserverController
                 return;
             }
         }
-        // 得到当前的spu下面的所有的值
-        $productPrimaryKey = Yii::$service->product->getPrimaryKey();
-        $select = [$productPrimaryKey, 'name', 'image', 'url_key'];
         
-        //$select = ['name', 'image', 'url_key'];
-        $data = $this->getSpuData($select);
         $spuValColl = [];
         // 通过值，找到spu。
         $reverse_val_spu = [];
@@ -562,7 +572,7 @@ class ProductController extends AppserverController
 
                 //$active = 'class="active"';
                 $one['main_img'] = isset($one['image']['main']['image']) ? $one['image']['main']['image'] : '';
-                $one['url'] = '/catalog/product/'.(string)$one[$productPrimaryKey];
+                $one['url'] = Yii::$service->url->getUrl($one['url_key']);
                 $reverse_val_spu[$reverse_key] = $one;
                 $showAsImgVal = $one[$this->_spuAttrShowAsImg];
                 if ($showAsImgVal) {
@@ -591,12 +601,10 @@ class ProductController extends AppserverController
             $attr_coll = [];
             foreach ($attrValArr as $attrVal) {
                 $attr_info = $this->getSpuAttrInfo($spuAttr, $attrVal, $reverse_val_spu);
-                $attr_info['attr_val'] = Yii::$service->page->translate->__($attr_info['attr_val']);
                 $attr_coll[] = $attr_info;
             }
             $spuShowArr[] = [
-                //'label' => $spuAttr,
-                'label' =>  Yii::$service->page->translate->__($spuAttr),
+                'label' => $spuAttr,
                 'value' => $attr_coll,
             ];
         }
