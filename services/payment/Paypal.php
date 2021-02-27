@@ -259,7 +259,7 @@ class Paypal extends Service
         $order_cancel_status = Yii::$service->order->payment_status_canceled;
         // 如果订单状态被取消，那么不能进行支付。
         if ($this->_order->order_status == $order_cancel_status) {
-            Yii::$service->helper->error->add('The order status has been canceled and you can not pay for item ,you can create a new order to pay');
+            Yii::$service->helper->errors->add('The order status has been canceled and you can not pay for item ,you can create a new order to pay');
 
             return;
         }
