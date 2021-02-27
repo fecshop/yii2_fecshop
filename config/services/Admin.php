@@ -488,6 +488,11 @@ return [
                                         'label' => 'Extention Gii',
                                         'url_key' => '/system/extensiongii/manager',
                                     ],
+                                    'admin_url_key' => [
+                                        'sort_order' => 500,
+                                        'label' => 'Admin Url Key Sql Gii',
+                                        'url_key' => '/system/adminurlkey/manager',
+                                    ],
                                 ],
                             ],
                             
