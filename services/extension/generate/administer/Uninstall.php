@@ -34,12 +34,13 @@ class Uninstall implements \fecshop\services\extension\UninstallInterface
     public function uninstallDbSql()
     {
         /*
+        $db = Yii::$app->getDb();
         $sql = "
         //    DROP TABLE IF EXISTS `fecmall_addon_test1`;
         //    DROP TABLE IF EXISTS `fecmall_addon_test2`;
         ";
         // 执行sql, 创建表结构的时候，这个函数会返回0，因此不能以返回值作为return
-        Yii::$app->getDb()->createCommand($sql)->execute();
+        $db->createCommand($sql)->execute();
         */
         
         return true;

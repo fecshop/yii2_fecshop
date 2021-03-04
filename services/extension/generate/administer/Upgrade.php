@@ -56,24 +56,27 @@ class Upgrade implements \fecshop\services\extension\UpgradeInterface
     public function upgrade101()
     {
         // 增加测试 - 冗余的字段
+        // $db = Yii::$app->getDb();
         // $sql = "ALTER TABLE fecmall_addon_test1 ADD COLUMN redundancy_field_5255 varchar(48);";
-        // Yii::$app->getDb()->createCommand($sql)->execute();
+        // $db->createCommand($sql)->execute();
     }
     
     // 1.0.2
     public function upgrade102()
     {
         // 删除测试 - 冗余的字段
+        // $db = Yii::$app->getDb();
         // $sql = "ALTER TABLE fecmall_addon_test1 ADD COLUMN redundancy_field_566 varchar(48);";
-        // Yii::$app->getDb()->createCommand($sql)->execute();
+        // $db->createCommand($sql)->execute();
     }
     
     // 1.0.3
     public function upgrade103()
     {
         // 删除测试 - 冗余的字段
+        // $db = Yii::$app->getDb();
         // $sql = "ALTER TABLE fecmall_addon_test1 ADD COLUMN redundancy_field_567 varchar(48);";
-        // Yii::$app->getDb()->createCommand($sql)->execute();
+        // $db->createCommand($sql)->execute();
     }
     
     /**
