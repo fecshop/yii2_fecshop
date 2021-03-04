@@ -59,6 +59,21 @@ class AttrMysqldb extends Service implements AttrInterface
         }
     }
     
+    public function getByAttrTypeAndName($attr_type, $name)
+    {
+        if ($attr_type && $name) {
+            $one = $this->_attrModel->findOne([
+                'attr_type' => $attr_type,
+                'name' => $name,
+            ]);
+            
+            return $one;
+        } else {
+            
+            return new $this->_attrModel();
+        }
+    }
+    
     public function getByRemoteId($remoteId)
     {
         if (!$remoteId) {

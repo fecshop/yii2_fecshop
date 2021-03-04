@@ -60,6 +60,18 @@ class AttrGroupMysqldb extends Service implements AttrGroupInterface
         }
     }
     
+    public function getByName($name)
+    {
+        if ($name) {
+            $one = $this->_attrGroupModel->findOne(['name' => $name]);
+            
+            return $one;
+        } else {
+            
+            return new $this->_attrGroupModel();
+        }
+    }
+    
     /*
      * example filter:
      * [
