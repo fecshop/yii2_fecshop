@@ -97,6 +97,14 @@ class Attr extends Service
     /**
      * get artile model by primary key.
      */
+    public function getByAttrTypeAndName($attr_type, $name)
+    {
+        return $this->_attr->getByAttrTypeAndName($attr_type, $name);
+    }
+    
+    /**
+     * get artile model by primary key.
+     */
     public function getByRemoteId($remoteId)
     {
         return $this->_attr->getByRemoteId($remoteId);

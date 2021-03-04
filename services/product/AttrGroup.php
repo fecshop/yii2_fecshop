@@ -87,11 +87,20 @@ class AttrGroup extends Service
     }
 
     /**
-     * get artile model by primary key.
+     * get  model by primary key.
      */
     public function getByPrimaryKey($primaryKey)
     {
         return $this->_attrGroup->getByPrimaryKey($primaryKey);
+    }
+    
+    
+    /**
+     * get  model by name
+     */
+    public function getByName($name)
+    {
+        return $this->_attrGroup->getByName($name);
     }
     
     public function coll($filter = '')
