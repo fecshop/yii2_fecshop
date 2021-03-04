@@ -73,17 +73,22 @@ class ProductattrgroupController extends AppapiTokenController
     public function actionFetchone()
     {
         $primaryKeyVal = Yii::$app->request->get('id');
+        $name = Yii::$app->request->get('name');
         $data          = [];
-        if ( !$primaryKeyVal ) {
+        
+        if ($primaryKeyVal) {
+            $attrM = Yii::$service->product->attrGroup->getByPrimaryKey($primaryKeyVal);
+        } else if ($name) {
+            $attrM = Yii::$service->product->attrGroup->getByName($name);
+        } else {
             
             return [
                 'code'    => 400,
-                'message' => 'request param [id] can not all empty',
+                'message' => 'request param [id or name] can not all empty',
                 'data'    => [],
             ];
-        }
-            
-        $attrM = Yii::$service->product->attrGroup->getByPrimaryKey($primaryKeyVal);
+        }   
+        
         if(isset($attrM['name']) && $attrM['name']){
             $data = $attrM;
         }
