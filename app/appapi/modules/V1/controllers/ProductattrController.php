@@ -73,17 +73,23 @@ class ProductattrController extends AppapiTokenController
     public function actionFetchone()
     {
         $primaryKeyVal = Yii::$app->request->get('id');
+        $attr_type = Yii::$app->request->get('attr_type');
+        $name = Yii::$app->request->get('name');
         $data          = [];
-        if ( !$primaryKeyVal ) {
+        
+        if ($primaryKeyVal) {
+            $attrM = Yii::$service->product->attr->getByPrimaryKey($primaryKeyVal);
+        } else if ($attr_type && $name) {
+            $attrM = Yii::$service->product->attr->getByAttrTypeAndName($attr_type, $name);
+        } else {
             
             return [
                 'code'    => 400,
-                'message' => 'request param [id] can not all empty',
+                'message' => 'request param [id or (attr_type && name)] can not all empty',
                 'data'    => [],
             ];
         }
-            
-        $attrM = Yii::$service->product->attr->getByPrimaryKey($primaryKeyVal);
+       
         if(isset($attrM['name']) && $attrM['name']){
             $data = $attrM;
         }
@@ -92,7 +98,7 @@ class ProductattrController extends AppapiTokenController
             
             return [
                 'code'    => 400,
-                'message' => 'can not find product attr by id ',
+                'message' => 'can not find product attr ',
                 'data'    => [],
             ];
         } else {
