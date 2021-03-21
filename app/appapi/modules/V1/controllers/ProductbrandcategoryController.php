@@ -71,6 +71,7 @@ class ProductbrandcategoryController extends AppapiTokenController
         $status = Yii::$app->request->post('status');
         
         $primaryKey = Yii::$service->product->brand->getPrimaryKey();
+        /*
         if (!$id) {
             return [
                 'code'    => 400,
@@ -80,6 +81,7 @@ class ProductbrandcategoryController extends AppapiTokenController
                 ],
             ];
         }
+        */
         $param = [
             'sort_order'           => $sort_order,
             'name'             => $name,

@@ -72,6 +72,7 @@ class ProductbrandController extends AppapiTokenController
         $logo = Yii::$app->request->post('logo');
         $website_url = Yii::$app->request->post('website_url');
         $primaryKey = Yii::$service->product->brand->getPrimaryKey();
+        /*
         if (!$id) {
             return [
                 'code'    => 400,
@@ -81,6 +82,7 @@ class ProductbrandController extends AppapiTokenController
                 ],
             ];
         }
+        */
         $param = [
             'brand_category_id'           => $brand_category_id,
             'name'             => $name,
