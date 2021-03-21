@@ -26,14 +26,22 @@ class ProductApi extends Service
 
     protected $_param = []; // $this->_param
     
-    protected $_productModelName = '\fecshop\models\mongodb\Product';
+    protected $_productModelName = '';
 
     protected $_productModel;
     
     public function init()
     {
         parent::init();
-        list($this->_productModelName, $this->_productModel) = \Yii::mapGet($this->_productModelName);
+        if (Yii::$service->product->storage == 'ProductMysqldb') {
+            $this->_productModelName = '\fecshop\models\mysqldb\Product';
+            list($this->_productModelName, $this->_productModel) = \Yii::mapGet($this->_productModelName);
+        } else {
+            $this->_productModelName = '\fecshop\models\mongodb\Product';
+            list($this->_productModelName, $this->_productModel) = \Yii::mapGet($this->_productModelName);
+        }
+        
+        
     }
     
     /**
