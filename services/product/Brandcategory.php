@@ -134,12 +134,14 @@ class Brandcategory extends Service
         $currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
         $primaryVal = $one['id'];
         //var_dump($one);exit;
-        if (!$primaryVal) {
-            Yii::$service->helper->errors->add('id can not empty');
-            
-            return;
+        if (!$primaryVal) {  // 如果id为空，或者为0，则新增。
+            //Yii::$service->helper->errors->add('id can not empty');
+            //return;
+            $model = new $this->_modelName();
+            $model->created_at = time();
+        } else {
+            $model = $this->_model->findOne($primaryVal);
         }
-        $model = $this->_model->findOne($primaryVal);
         if (!$model) {
             $model = new $this->_modelName();
             $model->created_at = time();
