@@ -318,8 +318,10 @@ class Price extends Service
                 'value'         => $special_price_info['value'],
                 'code'          => $special_price_info['code'],
             ];
-            $off = ($price_info['value'] - $special_price_info['value']) / $price_info['value'];
-            $this->currentOff = round($off * 100);
+            if ($price_info['value'] > 0) {
+                $off = ($price_info['value'] - $special_price_info['value']) / $price_info['value'];
+                $this->currentOff = round($off * 100);
+            }
         }
 
         return $return;

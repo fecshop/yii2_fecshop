@@ -205,7 +205,7 @@ class ProductattrgroupController extends AppapiTokenController
                 ],
             ];
         }
-        $saveData['attr_ids'] = unserialize($saveData['attr_ids']);
+        //$saveData['attr_ids'] = unserialize($saveData['attr_ids']);
         if (isset($saveData['attr_ids']) && $saveData['attr_ids']) {
             $saveData['attr_ids'] = unserialize($saveData['attr_ids']);
         }
