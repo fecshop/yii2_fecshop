@@ -119,7 +119,7 @@ $(document).ready(function(){
 		$(".validation-advice").remove();
 		$(".validation-failed").removeClass("validation-failed");
 		
-		var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+		var myreg = /^([a-zA-Z0-9]+[_|\_|\.|-|\-]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.|-|\-]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
 		// empty check
 		$(".account-register .required-entry").each(function(){
 			val = $(this).val();
