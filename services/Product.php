@@ -153,6 +153,7 @@ class Product extends Service
                     
                     $attrInfo = [
                         'dbtype'     => $attrOne['db_type'],
+                        'attr_type' => $attrOne['attr_type'],
                         'name'       => $attrName,
                         'showAsImg'  => $attrOne['show_as_img'] == 1 ? true : false ,
                         'sort_order'   => $attr_sort_order,

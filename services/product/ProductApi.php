@@ -420,15 +420,36 @@ class ProductApi extends Service
             return;
         }
         $i = 0;
-        $spu = $this->generateSpu();
+        
         $productSaveData = [];
+        $useOriginSpu = false;
         foreach ($products as $product) {
             $i++;
             $is_deputy = 2;
             if ($i == 1) {
                 $is_deputy = 1;
+                // 如果传递参数中存在sku和spu，则
+                if (isset($product['spu']) && isset($product['sku']) && $product['spu'] && $product['sku']) {
+                    // 验证spu是否已经存在
+                    $spuProducts = Yii::$service->product->getBySpu($product['spu']);
+                    if (is_array($spuProducts) && !empty($spuProducts)) {
+                        // 如果已经存在，则退出
+                        Yii::$service->helper->errors->add('spu['.$product['spu'].'] is exist');
+                        
+                        return ;
+                    }
+                    $useOriginSpu = true;
+                }
+                
             }
-            $sku = $this->generateSku($spu);
+            if (!$useOriginSpu) {
+                $spu = $this->generateSpu();
+                $sku = $this->generateSku($spu);
+            } else {
+                $spu = $product['spu'];
+                $sku = $product['sku'];
+            }
+            
             if ($saveData = $this->insertByShopfwItem($product, $spu, $sku, $is_deputy)) {
                 $productSaveData[] = $saveData;
             }
@@ -759,6 +780,10 @@ class ProductApi extends Service
         if (!empty($title) && is_array($title)) {
             $this->_param['title'] = $title;
         }
+        if (isset($post['brand_id']) && $post['brand_id']) {
+            $this->_param['brand_id'] =  $post['brand_id'];
+        }
+        
         // 选填 多语言
         $meta_keywords = $post['meta_keywords'];
         if (!empty($meta_keywords) && is_array($meta_keywords)) {
@@ -771,10 +796,29 @@ class ProductApi extends Service
         }
         // 属性组属性，这里没有做强制的必填判断，有值就会加入 $this->_param 中。
         $attrInfo = Yii::$service->product->getGroupAttrInfo($attr_group);
+        
+        $attr_group_normal = [];
+        if (isset($post['attr_group_normal']) && is_array($post['attr_group_normal']) && !empty($post['attr_group_normal'])) {
+            $attr_group_normal = $post['attr_group_normal'];
+        }
+        $attr_group_custom = [];
+        if (isset($post['attr_group_custom']) && is_array($post['attr_group_custom']) && !empty($post['attr_group_custom'])) {
+            $attr_group_custom = $post['attr_group_custom'];
+        }
+        
         if (is_array($attrInfo) && !empty($attrInfo)) {
             foreach ($attrInfo as $attrName => $info) {
-                if (isset($post[$attrName]) && $post[$attrName]) {
-                    $attrVal = $post[$attrName];
+                if ($info['attr_type'] == 'general_attr') {
+                    $attrVal = $attr_group_normal[$attrName];
+                } else if ($info['attr_type'] == 'spu_attr') {
+                    $attrVal = $attr_group_custom[$attrName];
+                }
+                $this->_param[$attrName] = $attrVal;
+                //if (isset($post[$attrName]) && $post[$attrName]) {
+                    //$attrVal = $post[$attrName];
+                    
+                    
+                    /*
                     if (isset($info['display']['type']) && $info['display']['type'] === 'select') {
                         $selectArr = $info['display']['data'];
                         if (!is_array($selectArr) || empty($selectArr)) {
@@ -789,9 +833,11 @@ class ProductApi extends Service
                     } else {
                         $this->_param[$attrName] = $attrVal;
                     }
-                }
+                    */
+                //}
             }
         }
+        //var_dump($this->_param);exit;
     }
     
     
