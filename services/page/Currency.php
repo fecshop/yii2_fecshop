@@ -250,6 +250,11 @@ class Currency extends Service
             $currencyCode = $this->getCurrentCurrency();
         }
 
+        if (!$this->getCurrencys($currencyCode)) {
+            $currencyCode = $this->defaultCurrency;
+            $this->setCurrentCurrency($currencyCode);
+        }
+        
         return $this->getCurrencys($currencyCode);
     }
 
