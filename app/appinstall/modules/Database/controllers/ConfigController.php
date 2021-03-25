@@ -318,7 +318,7 @@ class ConfigController extends Controller
                 $configArr = unserialize($baseConfig['value']);
                 $configArr['image_domain'] = 'http://'.$img_domain;
                 $configArr['base_currency'] = $baseCurrencyCode;
-                
+                $configArr['default_currency'] = $baseCurrencyCode;
                 $baseConfig['value'] = serialize($configArr);
                 $baseConfig['updated_at'] = time();
                 $baseConfig->save();
