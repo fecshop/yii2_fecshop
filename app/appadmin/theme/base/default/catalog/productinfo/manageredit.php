@@ -213,7 +213,9 @@ function thissubmit(thiss){
 						<!--<li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Custom Option') ?></span></a></li>
 						-->
                         <li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Relate Product') ?></span></a></li>
-					</ul>
+                        <li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Third Collection') ?></span></a></li>
+					
+                    </ul>
 				</div>
 			</div>
 			<div class="productPage tabsContent" style="height:550px;overflow:auto;">
@@ -392,6 +394,9 @@ function thissubmit(thiss){
 				</div>
 				<div class="relation_list" style="margin:20px 2px;">
 						<?= $relation ?>	
+				</div>
+                <div class="third_info_list" style="margin:20px 2px;">
+						<?= $thirdInfo ?>	
 				</div>
 			</div>
 			<div class="tabsFooter">

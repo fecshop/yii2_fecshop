@@ -92,6 +92,7 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
             'custom_option_img' => $this->getCustomOpImgHtml(),
             'custom_option_list'=> $this->_custom_option_list_str,
             'relation'          => $this->getRelationInfo(),
+            'thirdInfo'          => $this->getThirdDataInfo(),
         ];
     }
 
@@ -173,7 +174,18 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
 
         return $this->_lang_attr.$editBar.$this->_textareas;
     }
+    
+    
+    public function getThirdDataInfo()
+    {
+        $this->_lang_attr = '';
+        $this->_textareas = '';
+        $editArr = $this->_attr->getThirdDataInfo();
+        $editBar = $this->getEditBar($editArr);
 
+        return $this->_lang_attr.$editBar.$this->_textareas;
+    }
+    
     public function getBaseInfo()
     {
         $this->_lang_attr = '';

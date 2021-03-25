@@ -426,6 +426,8 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
                     <li><a class="add"   href="'.$this->_batchInsertUrl.'"  target="dialog" height="680" width="1200" drawable="true" mask="true"><span>' . Yii::$service->page->translate->__('Batch Add') . '</span></a></li>
                     <li><a target="dialog" height="680" width="1200" drawable="true" mask="true" class="edit" href="'.$this->_editUrl.'?'.$this->_primaryKey.'={sid_user}" ><span>' . Yii::$service->page->translate->__('Update') . '</span></a></li>
 					<li><a  csrfName="' .CRequest::getCsrfName(). '" csrfVal="' .CRequest::getCsrfValue(). '" title="' . Yii::$service->page->translate->__('Are you sure you want to delete these records?') . '" target="selectedTodo" rel="'.$this->_primaryKey.'s" postType="string" href="'.$this->_deleteUrl.'" class="delete"><span>' . Yii::$service->page->translate->__('Batch Delete') . '</span></a></li>
-				</ul>';
+                    <li><a  style="background-color: #eea236;  border: #eea236;"  href="https://www.shopfw.com/soft/fecmall.html"  target="_blank" ><span>批量采集商品</span></a></li>
+                    
+                </ul>';
     }
 }

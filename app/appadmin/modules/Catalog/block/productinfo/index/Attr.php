@@ -116,6 +116,38 @@ class Attr extends \yii\base\BaseObject
 
         ];
     }
+    
+    public function getThirdDataInfo()
+    {
+        return [
+            [
+                'label' => Yii::$service->page->translate->__('Third Refer Url'),
+                'name'  => 'third_refer_url',
+                'display' => [
+                    'type' => 'inputString',
+                ],
+                'require' => 0,
+            ],
+            [
+                'label' => Yii::$service->page->translate->__('Third Refer Code'),
+                'name'  => 'third_refer_code',
+                'display' => [
+                    'type' => 'inputString',
+                ],
+                'require' => 0,
+            ],
+            [
+                'label' => Yii::$service->page->translate->__('Third Product Code'),
+                'name'  => 'third_product_code',
+                'display' => [
+                    'type' => 'inputString',
+                ],
+                'require' => 0,
+            ],
+
+        ];
+    }
+    
 
     public function getBaseInfo()
     {
