@@ -614,7 +614,7 @@ return [
     'Order Config' => '订单参数配置',
     'Order IncrementId Format' => '订单编号格式',
     'requiredAddressAttr' => '订单地址必填字段',
-    'orderProductSaleInMonths' => '产品销量下单事件范围',
+    'orderProductSaleInMonths' => '产品销量下单时间范围',
     'minuteBeforeThatReturnPendingStock' => 'X分钟后未支付订单返还库存',
     'orderCountThatReturnPendingStock' => '未支付订单归还库存脚本处理个数',
     'orderRemarkStrMaxLen' => '订单备注字符最大数',
