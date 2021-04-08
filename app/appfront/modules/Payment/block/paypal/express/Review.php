@@ -28,6 +28,8 @@ class Review extends \yii\base\BaseObject
     protected $_cartAddress;
     protected $_cart_address;
     protected $_cart_info;
+    protected $_address;
+    protected $_countrySelect;
 
     public function getLastData()
     {
