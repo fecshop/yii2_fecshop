@@ -21,8 +21,9 @@
 <br/>
 <br/>
 <button type="button" class="btn btn-default  dbNext">安装产品测试数据</button>
+<!--
 <button type="button" class="btn btn-default  dbSkip">跳过</button>
-
+-->
 <div class="loadingInfo" style="display:none;">
 产品测试数据安装中，请耐心等待，在该过程中请勿刷新页面...
 </div>
