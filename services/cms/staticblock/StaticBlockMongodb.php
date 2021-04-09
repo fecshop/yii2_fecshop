@@ -109,7 +109,7 @@ class StaticBlockMongodb extends Service implements StaticBlockInterface
             $primaryVal = new \MongoDB\BSON\ObjectId();
             $model->{$this->getPrimaryKey()} = $primaryVal;
         }
-
+        $one['status'] = (int)$one['status'];
         $model->updated_at = time();
         unset($one['_id']);
         $saveStatus = Yii::$service->helper->ar->save($model, $one);
