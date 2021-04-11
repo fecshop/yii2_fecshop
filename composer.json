@@ -29,6 +29,7 @@
     "fancyecommerce/fec":">=1.2.0",
     "fancyecommerce/fec_admin":">=1.4.2",
     "ramsey/uuid": "*",
+    "league/iso3166": "^2.1",
     "facebook/graph-sdk": "*",
     "hightman/xunsearch": "*@beta"
   },

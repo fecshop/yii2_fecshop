@@ -32,7 +32,27 @@ class Country extends Service
 
         return $this->default_country;
     }
-
+    
+    /**
+     * @param $countryCode | string, 二位国家简码
+     * 得到IOS3166的数组信息 例子： 参数 $countryCode = CN，返回结果如下
+     *    [
+     *        'name' => 'China',
+     *        'alpha2' => 'CN',
+     *        'alpha3' => 'CHN',
+     *        'numeric' => '156',
+     *        'currency' => [
+     *            'CNY',
+     *        ],
+     *    ],
+     * 
+     */
+    public function getIOS3166InfoByCountryCode($countryCode)
+    {
+        
+        return (new \League\ISO3166\ISO3166)->alpha2($countryCode);
+    }
+    
     /**
      * 通过国家，得到省的option html的字符串
      */
