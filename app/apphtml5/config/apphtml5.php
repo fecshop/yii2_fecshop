@@ -67,6 +67,7 @@ $config = [
         ],
         // 404页面对应的链接。
         'errorHandler' => [
+            'class' => 'fecshop\yii\web\ErrorHandler',
             'errorAction' => 'site/helper/error',
             'exceptionView' => '@fecshop/yii/views/errorHandler/exception.php',
         ],

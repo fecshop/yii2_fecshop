@@ -74,6 +74,7 @@ $config = [
         ],
         // 404页面对应的url key
         'errorHandler' => [
+            'class' => 'fecshop\yii\web\ErrorHandler',
             'exceptionView' => '@fecshop/yii/views/errorHandler/exception.php',
         ],
     ],
