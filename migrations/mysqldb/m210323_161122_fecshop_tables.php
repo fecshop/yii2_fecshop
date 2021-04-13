@@ -16,6 +16,9 @@ class m210323_161122_fecshop_tables extends Migration
             "
             ALTER TABLE `product_flat` CHANGE `description` `description` LONGTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL
             ",
+            "
+            ALTER TABLE `sales_flat_order` CHANGE `txn_id` `txn_id` VARCHAR( 80 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'Transaction Id 支付平台唯一交易号,通过这个可以在第三方支付平台查找订单'
+            ",
         ];
 
         foreach ($arr as $sql) {
