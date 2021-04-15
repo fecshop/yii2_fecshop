@@ -40,7 +40,7 @@ class Helper extends Service
      */
     public  function getVersion()
     {
-        return '2.12.2';
+        return '2.13.0';
     }
     
     /**
