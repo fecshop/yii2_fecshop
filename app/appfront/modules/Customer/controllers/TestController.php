@@ -24,9 +24,8 @@ class TestController extends AppfrontController
 
     public $enableCsrfValidation = false;
 
-    /**
-     * 
     
+    /*
     public function actionIndex()
     {
         //$filePath = Yii::getAlias('@fecshop/app/appfront/languages/zh-CN/appfront.php');
@@ -55,7 +54,7 @@ class TestController extends AppfrontController
     {
         $filePath = Yii::getAlias('@fecshop/app/appserver/languages/zh-CN/appserver.php');
         
-        $config = require($filePath);
+        $config = require('/www/web/demo/fecwbbc/addons/fecmall/fecwbbc/app/apphtml5/languages/zh-CN/apphtml5.php');
         
         return $config;
     }
@@ -99,7 +98,7 @@ class TestController extends AppfrontController
     protected function getArr1()
     {
         $str = "
-        
+            
         ";
         $arr = explode(PHP_EOL, $str);
         $arr1 = [];
@@ -117,11 +116,11 @@ class TestController extends AppfrontController
         return $arr1;
     }
     
-    public function actionTest(){
-        $src_file = Yii::getAlias('@addons/fecshop_theme_furnilife.zip');
-        $dest_dir = Yii::getAlias('@addons/');
-        Yii::$service->helper->zipFile->unzip($src_file, $dest_dir, true, false);
-    }
+    //public function actionTest(){
+    //    $src_file = Yii::getAlias('@addons/fecshop_theme_furnilife.zip');
+    //    $dest_dir = Yii::getAlias('@addons/');
+    //    Yii::$service->helper->zipFile->unzip($src_file, $dest_dir, true, false);
+    //}
     
     
     public function actionTest(){
@@ -139,9 +138,9 @@ class TestController extends AppfrontController
     }
     
     
+    
+    
     */
-    
-    
     
     
     
