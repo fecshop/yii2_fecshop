@@ -54,7 +54,7 @@ class TestController extends AppfrontController
     {
         $filePath = Yii::getAlias('@fecshop/app/appserver/languages/zh-CN/appserver.php');
         
-        $config = require('/www/web/demo/fecwbbc/addons/fecmall/fecwbbc/app/apphtml5/languages/zh-CN/apphtml5.php');
+        $config = require('/www/web/demo/fecwbbc/addons/fecmall/fecwbbc/app/appfront/languages/zh-CN/appfront.php');
         
         return $config;
     }
@@ -98,7 +98,6 @@ class TestController extends AppfrontController
     protected function getArr1()
     {
         $str = "
-            
         ";
         $arr = explode(PHP_EOL, $str);
         $arr1 = [];
@@ -139,8 +138,8 @@ class TestController extends AppfrontController
     
     
     
-    
     */
+    
     
     
     
