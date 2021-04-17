@@ -35,8 +35,8 @@ class Helper extends Service
     protected $_param;
     
     /**
-     * Returns a string representing the current version of the Yii framework.
-     * @return string the version of Yii framework
+     * Returns a string representing the current version of the fecmall framework.
+     * @return string the version of fecmall framework
      */
     public  function getVersion()
     {
