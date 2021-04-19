@@ -116,8 +116,8 @@ class MysqlSearch extends Service implements SearchInterface
                     $one['final_price'] = (float)$one['final_price'];
                     unset($one[$productPrimaryKey]);
                     $one_name = $one['name'];
-                    $one_description = $one['description'];
-                    $one_short_description = $one['short_description'];
+                   // $one_description = $one['description'];
+                    //$one_short_description = $one['short_description'];
                     $searchLangCode = $this->getActiveLangCode();
                     if (!empty($searchLangCode) && is_array($searchLangCode)) {
                         foreach ($searchLangCode as $langCode) {
@@ -131,8 +131,8 @@ class MysqlSearch extends Service implements SearchInterface
                                 $searchModel = new $this->_searchModelName();
                             }
                             $one['name'] = Yii::$service->fecshoplang->getLangAttrVal($one_name, 'name', $langCode);
-                            $one['description'] = Yii::$service->fecshoplang->getLangAttrVal($one_description, 'description', $langCode);
-                            $one['short_description'] = Yii::$service->fecshoplang->getLangAttrVal($one_short_description, 'short_description', $langCode);
+                            //$one['description'] = Yii::$service->fecshoplang->getLangAttrVal($one_description, 'description', $langCode);
+                            //$one['short_description'] = Yii::$service->fecshoplang->getLangAttrVal($one_short_description, 'short_description', $langCode);
                             $one['sync_updated_at'] = time();
                             Yii::$service->helper->ar->save($searchModel, $one);
                             if ($errors = Yii::$service->helper->errors->get()) {
@@ -252,7 +252,8 @@ class MysqlSearch extends Service implements SearchInterface
         $searchText = $where['$text']['$search'];
         unset($where['$text']);
         $whereArr[] = 'and';
-        $whereArr[] = [ 'or', ['like', 'name', $searchText ], ['like', 'description', $searchText ] ];
+        //$whereArr[] = [ 'or', ['like', 'name', $searchText ], ['like', 'description', $searchText ] ];
+        $whereArr[] = ['like', 'name', $searchText ];
         if (!isset($where['status'])) {
             $where['status'] = Yii::$service->product->getEnableStatus();
         }
