@@ -247,6 +247,20 @@ class Category extends Service
         return $this->_category->getChildCategory($category_id);
     }
     
+    /**
+     * get  model by remote primary key.
+     */
+    public function getByRemoteId($remoteId)
+    {
+        return $this->_category->getByRemoteId($remoteId);
+    }
+    
+    public function getCategoryIdsByRemoteIds($remoteIds)
+    {
+        return $this->_category->getCategoryIdsByRemoteIds($remoteIds);
+    }
+    
+    
     public function excelSave($categoryArr)
     {
         return $this->_category->excelSave($categoryArr);
