@@ -989,6 +989,23 @@ class Country extends Service
                 'XJ' => '新疆维吾尔自治区',
                 'XG' => '香港特别行政区',
             ],
+            'ZA' => [  // 南非
+                'EC' => 'Eastern Cape',
+                'FS' => 'Free State',
+                'GT' => 'Gauteng',
+                'KZN' => 'KwaZulu-Natal',
+                'LP' => 'Limpopo',
+                'ML' => 'Mpumalange',
+                'NC' => 'Northern Cape',
+                'NW' => 'North West',
+                'WC' => 'Western Cape',
+                
+            ],
+            
+
+
+
+
         ];
 
         return $data;
