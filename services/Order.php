@@ -1002,6 +1002,41 @@ class Order extends Service
         
         return true;
     }
+    
+    
+    /**
+     * @property $orderId | int
+     * @property $trackingCompanyCode | string
+     * @property $trackingNumber | string
+     * 订单发货操作
+     */
+    public function trackingShip($orderId, $trackingCompanyCode, $trackingNumber)
+    {
+        $updateComules = $this->_orderModel->updateAll(
+            [
+                'order_status' => $this->status_dispatched,
+                'tracking_company' => $trackingCompanyCode,
+                'tracking_number' => $trackingNumber,
+                'dispatched_at' => time(),
+            ],
+            [
+                'and',
+                ['order_id'  => $orderId],
+                ['in', 'order_status', [
+                    $this->payment_status_confirmed,
+                    $this->status_processing,
+                ]]
+            ]
+        );
+        if (empty($updateComules)) {
+            Yii::$service->helper->errors->add('order {order_id} ship fail', [ 'order_id' => $orderId]);
+            
+            return false;
+        }
+        
+        return true;
+    }
+    
     /**
      * @param $incrementId | string, 订单编号
      * @param $customerId | int, 用户id
@@ -1109,6 +1144,7 @@ class Order extends Service
         
         return $logMessage;
     }
+    
 
     /**
      * @param $days | Int 天数
