@@ -164,7 +164,13 @@ class AttrGroup extends Service
         return $this->_attrGroup->getActiveAllColl();
     }
     
-    
+    /**
+     * get artile model by primary key.
+     */
+    public function getByRemoteId($remoteId)
+    {
+        return $this->_attr->getByRemoteId($remoteId);
+    }
     
     
 }
