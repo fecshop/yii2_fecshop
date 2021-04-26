@@ -241,7 +241,7 @@ class Index extends \yii\base\BaseObject
         }
         $stateHtml = Yii::$service->helper->country->getStateOptionsByContryCode($country, $state);
         if (!$stateHtml) {
-            $stateHtml = '<input id="state" name="billing[state]" value="'.$state.'" title="State" class="address_state input-text" style="" type="text">';
+            $stateHtml = '<input id="state" placeholder="'. Yii::$service->page->translate->__('Your State').'" name="billing[state]" value="'.$state.'" title="State" class="address_state input-text" style="" type="text">';
         } else {
             $stateHtml = '<select id="address:state" class="address_state validate-select" title="State" name="billing[state]">
 							<option value="">Please select region, state or province</option>'
