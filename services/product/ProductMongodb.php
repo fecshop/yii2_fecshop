@@ -327,6 +327,7 @@ class ProductMongodb extends Service implements ProductInterface
         $one['min_sales_qty'] = (int)$one['min_sales_qty'];
         $currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
         $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
+        $remoteId = isset($one['remote_id']) ? $one['remote_id'] : '';
         // 得到group spu attr
         $groupSpuAttrs = Yii::$service->product->getGroupSpuAttr($attr_group);
         $spuAttrArr = [];
@@ -334,6 +335,10 @@ class ProductMongodb extends Service implements ProductInterface
             foreach ($groupSpuAttrs as $groupSpuOne) {
                 $spuAttrArr[] = $groupSpuOne['name'];
             }
+        }
+        $modelM = $this->_productModel->findOne(['remote_id' => $remoteId]);
+        if ($modelM && !$primaryVal) {
+            $primaryVal = isset($modelM[$this->getPrimaryKey()]) ? $modelM[$this->getPrimaryKey()] : '';
         }
         if ($primaryVal) {
             $model = $this->_productModel->findOne($primaryVal);
@@ -1366,9 +1371,22 @@ class ProductMongodb extends Service implements ProductInterface
         $productM['price'] = $price;
         $productM['special_price'] = $special_price;
         $productM['qty'] = $qty;
-        $productM['updated_at'] = time();
+        //$productM['updated_at'] = time();
         $productM->save();
         
         return true;
+    }
+    
+    public function updateProductFlatQty($productId, $qty)
+    {
+        $productM = $this->_productModel->findOne($productId);
+        if (!$productM) {
+            Yii::$service->helper->errors->add('product is not exist');
+            
+            return false;
+        }
+        $productM['qty'] = $qty;
+        
+        return $productM->save();
     }
 }

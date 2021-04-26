@@ -415,6 +415,7 @@ class ProductMysqldb extends Service implements ProductInterface
         unset($one['url_key']);
         $currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
         $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
+        $remoteId = isset($one['remote_id']) ? $one['remote_id'] : '';
         // 得到group spu attr
         $attr_group = $one['attr_group'];
         $groupSpuAttrs = Yii::$service->product->getGroupSpuAttr($attr_group);
@@ -423,6 +424,10 @@ class ProductMysqldb extends Service implements ProductInterface
             foreach ($groupSpuAttrs as $groupSpuOne) {
                 $spuAttrArr[$groupSpuOne['name']] = $one[$groupSpuOne['name']];
             }
+        }
+        $modelM = $this->_productModel->findOne(['remote_id' => $remoteId]);
+        if ($modelM && !$primaryVal) {
+            $primaryVal = isset($modelM[$this->getPrimaryKey()]) ? $modelM[$this->getPrimaryKey()] : '';
         }
         if ($primaryVal) {
             if (!is_numeric($primaryVal)) {
@@ -514,7 +519,9 @@ class ProductMysqldb extends Service implements ProductInterface
          * 更新产品信息到搜索表。
          */
         Yii::$service->search->syncProductInfo([$product_id]);
-        
+        foreach ($this->serializeAttrs as $attr) {
+            $model[$attr] = $model[$attr] ? unserialize($model[$attr]) : '';
+        }
         return $model;
     }
     
@@ -1553,14 +1560,26 @@ class ProductMysqldb extends Service implements ProductInterface
             return false;
         }
         // 修改价格
-        
         $productM['price'] = $price;
         $productM['special_price'] = $special_price;
-        $productM['qty'] = $qty;
+        //$productM['qty'] = $qty;
         $productM['updated_at'] = time();
         $productM->save();
         
         return true;
+    }
+    
+    public function updateProductFlatQty($productId, $qty)
+    {
+        $productM = $this->_productModel->findOne($productId);
+        if (!$productM) {
+            Yii::$service->helper->errors->add('product is not exist');
+            
+            return false;
+        }
+        $productM['qty'] = $qty;
+        
+        return $productM->save();
     }
     
 }
