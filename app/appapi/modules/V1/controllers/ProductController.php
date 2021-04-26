@@ -175,6 +175,69 @@ class ProductController extends AppapiTokenController
         }
         
     }
+    
+    /**
+     * Upsert One Api：新增一条记录的api
+     */
+    public function actionUpsertone2()
+    {
+        //var_dump(Yii::$app->request->post());exit;
+        $productOne = Yii::$app->request->post('product');
+        $spu = $productOne['spu'];
+        Yii::$service->product->addGroupAttrs($productOne['attr_group']);
+        $originUrlKey   = 'catalog/product/index';
+        // 如果已经存在产品，则不更新库存
+        //$productM = Yii::$service->product->getByRemoteId($productOne['id']);
+        //if (isset($productM['sku']) && $productM['sku']) {
+            //unset($productOne['qty']);
+        //}
+        $categoryIds = $productOne['category'];
+        $brandId = $productOne['brand_id'];
+        $remoteId = $productOne['remote_id'];
+        if (!$remoteId) {
+            return [
+                'code'    => 400,
+                'message' => 'upsert product remote_id can not empty',
+                'data'    => [
+                    'error' => 'upsert product  remote_id can not empty',
+                ],
+            ];
+        }
+        // categoryIds
+        $productOne['category'] = Yii::$service->category->getCategoryIdsByRemoteIds($categoryIds);
+        
+        // $brandId
+        $brandM = Yii::$service->product->brand->getByRemoteId($brandId);
+        $productOne['brand_id'] = isset($brandM['id']) ? $brandM['id'] : '';
+        
+        $saveData       = Yii::$service->product->save($productOne, $originUrlKey);
+        $errors         = Yii::$service->helper->errors->get();
+        if (!$errors) {
+            $saveData = $saveData->attributes;
+            if (isset($saveData['_id'])) {
+                $saveData['id'] = (string)$saveData['_id'];
+                unset($saveData['_id']);
+            }
+            
+            return [
+                'code'    => 200,
+                'message' => 'add product success',
+                'data'    => [
+                    'addData' => $saveData,
+                ]
+            ];
+        } else {
+            
+            return [
+                'code'    => 400,
+                'message' => 'save product fail',
+                'data'    => [
+                    'error' => $errors,
+                ],
+            ];
+        }
+        
+    }
     /**
      * Update One Api：更新一条记录的api
      */
