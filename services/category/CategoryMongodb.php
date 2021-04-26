@@ -144,7 +144,7 @@ class CategoryMongodb extends Service implements CategoryInterface
      */
     public function save($one, $originUrlKey = 'catalog/category/index')
     {
-        $currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
+        $remoteId = isset($one['remote_id']) ? $one['remote_id'] : '';
         $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
         if ($primaryVal) {
             $model = $this->_categoryModel->findOne($primaryVal);
@@ -154,6 +154,16 @@ class CategoryMongodb extends Service implements CategoryInterface
                 return false;
             }
             $parent_id = $model['parent_id'];
+        } else if ($remoteId) {    
+            $model = $this->_categoryModel->findOne(['remote_id' => $remoteId]);
+            if (!$model) {
+                $model = new $this->_categoryModelName();
+                $model->created_user_id = \fec\helpers\CUser::getCurrentUserId();
+                $model->created_at = time();
+                $primaryVal = new \MongoDB\BSON\ObjectId();
+                $model->{$this->getPrimaryKey()} = $primaryVal;
+            }
+            $parent_id = $one['parent_id'];
         } else {
             $model = new $this->_categoryModelName;
             $model->created_at = time();
@@ -674,6 +684,43 @@ class CategoryMongodb extends Service implements CategoryInterface
         $model->save();
 
         return $model;
+    }
+    
+    
+    public function getByRemoteId($remoteId)
+    {
+        if (!$remoteId) {
+            
+            return null;
+        } 
+        $one = $this->_categoryModel->findOne(['remote_id' => $remoteId]);
+        if (!isset($one['remote_id']) || !$one['remote_id']){
+            
+            return null;
+        }
+        
+        return $one;
+    }
+    
+    public function getCategoryIdsByRemoteIds($remoteIds)
+    {
+        if (!is_array($remoteIds) || empty($remoteIds)) {
+            
+            return null;
+        } 
+        $data = $this->_categoryModel->find()->asArray()->select(['_id', 'remote_id'])->where([
+            'in', 'remote_id', $remoteIds
+        ])->all();
+        if (!is_array($data) || empty($data)) {
+            
+            return [];
+        } 
+        $arr = [];
+        foreach ($data as $one) {
+            $arr[] = $one['_id'];
+        }
+        
+        return $arr;
     }
     
 }
