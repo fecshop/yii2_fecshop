@@ -417,7 +417,16 @@ return [
     'Brand' => '品牌',
 
 
-
+    // new
+    'Eastern Cape'	=> '东开普省',
+    'Free State'	=> '自由省',
+    'Gauteng'	=> '豪登省',
+    'KwaZulu-Natal'	=> '夸祖鲁-纳塔尔省',
+    'Limpopo'	=> '林波波省',
+    'Mpumalange'	=> '普马兰加省',
+    'Northern Cape'	=> '北开普省',
+    'North West'	=> '西北省',
+    'Western Cape'	=> '西开普省',
 
 
 ];
