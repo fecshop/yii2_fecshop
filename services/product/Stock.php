@@ -112,6 +112,7 @@ class Stock extends Service
             return false;
         }
         // 保存自定义部分的qty
+        /*
         if (is_array($one['custom_option']) && !empty($one['custom_option'])) {
             $custom_option_qty = 0;
             //得到所有的产品custom option qty数据
@@ -146,6 +147,7 @@ class Stock extends Service
                 ]);
             }
         }
+        */
         // 保存产品flat qty
         $productFlatQty = $this->_flatQtyModel->find()
             ->where(['product_id' => $product_id])
@@ -156,6 +158,8 @@ class Stock extends Service
         }
         $productFlatQty->qty = $one['qty'];
         $productFlatQty->save();
+        // 更新产品表的qty（此数据为了排序使用）
+        Yii::$service->product->updateProductFlatQty($product_id, $one['qty']);
         
         return true;
     }
