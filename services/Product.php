@@ -693,5 +693,9 @@ class Product extends Service
         return $this->_product->excelSave($productArr);
     }
     
+    public function updateProductFlatQty($productId, $qty)
+    {
+        return $this->_product->updateProductFlatQty($productId, $qty);
+    }
     
 }
