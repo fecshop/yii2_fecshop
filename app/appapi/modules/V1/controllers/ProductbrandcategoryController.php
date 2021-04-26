@@ -110,6 +110,63 @@ class ProductbrandcategoryController extends AppapiTokenController
     }
     
     /**
+     * Update One Api：更新一条记录的api
+     */
+    public function actionUpsertone2()
+    {
+        $remote_id = Yii::$app->request->post('remote_id');
+        $sort_order = Yii::$app->request->post('sort_order');
+        $name = Yii::$app->request->post('name');
+        $status = Yii::$app->request->post('status');
+        
+        //$primaryKey = Yii::$service->product->brand->getPrimaryKey();
+        /*
+        if (!$id) {
+            return [
+                'code'    => 400,
+                'message' => 'upsert product brand category id can not empty',
+                'data'    => [
+                    'error' => 'upsert product brand category id can not empty',
+                ],
+            ];
+        }
+        */
+        $param = [
+            'sort_order'           => $sort_order,
+            'name'             => $name,
+            'status'     => $status,
+            'remote_id'   => $remote_id,
+        ];
+        if (!$remote_id) {
+            return [
+                'code'    => 400,
+                'message' => 'update product brand category remote_id can not empty',
+                'data'    => [
+                    'error' => 'update product brand category remote_id can not empty',
+                ],
+            ];
+        }
+        $saveData = Yii::$service->product->brandcategory->save($param);
+        if (!$saveData) {
+            $errors = Yii::$service->helper->errors->get(', ');
+            return [
+                'code'    => 400,
+                'message' => 'update product brandcategory fail',
+                'data'    => [
+                    'error' => $errors,
+                ],
+            ];
+        }
+        return [
+            'code'    => 200,
+            'message' => 'update product brandcategory success',
+            'data'    => [
+                'addData' => $saveData,
+            ]
+        ];
+    }
+    
+    /**
      * Delete One Api：删除一条记录的api
      */
     public function actionDeleteone()
