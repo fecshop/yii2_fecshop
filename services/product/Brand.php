@@ -62,7 +62,22 @@ class Brand extends Service
             return new $this->_modelName();
         }
     }
-
+    
+    public function getByRemoteId($remoteId)
+    {
+        if (!$remoteId) {
+            
+            return null;
+        } 
+        $one = $this->_model->findOne(['remote_id' => $remoteId]);
+        if (!isset($one['remote_id']) || !$one['remote_id']){
+            
+            return null;
+        }
+        
+        return $one;
+    }
+    
     /*
      * example filter:
      * [
@@ -103,7 +118,7 @@ class Brand extends Service
      */
     public function save($one)
     {
-        $currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
+        $remoteId = isset($one['remote_id']) ? $one['remote_id'] : '';
         $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
         
         if ($primaryVal) {
@@ -112,6 +127,12 @@ class Brand extends Service
                 Yii::$service->helper->errors->add('brand {primaryKey} is not exist', ['primaryKey' => $this->getPrimaryKey()]);
 
                 return;
+            }
+        } else if ($remoteId) {    
+            $model = $this->_model->findOne(['remote_id' => $remoteId]);
+            if (!$model) {
+                $model = new $this->_modelName();
+                $model->created_at = time();
             }
         } else {
             $model = new $this->_modelName();
@@ -129,6 +150,7 @@ class Brand extends Service
         foreach ($this->_lang_attr as $attr) {
             $model[$attr] = $model[$attr] ? unserialize($model[$attr]) : '';
         }
+        
         return $model;
     }
 
