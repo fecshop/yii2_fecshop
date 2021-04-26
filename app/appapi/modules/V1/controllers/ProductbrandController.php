@@ -113,6 +113,73 @@ class ProductbrandController extends AppapiTokenController
     }
     
     /**
+     * Update One Api：更新一条记录的api
+     */
+    public function actionUpsertone2()
+    {
+        $remote_id = Yii::$app->request->post('remote_id');
+        $brand_category_id = Yii::$app->request->post('brand_category_id');
+        $name = Yii::$app->request->post('name');
+        $status = Yii::$app->request->post('status');
+        $logo = Yii::$app->request->post('logo');
+        $website_url = Yii::$app->request->post('website_url');
+        $primaryKey = Yii::$service->product->brand->getPrimaryKey();
+        // brand category id
+        $brandCategoryM = Yii::$service->product->brandcategory->getByRemoteId($brand_category_id);
+        $local_brand_category_id = '';
+        if ($brandCategoryM && isset($brandCategoryM['id'])) {
+            $local_brand_category_id = $brandCategoryM['id'];
+        }
+        //$brand_category_id = $local_brand_category_id;
+        /*
+        if (!$id) {
+            return [
+                'code'    => 400,
+                'message' => 'upsert product brand id can not empty',
+                'data'    => [
+                    'error' => 'upsert product brand id can not empty',
+                ],
+            ];
+        }
+        */
+        $param = [
+            'brand_category_id'           => $local_brand_category_id,
+            'name'             => $name,
+            'status'     => $status,
+            'logo'  => $logo,
+            'remote_id'  => $remote_id,
+            'website_url'           => $website_url,
+        ];
+        if (!$remote_id) {
+            return [
+                'code'    => 400,
+                'message' => 'update product brand remote_id can not empty',
+                'data'    => [
+                    'error' => 'update product brand remote_id can not empty',
+                ],
+            ];
+        }
+        $saveData = Yii::$service->product->brand->save($param);
+        if (!$saveData) {
+            $errors = Yii::$service->helper->errors->get(', ');
+            return [
+                'code'    => 400,
+                'message' => 'update product brand fail',
+                'data'    => [
+                    'error' => $errors,
+                ],
+            ];
+        }
+        return [
+            'code'    => 200,
+            'message' => 'update product brand success',
+            'data'    => [
+                'addData' => $saveData,
+            ]
+        ];
+    }
+    
+    /**
      * Delete One Api：删除一条记录的api
      */
     public function actionDeleteone()
