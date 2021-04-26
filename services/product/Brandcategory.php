@@ -96,21 +96,43 @@ class Brandcategory extends Service
             'count'=> $query->limit(null)->offset(null)->count(),
         ];
     }
-
+    
+    public function getByRemoteId($remoteId)
+    {
+        if (!$remoteId) {
+            
+            return null;
+        } 
+        $one = $this->_model->findOne(['remote_id' => $remoteId]);
+        if (!isset($one['remote_id']) || !$one['remote_id']){
+            
+            return null;
+        }
+        
+        return $one;
+    }
+    
     /**
      * @param $one|array
      * save $data to cms model,then,add url rewrite info to system service urlrewrite.
      */
     public function save($one)
     {
-        $currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
+        //$currentDateTime = \fec\helpers\CDate::getCurrentDateTime();
         $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
+        $remoteId = isset($one['remote_id']) ? $one['remote_id'] : '';
         if ($primaryVal) {
             $model = $this->_model->findOne($primaryVal);
             if (!$model) {
                 Yii::$service->helper->errors->add('brand {primaryKey} is not exist', ['primaryKey' => $this->getPrimaryKey()]);
 
                 return;
+            }
+        } else if ($remoteId) {    
+            $model = $this->_model->findOne(['remote_id' => $remoteId]);
+            if (!$model) {
+                $model = new $this->_modelName();
+                $model->created_at = time();
             }
         } else {
             $model = new $this->_modelName();
@@ -125,7 +147,10 @@ class Brandcategory extends Service
         $primaryKey = $this->getPrimaryKey();
         $model      = Yii::$service->helper->ar->save($model, $one);
         $primaryVal = $model[$primaryKey];
-
+        foreach ($this->_lang_attr as $attr) {
+            $model[$attr] = $model[$attr] ? unserialize($model[$attr]) : '';
+        }
+        
         return $model;
     }
 
@@ -162,6 +187,7 @@ class Brandcategory extends Service
         return $model;
     }
 
+    
     
     public function remove($ids)
     {
