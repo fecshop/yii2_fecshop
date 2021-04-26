@@ -12,7 +12,7 @@ class HomeController extends AppapiController
     public function actionIndex(){
         return [
                 'code'    => 200,
-                'message' => 'Welcome To Fec-Shop AppApi',
+                'message' => 'Welcome To Fecmall AppApi',
                 'data'    => [],
             ];
         
