@@ -133,6 +133,8 @@ class MysqlSearch extends Service implements SearchInterface
                             $one['name'] = Yii::$service->fecshoplang->getLangAttrVal($one_name, 'name', $langCode);
                             //$one['description'] = Yii::$service->fecshoplang->getLangAttrVal($one_description, 'description', $langCode);
                             //$one['short_description'] = Yii::$service->fecshoplang->getLangAttrVal($one_short_description, 'short_description', $langCode);
+                            unset($one['description']);
+                            unset($one['short_description']);
                             $one['sync_updated_at'] = time();
                             Yii::$service->helper->ar->save($searchModel, $one);
                             if ($errors = Yii::$service->helper->errors->get()) {
