@@ -79,6 +79,9 @@ return [
             'echart' => [
                 'class' => 'fecshop\services\helper\Echart',
             ],
+            'scriptDate' => [
+                'class' => 'fecshop\services\helper\ScriptDate',
+            ],
         ],
     ],
 ];
