@@ -108,6 +108,7 @@ class AttrGroupMysqldb extends Service implements AttrGroupInterface
     {
         $primaryVal = isset($one[$this->getPrimaryKey()]) ? $one[$this->getPrimaryKey()] : '';
         $remoteId = isset($one['remote_id']) ? $one['remote_id'] : '';
+        $isUpdate = false;
         if ($primaryVal) {
             $model = $this->_attrGroupModel->findOne($primaryVal);
             if (!$model) {
@@ -115,15 +116,47 @@ class AttrGroupMysqldb extends Service implements AttrGroupInterface
 
                 return;
             }
+            $isUpdate = true;
         } else if ($remoteId) {    
             $model = $this->_attrGroupModel->findOne(['remote_id' => $remoteId]);
             if (!$model) {
                 $model = new $this->_attrGroupModelName();
                 $model->created_at = time();
+            } else {
+                $isUpdate = true;
             }
         } else {
             $model = new $this->_attrGroupModelName();
             $model->created_at = time();
+        }
+        // attr Group name唯一性判断
+        $groupName = $one['name'];
+        if (!$groupName) {
+            Yii::$service->helper->errors->add('name can not empty');
+            
+            return false;
+        }
+        if ($isUpdate) {
+            $groupId = $model['id'];
+            if ($groupId) {
+                $oneM = $this->_attrGroupModel->find()->asArray()->where([
+                    'and',
+                    ['<>', 'id', $groupId],
+                    ['name' => $groupName]
+                ])->one();
+                if ($oneM['id']) {
+                    Yii::$service->helper->errors->add('name must unique');
+            
+                    return false;
+                }
+            }
+        } else {
+           $oneM = $this->_attrGroupModel->find()->asArray()->where(['name' => $groupName] )->one();
+            if ($oneM['id']) {
+                Yii::$service->helper->errors->add('name must unique');
+        
+                return false;
+            }
         }
         $model->updated_at = time();
         $primaryKey = $this->getPrimaryKey();
@@ -133,6 +166,11 @@ class AttrGroupMysqldb extends Service implements AttrGroupInterface
         return $model;
     }
     
+    
+        
+        
+        
+        
     public function remove($ids)
     {
         if (!$ids) {
@@ -181,6 +219,19 @@ class AttrGroupMysqldb extends Service implements AttrGroupInterface
         return null;
     }
     
-    
+    public function getByRemoteId($remoteId)
+    {
+        if (!$remoteId) {
+            
+            return null;
+        } 
+        $one = $this->_attrGroupModel->findOne(['remote_id' => $remoteId]);
+        if (!isset($one['remote_id']) || !$one['remote_id']){
+            
+            return null;
+        }
+        
+        return $one;
+    }
     
 }
