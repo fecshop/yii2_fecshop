@@ -14,11 +14,27 @@ class m210419_044822_fecshop_tables extends Migration
     {
         $arr = [
             "
-            alert table full_search_product add INDEX  (`name`,`lang`)
+                alert table full_search_product add INDEX  (`name`,`lang`)
             ",
             "
-            alert table full_search_product add INDEX  (`product_id`,`lang`)
+                alert table full_search_product add INDEX  (`product_id`,`lang`)
             ",
+            "
+                ALTER TABLE `product_brand` ADD `remote_id` INT( 12 ) NULL COMMENT '远程同步数据的id', ADD UNIQUE ( `remote_id` )
+            ",
+            "
+                ALTER TABLE `product_brand_category` ADD `remote_id` INT( 12 ) NULL COMMENT '远程同步数据的id', ADD UNIQUE ( `remote_id` )
+            ",
+            "
+                ALTER TABLE `product_flat` ADD `remote_id` INT( 12 ) NULL COMMENT '远程同步数据的id', ADD UNIQUE ( `remote_id` )
+            ",
+            "
+                ALTER TABLE `category` ADD `remote_id` INT( 12 ) NULL COMMENT '远程同步数据的id', ADD UNIQUE ( `remote_id` )
+            ",
+            "
+                ALTER TABLE `category` ADD `remote_parent_id` INT( 12 ) NULL , ADD INDEX ( `remote_parent_id` )
+            ",
+           
         ];
         
         
