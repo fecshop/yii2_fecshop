@@ -406,6 +406,125 @@ class CategoryController extends AppapiTokenController
     }
     
     
+    
+    /**
+     * Update One Api：更新一条记录的api
+     */
+    public function actionUpsertone2(){
+        //var_dump(Yii::$app->request->post());exit;
+        $primaryKey         = Yii::$service->category->getPrimaryKey();
+        $param = [];
+        // 必填
+        $remote_id                 = Yii::$app->request->post('remote_id');
+        // 必填
+        $remote_parent_id          = Yii::$app->request->post('remote_parent_id');
+        // 必填
+        $name               = Yii::$app->request->post('name');
+        // 选填
+        $menu_show             = Yii::$app->request->post('menu_show');
+        
+        $status             = Yii::$app->request->post('status');
+        // 选填
+        $url_key            = Yii::$app->request->post('url_key');
+        // 选填
+        $description        = Yii::$app->request->post('description');
+        // 选填
+        $menu_custom        = Yii::$app->request->post('menu_custom');
+        // 选填
+        $filter_product_attr_selected   = Yii::$app->request->post('filter_product_attr_selected');
+        // 选填
+        $filter_product_attr_unselected = Yii::$app->request->post('filter_product_attr_unselected');
+        // 选填
+        $thumbnail_image                = Yii::$app->request->post('thumbnail_image');
+        // 选填
+        $image              = Yii::$app->request->post('image');
+        // 选填 多语言
+        $title              = Yii::$app->request->post('title');
+        // 选填 多语言
+        $meta_keywords      = Yii::$app->request->post('meta_keywords');
+        // 选填 多语言
+        $meta_description   = Yii::$app->request->post('meta_description');
+        if (!$remote_id) {
+            $error[] = '[remote_id] can not empty';
+        }
+        //if ($remote_parent_id === '') {
+        //    $error[] = '[remote_parent_id] can not empty';
+        //}
+        // 通过remote_parent_id 获取 parent_id
+        if ($remote_parent_id) {
+            $categoryM = Yii::$service->category->getByRemoteId($remote_parent_id);
+            if (isset($categoryM[$primaryKey]) && $categoryM[$primaryKey]) {
+                $param['parent_id'] = $categoryM[$primaryKey];
+            }
+        }
+        if (!$param['parent_id']) {
+            $param['parent_id'] = 0;
+        }
+        
+        $param['remote_id'] = $remote_id;
+        $param['remote_parent_id'] = $remote_parent_id;
+        //if (!$name) {
+        //    $error[] = '[name] can not empty';
+        //}
+        //if (!$parent_id && $parent_id !== '0') {
+        //    $error[] = '[parent_id] can not empty';
+        //}
+        if ($name && !Yii::$service->fecshoplang->getDefaultLangAttrVal($name, 'name')) {
+            $defaultLangAttrName = Yii::$service->fecshoplang->getDefaultLangAttrName('name');
+            $error[] = '[name.'.$defaultLangAttrName.'] can not empty';
+        }
+        if ($meta_keywords && !is_array($meta_keywords)) {
+            $error[] = '[meta_keywords] must be array';
+        }
+        if ($meta_description && !is_array($meta_description)) {
+            $error[] = '[meta_description] must be array';
+        }
+        if ($description && !is_array($description)) {
+            $error[] = '[description] must be array';
+        }
+        if ($title && !is_array($title)) {
+            $error[] = '[title] must be array';
+        }
+        if (!empty($error)) {
+            return [
+                'code'    => 400,
+                'message' => 'data param format error',
+                'data'    => [
+                    'error' => $error,
+                ],
+            ];
+        }
+        
+        $identity = Yii::$app->user->identity;
+        //$param['parent_id'] = $parent_id;
+        $param['name']      = $name;
+        $url_key            ? ($param['url_key'] = $url_key)                    : '';
+        $title              ? ($param['title'] = $title)                        : '';
+        $meta_keywords      ? ($param['meta_keywords'] = $meta_keywords)        : '';
+        $meta_description   ? ($param['meta_description'] = $meta_description)  : '';
+        $status             ? ($param['status'] = $status)                      : '';
+        $menu_show          ? ($param['menu_show'] = $menu_show)                      : '';
+        
+        $description                ? ($param['description'] = $description)                    : '';
+        $menu_custom                ? ($param['menu_custom'] = $menu_custom)                    : '';
+        $filter_product_attr_selected               ? ($param['filter_product_attr_selected'] = $filter_product_attr_selected)     : '';
+        $filter_product_attr_unselected             ? ($param['filter_product_attr_unselected'] = $filter_product_attr_unselected) : '';
+        $thumbnail_image            ? ($param['thumbnail_image'] = $thumbnail_image)            : '';
+        $image                      ? ($param['image'] = $image)               : '';
+        $originUrlKey       = 'catalog/category/index';
+        
+        //$param[$primaryKey] = $id;
+        $saveData = Yii::$service->category->save($param, $originUrlKey);
+        return [
+            'code'    => 200,
+            'message' => 'update category success',
+            'data'    => [
+                'updateData' => $saveData,
+            ]
+        ];
+    }
+    
+    
     /**
      * Delete One Api：删除一条记录的api
      */
