@@ -14,10 +14,10 @@ class m210419_044822_fecshop_tables extends Migration
     {
         $arr = [
             "
-                alert table full_search_product add INDEX  (`name`,`lang`)
+                ALTER TABLE `full_search_product` ADD INDEX ( `name`,`lang` ) 
             ",
             "
-                alert table full_search_product add INDEX  (`product_id`,`lang`)
+                ALTER TABLE `full_search_product` ADD INDEX ( `product_id`,`lang` ) 
             ",
             "
                 ALTER TABLE `product_brand` ADD `remote_id` INT( 12 ) NULL COMMENT '远程同步数据的id', ADD UNIQUE ( `remote_id` )
