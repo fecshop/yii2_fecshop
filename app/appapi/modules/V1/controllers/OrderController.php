@@ -22,23 +22,57 @@ class OrderController extends AppapiTokenController
     /**
      * Get Lsit Api：得到Category 列表的api
      */
-    public function actionList(){
-
+    public function actionList()
+    {
         $page = Yii::$app->request->get('page');
+        $is_payed = Yii::$app->request->get('is_payed');
+        $beginDate = Yii::$app->request->get('begin_date');
+        $endDate = Yii::$app->request->get('end_date');
+        $beginDate = $beginDate ? strtotime($beginDate) : '';
+        $endDate = $endDate ? strtotime($endDate) : '';
+        $where = [];
+        if ($beginDate) {
+            $where[] = ['>=', 'created_at', $beginDate];
+        }
+        if ($endDate) {
+            $where[] = ['<', 'created_at', $endDate];
+        }
+        if ($is_payed == 1) {
+            $orderPayedStatusArr = Yii::$service->order->getOrderPaymentedStatusArr();
+            $where[] = ['in', 'order_status', $orderPayedStatusArr];
+        }
         $page = $page ? $page : 1;
         $filter = [
             'numPerPage'    => $this->numPerPage,
             'pageNum'       => $page,
             'asArray'       => true,
+            'orderBy'   => [ 'created_at' =>SORT_ASC ],
         ];
+        
+        if (!empty($where)) {
+            $filter['where'] = $where;
+        }
         $data  = Yii::$service->order->getorderinfocoll($filter);
         $coll  = $data['coll'];
         foreach ($coll as $k => $one) {
-            // 处理mongodb类型
-            if (isset($one['_id'])) {
-                $coll[$k]['id'] = (string)$one['_id'];
-                unset($coll[$k]['_id']);
+            if (is_array($one['products']) && !empty($one['products'])) {
+                foreach ($one['products'] as $v=>$productOne) {
+                    $coll[$k]['products'][$v]['full_image'] = Yii::$service->product->image->getUrl($productOne['image']);
+                    $coll[$k]['products'][$v]['full_redirect_url'] = Yii::$service->url->getDefaultStoreUrl($productOne['redirect_url']);
+                    
+                    //$coll[$k]['products'][$v]['spu_options']
+                    
+                }
             }
+            $order_currency_code = $one['order_currency_code'];
+            $order_currency_symbol = Yii::$service->page->currency->getSymbol($order_currency_code);
+            $coll[$k]['order_currency_symbol'] = $order_currency_symbol;
+            // customer_address_country_name
+            $coll[$k]['customer_address_country_name'] = Yii::$service->helper->country->getCountryNameByKey($one['customer_address_country']);
+            // customer_address_state_name
+            $coll[$k]['customer_address_state_name'] = Yii::$service->helper->country->getStateByContryCode($one['customer_address_country'], $one['customer_address_state']);
+            
+            
         }
         $count = $data['count'];
         $pageCount = ceil($count / $this->numPerPage);
@@ -104,12 +138,14 @@ class OrderController extends AppapiTokenController
     }
 
     /**
-     * Update One Api：更新一条记录的api
+     * Update One Api：更新订单状态
      */
-    public function actionUpdateone(){
+    public function actionUpdateorderstatus(){
         // 必填
         $increment_id   = Yii::$app->request->post('increment_id');
         $order_status   = Yii::$app->request->post('order_status');
+        $tracking_number   = Yii::$app->request->post('tracking_number');
+        $tracking_company   = Yii::$app->request->post('tracking_company');
         if (!$increment_id) {
             $error[] = '[increment_id] can not empty';
         }
@@ -149,10 +185,17 @@ class OrderController extends AppapiTokenController
         $order = Yii::$service->order->getByIncrementId($increment_id);
         if (isset($order['increment_id']) && $order['increment_id']) {
             $order['order_status'] = $order_status;
+            // if ($order['order_status'] == Yii::$service->order->status_dispatched) {}
+            if ($tracking_number) {
+                $order['tracking_number'] = $tracking_number;
+            }
+            if ($tracking_company) {
+                $order['tracking_company'] = $tracking_company;
+            }
             $order->save();
             return [
                 'code'    => 200,
-                'message' => 'update category success',
+                'message' => 'update order status success',
                 'data'    => [
                     'updateData' => $order,
                 ]
