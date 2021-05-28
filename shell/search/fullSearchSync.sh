@@ -14,7 +14,7 @@ pagenum=`$Cur_Dir/../../../../../yii product/search/syncpagenum`
 echo "There are $count products to process"
 echo "There are $pagenum pages to process"
 echo "##############ALL BEGINING###############";
-for i in `seq $pagenum`
+for (( i=1; i<=$pagenum; i++ ))
 do
    $Cur_Dir/../../../../../yii product/search/syncdata $i
    echo "Page $i done"
