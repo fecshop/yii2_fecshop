@@ -14,7 +14,7 @@ pagenum=`$Cur_Dir/../../../../../yii category/mysqldatatomongo/syncpagenum`
 echo "There are $count categorys to process"
 echo "There are $pagenum pages to process"
 echo "##############ALL BEGINING###############";
-for (( i=1; i<=$pagenum; i++ ))
+for i in `seq $pagenum`
 do
    $Cur_Dir/../../../../../yii category/mysqldatatomongo/sync $i
    echo "Page $i done"
@@ -24,7 +24,7 @@ done
 echo "There are $count categorys to process"
 echo "There are $pagenum pages to process"
 echo "##############ALL BEGINING###############";
-for (( i=1; i<=$pagenum; i++ ))
+for i in `seq $pagenum`
 do
    $Cur_Dir/../../../../../yii category/mysqldatatomongo/initparentid $i
    echo "Page $i done"
@@ -38,7 +38,7 @@ pagenum=`$Cur_Dir/../../../../../yii product/mysqldatatomongo/syncpagenum`
 echo "There are $count products to process"
 echo "There are $pagenum pages to process"
 echo "##############ALL BEGINING###############";
-for (( i=1; i<=$pagenum; i++ ))
+for i in `seq $pagenum`
 do
    $Cur_Dir/../../../../../yii product/mysqldatatomongo/sync $i
    echo "Page $i done"

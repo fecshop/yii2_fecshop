@@ -8,7 +8,7 @@ echo "add category url to sitemap xml"
 categoryPageCount=`$Cur_Dir/../../../../yii sitemap/xml/categorypagecount`
 
 echo "There are $categoryPageCount page category to process"
-for (( i=1; i<=$categoryPageCount; i++ ))
+for i in `seq $categoryPageCount`
 do
    $Cur_Dir/../../../../yii sitemap/xml/category $i
    echo "Page $i done"
@@ -18,7 +18,7 @@ echo "add product url to sitemap xml"
 productPageCount=`$Cur_Dir/../../../../yii sitemap/xml/productpagecount`
 
 echo "There are $productPageCount page product to process"
-for (( i=1; i<=$productPageCount; i++ ))
+for i in `seq $productPageCount`
 do
    $Cur_Dir/../../../../yii sitemap/xml/product $i
    echo "Page $i done"
@@ -28,7 +28,7 @@ echo "add cms page url to sitemap xml"
 cmsPagePageCount=`$Cur_Dir/../../../../yii sitemap/xml/cmspagepagecount`
 
 echo "There are $cmsPagePageCount page product to process"
-for (( i=1; i<=$cmsPagePageCount; i++ ))
+for i in `seq $cmsPagePageCount`
 do
    $Cur_Dir/../../../../yii sitemap/xml/cmspage $i
    echo "Page $i done"

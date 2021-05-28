@@ -7,7 +7,7 @@ pagenum=`$Cur_Dir/../../../../../yii product/mongodatatomysql/syncpagenum`
 echo "There are $count products to process"
 echo "There are $pagenum pages to process"
 echo "##############ALL BEGINING###############";
-for (( i=1; i<=$pagenum; i++ ))
+for i in `seq $pagenum`
 do
    $Cur_Dir/../../../../../yii product/mongodatatomysql/sync $i
    echo "Page $i done"

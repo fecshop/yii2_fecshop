@@ -14,7 +14,7 @@ pagenum=`$Cur_Dir/../../../../yii helper/urlrewrite/productpagenum`
 echo "There are $count products to process"
 echo "There are $pagenum products pages to process"
 echo "##############ALL BEGINING###############";
-for (( i=1; i<=$pagenum; i++ ))
+for i in `seq $pagenum`
 do
    $Cur_Dir/../../../../yii helper/urlrewrite/product $i
    echo "Page $i done"
@@ -30,7 +30,7 @@ pagenum=`$Cur_Dir/../../../../yii helper/urlrewrite/categorypagenum`
 echo "There are $count categorys to process"
 echo "There are $pagenum categorys pages to process"
 echo "##############ALL BEGINING###############";
-for (( i=1; i<=$pagenum; i++ ))
+for i in `seq $pagenum`
 do
    $Cur_Dir/../../../../yii helper/urlrewrite/category $i
    echo "Page $i done"
