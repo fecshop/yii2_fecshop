@@ -282,10 +282,16 @@ class ScriptDate extends Service
         $beginAt = '';
         if ($model) {
             // 
-            if ($model['status'] == $this->status_complete  // 判断当前的记录是否是完成状态？上个脚本是否已经完成
-                || ($model['script_updated_at'] - $model['script_created_at'] > $this->processTimeout ) // 当脚本执行了xx时间，还是没有执行完成，则会强制init
-            ) {
+            if ($model['status'] == $this->status_complete ) {  // 判断当前的记录是否是完成状态？上个脚本是否已经完成
                 $beginAt = $model['end_at']; 
+            } else if ($model['script_updated_at'] - $model['script_created_at'] > $this->processTimeout ) {
+                // 当脚本执行了xx时间，还是没有执行完成，则会强制init
+                $model->script_created_at = time();
+                $model->script_updated_at = time();
+                $model->status = $this->status_init;
+                $model->error_info = NULL;
+                
+                return $model->save();
             } else {
                 // 此种情况，代表脚本已经初始化，或者脚本正在进行中
                 // 更新 script_updated_at
@@ -307,6 +313,7 @@ class ScriptDate extends Service
         $model->begin_at = $beginAt;
         $model->end_at = $endAt;
         $model->error_info = NULL;
+        
         return $model->save();
     }
    
