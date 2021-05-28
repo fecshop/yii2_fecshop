@@ -147,7 +147,7 @@ class Helper extends Service
     }
     
     
-    function createNoncestr( $length = 32 ){
+    public function createNoncestr( $length = 32 ){
         $chars = "abcdefghijklmnopqrstuvwxyz0123456789";
         $str ="";
         for ( $i = 0; $i < $length; $i++ )  {
