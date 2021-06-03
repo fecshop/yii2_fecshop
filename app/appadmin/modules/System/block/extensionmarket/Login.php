@@ -9,10 +9,6 @@
 
 namespace fecshop\app\appadmin\modules\System\block\extensionmarket;
 
-use fec\helpers\CUrl;
-use fec\helpers\CRequest;
-use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockInterface;
-use fecshop\app\appadmin\modules\AppadminbaseBlock;
 use Yii;
 
 /**
@@ -34,11 +30,11 @@ class Login extends \yii\base\BaseObject
     public function getLastData()
     {
 
-        
+
         return [
         ];
     }
-    
+
     public function login($param)
     {
         // 进行远程登陆
@@ -49,14 +45,14 @@ class Login extends \yii\base\BaseObject
             ]);
             exit;
         }
-        
+
         echo  json_encode([
             'statusCode' => '200',
             'message'    => Yii::$service->page->translate->__('Login Success'),
         ]);
-        exit;        
-        
-        
+        exit;
+
+
     }
 
 }

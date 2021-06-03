@@ -9,10 +9,6 @@
 
 namespace fecshop\app\appadmin\modules\Config\block\appserverstorelang;
 
-use fec\helpers\CUrl;
-use fec\helpers\CRequest;
-use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockEditInterface;
-use fecshop\app\appadmin\modules\AppadminbaseBlockEdit;
 use Yii;
 
 /**
@@ -27,10 +23,10 @@ class Manager extends \yii\base\BaseObject
     public $_key = 'appserver_store_lang';
     protected $_one;
     protected $_service;
-    
+
     public function init()
     {
-        
+
          // 需要配置
         $this->_saveUrl = Yii::$service->url->getUrl('config/appserverstorelang/managersave');
         $this->setService();
@@ -41,20 +37,20 @@ class Manager extends \yii\base\BaseObject
             $this->_one['value'] = unserialize($this->_one['value']);
         }
     }
-    
-    
-    
+
+
+
     // 传递给前端的数据 显示编辑form
     public function getLastData()
     {
-        $id = ''; 
+        $id = '';
         if (isset($this->_one['id'])) {
            $id = $this->_one['id'];
-        } 
+        }
         $configLangs = Yii::$service->fecshoplang->getLangAndCodeArr();
         $configLangsSelect = $this->getLangSelect($configLangs);
         return [
-            'id'            =>   $id, 
+            'id'            =>   $id,
             'configLangs'  => $configLangs,
             'configLangsSelect' => $configLangsSelect,
             'langs'      => $this->_one['value'],
@@ -70,15 +66,15 @@ class Manager extends \yii\base\BaseObject
             }
         }
         $str .= '</select>';
-        
+
         return $str;
     }
     public function setService()
     {
         $this->_service = Yii::$service->storeBaseConfig;
     }
-    
-    
+
+
     public function getEditParam($langs)
     {
         $arr = [];
@@ -89,7 +85,7 @@ class Manager extends \yii\base\BaseObject
             if ($one) {
                 list($lang_name, $lang_code) = explode('##', $one);
                 if ($lang_name && $lang_code) {
-                    $lang_code_name  = isset($configLangs[$lang_code])  ? $configLangs[$lang_code] : '';  
+                    $lang_code_name  = isset($configLangs[$lang_code])  ? $configLangs[$lang_code] : '';
                     if (in_array($lang_code, $langCodes)) {
                         continue;
                     }
@@ -101,9 +97,9 @@ class Manager extends \yii\base\BaseObject
                     ];
                 }
             }
-            
+
         }
-        
+
         return [
             'key' => $this->_key,
             'value' => $arr,
@@ -116,7 +112,7 @@ class Manager extends \yii\base\BaseObject
     {
         $editFormData = Yii::$app->request->post('editFormData');
         $langs = $editFormData['langs'];
-        
+
         $saveData = $this->getEditParam($langs);
         /*
          * if attribute is date or date time , db storage format is int ,by frontend pass param is int ,
@@ -124,7 +120,7 @@ class Manager extends \yii\base\BaseObject
          */
         // 设置 bdmin_user_id 为 当前的user_id
         $this->_service->saveConfig($saveData);
-        
+
         $errors = Yii::$service->helper->errors->get();
         if (!$errors) {
             echo  json_encode([
@@ -140,6 +136,6 @@ class Manager extends \yii\base\BaseObject
             exit;
         }
     }
-    
-    
+
+
 }

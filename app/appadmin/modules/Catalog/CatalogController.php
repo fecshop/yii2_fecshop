@@ -13,8 +13,7 @@ namespace fecshop\app\appadmin\modules\Catalog;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-use fecadmin\FecadminbaseController;
-use Yii;
+
 use fecshop\app\appadmin\modules\AppadminController;
 
 class CatalogController extends AppadminController

@@ -6,12 +6,11 @@
  * @copyright Copyright (c) 2016 FecShop Software LLC
  * @license http://www.fecshop.com/license/
  */
-use yii\helpers\Html;
+
 use fec\helpers\CRequest;
-use fecadmin\models\AdminRole;
 use fec\helpers\CUrl;
 
-/** 
+/**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -22,9 +21,9 @@ use fec\helpers\CUrl;
 .dialog .pageContent .pageFormContent{background:none;}
 </style>
 
-<div class="pageContent"> 
+<div class="pageContent">
 	<form  method="post" action="<?= $saveUrl ?>" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDoneCloseAndReflush);">
-		<?php echo CRequest::getCsrfInputHtml();  ?>	
+		<?php echo CRequest::getCsrfInputHtml();  ?>
 		<div layouth="56" class="pageFormContent" style="height: 240px; overflow: auto;">
                <input type="hidden"  value="<?=  $product_id; ?>" size="30" name="product_id" class="textInput ">
                <?= $lang_attr ?>
@@ -61,7 +60,7 @@ use fec\helpers\CUrl;
 			</ul>
 		</div>
 	</form>
-</div>	
+</div>
 <script>
 
 function removeCategoryImage () {
@@ -73,7 +72,7 @@ function removeCategoryImage () {
     $("#inputimage").val('');
 }
 $(document).ready(function(){
-	
+
 	$("#inputimage").change(function(){
 		var data = new FormData();
 		$.each($('#inputimage')[0].files, function(i, file) {
@@ -85,7 +84,7 @@ $(document).ready(function(){
 			type:'POST',
 			data:data,
 			async:false,
-			dataType: 'json', 
+			dataType: 'json',
 			timeout: 80000,
 			cache: false,
 			contentType: false,		//不可缺参数
@@ -103,4 +102,4 @@ $(document).ready(function(){
 		});
 	});
 });
-</script> 
+</script>

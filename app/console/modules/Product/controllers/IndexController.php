@@ -9,7 +9,6 @@
 
 namespace fecshop\app\console\modules\Product\controllers;
 
-use Yii;
 use yii\console\Controller;
 
 /**

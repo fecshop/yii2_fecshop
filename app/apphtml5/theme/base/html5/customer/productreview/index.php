@@ -8,7 +8,6 @@
  */
 ?>
 <?php
-use fecshop\app\apphtml5\helper\Format;
 ?>
 <div class="account-ds">
 	<div class="bar bar-nav account-top-m">
@@ -27,7 +26,7 @@ use fecshop\app\apphtml5\helper\Format;
 					<div style="width:100%;">
 						<div>
 							<?php  if(is_array($coll) && !empty($coll)):  ?>
-							<table class="product-Reviews"> 
+							<table class="product-Reviews">
 								<?php foreach($coll as $one):  ?>
 									<tr>
 										<td>
@@ -37,7 +36,7 @@ use fecshop\app\apphtml5\helper\Format;
 													<img src="<?= Yii::$service->product->image->getResize($main_image,[80,80],false) ?>" />
 												</a>
 												<a external href="#" class="review_star review_star_<?= $one['rate_star'] ?>" onclick="javascript:return false;"></a>
-												
+
 											</div>
 										</td>
 										<td>
@@ -45,8 +44,8 @@ use fecshop\app\apphtml5\helper\Format;
 											<div class="review-content">
 												<?= $one['review_content'] ?>
 											</div>
-											
-											<?php if($one['status'] == $noActiveStatus): ?>  
+
+											<?php if($one['status'] == $noActiveStatus): ?>
 											<div class="review_moderation">
 												<?= Yii::$service->page->translate->__('Your Review is awaiting moderation...');?>
 											</div>
@@ -62,12 +61,12 @@ use fecshop\app\apphtml5\helper\Format;
 										</td>
 										<td>
 											<span class="review_date_time"><?= $one['review_date'] ? date('Y-m-d H:i:s',$one['review_date']) : '' ?></span>
-											
+
 										</td>
 									</tr>
-									
+
 								<?php endforeach; ?>
-							</table>	
+							</table>
 							<?php if($pageToolBar): ?>
 							<div class="pageToolbar">
 								<label class=""><?= Yii::$service->page->translate->__('Page:');?></label>
@@ -84,6 +83,5 @@ use fecshop\app\apphtml5\helper\Format;
 			</div>
 		</div>
 	</div>
-	
+
 </div>
-	

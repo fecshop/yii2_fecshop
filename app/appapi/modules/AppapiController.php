@@ -10,13 +10,8 @@
 namespace fecshop\app\appapi\modules;
 
 use Yii;
-use yii\filters\auth\CompositeAuth;
-use yii\filters\auth\HttpBasicAuth;
-use yii\filters\auth\HttpBearerAuth;
-use fecshop\yii\filters\auth\AppapiQueryParamAuth;  
 use yii\rest\Controller;
 use yii\web\Response;
-use yii\filters\RateLimiter; 
 
 /**
  * @author Terry Zhao <2358269014@qq.com>
@@ -26,7 +21,7 @@ class AppapiController extends Controller
 {
     public $blockNamespace;
     public $enableCsrfValidation = false ;
-    
+
     public function init()
     {
         parent::init();
@@ -63,7 +58,7 @@ class AppapiController extends Controller
         $relativeFile .= '\\'.$this->id.'\\'.ucfirst($blockName);
         //查找是否在rewriteMap中存在重写
         $relativeFile = Yii::mapGetName($relativeFile);
-        
+
         return new $relativeFile();
     }
 }

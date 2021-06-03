@@ -6,10 +6,10 @@
  * @copyright Copyright (c) 2016 FecMall Software LLC
  * @license http://www.fecmall.com/license
  */
-use yii\helpers\Html;
+
 use fec\helpers\CRequest;
-use fecadmin\models\AdminRole;
-/** 
+
+/**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -20,13 +20,13 @@ use fecadmin\models\AdminRole;
 .dialog .pageContent .pageFormContent{background:none;}
 </style>
 
-<div class="pageContent systemConfig"> 
+<div class="pageContent systemConfig">
 	<form  method="post" action="<?= $saveUrl ?>" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-		<?php echo CRequest::getCsrfInputHtml();  ?>	
+		<?php echo CRequest::getCsrfInputHtml();  ?>
 		<div layouth="56" class="pageFormContent" style="height: 240px; overflow: auto;">
-			
+
 				<input type="hidden"  value="<?=  $_id; ?>" size="30" name="editFormData[_id]" class="textInput ">
-				
+
 				<fieldset id="fieldset_table_qbe">
 					<legend style="color:#cc0000"><?= Yii::$service->page->translate->__('Apphtml5 Base Config') ?></legend>
 					<div>
@@ -38,7 +38,7 @@ use fecadmin\models\AdminRole;
                     <?= $textareas ?>
                 </div>
 		</div>
-	
+
 		<div class="formBar">
 			<ul>
 				<!--<li><a class="buttonActive" href="javascript:;"><span>保存</span></a></li>-->
@@ -51,7 +51,7 @@ use fecadmin\models\AdminRole;
 			</ul>
 		</div>
 	</form>
-</div>	
+</div>
 
 <style>
 

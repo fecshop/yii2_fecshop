@@ -10,7 +10,6 @@
 namespace fecshop\app\appadmin\modules\Catalog\block\productattrgroup;
 
 use fec\helpers\CUrl;
-use fec\helpers\CRequest;
 use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockInterface;
 use fecshop\app\appadmin\modules\AppadminbaseBlock;
 use Yii;
@@ -81,7 +80,7 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
                     2 => Yii::$service->page->translate->__('Disable'),
                 ],
             ],
-            
+
         ];
 
         return $data;
@@ -115,7 +114,7 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
                     2 => Yii::$service->page->translate->__('Disable'),
                 ],
             ],
-            
+
             [
                 'orderField'    => 'created_at',
                 'label'           => Yii::$service->page->translate->__('Created At'),

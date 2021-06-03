@@ -6,8 +6,7 @@
  * @copyright Copyright (c) 2016 FecShop Software LLC
  * @license http://www.fecshop.com/license/
  */
-?>
-<?php
+
 namespace fecshop\app\console\modules;
 
 /**

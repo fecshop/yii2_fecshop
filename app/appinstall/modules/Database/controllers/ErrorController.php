@@ -8,8 +8,6 @@
  */
 namespace fecshop\app\appinstall\modules\Database\controllers;
 
-use fecshop\app\appfront\modules\AppfrontController;
-use Yii;
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0

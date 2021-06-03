@@ -9,7 +9,6 @@
 
 namespace fecshop\app\appfront\modules\Cms\block\article;
 
-use fec\helpers\CRequest;
 use Yii;
 /**
  * @author Terry Zhao <2358269014@qq.com>
@@ -24,10 +23,10 @@ class Index extends \yii\base\BaseObject
     {
         $this->initHead();
         if (!$this->_artile) {
-            
+
             return null;
         }
-        
+
         return [
             'title' => $this->_title,
             'content' => Yii::$service->store->getStoreAttrVal($this->_artile['content'], 'content'),

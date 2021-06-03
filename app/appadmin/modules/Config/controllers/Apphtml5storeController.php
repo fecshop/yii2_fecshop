@@ -10,7 +10,6 @@
 namespace fecshop\app\appadmin\modules\Config\controllers;
 
 use fecshop\app\appadmin\modules\Config\ConfigController;
-use Yii;
 
 /**
  * @author Terry Zhao <2358269014@qq.com>
@@ -44,6 +43,6 @@ class Apphtml5storeController extends ConfigController
         $this->getBlock('manageredit')->delete();
     }
 
-    
+
 
 }
