@@ -40,7 +40,7 @@ class Helper extends Service
      */
     public  function getVersion()
     {
-        return '2.13.4';
+        return '2.13.5';
     }
     
     /**
@@ -308,4 +308,81 @@ class Helper extends Service
             return $subDir.$dir;
         }
     }
+    
+    
+    public function getYearList($beginYear='', $endYear='')
+    {
+        if (!$beginYear) {
+            $beginYear = date('Y', time());
+        }
+        $beginYear = (int)$beginYear;
+        if (!$endYear) {
+            $endYear = $beginYear + 20;
+        }
+        $arr = [];
+        for ($i=$beginYear; $i<=$endYear; $i++) {
+            $arr[] = $i;
+        }
+        
+        return $arr;
+    }
+    
+    public function getYearOptions($beginYear='', $endYear='', $selected='') 
+    {
+        $str = '';
+        $yearArr = $this->getYearList($beginYear, $endYear);
+        
+        foreach ($yearArr as $year) {
+            $selectedYear = '';
+            if ($selected && $selected==$year) {
+                $selectedYear = 'selected="selected"';
+            }
+            $str .= '<option '.$selectedYear.' value="'.$year.'">'.$year.'</option>';
+        }
+        
+        return $str ;
+    }
+    
+    public function getMonthList()
+    {
+        $arr = [];
+        for ($i=1; $i<=12; $i++) {
+            $arr[] = $i;
+        }
+        
+        return $arr;
+    }
+    public function getMonthOptions($selected='') 
+    {
+        $str = '';
+        $monthArr = $this->getMonthList();
+        foreach ($monthArr as $month) {
+            $selectedMonth = '';
+            if ($selected && $selected==$month) {
+                $selectedMonth = 'selected="selected"';
+            }
+            $str .= '<option '.$selectedMonth.' value="'.$month.'">'.$month.'</option>';
+        }
+        
+        return $str ;
+    }
+    
+    public function getBeginAndEndByYearAndMonth($year, $month)
+    {
+        if ((int)$month < 10) {
+            $month = '0'.$month;
+        }
+        $str = $year.'-'.$month.'-01 00:00:00';
+        //echo $str;exit;
+        $beginTime = strtotime($str);
+        $endTime = strtotime($str . ' +1 month ');
+        
+        return [$beginTime, $endTime];
+    }
+    
+    
+    
+    
+    
+    
 }

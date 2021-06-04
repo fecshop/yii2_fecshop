@@ -76,7 +76,7 @@ class Register extends \yii\base\BaseObject
         }
     }
 
-   /**
+    /**
      * 发送登录邮件.
      */
     public function sendRegisterEmail($param)
