@@ -9,7 +9,6 @@
 
 namespace fecshop\app\appadmin\modules;
 
-use fec\controllers\FecController;
 use fec\helpers\CConfig;
 use Yii;
 use yii\base\InvalidValueException;
@@ -23,7 +22,7 @@ class AppadminController extends Controller
 {
     public $blockNamespace;
     public $enableCsrfValidation = true;
-    
+
     /**
      * init theme component property : $fecshopThemeDir and $layoutFile
      * $fecshopThemeDir is appfront base theme directory.
@@ -82,7 +81,7 @@ class AppadminController extends Controller
 
         return false;
     }
-    
+
 
     /**
      * @param $view|string , (only) view file name ,by this module id, this controller id , generate view relative path.
@@ -117,7 +116,7 @@ class AppadminController extends Controller
         }
         throw new InvalidValueException('layout file is not exist!');
     }
-    
+
     public function getFecadminBlock($blockname=''){
 	    $_currentNameSpace = \fec\helpers\CModule::param("_currentNameSpace");
 		//echo $_currentNameSpace;exit;
@@ -136,16 +135,16 @@ class AppadminController extends Controller
 		}else{
 			$url_key_arr[count($url_key_arr)-1] = ucfirst($url_key_arr[count($url_key_arr)-1]);
 		}
-		
+
 		$block_space = implode("\\",$url_key_arr);
 		$blockFile = $modulesDir.$block_space;
 		//查找是否在rewriteMap中存在重写
         //$relativeFile = Yii::mapGetName($relativeFile);
         $blockFile = Yii::mapGetName($blockFile);
         //echo $blockFile;exit;
-        
+
 		return new $blockFile;
-		
+
     }
 
     public function getBlock($blockName = ''){

@@ -9,8 +9,6 @@
 
 namespace fecshop\app\appadmin\modules\Catalog\block\productupload;
 
-use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockInterface;
-use fecshop\app\appadmin\modules\AppadminbaseBlock;
 use Yii;
 
 /**
@@ -20,7 +18,7 @@ use Yii;
  */
 class Manager extends \yii\base\BaseObject
 {
-    
+
     public $_fileFullDir;
 
     public function getLastData()
@@ -28,14 +26,14 @@ class Manager extends \yii\base\BaseObject
         return [
         ];
     }
-    
-    
+
+
     public function uploadProduct()
     {
         $fileFullDir = Yii::getAlias('@appadmin/runtime/upload/');
         if ($this->saveUploadExcelFile($fileFullDir)) {
             //echo $this->_fileFullDir;
-            
+
             $arr = \fec\helpers\CExcel::getExcelContent($this->_fileFullDir);
             $i = 0;
             if (is_array($arr) && !empty($arr)) {
@@ -59,9 +57,9 @@ class Manager extends \yii\base\BaseObject
             ]);
             exit;
         }
-        
+
     }
-    
+
     public function saveProduct($one)
     {
         // 从excel中获取数据。
@@ -83,28 +81,28 @@ class Manager extends \yii\base\BaseObject
         $meta_title = $one['P'];
         $meta_keywords = $one['Q'];
         $meta_description = $one['R'];
-        
+
         $short_description = $one['S'];
         $description = $one['T'];
         $main_image = $one['U'];
         $gallery_image = $one['V'];
         $group_attr_name = $one['W'];
         $group_attrs = $one['X'];
-        
+
         $nameLang = Yii::$service->fecshoplang->getLangAttrName('name',$language_code);
         $titleLang = Yii::$service->fecshoplang->getLangAttrName('meta_title',$language_code);
         $metaKeywordsLang = Yii::$service->fecshoplang->getLangAttrName('meta_keywords',$language_code);
         $metaDescriptionLang = Yii::$service->fecshoplang->getLangAttrName('meta_description',$language_code);
         $shortDescriptionLang = Yii::$service->fecshoplang->getLangAttrName('short_description',$language_code);
         $descriptionLang = Yii::$service->fecshoplang->getLangAttrName('description',$language_code);
-        
+
         $productMode = Yii::$service->product->getBySku($sku);
         $productPrimaryKey = Yii::$service->product->getPrimaryKey();
         $product_id = '';
         if ($productMode && isset($productMode['sku']) && $productMode['sku']) {
             $product_id = $productMode[$productPrimaryKey];
         }
-        
+
         $productArr['name'][$nameLang] = $product_name;
         $productArr['spu'] = $spu;
         $productArr['sku'] = $sku;
@@ -124,8 +122,8 @@ class Manager extends \yii\base\BaseObject
         $productArr['meta_description'][$metaDescriptionLang] = $meta_description;
         $productArr['short_description'][$shortDescriptionLang] = $short_description;
         $productArr['description'][$descriptionLang] = $description;
-        
-        
+
+
         $productArr['image']['main'] = [
             'image' => $main_image,
             'label' => '',
@@ -147,9 +145,9 @@ class Manager extends \yii\base\BaseObject
                 }
             }
         }
-        
+
         $productArr['attr_group'] = $group_attr_name;
-        
+
         if ($group_attrs) {
             $group_attr_info = json_decode($group_attrs, true);
             if (is_array($group_attr_info)) {
@@ -158,37 +156,37 @@ class Manager extends \yii\base\BaseObject
                 }
             }
         }
-        
+
         return Yii::$service->product->excelSave($productArr);
     }
-    
+
     # 1.保存前台上传的文件。
 	public function saveUploadExcelFile($fileFullDir){
-        
+
         $name = $_FILES["file"]["name"];
         $fileFullDir .= 'product_'.time().'_'.rand(1000,9999);
         if(strstr($name,'.xlsx')){
             $fileFullDir .='.xlsx';
         } else if (strstr($name,'.xls')){
             $fileFullDir .='.xls';
-        }  
-        $this->_fileFullDir  = $fileFullDir;    
+        }
+        $this->_fileFullDir  = $fileFullDir;
         $result = @move_uploaded_file($_FILES["file"]["tmp_name"],$fileFullDir);
-        
+
 		return $result;
 	}
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

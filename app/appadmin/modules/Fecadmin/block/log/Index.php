@@ -8,7 +8,6 @@
  */
 namespace fecshop\app\appadmin\modules\Fecadmin\block\log;
 
-use fec\helpers\CUrl;
 use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockInterface;
 use fecshop\app\appadmin\modules\AppadminbaseBlock;
 use Yii;
@@ -26,11 +25,11 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
         $this->_service = Yii::$service->admin->systemLog;
         parent::init();
     }
-	
+
 	public function getLastData(){
 		# 返回数据的函数
 		# 隐藏部分
-		$pagerForm = $this->getPagerForm();  
+		$pagerForm = $this->getPagerForm();
 		# 搜索部分
 		$searchBar = $this->getSearchBar();
 		# 编辑 删除  按钮部分
@@ -40,8 +39,8 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 		# 表内容部分
 		$tbody = $this->getTableTbody();
 		# 分页部分
-		$toolBar = $this->getToolBar($this->_param['numCount'],$this->_param['pageNum'],$this->_param['numPerPage']); 
-		
+		$toolBar = $this->getToolBar($this->_param['numCount'],$this->_param['pageNum'],$this->_param['numPerPage']);
+
 		return [
 			'pagerForm'	 	=> $pagerForm,
 			'searchBar'		=> $searchBar,
@@ -87,38 +86,38 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 	# 定义表格显示部分的配置
 	public function getTableFieldArr(){
 		$table_th_bar = [
-			[	
+			[
 				'orderField' 	=> 'id',
 				'label'			=> Yii::$service->page->translate->__('Id'),
 				'width'			=> '70',
 				'align' 		    => 'center',
-				
+
 			],
-			[	
+			[
 				'orderField'	    => 'account',
 				'label'			=> Yii::$service->page->translate->__('Account'),
 				'width'			=> '70',
 				'align' 		    => 'center',
 			],
-			[	
+			[
 				'orderField'	    => 'person',
 				'label'			=> Yii::$service->page->translate->__('User Name'),
 				'width'			=> '70',
 				'align' 		    => 'left',
 			],
-			[	
+			[
 				'orderField'	    => 'menu',
 				'label'			=> Yii::$service->page->translate->__('Resource'),
 				'width'			=> '70',
 				'align' 		    => 'left',
 			],
-			[	
+			[
 				'orderField'	    => 'url',
 				'label'			=> Yii::$service->page->translate->__('Url'),
 				'width'			=> '220',
 				'align' 		    => 'left',
 			],
-			[	
+			[
 				'orderField'	    => 'created_at',
 				'label'			=> Yii::$service->page->translate->__('Created At'),
 				'width'			=> '130',
@@ -128,7 +127,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 		];
 		return $table_th_bar ;
 	}
-	
+
 	# table 内容部分
 	public function getTableTbodyHtml($data){
 		$fileds = $this->getTableFieldArr();
@@ -180,7 +179,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 			}
 			$str .= '</tr>';
 		}
-        
+
 		return $str ;
 	}
 	# table 表  标题  1
@@ -192,7 +191,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 		foreach ($table_th_bar as $k => $field) {
 			if ($field['orderField'] == $this->_param['orderField']) {
 				$table_th_bar[$k]['class'] = $this->_param['orderDirection'];
-			}	
+			}
 		}
 		$str = '<thead><tr>';
 		$str .= '<th width="22"><input type="checkbox" group="'.$primaryKey.'s" class="checkboxCtrl"></th>';
@@ -205,9 +204,9 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 			$str .= '<th width="'.$width.'" '.$align.' orderField="'.$orderField.'" class="'.$class.'">'.$label.'</th>';
 		}
 		$str .= '</tr></thead>';
-        
+
 		return $str;
 	}
-	
+
 }
 

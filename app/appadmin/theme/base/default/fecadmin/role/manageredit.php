@@ -6,8 +6,7 @@
  * @copyright Copyright (c) 2016 FecShop Software LLC
  * @license http://www.fecshop.com/license/
  */
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+
 use backend\models\core\helper\Producthelper;
 use backend\models\core\helper\Base;
 use backend\models\core\Url;

@@ -9,10 +9,6 @@
 
 namespace fecshop\app\appadmin\modules\System\block\extensionmarket;
 
-use fec\helpers\CUrl;
-use fec\helpers\CRequest;
-use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockInterface;
-use fecshop\app\appadmin\modules\AppadminbaseBlock;
 use Yii;
 
 /**
@@ -22,7 +18,7 @@ use Yii;
  */
 class Manager extends \yii\base\BaseObject
 {
-    
+
     public $installedNameSpaceArr;
     public $versionArr;
     public $_param = [];
@@ -44,7 +40,7 @@ class Manager extends \yii\base\BaseObject
         $this->initInstalledExtensions();
         $toolBar = $this->getToolBar($count, $this->_param['pageNum'], $this->_param['numPerPage']);
         $pagerForm = $this->getPagerForm();
-        
+
         $can_hand_install_extensions = $this->canHandInstallExtensions($coll);
         $can_hand_upgrade_extensions = $this->canHandUpgradeExtensions($coll);
         //var_dump( $can_hand_install_extensions);
@@ -58,7 +54,7 @@ class Manager extends \yii\base\BaseObject
             'can_hand_upgrade_extensions' => $can_hand_upgrade_extensions,
             'versionArr' => $this->versionArr,
             'localCreatedArr' => $this->localCreatedArr ,
-            
+
         ];
     }
     /**
@@ -74,7 +70,7 @@ class Manager extends \yii\base\BaseObject
         foreach ($addon_list as $addon) {
             $packageName = isset($addon['addon_info']['package']) ? $addon['addon_info']['package'] : '';
             $folderName = isset($addon['addon_info']['folder']) ? $addon['addon_info']['folder'] : '';
-            $namespaceName = isset($addon['addon_info']['namespace']) ? $addon['addon_info']['namespace'] : '';  //$addon['namespace']; 
+            $namespaceName = isset($addon['addon_info']['namespace']) ? $addon['addon_info']['namespace'] : '';  //$addon['namespace'];
             // 如果应用没安装
             if (!in_array($namespaceName, $this->installedNameSpaceArr)) {
                 continue;
@@ -86,11 +82,11 @@ class Manager extends \yii\base\BaseObject
             // 文件检测
             $filePath = Yii::$service->extension->remoteService->getExtensionZipFilePath($packageName, $folderName);
             if (file_exists($filePath) && is_executable($filePath)) {
-                
+
                 $arr[] = $namespaceName;
             }
         }
-        
+
         return $arr;
     }
     /**
@@ -106,21 +102,21 @@ class Manager extends \yii\base\BaseObject
         foreach ($addon_list as $addon) {
             $packageName = isset($addon['addon_info']['package']) ? $addon['addon_info']['package'] : '';
             $folderName = isset($addon['addon_info']['folder']) ? $addon['addon_info']['folder'] : '';
-            $namespaceName = isset($addon['addon_info']['namespace']) ? $addon['addon_info']['namespace'] : '';  //$addon['namespace']; 
+            $namespaceName = isset($addon['addon_info']['namespace']) ? $addon['addon_info']['namespace'] : '';  //$addon['namespace'];
             // 如果应用已经安装
             if (in_array($namespaceName, $this->installedNameSpaceArr)) {
                 continue;
             }
             $filePath = Yii::$service->extension->remoteService->getExtensionZipFilePath($packageName, $folderName);
             if (file_exists($filePath) && is_executable($filePath)) {
-                
+
                 $arr[] = $namespaceName;
             }
         }
-        
+
         return $arr;
     }
-    
+
     public function getPagerForm()
     {
         $str = '';
@@ -147,7 +143,7 @@ class Manager extends \yii\base\BaseObject
 				';
     }
 
-    
+
     // namespace
     public function initInstalledExtensions()
     {
@@ -169,7 +165,7 @@ class Manager extends \yii\base\BaseObject
                     if (Yii::$service->extension->isTypeLocalCreated($one['type'])) {
                         $localCreatedArr[] = $namespace;
                     }
-                    
+
                     $versionArr[$namespace] = $one['installed_version'];
                 }
             }
@@ -177,23 +173,23 @@ class Manager extends \yii\base\BaseObject
         $this->versionArr = $versionArr;
         $this->installedNameSpaceArr = $installedArr;
         $this->localCreatedArr = $localCreatedArr;
-        
+
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

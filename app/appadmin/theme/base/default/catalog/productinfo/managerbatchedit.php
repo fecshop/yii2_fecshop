@@ -6,11 +6,11 @@
  * @copyright Copyright (c) 2016 FecShop Software LLC
  * @license http://www.fecshop.com/license/
  */
-use yii\helpers\Html;
+
 use fec\helpers\CRequest;
 use fec\helpers\CUrl;
-use fecadmin\models\AdminRole;
-/** 
+
+/**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -83,12 +83,12 @@ $(document).ready(function(){
 });
 
 
-function getCategoryData(product_id,i){												
+function getCategoryData(product_id,i){
 	$.ajax({
 		url:'<?= CUrl::getUrl("catalog/productinfo/getproductcategory",['product_id'=>$product_id]); ?>',
 		async:false,
 		timeout: 80000,
-		dataType: 'json', 
+		dataType: 'json',
 		type:'get',
 		data:{
 			'product_id':product_id,
@@ -136,7 +136,7 @@ function thissubmit(thiss){
 			image_gallery += gallery_image_image+'#####'+gallery_image_label+'#####'+gallery_image_sort_order +'#####'+gallery_image_is_thumbnails  +'#####'+gallery_image_is_detail+'|||||';
 		}
 	});
-    
+
 	$(".tabsContent .image_gallery").val(image_gallery);
 	//custom_option
 	//i = 0;
@@ -145,7 +145,7 @@ function thissubmit(thiss){
 	//	option_header = new Object();
 	//	$(this).find("td").each(function(){
 	//		rel = $(this).attr("rel");
-	//		
+	//
 	//		if(rel != 'image'){
 	//			if(rel){
 	//				option_header[rel] = $(this).attr('val');
@@ -154,31 +154,31 @@ function thissubmit(thiss){
 	//			rel = $(this).find("img").attr("rel");
 	//			option_header['image'] = rel;
 	//		}
-	//		
+	//
 	//	});
 	//	custom_option[i] = option_header;
 	//	i++;
 	//});
-	//	
+	//
 	//custom_option = JSON.stringify(custom_option);
 	//alert(custom_option);
 	//jQuery(".custom_option_value").val(custom_option);
-	
+
 	cate_str = "";
 	jQuery(".category_tree div.ckbox.checked").each(function(){
 		cate_id = jQuery(this).find("input").val();
 		cate_str += cate_id+",";
 	});
-	
-	
-	
+
+
+
 	jQuery(".category_tree div.ckbox.indeterminate").each(function(){
 		cate_id = jQuery(this).find("input").val();
 		cate_str += cate_id+",";
 	});
-	
+
 	jQuery(".inputcategory").val(cate_str);
-	
+
 	tier_price_str = "";
 	$(".tier_price table tbody tr").each(function(){
 		tier_qty = $(this).find(".tier_qty").val();
@@ -187,7 +187,7 @@ function thissubmit(thiss){
 			tier_price_str += tier_qty+'##'+tier_price+"||";
 		}
 	});
-    
+
     spuStr = '';
     isSkuPriceQtyEmpty = false;
     $(".sell-sku-body-table tr ").each(function(){
@@ -212,10 +212,10 @@ function thissubmit(thiss){
                 spuStr += skuStr + '***';
             } else {
                 isSkuPriceQtyEmpty = true;
-                
+
             }
         }
-        
+
     });
     if (isSkuPriceQtyEmpty) {
         alert("sku,价格，库存不能为空");
@@ -233,9 +233,9 @@ function thissubmit(thiss){
 }
 </script>
 
-<div class="pageContent"> 
+<div class="pageContent">
 	<form  method="post" action="<?= $saveUrl ?>" class="pageForm required-validate" onsubmit="return thissubmit(this, dialogAjaxDoneCloseAndReflush);">
-		<?php echo CRequest::getCsrfInputHtml();  ?>	
+		<?php echo CRequest::getCsrfInputHtml();  ?>
 		<input type="hidden" name="operate"  value="<?=  $operate ?>" />
 		<input type="hidden" class="primary_info"  value="<?= $primaryInfo ?>" />
        <input type="hidden" class="spu_attrs"  name="spu_attrs" value="" />
@@ -250,20 +250,20 @@ function thissubmit(thiss){
 						<li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Image Info') ?></span></a></li>
 						<li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Category Info') ?></span></a></li>
 						<li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Attr Group') ?></span></a></li>
-						
+
                         <li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Spu Attr') ?></span></a></li>
 						<!--<li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Custom Option') ?></span></a></li>
 						-->
                         <li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Relate Product') ?></span></a></li>
                         <li><a href="javascript:;"><span><?=  Yii::$service->page->translate->__('Third Collection') ?></span></a></li>
-					
+
                     </ul>
 				</div>
 			</div>
 			<div class="tabsContent" style="height:550px;overflow:auto;">
 				<div>
 					<input type="hidden"  value="<?=  $product_id; ?>" size="30" name="product_id" class="textInput ">
-				
+
 					<fieldset id="fieldset_table_qbe">
 						<legend style="color:#009688"><?=  Yii::$service->page->translate->__('Product attribute group switching: Please switch the product attribute group before editing') ?></legend>
 						<div>
@@ -307,12 +307,12 @@ function thissubmit(thiss){
 								</tbody>
 								<tfoot style="text-align:right;">
 									<tr>
-										<td colspan="100" style="text-align:right;">						
+										<td colspan="100" style="text-align:right;">
 											<a rel="2" style="text-align:right;" href="javascript:void(0)" class="addProductTierPrice button">
 												<span><?=  Yii::$service->page->translate->__('Add Tier Price') ?></span>
-											</a>					
-										</td>				
-									</tr>			
+											</a>
+										</td>
+									</tr>
 								</tfoot>
 							</table>
 							<script>
@@ -328,7 +328,7 @@ function thissubmit(thiss){
 									$(".dialog").off("click").on("click",".tier_price table tbody tr td .fa-trash-o",function(){
                                         $(this).parent().parent().remove();
                                     });
-                                    
+
 								});
 							</script>
 						</div>
@@ -343,14 +343,14 @@ function thissubmit(thiss){
 				<div >
 					<input type="hidden" name="image_main" class="image_main"  />
 					<input type="hidden" name="image_gallery" class="image_gallery"  />
-					<?=  $img_html ?>	
+					<?=  $img_html ?>
 					<div id="addpicContainer" style="padding-bottom:20px;">
 						<!-- 利用multiple="multiple"属性实现添加多图功能 -->
 						<!-- position: absolute;left: 10px;top: 5px;只针对本用例将input隐至图片底下。-->
 						<!-- height:0;width:0;z-index: -1;是为了隐藏input，因为Chrome下不能使用display:none，否则无法添加文件 -->
 						<!-- onclick="getElementById('inputfile').click()" 点击图片时则点击添加文件按钮 -->
 						<button style="" onclick="getElementById('inputfile').click()" class="scalable upload-image" type="button" title="Duplicate" id=""><span><span><span><?=  Yii::$service->page->translate->__('Browse Files') ?></span></span></span></button>
-						
+
 						<input type="file" multiple="multiple" id="inputfile" style="margin:10px;height:0;width:0;z-index: -1; position: absolute;left: 10px;top: 5px;"/>
 						<span class="loading"></span>
 					</div>
@@ -362,7 +362,7 @@ function thissubmit(thiss){
 							//jQuery(".delete_img").click(function(){
 							//	jQuery
 							//});
-						
+
 							//响应文件添加成功事件
 							$("#inputfile").change(function(){
 								//创建FormData对象
@@ -377,7 +377,7 @@ function thissubmit(thiss){
 								//alert(thisindex);
 								var data = new FormData();
 								data.append('thisindex', thisindex);
-								
+
 								//为FormData对象添加数据
 								$.each($('#inputfile')[0].files, function(i, file) {
 									data.append('upload_file'+i, file);
@@ -390,7 +390,7 @@ function thissubmit(thiss){
 									type:'POST',
 									data:data,
 									async:false,
-									dataType: 'json', 
+									dataType: 'json',
 									timeout: 80000,
 									cache: false,
 									contentType: false,		//不可缺参数
@@ -420,11 +420,11 @@ function thissubmit(thiss){
 				</div>
 				<div>
 					<script>
-									
+
                         $(document).ready(function(){
                             id = '<?= $product_id; ?>' ;
-                            
-                            getCategoryData(id,0);  
+
+                            getCategoryData(id,0);
                         });
                     </script>
                     <input type="hidden" value="" name="category"  class="inputcategory"/>
@@ -442,7 +442,7 @@ function thissubmit(thiss){
                                     <div style="margin-bottom: 10px;">
                                         <label style="text-transform: capitalize;"><?= $spuName ?></label>
                                         <input type="text" style="width:100px;"  class="spu_attr_input spu_attr_input_<?= $iu  ?>" />
-                                        
+
                                         <a  rel="<?= $iu  ?>" style="text-align:right; float:none;" href="javascript:void(0)" class="add_spu_attr button">
 												<span> <?=  Yii::$service->page->translate->__('Add') ?></span>
 											</a>
@@ -496,10 +496,10 @@ function thissubmit(thiss){
                                     htmlStr += '</tr>';
                                     i = 0;
                                     hStr = '';
-                                    htmlStr += getTableStr(attrArr, i, hStr); 
+                                    htmlStr += getTableStr(attrArr, i, hStr);
                                     $(".sell-sku-body-table tbody").html(htmlStr);
                                 });
-                                
+
                                 function getTableStr(attrArr, i, hStr) {
                                     var attrObj = attrArr[i];
                                     var htmlStr = '';
@@ -512,13 +512,13 @@ function thissubmit(thiss){
                                         ii = i + 1;
                                         if ( ii >= attrArr.length) {
                                             if (j > 0) {
-                                                reallyDo = 'sell-sku-cell-text'; 
+                                                reallyDo = 'sell-sku-cell-text';
                                                 replaceWith = "sell-sku-cell-text hide";
                                                 shStr = shStr.replace(new RegExp(reallyDo, 'g'), replaceWith);
                                             }
                                         } else if(ii != 1){
                                             if (j > 0) {
-                                                reallyDo = 'sell-sku-cell-text'; 
+                                                reallyDo = 'sell-sku-cell-text';
                                                 replaceWith = "sell-sku-cell-text hide";
                                                 shStr = shStr.replace(new RegExp(reallyDo, 'g'), replaceWith);
                                             }
@@ -560,10 +560,10 @@ function thissubmit(thiss){
                                             htmlStr += '</tr>';
                                         }
                                     }
-                                    
+
                                     return htmlStr;
                                 }
-                                
+
                                 $(".dialog").on("click",".add_spu_attr",function(){
                                     var rel = $(this).attr('rel');
                                     var str1 = ".spu_attr_input_" + rel;
@@ -588,9 +588,9 @@ function thissubmit(thiss){
                                             $(str2).append(appendStr);
                                         }
                                     }
-                                    
+
                                 });
-                                
+
                             });
                         </script>
                         <table class="sell-sku-inner-table sell-sku-body-table " style="transform: translateY(0px);">
@@ -603,16 +603,16 @@ function thissubmit(thiss){
                                 <col width="151px">
                             </colgroup>
                             <tbody>
-                                
+
                             </tbody>
                         </table>
-                    </div>    
+                    </div>
 				</div>
 				<div class="relation_list" style="margin:20px 2px;">
-                    <?= $relation ?>	
+                    <?= $relation ?>
 				</div>
                 <div class="third_info_list" style="margin:20px 2px;">
-                    <?= $thirdInfo ?>	
+                    <?= $thirdInfo ?>
 				</div>
 			</div>
 			<div class="tabsFooter">
@@ -629,7 +629,7 @@ function thissubmit(thiss){
 			</ul>
 		</div>
 	</form>
-</div>	
+</div>
 
 
 <style>
@@ -651,8 +651,8 @@ function thissubmit(thiss){
     vertical-align: middle;
     min-width: 40px;
     border-bottom: 1px solid #c6d1db;
-    
-    
+
+
 }
 
 .sell-sku-body-table .hide {

@@ -6,10 +6,10 @@
  * @copyright Copyright (c) 2016 FecShop Software LLC
  * @license http://www.fecshop.com/license/
  */
-use yii\helpers\Html;
+
 use fec\helpers\CRequest;
-use fecadmin\models\AdminRole;
-/** 
+
+/**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -26,7 +26,7 @@ use fecadmin\models\AdminRole;
 function thissubmit(thiss){
 	var fill = true;
 	items_input = "";
-    
+
     var display_type_select = $(".display_type_select").val();
     if (display_type_select == 'select' || display_type_select == 'editSelect') {
         $(".pageContent .items table tbody tr").each(function(){
@@ -51,9 +51,9 @@ function thissubmit(thiss){
 
 </script>
 
-<div class="pageContent"> 
+<div class="pageContent">
 	<form  method="post" action="<?= $saveUrl ?>" class="pageForm required-validate" onsubmit="return thissubmit(this)">
-		<?php echo CRequest::getCsrfInputHtml();  ?>	
+		<?php echo CRequest::getCsrfInputHtml();  ?>
 		<div layouth="56" class="pageFormContent" style="height: 240px; overflow: auto;">
 			    <input type="hidden"  value="<?=  $product_id; ?>" size="30" name="product_id" class="textInput ">
 				<fieldset id="fieldset_table_qbe">
@@ -62,28 +62,28 @@ function thissubmit(thiss){
 						<?= $editBar; ?>
 					</div>
 				</fieldset>
-                
+
                 <fieldset id="fieldset_table_qbe">
 					<legend style="color:#009688"><?= Yii::$service->page->translate->__('Attr Display') ?></legend>
 					<div>
 						<p class="edit_p" style="width:100%">
                             <label><?=  Yii::$service->page->translate->__('Display Type');?>：</label>
-                            
+
                             <select  class=" required display_type_select" name="editFormData[display_type]" >
                                 <?php if (is_array($display_types)): ?>
                                     <?php foreach ($display_types as $d_type): ?>
-                                            
+
                                         <?php if ($display_type == $d_type): ?>
                                             <option  selected="selected" value="<?= $d_type?>"><?= Yii::$service->page->translate->__($d_type) ?></option>
                                         <?php else: ?>
                                             <option value="<?= $d_type ?>"><?= Yii::$service->page->translate->__($d_type) ?></option>
                                         <?php endif; ?>
-                                        
+
                                     <?php endforeach; ?>
                                 <?php endif; ?>
                             </select>
                             <span class="remark-text"></span>
-                            
+
                             <div class="edit_p display_itemcs" style="display:<?= ($display_type=='select' || $display_type=='editSelect')    ? 'block' : 'none'  ?>">
                                 <label><?=  Yii::$service->page->translate->__('Display Items') ?>：</label>
                                 <input type="hidden" name="editFormData[display_data]" class="items_input"  />
@@ -111,12 +111,12 @@ function thissubmit(thiss){
                                         </tbody>
                                         <tfoot style="text-align:right;">
                                             <tr>
-                                                <td colspan="100" style="text-align:right;">						
+                                                <td colspan="100" style="text-align:right;">
                                                     <a rel="2" style="text-align:right;margin-top:15px;" href="javascript:void(0)" class="addItems button">
                                                         <span><?=  Yii::$service->page->translate->__('Add Items') ?></span>
-                                                    </a>					
-                                                </td>				
-                                            </tr>			
+                                                    </a>
+                                                </td>
+                                            </tr>
                                         </tfoot>
                                     </table>
                                     <script>
@@ -131,7 +131,7 @@ function thissubmit(thiss){
                                             $("body").off("click").on("click",".pageContent .items table tbody tr td .fa-trash-o",function(){
                                                 $(this).parent().parent().remove();
                                             });
-                                            
+
                                             $("body").off("change").on("change",".pageContent .select_attr_type",function(){
                                                 var val = $(this).val();
                                                 if (val == 'spu_attr') {
@@ -140,12 +140,12 @@ function thissubmit(thiss){
                                                     $(".display_itemcs").show();
                                                 }
                                             });
-                                            
+
                                             $("body").on("change",".pageContent .display_type_select",function(){
                                                 var val = $(this).val();
                                                 if (val != 'select' && val != 'editSelect' ) {
                                                     $(".display_itemcs").hide();
-                                                    
+
                                                 } else {
                                                     $(".display_itemcs").show();
                                                 }
@@ -157,10 +157,10 @@ function thissubmit(thiss){
                         </p>
 					</div>
 				</fieldset>
-                
+
 				<?= $lang_attr ?>
 				<?= $textareas ?>
-                
+
 		</div>
 		<div class="formBar">
 			<ul>
@@ -174,7 +174,7 @@ function thissubmit(thiss){
 			</ul>
 		</div>
 	</form>
-</div>	
+</div>
 
 <style>
 .edit_p .items input{

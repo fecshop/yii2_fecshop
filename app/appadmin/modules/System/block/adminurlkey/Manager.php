@@ -9,10 +9,6 @@
 
 namespace fecshop\app\appadmin\modules\System\block\adminurlkey;
 
-use fec\helpers\CUrl;
-use fec\helpers\CRequest;
-use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockEditInterface;
-use fecshop\app\appadmin\modules\AppadminbaseBlockEdit;
 use Yii;
 
 /**
@@ -20,21 +16,21 @@ use Yii;
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
-class Manager 
+class Manager
 {
-    
-    
+
+
     // 传递给前端的数据 显示编辑form
     public function getLastData($developer_info)
     {
         $addon_author = isset($developer_info['addon_author']) ? $developer_info['addon_author'] : '';
         $package = isset($developer_info['package']) ? $developer_info['package'] : '';
-        
+
         return [
             'addon_author' => $addon_author,
             'package' => $package,
             'saveUrl' => Yii::$service->url->getUrl('system/adminurlkey/manager'),
         ];
     }
-    
+
 }

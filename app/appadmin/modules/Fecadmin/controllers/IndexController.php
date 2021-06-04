@@ -8,8 +8,6 @@
  */
 namespace fecshop\app\appadmin\modules\Fecadmin\controllers;
 use Yii;
-use fec\helpers\CRequest;
-use fecadmin\FecadminbaseController;
 use fecshop\app\appadmin\modules\AppadminController;
 /**
  * @author Terry Zhao <2358269014@qq.com>
@@ -18,21 +16,21 @@ use fecshop\app\appadmin\modules\AppadminController;
 class IndexController extends AppadminController
 {
 	public $enableCsrfValidation = true;
-    
+
     public function init()
     {
         Yii::$service->page->theme->layoutFile = 'dashboard.php';
-        parent::init(); 
+        parent::init();
     }
-    
+
     public function actionIndex()
     {
 		return $this->render('index');
 	}
-	
-	
-	
-	
+
+
+
+
 }
 
 

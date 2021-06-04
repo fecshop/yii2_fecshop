@@ -7,9 +7,7 @@
  * @license http://www.fecshop.com/license/
  */
 namespace fecshop\app\appadmin\modules\Fecadmin\controllers;
-use Yii;
 use fec\helpers\CRequest;
-use fecadmin\FecadminbaseController;
 use fecshop\app\appadmin\modules\AppadminController;
 /**
  * @author Terry Zhao <2358269014@qq.com>
@@ -29,10 +27,10 @@ class CacheController extends AppadminController
 		$data = $block->getLastData();
 		return $this->render($this->action->id,$data);
 	}
-	
-	
-	
-	
+
+
+
+
 }
 
 

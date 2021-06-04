@@ -6,10 +6,10 @@
  * @copyright Copyright (c) 2016 FecShop Software LLC
  * @license http://www.fecshop.com/license/
  */
-use yii\helpers\Html;
+
 use fec\helpers\CRequest;
-use fecadmin\models\AdminRole;
-/** 
+
+/**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -20,12 +20,12 @@ use fecadmin\models\AdminRole;
 </form>
 
 <?php if (!$guest): ?>
-<div class="pageContent systemConfig"> 
+<div class="pageContent systemConfig">
 	<form  method="post" action="<?= $saveUrl ?>" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-		<?php echo CRequest::getCsrfInputHtml();  ?>	
+		<?php echo CRequest::getCsrfInputHtml();  ?>
 		<div layouth="56" class="pageFormContent" style="height: 240px; overflow: auto;">
-			
-        
+
+
                 <fieldset id="fieldset_table_qbe">
 					<legend style="color:#888">Gii生成应用</legend>
 					<div>
@@ -58,12 +58,12 @@ use fecadmin\models\AdminRole;
                             <input type="text" value="<?= $addon_author ?>" size="30" name="editFormData[addon_author]" class="textInput required">
                             <span class="remark-text">应用的作者，建议您使用默认值即可</span>
                         </p>
-                        
+
                     </div>
 				</fieldset>
-                
+
 		</div>
-	
+
 		<div class="formBar">
 			<ul>
 				<!--<li><a class="buttonActive" href="javascript:;"><span>保存</span></a></li>-->
@@ -76,7 +76,7 @@ use fecadmin\models\AdminRole;
 			</ul>
 		</div>
 	</form>
-</div>	
+</div>
 <?php endif; ?>
 <style>
 .pageForm  .pageFormContent .edit_p{
@@ -97,7 +97,7 @@ use fecadmin\models\AdminRole;
 
 .pageContent .combox {
         margin-left:5px;
-        
+
 }
 </style>
 
@@ -125,21 +125,21 @@ use fecadmin\models\AdminRole;
             var packageName = $(this).attr('packageName');
             var addonName = $(this).attr('addonName');
             var folderName = $(this).attr('folderName');
-            
+
             var url = "<?= Yii::$service->url->getUrl("system/extensionmarket/install"); ?>";
             url += '?namespace=' + namespace;
             url += '&packageName=' + packageName;
             url += '&folderName=' + folderName;
             url += '&addonName=' + encodeURIComponent(addonName);
-            
+
             $.ajax({
                 url: url,
                 async: true,
                 timeout: 800000,
-                dataType: 'json', 
+                dataType: 'json',
                 type: 'get',
                 success:function(data, textStatus){
-                    
+
                     if(data.statusCode == 200){
                         //alert(data.statusCode);
                         message = data.message;
@@ -154,12 +154,12 @@ use fecadmin\models\AdminRole;
                     //
                 },
                 error:function(){
-                    
+
                 }
             });
-            
+
         });
-        
+
     });
 
 

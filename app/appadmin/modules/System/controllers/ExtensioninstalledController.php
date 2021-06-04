@@ -10,7 +10,6 @@
 namespace fecshop\app\appadmin\modules\System\controllers;
 
 use fecshop\app\appadmin\modules\System\SystemController;
-use Yii;
 
 /**
  * @author Terry Zhao <2358269014@qq.com>
@@ -33,27 +32,27 @@ class ExtensioninstalledController extends SystemController
 
         return $this->render($this->action->id, $data);
     }
-    
+
     public function actionManagerview()
     {
         $data = $this->getBlock()->getLastData();
 
         return $this->render($this->action->id, $data);
     }
-    
+
     public function actionManagerenable()
     {
         $data = $this->getBlock('manageredit')->extensionEnable();
     }
-    
+
     public function actionManagerdisable()
     {
         $data = $this->getBlock('manageredit')->extensionDisable();
     }
-    
-    
-    
-    
+
+
+
+
     public function actionManagereditsave()
     {
         $data = $this->getBlock('manageredit')->save();

@@ -1,5 +1,4 @@
 <?php
-    use fec\helpers\CRequest;
 ?>
 <h1>Mysql数据库表初始化完成页面</h1>
 <br/>
@@ -28,19 +27,19 @@
 产品测试数据安装中，请耐心等待，在该过程中请勿刷新页面...
 </div>
 <script>
-	// add to cart js	
+	// add to cart js
 	<?php $this->beginBlock('dbNext') ?>
 	$(document).ready(function(){
         $(".dbNext").click(function(){
             $(".loadingInfo").show();
             window.location.href="<?= $nextUrl ?>";
         });
-        
+
         $(".dbSkip").click(function(){
             window.location.href="<?= $skipUrl ?>";
         });
-        
-	});   
-	<?php $this->endBlock(); ?>  
+
+	});
+	<?php $this->endBlock(); ?>
 	<?php $this->registerJs($this->blocks['dbNext'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
-</script> 
+</script>

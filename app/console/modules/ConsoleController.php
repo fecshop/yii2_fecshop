@@ -6,8 +6,7 @@
  * @copyright Copyright (c) 2016 FecShop Software LLC
  * @license http://www.fecshop.com/license/
  */
-?>
-<?php
+
 namespace fecshop\app\console\modules;
 
 use fec\controllers\FecController;
@@ -41,7 +40,7 @@ class ConsoleController extends FecController
         $relativeFile .= '\\'.$this->id.'\\'.ucfirst($blockName);
         //查找是否在rewriteMap中存在重写
         $relativeFile = Yii::mapGetName($relativeFile);
-        
+
         return new $relativeFile();
     }
 }

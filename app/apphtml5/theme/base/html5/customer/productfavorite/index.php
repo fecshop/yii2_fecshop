@@ -9,7 +9,6 @@
 use fec\helpers\CRequest;
 ?>
 <?php
-use fecshop\app\apphtml5\helper\Format;
 ?>
 <div class="account-ds">
 	<div class="bar bar-nav account-top-m">
@@ -28,10 +27,10 @@ use fecshop\app\apphtml5\helper\Format;
 				<div style="width:100%;min-height:500px;">
 					<div style="width:100%;">
 						<?php if(is_array($coll) && !empty($coll)):  ?>
-						<table class="product-Reviews"> 
+						<table class="product-Reviews">
 							<?php  foreach($coll as $one):  ?>
 							<?php  $main_img = $one['image']['main']['image'];  ?>
-							
+
 							<tr>
 								<td>
 									<a external href="<?= Yii::$service->url->getUrl($one['url_key'])  ?>">
@@ -56,12 +55,12 @@ use fecshop\app\apphtml5\helper\Format;
                                                 echo Yii::$service->page->widget->DiRender('category/price', $diConfig);
 											?>
 										</div>
-										
+
 										<div class="clear"></div>
 										<div style="font-weight:100">
 											<?= Yii::$service->page->translate->__('Favorite Date:');?><?= date('Y-m-d H:i:s',$one['updated_at']) ?>
 										</div>
-									</div>	
+									</div>
 								</td>
 								<td>
 									<div class="favorite-Operation addressbook " style="display:inline-block;float:right; margin-top: 0px;">
@@ -71,7 +70,7 @@ use fecshop\app\apphtml5\helper\Format;
 									</div>
 								</td>
 							</tr>
-								
+
 							<?php  endforeach;  ?>
 						</table>
 						<?php  else:  ?>
@@ -87,8 +86,8 @@ use fecshop\app\apphtml5\helper\Format;
 			</div>
 		</div>
 	</div>
-	
-	
+
+
 	<div class="clear"></div>
 </div>
 <script>

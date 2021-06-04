@@ -9,10 +9,6 @@
 
 namespace fecshop\app\appadmin\modules\Config\block\currency;
 
-use fec\helpers\CUrl;
-use fec\helpers\CRequest;
-use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockEditInterface;
-use fecshop\app\appadmin\modules\AppadminbaseBlockEdit;
 use Yii;
 
 /**
@@ -27,10 +23,10 @@ class Manager extends \yii\base\BaseObject
     public $_key = 'currency';
     protected $_one;
     protected $_service;
-    
+
     public function init()
     {
-        
+
          // 需要配置
         $this->_saveUrl = Yii::$service->url->getUrl('config/currency/managersave');
         $this->setService();
@@ -41,16 +37,16 @@ class Manager extends \yii\base\BaseObject
             $this->_one['value'] = unserialize($this->_one['value']);
         }
     }
-    
-    
-    
+
+
+
     // 传递给前端的数据 显示编辑form
     public function getLastData()
     {
-        $id = ''; 
+        $id = '';
         if (isset($this->_one['id'])) {
            $id = $this->_one['id'];
-        } 
+        }
         return [
             'id'            =>   $id,
             'currencys'      => $this->_one['value'],
@@ -61,8 +57,8 @@ class Manager extends \yii\base\BaseObject
     {
         $this->_service = Yii::$service->storeBaseConfig;
     }
-    
-    
+
+
     public function getEditParam($currencys)
     {
         $arr = [];
@@ -78,9 +74,9 @@ class Manager extends \yii\base\BaseObject
                     ];
                 }
             }
-            
+
         }
-        
+
         return [
             'key' => $this->_key,
             'value' => $arr,
@@ -93,7 +89,7 @@ class Manager extends \yii\base\BaseObject
     {
         $editFormData = Yii::$app->request->post('editFormData');
         $currencys = $editFormData['currencys'];
-        
+
         $saveData = $this->getEditParam($currencys);
          // 得到baseCurrencyCode
         $base_currency = Yii::$app->store->get('base_info', 'base_currency');
@@ -116,16 +112,16 @@ class Manager extends \yii\base\BaseObject
                 ]);
                 exit;
             }
-        } 
+        }
         /*
          * if attribute is date or date time , db storage format is int ,by frontend pass param is int ,
          * you must convert string datetime to time , use strtotime function.
          */
         // 设置 bdmin_user_id 为 当前的user_id
         $this->_service->saveConfig($saveData);
-        
-       
-        
+
+
+
         $errors = Yii::$service->helper->errors->get();
         if (!$errors) {
             echo  json_encode([
@@ -141,6 +137,6 @@ class Manager extends \yii\base\BaseObject
             exit;
         }
     }
-    
-    
+
+
 }

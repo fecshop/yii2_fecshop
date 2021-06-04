@@ -10,7 +10,6 @@ namespace fecshop\app\appinstall\modules\Database\controllers;
 
 //use fecshop\models\mysqldb\AdminUser;
 use Yii;
-use yii\base\Exception;
 use yii\web\Controller;
 use fecshop\models\mysqldb\StoreDomain;
 use fecshop\models\mysqldb\StoreBaseConfig;
@@ -45,11 +44,11 @@ class ConfigController extends Controller
                 return false;
             }
         }
-        
+
 
         return parent::beforeAction($action);
     }
-    
+
     protected function getInstallLockFilePath()
     {
         return Yii::getAlias('@appfront/runtime/install.lock');
@@ -69,8 +68,8 @@ class ConfigController extends Controller
         if (!$database) {
             return $this->render('readme', []);
         }
-        
-        
+
+
         $editForm = Yii::$app->request->post('editForm');
         if ($editForm && $this->checkDatabaseData($editForm)
             && $this->updateDatabaseConfig($editForm)) {
@@ -81,15 +80,15 @@ class ConfigController extends Controller
         }
         $errorInfo = Yii::$app->session->getFlash('database-errors');
         $errorInfo = $this->getErrorHtml($errorInfo);
-        
-        
+
+
         return $this->render($this->action->id, [
             'errorInfo' => $errorInfo,
             'editForm' => $editForm,
         ]);
     }
-    
-    
+
+
 
     // 数据库migrate页面
     public function actionMigrate()
@@ -99,7 +98,7 @@ class ConfigController extends Controller
         if ($isPost ) {
             // 进行数据库初始化
             if ($this->runMigrate()) {
-                
+
                 $successInfo = '数据库migrate初始化完成';
                 $successInfo = $this->getSuccessHtml($successInfo);
                 //exit;
@@ -124,33 +123,33 @@ class ConfigController extends Controller
             'errorInfo' => $errorInfo,
         ]);
     }
-    
-    
-    
+
+
+
    /*
                 $superUserInfo = Yii::$app->session->get('super_account', [
                     'username' => 'admin',
                     'userpassword' => 'admin123',
                     'useremail' => 'admin@fecmall.com',
                 ]);
-                
+
                 $param = [
                     'username' =>  $superUserInfo['username'],
                     'password' =>  $superUserInfo['userpassword'],
                     'email' =>  $superUserInfo['useremail'],
                 ];
                 $this->installUpdateUser($param);
-                
+
                 Yii::$app->session->remove('super_account');
 */
-                
-                
+
+
     /**
      * 因为安装部分没有引入services，因此无法使用Yii::$service
      * 安装更新User
      */
     protected $_install_errors;
-    
+
     public function installUpdateUser($param)
     {
         // $userFormModelName = '\fecshop\models\mysqldb\adminUser\AdminUserForm';
@@ -162,11 +161,11 @@ class ConfigController extends Controller
             $this->_install_errors = 'admin user[id=2] is not exist';
             return false;
         }
-        
+
         $model->attributes = $param;
         if ($model->validate()) {
             $model->save();
-            
+
             return true;
         } else {
             $errors = $model->errors;
@@ -175,13 +174,13 @@ class ConfigController extends Controller
                     $this->_install_errors .= implode(',', $one);
                 }
             }
-            
-            
+
+
             return false;
-        }    
-        
-        
-        
+        }
+
+
+
         echo $param['username'];echo $param['password'];
         $model->username = $param['username'];
         $model->setPassword($param['password']); // = Yii::$app->security->generatePasswordHash($superUserInfo['userpassword'], 6);;
@@ -192,7 +191,7 @@ class ConfigController extends Controller
             echo 55;
             exit;
             return $model->save();
-            
+
             return true;
         } else {
             $errors = $model->errors;
@@ -201,7 +200,7 @@ class ConfigController extends Controller
             var_dump($this->_install_errors);
             exit;
             return false;
-        }    
+        }
     }
 
     // 产品测试数据添加
@@ -213,7 +212,7 @@ class ConfigController extends Controller
             $errorInfo = Yii::$app->session->getFlash('add-test-data-errors');
             $errorInfo = $this->getErrorHtml($errorInfo);
         }
-         
+
         return $this->render($this->action->id, [
             'errorInfo' => $errorInfo,
             'successInfo' => $successInfo,
@@ -223,7 +222,7 @@ class ConfigController extends Controller
         ]);
 
     }
-    
+
     // 域名部分
     public function actionInitdomain()
     {
@@ -234,7 +233,7 @@ class ConfigController extends Controller
             $mall_type = $editForm['mall_type'];
             if ($appfront_domain && $img_domain && $mall_type) {
                 $this->updateDomainConfig($editForm);
-                
+
                 return $this->redirect(Yii::$app->homeUrl . '/database/config/initadminuser');
             } else {
                 $this->_install_errors .= 'pc域名,图片域名, 商城类型 不能为空';
@@ -246,9 +245,9 @@ class ConfigController extends Controller
             'editForm' => $editForm,
             'demoDomainList' => $this->getDemoDomainList(),
         ]);
-        
+
     }
-    
+
     // 将提交的信息更新到数据库
     public function updateDomainConfig($editForm)
     {
@@ -260,7 +259,7 @@ class ConfigController extends Controller
         $baseCurrencyCode = '';
         $storeLanguageCode = '';
         $storeLanguageName = '';
-        
+
         if ($mall_type == 'china') {
             $baseCurrencyCode = 'CNY';
             $storeLanguageCode = 'zh-CN';
@@ -270,7 +269,7 @@ class ConfigController extends Controller
             $storeLanguageCode = 'en-US';
             $storeLanguageName = 'English';
         }
-        // pc 
+        // pc
         if ($appfront_domain) {
             // appfront 更新
             $appfrontOne = StoreDomain::findOne([
@@ -289,7 +288,7 @@ class ConfigController extends Controller
                     $appfrontOne['mobile_enable'] = 2;
                 }
                 $appfrontOne['updated_at'] = time();
-                
+
                 $appfrontOne->save();
             }
         }
@@ -304,7 +303,7 @@ class ConfigController extends Controller
                 $apphtml5One['lang'] = $storeLanguageCode;
                 $apphtml5One['lang_name'] = $storeLanguageName;
                 $apphtml5One['currency'] = $baseCurrencyCode;
-                
+
                 $apphtml5One['updated_at'] = time();
                 $apphtml5One->save();
             }
@@ -337,14 +336,14 @@ class ConfigController extends Controller
                         'currency_rate' => 1,
                     ]
                 ];
-                
+
                 $baseConfig['value'] = serialize($configArr);
                 $baseConfig['updated_at'] = time();
                 $baseConfig->save();
             }
         }
-        
-        
+
+
         if ($appserver_domain) {
             $baseConfig = StoreBaseConfig::findOne([
                 'key' => 'appserver_store',
@@ -355,16 +354,16 @@ class ConfigController extends Controller
                 $configArr['lang'] = $storeLanguageCode;
                 $configArr['lang_name'] = $storeLanguageName;
                 $configArr['currency'] = $baseCurrencyCode;
-                
+
                 $baseConfig['value'] = serialize($configArr);
                 $baseConfig['updated_at'] = time();
                 $baseConfig->save();
             }
         }
-        
-        
+
+
     }
-    
+
     public function getDemoDomainList()
     {
         $domainStr = $_SERVER['SERVER_NAME'];
@@ -375,7 +374,7 @@ class ConfigController extends Controller
         } else if  (count($domainArr) == 3) {
             $subDomainStr = $domainArr[1].'.'.$domainArr[2];
         } else {
-            
+
             return [
                 'demo_pc_domain' => '',
                 'demo_admin_domain' => '',
@@ -386,7 +385,7 @@ class ConfigController extends Controller
                 'demo_appbdmin_domain' => '',
             ];
         }
-        
+
         return [
             'demo_pc_domain' => 'www.' . $subDomainStr,
             'demo_admin_domain' => 'appadmin.' . $subDomainStr,
@@ -397,10 +396,10 @@ class ConfigController extends Controller
             'demo_appbdmin_domain' => 'appbdmin.' . $subDomainStr,
         ];
     }
-    
-    
-    
-    
+
+
+
+
     // 安装默认第一步页面
     public function actionInitadminuser()
     {
@@ -413,7 +412,7 @@ class ConfigController extends Controller
             if ($this->installUpdateUser($param)) {
                 $homeUrl = Yii::$app->homeUrl;
                 return $this->redirect($homeUrl . '/database/config/complete');
-                
+
             }
         }
         $errorInfo = $this->getErrorHtml($this->_install_errors);
@@ -421,7 +420,7 @@ class ConfigController extends Controller
             'errorInfo' => $errorInfo,
             'editForm' => $editForm,
         ]);
-        
+
     }
 
     // 进行sql migrate ，产品图片的复制
@@ -454,7 +453,7 @@ class ConfigController extends Controller
     // 完成页面
     public function actionComplete()
     {
-        
+
         // 锁定安装向导
         $installLockFilePath = $this->getInstallLockFilePath();
         file_put_contents($installLockFilePath, "1");

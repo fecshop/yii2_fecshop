@@ -14,8 +14,6 @@
 /* @var $message string */
 /* @var $exception Exception */
 
-use yii\helpers\Html;
-
 $this->title = $name;
 ?>
 <div class="main container one-column">
@@ -25,5 +23,5 @@ $this->title = $name;
 			<p>Please contact us if you think this is a server error, Thank you.</p>
 			<h2><a href="<?= Yii::$app->homeUrl; ?>">Bring me back Home</a></h2>
 		</div>
-	</div>	
+	</div>
 </div>

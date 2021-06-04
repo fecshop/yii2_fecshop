@@ -9,7 +9,6 @@
 
 namespace fecshop\app\appadmin\modules\Sales\block\orderinfo;
 
-use fec\helpers\CUrl;
 use Yii;
 use yii\base\BaseObject;
 
@@ -42,13 +41,13 @@ class Manageredit extends BaseObject
             'saveUrl' 	    => Yii::$service->url->getUrl('sales/orderinfo/managereditsave'),
         ];
     }
-    
+
     public function getViewOrderInfo($order_info){
         // 订单状态部分
         $orderStatusArr = Yii::$service->order->getStatusArr();
         //var_dump($orderStatusArr);exit;
         $order_info['order_status_options'] = $this->getOptions($orderStatusArr,$order_info['order_status']);
-    
+
         // 货币部分
         $currencys = Yii::$service->page->currency->getCurrencys();
         $currencyArr = [];
@@ -62,7 +61,7 @@ class Manageredit extends BaseObject
         $checkTypeArr = Yii::$service->order->getCheckoutTypeArr();
         $order_info['checkout_method_options'] = $this->getOptions($checkTypeArr,$order_info['checkout_method']);
         // 游客下单
-        $customerOrderArr = [ 
+        $customerOrderArr = [
             1 => Yii::$service->page->translate->__('Yes'),
             2 => Yii::$service->page->translate->__('No'),
         ];
@@ -74,10 +73,10 @@ class Manageredit extends BaseObject
         // 支付方式label 货运方式label
         $order_info['shipping_method_label'] = Yii::$service->shipping->getShippingLabelByMethod($order_info['shipping_method']);
         $order_info['payment_method_label'] = Yii::$service->payment->getPaymentLabelByMethod($order_info['payment_method']);
-        
+
         return $order_info;
     }
-    
+
     public function getOptions($orderStatusArr,$order_status){
         $str = '';
         if (is_array($orderStatusArr)) {
@@ -89,10 +88,10 @@ class Manageredit extends BaseObject
                 }
             }
         }
-        
+
         return $str;
     }
-    
+
     public function save(){
         $editForm = Yii::$app->request->post('editForm');
         $order_id = $editForm['order_id'];
@@ -102,7 +101,7 @@ class Manageredit extends BaseObject
                 if ($orderModel->hasAttribute($k)) {
                     $orderModel[$k] = $v;
                 }
-            } 
+            }
             $orderModel->save();
         }
         echo  json_encode([
@@ -111,7 +110,7 @@ class Manageredit extends BaseObject
         ]);
         exit;
     }
-    
+
     public function exportExcel(){
         $order_ids = Yii::$app->request->post('order_ids');
         $order_arr = explode(',', $order_ids);
@@ -123,7 +122,7 @@ class Manageredit extends BaseObject
             Yii::$service->page->translate->__('Created At'),
             Yii::$service->page->translate->__('Update At'),
             Yii::$service->page->translate->__('Base Grand Total'),
-            Yii::$service->page->translate->__('Customer Id'), 
+            Yii::$service->page->translate->__('Customer Id'),
             Yii::$service->page->translate->__('Order Email'),
             Yii::$service->page->translate->__('First Name') ,
             Yii::$service->page->translate->__('Last Name'),
@@ -184,25 +183,25 @@ class Manageredit extends BaseObject
                     if (isset($orderCollArr[$order_id])) {
                         $order = $orderCollArr[$order_id];
                         $excelArr[] = [
-                            $order['order_id'], $order['increment_id'], $order['order_status'], 
-                            $order['store'], date('Y-m-d H:i:s', $order['created_at']), date('Y-m-d H:i:s', $order['updated_at']), 
-                            $order['base_grand_total'], $order['customer_id'], $order['customer_email'], 
-                            $order['customer_firstname'], $order['customer_lastname'], $order['customer_is_guest'] == 1 ? '是' : '否', 
-                            $order['coupon_code'], $order['payment_method'], $order['shipping_method'], 
-                            $order['base_shipping_total'], $order['customer_telephone'], $order['customer_address_country'], 
-                            $order['customer_address_state'], $order['customer_address_city'], $order['customer_address_zip'], 
-                            $order['customer_address_street1'], $order['customer_address_street2'], $order['order_remark'], 
-                            
-                            $orderItem['product_id'], $orderItem['sku'], $orderItem['name'], 
-                            $orderItem['custom_option_sku'], $orderItem['weight'], 
+                            $order['order_id'], $order['increment_id'], $order['order_status'],
+                            $order['store'], date('Y-m-d H:i:s', $order['created_at']), date('Y-m-d H:i:s', $order['updated_at']),
+                            $order['base_grand_total'], $order['customer_id'], $order['customer_email'],
+                            $order['customer_firstname'], $order['customer_lastname'], $order['customer_is_guest'] == 1 ? '是' : '否',
+                            $order['coupon_code'], $order['payment_method'], $order['shipping_method'],
+                            $order['base_shipping_total'], $order['customer_telephone'], $order['customer_address_country'],
+                            $order['customer_address_state'], $order['customer_address_city'], $order['customer_address_zip'],
+                            $order['customer_address_street1'], $order['customer_address_street2'], $order['order_remark'],
+
+                            $orderItem['product_id'], $orderItem['sku'], $orderItem['name'],
+                            $orderItem['custom_option_sku'], $orderItem['weight'],
                             $orderItem['qty'], $orderItem['base_price'],
                         ];
                     }
                 }
             }
         }
-        
+
         \fec\helpers\CExcel::downloadExcelFileByArray($excelArr);
     }
-   
+
 }

@@ -6,10 +6,10 @@
  * @copyright Copyright (c) 2016 FecShop Software LLC
  * @license http://www.fecshop.com/license/
  */
-use yii\helpers\Html;
+
 use fec\helpers\CRequest;
-use fecadmin\models\AdminRole;
-/** 
+
+/**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -20,9 +20,9 @@ use fecadmin\models\AdminRole;
 </form>
 
 <?php if (!$guest): ?>
-<div class="pageContent systemConfig"> 
+<div class="pageContent systemConfig">
 	<form id="pagerForm"  method="post" action="<?= $saveUrl ?>"  onsubmit="return navTabReflush(this);" >
-		<?php echo CRequest::getCsrfInputHtml();  ?>	
+		<?php echo CRequest::getCsrfInputHtml();  ?>
 		<div layouth="56" class="pageFormContent" style="height: 240px; overflow: auto;">
             <div style="padding:10px;">
                 <label style="float: none; display: block;width: 900px;">请将表 admin_url_key 导出的sql复制进来（只复制您添加的sql部分即可），更详细的介绍参看：
@@ -34,7 +34,7 @@ use fecadmin\models\AdminRole;
                 <textarea style="padding:10px;display:block;width:700px;height:200px;"><?= $generateStr ?></textarea>
             </div>
 		</div>
-	
+
 		<div class="formBar">
 			<ul>
 				<li>
@@ -46,7 +46,7 @@ use fecadmin\models\AdminRole;
 			</ul>
 		</div>
 	</form>
-</div>	
+</div>
 <?php endif; ?>
 <style>
 .pageForm  .pageFormContent .edit_p{
@@ -79,10 +79,10 @@ use fecadmin\models\AdminRole;
     function navTabReflush(form, navTabId){
         var $form = $(form);
         navTab.reload($form.attr('action'), {data: $form.serializeArray(), navTabId:navTabId});
-        
+
         return false;
     }
-    
+
     $(document).ready(function(){
         var isGuest = <?=  $guest ? 'true' : 'false' ?> ;
         if (isGuest) {
@@ -98,18 +98,18 @@ use fecadmin\models\AdminRole;
             var packageName = $(this).attr('packageName');
             var addonName = $(this).attr('addonName');
             var folderName = $(this).attr('folderName');
-            
+
             var url = "<?= Yii::$service->url->getUrl("system/extensionmarket/install"); ?>";
             url += '?namespace=' + namespace;
             url += '&packageName=' + packageName;
             url += '&folderName=' + folderName;
             url += '&addonName=' + encodeURIComponent(addonName);
-            
+
             $.ajax({
                 url: url,
                 async: true,
                 timeout: 800000,
-                dataType: 'json', 
+                dataType: 'json',
                 type: 'get',
                 success:function(data, textStatus){
                     if(data.statusCode == 200){

@@ -10,7 +10,6 @@
 namespace fecshop\app\appadmin\modules\Catalog\block\productattr;
 
 use fec\helpers\CUrl;
-use fec\helpers\CRequest;
 use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockInterface;
 use fecshop\app\appadmin\modules\AppadminbaseBlock;
 use Yii;
@@ -81,7 +80,7 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
                     2 => Yii::$service->page->translate->__('Disable'),
                 ],
             ],
-            
+
         ];
 
         return $data;
@@ -112,7 +111,7 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
                 'width'          => '110',
                 'align'           => 'left',
             ],
-            
+
             [
                 'orderField'    => 'status',
                 'label'           => Yii::$service->page->translate->__('Status'),
@@ -123,14 +122,14 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
                     2 => Yii::$service->page->translate->__('Disable'),
                 ],
             ],
-            
+
             [
                 'orderField'    => 'db_type',
                 'label'           => Yii::$service->page->translate->__('Db Type'),
                 'width'          => '110',
                 'align'           => 'center',
             ],
-            
+
             [
                 'orderField'    => 'show_as_img',
                 'label'           => Yii::$service->page->translate->__('Show As Img'),
@@ -141,7 +140,7 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
                     2 => Yii::$service->page->translate->__('No'),
                 ],
             ],
-            
+
             [
                 'orderField'    => 'display_type',
                 'label'           => Yii::$service->page->translate->__('Display Type'),

@@ -9,10 +9,8 @@
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
-use fecadmin\myassets\LoginAsset;
 use common\widgets\Alert;
-use fec\helpers\CUrl;
+
 # css config
 $cssOptions = [
     # css config 1.
@@ -45,8 +43,8 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
 <?php $langArr = Yii::$service->admin->getLangArr() ?>
 <div data-v-5cb71550  class="login-container">
     <?= $content; ?>
-</div>      
- 
+</div>
+
 <ul data-v-54d0b3ce="" class="el-dropdown-menu el-popper el-dropdown-menu--medium " id="dropdown-menu-9947"  style="display:none;transform-origin: center top; z-index: 2001; position: fixed; top: 180px; left: 1103px;" x-placement="bottom-end">
     <?php foreach ($langArr as $code => $name): ?>
         <li data-v-54d0b3ce=""  class="el-dropdown-menu__item  <?= ($code == $currentLangCode) ? ' is-disabled' : ''  ?>  " rel="<?= $code ?>"><?= $name ?></li>
@@ -55,9 +53,9 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
 </ul>
 
 <?php $this->endBody() ?>
-<script> 
+<script>
 　$(document).ready(function(){
-    
+
         $(".set-language.el-dropdown").click(function(){
             if ($(this).hasClass("isHide")) {
                 $(this).removeClass("isHide");
@@ -67,14 +65,14 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
                 $(".el-dropdown-menu--medium").hide();
             }
         });
-    
+
         $(".el-dropdown-menu li").click(function(){
             $langCode = $(this).attr("rel");
             $.ajax({
                 url:'<?= Yii::$service->url->getUrl('fecadmin/login/changelang')  ?>',
                 async:true,
                 timeout: 80000,
-                dataType: 'json', 
+                dataType: 'json',
                 type:'get',
                 data:{
                     'lang':$langCode,
@@ -91,11 +89,11 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
                     alert('error');
                 }
             });
-        });    
-    
-    });  
-</script> 
-                            
+        });
+
+    });
+</script>
+
 </body>
 </html>
 <?php $this->endPage() ?>
