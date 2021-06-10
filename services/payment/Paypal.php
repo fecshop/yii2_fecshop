@@ -77,7 +77,9 @@ class Paypal extends Service
     
     protected $_ipnMessageModelName = '\fecshop\models\mysqldb\IpnMessage';
     protected $_ipnMessageModel;
-    
+    // paypal 账号
+    protected $_loginAccount;
+    // paypal API账号
     protected $_account;
     protected $_password;
     protected $_signature;
@@ -86,6 +88,7 @@ class Paypal extends Service
     public function init()
     {
         parent::init();
+        $this->_loginAccount = Yii::$app->store->get('payment_paypal', 'paypal_email_account');
         $this->_account = Yii::$app->store->get('payment_paypal', 'paypal_account');
         $this->_password = Yii::$app->store->get('payment_paypal', 'paypal_password');
         $this->_signature = Yii::$app->store->get('payment_paypal', 'paypal_signature');
@@ -95,6 +98,37 @@ class Paypal extends Service
             Yii::$service->order->payment_status_pending,
             Yii::$service->order->payment_status_processing,
         ];
+    }
+    
+    public function getPaypayLoginAccount()
+    {
+        
+        return $this->_loginAccount;
+    }
+    /**
+     * 是否沙盒账户环境
+     */
+    public function isSandoxEnv()
+    {
+        if ($this->_env == Yii::$service->payment->env_sanbox) {
+            
+            return true;
+        }
+        
+        return false;
+    }
+    /**
+     * 是否，商业账户模式
+     * 如果没有填写api信息，则为个人账户，否则为商业账户
+     */
+    public function accountIsBusinessMode()
+    {
+        if ($this->_account && $this->_password && $this->_signature) {
+            //var_dump($this->_account , $this->_password , $this->_signature);exit;
+            return true;
+        }
+        
+        return false;
     }
 
     /**
