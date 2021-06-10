@@ -27,6 +27,7 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
     public $_key = 'payment_paypal';
     public $_type;
     protected $_attrArr = [
+        'paypal_email_account',
         'paypal_account',
         'paypal_password',
         'paypal_signature',
@@ -106,26 +107,39 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
             
             [
                 'label'  => Yii::$service->page->translate->__('Paypal Account'),
+                'name' => 'paypal_email_account',
+                'display' => [
+                    'type' => 'inputString',
+                ],
+                'require' => 1,
+                'remark' => '【必填】您的paypal的邮箱账户'
+            ],
+            
+            [
+                'label'  => Yii::$service->page->translate->__('Paypal Api Account'),
                 'name' => 'paypal_account',
                 'display' => [
                     'type' => 'inputString',
                 ],
+                'remark' => '【选填】Paypal Api账户，注意，这里不是你的paypal账户，而是您申请的Api凭证信息里面的Api账户'
             ],
             
             [
-                'label'  => Yii::$service->page->translate->__('Paypal Password'),
+                'label'  => Yii::$service->page->translate->__('Paypal Api Password'),
                 'name' => 'paypal_password',
                 'display' => [
                     'type' => 'inputString',
                 ],
+                'remark' => '【选填】Paypal Api 账户密码'
             ],
             
             [
-                'label'  => Yii::$service->page->translate->__('Paypal Signature'),
+                'label'  => Yii::$service->page->translate->__('Paypal Api Signature'),
                 'name' => 'paypal_signature',
                 'display' => [
                     'type' => 'inputString',
                 ],
+                'remark' => '【选填】Paypal Api 签名'
             ],
             
             

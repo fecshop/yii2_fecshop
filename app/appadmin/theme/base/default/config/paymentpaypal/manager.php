@@ -32,7 +32,13 @@ use fecadmin\models\AdminRole;
 					<div>
 						<?= $editBar; ?>
 					</div>
+                    
 				</fieldset>
+                <div style="padding-left:100px;padding-top:40px;">
+                    <b>注意1</b>：对于个人paypal账户收款，只需要填写<b>Paypal账户</b>即可，个人账户不支持paypal快捷支付（从购物车页面点击paypal按钮发起支付）
+                    <br/><br/>
+                    <b>注意2</b>：对于商户paypal账户收款，支持api授权，请您填写<b>Api账号信息</b>(就是尾部的三个api选项)，支付功能更为完善。
+                </div>
 				<?= $lang_attr ?>
 				<?= $textareas ?>
 		</div>
