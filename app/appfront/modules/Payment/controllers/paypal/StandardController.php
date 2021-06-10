@@ -44,7 +44,8 @@ class StandardController extends AppfrontController
         \Yii::info('paypal ipn begin standard', 'fecshop_debug');
         $payment_method = Yii::$service->payment->paypal->standard_payment_method;
         Yii::$service->payment->setPaymentMethod($payment_method);
-        $post = Yii::$app->request->post();
+        //$post = Yii::$app->request->post();
+        $post = $_POST;
         if (is_array($post) && !empty($post)) {
             $post = \Yii::$service->helper->htmlEncode($post);
             ob_start();
@@ -52,7 +53,7 @@ class StandardController extends AppfrontController
             var_dump($post);
             $post_log = ob_get_clean();
             \Yii::info($post_log, 'fecshop_debug');
-            Yii::$service->payment->paypal->receiveIpn($post);
+            Yii::$service->payment->paypal->receiveIpn($_POST);
         }
     }
     
