@@ -19,6 +19,15 @@ class Start extends \yii\base\BaseObject
 {
     public function startPayment()
     {
+        // 如果是个人账户支付模式。
+        if (!Yii::$service->payment->paypal->accountIsBusinessMode()) {
+            $orderInfo = Yii::$service->order->getCurrentOrderInfo();
+            $paypalStr = Yii::$service->payment->paypalCart->getRequestUrl( $orderInfo);
+            // var_dump( $paypalStr);exit;
+            Yii::$service->url->redirect($paypalStr);
+            
+            return;
+        }
         $methodName_ = 'SetExpressCheckout';
         $nvpStr_ = Yii::$service->payment->paypal->getStandardTokenNvpStr();
         //echo $nvpStr_;exit;

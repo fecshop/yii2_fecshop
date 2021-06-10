@@ -61,7 +61,7 @@ class ExpressController extends AppfrontController
             var_dump($post);
             $post_log = ob_get_clean();
             \Yii::info($post_log, 'fecshop_debug');
-            Yii::$service->payment->paypal->receiveIpn($post);
+            Yii::$service->payment->paypal->receiveIpn($_POST);
         }
     }
     
