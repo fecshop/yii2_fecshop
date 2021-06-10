@@ -87,6 +87,9 @@ return [
         ],
         */
         'childService' => [
+            'paypalCart' => [
+                'class'    => 'fecshop\services\payment\PaypalCart',
+            ],
             'paypal' => [
                 'class'    => 'fecshop\services\payment\Paypal',
                 /*
