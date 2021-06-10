@@ -6,10 +6,10 @@
  * @copyright Copyright (c) 2016 FecMall Software LLC
  * @license http://www.fecmall.com/license
  */
-use yii\helpers\Html;
+
 use fec\helpers\CRequest;
-use fecadmin\models\AdminRole;
-/** 
+
+/**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -24,7 +24,7 @@ use fecadmin\models\AdminRole;
 
 
 function thissubmit(thiss){
-    
+
 	var fill = true;
 	langs_input = "";
 	$(".currencys table tbody tr").each(function(){
@@ -47,11 +47,11 @@ function thissubmit(thiss){
 }
 
 </script>
-<div class="pageContent systemConfig"> 
+<div class="pageContent systemConfig">
 	<form  method="post" action="<?= $saveUrl ?>" class="pageForm required-validate" onsubmit="return thissubmit(this);">
-		<?php echo CRequest::getCsrfInputHtml();  ?>	
+		<?php echo CRequest::getCsrfInputHtml();  ?>
 		<div layouth="56" class="pageFormContent" style="height: 240px; overflow: auto;">
-        
+
             <div class="edit_p">
                 <label><?=  Yii::$service->page->translate->__('Currency') ?>：</label>
                 <input type="hidden" name="editFormData[currencys]" class="langs_input"  />
@@ -87,12 +87,12 @@ function thissubmit(thiss){
                         </tbody>
                         <tfoot style="text-align:right;">
                             <tr>
-                                <td colspan="100" style="text-align:right;">						
+                                <td colspan="100" style="text-align:right;">
                                     <a rel="2" style="text-align:right;margin-top:15px;" href="javascript:void(0)" class="addCurrency button">
                                         <span><?=  Yii::$service->page->translate->__('Add Currency') ?></span>
-                                    </a>					
-                                </td>				
-                            </tr>			
+                                    </a>
+                                </td>
+                            </tr>
                         </tfoot>
                     </table>
                     <script>
@@ -109,20 +109,20 @@ function thissubmit(thiss){
                             $(".systemConfig").off("click").on("click",".currencys table tbody tr td .fa-trash-o",function(){
                                 $(this).parent().parent().remove();
                             });
-                            
+
                         });
                     </script>
                 </div>
             </div>
-            
+
 
             <div class="edit_remark" style="width:500px;margin-right:50px;float:right;font-size:14px;">
-                <p > 
+                <p >
                 </p>
-            
+
             </div>
         </div>
-	
+
 		<div class="formBar">
 			<ul>
 				<!--<li><a class="buttonActive" href="javascript:;"><span>保存</span></a></li>-->
@@ -135,9 +135,9 @@ function thissubmit(thiss){
 			</ul>
 		</div>
 	</form>
-    
-    
-</div>	
+
+
+</div>
 
 
 

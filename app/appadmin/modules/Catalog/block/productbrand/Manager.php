@@ -9,7 +9,6 @@
 
 namespace fecshop\app\appadmin\modules\Catalog\block\productbrand;
 
-use fec\helpers\CUrl;
 use fec\helpers\CRequest;
 use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockInterface;
 use fecshop\app\appadmin\modules\AppadminbaseBlock;
@@ -82,7 +81,7 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
                     2 => Yii::$service->page->translate->__('Disable'),
                 ],
             ],
-            
+
             [    // 时间区间类型搜索
                 'type'  => 'inputdatefilter',
                 'name' => 'created_at',
@@ -102,9 +101,9 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
      */
     public function getTableFieldArr()
     {
-        $brandCategorys = Yii::$service->product->brandcategory->getBrandCategoryIdAndNames(); 
+        $brandCategorys = Yii::$service->product->brandcategory->getBrandCategoryIdAndNames();
         $brandStatus = Yii::$service->product->brandcategory->getStatusArr();
-        
+
         $table_th_bar = [
             [
                 'orderField'    => $this->_primaryKey,
@@ -140,7 +139,7 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
                 'width'          => '110',
                 'align'           => 'center',
             ],
-            
+
             [
                 'orderField'    => 'status',
                 'label'           => Yii::$service->page->translate->__('Status'),
@@ -148,8 +147,8 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
                 'align'           => 'center',
                 'display'        => $brandStatus,
             ],
-            
-            
+
+
             [
                 'orderField'    => 'created_at',
                 'label'           => Yii::$service->page->translate->__('Created At'),
@@ -168,9 +167,9 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
 
         return $table_th_bar;
     }
-    
-    
-    
+
+
+
     public function getTableTbodyHtml($data)
     {
         $fields = $this->getTableFieldArr();
@@ -250,6 +249,6 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
 
         return $str;
     }
-    
-    
+
+
 }

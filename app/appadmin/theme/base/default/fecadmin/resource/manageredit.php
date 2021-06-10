@@ -6,9 +6,9 @@
  * @copyright Copyright (c) 2016 FecShop Software LLC
  * @license http://www.fecshop.com/license/
  */
-use yii\helpers\Html;
+
 use fec\helpers\CRequest;
-use fecadmin\models\AdminRole;
+
 /**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0

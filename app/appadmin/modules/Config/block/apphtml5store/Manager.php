@@ -10,7 +10,6 @@
 namespace fecshop\app\appadmin\modules\Config\block\apphtml5store;
 
 use fec\helpers\CUrl;
-use fec\helpers\CRequest;
 use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockInterface;
 use fecshop\app\appadmin\modules\AppadminbaseBlock;
 use Yii;
@@ -139,7 +138,7 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
                     2 => Yii::$service->page->translate->__('Disable'),
                 ],
             ],
-            
+
             [
                 'orderField'    => 'created_at',
                 'label'           => Yii::$service->page->translate->__('Created At'),
@@ -158,7 +157,7 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
 
         return $table_th_bar;
     }
-    
+
     /**
      * list table body.
      */
@@ -184,5 +183,5 @@ class Manager extends AppadminbaseBlock implements AppadminbaseBlockInterface
         return $this->getTableTbodyHtml($data);
     }
 
-    
+
 }

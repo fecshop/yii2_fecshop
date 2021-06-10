@@ -9,12 +9,8 @@
 namespace fecshop\app\appadmin\modules\Fecadmin\controllers;
 use Yii;
 use fec\helpers\CConfig;
-use fecadmin\FecadminbaseController;
-use fecshop\app\appadmin\modules\AppadminController;
 
-use yii\helpers\Url;
 use fec\helpers\CModel;
-use fec\helpers\CDate;
 use fecadmin\models\AdminUser\AdminUserLogin;
 
 /**
@@ -25,7 +21,7 @@ class LoginController extends \fecadmin\controllers\LoginController
 {
 	public $enableCsrfValidation = true;
     public $blockNamespace;
-    
+
     /**
      * init theme component property : $fecshopThemeDir and $layoutFile
      * $fecshopThemeDir is appfront base theme directory.
@@ -49,9 +45,9 @@ class LoginController extends \fecadmin\controllers\LoginController
          *  set i18n translate category.
          */
         Yii::$service->page->translate->category = 'appadmin';
-        Yii::$service->page->theme->layoutFile = 'login.php';  
+        Yii::$service->page->theme->layoutFile = 'login.php';
     }
-    
+
     public function actionIndex()
     {
         $langCode = Yii::$app->request->get('lang');
@@ -87,7 +83,7 @@ class LoginController extends \fecadmin\controllers\LoginController
             'error' => $errors,
         ]);
     }
-    
+
     public function actionChangelang(){
         $langCode = Yii::$app->request->get('lang');
         if ($langCode) {
@@ -98,14 +94,14 @@ class LoginController extends \fecadmin\controllers\LoginController
                 ]);
                 exit;
             }
-        }  
-        
+        }
+
         echo json_encode([
             'status' => 'fail'
         ]);
         exit;
     }
-   
+
     /**
      * @param $view|string , (only) view file name ,by this module id, this controller id , generate view relative path.
      * @param $params|Array,
@@ -139,7 +135,7 @@ class LoginController extends \fecadmin\controllers\LoginController
         }
         throw new InvalidValueException('layout file is not exist!');
     }
-    
+
 }
 
 

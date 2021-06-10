@@ -9,10 +9,6 @@
 
 namespace fecshop\app\appadmin\modules\System\block\error;
 
-use fec\helpers\CRequest;
-use fec\helpers\CUrl;
-use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockEditInterface;
-use fecshop\app\appadmin\modules\AppadminbaseBlockEdit;
 use Yii;
 
 /**
@@ -22,7 +18,7 @@ use Yii;
  */
 class Manageredit extends \yii\base\BaseObject
 {
-    
+
     // 传递给前端的数据 显示编辑form
     public function getLastData()
     {
@@ -30,8 +26,8 @@ class Manageredit extends \yii\base\BaseObject
         $primaryVal = Yii::$app->request->get($primaryKey);
         $errorHander = Yii::$service->helper->errorHandler->getByPrimaryKey($primaryVal);
         return $errorHander->attributes;
-        
+
     }
-    
+
 
 }

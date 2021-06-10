@@ -6,10 +6,10 @@
  * @copyright Copyright (c) 2016 FecMall Software LLC
  * @license http://www.fecmall.com/license
  */
-use yii\helpers\Html;
+
 use fec\helpers\CRequest;
-use fecadmin\models\AdminRole;
-/** 
+
+/**
  * @author Terry Zhao <2358269014@qq.com>
  * @since 1.0
  */
@@ -24,7 +24,7 @@ use fecadmin\models\AdminRole;
 
 
 function thissubmit(thiss){
-    
+
 	var fill = true;
 	langs_input = "";
 	$(".category_sorts table tbody tr").each(function(){
@@ -48,11 +48,11 @@ function thissubmit(thiss){
 }
 
 </script>
-<div class="pageContent systemConfig"> 
+<div class="pageContent systemConfig">
 	<form  method="post" action="<?= $saveUrl ?>" class="pageForm required-validate" onsubmit="return thissubmit(this);">
-		<?php echo CRequest::getCsrfInputHtml();  ?>	
+		<?php echo CRequest::getCsrfInputHtml();  ?>
 		<div layouth="56" class="pageFormContent" style="height: 240px; overflow: auto;">
-        
+
             <div class="edit_p">
                 <label><?=  Yii::$service->page->translate->__('Cateory Sort') ?>：</label>
                 <input type="hidden" name="editFormData[category_sorts]" class="langs_input"  />
@@ -84,16 +84,16 @@ function thissubmit(thiss){
                                         <select class="sort_direction">
                                             <?php if (is_array($sort_directions)): ?>
                                                 <?php foreach ($sort_directions as $sort_direction): ?>
-                                                        
+
                                                     <?php if ($one['sort_direction'] == $sort_direction): ?>
                                                         <option  selected="selected" value="<?= $sort_direction?>"><?= Yii::$service->page->translate->__($sort_direction) ?></option>
                                                     <?php else: ?>
                                                         <option value="<?= $sort_direction?>"><?= Yii::$service->page->translate->__($sort_direction) ?></option>
                                                     <?php endif; ?>
-                                                    
+
                                                 <?php endforeach; ?>
                                             <?php endif; ?>
-                                            
+
                                         </select>
                                     </td>
                                     <td>
@@ -105,12 +105,12 @@ function thissubmit(thiss){
                         </tbody>
                         <tfoot style="text-align:right;">
                             <tr>
-                                <td colspan="100" style="text-align:right;">						
+                                <td colspan="100" style="text-align:right;">
                                     <a rel="2" style="text-align:right;margin-top:15px;" href="javascript:void(0)" class="addCategorySort button">
                                         <span><?=  Yii::$service->page->translate->__('Add Category Sort') ?></span>
-                                    </a>					
-                                </td>				
-                            </tr>			
+                                    </a>
+                                </td>
+                            </tr>
                         </tfoot>
                     </table>
                     <script>
@@ -128,20 +128,20 @@ function thissubmit(thiss){
                             $(".systemConfig").off("click").on("click",".category_sorts table tbody tr td .fa-trash-o",function(){
                                 $(this).parent().parent().remove();
                             });
-                            
+
                         });
                     </script>
                 </div>
             </div>
-            
+
 
             <div class="edit_remark" style="width:500px;margin-right:50px;float:right;font-size:14px;">
-                <p > 
+                <p >
                 </p>
-            
+
             </div>
         </div>
-	
+
 		<div class="formBar">
 			<ul>
 				<!--<li><a class="buttonActive" href="javascript:;"><span>保存</span></a></li>-->
@@ -154,9 +154,9 @@ function thissubmit(thiss){
 			</ul>
 		</div>
 	</form>
-    
-    
-</div>	
+
+
+</div>
 
 
 

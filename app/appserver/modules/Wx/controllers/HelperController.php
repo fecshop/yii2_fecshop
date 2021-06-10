@@ -10,11 +10,10 @@
 namespace fecshop\app\appserver\modules\Wx\controllers;
 
 use fecshop\app\appserver\modules\AppserverController;
-use Yii;
- 
+
 /**
  * @author Terry Zhao <2358269014@qq.com>
- * @since 1.0 
+ * @since 1.0
  */
 class HelperController extends AppserverController
 {
@@ -23,11 +22,11 @@ class HelperController extends AppserverController
     public function actionQrcode()
     {
         POST https://api.weixin.qq.com/cgi-bin/wxaapp/createwxaqrcode?access_token=ACCESS_TOKEN
-        
+
         access_token
-        
+
     }
     */
-    
-    
+
+
 }

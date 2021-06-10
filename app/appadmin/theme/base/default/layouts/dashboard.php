@@ -11,13 +11,10 @@
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
 use fecadmin\myassets\AppAsset;
 use fecadmin\myassets\AppZhAsset;
 use common\widgets\Alert;
-use fec\helpers\CUrl;
 use fec\helpers\CRequest;
-use fecadmin\views\layouts\Head;
 
 $currentLangCode = Yii::$service->admin->getCurrentLangCode();
 if ($currentLangCode == 'zh') {
@@ -42,18 +39,18 @@ $jsOptions = [
         'options' => [
 			'position' => \yii\web\View::POS_END,  //POS_HEAD,
 		],
-        
+
 	],
     [
 		'js'	=>[
             'js/echarts.min.js',
-           
+
 		],
         // js 放到尾部
         'options' => [
 			'position' => \yii\web\View::POS_HEAD,  //POS_HEAD,
 		],
-        
+
 	],
 	# js config 2
 	//[
@@ -84,7 +81,7 @@ $cssOptions = [
 	],
 ];
 \Yii::$service->page->asset->jsOptions 	= \yii\helpers\ArrayHelper::merge($jsOptions, \Yii::$service->page->asset->jsOptions);
-\Yii::$service->page->asset->cssOptions = \yii\helpers\ArrayHelper::merge($cssOptions, \Yii::$service->page->asset->cssOptions);				
+\Yii::$service->page->asset->cssOptions = \yii\helpers\ArrayHelper::merge($cssOptions, \Yii::$service->page->asset->cssOptions);
 \Yii::$service->page->asset->register($this);
 $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/default/assets/images/blue_logo.png');
 ?>
@@ -98,9 +95,9 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
 
     <?= Html::csrfMetaTags() ?>
     <title><?= $this->title ? Html::encode($this->title) : Yii::$service->page->translate->__('Fecmall Admin Manager System') ?></title>
-    
+
 	<?php $this->head() ?>
-<script> 
+<script>
 
 　$(function(){
 	DWZ.init("<?= $publishedPath[1]; ?>", {
@@ -117,13 +114,13 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
 		}
 	});
 });
-</script> 
+</script>
 </head>
 <body>
 <?php $this->beginBody() ?>
 	<div id="layout">
 		<div id="header">
-			
+
 			<div id="navMenu">
 				<ul style="width:100%">
 					<?= Yii::$service->admin->menu->getTopMenuHtml();  ?>
@@ -133,7 +130,7 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
 				</ul>
 			</div>
 		</div>
-        
+
         <div id="leftside" style="top:35px">
 			<div id="sidebar">
 				<div class="accordion" fillSpace="sidebar">
@@ -158,7 +155,7 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
 						</ul>
 					</div>
 				</div>
-                
+
                   <div class="headerNav" style="position: absolute;right: 10px; top: 0; width: 200px;  height: 30px; z-index: 99;">
                         <span style="font-size:14px;line-height: 40px;  color: #97a8be;  display: block;   height: 21px;  position: absolute; right: 125px; top: 0px;  z-index: 31; width: 100px;">
                         <?= Yii::$service->page->translate->__('Hello'); ?>: <?= \fec\helpers\CUser::getCurrentUsername();   ?>
@@ -176,7 +173,7 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
                             <?= Yii::$service->page->translate->__('Logout'); ?>
                         </a>
                   </div>
-                
+
 				<ul class="tabsMoreList">
 					<li><a href="javascript:;"><?= Yii::$service->page->translate->__('My Main Page'); ?></a></li>
 				</ul>
@@ -237,8 +234,8 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
                                         </div>
                                     </div>
                                 </div>
-                            </div>                   
-                        
+                            </div>
+
                             <div class="row page-home">
                                 <div class="am-u-sm-12 am-u-md-12 am-u-lg-12 am-margin-bottom">
                                     <div class="widget am-cf">
@@ -292,10 +289,10 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
                                         </div>
                                     </div>
                                 </div>
-                            </div>      
-                        
+                            </div>
+
                             <?php $day = 31;  // 获取三个月的数据?>
-                            
+
                             <?php list($orderAmount, $orderCount) = Yii::$service->order->getPreMonthOrder($day); ?>
                             <div class="widget" style="padding:50px 5px; 100px">
                                 <div style="padding-left:100px;font-size:16px;">
@@ -304,7 +301,7 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
                                 <?= Yii::$service->helper->echart->getLine($orderAmount, true); ?>
                             </div>
                             <br/>
-                            
+
                             <div class="widget"  style="padding:50px 5px; 100px">
                                 <div style="padding-left:100px;font-size:16px;">
                                     <?= Yii::$service->page->translate->__('Trends in the number of orders in the last month'); ?>
@@ -318,7 +315,7 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
                                 </div>
                                 <?php $customerRegisterCount = Yii::$service->customer->getPreMonthCustomer($day); ?>
                                 <?= Yii::$service->helper->echart->getLine($customerRegisterCount, false); ?>
-                            </div> 
+                            </div>
                         <br/><br/><br/><br/><br/><br/><br/>
 					</div>
 				</div>
@@ -339,7 +336,7 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
     </div>
 </footer>
 <?php $this->endBody() ?>
-<script> 
+<script>
 　$(document).ready(function(){
         $(".store_langs").change(function(){
             $langCode = $(this).val();
@@ -347,7 +344,7 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
                 url:'<?= Yii::$service->url->getUrl('fecadmin/login/changelang')  ?>',
                 async:true,
                 timeout: 80000,
-                dataType: 'json', 
+                dataType: 'json',
                 type:'get',
                 data:{
                     'lang':$langCode,
@@ -356,17 +353,17 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
                     if (data.status == "success"){
                         window.location.reload();
                     } else {
-                        
+
                     }
                 },
                 error:function(){
                     alert('<?= Yii::$service->page->translate->__('change language error'); ?>');
                 }
             });
-        });    
-    });  
-</script> 
-                    
+        });
+    });
+</script>
+
  <style>
 .row {
     margin-right: -10px;
@@ -432,7 +429,7 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
 
 .page-home .widget .widget-body {
     padding: 0;
-   
+
 }
 
 .card-body{position: relative;}
@@ -539,7 +536,7 @@ $logoPath = $this->assetManager->publish('@fecshop/app/appadmin/theme/base/defau
     display: -ms-flexbox;
     display: flex;
 }
-</style> 
+</style>
 
 </body>
 </html>

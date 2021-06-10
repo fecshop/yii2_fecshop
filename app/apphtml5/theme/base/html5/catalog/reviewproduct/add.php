@@ -22,7 +22,7 @@
 						<a external class="product_name" href="<?= $url ?>">
 							<?= $product_name ?>
 						</a>
-						
+
 						<div class="product_info review_add_price">
 							<div class="price_info">
 								<?= Yii::$service->page->widget->render('product/price',['price_info' => $price_info]); ?>
@@ -30,16 +30,16 @@
 						</div>
 					</div>
 				</div>
-				
+
 			</div>
 			<div class="product-Reviews_bottom">
 				<form method="post" action="">
 					<?= \fec\helpers\CRequest::getCsrfInputHtml();  ?>
 					<input name="editForm[product_spu]" value="<?= $spu ?>" id="product_spu" type="hidden">
 					<input name="editForm[product_id]" value="<?= $product_id ?>" id="product_id" type="hidden">
-						
+
 					<div class="list-block" >
-						<ul>			
+						<ul>
 							<li>
 								<div class="item-content">
 									<div class="item-media">
@@ -53,7 +53,7 @@
 									</div>
 								</div>
 							</li>
-											
+
 							<li>
 								<div class="item-content">
 									<div class="item-media">
@@ -61,20 +61,20 @@
 									</div>
 									<div class="item-inner">
 										<div class="item-title label">
-											<?= Yii::$service->page->translate->__('Summary');?><em class="product-description_em">*</em> 
+											<?= Yii::$service->page->translate->__('Summary');?><em class="product-description_em">*</em>
 										</div>
 										<input placeholder="<?= Yii::$service->page->translate->__('Summary of Your Review');?>" name="editForm[summary]" id="review_title_field" class="input-text  review-input-text required-entry" value="<?=  $editForm['summary'] ?>" type="text">
-									
+
 									</div>
 								</div>
 							</li>
-							
+
 							<li>
 								<div class="item-content">
 								  <div class="item-media"><i class="icon icon-form-name"></i></div>
 								  <div class="item-inner">
 									<div class="item-title label">
-										<?= Yii::$service->page->translate->__('Rate');?></strong><em class="product-description_em">*</em>
+										<?= Yii::$service->page->translate->__('Rate');?><em class="product-description_em">*</em>
 									</div>
 									<div class="lh30_f">
 										<input name="editForm[rate_star]" value="5" id="review_price_field" type="hidden">
@@ -84,14 +84,14 @@
 											<li><a class="star_3 full_star" title="3 stars" rel="3" alt="8" href="#" onclick="javascript:return false;"></a></li>
 											<li><a class="star_4 full_star" title="4 stars" rel="4" alt="9" href="#" onclick="javascript:return false;"></a></li>
 											<li><a class="star_5 full_star" title="5 stars" rel="5" alt="10" href="#" onclick="javascript:return false;"></a></li>
-										</ul>          
+										</ul>
 										<span class="review_span_error" id="review_price_span" style="display:inline;"></span>
 									</div>
-									
+
 								  </div>
 								</div>
-							  </li> 
-							
+							  </li>
+
 							<li class="align-top">
 								<div class="item-content">
 									<div class="item-media">
@@ -114,20 +114,20 @@
 											<?= Yii::$service->page->translate->__('Captcha');?><em class="product-description_em">*</em>
 										</div>
 										<div class="input-box login-captcha">
-											<input type="text" name="editForm[captcha]" value="" size=10 class="login-captcha-input"> 
+											<input type="text" name="editForm[captcha]" value="" size=10 class="login-captcha-input">
 											<img class="login-captcha-img"  title="点击刷新" src="<?= Yii::$service->url->getUrl('site/helper/captcha'); ?>?<?php echo md5(time() . mt_rand(1,10000));?>" align="absbottom" onclick="this.src='<?= Yii::$service->url->getUrl('site/helper/captcha'); ?>?'+Math.random();"></img>
 											<span class="icon icon-refresh"></span>
-											
+
 										</div>
 										<script>
-										<?php $this->beginBlock('login_captcha_onclick_refulsh') ?>  
+										<?php $this->beginBlock('login_captcha_onclick_refulsh') ?>
 										$(document).ready(function(){
 											$(".icon-refresh").click(function(){
 												$(this).parent().find("img").click();
 											});
 										});
-										<?php $this->endBlock(); ?>  
-										</script>  
+										<?php $this->endBlock(); ?>
+										</script>
 										<?php $this->registerJs($this->blocks['login_captcha_onclick_refulsh'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
 
 									</div>
@@ -147,10 +147,10 @@
 
 
 
-		
+
 
 <script>
-	// add to cart js	
+	// add to cart js
 	<?php $this->beginBlock('product_review_rate') ?>
 	$(document).ready(function(){
 	   $(".star_ul li a").click(function(){
@@ -163,8 +163,8 @@
                 $('#review_price_field').val($num);
         });
 	});
-	 
-	<?php $this->endBlock(); ?>  
+
+	<?php $this->endBlock(); ?>
 	<?php $this->registerJs($this->blocks['product_review_rate'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
 
-</script> 
+</script>

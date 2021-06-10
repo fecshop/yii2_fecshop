@@ -9,13 +9,7 @@
 namespace fecshop\app\appadmin\modules\Fecadmin\controllers;
 use Yii;
 use fec\helpers\CConfig;
-use fecadmin\FecadminbaseController;
-use fecshop\app\appadmin\modules\AppadminController;
 use yii\web\Controller;
-use yii\helpers\Url;
-use fec\helpers\CModel;
-use fec\helpers\CDate;
-use fecadmin\models\AdminUser\AdminUserLogin;
 
 /**
  * @author Terry Zhao <2358269014@qq.com>
@@ -25,8 +19,8 @@ class LogoutController extends Controller
 {
 	public $enableCsrfValidation = true;
     public $blockNamespace;
-    
-    
+
+
     /**
      * init theme component property : $fecshopThemeDir and $layoutFile
      * $fecshopThemeDir is appfront base theme directory.
@@ -54,7 +48,7 @@ class LogoutController extends Controller
          * 自定义Yii::$classMap,用于重写
          */
     }
-    
+
     public function actionIndex()
     {
         $currentLang = Yii::$service->admin->getCurrentLangCode();
@@ -74,7 +68,7 @@ class LogoutController extends Controller
         // Yii::$app->getResponse()->redirect()->send();
         //$this->redirect("/fecadmin/login/index",200)->send();
     }
-    
+
     /**
      * @param $view|string , (only) view file name ,by this module id, this controller id , generate view relative path.
      * @param $params|Array,
@@ -108,7 +102,7 @@ class LogoutController extends Controller
         }
         throw new InvalidValueException('layout file is not exist!');
     }
-    
+
 }
 
 

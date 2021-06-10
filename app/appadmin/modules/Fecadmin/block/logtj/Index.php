@@ -8,7 +8,6 @@
  */
 namespace fecshop\app\appadmin\modules\Fecadmin\block\logtj;
 
-use fec\helpers\CUrl;
 use fec\helpers\CDate;
 use fec\helpers\CRequest;
 use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockInterface;
@@ -30,11 +29,11 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
         $this->_param['created_at_lt'] || $this->_param['created_at_lt'] = date('Y-m-d',strtotime(CDate::getCurrentDate().' +1 day '));
 		$this->_param['created_at_gte'] || $this->_param['created_at_gte'] = date('Y-m-d',strtotime($this->_param['created_at_gte'].' -1 month '));
     }
-	
+
 	public function getLastData(){
 		# 返回数据的函数
 		# 隐藏部分
-		$pagerForm = $this->getPagerForm();  
+		$pagerForm = $this->getPagerForm();
 		# 搜索部分
 		$searchBar = $this->getSearchBar();
 		# 编辑 删除  按钮部分
@@ -44,8 +43,8 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 		# 表内容部分
 		$tbody = $this->getTableTbody();
 		# 分页部分
-		$toolBar = $this->getToolBar($this->_param['numCount'],$this->_param['pageNum'],$this->_param['numPerPage']); 
-		
+		$toolBar = $this->getToolBar($this->_param['numCount'],$this->_param['pageNum'],$this->_param['numPerPage']);
+
 		return [
 			'pagerForm'	 	=> $pagerForm,
 			'searchBar'		=> $searchBar,
@@ -55,7 +54,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 			'toolBar'	=> $toolBar,
 		];
 	}
-	
+
 	# 定义搜索部分字段格式
 	public function getSearchArr(){
 		$data = [
@@ -72,7 +71,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 				'columns_type' => 'string'
 			],
 			[	# selecit的Int 类型
-				'type' => 'select',	 
+				'type' => 'select',
 				'title' => Yii::$service->page->translate->__('Type'),
 				'name' => 'tj_type',
 				'columns_type' => 'int',  # int使用标准匹配， string使用模糊查询
@@ -93,41 +92,41 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 		];
 		return $data;
 	}
-	
+
 	# 定义表格显示部分的配置
 	public function getTableFieldArr(){
 		$table_th_bar = [
-			[	
+			[
 				'orderField'	=> 'account',
 				'label'			=> Yii::$service->page->translate->__('Account'),
 				'width'			=> '70',
 				'align' 		=> 'center',
 			],
-			[	
+			[
 				'orderField'	=> 'person',
 				'label'			=> Yii::$service->page->translate->__('Name'),
 				'width'			=> '70',
 				'align' 		=> 'left',
 			],
-			//[	
+			//[
 			//	'orderField'	=> 'menu',
 			//	'label'			=> '操作菜单',
 			//	'width'			=> '70',
 			//	'align' 		=> 'left',
 			//],
-			[	
+			[
 				'orderField'	=> 'click_count',
 				'label'			=> Yii::$service->page->translate->__('Count'),
 				'width'			=> '220',
 				'align' 		=> 'left',
 			],
 		];
-        
+
 		return $table_th_bar ;
 	}
-	# 得到表格的内容部分 
+	# 得到表格的内容部分
 	public function getTableTbody(){
-        
+
 		$obj = Yii::$service->admin->systemLog->getSystemLogModel();
 		$offset = ($this->_param['pageNum'] -1)*$this->_param['numPerPage'] ;
 		$limit 	= $this->_param['numPerPage'];
@@ -147,7 +146,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 			$where []= " menu = 'login' ";
 			$group .=  " ,menu ";
 		}
-			
+
 		if($created_at_lt)
 			$where []= " created_at < '$created_at_lt' ";
 		if($created_at_gte)
@@ -157,24 +156,24 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 		}else{
 			$where = '';
 		}
-			
+
 		$table = $obj::tableName();
-		
+
 		$db = \Yii::$app->db;
-		
-		# 得到 总数。		
-		$sql = "select count(*) as count from (select account,person,menu ,count(*) as click_count 
+
+		# 得到 总数。
+		$sql = "select count(*) as count from (select account,person,menu ,count(*) as click_count
 		from $table  $where group by $group ) as t ";
 		$data_count = $db->createCommand($sql,[])->queryOne();
 		$this->_param['numCount'] = $data_count['count'];
 		# 得到数据
-		$sql = "select account,person,menu ,count(*) as click_count 
+		$sql = "select account,person,menu ,count(*) as click_count
 		from $table  $where group by $group order by click_count DESC $limit ";
 		$data = $db->createCommand($sql,[])->queryAll();
 
 		return $this->getTableTbodyHtml($data);
 	}
-	
+
 	# table 内容部分
 	public function getTableTbodyHtml($data){
 		$fileds = $this->getTableFieldArr();
@@ -221,7 +220,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 			}
 			$str .= '</tr>';
 		}
-        
+
 		return $str ;
 	}
 	# table 表  标题  1
@@ -233,7 +232,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 		foreach ($table_th_bar as $k => $field) {
 			if ($field['orderField'] == $this->_param['orderField']) {
 				$table_th_bar[$k]['class'] = $this->_param['orderDirection'];
-			}	
+			}
 		}
 		$str = '<thead><tr>';
 		//$str .= '<th width="22"><input type="checkbox" group="'.$primaryKey.'s" class="checkboxCtrl"></th>';
@@ -246,8 +245,8 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
 			$str .= '<th width="'.$width.'" '.$align.' orderField="'.$orderField.'" class="'.$class.'">'.$label.'</th>';
 		}
 		$str .= '</tr></thead>';
-        
+
 		return $str;
 	}
-	
+
 }

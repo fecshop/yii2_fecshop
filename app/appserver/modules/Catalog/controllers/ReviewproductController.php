@@ -11,7 +11,6 @@ namespace fecshop\app\appserver\modules\Catalog\controllers;
 
 use fecshop\app\appserver\modules\AppserverController;
 use Yii;
-use fecshop\app\appserver\modules\Catalog\helpers\Review as ReviewHelper;
 
 /**
  * @author Terry Zhao <2358269014@qq.com>
@@ -19,9 +18,9 @@ use fecshop\app\appserver\modules\Catalog\helpers\Review as ReviewHelper;
  */
 class ReviewproductController extends AppserverController
 {
-    
+
     public $enableCsrfValidation = false ;
-    
+
     // 增加评论
     public function actionAdd()
     {
@@ -35,11 +34,11 @@ class ReviewproductController extends AppserverController
         if ($addReviewOnlyLogin ==  Yii::$app->store->enable && Yii::$app->user->isGuest) {
             $identity = Yii::$service->customer->loginByAccessToken(get_class($this));
             if(!$identity){
-                
+
                 $code = Yii::$service->helper->appserver->account_no_login_or_login_token_timeout;
                 $data = [];
                 $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
-                
+
                 return $responseData;
             }
         }
@@ -55,8 +54,8 @@ class ReviewproductController extends AppserverController
 
         return $data;
     }
-    
-    
+
+
     public function actionSubmitreview()
     {
         if(Yii::$app->request->getMethod() === 'OPTIONS'){
@@ -73,7 +72,7 @@ class ReviewproductController extends AppserverController
                 $code = Yii::$service->helper->appserver->status_invalid_captcha;
                 $data = [];
                 $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
-                
+
                 return $responseData;
             }
         }
@@ -85,7 +84,7 @@ class ReviewproductController extends AppserverController
                 $code = Yii::$service->helper->appserver->account_no_login_or_login_token_timeout;
                 $data = [];
                 $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
-                
+
                 return $responseData;
             }
         }
@@ -100,47 +99,47 @@ class ReviewproductController extends AppserverController
             $code = Yii::$service->helper->appserver->product_not_active;
             $data = [];
             $responseData = Yii::$service->helper->appserver->getResponseData($code, $data);
-            
+
             return $responseData;
         }
         // 检查前台传递的信息
         if(!$customer_name){
-            
+
             $code = Yii::$service->helper->appserver->status_miss_param;
             $data = [];
             $message = 'customer name is empty';
             $responseData = Yii::$service->helper->appserver->getResponseData($code, $data, $message);
-            
+
             return $responseData;
         }
-        
+
         if(!$summary){
-            
+
             $code = Yii::$service->helper->appserver->status_miss_param;
             $data = [];
             $message = 'summary is empty';
             $responseData = Yii::$service->helper->appserver->getResponseData($code, $data, $message);
-            
+
             return $responseData;
         }
-        
+
         if(!$review_content){
-            
+
             $code = Yii::$service->helper->appserver->status_miss_param;
             $data = [];
             $message = 'review content is empty';
             $responseData = Yii::$service->helper->appserver->getResponseData($code, $data, $message);
-            
+
             return $responseData;
         }
-        
+
         if(!$selectStar){
-            
+
             $code = Yii::$service->helper->appserver->status_miss_param;
             $data = [];
             $message = 'review Star is empty';
             $responseData = Yii::$service->helper->appserver->getResponseData($code, $data, $message);
-            
+
             return $responseData;
         }
         // 用户是否有添加这个产品的权限
@@ -149,7 +148,7 @@ class ReviewproductController extends AppserverController
             $data = [];
             $message = 'product _id:'.$product_id.'  , you review this product only after ordered it';
             $responseData = Yii::$service->helper->appserver->getResponseData($code, $data, $message);
-            
+
             return $responseData;
         }
 
@@ -163,10 +162,10 @@ class ReviewproductController extends AppserverController
         ];
         // 保存评论
         return $this->getBlock('add')->saveReview($editForm);
-        
-        
-       
-        
+
+
+
+
     }
-    
+
 }

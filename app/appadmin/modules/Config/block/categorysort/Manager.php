@@ -9,10 +9,6 @@
 
 namespace fecshop\app\appadmin\modules\Config\block\categorysort;
 
-use fec\helpers\CUrl;
-use fec\helpers\CRequest;
-use fecshop\app\appadmin\interfaces\base\AppadminbaseBlockEditInterface;
-use fecshop\app\appadmin\modules\AppadminbaseBlockEdit;
 use Yii;
 
 /**
@@ -27,10 +23,10 @@ class Manager extends \yii\base\BaseObject
     public $_key = 'category_sort';
     protected $_one;
     protected $_service;
-    
+
     public function init()
     {
-        
+
          // 需要配置
         $this->_saveUrl = Yii::$service->url->getUrl('config/categorysort/managersave');
         $this->setService();
@@ -42,16 +38,16 @@ class Manager extends \yii\base\BaseObject
             $this->_one['value'] = unserialize($this->_one['value']);
         }
     }
-    
-    
-    
+
+
+
     // 传递给前端的数据 显示编辑form
     public function getLastData()
     {
-        $id = ''; 
+        $id = '';
         if (isset($this->_one['id'])) {
            $id = $this->_one['id'];
-        } 
+        }
         $sort_directions = $this->getSortDirection();
         $sort_directions_select = $this->getSortSelect($sort_directions);
         return [
@@ -71,23 +67,23 @@ class Manager extends \yii\base\BaseObject
             }
         }
         $str .= '</select>';
-        
+
         return $str;
     }
     public function getSortDirection()
     {
         $sort_direction = [
-            'desc' , 'asc' 
+            'desc' , 'asc'
         ];
         return $sort_direction;
     }
-    
+
     public function setService()
     {
         $this->_service = Yii::$service->storeBaseConfig;
     }
-    
-    
+
+
     public function getEditParam($category_sorts)
     {
         $arr = [];
@@ -106,7 +102,7 @@ class Manager extends \yii\base\BaseObject
                 }
             }
         }
-        
+
         return [
             'key' => $this->_key,
             'value' => $arr,
@@ -119,7 +115,7 @@ class Manager extends \yii\base\BaseObject
     {
         $editFormData = Yii::$app->request->post('editFormData');
         $category_sorts = $editFormData['category_sorts'];
-        
+
         $saveData = $this->getEditParam($category_sorts);
         //var_dump($saveData);
         /*
@@ -128,7 +124,7 @@ class Manager extends \yii\base\BaseObject
          */
         // 设置 bdmin_user_id 为 当前的user_id
         $this->_service->saveConfig($saveData);
-        
+
         $errors = Yii::$service->helper->errors->get();
         if (!$errors) {
             echo  json_encode([
@@ -144,6 +140,6 @@ class Manager extends \yii\base\BaseObject
             exit;
         }
     }
-    
-    
+
+
 }

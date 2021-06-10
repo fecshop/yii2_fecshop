@@ -44,7 +44,7 @@ class CartController extends AppserverTokenController
         return $responseData;
     }
 
-    /** @return data example
+    /** @return array data example
      *	[
      *				'coupon_code' 	=> $coupon_code,
      *				'grand_total' 	=> $grand_total,

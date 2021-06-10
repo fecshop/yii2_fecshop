@@ -3,7 +3,6 @@
 namespace fecshop\app\appapi\modules\V1;
 
 use fecshop\app\appapi\modules\AppapiModule;
-use Yii;
 
 class Module extends AppapiModule
 {
@@ -20,6 +19,6 @@ class Module extends AppapiModule
         // 指定默认的man文件
         //$this->layout = "home.php";
         //Yii::$service->page->theme->layoutFile = 'home.php';
-        
+
     }
 }
