@@ -26,15 +26,8 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
     // 需要配置
     public $_key = 'apphtml5_payment';
     public $_type;
-    protected $_attrArr = [
-        'check_money',
-        'paypal_standard',
-        'paypal_express',
-        'alipay_standard',
-        'wxpay_standard',
-        'wxpay_jsapi',
-        'wxpay_h5',
-    ];
+    protected $_attrArr;
+    public $_editArr;
     
     public function init()
     {
@@ -49,6 +42,7 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
         if ($this->_one['value']) {
             $this->_one['value'] = unserialize($this->_one['value']);
         }
+        $this->_getEditArr();
     }
     
     
@@ -72,12 +66,12 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
     {
         $this->_service = Yii::$service->storeBaseConfig;
     }
-    public function getEditArr()
+    protected function _getEditArr()
     {
         $deleteStatus = Yii::$service->customer->getStatusDeleted();
         $activeStatus = Yii::$service->customer->getStatusActive();
         
-        return [
+        $this->_editArr = [
             // 需要配置
             [
                 'label' => Yii::$service->page->translate->__('Check Money'),
@@ -168,10 +162,19 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
                 ],
                 'remark' => '微信支付手机浏览器html5'
             ],
-            
         ];
+        
+        $beforeEventName = 'event_before_save_payment_config';
+        Yii::$service->event->trigger($beforeEventName, $this);
+        foreach ($this->_editArr as $one) {
+            $this->_attrArr[] = $one['name'];
+        }
     }
     
+    public function getEditArr()
+    {
+        return $this->_editArr;
+    }
     public function getArrParam(){
         $request_param = CRequest::param();
         $this->_param = $request_param[$this->_editFormData];

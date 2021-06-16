@@ -293,6 +293,15 @@ class Placeorder extends \yii\base\BaseObject
                 return false;
             }
         }
+        // 增加event
+        $beforeEventName = 'event_place_order_check_order';
+        Yii::$service->event->trigger($beforeEventName, $post);
+        $eventCheckErr = Yii::$service->event->getErrStr();  // 事件检查结果，是否存在报错，得到报错信息
+        if ($eventCheckErr) {
+            Yii::$service->helper->errors->add($eventCheckErr);
+
+            return false;
+        }
         
         // 订单备注信息不能超过1500字符
         $orderRemarkStrMaxLen = Yii::$service->order->orderRemarkStrMaxLen;
