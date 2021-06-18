@@ -914,7 +914,63 @@ class Order extends Service
             $myOrder->save();
         }
     }
-
+    
+    /**
+     * @param $increment_id | String 订单号
+     * @param $token | String ，通过api支付的token
+     * 更新订单的 $txnId。只有未支付订单才能进行更新
+     */
+    public function updateTxnIdByIncrementId($incrementId, $txnId, $onlyPendingOrder=true)
+    {
+       if (!$incrementId ||  !$txnId) {
+            Yii::$service->helper->errors->add('incrementId and txnId can not empty ');
+            
+            return false;
+        }
+        $updateArr = [];
+        $updateArr['updated_at'] = time();
+        $updateArr['txn_id'] = $txnId;
+        $where = [];
+        if ($onlyPendingOrder) {
+            $where = [
+                'and',
+                ['increment_id' => $incrementId],
+                ['in', 'order_status', [
+                    $this->payment_status_pending,
+                    $this->payment_status_processing,
+                    
+                ]],
+            ];
+        } else {
+            $where = ['increment_id' => $incrementId];
+        }
+        $updateColumn = $this->_orderModel->updateAll(
+            $updateArr,
+            $where
+        );
+        
+        if (empty($updateColumn)) {
+            Yii::$service->helper->errors->add('order incrementId: {incrementId} , updateTxnIdAndCheckSumByIncrementId fail ', ['incrementId' => $incrementId]);
+            
+            return false;
+        }
+        
+        return true;
+    }
+    
+    /**
+     * @param $txnId | string, 订单交易号
+     * 通过支付渠道交易号，得到订单交易号
+     */
+    public function getOrderIncrementIdByTxnId($txnId)
+    {
+        $one = $this->_orderModel->findOne(['txn_id' => $txnId ]);
+        if ($one['increment_id']) {
+            
+            return $one['increment_id'];
+        }
+    }
+    
     /**
      * 从session中销毁订单号.
      */
