@@ -25,9 +25,9 @@ class Index extends \yii\base\BaseObject
         }
         $order = Yii::$service->order->getInfoByIncrementId($increment_id);
         // 清空购物车。这里针对的是未登录用户进行购物车清空。
-        if (Yii::$app->user->isGuest) {
+        //if (Yii::$app->user->isGuest) {
             Yii::$service->cart->clearCartProductAndCoupon();
-        }
+        //}
         // 清空session中存储的当前订单编号。
         Yii::$service->order->removeSessionIncrementId();
 
