@@ -60,7 +60,7 @@ class CategoryController extends AppapiTokenController
         } else {
             return [
                 'code'    => 400,
-                'message' => 'fetch category fail , exceeded the maximum number of pages',
+                'message' => 'fetch category fail , exceeded the maximum number of pages ['.$page.' <= '.$pageCount.']',
                 'data'    => [],
             ];
         }
