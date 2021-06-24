@@ -148,6 +148,16 @@ class Currency extends Service
         }
     }
     /**
+     * 得到默认的货币code，譬如： USD, CNY
+     */
+    public function getBaseCurrecyCode()
+    {
+        
+        return $this->baseCurrecy;
+    }
+    
+    
+    /**
      * property $price|Float ，默认货币的价格
      * Get current currency price.  price format is two decimal places,
      * if current currency is not find in object variable $currencys(maybe change config in online shop,but current user session is effective),
