@@ -664,7 +664,9 @@ body .combox .select a:focus{
     color:#fff;
 }
 
-
+.remark-text{
+    padding-left:10px;
+}
 
 
 
