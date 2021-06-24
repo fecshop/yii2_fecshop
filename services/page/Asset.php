@@ -137,6 +137,35 @@ class Asset extends Service
                 }
             }
         }
+        /**
+         * Registers a meta tag. 添加event，扩展可以通过event进行添加head meta信息等
+         *
+         * For example, a description meta tag can be added like the following:
+         *
+         * ```php
+         * $view->registerMetaTag([
+         *     'name' => 'description',
+         *     'content' => 'This website is about funny raccoons.'
+         * ]);
+         * ```
+         * will result in the meta tag `<meta name="description" content="This website is about funny raccoons.">`.
+         */
+        $metaAfterEventName = 'event_after_head_meta_config';
+        Yii::$service->event->trigger($metaAfterEventName, $view);
+        /**
+         * Registers a link tag. 添加event，扩展可以通过event进行添加head link信息等
+         *
+         * For example, a link tag for a custom [favicon](http://www.w3.org/2005/10/howto-favicon)
+         * can be added like the following:
+         *
+         * ```php
+         * $view->registerLinkTag(['rel' => 'icon', 'type' => 'image/png', 'href' => '/myicon.png']);
+         * ```
+         *
+         * which will result in the following HTML: `<link rel="icon" type="image/png" href="/myicon.png">`.
+         */
+        $linkAfterEventName = 'event_after_head_link_config';
+        Yii::$service->event->trigger($linkAfterEventName, $view);
         
     }
 
