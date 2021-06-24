@@ -167,6 +167,28 @@ class ProductMongodb extends Service implements ProductInterface
         ];
     }
     
+    /*
+     * example filter:
+     * [
+     * 		'numPerPage' 	=> 20,
+     * 		'pageNum'		=> 1,
+     * 		'orderBy'	=> ['_id' => SORT_DESC, 'sku' => SORT_ASC ],
+     * 		'where'			=> [
+                ['>','price',1],
+                ['<=','price',10]
+     * 			['sku' => 'uk10001'],
+     * 		],
+     * 	'asArray' => true,
+     * ]
+     */
+    public function query($filter = '')
+    {
+        $query = $this->_productModel->find();
+        $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
+
+        return $query;
+    }
+    
     public function spuCollData($select, $spuAttrArr, $spu)
     {
         $select = array_merge($select, $spuAttrArr);

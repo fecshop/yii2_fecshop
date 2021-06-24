@@ -524,6 +524,11 @@ class Product extends Service
     {
         return $this->_product->coll($filter);
     }
+    
+    public function query($filter = [])
+    {
+        return $this->_product->query($filter);
+    }
 
     public function collCount($filter = [])
     {

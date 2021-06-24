@@ -209,6 +209,35 @@ class ProductMysqldb extends Service implements ProductInterface
         ];
     }
     
+    /*
+     * example filter:
+     * [
+     * 		'numPerPage' 	=> 20,
+     * 		'pageNum'		=> 1,
+     * 		'orderBy'	=> ['_id' => SORT_DESC, 'sku' => SORT_ASC ],
+     * 		'where'			=> [
+                ['>','price',1],
+                ['<=','price',10]
+     * 			['sku' => 'uk10001'],
+     * 		],
+     * 	'asArray' => true,
+     * ]
+     */
+    public function query($filter = '')
+    {
+        $query = $this->_productModel->find();
+        // 对于存在select的查询，自动加上主键值。
+        if (isset($filter['select']) && is_array($filter['select'])) {
+            $primaryKey = $this->getPrimaryKey();
+            if (!in_array($primaryKey, $filter['select'])) {
+                $filter['select'][] = $primaryKey;
+            }
+        }
+        $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
+        
+        return $query;
+    }
+    
     public function spuCollData($select, $spuAttrArr, $spu)
     {
         $select[] = 'attr_group_info';
