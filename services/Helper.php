@@ -379,10 +379,20 @@ class Helper extends Service
         
         return [$beginTime, $endTime];
     }
+    /**
+     * @param $timestamp | int, 时间戳
+     * 得到字符串GMT格式日期时间
+     */
+    public function getGmtDateStr($timestamp='')
+    {
+        if (!$timestamp) {
+            $timestamp = time();
+        }
+        
+        return gmdate ('l d F Y H:i:s', $timestamp).' GMT';
+    }
     
-    
-    
-    
+   
     
     
 }
