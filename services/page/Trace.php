@@ -21,62 +21,37 @@ use Yii;
 class Trace extends Service
 {
     public $traceJsEnable = false;  // 是否打开js追踪
-
     public $website_id;     // 网站的id，在trace系统中获取
-
     public $trace_url;      // trace系统接收数据的url，在trace系统中获取
-    
     // trace js收集的数据，将发送到该api
     public $trace_api_url;
-
     // 通过trace系统得到的token
     public $access_token;
-    
     // 第三方追踪js
     public $thirdTraceJsStr;
-
     // api发送数据给trace系统的最大等待时间，超过这个时间将不继续等待
     public $api_time_out = 1;
 
     protected $_fta;
-
     protected $_ftactivity;
-
     protected $_ftactivity_child;
-
     protected $_fto;
-
     protected $_ftreferdomain;
-
     protected $_ftreferurl;
-
     protected $_ftreturn;
-
     protected $_fta_site_id;  // website_id
-
     protected $_fid;  // 广告id
-
     protected $_fec_medium;     // 广告渠道
-
     protected $_fec_source;     // 广告子渠道
-
     protected $_fec_campaign;   // 广告活动
-
     protected $_fec_content;    // 广告推广员
-
     protected $_fec_design;     // 广告图片设计员
 
     const LOGIN_EMAIL = 'login_email';
-
     const REGISTER_EMAIL = 'register_email';
-
     const CART = 'cart';
-
     const PAYMENT_PENDING_ORDER = 'payment_pending_order';
-
     const PAYMENT_SUCCESS_ORDER = 'payment_success_order';
-    
-    
     
     public function init()
     {
@@ -94,7 +69,6 @@ class Trace extends Service
         // 第三方追踪js片段
         $appName = Yii::$service->helper->getAppName();
         $this->thirdTraceJsStr = Yii::$app->store->get($appName.'_base', 'third_trace_js');
-        
         
         // 设置trace url
         $traceJsUrl = $faDomain . '/fec_trace.js';
@@ -118,11 +92,8 @@ class Trace extends Service
         if ($faApiTimeout) {
             $this->api_time_out = $faApiTimeout;
         }
-        
     }
     
-    
-
     /**
      * @return String, 通用的js部分，需要先设置 website_id 和 trace_url
      */
@@ -149,17 +120,79 @@ class Trace extends Service
     })();
 </script>
 ";
-
-
         return $traceJs . $this->thirdTraceJsStr;
     }
-
+    
     /**
-     * @param $categoryName | String ， 填写分类的name，如果是多语言网站，那么这里填写默认语言的分类name
-     * @return String, 分类页面的js Code
+     * @param $view | Object ，\yii\web\View
+     * @param $homeData | array, 首页传递的数据，数组里面的值并不是固定的，根据需要灵活处理。
+     * @return String, 注册页面的js Code
      */
-    public function getTraceCategoryJsCode($categoryName)
+    public function getTraceHomeJsCode($view, $homeData)
     {
+        // 加入事件event
+        $metaAfterEventName = 'event_after_trace_home_js_code';
+        Yii::$service->event->trigger($metaAfterEventName, [
+            'view' => $view,
+            'homeData' => $homeData,
+        ]);
+        
+        if ($this->traceJsEnable) {
+            
+            return "<script type=\"text/javascript\">
+    var _maq = _maq || [];
+</script>";
+        } else {
+            
+            return '';
+        }
+    }
+    
+    /**
+     * @param $view | Object ，\yii\web\View
+     * @param $search | string, 搜索数据信息，是一个json_encode的数组字符串
+     * @param $products | array, 搜索页面的产品信息
+     * 搜索页面的trace信息。
+     */
+    public function getTraceSearchJsCode($view, $search, $products)
+    {
+        // 加入事件event
+        $metaAfterEventName = 'event_after_trace_search_js_code';
+        Yii::$service->event->trigger($metaAfterEventName, [
+            'view' => $view,
+            'searchText' => json_decode($search, true),
+            'products' => $products,
+        ]);
+        
+        if ($this->traceJsEnable && $search) {
+            
+            return "<script type=\"text/javascript\">
+    var _maq = _maq || [];
+    _maq.push(['search', ".$search." ]);
+</script>";
+        } else {
+            
+            return '';
+        }
+    }
+    
+    /**
+     * @param $view | Object ，\yii\web\View
+     * @param $categoryM | Object, 分类model
+     * @param $products | array, 分类页面的产品信息
+     * 分类页面的trace信息。
+     */
+    public function getTraceCategoryJsCode($view, $categoryM, $products)
+    {
+        // 加入事件event
+        $metaAfterEventName = 'event_after_trace_category_js_code';
+        Yii::$service->event->trigger($metaAfterEventName, [
+            'view' => $view,
+            'categoryM' => $categoryM,
+            'products' => $products,
+        ]);
+        
+        $categoryName = Yii::$service->fecshoplang->getDefaultLangAttrVal($categoryM['name'], 'name');
         if ($this->traceJsEnable && $categoryName) {
             
             return "<script type=\"text/javascript\">
@@ -173,12 +206,24 @@ class Trace extends Service
     }
 
     /**
-     * @param $sku | String ， 产品页面的sku编码
+     * @param $view | Object ， Yii Component View
+     * @param $productM | Object, Product Model
      * @return String, 产品页面的js Code
-     * <?= Yii::$service->page->trace->getTraceProductJsCode($sku)  ?>
+     * <?= Yii::$service->page->trace->getTraceProductJsCode($view, $productM)  ?>
+     * 产品页面js追踪
      */
-    public function getTraceProductJsCode($sku, $spu='')
+    public function getTraceProductJsCode($view, $productM)
     {
+        // 加入事件event
+        $metaAfterEventName = 'event_after_trace_product_js_code';
+        Yii::$service->event->trigger($metaAfterEventName, [
+            'view' => $view,
+            'productM' => $productM,
+        ]);
+        // 加入FA Trace
+        $sku=$productM['sku'];
+        $spu=$productM['spu'];
+        
         if ($this->traceJsEnable && $sku) {
             
             return "<script type=\"text/javascript\">
@@ -222,22 +267,25 @@ class Trace extends Service
             return '';
         }
     }
-
+    
     /**
-     * @param $search | String ，搜索的json格式如下：
-     * {
-     * "text": "fashion handbag", // 搜索词
-     * "result_qty":5  // 搜索的产品个数
-     * }
-     * @return String, 注册页面的js Code
+     * @param $view | Object ，\yii\web\View
+     * @param $cart_info | Object or array, 下单页面，购物车数据
+     * 下单填写表单页面的trace信息。
      */
-    public function getTraceSearchJsCode($search)
+    public function getTraceCheckoutJsCode($view, $cart_info)
     {
-        if ($this->traceJsEnable && $search) {
+        // 加入事件event
+        $metaAfterEventName = 'event_after_trace_checkout_js_code';
+        Yii::$service->event->trigger($metaAfterEventName, [
+            'view' => $view,
+            'cartInfo' => $cart_info,
+        ]);
+        
+        if ($this->traceJsEnable) {
             
             return "<script type=\"text/javascript\">
     var _maq = _maq || [];
-    _maq.push(['search', ".$search." ]);
 </script>";
         } else {
             
@@ -245,6 +293,33 @@ class Trace extends Service
         }
     }
 
+    /**
+     * @param $view | Object ，\yii\web\View
+     * @param $orderM | Object, 下单页面，订单order model
+     * 已支付订单，将订单信息传递给ga
+     */
+    public function getTracePurchaseJsCode($view, $orderM)
+    {
+        // 加入事件event
+        $metaAfterEventName = 'event_after_trace_purchase_js_code';
+        Yii::$service->event->trigger($metaAfterEventName, [
+            'view' => $view,
+            'orderM' => $orderM,
+        ]);
+        
+        if ($this->traceJsEnable) {
+            
+            return "<script type=\"text/javascript\">
+    var _maq = _maq || [];
+</script>";
+        } else {
+            
+            return '';
+        }
+    }
+    /**
+     * init cookie
+     */
     public function initCookie()
     {
         // 判断当前是否是appserver端，如果是，则从 Yii::$app->request->post('cookies') 中获取
