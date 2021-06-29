@@ -71,6 +71,9 @@ $config = [
             'errorAction' => 'site/helper/error',
             'exceptionView' => '@fecshop/yii/views/errorHandler/exception.php',
         ],
+        'view' => [
+            'class' => 'fecshop\yii\web\View',
+        ],
         // 首页对应的url
         'urlManager' => [
             'rules' => [
