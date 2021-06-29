@@ -131,6 +131,7 @@ class Item extends Service
             $product_one = Yii::$service->product->getByPrimaryKey($product_id);
             $productSpuOptions = $this->getProductSpuOptions($product_one);
             $items[$k]['spu_options'] = $productSpuOptions;
+            $items[$k]['brand_id'] = $product_one['brand_id'];
             $items[$k]['custom_option'] = $product_one['custom_option'];
             $items[$k]['custom_option_info'] = $this->getProductOptions($items[$k]);
             $items[$k]['image'] = $this->getProductImage($product_one, $one);
