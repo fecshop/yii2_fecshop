@@ -104,6 +104,7 @@ class Index extends \yii\base\BaseObject
             '_id'                       => $this->_product[$productPrimaryKey],
             'buy_also_buy'              => $this->getProductBuyAlsoBuy(),
             'brand_name' => $this->_brandName,
+            'productM'  => $this->_product,
         ];
     }
     public function getGroupAttrArr($groupAttrInfo){
