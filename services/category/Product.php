@@ -74,6 +74,7 @@ class Product extends Service
     public function getFrontList($filter)
     {
         $filter['group'] = '$spu';
+        $filter['select'][] = 'brand_id';
         $coll = Yii::$service->product->getFrontCategoryProducts($filter);
         $collection = $coll['coll'];
         $count = $coll['count'];
@@ -122,6 +123,7 @@ class Product extends Service
                     'review_count'   => isset($one['review_count']) ? $one['review_count'] : 0,
                     '_id'                  => $product_id,
                     'image'              => $image,
+                    'brand_id'              => $one['brand_id'],
                     'price'                => $price,
                     'special_price'     => $special_price,
                     'url'                   => Yii::$service->url->getUrl($url_key),
