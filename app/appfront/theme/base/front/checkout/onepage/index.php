@@ -151,6 +151,76 @@ use fec\helpers\CRequest;
 			});
 		}
 	}	
+    var checkoutFunc = function(){
+        $(".validation-advice").remove();
+        i = 0;
+        j = 0;
+        address_list = $(".address_list").val();
+        // shipping
+        shipment_method = $(".onestepcheckout-shipping-method-block input[name='shipping_method']:checked").val();
+        //alert(shipment_method);
+        if(!shipment_method){
+            $(".shipment-methods").after('<div style=""  class="validation-advice"><?= Yii::$service->page->translate->__('This is a required field.');?></div>');
+            j = 1;
+        }
+        //alert(j);
+        //payment  
+        payment_method = $("#checkout-payment-method-load input[name='payment_method']:checked").val();
+        //alert(shipment_method);
+        if(!payment_method){
+            $(".checkout-payment-method-load").after('<div style=""  class="validation-advice"><?= Yii::$service->page->translate->__('This is a required field.');?></div>');
+            j = 1;
+        }
+        if(address_list){
+            if(!j){
+                $(".onestepcheckout-place-order").addClass('visit');
+            
+                $("#onestepcheckout-form").submit();
+            }
+        }else{
+            $("#onestepcheckout-form .required-entry").each(function(){
+                value = $(this).val();
+                if(!value){
+                    i++;
+                    $(this).after('<div style=""  class="validation-advice"><?= Yii::$service->page->translate->__('This is a required field.');?></div>');
+                }
+            });
+            //email  format validate
+            user_email = $("#billing_address .validate-email").val();
+            if(user_email && !validateEmail(user_email)){
+                $("#billing_address .validate-email").after('<div style=""  class="validation-advice"><?= Yii::$service->page->translate->__('email address format is incorrect');?></div>');
+                i++;
+            }
+            // password 是否长度大于6，并且两个密码一致
+            if($("#id_create_account").is(':checked')){
+                
+                new_user_pass = $(".customer_password").val();
+                new_user_pass_cm = $(".customer_confirm_password").val();
+                <?php 
+                    $passwdMinLength = Yii::$service->customer->getRegisterPassMinLength();
+                    $passwdMaxLength = Yii::$service->customer->getRegisterPassMaxLength();
+                ?>
+                passwdMinLength = "<?= $passwdMinLength ?>";
+                passwdMaxLength = "<?= $passwdMaxLength ?>";
+                if(new_user_pass.length < passwdMinLength){
+                    $(".customer_password").after('<div style=""  class="validation-advice"><?= Yii::$service->page->translate->__('Password length must be greater than or equal to {passwdMinLength}',['passwdMinLength' => $passwdMinLength]);?></div>');
+                    i++;
+                }else if(new_user_pass.length > passwdMaxLength){
+                    $(".customer_password").after('<div style=""  class="validation-advice"><?= Yii::$service->page->translate->__('Password length must be less than or equal to {passwdMaxLength}',['passwdMaxLength' => $passwdMaxLength]);?></div>');
+                    i++;
+                }else if(new_user_pass != new_user_pass_cm){
+                    $(".customer_confirm_password").after('<div style=""  class="validation-advice"><?= Yii::$service->page->translate->__('The passwords are inconsistent');?></div>');
+                    i++; 
+                }  
+            }
+            
+            if(!i && !j){
+                $(".onestepcheckout-place-order").addClass('visit');
+                $("#onestepcheckout-form").submit();
+            }
+        }
+        
+    }
 	$(document).ready(function(){
 		currentUrl = "<?= Yii::$service->url->getUrl('checkout/onepage') ?>"
 		//优惠券
@@ -247,76 +317,7 @@ use fec\helpers\CRequest;
 		});
 		//###########################
 		//下单(这个部分未完成。)
-		$("#onestepcheckout-place-order").click(function(){
-			$(".validation-advice").remove();
-			i = 0;
-			j = 0;
-			address_list = $(".address_list").val();
-			// shipping
-			shipment_method = $(".onestepcheckout-shipping-method-block input[name='shipping_method']:checked").val();
-			//alert(shipment_method);
-			if(!shipment_method){
-				$(".shipment-methods").after('<div style=""  class="validation-advice"><?= Yii::$service->page->translate->__('This is a required field.');?></div>');
-				j = 1;
-			}
-			//alert(j);
-			//payment  
-			payment_method = $("#checkout-payment-method-load input[name='payment_method']:checked").val();
-			//alert(shipment_method);
-			if(!payment_method){
-				$(".checkout-payment-method-load").after('<div style=""  class="validation-advice"><?= Yii::$service->page->translate->__('This is a required field.');?></div>');
-				j = 1;
-			}
-			if(address_list){
-				if(!j){
-					$(".onestepcheckout-place-order").addClass('visit');
-				
-					$("#onestepcheckout-form").submit();
-				}
-			}else{
-				$("#onestepcheckout-form .required-entry").each(function(){
-					value = $(this).val();
-					if(!value){
-						i++;
-						$(this).after('<div style=""  class="validation-advice"><?= Yii::$service->page->translate->__('This is a required field.');?></div>');
-					}
-				});
-				//email  format validate
-				user_email = $("#billing_address .validate-email").val();
-				if(user_email && !validateEmail(user_email)){
-					$("#billing_address .validate-email").after('<div style=""  class="validation-advice"><?= Yii::$service->page->translate->__('email address format is incorrect');?></div>');
-					i++;
-				}
-				// password 是否长度大于6，并且两个密码一致
-				if($("#id_create_account").is(':checked')){
-					
-					new_user_pass = $(".customer_password").val();
-					new_user_pass_cm = $(".customer_confirm_password").val();
-					<?php 
-						$passwdMinLength = Yii::$service->customer->getRegisterPassMinLength();
-						$passwdMaxLength = Yii::$service->customer->getRegisterPassMaxLength();
-					?>
-					passwdMinLength = "<?= $passwdMinLength ?>";
-					passwdMaxLength = "<?= $passwdMaxLength ?>";
-					if(new_user_pass.length < passwdMinLength){
-						$(".customer_password").after('<div style=""  class="validation-advice"><?= Yii::$service->page->translate->__('Password length must be greater than or equal to {passwdMinLength}',['passwdMinLength' => $passwdMinLength]);?></div>');
-						i++;
-					}else if(new_user_pass.length > passwdMaxLength){
-						$(".customer_password").after('<div style=""  class="validation-advice"><?= Yii::$service->page->translate->__('Password length must be less than or equal to {passwdMaxLength}',['passwdMaxLength' => $passwdMaxLength]);?></div>');
-						i++;
-					}else if(new_user_pass != new_user_pass_cm){
-						$(".customer_confirm_password").after('<div style=""  class="validation-advice"><?= Yii::$service->page->translate->__('The passwords are inconsistent');?></div>');
-						i++; 
-					}  
-				}
-				
-				if(!i && !j){
-					$(".onestepcheckout-place-order").addClass('visit');
-					$("#onestepcheckout-form").submit();
-				}
-			}
-			
-		});
+		$("#onestepcheckout-place-order").click(checkoutFunc);
 		
 		//登录用户切换地址列表
 		$(".address_list").change(function(){
@@ -400,9 +401,10 @@ use fec\helpers\CRequest;
 	});	
 	//ajaxreflush();
 <?php $this->endBlock(); ?> 
-<?php $this->registerJs($this->blocks['placeOrder'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
+<?php $this->registerJs($this->blocks['placeOrder'],\yii\web\View::POS_READY);//将编写的js代码注册到页面底部 ?>
 
 </script>
-    
+
+<?= Yii::$service->page->trace->getTraceCheckoutJsCode($this, $cart_info)  ?> 
 
 	

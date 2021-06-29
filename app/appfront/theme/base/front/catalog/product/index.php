@@ -150,73 +150,75 @@
 </div>
 
 <script>
-	// add to cart js	
-	<?php $this->beginBlock('add_to_cart') ?>
+// add to cart js	
+<?php $this->beginBlock('add_to_cart') ?>
+    var addToCart = function(){
+        i = 1;
+        $(".product_custom_options .pg .rg ul.required").each(function(){
+            val = $(this).find("li.current a.current").attr("value");
+            if(!val){
+                $(this).parent().parent().css("border","1px dashed #cc0000").css('padding-left','10px').css("margin-left","-10px");
+                i = 0;
+            }else{
+                $(this).parent().parent().css("border","none").css('padding-left','0px').css("margin-left","0px");
+            
+            }
+        });
+        if(i){
+            custom_option = new Object();
+            $(".product_custom_options .pg .rg ul").each(function(){
+                $m = $(this).find("li.current a.current");
+                attr = $m.attr("attr");
+                value = $m.attr("value");
+                custom_option[attr] = value;
+            });
+            custom_option_json = JSON.stringify(custom_option);
+            //alert(custom_option_json);
+            sku = $(".sku").val();
+            qty = $(".qty").val();
+            qty = qty ? qty : 1;
+            csrfName = $(".product_csrf").attr("name");
+            csrfVal  = $(".product_csrf").val();
+            
+            $(".product_custom_options").val(custom_option_json);
+            $(this).addClass("dataUp");
+            // ajax 提交数据
+            
+            addToCartUrl = "<?= Yii::$service->url->getUrl('checkout/cart/add'); ?>";
+            $data = {};
+            $data['custom_option'] 	= custom_option_json;
+            $data['product_id'] 	= $('.product_view_id').val();
+            $data['qty'] 			= qty;
+            if (csrfName && csrfVal) {
+                $data[csrfName] 		= csrfVal;
+            }
+            jQuery.ajax({
+                async:true,
+                timeout: 6000,
+                dataType: 'json', 
+                type:'post',
+                data: $data,
+                url:addToCartUrl,
+                success:function(data, textStatus){ 
+                    if(data.status == 'success'){
+                        items_count = data.items_count;
+                        $("#js_cart_items").html(items_count);
+                        window.location.href="<?= Yii::$service->url->getUrl("checkout/cart") ?>";
+                    }else{
+                        content = data.content;
+                        $(".addProductToCart").removeClass("dataUp");
+                        alert(content);
+                    }
+                    
+                },
+                error:function (XMLHttpRequest, textStatus, errorThrown){}
+            });
+            
+        }
+    };
+    
 	$(document).ready(function(){
-		$(".addProductToCart").click(function(){
-			i = 1;
-			$(".product_custom_options .pg .rg ul.required").each(function(){
-				val = $(this).find("li.current a.current").attr("value");
-			    if(!val){
-				    $(this).parent().parent().css("border","1px dashed #cc0000").css('padding-left','10px').css("margin-left","-10px");
-					i = 0;
-				}else{
-					$(this).parent().parent().css("border","none").css('padding-left','0px').css("margin-left","0px");
-			    
-			    }
-			});
-			if(i){
-				custom_option = new Object();
-				$(".product_custom_options .pg .rg ul").each(function(){
-					$m = $(this).find("li.current a.current");
-					attr = $m.attr("attr");
-					value = $m.attr("value");
-					custom_option[attr] = value;
-				});
-				custom_option_json = JSON.stringify(custom_option);
-				//alert(custom_option_json);
-				sku = $(".sku").val();
-				qty = $(".qty").val();
-				qty = qty ? qty : 1;
-				csrfName = $(".product_csrf").attr("name");
-				csrfVal  = $(".product_csrf").val();
-				
-				$(".product_custom_options").val(custom_option_json);
-				$(this).addClass("dataUp");
-				// ajax 提交数据
-				
-				addToCartUrl = "<?= Yii::$service->url->getUrl('checkout/cart/add'); ?>";
-				$data = {};
-				$data['custom_option'] 	= custom_option_json;
-				$data['product_id'] 	= $('.product_view_id').val();
-				$data['qty'] 			= qty;
-				if (csrfName && csrfVal) {
-					$data[csrfName] 		= csrfVal;
-				}
-				jQuery.ajax({
-					async:true,
-					timeout: 6000,
-					dataType: 'json', 
-					type:'post',
-					data: $data,
-					url:addToCartUrl,
-					success:function(data, textStatus){ 
-						if(data.status == 'success'){
-							items_count = data.items_count;
-							$("#js_cart_items").html(items_count);
-							window.location.href="<?= Yii::$service->url->getUrl("checkout/cart") ?>";
-						}else{
-							content = data.content;
-							$(".addProductToCart").removeClass("dataUp");
-							alert(content);
-						}
-						
-					},
-					error:function (XMLHttpRequest, textStatus, errorThrown){}
-				});
-				
-			}
-		});
+		$(".addProductToCart").click(addToCart);
 	   
 	   // product favorite
 	   $("#divMyFavorite").click(function(){
@@ -271,11 +273,11 @@
 			}
 		});
 	});
-	<?php $this->endBlock(); ?> 
-	<?php $this->registerJs($this->blocks['add_to_cart'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
+<?php $this->endBlock(); ?> 
+<?php $this->registerJs($this->blocks['add_to_cart'],\yii\web\View::POS_READY);//将编写的js代码注册到页面底部 ?>
 
-	//tab 切换js
-	<?php $this->beginBlock('product_info_tab') ?> 
+//tab 切换js
+<?php $this->beginBlock('product_info_tab') ?> 
 	var navContainer = document.getElementById("nav-container");  
 	var navBox = document.getElementById("nav-box");  
 	var text = document.getElementById("text");  
@@ -333,8 +335,8 @@
 			},4);  
 		};  
 	}  
-	<?php $this->endBlock(); ?>  
-	<?php $this->registerJs($this->blocks['product_info_tab'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
+<?php $this->endBlock(); ?>  
+<?php $this->registerJs($this->blocks['product_info_tab'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
 </script> 
-<?= Yii::$service->page->trace->getTraceProductJsCode($sku, $spu)  ?>
+<?= Yii::$service->page->trace->getTraceProductJsCode($this, $productM)  ?>
  
