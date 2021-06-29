@@ -221,6 +221,19 @@ class Brand extends Service
         ];
     }
     
+    protected $_allBrandIdAndNames;
+    public function getBrandNameByIdWithAll($brandId)
+    {
+        if (!$this->_allBrandIdAndNames) {
+            $this->_allBrandIdAndNames = $this->getAllBrandIdAndNames();
+        }
+        if (isset($this->_allBrandIdAndNames[$brandId]) && $this->_allBrandIdAndNames[$brandId]) {
+            
+            return $this->_allBrandIdAndNames[$brandId];
+        }
+        return $brandId;
+    }
+    
     /**
      * 得到品牌id 和 names 数组
      */
