@@ -198,7 +198,30 @@ class Fecshoplang extends Service
 
         return '';
     }
-
+    /**
+     * 得到当前的语言长简码，譬如：en-US, zh-CN
+     */
+    public function getCurrentLongLangCode()
+    {
+        
+        return Yii::$service->store->currentLang;
+    }
+    /**
+     * 得到当前的语言缩写简码，譬如：en, zh
+     */
+    public function getCurrentShortLangCode()
+    {
+        
+        return Yii::$service->store->currentLangCode;
+    }
+    /**
+     * 得到当前的语言全称，譬如：English，中文
+     */
+    public function getCurrentLangName()
+    {
+        
+        return Yii::$service->store->currentLangName;
+    }
     /**
      * @param $attrVal|string  属性对应的值 一般是一个数组，里面包含各个语言的的属性值
      * @param $attrName|string 属性名称，譬如:  name   title
