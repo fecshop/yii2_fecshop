@@ -356,6 +356,7 @@ class Index extends \yii\base\BaseObject
             'product_id','sku', 'spu', 'name', 'image',
             'price', 'special_price',
             'special_from', 'special_to',
+            'brand_id',
             'url_key', 'score',
         ];
         $where = $this->_where;

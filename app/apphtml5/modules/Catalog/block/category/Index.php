@@ -110,6 +110,7 @@ class Index  extends \yii\base\BaseObject
             'filter_info'       => Yii::$service->category->getFilterInfo($this->_category, $this->_where),
             'filter_price'      => $this->getFilterPrice(),
             'filter_category'   => $this->getFilterCategoryHtml(),
+            'categoryM' => $this->_category,
             'page_count'        => $page_count,
             //'content' => Yii::$service->store->getStoreAttrVal($this->_category['content'],'content'),
             //'created_at' => $this->_category['created_at'],

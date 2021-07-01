@@ -28,3 +28,4 @@
 		</div>
 	</div>
 </div>
+<?= Yii::$service->page->trace->getTracePurchaseJsCode($this, $order)  ?> 

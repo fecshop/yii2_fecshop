@@ -28,7 +28,7 @@
 				<!-- 添加 class infinite-scroll 和 data-distance  向下无限滚动可不加infinite-scroll-bottom类，这里加上是为了和下面的向上无限滚动区分-->
 				<div class=" infinite-scroll infinite-scroll-bottom" data-distance="10">
 					<div class="list-block">
-						<div class="list-container">
+						<div class="list-container category_product">
 							<?php  if(is_array($products) && !empty($products)): ?>
                                 <?php
                                     $parentThis['products'] = $products;
@@ -174,4 +174,4 @@ $.init();
 <?php $this->endBlock(); ?>
 </script>
 <?php $this->registerJs($this->blocks['category_product_filter'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
-<?= Yii::$service->page->trace->getTraceSearchJsCode($traceSearchData)  ?>
+<?= Yii::$service->page->trace->getTraceSearchJsCode($this, $traceSearchData, $products)  ?>

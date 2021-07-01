@@ -47,6 +47,7 @@ class Index extends \yii\base\BaseObject
                 'sku', 'spu', 'name', 'image',
                 'price', 'special_price',
                 'special_from', 'special_to',
+                'brand_id',
                 'url_key', 'score',
             ];
             $filter['where'] = ['in', 'sku', $skus];

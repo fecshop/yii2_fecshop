@@ -14,7 +14,7 @@
             <?php if($i%2 == 0):  ?>
                 <div class="row">
             <?php endif; ?>
-                <div class="col-50 product_list">
+                <div class="col-50 product_list home_item">
                     <a href="<?= $product['url'] ?>" external>
                         <img width="100%" src="<?= Yii::$service->image->getImgUrl('images/lazyload.gif'); ?>"  class="lazy" data-src="<?= Yii::$service->product->image->getResize($product['image'],296,false) ?>"  />
                     </a> 
