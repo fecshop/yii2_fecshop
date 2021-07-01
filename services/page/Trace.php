@@ -273,13 +273,14 @@ class Trace extends Service
      * @param $cart_info | Object or array, 下单页面，购物车数据
      * 下单填写表单页面的trace信息。
      */
-    public function getTraceCheckoutJsCode($view, $cart_info)
+    public function getTraceCheckoutJsCode($view, $cart_info, $isbbc=false)
     {
         // 加入事件event
         $metaAfterEventName = 'event_after_trace_checkout_js_code';
         Yii::$service->event->trigger($metaAfterEventName, [
             'view' => $view,
             'cartInfo' => $cart_info,
+            'isbbc' => $isbbc,
         ]);
         
         if ($this->traceJsEnable) {
@@ -298,13 +299,14 @@ class Trace extends Service
      * @param $orderM | Object, 下单页面，订单order model
      * 已支付订单，将订单信息传递给ga
      */
-    public function getTracePurchaseJsCode($view, $orderM)
+    public function getTracePurchaseJsCode($view, $orderM, $isbbc=false)
     {
         // 加入事件event
         $metaAfterEventName = 'event_after_trace_purchase_js_code';
         Yii::$service->event->trigger($metaAfterEventName, [
             'view' => $view,
             'orderM' => $orderM,
+            'isbbc' => $isbbc,
         ]);
         
         if ($this->traceJsEnable) {
