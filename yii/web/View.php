@@ -119,7 +119,11 @@ class View extends \yii\web\View
                 
             }
         }
-
+        
+        if (!empty($this->jsFiles['POS_READY'])) {
+            $lines[] = implode("\n", $this->jsFiles['POS_READY']);
+        }
+        
         return empty($lines) ? '' : implode("\n", $lines);
     }
     
