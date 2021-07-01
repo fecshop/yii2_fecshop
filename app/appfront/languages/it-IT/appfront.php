@@ -284,7 +284,7 @@ return [
     'You can fill in the order remark information below' => 'È possibile compilare le informazioni sull\'osservazione dell\'ordine di seguito',
     'you must login your account before you use coupon' => 'devi accedere al tuo account prima di utilizzare il coupon',
     'email address is empty, you must Fill in email' => 'l\'indirizzo e-mail è vuoto, è necessario compilare l\'email',
-    'email address format is incorrect' => 'il formato dell\'indirizzo e-mail non è corretto',
+    'email address format is incorrect' => 'il formato dell indirizzo e-mail non è corretto',
     'This email is registered , you must fill in another email' => 'Questa email è registrata, devi inserire un\'altra email',
     'Password length must be greater than or equal to {passwdMinLength}' => 'La lunghezza della password deve essere maggiore o uguale a {passwdMinLength}',
     'Password length must be less than or equal to {passwdMaxLength}' => 'La lunghezza della password deve essere inferiore o uguale a {passwdMaxLength}',
