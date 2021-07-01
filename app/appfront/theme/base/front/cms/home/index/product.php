@@ -12,7 +12,7 @@
 		<?php  if(is_array($parentThis['products']) && !empty($parentThis['products'])): ?>
 		<div id="owl-<?= $parentThis['name']; ?>" class="owl-carousel">	
 			<?php foreach($parentThis['products'] as $product): ?>
-				<div class="item">
+				<div class="item home_item">
 					<p class="tc pro_img">
 						<a style="" class="i_proImg" href="<?= $product['url'] ?>">
 							<img style="width:100%;" class="lazyOwl" data-src="<?= Yii::$service->product->image->getResize($product['image'],[285,434],false) ?>"  src="<?= Yii::$service->image->getImgUrl('appfront/images/lazyload1.gif') ; ?>">
