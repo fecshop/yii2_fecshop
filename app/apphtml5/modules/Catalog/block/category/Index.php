@@ -447,7 +447,7 @@ class Index  extends \yii\base\BaseObject
                 $productPrimaryKey, 'sku', 'spu', 'name', 'image',
                 'price', 'special_price',
                 'special_from', 'special_to',
-                'url_key', 'score',
+                'url_key', 'score','is_in_stock',
             ];
         if (is_array($this->_sort_items)) {
             foreach ($this->_sort_items as $sort_item) {

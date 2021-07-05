@@ -18,6 +18,7 @@
 					$imageParam = [
                         'media_size' => $media_size,
                         'image' => $image_thumbnails,
+                        'is_in_stock' => $is_in_stock,
                     ];
 				?>
 				<?= Yii::$service->page->widget->render('product/image',$imageParam); ?>

@@ -74,6 +74,7 @@
 								'media_size' => $media_size,
 								'image' => $image_thumbnails,
 								'productImgMagnifier' => $productImgMagnifier,
+                                'is_in_stock' => $is_in_stock,
 							];
 						?>
 						<?= Yii::$service->page->widget->render('product/image',$imageParam); ?>

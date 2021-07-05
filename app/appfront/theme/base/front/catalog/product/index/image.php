@@ -14,11 +14,41 @@ $productImgMagnifier = $parentThis['productImgMagnifier'];
 $small_img_width = $media_size['small_img_width'];
 $small_img_height = $media_size['small_img_height'];
 $middle_img_width = $media_size['middle_img_width'];
+$is_in_stock = $parentThis['is_in_stock'];
+
 ?>
 <?php  $main_img = isset($image['main']['image']) ? $image['main']['image'] : '' ?>
+<?php if ($is_in_stock == 1): ?>
 <div class="product-main-img">
 	<img id="zoom_03" src="<?= Yii::$service->product->image->getResize($main_img,$middle_img_width,false) ?>" data-zoom-image="<?= Yii::$service->product->image->getUrl($main_img);  ?>"/>
 </div>
+<?php else: ?>
+<div class="product-main-img">
+    <span class="second_tag">
+        <?= Yii::$service->page->translate->__('OUT OF STOCK'); ?>
+    </span>
+	<img  src="<?= Yii::$service->product->image->getResize($main_img,$middle_img_width,false) ?>" data-zoom-image="<?= Yii::$service->product->image->getUrl($main_img);  ?>"/>
+</div>
+<style>
+.product-main-img{
+    position:relative;
+}
+.second_tag {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.5);
+    color: #fff;
+    font-size: 16px;
+    text-align: center;
+    padding-top: 0;
+    top: 0;
+    left: 0;
+    margin-left: 0;
+    margin-top: 0;
+    line-height: 400px;
+</style>
+<?php endif; ?>
 <?php
 	if(isset($image['gallery']) && is_array($image['gallery']) && !empty($image['gallery'])):
 		$gallerys = $image['gallery'];

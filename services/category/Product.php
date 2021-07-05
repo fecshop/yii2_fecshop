@@ -128,6 +128,7 @@ class Product extends Service
                     'special_price'     => $special_price,
                     'url'                   => Yii::$service->url->getUrl($url_key),
                     'product_id'        => $product_id,
+                    'is_in_stock' => $one['is_in_stock'],
                 ];
             }
         }

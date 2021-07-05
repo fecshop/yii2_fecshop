@@ -459,7 +459,7 @@ class Index extends \yii\base\BaseObject
         $select = [
             $productPrimaryKey, 'sku', 'spu', 'name', 'image',
             'price', 'special_price',
-            'special_from', 'special_to',
+            'special_from', 'special_to','is_in_stock',
             'url_key', 'score', 'reviw_rate_star_average', 'review_count'
         ];
         if (is_array($this->_sort_items)) {

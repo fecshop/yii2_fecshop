@@ -43,7 +43,6 @@ $cssOptions = [
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?= $currentLangCode = Yii::$service->store->currentLangCode; ?>" lang="<?= $currentLangCode ?>">
 <head>
 <?= Yii::$service->page->widget->render('base/head',$this); ?>
-        
 </head>
 <body>
 <?= Yii::$service->page->widget->render('base/beforeContent',$this); ?>
