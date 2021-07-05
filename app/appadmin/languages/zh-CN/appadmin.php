@@ -887,7 +887,11 @@ return [
     'Priority' => '优先级',
     'Social Config' => '社交平台配置',
     'Social Feed' => '社交平台Feed',
-    '' => '',
+    
+    'Ga Config'	=> 'GA配置',
+    'LiveChat Config'	=> '在线聊天配置',
+    
+    'Livechat Js Code' => '在线聊天Js代码',
     '' => '',
     '' => '',
     '' => '',
