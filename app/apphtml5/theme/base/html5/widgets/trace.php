@@ -1,1 +1,1 @@
-<?= Yii::$service->page->trace->getTraceCommonJsCode()  ?>
+<?= Yii::$service->page->trace->getTraceCommonJsCode($this)  ?>
