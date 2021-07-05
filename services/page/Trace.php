@@ -97,8 +97,14 @@ class Trace extends Service
     /**
      * @return String, 通用的js部分，需要先设置 website_id 和 trace_url
      */
-    public function getTraceCommonJsCode()
+    public function getTraceCommonJsCode($view)
     {
+        // 加入事件event
+        $metaAfterEventName = 'event_after_trace_common_js_code';
+        Yii::$service->event->trigger($metaAfterEventName, [
+            'view' => $view
+        ]);
+        
         if (!$this->traceJsEnable) {
             
             return '';
