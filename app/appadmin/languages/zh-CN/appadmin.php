@@ -892,8 +892,8 @@ return [
     'LiveChat Config'	=> '在线聊天配置',
     
     'Livechat Js Code' => '在线聊天Js代码',
-    '' => '',
-    '' => '',
+    'FbPixel Config' => 'Facebook像素配置',
+    'FbPixel Code' => 'Facebook像素js代码',
     '' => '',
     '' => '',
     '' => '',
