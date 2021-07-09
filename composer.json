@@ -31,6 +31,7 @@
     "ramsey/uuid": "*",
     "league/iso3166": "^2.1",
     "facebook/graph-sdk": "*",
+    "geoip2/geoip2": "2.10.0",
     "hightman/xunsearch": "*@beta"
   },
   "autoload": {
