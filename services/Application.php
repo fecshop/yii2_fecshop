@@ -69,6 +69,8 @@ class Application
         $this->initRewriteMap($config);
         $this->childService = $config['services'];
         unset($config['services']);
+        $beforeEventName = 'event_service_application_init';
+        Yii::$service->event->trigger($beforeEventName, $config);
     }
     // init yiiClassMap and fecRewriteMap
     public function initRewriteMap(&$config)
