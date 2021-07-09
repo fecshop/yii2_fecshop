@@ -174,7 +174,7 @@ class Country extends Service
      * @return array ，得到所有国家的数组
      *               格式：['国家简码' => '国家全称']
      */
-    public static function getAllCountryArray()
+    public function getAllCountryArray()
     {
         return [
             'AF'=>'Afghanistan',
