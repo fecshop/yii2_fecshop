@@ -978,7 +978,9 @@ class Order extends Service
     {
         return Yii::$service->session->remove(self::CURRENT_ORDER_INCREAMENT_ID);
     }
-
+    
+    public $_eventGeneratedIncrementId;
+    public $_eventGenerateOrderId;
     /**
      * @param int $order_id the order id
      * @return int $increment_id
@@ -986,6 +988,17 @@ class Order extends Service
      */
     protected function generateIncrementIdByOrderId($order_id)
     {
+        $this->_eventGenerateOrderId = $order_id;
+        $beforeEventName = 'event_generate_order_increment_id_before';
+        Yii::$service->event->trigger($beforeEventName, $this);
+        // 如果event中进行了订单号的生成，就会将其写入到 $this->_eventGeneratedIncrementId
+        if ($eventGeneratedIncrementId = $this->_eventGeneratedIncrementId) {
+            // 清空类变量，保证每次都是最新生成的订单id。
+            $this->_eventGeneratedIncrementId = '';
+            
+            return $eventGeneratedIncrementId;
+        }
+        // 按照订单id进行生成订单编号，常规生成。
         $increment_id = (int) $this->increment_id + (int) $order_id;
 
         return $increment_id;

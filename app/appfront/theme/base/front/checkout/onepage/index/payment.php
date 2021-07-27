@@ -32,7 +32,7 @@
 						<ul class="form-list" id="payment_form_<?= $payment ?>" style="">
 							<li>
 							<?php if(isset($info['imageUrl']) && !empty($info['imageUrl'])): ?>
-								<img style="margin:10px 0 8px 0" src="<?= $info['imageUrl'] ?>">
+								<img style="margin:10px 0 8px 0;max-height: 60px;" src="<?= $info['imageUrl'] ?>">
 							<?php endif; ?>
 							</li>
 							<li class="form-alt"><?= Yii::$service->page->translate->__($info['supplement']) ?></li>
