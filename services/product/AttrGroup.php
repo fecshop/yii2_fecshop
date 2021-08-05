@@ -172,5 +172,9 @@ class AttrGroup extends Service
         return $this->_attr->getByRemoteId($remoteId);
     }
     
+    public function getAttrGroupArr()
+    {
+        return $this->_attrGroup->getAttrGroupArr();
+    }
     
 }

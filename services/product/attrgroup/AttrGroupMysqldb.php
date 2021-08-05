@@ -219,6 +219,37 @@ class AttrGroupMysqldb extends Service implements AttrGroupInterface
         return null;
     }
     
+    
+    
+    public function getAttrGroupArr()
+    {
+        // attribute Group
+        $filter = [
+            'where' => [
+                ['status' => $this->getEnableStatus()]
+            ],
+            'fetchAll' => true,
+            'asArray' => true,
+        ];
+        $query = $this->_attrGroupModel->find();
+        $query = Yii::$service->helper->ar->getCollByFilter($query, $filter);
+        $coll = $query->all();
+        $arr = [];
+        if (is_array($coll)) {
+            foreach ($coll as $k => $groupOne) {
+                if ($groupOne['name']) {
+                    $groupName = $groupOne['name'];
+                    $arr[$groupName] = $groupName;
+                }
+            }
+            
+            return $arr;
+        }
+        
+        return null;
+    }
+    
+    
     public function getByRemoteId($remoteId)
     {
         if (!$remoteId) {
