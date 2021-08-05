@@ -495,8 +495,11 @@ class ProductMysqldb extends Service implements ProductInterface
         } else {
             $model = new $this->_productModelName();
             $model->created_at = time();
-            $created_user_id = Yii::$app->user->identity->id;
-            $model->created_user_id = $created_user_id ;
+            if ( Yii::$service->helper->getAppName() != 'console') {
+                $created_user_id = Yii::$app->user->identity->id;
+                $model->created_user_id = $created_user_id ;
+            }
+            
             //验证sku 是否重复
             $product_one = $this->_productModel->find()->asArray()->where([
                 'sku' => $one['sku'],
@@ -592,8 +595,10 @@ class ProductMysqldb extends Service implements ProductInterface
             $model = new $this->_productModelName();
             $model->created_at = time();
             $model->id = $one['id'];
-            $created_user_id = Yii::$app->user->identity->id;
-            $model->created_user_id = $created_user_id ;
+            if ( Yii::$service->helper->getAppName() != 'console') {
+                $created_user_id = Yii::$app->user->identity->id;
+                $model->created_user_id = $created_user_id ;
+            }
             $hasProduct = false; 
         }
         //验证sku 是否重复
@@ -1494,8 +1499,10 @@ class ProductMysqldb extends Service implements ProductInterface
         } else {
             $model = new $this->_productModelName();
             $model->created_at = time();
-            $created_user_id = Yii::$app->user->identity->id;
-            $model->created_user_id = $created_user_id ;
+            if ( Yii::$service->helper->getAppName() != 'console') {
+                $created_user_id = Yii::$app->user->identity->id;
+                $model->created_user_id = $created_user_id ;
+            }
             //验证sku 是否重复
             $product_one = $this->_productModel->find()->asArray()->where([
                 'sku' => $one['sku'],
