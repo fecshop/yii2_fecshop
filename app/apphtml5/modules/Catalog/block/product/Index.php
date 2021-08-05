@@ -73,6 +73,7 @@ class Index extends \yii\base\BaseObject
             'image_thumbnails'          => $this->_image_thumbnails,
             'image_detail'              => $this->_image_detail,
             'sku'                       => $this->_product['sku'],
+            'is_in_stock'                     => $this->_product['is_in_stock'],
             'main_img'                       => isset($this->_product['image']['main']['image']) ? $this->_product['image']['main']['image'] : '',
             'package_number'            => $this->_product['package_number'],
             'spu'                       => $this->_product['spu'],

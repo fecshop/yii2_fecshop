@@ -14,6 +14,7 @@
 		<input type="hidden" class="product_csrf" name="" value="" />
 		<div class="media_img">
 			<div class="media_img_content">
+            
 				<?php # 图片部分。
 					$imageParam = [
                         'media_size' => $media_size,

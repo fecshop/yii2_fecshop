@@ -32,9 +32,11 @@ $is_in_stock = $parentThis['is_in_stock'];
 		<?php foreach($gallerys as $gallery): ?>
 			<?php $image = $gallery['image']; ?>
 			<div class="swiper-slide product-main-img">
+                <?php if ($is_in_stock != 1): ?>
                 <span class="second_tag">
                     <?= Yii::$service->page->translate->__('OUT OF STOCK'); ?>
                 </span>
+                <?php endif; ?>
                 <img class="lazy" data-src="<?= Yii::$service->product->image->getResize($image,$middle_img_width,false)  ?>" src="<?= Yii::$service->image->getImgUrl('images/lazyload.gif'); ?>" alt="" style='width: 100%'>
             </div>	
 		<?php endforeach ?>

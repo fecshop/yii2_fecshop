@@ -32,6 +32,11 @@
                             <?php  endif; ?>
                                 <li>
                                     <div class="c_img">
+                                        <?php if ($product['is_in_stock'] != 1): ?>
+                                            <span class="second_tag">
+                                                <?= Yii::$service->page->translate->__('OUT OF STOCK'); ?>
+                                            </span>
+                                        <?php endif; ?>
                                         <a href="<?= $product['url'] ?>">
                                             <img  class="js_lazy" src="<?= Yii::$service->image->getImgUrl('images/lazyload.gif');   ?>" data-original="<?= Yii::$service->product->image->getResize($product['image'],[230,230],false) ?>"  />
                                         </a>
@@ -124,3 +129,23 @@ $(document).ready(function(){
 <?php $this->registerJs($this->blocks['category_product_filter'],\yii\web\View::POS_END);//将编写的js代码注册到页面底部 ?>
 <?= Yii::$service->page->trace->getTraceSearchJsCode($this, $traceSearchData, $products)  ?>
 
+<style>
+.c_img{
+    position:relative;
+}
+.second_tag {
+    position: absolute;
+    width: 140px;
+    height: 80px;
+    border-radius: 140px;
+    background: rgba(0,0,0,.5);
+    color: #fff;
+    font-size: 16px;
+    text-align: center;
+    padding-top: 62px;
+    top: 50%;
+    left: 50%;
+    margin-left: -70px;
+    margin-top: -70px;
+}
+</style>
