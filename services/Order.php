@@ -1079,12 +1079,13 @@ class Order extends Service
      * @property $trackingNumber | string
      * 订单发货操作
      */
-    public function trackingShip($orderId, $trackingCompanyCode, $trackingNumber)
+    public function trackingShip($orderId, $trackingCompanyCode, $trackingNumber, $trackingCompanyName='')
     {
         $updateComules = $this->_orderModel->updateAll(
             [
                 'order_status' => $this->status_dispatched,
                 'tracking_company' => $trackingCompanyCode,
+                'tracking_company_name' => $trackingCompanyName,
                 'tracking_number' => $trackingNumber,
                 'dispatched_at' => time(),
             ],
