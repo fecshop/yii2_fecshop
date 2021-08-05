@@ -81,7 +81,8 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
                 'display' => [
                     'type' => 'textarea',
                     'lang' => true,
-                    'rows' => 14,
+                    'notEditor' => true,
+                    'rows' => 4,
                     'cols'  => 110,
                 ],
                 'require' => 0,
@@ -92,6 +93,7 @@ class Manageredit extends AppadminbaseBlockEdit implements AppadminbaseBlockEdit
                 'display' => [
                     'type' => 'textarea',
                     'lang' => true,
+                   
                     'rows' => 14,
                     'cols'  => 110,
                 ],
