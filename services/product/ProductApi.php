@@ -514,25 +514,25 @@ class ProductApi extends Service
             unset($saveData['_id']);
         }
         
-        if ($saveData['name']) {
+        if (is_string($saveData['name']) && $saveData['name']) {
             $saveData['name'] = unserialize($saveData['name']);
         }
-        if ($saveData['description']) {
+        if (is_string($saveData['description']) && $saveData['description']) {
             $saveData['description'] = unserialize($saveData['description']);
         }
-        if ($saveData['image']) {
+        if (is_string($saveData['image']) && $saveData['image']) {
             $saveData['image'] = unserialize($saveData['image']);
         }
-        if ($saveData['short_description']) {
+        if (is_string($saveData['short_description']) && $saveData['short_description']) {
             $saveData['short_description'] = unserialize($saveData['short_description']);
         }
-        if ($saveData['meta_description']) {
+        if (is_string($saveData['meta_description']) && $saveData['meta_description']) {
             $saveData['meta_description'] = unserialize($saveData['meta_description']);
         }
-        if ($saveData['meta_keywords']) {
+        if (is_string($saveData['meta_keywords']) && $saveData['meta_keywords']) {
             $saveData['meta_keywords'] = unserialize($saveData['meta_keywords']);
         }
-        if ($saveData['attr_group_info']) {
+        if (is_string($saveData['attr_group_info']) && $saveData['attr_group_info']) {
             $saveData['attr_group_info'] = unserialize($saveData['attr_group_info']);
         }
         
