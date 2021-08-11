@@ -136,8 +136,8 @@ $(document).ready(function(){
 		<a href="" ajaxxurl="<?= CUrl::getUrl('catalog/category/index'); ?>" target="ajax" rel="jbsxBox"  class="add_category_a">add</a>
 	</div>
 	<div class="pageContent" style="padding:5px">
-		<div layoutH="16" style="float:left; display:block; overflow:auto; width:240px; border:solid 1px #CCC; line-height:21px; background:#fff">
-			<div style="">
+		<div class="categoryMenu" layoutH="16" style="float:left; display:block; overflow:auto; width:240px; border:solid 1px #CCC; line-height:21px; background:#fff">
+			<div style="    position: absolute;  padding-bottom: 10px;   top: 7px; padding: 10px 0; background: #fff;border-bottom: 1px solid #ccc;">
 				<div class="formBar">
 					<ul style="float:left;">
 						<!--<li><a class="buttonActive" href="javascript:;"><span>保存</span></a></li>-->
@@ -160,7 +160,9 @@ $(document).ready(function(){
 	</div>
 </form>
 
-
+<style>
+.categoryMenu .tree.treeFolder{margin-top:66px;}
+</style>
 
 
 

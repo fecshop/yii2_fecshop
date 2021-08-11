@@ -86,12 +86,16 @@ $(document).ready(function(){
 	$(".searchBar").off("click").on("click",".productSearch",function(){
 		url 	= $(".j-ajax").attr("href")+"&";
 		$("#pagerForm2 input[name='productfiltertype']").val("");
+        $('#jbsxBox_product input[name="product_select_info"]').val("");
+        $('#jbsxBox_product input[name="product_unselect_info"]').val("");
 		ajaxProduct(url,'','');
 	});
 	// 重置搜索
 	$(".searchBar").on("click",".productReset",function(){
 		url 	= $(".j-ajax").attr("href")+"&";
 		$("#pagerForm2 input[name='productfiltertype']").val("reset");
+        $('#jbsxBox_product input[name="product_select_info"]').val("");
+        $('#jbsxBox_product input[name="product_unselect_info"]').val("");
 		ajaxProduct(url,'','');
 	});
 	
@@ -117,46 +121,6 @@ $(document).ready(function(){
 	//$("#jbsxBox_product").on("click","input:checkbox",function(){
 	//	product_select();
 	//});
-	
-	//选择产品。
-	function product_select(){
-		product_select_info = $('#jbsxBox_product input[name="product_select_info"]').val();
-		if(product_select_info){
-			var select_arr = product_select_info.split(","); 
-		}else{
-			var select_arr = []; 
-		} 
-		
-		product_unselect_info = $('#jbsxBox_product input[name="product_unselect_info"]').val();
-		if(product_unselect_info){
-			var un_select_arr = product_unselect_info.split(","); 
-		}else{
-			var un_select_arr = []; 
-		} 
-		
-		$('.gridTbody input:checkbox:checked').each(function(){
-			val = $(this).val();
-			select_arr.push(val);
-		});
-		select_arr = array_unique(select_arr);
-		//alert(select_arr);
-		
-		$('.gridTbody input:checkbox:unchecked').each(function(){
-			val = $(this).val();
-			un_select_arr.push(val);
-		});
-		un_select_arr = array_unique(un_select_arr);
-		
-		select_arr = array_quchu(select_arr,un_select_arr);
-		selected_product = select_arr.join(",");
-		//alert(selected_product); 
-		$('#jbsxBox_product input[name="product_select_info"]').val(selected_product);		
-		
-		un_select_arr = array_quchu(un_select_arr,select_arr);
-		un_selected_product = un_select_arr.join(",");
-		//alert(un_selected_product); 
-		$('#jbsxBox_product input[name="product_unselect_info"]').val(un_selected_product);
-	}
 	
 	
 	
