@@ -107,14 +107,26 @@ class Product extends AppadminbaseBlock implements AppadminbaseBlockInterface
      */
     public function getSearchArr()
     {
-        $data = [
-            [    // 字符串类型
+        $nameInput = [];
+        if (Yii::$service->product->serviceStorageName() == 'mongodb') {
+            $nameInput = [    // 字符串类型
                 'type'  => 'inputtext',
                 'title' => 'Name',
                 'name'  => 'name',
                 'columns_type' => 'string',
                 'lang'  => true,
-            ],
+            ];
+        } else {
+            $nameInput = [    // 字符串类型
+                'type'  => 'inputtext',
+                'title' => 'Name',
+                'name'  => 'name',
+                'columns_type' => 'string',
+                'lang'  => false,
+            ];
+        }
+        $data = [
+            $nameInput,
             [    // 字符串类型
                 'type'  => 'inputtext',
                 'title' => Yii::$service->page->translate->__('Spu'),
