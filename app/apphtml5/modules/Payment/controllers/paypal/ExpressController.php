@@ -26,7 +26,14 @@ class ExpressController extends AppfrontController
         Yii::$service->payment->setPaymentMethod($payment_method);
         $data = $this->getBlock()->startPayment();
     }
-
+    
+    public function actionButton()
+    {
+        $payment_method = Yii::$service->payment->paypal->express_payment_method;
+        Yii::$service->payment->setPaymentMethod($payment_method);
+        $this->getBlock('start')->startButtonPayment();
+    }
+    
     // 2.Review  从paypal确认后返回
     public function actionReview()
     {

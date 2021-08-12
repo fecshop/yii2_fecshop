@@ -31,6 +31,7 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
         'paypal_account',
         'paypal_password',
         'paypal_signature',
+        'paypal_client_id',
         'paypal_env',
     ];
     
@@ -140,6 +141,15 @@ class Manager extends AppadminbaseBlockEdit implements AppadminbaseBlockEditInte
                     'type' => 'inputString',
                 ],
                 'remark' => '【选填】Paypal Api 签名'
+            ],
+            
+            [
+                'label'  => Yii::$service->page->translate->__('Paypal Client Id'),
+                'name' => 'paypal_client_id',
+                'display' => [
+                    'type' => 'inputString',
+                ],
+                'remark' => '【选填】Paypal Client ID'
             ],
             
             

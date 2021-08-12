@@ -84,6 +84,7 @@ class Paypal extends Service
     protected $_password;
     protected $_signature;
     protected $_env;
+    protected $_client_id;
     
     public function init()
     {
@@ -93,11 +94,23 @@ class Paypal extends Service
         $this->_password = Yii::$app->store->get('payment_paypal', 'paypal_password');
         $this->_signature = Yii::$app->store->get('payment_paypal', 'paypal_signature');
         $this->_env = Yii::$app->store->get('payment_paypal', 'paypal_env');
+        $this->_client_id = Yii::$app->store->get('payment_paypal', 'paypal_client_id');
+        
         list($this->_ipnMessageModelName, $this->_ipnMessageModel) = \Yii::mapGet($this->_ipnMessageModelName);
         $this->_allowChangOrderStatus = [
             Yii::$service->order->payment_status_pending,
             Yii::$service->order->payment_status_processing,
         ];
+    }
+    
+    public function getPaypalSdkJsUrl($currencyCode)
+    {
+        if ($this->_client_id) {
+            
+            return 'https://www.paypal.com/sdk/js?commit=false&currency='.$currencyCode.'&client-id='.$this->_client_id;
+        }
+        
+        return '';
     }
     
     public function getPaypayLoginAccount()

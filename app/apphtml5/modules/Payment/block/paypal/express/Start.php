@@ -17,6 +17,29 @@ use Yii;
  */
 class Start extends \yii\base\BaseObject
 {
+    public function startButtonPayment()
+    {
+        $methodName_ = 'SetExpressCheckout';
+        $nvpStr_ = Yii::$service->payment->paypal->getExpressTokenNvpStr();
+        //echo $nvpStr_;exit;
+        $checkoutReturn = Yii::$service->payment->paypal->PPHttpPost5($methodName_, $nvpStr_);
+        //var_dump($checkoutReturn);
+        if (strtolower($checkoutReturn['ACK']) == 'success') {
+            $token = $checkoutReturn['TOKEN'];
+            if($token){
+                if(!Yii::$service->order->generatePPExpressOrder($token)){
+                    return false;
+                }
+                echo '"'.$token.'"';
+            }
+            
+        } elseif (strtolower($checkoutReturn['ACK']) == 'failure') {
+            echo $checkoutReturn['L_LONGMESSAGE0'];
+        } else {
+            var_dump($checkoutReturn);
+        }
+    }
+    
     public function startPayment()
     {
         $checkStatus = $this->checkStockQty();

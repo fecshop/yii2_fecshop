@@ -13,6 +13,7 @@ use fec\helpers\CRequest;
 ?>
 <div class="main container one-column">
 	<div class="col-main">
+    <script  src="<?= Yii::$service->payment->paypal->getPaypalSdkJsUrl($currency_info['code']) ?>"> </script>
      <?= Yii::$service->page->widget->render('base/flashmessage'); ?>
 	<?php if(is_array($cart_info) && !empty($cart_info)):   ?>
 			    
@@ -128,16 +129,50 @@ use fec\helpers\CRequest;
 					<div class="totals cart-totals">
 						<div class="proceed_to_checkout">
 							<div class="row no-gutter">
-								<div class="col-50">
+								
+                                <?php if ($enablePaypalExpress): ?>
+                                    <div style="clear: both; position: relative; z-index: 0;" id="paypal-button-container"></div>
+                                    <div id="onestepcheckout-place-order-loading"  class="onestepcheckout-place-order-loading" style="font-size:0.6rem;display:none;color:#777"><img src="<?= Yii::$service->image->getImgUrl('images/opc-ajax-loader.gif') ?>">&nbsp;&nbsp;Please wait, processing your order...</div>
+                                    <script>
+                                        paypal.Buttons({   
+                                            style: {
+                                                layout: 'vertical',  // horizontal | vertical
+                                                size:   'medium',    // small | medium | large | responsive
+                                                shape:  'rect',      // pill | rect
+                                                color:  'gold',       // gold | blue | silver | black
+                                                label:  'buynow', 
+                                                //height:35,   //35-55
+                                            },
+                                            createOrder: function () {
+                                                return fetch('<?= Yii::$service->url->getUrl('payment/paypal/express/button') ?>', {
+                                                    method: 'post',
+                                                    body: JSON.stringify({}),
+                                                    headers: {
+                                                        'content-type': 'application/json'
+                                                    }
+                                                }).then(function (res) {
+                                                    return res.json();
+                                                }).then(function (data) {
+                                                    return data;
+                                                });
+                                            },
+                                            onApprove: function(data, actions) {			
+                                                var postData = { token: data.orderID, PayerID: data.payerID, isAjax: true};
+                                                var dom=document.getElementById("onestepcheckout-place-order-loading"); 
+                                                dom.style.display="block";
+                                                window.location.href="<?= Yii::$service->url->getUrl('payment/paypal/express/review') ?>?token="+data.orderID+"&PayerID="+data.payerID;
+                                            }
+                                        }).render('#paypal-button-container');
+                                    </script>
+
+                                    <span style="display:block;text-align:center;" class="or">- <?= Yii::$service->page->translate->__('OR');?> - </span>
+                                    <br/>
+                                <?php endif;  ?>
+                                
+                                <div >
 									<button onclick="location.href='<?= Yii::$service->url->getUrl('checkout/onepage');  ?>'" type="button" title="Proceed to Checkout" class="button btn-proceed-checkout btn-checkout"><span><span><?= Yii::$service->page->translate->__('Proceed to Pay');?></span></span></button>
                                 </div>
-                                <?php if ($enablePaypalExpress): ?>
-								<div class="col-50">
-									<a  external class="express_paypal" href="<?= Yii::$service->url->getUrl('payment/paypal/express/start');    ?>">
-										<img src="<?= Yii::$service->image->getImgUrl('/images/pay.png') ?>"  />
-									</a>
-								</div>
-                                <?php endif;  ?>
+                                
 							</div>
 						</div>
 					</div>
