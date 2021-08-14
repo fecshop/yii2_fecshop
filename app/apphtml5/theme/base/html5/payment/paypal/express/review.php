@@ -83,6 +83,8 @@
 
 <script>
 <?php $this->beginBlock('placeOrder') ?>
+    csrfName = $(".thiscsrf").attr("name");
+    csrfVal = $(".thiscsrf").val();
 	function validateEmail(email) {
 		var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 		return re.test(email);
@@ -149,13 +151,14 @@
 				//alert("coupon can not empty!");
 			}
 			//coupon_url = $("#discount-coupon-form").attr("action");
-			//alert(coupon_url);
+			$data = {"coupon_code":coupon_code};
+            $data[csrfName] = csrfVal;
 			$.ajax({
 				async:true,
 				timeout: 6000,
 				dataType: 'json', 
 				type:'post',
-				data: {"coupon_code":coupon_code},
+				data: $data,
 				url:coupon_url,
 				success:function(data, textStatus){ 
 					if(data.status == 'success'){
