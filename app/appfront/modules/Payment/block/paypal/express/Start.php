@@ -39,6 +39,7 @@ class Start extends \yii\base\BaseObject
         } else {
             var_dump($checkoutReturn);
         }
+        exit;
     }
     
     

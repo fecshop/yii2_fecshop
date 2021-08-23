@@ -78,7 +78,7 @@ class ItemController extends Controller
             }
         }
 
-        return ture;
+        return true;
     }
 
 
