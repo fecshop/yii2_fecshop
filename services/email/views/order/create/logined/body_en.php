@@ -19,7 +19,7 @@ use fecshop\app\appfront\helper\Format;
 						<!-- [ middle starts here] -->
 						<tr>
 							<td valign="top">
-								<h1 style="font-size:22px; font-weight:normal; line-height:22px; margin:0 0 11px 0;"">Hello, <?= $name; ?></h1>
+								<h1 style="font-size:22px; font-weight:normal; line-height:22px; margin:0 0 11px 0;">Hello, <?= $name; ?></h1>
 								<p style="font-size:12px; line-height:16px; margin:0;">
 									Thank you for your order from <?= $storeName; ?>.
 									Once your package ships we will send an email with a link to track your order.
