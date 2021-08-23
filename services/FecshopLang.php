@@ -237,7 +237,7 @@ class Fecshoplang extends Service
     */
 
     /**
-     * @param $language|string  like: en_US ,fr_FR,zh_CN
+     * @param $language|string  like: en-US ,fr-FR,zh-CN
      * @return string , like  en ,fr ,es ,  if  $language is not exist in $this->allLangCode
      *                empty will be return.
      */
