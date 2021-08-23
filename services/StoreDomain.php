@@ -175,4 +175,32 @@ class StoreDomain extends Service
         
         return $one;
     }
+    /**
+     *  @param $storeKey | string, store key
+     * 这里得到store key对应的语言简码，譬如 en-US
+     */
+    public function getLangCodeByStoreKey($storeKey)
+    {
+        $one = $this->_model->findOne(['status' => 1, 'key' => $storeKey]);
+        if ($one['lang']) {
+            
+            return $one['lang'];
+        }
+        
+        return '';
+    }
+    
+    public function getHomeUrlByStoreKey($storeKey)
+    {
+        $one = $this->_model->findOne(['status' => 1, 'key' => $storeKey]);
+        if ($one['lang']) {
+            $https_enable = $one['https_enable'];
+            $httpStr = $https_enable == 1 ? 'https' : 'http';
+            $httpStr .= '://';
+            
+            return $httpStr .= $storeKey;
+        }
+        
+        return '';
+    }
 }
