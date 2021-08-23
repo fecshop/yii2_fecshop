@@ -314,12 +314,22 @@ class Url extends Service
 
         return $this->_currentBaseUrl;
     }
-
+    
+    protected $_homeUrl;
+    public function setHomeUrl($homeUrl)
+    {
+        
+        $this->_homeUrl = $homeUrl;
+    }
     /**
      * get current home url , is was generate by 'http://'.store_code.
      */
     public function homeUrl()
     {
+        if ($this->_homeUrl) {
+            
+            return $this->_homeUrl;
+        }
         return Yii::$app->getHomeUrl();
     }
     
