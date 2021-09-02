@@ -73,7 +73,7 @@ class Index extends AppadminbaseBlock implements AppadminbaseBlockInterface
             [    // 字符串类型
                 'type' => 'inputtext',
                 'title' => Yii::$service->page->translate->__('Id'),
-                'name' => '_id',
+                'name' => Yii::$service->helper->errorHandler->getPrimaryKey(),
                 'columns_type' => 'string',
             ],
             
