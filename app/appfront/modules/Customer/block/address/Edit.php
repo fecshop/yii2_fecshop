@@ -149,7 +149,16 @@ class Edit extends \yii\base\BaseObject
     public function save($addressInfo)
     {
         $identity = Yii::$app->user->identity;
-        $addressInfo['customer_id'] = $identity['id'];
+        $customer_id = $identity['id'];
+        $address_id = isset($addressInfo['address_id']) ? $addressInfo['address_id'] : '';
+        if ($address_id) {
+            $addressModel = Yii::$service->customer->address->getAddressByIdAndCustomerId($address_id, $customer_id);
+            if (!$addressModel) {
+                Yii::$service->page->message->addError('address is not exist');
+                return false;
+            }
+        }
+        $addressInfo['customer_id'] = $customer_id;
         $saveStatus = Yii::$service->customer->address->save($addressInfo);
         if (!$saveStatus) {
             Yii::$service->page->message->addByHelperErrors();
